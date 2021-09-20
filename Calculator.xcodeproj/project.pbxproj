@@ -11,6 +11,8 @@
 		AA40C44726F808D900119D4F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA40C44626F808D800119D4F /* ContentView.swift */; };
 		AA40C44926F808DA00119D4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA40C44826F808DA00119D4F /* Assets.xcassets */; };
 		AA40C44C26F808DA00119D4F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA40C44B26F808DA00119D4F /* Preview Assets.xcassets */; };
+		AA40C45326F8090C00119D4F /* dist in Resources */ = {isa = PBXBuildFile; fileRef = AA40C45226F8090C00119D4F /* dist */; };
+		AA40C45526F8094700119D4F /* Gmp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA40C45426F8094700119D4F /* Gmp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +21,9 @@
 		AA40C44626F808D800119D4F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AA40C44826F808DA00119D4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA40C44B26F808DA00119D4F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		AA40C45226F8090C00119D4F /* dist */ = {isa = PBXFileReference; lastKnownFileType = folder; path = dist; sourceTree = "<group>"; };
+		AA40C45426F8094700119D4F /* Gmp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gmp.swift; sourceTree = "<group>"; };
+		AA40C45626F8096700119D4F /* Calculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Calculator.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +40,7 @@
 		AA40C43826F808D800119D4F = {
 			isa = PBXGroup;
 			children = (
+				AA40C45226F8090C00119D4F /* dist */,
 				AA40C44326F808D800119D4F /* Calculator */,
 				AA40C44226F808D800119D4F /* Products */,
 			);
@@ -51,8 +57,10 @@
 		AA40C44326F808D800119D4F /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
+				AA40C45626F8096700119D4F /* Calculator.entitlements */,
 				AA40C44426F808D800119D4F /* CalculatorApp.swift */,
 				AA40C44626F808D800119D4F /* ContentView.swift */,
+				AA40C45426F8094700119D4F /* Gmp.swift */,
 				AA40C44826F808DA00119D4F /* Assets.xcassets */,
 				AA40C44A26F808DA00119D4F /* Preview Content */,
 			);
@@ -125,6 +133,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA40C45326F8090C00119D4F /* dist in Resources */,
 				AA40C44C26F808DA00119D4F /* Preview Assets.xcassets in Resources */,
 				AA40C44926F808DA00119D4F /* Assets.xcassets in Resources */,
 			);
@@ -138,6 +147,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA40C44726F808D900119D4F /* ContentView.swift in Sources */,
+				AA40C45526F8094700119D4F /* Gmp.swift in Sources */,
 				AA40C44526F808D800119D4F /* CalculatorApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -266,6 +276,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Calculator/Calculator.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Calculator/Preview Content\"";
@@ -285,7 +296,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.joachimneumann.Calculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = /Users/joachim/projects/Calculator/dist/include/bridge.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -296,6 +309,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Calculator/Calculator.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Calculator/Preview Content\"";
@@ -315,7 +329,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.joachimneumann.Calculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = /Users/joachim/projects/Calculator/dist/include/bridge.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
