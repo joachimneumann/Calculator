@@ -81,6 +81,14 @@ cp src/.libs/libmpfr.a ../catalyst/libmpfr.a
 
 cd ..
 
-rm -rf gmp_mpfr.xcframework
-xcodebuild -create-xcframework -library iPhone/libgmp.a -library simulator/libgmp.a -library catalyst/libgmp.a -library iPhone/libmpfr.a -library simulator/libmpfr.a -library catalyst/libmpfr.a -output gmp_mpfr.xcframework
+codesign -s 5D0F9B026D6B6975270955D7CA9A986F6D6B0DE1 iPhone/libgmp.a
+codesign -s 5D0F9B026D6B6975270955D7CA9A986F6D6B0DE1 iPhone/libmpfr.a
+codesign -s 5D0F9B026D6B6975270955D7CA9A986F6D6B0DE1 simulator/libgmp.a
+codesign -s 5D0F9B026D6B6975270955D7CA9A986F6D6B0DE1 simulator/libmpfr.a
+codesign -s 5D0F9B026D6B6975270955D7CA9A986F6D6B0DE1 catalyst/libgmp.a
+codesign -s 5D0F9B026D6B6975270955D7CA9A986F6D6B0DE1 catalyst/libmpfr.a
+
+rm -rf mpfr.xcframework gmp.xcframework
+xcodebuild -create-xcframework -library iPhone/libgmp.a  -library simulator/libgmp.a  -library catalyst/libgmp.a  -output gmp.xcframework
+xcodebuild -create-xcframework -library iPhone/libmpfr.a -library simulator/libmpfr.a -library catalyst/libmpfr.a -output mpfr.xcframework
 
