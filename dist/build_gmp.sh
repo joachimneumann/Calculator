@@ -51,33 +51,33 @@ build()
 	--host=aarch64-apple-darwin --disable-assembly --enable-static --disable-shared ${ARGS}
 
 	echo "make in progress for ${ARCH}"
-	make -j `sysctl -n hw.logicalcpu_max` &> "${CURRENT}/gmplib-${ARCH}-build.log"
+	make 
 	echo "install in progress for ${ARCH}"
 	make install &> "${CURRENT}/gmplib-${ARCH}-install.log"
 }
 
 
-rm -rf dist
-mkdir dist
-mkdir dist/arm64
-mkdir dist/x64_86
-mkdir dist/include
+# rm -rf dist
+# mkdir dist
+# mkdir dist/arm64
+# mkdir dist/x64_86
+# mkdir dist/include
 
-cd gmp
-CURRENT=`pwd`
+# cd gmp
+# CURRENT=`pwd`
 
-build "arm64" "${IPHONEOS_SDK}" "${IPHONEOS_PLATFORM}"
-# build "i386" "${IPHONESIMULATOR_SDK}" "${IPHONESIMULATOR_PLATFORM}"
-build "x64_86" "${OSX_SDK}" "${OSX_PLATFORM}"
+# build "arm64" "${IPHONEOS_SDK}" "${IPHONEOS_PLATFORM}"
+# # build "i386" "${IPHONESIMULATOR_SDK}" "${IPHONESIMULATOR_PLATFORM}"
+# build "x64_86" "${OSX_SDK}" "${OSX_PLATFORM}"
 
 
-cp ${CURRENT}/gmplib-arm64/lib/libgmp.a  ${CURRENT}/../dist/arm64/libgmp.a
-cp ${CURRENT}/gmplib-x64_86/lib/libgmp.a ${CURRENT}/../dist/x64_86/libgmp.a
-cp ${CURRENT}/gmplib-arm64/include/gmp.h ${CURRENT}/../dist/include/gmp.h
+# cp ${CURRENT}/gmplib-arm64/lib/libgmp.a  ${CURRENT}/../dist/arm64/libgmp.a
+# cp ${CURRENT}/gmplib-x64_86/lib/libgmp.a ${CURRENT}/../dist/x64_86/libgmp.a
+# cp ${CURRENT}/gmplib-arm64/include/gmp.h ${CURRENT}/../dist/include/gmp.h
 
-echo "################"
-echo "####  DONE  ####"
-echo "################"
-echo ${CURRENT}/dist/arm64/libgmp.a
-echo ${CURRENT}/dist/x64_86/libgmp.a
-echo ${CURRENT}/dist/include/gmp.h
+# echo "################"
+# echo "####  DONE  ####"
+# echo "################"
+# echo ${CURRENT}/dist/arm64/libgmp.a
+# echo ${CURRENT}/dist/x64_86/libgmp.a
+# echo ${CURRENT}/dist/include/gmp.h
