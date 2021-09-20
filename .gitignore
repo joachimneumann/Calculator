@@ -1,0 +1,7 @@
+*/xcuserdata
+Calculator.xcodeproj/project.xcworkspace/xcuserdata/
+dist/gmp/*
+dist/mpfr/*
+dist/iPhone
+dist/simulator
+dist/catalyst
