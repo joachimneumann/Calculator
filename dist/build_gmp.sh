@@ -31,53 +31,56 @@ build()
 	ARCH=$1
 	SDK=$2
 	PLATFORM=$3
-	ARGS=$4
+	COMPILEARGS=$4
+	CONFIGUREARGS=$5
 
 	make clean
 	make distclean
 
 	export PATH="${PLATFORM}/Developer/usr/bin:${DEVELOPER}/usr/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
-	mkdir gmplib-${ARCH}
-
 	EXTRAS=""
-	if [ "${ARCH}" != "x64_86" ]; then
+	if [ "${ARCH}" != "x86_64" ]; then
 		EXTRAS="-miphoneos-version-min=${MIN_IOS} -no-integrated-as -arch ${ARCH} -target ${ARCH}-apple-darwin"
 	fi
 
-	CFLAGS="${BITCODE} -isysroot ${SDK} -Wno-error -Wno-implicit-function-declaration ${EXTRAS}"
+	CFLAGS="${BITCODE} -isysroot ${SDK} -Wno-error -Wno-implicit-function-declaration ${EXTRAS} ${COMPILEARGS}"
 
-	./configure --prefix="${CURRENT}/gmplib-${ARCH}" CC="${CLANG} ${CFLAGS}"  CPP="${CLANG} -E"  CPPFLAGS="${CFLAGS}" \
-	--host=aarch64-apple-darwin --disable-assembly --enable-static --disable-shared ${ARGS}
+	./configure CC="${CLANG} ${CFLAGS}"  CPP="${CLANG} -E"  CPPFLAGS="${CFLAGS}" \
+	--host=aarch64-apple-darwin --disable-assembly --enable-static --disable-shared ${CONFIGUREARGS}
 
 	echo "make in progress for ${ARCH}"
-	make 
-	echo "install in progress for ${ARCH}"
-	make install &> "${CURRENT}/gmplib-${ARCH}-install.log"
+	make &> "${CURRENT}/build.log"
 }
 
+# code signing: get the correct expanded identity with the command $security find-identity 
 
-# rm -rf dist
-# mkdir dist
-# mkdir dist/arm64
-# mkdir dist/x64_86
-# mkdir dist/include
+rm -rf iPhone simulator catalyst
+mkdir iPhone simulator catalyst
 
-# cd gmp
-# CURRENT=`pwd`
+cd gmp
 
-# build "arm64" "${IPHONEOS_SDK}" "${IPHONEOS_PLATFORM}"
-# # build "i386" "${IPHONESIMULATOR_SDK}" "${IPHONESIMULATOR_PLATFORM}"
-# build "x64_86" "${OSX_SDK}" "${OSX_PLATFORM}"
+build "arm64" "${IPHONEOS_SDK}" "${IPHONEOS_PLATFORM}"
+cp .libs/libgmp.a ../iPhone/libgmp.a
 
+build "x86_64" "${IPHONESIMULATOR_SDK}" "${IPHONESIMULATOR_PLATFORM}"
+cp .libs/libgmp.a ../simulator/libgmp.a
 
-# cp ${CURRENT}/gmplib-arm64/lib/libgmp.a  ${CURRENT}/../dist/arm64/libgmp.a
-# cp ${CURRENT}/gmplib-x64_86/lib/libgmp.a ${CURRENT}/../dist/x64_86/libgmp.a
-# cp ${CURRENT}/gmplib-arm64/include/gmp.h ${CURRENT}/../dist/include/gmp.h
+build "x86_64" "${OSX_SDK}" "${OSX_PLATFORM}" "-target x86_64-apple-ios-macabi"
+cp .libs/libgmp.a ../catalyst/libgmp.a
 
-# echo "################"
-# echo "####  DONE  ####"
-# echo "################"
-# echo ${CURRENT}/dist/arm64/libgmp.a
-# echo ${CURRENT}/dist/x64_86/libgmp.a
-# echo ${CURRENT}/dist/include/gmp.h
+cd ../mpfr
+build "arm64" "${IPHONEOS_SDK}" "${IPHONEOS_PLATFORM}" "" "--with-gmp-lib=/Users/joachim/projects/Calculator/dist/iPhone --with-gmp-include=/Users/joachim/projects/Calculator/dist/include"
+cp src/.libs/libmpfr.a ../iPhone/libmpfr.a
+
+build "x86_64" "${IPHONESIMULATOR_SDK}" "${IPHONESIMULATOR_PLATFORM}" "" "--with-gmp-lib=/Users/joachim/projects/Calculator/dist/simulator --with-gmp-include=/Users/joachim/projects/Calculator/dist/include"
+cp src/.libs/libmpfr.a ../simulator/libmpfr.a
+
+build "x86_64" "${OSX_SDK}" "${OSX_PLATFORM}" "-target x86_64-apple-ios-macabi" "--with-gmp-lib=/Users/joachim/projects/Calculator/dist/catalyst --with-gmp-include=/Users/joachim/projects/Calculator/dist/include"
+cp src/.libs/libmpfr.a ../catalyst/libmpfr.a
+
+cd ..
+
+rm -rf gmp_mpfr.xcframework
+xcodebuild -create-xcframework -library iPhone/libgmp.a -library simulator/libgmp.a -library catalyst/libgmp.a -library iPhone/libmpfr.a -library simulator/libmpfr.a -library catalyst/libmpfr.a -output gmp_mpfr.xcframework
+
