@@ -2324,7 +2324,7 @@ enum
 };
 
 /* Define CC and CFLAGS which were used to build this version of GMP */
-#define __GMP_CC "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.5.sdk -Wno-error -Wno-implicit-function-declaration -miphoneos-version-min=14.0 -no-integrated-as -arch arm64 -target arm64-apple-darwin"
+#define __GMP_CC "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -fembed-bitcode -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.5.sdk -Wno-error -Wno-implicit-function-declaration -miphoneos-version-min=14.0 -no-integrated-as -arch arm64 -target arm64-apple-darwin"
 #define __GMP_CFLAGS "-O2 -pedantic -march=armv8-a"
 
 /* Major version number is the value of __GNU_MP__ too, above. */

@@ -13,6 +13,10 @@
 		AA40C44C26F808DA00119D4F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA40C44B26F808DA00119D4F /* Preview Assets.xcassets */; };
 		AA40C45326F8090C00119D4F /* dist in Resources */ = {isa = PBXBuildFile; fileRef = AA40C45226F8090C00119D4F /* dist */; };
 		AA40C45526F8094700119D4F /* Gmp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA40C45426F8094700119D4F /* Gmp.swift */; };
+		AA40C45C26F8182700119D4F /* libmpfr.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA40C45B26F8182700119D4F /* libmpfr.a */; platformFilter = ios; };
+		AA466B1C26F81C1100FB203E /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA466B1B26F81C1100FB203E /* libgmp.a */; platformFilter = ios; };
+		AA67F63726F81F1D00477F34 /* libmpfrCATALYST.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA67F63526F81EEE00477F34 /* libmpfrCATALYST.a */; platformFilter = maccatalyst; };
+		AA67F63926F81F2B00477F34 /* libgmpCATALYST.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA67F63826F81F2B00477F34 /* libgmpCATALYST.a */; platformFilter = maccatalyst; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +28,12 @@
 		AA40C45226F8090C00119D4F /* dist */ = {isa = PBXFileReference; lastKnownFileType = folder; path = dist; sourceTree = "<group>"; };
 		AA40C45426F8094700119D4F /* Gmp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gmp.swift; sourceTree = "<group>"; };
 		AA40C45626F8096700119D4F /* Calculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Calculator.entitlements; sourceTree = "<group>"; };
+		AA40C45B26F8182700119D4F /* libmpfr.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmpfr.a; path = dist/arm64/libmpfr.a; sourceTree = "<group>"; };
+		AA466B1B26F81C1100FB203E /* libgmp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgmp.a; path = dist/arm64/libgmp.a; sourceTree = "<group>"; };
+		AA67F63526F81EEE00477F34 /* libmpfrCATALYST.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmpfrCATALYST.a; path = dist/x64_86/libmpfrCATALYST.a; sourceTree = "<group>"; };
+		AA67F63826F81F2B00477F34 /* libgmpCATALYST.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgmpCATALYST.a; path = dist/x64_86/libgmpCATALYST.a; sourceTree = "<group>"; };
+		AAC781D126F81D8200DE506F /* libmpfrs.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmpfrs.a; path = dist/x64_86/libmpfrs.a; sourceTree = "<group>"; };
+		AAC781D326F81E8500DE506F /* libmpfr.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmpfr.a; path = dist/x64_86/libmpfr.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +41,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA466B1C26F81C1100FB203E /* libgmp.a in Frameworks */,
+				AA40C45C26F8182700119D4F /* libmpfr.a in Frameworks */,
+				AA67F63726F81F1D00477F34 /* libmpfrCATALYST.a in Frameworks */,
+				AA67F63926F81F2B00477F34 /* libgmpCATALYST.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +57,7 @@
 				AA40C45226F8090C00119D4F /* dist */,
 				AA40C44326F808D800119D4F /* Calculator */,
 				AA40C44226F808D800119D4F /* Products */,
+				AA40C45A26F8182700119D4F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -73,6 +88,19 @@
 				AA40C44B26F808DA00119D4F /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		AA40C45A26F8182700119D4F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AA67F63826F81F2B00477F34 /* libgmpCATALYST.a */,
+				AAC781D126F81D8200DE506F /* libmpfrs.a */,
+				AA466B1B26F81C1100FB203E /* libgmp.a */,
+				AA67F63526F81EEE00477F34 /* libmpfrCATALYST.a */,
+				AAC781D326F81E8500DE506F /* libmpfr.a */,
+				AA40C45B26F8182700119D4F /* libmpfr.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -293,6 +321,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/dist/arm64",
+					"$(PROJECT_DIR)/dist/x64_86",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.joachimneumann.Calculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -325,6 +357,10 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/dist/arm64",
+					"$(PROJECT_DIR)/dist/x64_86",
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.joachimneumann.Calculator;

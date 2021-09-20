@@ -5,7 +5,7 @@
 //  Created by Joachim Neumann on 20/09/2021.
 //
 
-// This class bridges between swift and the GMP library that is implemented in C
+// This class bridges between swift and the GMP library which is implemented in C
 
 
 import Foundation

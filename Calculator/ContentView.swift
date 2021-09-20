@@ -9,7 +9,10 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello, world!")
+        let x: Gmp = Gmp("1.0", precision: 10)
+        let y: Gmp = Gmp("2.0", precision: 10)
+        let z: Gmp = x + y
+        Text("x=\(z.toLongString())")
             .padding()
     }
 }
