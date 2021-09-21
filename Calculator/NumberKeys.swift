@@ -37,7 +37,7 @@ struct NumberKeys: View {
     var body: some View {
         VStack(spacing: size.space) {
             HStack(spacing: size.space) {
-                CKey(AC: .constant(false),
+                CKey(AC: false,
                      fontSize: size.fontSize,
                      properties: operatorProperties) {}
                      .frame(width: size.width, height: size.height)
@@ -49,7 +49,7 @@ struct NumberKeys: View {
                     fontSize: size.fontSize,
                     properties: digitProperties) {}
                     .frame(width: size.width, height: size.height)
-                OpKey(waiting: .constant(true),
+                OpKey(waiting: true,
                       text: "/",
                       fontSize: size.fontSize,
                       properties: operatorProperties) {}
@@ -68,7 +68,7 @@ struct NumberKeys: View {
                     fontSize: size.fontSize,
                     properties: digitProperties) {}
                     .frame(width: size.width, height: size.height)
-                OpKey(waiting: .constant(false),
+                OpKey(waiting: false,
                       text: "x",
                       fontSize: size.fontSize,
                       properties: operatorProperties) {}
@@ -87,7 +87,7 @@ struct NumberKeys: View {
                     fontSize: size.fontSize,
                     properties: digitProperties) {}
                     .frame(width: size.width, height: size.height)
-                OpKey(waiting: .constant(false),
+                OpKey(waiting: false,
                       text: "-",
                       fontSize: size.fontSize,
                       properties: operatorProperties) {}
@@ -106,7 +106,7 @@ struct NumberKeys: View {
                     fontSize: size.fontSize,
                     properties: digitProperties) {}
                     .frame(width: size.width, height: size.height)
-                OpKey(waiting: .constant(false),
+                OpKey(waiting: false,
                       text: "+",
                       fontSize: size.fontSize,
                       properties: operatorProperties) {}

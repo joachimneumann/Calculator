@@ -38,7 +38,7 @@ struct ZeroKey: View {
 }
 
 struct CKey: View {
-    @Binding var AC: Bool
+    var AC: Bool
     let fontSize: CGFloat
     let properties: TextKeyproperties
     let callback: () -> Void
@@ -57,7 +57,6 @@ struct CKey: View {
             DragGesture(minimumDistance: 0)
                 .onChanged { value in
                     pressed = true
-                    AC = true
                 }
                 .onEnded { value in
                     pressed = false
@@ -68,20 +67,17 @@ struct CKey: View {
 }
 
 struct OpKey: View {
-    @Binding var waiting: Bool
+    var waiting: Bool
     let text: String
     let fontSize: CGFloat
     let properties: TextKeyproperties
     let callback: () -> Void
 
     let sfImages: [String: String] = [
-        "+/-": "plus.forwardslash.minus",
         "+": "plus",
         "-": "minus",
         "x": "multiply",
         "/": "divide",
-        "=": "equal",
-        "%": "percent",
     ]
     @State var pressed = false
     var textColor: Color {
@@ -123,10 +119,6 @@ struct OpKey: View {
 struct Key: View {
     let sfImages: [String: String] = [
         "+/-": "plus.forwardslash.minus",
-        "+": "plus",
-        "-": "minus",
-        "x": "multiply",
-        "/": "divide",
         "=": "equal",
         "%": "percent",
     ]
@@ -184,7 +176,7 @@ struct Key_Previews: PreviewProvider {
                     color: Color(white: 0.6),
                     downColor: Color(white: 0.7))) {}
                     .background(Color.green)
-            CKey(AC: .constant(false),
+            CKey(AC: false,
                  fontSize: 100,
                  properties: TextKeyproperties(
                     textColor: Color.white,
@@ -192,7 +184,7 @@ struct Key_Previews: PreviewProvider {
                     color: Color(white: 0.6),
                     downColor: Color(white: 0.7))) {}
                     .background(Color.green)
-            OpKey(waiting: .constant(false),
+            OpKey(waiting: false,
                   text: "/",
                  fontSize: 100,
                  properties: TextKeyproperties(
