@@ -56,13 +56,13 @@ let DigitKeyProperties = KeyProperties(
 let OpKeyProperties = KeyProperties(
     textColor: Color.white,
     color: Color(
-        red:    81.0/255.0,
-        green: 181.0/255.0,
-        blue:  235.0/255.0),
+        red:   105.0/255.0,
+        green: 183.0/255.0,
+        blue:  191.0/255.0),
     downColor: Color(
-        red:   209/255.0,
-        green: 222/255.0,
-        blue:  243/255.0),
+        red:   203/255.0,
+        green: 230/255.0,
+        blue:  232/255.0),
     downAnimationTime: 0.1,
     upAnimationTime: 0.3)
 
