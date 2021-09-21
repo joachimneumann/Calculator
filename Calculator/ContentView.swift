@@ -13,8 +13,13 @@ struct ContentView: View {
         let y: Gmp = Gmp("2.0", precision: 10)
         let z: Gmp = x + y
 //        let x = funnyAdd(2, 3)
-        Text("z=\(z.toShortString(maxPrecision: 10))")
-            .padding()
+//        Text("z=\(z.toShortString(maxPrecision: 10))")
+//            .padding()
+        ZStack {
+            Rectangle()
+            NumberKeys(roundKeys: true, width: 320)
+        }
+            .background(Color.black)
     }
 }
 

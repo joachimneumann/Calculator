@@ -9,97 +9,67 @@ import SwiftUI
 
 
 struct NumberKeys: View {
-    let size: KeySize
-    
+    let size: CGSize
+    let verticalSpace: CGFloat
+    let horizontalSpace: CGFloat
+
     var body: some View {
-        VStack(spacing: size.space) {
-            HStack(spacing: size.space) {
-                CKey(AC: false,
-                     fontSize: size.fontSize) {}
-                     .frame(width: size.width, height: size.height)
-                GrayKey(text: "+/-",
-                    fontSize: size.fontSize) {}
-                    .frame(width: size.width, height: size.height)
-                GrayKey(text: "%",
-                    fontSize: size.fontSize) {}
-                    .frame(width: size.width, height: size.height)
-                OpKey(waiting: true,
-                      text: "/",
-                      fontSize: size.fontSize) {}
-                      .frame(width: size.width, height: size.height)
+        VStack(spacing: verticalSpace) {
+            HStack(spacing: horizontalSpace) {
+                Key("C")
+                    .op3(size: size)
+                Key("+/-")
+                    .op2(size: size)
+                Key("%")
+                    .op2(size: size)
+                Key("/")
+                    .op(size: size)
             }
-            HStack(spacing: size.space) {
-                GrayKey(text: "7",
-                    fontSize: size.fontSize) {}
-                    .frame(width: size.width, height: size.height)
-                GrayKey(text: "8",
-                    fontSize: size.fontSize) {}
-                    .frame(width: size.width, height: size.height)
-                GrayKey(text: "9",
-                    fontSize: size.fontSize) {}
-                    .frame(width: size.width, height: size.height)
-                OpKey(waiting: false,
-                      text: "x",
-                      fontSize: size.fontSize) {}
-                      .frame(width: size.width, height: size.height)
+            HStack(spacing: horizontalSpace) {
+                Key("7")
+                    .digit(size: size)
+                Key("8")
+                    .digit(size: size)
+                Key("9")
+                    .digit(size: size)
+                Key("x")
+                    .op(size: size)
             }
-            HStack(spacing: size.space) {
-                GrayKey(text: "4",
-                    fontSize: size.fontSize) {}
-                    .frame(width: size.width, height: size.height)
-                GrayKey(text: "5",
-                    fontSize: size.fontSize) {}
-                    .frame(width: size.width, height: size.height)
-                GrayKey(text: "6",
-                    fontSize: size.fontSize) {}
-                    .frame(width: size.width, height: size.height)
-                OpKey(waiting: false,
-                      text: "-",
-                      fontSize: size.fontSize) {}
-                      .frame(width: size.width, height: size.height)
+            HStack(spacing: horizontalSpace) {
+                Key("4")
+                    .digit(size: size)
+                Key("5")
+                    .digit(size: size)
+                Key("6")
+                    .digit(size: size)
+                Key("-")
+                    .op(size: size)
             }
-            HStack(spacing: size.space) {
-                GrayKey(text: "1",
-                    fontSize: size.fontSize) {}
-                    .frame(width: size.width, height: size.height)
-                GrayKey(text: "2",
-                    fontSize: size.fontSize) {}
-                    .frame(width: size.width, height: size.height)
-                GrayKey(text: "3",
-                    fontSize: size.fontSize) {}
-                    .frame(width: size.width, height: size.height)
-                OpKey(waiting: false,
-                      text: "+",
-                      fontSize: size.fontSize) {}
-                      .frame(width: size.width, height: size.height)
+            HStack(spacing: horizontalSpace) {
+                Key("1")
+                    .digit(size: size)
+                Key("2")
+                    .digit(size: size)
+                Key("3")
+                    .digit(size: size)
+                Key("+")
+                    .op(size: size)
             }
-            HStack(spacing: size.space) {
-                ZeroKey(fontSize: size.fontSize) {}
-                        .frame(width: size.doubleWidth, height: size.height)
-                GrayKey(text: ",",
-                    fontSize: size.fontSize) {}
-                    .frame(width: size.width, height: size.height)
-                OpKey(waiting: false,
-                      text: "=",
-                      fontSize: size.fontSize) {}
-                      .frame(width: size.width, height: size.height)
+            HStack(spacing: horizontalSpace) {
+                Key("0")
+                    .zero(size: size, horizontalSpace: horizontalSpace)
+                Key(",")
+                    .digit(size: size)
+                Key("=")
+                    .op(size: size)
             }
         }
     }
-}
-
-struct KeySize {
-    let width: CGFloat
-    let height: CGFloat
-    let space: CGFloat
-    let fontSize: CGFloat
-    let doubleWidth: CGFloat
     init(roundKeys: Bool, width totalWidth: CGFloat) {
-        space = 0.03 * totalWidth
-        width = (totalWidth - 3.0 * space) * 0.25
-        height = width
-        fontSize = width * 0.4
-        doubleWidth = 2.0 * width + space
+        horizontalSpace = 0.03 * totalWidth
+        verticalSpace = 0.03 * totalWidth
+        let w = (totalWidth - 3.0 * horizontalSpace) * 0.25
+        size = CGSize(width: w, height: w)
     }
 }
 
@@ -107,8 +77,7 @@ struct NumberKeys_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             Rectangle()
-            let keySize = KeySize(roundKeys: true, width: 320)
-            NumberKeys(size: keySize)
+            NumberKeys(roundKeys: true, width: 320)
         }
             .background(Color.black)
     }
