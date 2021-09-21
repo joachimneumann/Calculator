@@ -9,9 +9,8 @@
 /* Begin PBXBuildFile section */
 		AA2576A626F8E6CE00CDD8C9 /* mpfr.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA2576A526F8E6CE00CDD8C9 /* mpfr.xcframework */; };
 		AA2576A726F8E6CE00CDD8C9 /* mpfr.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA2576A526F8E6CE00CDD8C9 /* mpfr.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		AA2576B126F8EE3A00CDD8C9 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2576B026F8EE3A00CDD8C9 /* Key.swift */; };
+		AA2576B126F8EE3A00CDD8C9 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2576B026F8EE3A00CDD8C9 /* Keys.swift */; };
 		AA2576B326F8F16600CDD8C9 /* NumberKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2576B226F8F16600CDD8C9 /* NumberKeys.swift */; };
-		AA2576B526F9602A00CDD8C9 /* TextKeyProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2576B426F9602A00CDD8C9 /* TextKeyProperties.swift */; };
 		AA3D6F7F26F8940800423E76 /* gmp.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA3D6F7E26F8940800423E76 /* gmp.xcframework */; };
 		AA3D6F8026F8940800423E76 /* gmp.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA3D6F7E26F8940800423E76 /* gmp.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AA40C44526F808D800119D4F /* CalculatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA40C44426F808D800119D4F /* CalculatorApp.swift */; };
@@ -38,9 +37,8 @@
 
 /* Begin PBXFileReference section */
 		AA2576A526F8E6CE00CDD8C9 /* mpfr.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = mpfr.xcframework; path = dist/mpfr.xcframework; sourceTree = "<group>"; };
-		AA2576B026F8EE3A00CDD8C9 /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
+		AA2576B026F8EE3A00CDD8C9 /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		AA2576B226F8F16600CDD8C9 /* NumberKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberKeys.swift; sourceTree = "<group>"; };
-		AA2576B426F9602A00CDD8C9 /* TextKeyProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextKeyProperties.swift; sourceTree = "<group>"; };
 		AA3D6F7E26F8940800423E76 /* gmp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = gmp.xcframework; path = dist/gmp.xcframework; sourceTree = "<group>"; };
 		AA40C44126F808D800119D4F /* Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA40C44426F808D800119D4F /* CalculatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorApp.swift; sourceTree = "<group>"; };
@@ -86,13 +84,12 @@
 			children = (
 				AA40C45626F8096700119D4F /* Calculator.entitlements */,
 				AA40C44426F808D800119D4F /* CalculatorApp.swift */,
-				AA2576B026F8EE3A00CDD8C9 /* Key.swift */,
+				AA2576B026F8EE3A00CDD8C9 /* Keys.swift */,
 				AA40C44626F808D800119D4F /* ContentView.swift */,
 				AA40C45426F8094700119D4F /* Gmp.swift */,
 				AA40C44826F808DA00119D4F /* Assets.xcassets */,
 				AA40C44A26F808DA00119D4F /* Preview Content */,
 				AA2576B226F8F16600CDD8C9 /* NumberKeys.swift */,
-				AA2576B426F9602A00CDD8C9 /* TextKeyProperties.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -186,11 +183,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA40C44726F808D900119D4F /* ContentView.swift in Sources */,
-				AA2576B126F8EE3A00CDD8C9 /* Key.swift in Sources */,
+				AA2576B126F8EE3A00CDD8C9 /* Keys.swift in Sources */,
 				AA2576B326F8F16600CDD8C9 /* NumberKeys.swift in Sources */,
 				AA40C45526F8094700119D4F /* Gmp.swift in Sources */,
 				AA40C44526F808D800119D4F /* CalculatorApp.swift in Sources */,
-				AA2576B526F9602A00CDD8C9 /* TextKeyProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
