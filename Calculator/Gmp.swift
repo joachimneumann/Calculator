@@ -10,11 +10,6 @@
 
 import Foundation
 
-
-func add(x: Double, y: Double) -> Double {
-    funnyAdd(x, y)
-}
-
 extension String {
 
     subscript (i: Int) -> Character {
