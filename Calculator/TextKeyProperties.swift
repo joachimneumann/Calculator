@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TextKeyproperties {
     let textColor: Color
+    let bold: Bool
     let color: Color
     let downColor: Color
 }

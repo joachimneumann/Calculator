@@ -13,6 +13,7 @@ struct NumberKeys: View {
     
     let digitProperties = TextKeyproperties(
         textColor: Color.white,
+        bold: false,
         color: Color(
             red:    52.0/255.0,
             green:  52.0/255.0,
@@ -23,6 +24,7 @@ struct NumberKeys: View {
             blue:  115/255.0))
     let operatorProperties = TextKeyproperties(
         textColor: Color.white,
+        bold: true,
         color: Color(
             red:    81.0/255.0,
             green: 181.0/255.0,
@@ -31,94 +33,97 @@ struct NumberKeys: View {
             red:   209/255.0,
             green: 222/255.0,
             blue:  243/255.0))
-
+    
     var body: some View {
         VStack(spacing: size.space) {
             HStack(spacing: size.space) {
-                Key(text: "C",
-                        fontSize: size.fontSize,
-                        properties: operatorProperties) {}
-                        .frame(width: size.width, height: size.height)
+                CKey(AC: .constant(false),
+                     fontSize: size.fontSize,
+                     properties: operatorProperties) {}
+                     .frame(width: size.width, height: size.height)
                 Key(text: "+/-",
-                        fontSize: size.fontSize,
-                        properties: digitProperties) {}
-                        .frame(width: size.width, height: size.height)
+                    fontSize: size.fontSize,
+                    properties: digitProperties) {}
+                    .frame(width: size.width, height: size.height)
                 Key(text: "%",
-                        fontSize: size.fontSize,
-                        properties: digitProperties) {}
-                        .frame(width: size.width, height: size.height)
-                Key(text: "÷",
-                        fontSize: size.fontSize,
-                        properties: operatorProperties) {}
-                        .frame(width: size.width, height: size.height)
+                    fontSize: size.fontSize,
+                    properties: digitProperties) {}
+                    .frame(width: size.width, height: size.height)
+                OpKey(waiting: .constant(true),
+                      text: "/",
+                      fontSize: size.fontSize,
+                      properties: operatorProperties) {}
+                      .frame(width: size.width, height: size.height)
             }
             HStack(spacing: size.space) {
                 Key(text: "7",
-                        fontSize: size.fontSize,
-                        properties: digitProperties) {}
-                        .frame(width: size.width, height: size.height)
+                    fontSize: size.fontSize,
+                    properties: digitProperties) {}
+                    .frame(width: size.width, height: size.height)
                 Key(text: "8",
-                        fontSize: size.fontSize,
-                        properties: digitProperties) {}
-                        .frame(width: size.width, height: size.height)
+                    fontSize: size.fontSize,
+                    properties: digitProperties) {}
+                    .frame(width: size.width, height: size.height)
                 Key(text: "9",
-                        fontSize: size.fontSize,
-                        properties: digitProperties) {}
-                        .frame(width: size.width, height: size.height)
-                Key(text: "x",
-                        fontSize: size.fontSize,
-                        properties: operatorProperties) {}
-                        .frame(width: size.width, height: size.height)
+                    fontSize: size.fontSize,
+                    properties: digitProperties) {}
+                    .frame(width: size.width, height: size.height)
+                OpKey(waiting: .constant(false),
+                      text: "x",
+                      fontSize: size.fontSize,
+                      properties: operatorProperties) {}
+                      .frame(width: size.width, height: size.height)
             }
             HStack(spacing: size.space) {
                 Key(text: "4",
-                        fontSize: size.fontSize,
-                        properties: digitProperties) {}
-                        .frame(width: size.width, height: size.height)
+                    fontSize: size.fontSize,
+                    properties: digitProperties) {}
+                    .frame(width: size.width, height: size.height)
                 Key(text: "5",
-                        fontSize: size.fontSize,
-                        properties: digitProperties) {}
-                        .frame(width: size.width, height: size.height)
+                    fontSize: size.fontSize,
+                    properties: digitProperties) {}
+                    .frame(width: size.width, height: size.height)
                 Key(text: "6",
-                        fontSize: size.fontSize,
-                        properties: digitProperties) {}
-                        .frame(width: size.width, height: size.height)
-                Key(text: "-",
-                        fontSize: size.fontSize,
-                        properties: operatorProperties) {}
-                        .frame(width: size.width, height: size.height)
+                    fontSize: size.fontSize,
+                    properties: digitProperties) {}
+                    .frame(width: size.width, height: size.height)
+                OpKey(waiting: .constant(false),
+                      text: "-",
+                      fontSize: size.fontSize,
+                      properties: operatorProperties) {}
+                      .frame(width: size.width, height: size.height)
             }
             HStack(spacing: size.space) {
                 Key(text: "1",
-                        fontSize: size.fontSize,
-                        properties: digitProperties) {}
-                        .frame(width: size.width, height: size.height)
+                    fontSize: size.fontSize,
+                    properties: digitProperties) {}
+                    .frame(width: size.width, height: size.height)
                 Key(text: "2",
-                        fontSize: size.fontSize,
-                        properties: digitProperties) {}
-                        .frame(width: size.width, height: size.height)
+                    fontSize: size.fontSize,
+                    properties: digitProperties) {}
+                    .frame(width: size.width, height: size.height)
                 Key(text: "3",
-                        fontSize: size.fontSize,
-                        properties: digitProperties) {}
-                        .frame(width: size.width, height: size.height)
-                Key(text: "+",
-                        fontSize: size.fontSize,
-                        properties: operatorProperties) {}
-                        .frame(width: size.width, height: size.height)
+                    fontSize: size.fontSize,
+                    properties: digitProperties) {}
+                    .frame(width: size.width, height: size.height)
+                OpKey(waiting: .constant(false),
+                      text: "+",
+                      fontSize: size.fontSize,
+                      properties: operatorProperties) {}
+                      .frame(width: size.width, height: size.height)
             }
             HStack(spacing: size.space) {
-                Key(text: "0",
-                        fontSize: size.fontSize,
+                ZeroKey(fontSize: size.fontSize,
                         properties: digitProperties) {}
                         .frame(width: size.doubleWidth, height: size.height)
                 Key(text: ",",
-                        fontSize: size.fontSize,
-                        properties: digitProperties) {}
-                        .frame(width: size.width, height: size.height)
+                    fontSize: size.fontSize,
+                    properties: digitProperties) {}
+                    .frame(width: size.width, height: size.height)
                 Key(text: "=",
-                        fontSize: size.fontSize,
-                        properties: operatorProperties) {}
-                        .frame(width: size.width, height: size.height)
+                    fontSize: size.fontSize,
+                    properties: operatorProperties) {}
+                    .frame(width: size.width, height: size.height)
             }
         }
     }
@@ -143,6 +148,6 @@ struct NumberKeys_Previews: PreviewProvider {
     static var previews: some View {
         let keySize = KeySize(roundKeys: true, width: 320)
         NumberKeys(size: keySize)
-.previewInterfaceOrientation(.portraitUpsideDown)
+            .background(Color.black)
     }
 }
