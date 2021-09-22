@@ -25,6 +25,14 @@ class BrainViewModel: ObservableObject {
         higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
     }
     
+    func operation(_ op: String) {
+        brain.operation(op)
+        shortDisplayString = brain.shortDisplayString()
+        longString = brain.longString()
+        mainDisplay = shortDisplayString.show()
+        higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
+    }
+    
     func changeSign() {
         brain.operation("+/-")
         shortDisplayString = brain.shortDisplayString()

@@ -21,7 +21,6 @@ class Brain {
     private let debug = true
     private var lastWasDigit = true
     private var internalDisplay: String = "0"
-    private var display_private: String = "0"
     fileprivate var nBits = 0
     
     func digit(_ digit: Character) {
@@ -58,7 +57,7 @@ class Brain {
         n.push(Gmp(internalDisplay, precision: nBits))
         lastWasDigit = true
     }
-    
+
     private struct OpStack {
         var brainProtocolDelegate: BrainProtocol? = nil
         fileprivate var array: [String] = []
@@ -177,7 +176,7 @@ class Brain {
         assert(n.peek() == Gmp("1", precision: nBits))
         operation("+")
         digit("2")
-        operation("×")
+        operation("x")
         assert(n.peek() == Gmp("2", precision: nBits))
         digit("4")
         assert(n.peek() == Gmp("4", precision: nBits))
@@ -189,7 +188,7 @@ class Brain {
         assert(n.peek() == Gmp("1", precision: nBits))
         operation("+")
         digit("2")
-        operation("×")
+        operation("x")
         assert(n.peek() == Gmp("2", precision: nBits))
         digit("4")
         assert(n.peek() == Gmp("4", precision: nBits))
@@ -205,7 +204,7 @@ class Brain {
         
         reset()
         operation("π")
-        operation("×")
+        operation("x")
         digit("2")
         operation("=")
         
@@ -223,7 +222,7 @@ class Brain {
         print("brain init()")
         precision = 100000
         reset()
-        test()
+        //test()
     }
     
     private func fromLongString(_ string: String) -> Bool {
@@ -240,7 +239,7 @@ class Brain {
     
     func longString() -> String {
         var result = internalDisplay
-        let maxPrecision = 100
+        let maxPrecision = 70000
         var resultArray = result.split(separator: "E")
         if resultArray.count == 2 {
             if resultArray[0].count > maxPrecision {
@@ -369,9 +368,9 @@ class Brain {
 
     fileprivate let twoParameterOp: Dictionary < String, Int> = [
         "+": 1,
-        "−": 1,
-        "×": 2,
-        "÷": 2,
+        "-": 1,
+        "x": 2,
+        "/": 2,
         "x^y": 2,
         "pow_x_y": 2,
         "x↑↑y": 2
@@ -379,9 +378,9 @@ class Brain {
     
     fileprivate var opDict: Dictionary< String, (Gmp, Gmp) -> (Gmp) > = [
         "+": add,
-        "−": min,
-        "×": mul,
-        "÷": div,
+        "-": min,
+        "x": mul,
+        "/": div,
         "x^y": pow_x_y,
         "pow_x_y": pow_x_y,
         "x↑↑y": x_double_up_arrow_y

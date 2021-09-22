@@ -24,7 +24,7 @@ struct NumberKeys: View {
                 Key("%")
                     .op_plusMinus_percentage(size: size) {}
                 Key("/")
-                    .op_div_mul_add_sub_eq(size: size) {}
+                    .op_div_mul_add_sub_eq(size: size) { model.operation("/") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("7")
@@ -34,7 +34,7 @@ struct NumberKeys: View {
                 Key("9")
                     .digit_1_to_9(size: size) { model.digit("9") }
                 Key("x")
-                    .op_div_mul_add_sub_eq(size: size) {}
+                    .op_div_mul_add_sub_eq(size: size) { model.operation("x") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("4")
@@ -44,7 +44,7 @@ struct NumberKeys: View {
                 Key("6")
                     .digit_1_to_9(size: size) { model.digit("6") }
                 Key("-")
-                    .op_div_mul_add_sub_eq(size: size) {}
+                    .op_div_mul_add_sub_eq(size: size) { model.operation("-") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("1")
@@ -54,7 +54,7 @@ struct NumberKeys: View {
                 Key("3")
                     .digit_1_to_9(size: size) { model.digit("3") }
                 Key("+")
-                    .op_div_mul_add_sub_eq(size: size) {}
+                    .op_div_mul_add_sub_eq(size: size) { model.operation("+") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("0")
@@ -62,7 +62,7 @@ struct NumberKeys: View {
                 Key(",")
                     .digit_1_to_9(size: size) { model.comma() }
                 Key("=")
-                    .op_div_mul_add_sub_eq(size: size) {}
+                    .op_div_mul_add_sub_eq(size: size) { model.operation("=") }
             }
         }
     }

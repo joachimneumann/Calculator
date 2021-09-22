@@ -24,11 +24,11 @@ struct ShortDisplayString {
 }
 
 extension String {
-
+    
     subscript (i: Int) -> Character {
         return self[self.index(self.startIndex, offsetBy: i)]
     }
-
+    
     subscript (i: Int) -> String {
         return String(self[i] as Character)
     }
@@ -88,7 +88,7 @@ func x_double_up_arrow_y(_ left: Gmp, right: Gmp) -> Gmp {
     var temp: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &dummyUnsignedLongInt)
     mpfr_init2 (&temp, mpfr_get_prec(&left.mpfr))
     mpfr_set(&temp, &left.mpfr, MPFR_RNDN)
-
+    
     let counter: CLong = mpfr_get_si(&right.mpfr, MPFR_RNDN) - 1
     guard counter > 0 else { return left }
     for _ in 0..<counter {
@@ -190,7 +190,7 @@ class Gmp: CustomDebugStringConvertible {
     // Swift requires me to initialize the mpfr_t struc
     // I do this with zeros. The struct will be initialized correctly in mpfr_init2
     fileprivate var mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &dummyUnsignedLongInt)
-
+    
     // there is only ine initialzer that takes a string.
     // Implementing an initializer that accepts a double which is created from a string leads to a loss of precision.
     init(_ s: String, precision: CLong) {
@@ -198,17 +198,17 @@ class Gmp: CustomDebugStringConvertible {
         mpfr_init2 (&mpfr, precision)
         mpfr_set_str (&mpfr, s1, 10, MPFR_RNDN)
     }
-
+    
     func copy() -> Gmp {
         let ret = Gmp("0.0", precision: mpfr_get_prec(&mpfr))
         mpfr_set(&ret.mpfr, &mpfr, MPFR_RNDN)
         return ret
     }
-
+    
     var debugDescription: String {
         return toLongString()
     }
-
+    
     func toLongString() -> String {
         if mpfr_nan_p(&mpfr) != 0 {
             return "Not a Number"
@@ -216,74 +216,74 @@ class Gmp: CustomDebugStringConvertible {
         if mpfr_inf_p(&mpfr) != 0 {
             return "Infinity"
         }
-
+        
         // set negative 0 to 0
         if mpfr_zero_p(&mpfr) != 0 {
             return "0"
         }
-
+        
         let significantBytesEstimate = Int(round(0.302 * Double(mpfr_get_prec(&mpfr))))+1
         var expptr: mpfr_exp_t = 0
         var charArray: Array<CChar> = Array(repeating: 0, count: significantBytesEstimate+2) // +2 because: one for a possible - and one for zero termination
         mpfr_get_str(&charArray, &expptr, 10, significantBytesEstimate, &mpfr, MPFR_RNDN)
-
+        
         // for speed, we work a bit with the charArray before using swift string
-
+        
         // negative?
         var negative = false
         if charArray[0] == 45 {
             charArray.removeFirst()
             negative = true
         }
-
+        
         // find last non-zero digit
         var lastSignificantIndex = charArray.count-1
         while (charArray[lastSignificantIndex] == 0 || charArray[lastSignificantIndex] == 48) && lastSignificantIndex > 0 {
             lastSignificantIndex -= 1
         }
         let lastSignificantDigit = lastSignificantIndex + 1
-
+        
         // is it an Integer?
         if expptr > 0 && lastSignificantDigit <= expptr && expptr < significantBytesEstimate {
             charArray[expptr] = 0
             guard let integerString = String(validatingUTF8: charArray)
-                else { return "not a number" }
+            else { return "not a number" }
             if negative {
                 return "-"+integerString
             } else {
                 return integerString
             }
         }
-
+        
         // do we have a simple double that can written in decimal notation?
         let doubleDigits = 6
         if lastSignificantDigit < doubleDigits && abs(expptr) < 10 {
             let d = mpfr_get_d(&mpfr, MPFR_RNDN)
             return String(d)
         }
-
+        
         charArray[lastSignificantDigit] = 0
-
+        
         guard var floatString = String(validatingUTF8: charArray)
-            else { return "not a number" }
-
+        else { return "not a number" }
+        
         // make sure the length of the float string is at least two characters
         while floatString.count < 2 { floatString += "0" }
-
+        
         floatString.insert(".", at: floatString.index(floatString.startIndex, offsetBy: 1))
-
+        
         // if exponent is 0, drop it
         if expptr-1 != 0 {
             floatString += " E"+String(expptr-1)
         }
-
+        
         if negative {
             return "-"+floatString
         } else {
             return floatString
         }
     }
-
+    
     func printCharArray(_ a: Array<CChar>) {
         var s1 = "["
         var s2 = "["
@@ -310,7 +310,7 @@ class Gmp: CustomDebugStringConvertible {
         var s = ""
         var l = 0
         for c in a {
-            if c != 0 && l < exponent {
+            if c != 0 && l < exponent+1 {
                 let x1 = UInt8(c)
                 let x2 = UnicodeScalar(x1)
                 let x3 = String(x2)
@@ -322,10 +322,11 @@ class Gmp: CustomDebugStringConvertible {
         return s
     }
     
+    
     func getZeroDotString(_ a: Array<CChar>, exponent: Int, significantDigits: Int) -> String {
         var s = "0."
         var l = 0
-        for _ in 1...(-1*exponent) {
+        for _ in 1..<(-1*exponent) {
             s += "0"
         }
         for c in a {
@@ -338,6 +339,29 @@ class Gmp: CustomDebugStringConvertible {
             l += 1
         }
         print("getZeroDotString: \(s)")
+        return s
+    }
+    
+    func getXDotString(_ a: Array<CChar>, exponent: Int, significantDigits: Int) -> String {
+        var s = ""
+        /// first digit
+        let x1 = UInt8(a[0])
+        let x2 = UnicodeScalar(x1)
+        let x3 = String(x2)
+        s += x3.withCString { String(format: "%s", $0) }
+        s += "."
+        
+        var l = 0
+        for c in a {
+            if c != 0 && l > 0 && l < significantDigits {
+                let x1 = UInt8(c)
+                let x2 = UnicodeScalar(x1)
+                let x3 = String(x2)
+                s += x3.withCString { String(format: "%s", $0) }
+            }
+            l += 1
+        }
+        print("getXDotString: \(s)")
         return s
     }
     
@@ -354,7 +378,7 @@ class Gmp: CustomDebugStringConvertible {
         let x3 = String(x2)
         s += x3.withCString { String(format: "%s", $0) }
         s += "."
-
+        
         var l = 0
         for c in a {
             if l > 0 && c != 0 && l < min(significantDigits, availableDigits) {
@@ -365,14 +389,16 @@ class Gmp: CustomDebugStringConvertible {
             }
             l += 1
         }
-
+        
         if s.count == 2 {
             /// the mantissa is of type "x."
             s += "0"
         }
         
-        s += "e"
-        s += String(exponent)
+        if exponent != 0 {
+            s += "e"
+            s += String(exponent)
+        }
         
         print("getScientificString: \(s)")
         return s
@@ -395,7 +421,7 @@ class Gmp: CustomDebugStringConvertible {
                 isScientificNotation: false,
                 content: "Infinity")
         }
-
+        
         // set negative 0 to 0
         if mpfr_zero_p(&mpfr) != 0 {
             return ShortDisplayString(
@@ -405,12 +431,14 @@ class Gmp: CustomDebugStringConvertible {
                 isScientificNotation: false,
                 content: "0")
         }
-
+        
         let charArrayLength = 15
         var exponent: mpfr_exp_t = 0
         var charArray: Array<CChar> = Array(repeating: 0, count: charArrayLength+2) // +2 because: one for a possible - and one for zero termination
         mpfr_get_str(&charArray, &exponent, 10, charArrayLength, &mpfr, MPFR_RNDN)
-
+        
+        exponent -= 1 /// This gives the actual power 10 exponent
+        
         if exponent > 160 {
             return ShortDisplayString(
                 isValidNumber: false,
@@ -419,7 +447,7 @@ class Gmp: CustomDebugStringConvertible {
                 isScientificNotation: false,
                 content: "too large")
         }
-
+        
         if exponent < -160 {
             return ShortDisplayString(
                 isValidNumber: false,
@@ -428,14 +456,14 @@ class Gmp: CustomDebugStringConvertible {
                 isScientificNotation: false,
                 content: "too small")
         }
-
+        
         // negative?
         var negative = false
         if charArray[0] == 45 {
             charArray.removeFirst()
             negative = true
         }
-
+        
         print("exponent=\(exponent) \(negative ? "negative" : "")")
         printCharArray(charArray)
         
@@ -446,10 +474,10 @@ class Gmp: CustomDebugStringConvertible {
         }
         let significantDigits = lastSignificantIndex + 1
         print("significantDigits=\(significantDigits)")
-
+        
         // is it an Integer?
         var availableDigits = negative ? 8 : 9
-        if exponent >= 0 && exponent <= availableDigits && significantDigits <= exponent {
+        if exponent >= 0 && exponent <= availableDigits && significantDigits <= exponent+1 {
             return ShortDisplayString(
                 isValidNumber: true,
                 isNegative: negative,
@@ -458,7 +486,7 @@ class Gmp: CustomDebugStringConvertible {
                 content: getIntegerString(charArray, exponent: exponent))
         }
         
-        // is it a floating point number, starting ith 0. ?
+        // is it a floating point number, starting with 0. ?
         availableDigits = negative ? 7 : 8 /// 9 minus one for "0." minus? negative
         if exponent < 0 && significantDigits - exponent <= availableDigits {
             return ShortDisplayString(
@@ -468,16 +496,28 @@ class Gmp: CustomDebugStringConvertible {
                 isScientificNotation: false,
                 content: getZeroDotString(charArray, exponent: exponent, significantDigits: significantDigits))
         }
+        // is it a floating point number, starting with X. ?
+        availableDigits = negative ? 8 : 9 /// 9 minus one for "0." minus? negative
+        if exponent == 0 && significantDigits <= availableDigits {
+            return ShortDisplayString(
+                isValidNumber: true,
+                isNegative: negative,
+                higherPrecisionAvailable: false,
+                isScientificNotation: false,
+                content: getXDotString(charArray, exponent: exponent, significantDigits: significantDigits))
+        }
+        
         
         /// number that can be displayed in scientific notation without loss of precision?
         availableDigits = 9
         availableDigits -= 1 // for "e"
         if negative { availableDigits -= 1 }
         if exponent < 0 { availableDigits -= 1 }
-        let doubleExponent = Double(abs(exponent))
-        let log10e = Int(floor(log10(doubleExponent))) + 1
-        availableDigits -= log10e
-
+        if exponent != 0 {
+            let doubleExponent = Double(abs(exponent))
+            let log10e = Int(floor(log10(doubleExponent))) + 1
+            availableDigits -= log10e
+        }
         return ShortDisplayString(
             isValidNumber: true,
             isNegative: negative,
@@ -485,19 +525,19 @@ class Gmp: CustomDebugStringConvertible {
             isScientificNotation: true,
             content: getScientificString(charArray, exponent: exponent, significantDigits: significantDigits, availableDigits: availableDigits))
     }
-
+    
     func isNull() -> Bool {
         return mpfr_cmp_d(&mpfr, 0.0) == 0
     }
-
+    
     func isNegtive() -> Bool {
         return mpfr_cmp_d(&mpfr, 0.0) < 0
     }
-
+    
     func isNotANumber() -> Bool {
         return mpfr_nan_p(&mpfr) != 0
     }
-
+    
 }
 
 extension Gmp: Equatable {
