@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-private struct PlaceInCapsule: ViewModifier {
-    let properties: KeyProperties
+private struct AddBackGround: ViewModifier {
+    let properties: Configuration.KeyProperties
     let callback: () -> Void
     @State var down: Bool = false
     func body(content: Content) -> some View {
         ZStack {
-            Capsule()
+            Configuration.Background()
                 .foregroundColor(down ? properties.downColor : properties.color)
             content
         }
@@ -35,7 +35,7 @@ private struct PlaceInCapsule: ViewModifier {
 }
 
 extension View {
-    func placeInCapsule(with properties: KeyProperties, callback: @escaping () -> Void) -> some View {
-        return self.modifier(PlaceInCapsule(properties: properties, callback: callback))
+    func addBackground(with properties: Configuration.KeyProperties, callback: @escaping () -> Void) -> some View {
+        return self.modifier(AddBackGround(properties: properties, callback: callback))
     }
 }

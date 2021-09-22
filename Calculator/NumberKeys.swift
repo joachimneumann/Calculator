@@ -68,8 +68,8 @@ struct NumberKeys: View {
     }
     init(model: BrainViewModel, roundKeys: Bool, width totalWidth: CGFloat) {
         self.model = model
-        horizontalSpace = 0.03 * totalWidth
-        verticalSpace = 0.03 * totalWidth
+        horizontalSpace = Configuration.shared.horizontalSpace(forTotalWidth: totalWidth)
+        verticalSpace   = Configuration.shared.verticalSpace(forTotalWidth: totalWidth)
         let w = (totalWidth - 3.0 * horizontalSpace) * 0.25
         size = CGSize(width: w, height: w)
     }
