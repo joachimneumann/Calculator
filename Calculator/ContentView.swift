@@ -15,10 +15,17 @@ struct ContentView: View {
             VStack (spacing: 0) {
                 Spacer()
                 HStack {
+                    Spacer()
+                    Image("zoom_in")
+                        .opacity(brainViewModel.higherPrecisionAvailable ? 1.0 : 0.5)
+                }
+                Spacer()
+                HStack {
                     Spacer(minLength: 0)
                     Text(brainViewModel.mainDisplay)
                         .foregroundColor(Color.white)
-                        .font(.system(size: 90).weight(.thin))
+                        .font(Font.system(size: 90, design: .monospaced).monospacedDigit())
+//                        .font(system(size: 90, design: .monospaced).weight(.thin))
                         .minimumScaleFactor(0.1)
                         .lineLimit(1)
                         .padding(.trailing, 20)
