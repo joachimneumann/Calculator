@@ -341,7 +341,11 @@ class Gmp: CustomDebugStringConvertible {
         return s
     }
     
-    func getScientificString(_ a: Array<CChar>, exponent: Int, significantDigits: Int) -> String {
+    func getScientificString(
+        _ a: Array<CChar>,
+        exponent: Int,
+        significantDigits: Int,
+        availableDigits: Int) -> String {
         var s = ""
         
         /// first digit
@@ -353,7 +357,7 @@ class Gmp: CustomDebugStringConvertible {
 
         var l = 0
         for c in a {
-            if l > 0 && c != 0 && l < significantDigits {
+            if l > 0 && c != 0 && l < min(significantDigits, availableDigits) {
                 let x1 = UInt8(c)
                 let x2 = UnicodeScalar(x1)
                 let x3 = String(x2)
@@ -465,7 +469,7 @@ class Gmp: CustomDebugStringConvertible {
                 content: getZeroDotString(charArray, exponent: exponent, significantDigits: significantDigits))
         }
         
-        /// number that can be displayed in scientific notation withut loss of precision?
+        /// number that can be displayed in scientific notation without loss of precision?
         availableDigits = 9
         availableDigits -= 1 // for "e"
         if negative { availableDigits -= 1 }
@@ -474,48 +478,12 @@ class Gmp: CustomDebugStringConvertible {
         let log10e = Int(floor(log10(doubleExponent))) + 1
         availableDigits -= log10e
 
-        if significantDigits <= availableDigits {
-            return ShortDisplayString(
-                isValidNumber: true,
-                isNegative: negative,
-                higherPrecisionAvailable: false,
-                isScientificNotation: true,
-                content: getScientificString(charArray, exponent: exponent, significantDigits: significantDigits))
-        }
-
-//
-//        charArray[lastSignificantDigit] = 0
-//
-//        guard var floatString = String(validatingUTF8: charArray)
-//            else {
-//                return ShortDisplayString(
-//                    isValidNumber: false,
-//                    higherPrecisionAvailable: false,
-//                    isScientificNotation: false,
-//                    content: "not a number")
-//            }
-//
-//        // make sure the length of the float string is at least two characters
-//        while floatString.count < 2 { floatString += "0" }
-//
-//        floatString.insert(".", at: floatString.index(floatString.startIndex, offsetBy: 1))
-//
-//        // if exponent is 0, drop it
-//        if exponent-1 != 0 {
-//            floatString += " E"+String(exponent-1)
-//        }
-//
-//        if negative {
-//            return "-"+floatString
-//        } else {
-//            return floatString
-//        }
         return ShortDisplayString(
             isValidNumber: true,
-            isNegative: false,
-            higherPrecisionAvailable: false,
-            isScientificNotation: false,
-            content: "!?!")
+            isNegative: negative,
+            higherPrecisionAvailable: significantDigits > availableDigits,
+            isScientificNotation: true,
+            content: getScientificString(charArray, exponent: exponent, significantDigits: significantDigits, availableDigits: availableDigits))
     }
 
     func isNull() -> Bool {
