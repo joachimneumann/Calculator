@@ -10,6 +10,19 @@
 
 import Foundation
 
+struct ShortDisplayString {
+    let isValidNumber: Bool
+    let isNegative: Bool
+    let higherPrecisionAvailable: Bool
+    let isScientificNotation: Bool
+    let content: String
+    func show() -> String {
+        var ret = content.replacingOccurrences(of: ".", with: ",")
+        if isNegative { ret = "-" + ret }
+        return ret
+    }
+}
+
 extension String {
 
     subscript (i: Int) -> Character {
@@ -271,33 +284,146 @@ class Gmp: CustomDebugStringConvertible {
         }
     }
 
-    func toShortString(maxPrecision: CLong) -> String {
+    func printCharArray(_ a: Array<CChar>) {
+        var s1 = "["
+        var s2 = "["
+        for c in a {
+            s1 += String(format: "%3i,", UInt8(c))
+            if c != 0 {
+                let x1 = UInt8(c)
+                let x2 = UnicodeScalar(x1)
+                let x3 = String(x2)
+                s2 += x3.withCString { String(format: "%3s,", $0) }
+            } else {
+                s2 += "  -,"
+            }
+        }
+        s1 = String(s1.dropLast())
+        s2 = String(s2.dropLast())
+        s1 += "]"
+        s2 += "]"
+        print(s1)
+        print(s2)
+    }
+    
+    func getIntegerString(_ a: Array<CChar>, exponent: Int) -> String {
+        var s = ""
+        var l = 0
+        for c in a {
+            if c != 0 && l < exponent {
+                let x1 = UInt8(c)
+                let x2 = UnicodeScalar(x1)
+                let x3 = String(x2)
+                s += x3.withCString { String(format: "%s", $0) }
+            }
+            l += 1
+        }
+        print("getIntegerString: \(s)")
+        return s
+    }
+    
+    func getZeroDotString(_ a: Array<CChar>, exponent: Int, significantDigits: Int) -> String {
+        var s = "0."
+        var l = 0
+        for _ in 1...(-1*exponent) {
+            s += "0"
+        }
+        for c in a {
+            if c != 0 && l < significantDigits {
+                let x1 = UInt8(c)
+                let x2 = UnicodeScalar(x1)
+                let x3 = String(x2)
+                s += x3.withCString { String(format: "%s", $0) }
+            }
+            l += 1
+        }
+        print("getZeroDotString: \(s)")
+        return s
+    }
+    
+    func getScientificString(_ a: Array<CChar>, exponent: Int, significantDigits: Int) -> String {
+        var s = ""
+        
+        /// first digit
+        let x1 = UInt8(a[0])
+        let x2 = UnicodeScalar(x1)
+        let x3 = String(x2)
+        s += x3.withCString { String(format: "%s", $0) }
+        s += "."
+
+        var l = 0
+        for c in a {
+            if l > 0 && c != 0 && l < significantDigits {
+                let x1 = UInt8(c)
+                let x2 = UnicodeScalar(x1)
+                let x3 = String(x2)
+                s += x3.withCString { String(format: "%s", $0) }
+            }
+            l += 1
+        }
+
+        if s.count == 2 {
+            /// the mantissa is of type "x."
+            s += "0"
+        }
+        
+        s += "e"
+        s += String(exponent)
+        
+        print("getScientificString: \(s)")
+        return s
+    }
+    
+    func shortDisplayString() -> ShortDisplayString {
         if mpfr_nan_p(&mpfr) != 0 {
-            return "Not a Number"
+            return ShortDisplayString(
+                isValidNumber: false,
+                isNegative: false,
+                higherPrecisionAvailable: false,
+                isScientificNotation: false,
+                content: "Not a Number")
         }
         if mpfr_inf_p(&mpfr) != 0 {
-            return "Infinity"
+            return ShortDisplayString(
+                isValidNumber: false,
+                isNegative: false,
+                higherPrecisionAvailable: false,
+                isScientificNotation: false,
+                content: "Infinity")
         }
 
         // set negative 0 to 0
         if mpfr_zero_p(&mpfr) != 0 {
-            return "0"
+            return ShortDisplayString(
+                isValidNumber: true,
+                isNegative: false,
+                higherPrecisionAvailable: false,
+                isScientificNotation: false,
+                content: "0")
         }
 
-        let integerDigitLimit = 9
+        let charArrayLength = 15
         var exponent: mpfr_exp_t = 0
-        var charArray: Array<CChar> = Array(repeating: 0, count: integerDigitLimit+2) // +2 because: one for a possible - and one for zero termination
-        mpfr_get_str(&charArray, &exponent, 10, integerDigitLimit, &mpfr, MPFR_RNDN)
+        var charArray: Array<CChar> = Array(repeating: 0, count: charArrayLength+2) // +2 because: one for a possible - and one for zero termination
+        mpfr_get_str(&charArray, &exponent, 10, charArrayLength, &mpfr, MPFR_RNDN)
 
-        if exponent > maxPrecision {
-            return "too large"
+        if exponent > 160 {
+            return ShortDisplayString(
+                isValidNumber: false,
+                isNegative: false,
+                higherPrecisionAvailable: false,
+                isScientificNotation: false,
+                content: "too large")
         }
 
-        if exponent < -maxPrecision {
-            return "too small"
+        if exponent < -160 {
+            return ShortDisplayString(
+                isValidNumber: false,
+                isNegative: false,
+                higherPrecisionAvailable: false,
+                isScientificNotation: false,
+                content: "too small")
         }
-
-        // for speed, we work a bit with the charArray before using swift string
 
         // negative?
         var negative = false
@@ -306,54 +432,123 @@ class Gmp: CustomDebugStringConvertible {
             negative = true
         }
 
+        print("exponent=\(exponent) \(negative ? "negative" : "")")
+        printCharArray(charArray)
+        
         // find last significant digit
         var lastSignificantIndex = charArray.count-1
-        while (charArray[lastSignificantIndex] == 0 || charArray[lastSignificantIndex] == 48) && lastSignificantIndex > 0 { lastSignificantIndex -= 1 }
-        let lastSignificantDigit = lastSignificantIndex + 1
+        while (charArray[lastSignificantIndex] == 0 || charArray[lastSignificantIndex] == 48) && lastSignificantIndex > 0 {
+            lastSignificantIndex -= 1
+        }
+        let significantDigits = lastSignificantIndex + 1
+        print("significantDigits=\(significantDigits)")
 
         // is it an Integer?
-        if exponent > 0 && lastSignificantDigit <= exponent && exponent <= integerDigitLimit {
-            charArray[exponent] = 0
-            guard let integerString = String(validatingUTF8: charArray)
-                else { return "not a number" }
-            if negative {
-                return "-"+integerString
-            } else {
-                return integerString
-            }
+        var availableDigits = negative ? 8 : 9
+        if exponent >= 0 && exponent <= availableDigits && significantDigits <= exponent {
+            return ShortDisplayString(
+                isValidNumber: true,
+                isNegative: negative,
+                higherPrecisionAvailable: false,
+                isScientificNotation: false,
+                content: getIntegerString(charArray, exponent: exponent))
         }
-
-        // do we have a simple double that can written in decimal notation?
-        let d:Double = mpfr_get_d(&mpfr, MPFR_RNDN)
-        let log10D = log10(d)
-        if log10D < 3 && log10D > -4 {
-            let numberFormatter = NumberFormatter()
-            numberFormatter.numberStyle = .decimal
-            numberFormatter.usesSignificantDigits = true
-            numberFormatter.maximumSignificantDigits = 8
-            return numberFormatter.string(for: d)!
+        
+        // is it a floating point number, starting ith 0. ?
+        availableDigits = negative ? 7 : 8 /// 9 minus one for "0." minus? negative
+        if exponent < 0 && significantDigits - exponent <= availableDigits {
+            return ShortDisplayString(
+                isValidNumber: true,
+                isNegative: negative,
+                higherPrecisionAvailable: false,
+                isScientificNotation: false,
+                content: getZeroDotString(charArray, exponent: exponent, significantDigits: significantDigits))
         }
+        
+        /// number that can be displayed in scientific notation?
+        availableDigits = 9
+        availableDigits -= 1 // for "e"
+        if negative { availableDigits -= 1 }
+        if exponent < 0 { availableDigits -= 1 }
+        let doubleExponent = Double(abs(exponent))
+        let log10e = Int(floor(log10(doubleExponent))) + 1
+        availableDigits -= log10e
 
-        charArray[lastSignificantDigit] = 0
-
-        guard var floatString = String(validatingUTF8: charArray)
-            else { return "not a number" }
-
-        // make sure the length of the float string is at least two characters
-        while floatString.count < 2 { floatString += "0" }
-
-        floatString.insert(".", at: floatString.index(floatString.startIndex, offsetBy: 1))
-
-        // if exponent is 0, drop it
-        if exponent-1 != 0 {
-            floatString += " E"+String(exponent-1)
+        if significantDigits <= availableDigits {
+            return ShortDisplayString(
+                isValidNumber: true,
+                isNegative: negative,
+                higherPrecisionAvailable: false,
+                isScientificNotation: false,
+                content: getScientificString(charArray, exponent: exponent, significantDigits: significantDigits))
         }
-
-        if negative {
-            return "-"+floatString
-        } else {
-            return floatString
-        }
+        //            charArray[exponent] = 0
+//            guard let integerString = String(validatingUTF8: charArray)
+//                else {
+//                    return ShortDisplayString(
+//                        isValidNumber: false,
+//                        higherPrecisionAvailable: false,
+//                        isScientificNotation: false,
+//                        content: "not a number")
+//                }
+//            if negative {
+//                return ShortDisplayString(
+//                    isValidNumber: true,
+//                    higherPrecisionAvailable: false,
+//                    isScientificNotation: false,
+//                    content: "-" + integerString)
+//            } else {
+//                return ShortDisplayString(
+//                    isValidNumber: true,
+//                    higherPrecisionAvailable: false,
+//                    isScientificNotation: false,
+//                    content: integerString)
+//            }
+//        }
+//
+////        // do we have a simple double that can written in decimal notation?
+////        let d:Double = mpfr_get_d(&mpfr, MPFR_RNDN)
+////        let log10D = log10(d)
+////        if log10D < 3 && log10D > -9 {
+////            let numberFormatter = NumberFormatter()
+////            numberFormatter.numberStyle = .decimal
+////            numberFormatter.usesSignificantDigits = true
+////            numberFormatter.maximumSignificantDigits = 8
+////            return numberFormatter.string(for: d)!
+////        }
+//
+//        charArray[lastSignificantDigit] = 0
+//
+//        guard var floatString = String(validatingUTF8: charArray)
+//            else {
+//                return ShortDisplayString(
+//                    isValidNumber: false,
+//                    higherPrecisionAvailable: false,
+//                    isScientificNotation: false,
+//                    content: "not a number")
+//            }
+//
+//        // make sure the length of the float string is at least two characters
+//        while floatString.count < 2 { floatString += "0" }
+//
+//        floatString.insert(".", at: floatString.index(floatString.startIndex, offsetBy: 1))
+//
+//        // if exponent is 0, drop it
+//        if exponent-1 != 0 {
+//            floatString += " E"+String(exponent-1)
+//        }
+//
+//        if negative {
+//            return "-"+floatString
+//        } else {
+//            return floatString
+//        }
+        return ShortDisplayString(
+            isValidNumber: true,
+            isNegative: false,
+            higherPrecisionAvailable: false,
+            isScientificNotation: false,
+            content: "!?!")
     }
 
     func isNull() -> Bool {

@@ -13,13 +13,16 @@ protocol BrainProtocol {
 }
 
 class Brain {
-    var shortString: String = "0"
+    func shortDisplayString() -> ShortDisplayString {
+        let tempGmp = Gmp(internalDisplay, precision: nBits)
+        return tempGmp.shortDisplayString()
+    }
+
     private let debug = true
     private var lastWasDigit = true
     private var internalDisplay: String = "0"
     private var display_private: String = "0"
     fileprivate var nBits = 0
-    fileprivate var maxPrecision = 0
     
     private var display: String  {
         set {
@@ -30,20 +33,23 @@ class Brain {
     }
     
     func digit(_ digit: Character) {
-        let newGmpValue: Gmp
         if lastWasDigit {
             var ignore = false
 
-            // if the display contains a dot, ignore further dots
-            if internalDisplay.range(of: ".") != nil && digit == "." {
-                ignore = true
-                //if debug { print("ignore \(digit)") }
-            }
-
-            // If the display is "0", set display to digit
-            if internalDisplay == "0" {
-                internalDisplay = String(digit); ignore = true
-                //if debug { print("set \(digit)") }
+            if digit == "." {
+                // if the display contains a dot
+                if internalDisplay.range(of: ".") != nil {
+                    ignore = true
+                } else {
+                    internalDisplay = internalDisplay + "."
+                    ignore = true
+                }
+            } else {
+                /// not "."
+                if internalDisplay == "0" {
+                    internalDisplay = String(digit)
+                    ignore = true
+                }
             }
 
             if !ignore {
@@ -52,14 +58,12 @@ class Brain {
             }
             if n.count() > 0 {
                 n.removeLast()
-                //if debug { print("set \(digit)") }
             }
         } else {
             internalDisplay = String(digit)
         }
-        newGmpValue = Gmp(internalDisplay, precision: nBits)
-        shortString = newGmpValue.toShortString(maxPrecision: maxPrecision)
-        n.push(newGmpValue)
+        print("internalDisplay \(internalDisplay)")
+        n.push(Gmp(internalDisplay, precision: nBits))
         lastWasDigit = true
     }
     
@@ -127,7 +131,6 @@ class Brain {
         // throwing in 20 addition bits, this helps with sin(asin) to result in identity
         set {
             nBits = Int(round(Double(newValue) / 0.302)) + 20
-            maxPrecision = Int(Double(precision) * 0.7)
         }
         get {
             return Int(round(Double(nBits-20) * 0.302))
@@ -246,26 +249,37 @@ class Brain {
     private func longString() -> String {
         var result = display
         var resultArray = result.split(separator: "E")
-        if resultArray.count == 2 {
-            if resultArray[0].count > maxPrecision {
-                resultArray[0] = resultArray[0].prefix(maxPrecision)
-                result = String(resultArray[0])+"E"+String(resultArray[1])
-            }
-        } else {
-            // no E
-            result = String(resultArray[0].prefix(maxPrecision))
-        }
+//        if resultArray.count == 2 {
+//            if resultArray[0].count > maxPrecision {
+//                resultArray[0] = resultArray[0].prefix(maxPrecision)
+//                result = String(resultArray[0])+"E"+String(resultArray[1])
+//            }
+//        } else {
+//            // no E
+//            result = String(resultArray[0].prefix(maxPrecision))
+//        }
         return result
     }
 
     func reset() {
         n.clean()
         op.clean()
-        shortString = "0"
         internalDisplay = "0"
+        print("internalDisplay \(internalDisplay)")
         lastWasDigit = true
     }
 
+    func changeSign_() {
+        if internalDisplay.starts(with: "-") {
+            internalDisplay = String(internalDisplay.dropFirst())
+        } else {
+            internalDisplay = "-" + internalDisplay
+        }
+//        let n1 = Gmp(internalDisplay, precision: nBits)
+//        changeSign(n1)
+//        if n.count() > 0 { n.removeLast() }
+//        n.push(n1)
+    }
 
     func operation(_ symbol: String) {
         if symbol == "C" {

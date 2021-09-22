@@ -18,7 +18,7 @@ struct ContentView: View {
                     Spacer(minLength: 0)
                     Text(brainViewModel.mainDisplay)
                         .foregroundColor(Color.white)
-                        .font(.system(size: 90).monospacedDigit().weight(.thin))
+                        .font(.system(size: 90).weight(.thin))
                         .minimumScaleFactor(0.1)
                         .lineLimit(1)
                         .padding(.trailing, 20)

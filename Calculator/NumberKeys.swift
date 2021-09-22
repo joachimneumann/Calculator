@@ -20,7 +20,7 @@ struct NumberKeys: View {
                 Key("C")
                     .op_clear(size: size) { model.reset() }
                 Key("+/-")
-                    .op_plusMinus_percentage(size: size) {}
+                    .op_plusMinus_percentage(size: size) { model.changeSign() }
                 Key("%")
                     .op_plusMinus_percentage(size: size) {}
                 Key("/")
@@ -58,9 +58,9 @@ struct NumberKeys: View {
             }
             HStack(spacing: horizontalSpace) {
                 Key("0")
-                    .digit_0(size: size, horizontalSpace: horizontalSpace) { model.digit("0") }
+                    .digit_0(size: size, horizontalSpace: horizontalSpace) { model.zero() }
                 Key(",")
-                    .digit_1_to_9(size: size) { model.digit(".") }
+                    .digit_1_to_9(size: size) { model.comma() }
                 Key("=")
                     .op_div_mul_add_sub_eq(size: size) {}
             }
