@@ -465,7 +465,7 @@ class Gmp: CustomDebugStringConvertible {
                 content: getZeroDotString(charArray, exponent: exponent, significantDigits: significantDigits))
         }
         
-        /// number that can be displayed in scientific notation?
+        /// number that can be displayed in scientific notation withut loss of precision?
         availableDigits = 9
         availableDigits -= 1 // for "e"
         if negative { availableDigits -= 1 }
@@ -479,43 +479,10 @@ class Gmp: CustomDebugStringConvertible {
                 isValidNumber: true,
                 isNegative: negative,
                 higherPrecisionAvailable: false,
-                isScientificNotation: false,
+                isScientificNotation: true,
                 content: getScientificString(charArray, exponent: exponent, significantDigits: significantDigits))
         }
-        //            charArray[exponent] = 0
-//            guard let integerString = String(validatingUTF8: charArray)
-//                else {
-//                    return ShortDisplayString(
-//                        isValidNumber: false,
-//                        higherPrecisionAvailable: false,
-//                        isScientificNotation: false,
-//                        content: "not a number")
-//                }
-//            if negative {
-//                return ShortDisplayString(
-//                    isValidNumber: true,
-//                    higherPrecisionAvailable: false,
-//                    isScientificNotation: false,
-//                    content: "-" + integerString)
-//            } else {
-//                return ShortDisplayString(
-//                    isValidNumber: true,
-//                    higherPrecisionAvailable: false,
-//                    isScientificNotation: false,
-//                    content: integerString)
-//            }
-//        }
-//
-////        // do we have a simple double that can written in decimal notation?
-////        let d:Double = mpfr_get_d(&mpfr, MPFR_RNDN)
-////        let log10D = log10(d)
-////        if log10D < 3 && log10D > -9 {
-////            let numberFormatter = NumberFormatter()
-////            numberFormatter.numberStyle = .decimal
-////            numberFormatter.usesSignificantDigits = true
-////            numberFormatter.maximumSignificantDigits = 8
-////            return numberFormatter.string(for: d)!
-////        }
+
 //
 //        charArray[lastSignificantDigit] = 0
 //

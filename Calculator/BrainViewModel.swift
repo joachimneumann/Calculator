@@ -29,7 +29,8 @@ class BrainViewModel: ObservableObject {
     
     func zero() {
         brain.digit("0")
-        if mainDisplay.contains(",") {
+        shortDisplayString = brain.shortDisplayString()
+        if mainDisplay.contains(",") && !shortDisplayString.isScientificNotation {
             if trailingZeroesString == nil {
                 trailingZeroesString = mainDisplay
             }
@@ -38,7 +39,6 @@ class BrainViewModel: ObservableObject {
                 mainDisplay = trailingZeroesString!
             }
         } else {
-            shortDisplayString = brain.shortDisplayString()
             mainDisplay = shortDisplayString.show()
         }
     }
