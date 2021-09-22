@@ -9,6 +9,7 @@ import Foundation
 
 class BrainViewModel: ObservableObject {
     @Published private(set) var mainDisplay: String = ""
+    @Published private(set) var longString: String = ""
     @Published private(set) var higherPrecisionAvailable: Bool = false
 
     private var shortDisplayString: ShortDisplayString
@@ -19,6 +20,7 @@ class BrainViewModel: ObservableObject {
         brain.digit(digit)
         trailingZeroesString = nil
         shortDisplayString = brain.shortDisplayString()
+        longString = brain.longString()
         mainDisplay = shortDisplayString.show()
         higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
     }
@@ -26,6 +28,7 @@ class BrainViewModel: ObservableObject {
     func changeSign() {
         brain.changeSign_()
         shortDisplayString = brain.shortDisplayString()
+        longString = brain.longString()
         mainDisplay = shortDisplayString.show()
         higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
     }
@@ -33,6 +36,7 @@ class BrainViewModel: ObservableObject {
     func zero() {
         brain.digit("0")
         shortDisplayString = brain.shortDisplayString()
+        longString = brain.longString()
         higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
         if mainDisplay.contains(",") && !shortDisplayString.isScientificNotation {
             if trailingZeroesString == nil {
@@ -50,6 +54,7 @@ class BrainViewModel: ObservableObject {
     func comma() {
         brain.digit(".")
         shortDisplayString = brain.shortDisplayString()
+        longString = brain.longString()
         higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
         mainDisplay = shortDisplayString.show()
         if !mainDisplay.contains(",") {
@@ -62,6 +67,7 @@ class BrainViewModel: ObservableObject {
         brain.reset()
         trailingZeroesString = nil
         shortDisplayString = brain.shortDisplayString()
+        longString = brain.longString()
         higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
         mainDisplay = shortDisplayString.show()
         //        let temp = brain.shortString()
@@ -71,6 +77,7 @@ class BrainViewModel: ObservableObject {
     init() {
         trailingZeroesString = nil
         shortDisplayString = brain.shortDisplayString()
+        longString = brain.longString()
         higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
         mainDisplay = shortDisplayString.show()
     }

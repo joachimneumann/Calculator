@@ -24,14 +24,6 @@ class Brain {
     private var display_private: String = "0"
     fileprivate var nBits = 0
     
-    private var display: String  {
-        set {
-        }
-        get {
-            return display_private
-        }
-    }
-    
     func digit(_ digit: Character) {
         if lastWasDigit {
             var ignore = false
@@ -238,7 +230,7 @@ class Brain {
         if isValidGmpString(s: string, precision: nBits) {
             let value = Gmp(string, precision: nBits)
             n.push(value)
-            display = value.toLongString()
+            internalDisplay = value.toLongString()
             return true
         } else {
             return false
@@ -246,18 +238,19 @@ class Brain {
     }
     
     
-    private func longString() -> String {
-        var result = display
+    func longString() -> String {
+        var result = internalDisplay
+        let maxPrecision = 100
         var resultArray = result.split(separator: "E")
-//        if resultArray.count == 2 {
-//            if resultArray[0].count > maxPrecision {
-//                resultArray[0] = resultArray[0].prefix(maxPrecision)
-//                result = String(resultArray[0])+"E"+String(resultArray[1])
-//            }
-//        } else {
-//            // no E
-//            result = String(resultArray[0].prefix(maxPrecision))
-//        }
+        if resultArray.count == 2 {
+            if resultArray[0].count > maxPrecision {
+                resultArray[0] = resultArray[0].prefix(maxPrecision)
+                result = String(resultArray[0])+"E"+String(resultArray[1])
+            }
+        } else {
+            // no E
+            result = String(resultArray[0].prefix(maxPrecision))
+        }
         return result
     }
 
@@ -292,19 +285,19 @@ class Brain {
                 let operation = opDict[opName]!
                 let n3 = operation(n2,n1)
                 n.push(n3)
-                display = n3.toLongString()
+                internalDisplay = n3.toLongString()
             }
             n.clean()
             op.clean()
-            n.push(Gmp(display, precision: nBits))
+            n.push(Gmp(internalDisplay, precision: nBits))
         } else if inplaceDict.keys.contains(symbol) {
             if let op = inplaceDict[symbol] {
-                if display != "Not a Number" {
-                    let n1 = Gmp(display, precision: nBits)
+                if internalDisplay != "Not a Number" {
+                    let n1 = Gmp(internalDisplay, precision: nBits)
                     op(n1)
                     if n.count() > 0 { n.removeLast() }
                     n.push(n1)
-                    display = n1.toLongString()
+                    internalDisplay = n1.toLongString()
                 }
             }
         } else if constDict.keys.contains(symbol) {
@@ -312,7 +305,7 @@ class Brain {
                 let n1 = Gmp("0", precision: nBits)
                 op(n1)
                 n.push(n1)
-                display = n1.toLongString()
+                internalDisplay = n1.toLongString()
             }
         } else {
             if twoParameterOp.keys.contains(symbol) {
@@ -335,7 +328,7 @@ class Brain {
                                 let n2 = n.pop()!
                                 let n3 = op(n2, n1)
                                 n.push(n3)
-                                display = n3.toLongString()
+                                internalDisplay = n3.toLongString()
                             }
                         }
                     }
