@@ -18,7 +18,8 @@
 		AA40C44C26F808DA00119D4F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA40C44B26F808DA00119D4F /* Preview Assets.xcassets */; };
 		AA40C45526F8094700119D4F /* Gmp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA40C45426F8094700119D4F /* Gmp.swift */; };
 		AA95563C26FA0E360029D94C /* PlaceInCapsule.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95563B26FA0E360029D94C /* PlaceInCapsule.swift */; };
-		AA95564026FA1C180029D94C /* Digit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95563F26FA1C180029D94C /* Digit.swift */; };
+		AA95564026FA1C180029D94C /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95563F26FA1C180029D94C /* Key.swift */; };
+		AA95564226FA471D0029D94C /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95564126FA471D0029D94C /* Brain.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -48,7 +49,8 @@
 		AA40C45426F8094700119D4F /* Gmp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gmp.swift; sourceTree = "<group>"; };
 		AA40C45626F8096700119D4F /* Calculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Calculator.entitlements; sourceTree = "<group>"; };
 		AA95563B26FA0E360029D94C /* PlaceInCapsule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInCapsule.swift; sourceTree = "<group>"; };
-		AA95563F26FA1C180029D94C /* Digit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Digit.swift; sourceTree = "<group>"; };
+		AA95563F26FA1C180029D94C /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
+		AA95564126FA471D0029D94C /* Brain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brain.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,7 +94,8 @@
 				AA40C44A26F808DA00119D4F /* Preview Content */,
 				AA2576B226F8F16600CDD8C9 /* NumberKeys.swift */,
 				AA95563B26FA0E360029D94C /* PlaceInCapsule.swift */,
-				AA95563F26FA1C180029D94C /* Digit.swift */,
+				AA95563F26FA1C180029D94C /* Key.swift */,
+				AA95564126FA471D0029D94C /* Brain.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -189,8 +192,9 @@
 				AA95563C26FA0E360029D94C /* PlaceInCapsule.swift in Sources */,
 				AA2576B326F8F16600CDD8C9 /* NumberKeys.swift in Sources */,
 				AA40C45526F8094700119D4F /* Gmp.swift in Sources */,
+				AA95564226FA471D0029D94C /* Brain.swift in Sources */,
 				AA40C44526F808D800119D4F /* CalculatorApp.swift in Sources */,
-				AA95564026FA1C180029D94C /* Digit.swift in Sources */,
+				AA95564026FA1C180029D94C /* Key.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-struct PlaceInCapsule: ViewModifier {
+private struct PlaceInCapsule: ViewModifier {
     let properties: KeyProperties
+    let callback: () -> Void
     @State var down: Bool = false
     func body(content: Content) -> some View {
         ZStack {
@@ -27,13 +28,14 @@ struct PlaceInCapsule: ViewModifier {
                     withAnimation(.easeIn(duration: properties.upAnimationTime)) {
                         down = false
                     }
+                    callback()
                 }
         )
     }
 }
 
 extension View {
-    func placeInCapsule(with properties: KeyProperties) -> some View {
-        return self.modifier(PlaceInCapsule(properties: properties))
+    func placeInCapsule(with properties: KeyProperties, callback: @escaping () -> Void) -> some View {
+        return self.modifier(PlaceInCapsule(properties: properties, callback: callback))
     }
 }

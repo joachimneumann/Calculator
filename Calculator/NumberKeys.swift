@@ -9,6 +9,7 @@ import SwiftUI
 
 
 struct NumberKeys: View {
+    let brain = Brain()
     let size: CGSize
     let verticalSpace: CGFloat
     let horizontalSpace: CGFloat
@@ -17,51 +18,51 @@ struct NumberKeys: View {
         VStack(spacing: verticalSpace) {
             HStack(spacing: horizontalSpace) {
                 Key("C")
-                    .op3(size: size)
+                    .op_clear(size: size) {}
                 Key("+/-")
-                    .op2(size: size)
+                    .op_plusMinus_percentage(size: size) {}
                 Key("%")
-                    .op2(size: size)
+                    .op_plusMinus_percentage(size: size) {}
                 Key("/")
-                    .op(size: size)
+                    .op_div_mul_add_sub_eq(size: size) {}
             }
             HStack(spacing: horizontalSpace) {
                 Key("7")
-                    .digit(size: size)
+                    .digit_1_to_9(size: size) { brain.digit("7")}
                 Key("8")
-                    .digit(size: size)
+                    .digit_1_to_9(size: size) {}
                 Key("9")
-                    .digit(size: size)
+                    .digit_1_to_9(size: size) {}
                 Key("x")
-                    .op(size: size)
+                    .op_div_mul_add_sub_eq(size: size) {}
             }
             HStack(spacing: horizontalSpace) {
                 Key("4")
-                    .digit(size: size)
+                    .digit_1_to_9(size: size) {}
                 Key("5")
-                    .digit(size: size)
+                    .digit_1_to_9(size: size) {}
                 Key("6")
-                    .digit(size: size)
+                    .digit_1_to_9(size: size) {}
                 Key("-")
-                    .op(size: size)
+                    .op_div_mul_add_sub_eq(size: size) {}
             }
             HStack(spacing: horizontalSpace) {
                 Key("1")
-                    .digit(size: size)
+                    .digit_1_to_9(size: size) {}
                 Key("2")
-                    .digit(size: size)
+                    .digit_1_to_9(size: size) {}
                 Key("3")
-                    .digit(size: size)
+                    .digit_1_to_9(size: size) {}
                 Key("+")
-                    .op(size: size)
+                    .op_div_mul_add_sub_eq(size: size) {}
             }
             HStack(spacing: horizontalSpace) {
                 Key("0")
-                    .zero(size: size, horizontalSpace: horizontalSpace)
+                    .digit_0(size: size, horizontalSpace: horizontalSpace) {}
                 Key(",")
-                    .digit(size: size)
+                    .digit_1_to_9(size: size) {}
                 Key("=")
-                    .op(size: size)
+                    .op_div_mul_add_sub_eq(size: size) {}
             }
         }
     }

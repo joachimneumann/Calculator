@@ -1,5 +1,5 @@
 //
-//  Digit.swift
+//  Key.swift
 //  Calculator
 //
 //  Created by Joachim Neumann on 21/09/2021.
@@ -18,15 +18,19 @@ let sfImages: [String: String] = [
 ]
 
 struct Key: View {
-    let content: AnyView
+    private let asText: Text
+    private var asImage: Image? = nil
     var body: some View {
-        content
+        if let asImage = asImage {
+            asImage
+        } else {
+            asText
+        }
     }
     init(_ text: String) {
+        asText = Text(text)
         if let sfImage = sfImages[text] {
-            content = AnyView(Image(systemName: sfImage))
-        } else {
-            content = AnyView(Text(text))
+            asImage = Image(systemName: sfImage)
         }
     }
 }
@@ -80,84 +84,88 @@ let LightGrayKeyProperties = KeyProperties(
     upAnimationTime: 0.5)
 
 
-struct Digit: ViewModifier {
+private struct Digit_0_to_9: ViewModifier {
     let size: CGSize
+    let callback: () -> Void
     func body(content: Content) -> some View {
         let fontsize = size.height * 0.45
         content
             .foregroundColor(DigitKeyProperties.textColor)
-            .placeInCapsule(with: DigitKeyProperties)
+            .placeInCapsule(with: DigitKeyProperties, callback: callback)
             .font(.system(size: fontsize))
     }
 }
 
-struct Op: ViewModifier {
+private struct Colorful_plus_minus_etc: ViewModifier {
     let size: CGSize
+    let callback: () -> Void
     func body(content: Content) -> some View {
         let fontsize = size.height * 0.36
         content
             .foregroundColor(OpKeyProperties.textColor)
-            .placeInCapsule(with: OpKeyProperties)
+            .placeInCapsule(with: OpKeyProperties, callback: callback)
             .font(.system(size: fontsize, weight: .bold))
         
     }
 }
 
-struct Op2: ViewModifier {
+private struct PlusMinus_percentage: ViewModifier {
     let size: CGSize
+    let callback: () -> Void
     func body(content: Content) -> some View {
         let fontsize = size.height * 0.33
         content
             .foregroundColor(LightGrayKeyProperties.textColor)
-            .placeInCapsule(with: LightGrayKeyProperties)
+            .placeInCapsule(with: LightGrayKeyProperties, callback: callback)
             .font(.system(size: fontsize, weight: .semibold))
     }
 }
 
-struct Op3: ViewModifier {
+private struct ClearButton: ViewModifier {
     let size: CGSize
+    let callback: () -> Void
     func body(content: Content) -> some View {
         let fontsize = size.height * 0.42
         content
             .foregroundColor(LightGrayKeyProperties.textColor)
-            .placeInCapsule(with: LightGrayKeyProperties)
+            .placeInCapsule(with: LightGrayKeyProperties, callback: callback)
             .font(.system(size: fontsize, weight: .medium))
     }
 }
 
 
 extension View {
-    func digit(size: CGSize) -> some View {
+    func digit_1_to_9(size: CGSize, callback: @escaping () -> Void) -> some View {
         self
-            .modifier(Digit(size: size))
+            .modifier(Digit_0_to_9(size: size, callback: callback))
             .frame(width: size.width, height: size.height)
     }
     
-    func zero(size: CGSize, horizontalSpace: CGFloat) -> some View {
+    func digit_0(size: CGSize, horizontalSpace: CGFloat, callback: @escaping () -> Void) -> some View {
         HStack {
             self
                 .padding(.leading, size.height * 0.4)
             Spacer()
         }
-        .modifier(Digit(size: size))
+        .modifier(Digit_0_to_9(size: size, callback: callback))
         .frame(width: size.width*2+horizontalSpace, height: size.height)
     }
     
-    func op(size: CGSize) -> some View {
+    func op_div_mul_add_sub_eq(size: CGSize, callback: @escaping () -> Void) -> some View {
         self
-            .modifier(Op(size: size))
+            .modifier(Colorful_plus_minus_etc(size: size, callback: callback))
             .frame(width: size.width, height: size.height)
     }
 
-    func op2(size: CGSize) -> some View {
+    func op_plusMinus_percentage(size: CGSize, callback: @escaping () -> Void) -> some View {
         self
-            .modifier(Op2(size: size))
+            .modifier(PlusMinus_percentage(size: size, callback: callback))
             .frame(width: size.width, height: size.height)
     }
 
-    func op3(size: CGSize) -> some View {
+    func op_clear(size: CGSize, callback: @escaping () -> Void) -> some View {
         self
-            .modifier(Op3(size: size))
+            .modifier(ClearButton(size: size, callback: callback))
             .frame(width: size.width, height: size.height)
     }
 }
