@@ -7,19 +7,21 @@
 
 import SwiftUI
 
-let sfImages: [String: String] = [
-    "+": "plus",
-    "-": "minus",
-    "x": "multiply",
-    "/": "divide",
-    "+/-": "plus.forwardslash.minus",
-    "=": "equal",
-    "%": "percent",
-]
 
 struct Key: View {
     private let asText: Text
     private var asImage: Image? = nil
+
+    private let sfImageNames: [String: String] = [
+        "+":   "plus",
+        "-":   "minus",
+        "x":   "multiply",
+        "/":   "divide",
+        "+/-": "plus.forwardslash.minus",
+        "=":   "equal",
+        "%":   "percent",
+    ]
+
     var body: some View {
         if let asImage = asImage {
             asImage
@@ -29,7 +31,7 @@ struct Key: View {
     }
     init(_ text: String) {
         asText = Text(text)
-        if let sfImage = sfImages[text] {
+        if let sfImage = sfImageNames[text] {
             asImage = Image(systemName: sfImage)
         }
     }

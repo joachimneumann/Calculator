@@ -284,16 +284,16 @@ class Gmp: CustomDebugStringConvertible {
             return "0"
         }
 
-        let significantBytesEstimate = 7
-        var expptr: mpfr_exp_t = 0
-        var charArray: Array<CChar> = Array(repeating: 0, count: significantBytesEstimate+2) // +2 because: one for a possible - and one for zero termination
-        mpfr_get_str(&charArray, &expptr, 10, significantBytesEstimate, &mpfr, MPFR_RNDN)
+        let integerDigitLimit = 9
+        var exponent: mpfr_exp_t = 0
+        var charArray: Array<CChar> = Array(repeating: 0, count: integerDigitLimit+2) // +2 because: one for a possible - and one for zero termination
+        mpfr_get_str(&charArray, &exponent, 10, integerDigitLimit, &mpfr, MPFR_RNDN)
 
-        if expptr > maxPrecision {
+        if exponent > maxPrecision {
             return "too large"
         }
 
-        if expptr < -maxPrecision {
+        if exponent < -maxPrecision {
             return "too small"
         }
 
@@ -312,8 +312,8 @@ class Gmp: CustomDebugStringConvertible {
         let lastSignificantDigit = lastSignificantIndex + 1
 
         // is it an Integer?
-        if expptr > 0 && lastSignificantDigit <= expptr && expptr < significantBytesEstimate {
-            charArray[expptr] = 0
+        if exponent > 0 && lastSignificantDigit <= exponent && exponent <= integerDigitLimit {
+            charArray[exponent] = 0
             guard let integerString = String(validatingUTF8: charArray)
                 else { return "not a number" }
             if negative {
@@ -345,8 +345,8 @@ class Gmp: CustomDebugStringConvertible {
         floatString.insert(".", at: floatString.index(floatString.startIndex, offsetBy: 1))
 
         // if exponent is 0, drop it
-        if expptr-1 != 0 {
-            floatString += " E"+String(expptr-1)
+        if exponent-1 != 0 {
+            floatString += " E"+String(exponent-1)
         }
 
         if negative {

@@ -8,19 +8,31 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var brainViewModel = BrainViewModel()
     var body: some View {
-        let x: Gmp = Gmp("1.0", precision: 10)
-        let y: Gmp = Gmp("2.0", precision: 10)
-        let z: Gmp = x + y
-        print("z=\(z)")
-//        let x = funnyAdd(2, 3)
-//        Text("z=\(z.toShortString(maxPrecision: 10))")
-//            .padding()
-        return ZStack {
+        ZStack {
             Rectangle()
-            NumberKeys(roundKeys: true, width: 320)
+            VStack (spacing: 0) {
+                Spacer()
+                HStack {
+                    Spacer(minLength: 0)
+                    Text(brainViewModel.mainDisplay)
+                        .foregroundColor(Color.white)
+                        .font(.system(size: 90).monospacedDigit().weight(.thin))
+                        .minimumScaleFactor(0.1)
+                        .lineLimit(1)
+                        .padding(.trailing, 20)
+                        .padding(.bottom, 10)
+                        //.background(Color.red)
+                }
+                //.background(Color.orange)
+                NumberKeys(model: brainViewModel, roundKeys: true, width: 370)
+                    //.background(Color.yellow)
+            }
+            .padding(.bottom, 40)
+            //.background(Color.green)
         }
-            .background(Color.black)
+        .ignoresSafeArea()
     }
 }
 

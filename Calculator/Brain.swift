@@ -10,41 +10,60 @@ import Foundation
 protocol BrainProtocol {
     func pendingOperator(name: String)
     func endPendingOperator(name: String)
-    func updateDisplay(s: String)
 }
 
 class Brain {
-
-    static let shared = Brain()
-
-    let debug = true
-    var lastWasDigit = false
+    var shortString: String = "0"
+    private let debug = true
+    private var lastWasDigit = true
+    private var internalDisplay: String = "0"
     private var display_private: String = "0"
     fileprivate var nBits = 0
     fileprivate var maxPrecision = 0
     
-
-    var display: String  {
+    private var display: String  {
         set {
-            display_private = newValue
-            let value = Gmp(display_private, precision: nBits)
-            brainProtocolDelegate?.updateDisplay(s: value.toShortString(maxPrecision: maxPrecision))
         }
         get {
             return display_private
         }
     }
     
-    var brainProtocolDelegate: BrainProtocol? {
-        set {
-            op.brainProtocolDelegate = newValue
+    func digit(_ digit: Character) {
+        let newGmpValue: Gmp
+        if lastWasDigit {
+            var ignore = false
+
+            // if the display contains a dot, ignore further dots
+            if internalDisplay.range(of: ".") != nil && digit == "." {
+                ignore = true
+                //if debug { print("ignore \(digit)") }
+            }
+
+            // If the display is "0", set display to digit
+            if internalDisplay == "0" {
+                internalDisplay = String(digit); ignore = true
+                //if debug { print("set \(digit)") }
+            }
+
+            if !ignore {
+                internalDisplay.append(String(digit))
+                //if debug { print("append \(digit)") }
+            }
+            if n.count() > 0 {
+                n.removeLast()
+                //if debug { print("set \(digit)") }
+            }
+        } else {
+            internalDisplay = String(digit)
         }
-        get {
-            return op.brainProtocolDelegate
-        }
+        newGmpValue = Gmp(internalDisplay, precision: nBits)
+        shortString = newGmpValue.toShortString(maxPrecision: maxPrecision)
+        n.push(newGmpValue)
+        lastWasDigit = true
     }
     
-    struct OpStack {
+    private struct OpStack {
         var brainProtocolDelegate: BrainProtocol? = nil
         fileprivate var array: [String] = []
         mutating func push(_ element: String) {
@@ -79,7 +98,7 @@ class Brain {
         }
     }
     
-    struct GmpStack {
+    private struct GmpStack {
         fileprivate var array: [Gmp] = []
         mutating func push(_ element: Gmp) {
             array.append(element)
@@ -101,10 +120,10 @@ class Brain {
         }
     }
 
-    var op = OpStack()
-    var n = GmpStack()
+    private var op = OpStack()
+    private var n = GmpStack()
 
-    var precision: Int {
+    private var precision: Int {
         // throwing in 20 addition bits, this helps with sin(asin) to result in identity
         set {
             nBits = Int(round(Double(newValue) / 0.302)) + 20
@@ -115,7 +134,7 @@ class Brain {
         }
     }
     
-    func test() {
+    private func test() {
         precision = 75
 
         // 1 / 10
@@ -206,12 +225,13 @@ class Brain {
     }
     
     init() {
+        print("brain init()")
         precision = 100000
         reset()
-        if debug { test() }
+        //test()
     }
     
-    func fromLongString(_ string: String) -> Bool {
+    private func fromLongString(_ string: String) -> Bool {
         if isValidGmpString(s: string, precision: nBits) {
             let value = Gmp(string, precision: nBits)
             n.push(value)
@@ -223,13 +243,13 @@ class Brain {
     }
     
     
-    func longString() -> String {
+    private func longString() -> String {
         var result = display
         var resultArray = result.split(separator: "E")
         if resultArray.count == 2 {
             if resultArray[0].count > maxPrecision {
                 resultArray[0] = resultArray[0].prefix(maxPrecision)
-                result = resultArray[0]+"E"+resultArray[1]
+                result = String(resultArray[0])+"E"+String(resultArray[1])
             }
         } else {
             // no E
@@ -241,34 +261,11 @@ class Brain {
     func reset() {
         n.clean()
         op.clean()
-        display = "0"
-        lastWasDigit = false
-    }
-
-    func digit(_ digit: String) {
-        assert(digit.count == 1)
-        if lastWasDigit {
-            var ignore = false
-
-            // if the display contains a dot, ignore further dots
-            if display.range(of: ".") != nil && digit == "." { ignore = true }
-
-            // If the display is "0", set display to digit
-            if display == "0" { display = digit; ignore = true }
-
-            if !ignore {
-                display = display + digit
-            }
-            if n.count() > 0 { n.removeLast() }
-            n.push(Gmp(display, precision: nBits))
-        } else {
-            display = digit
-            n.push(Gmp(display, precision: nBits))
-        }
+        shortString = "0"
+        internalDisplay = "0"
         lastWasDigit = true
-
-        if debug { print("replaceDigit \(digit) \(n)") }
     }
+
 
     func operation(_ symbol: String) {
         if symbol == "C" {
