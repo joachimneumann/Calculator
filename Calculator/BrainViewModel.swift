@@ -26,7 +26,7 @@ class BrainViewModel: ObservableObject {
     }
     
     func changeSign() {
-        brain.changeSign_()
+        brain.operation("+/-")
         shortDisplayString = brain.shortDisplayString()
         longString = brain.longString()
         mainDisplay = shortDisplayString.show()

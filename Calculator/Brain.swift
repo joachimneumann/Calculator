@@ -223,7 +223,7 @@ class Brain {
         print("brain init()")
         precision = 100000
         reset()
-        //test()
+        test()
     }
     
     private func fromLongString(_ string: String) -> Bool {
@@ -341,7 +341,7 @@ class Brain {
     }
 
     fileprivate var inplaceDict: Dictionary< String, (Gmp) -> () > = [
-        "±": changeSign,
+        "+/-": changeSign,
         "1\\x": rez,
         "x!": fac,
         "Z": Z,
