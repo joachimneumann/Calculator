@@ -18,6 +18,10 @@ class Configuration {
     }
 
 #if targetEnvironment(macCatalyst)
+    let appBackgroundColor = Color(
+        red:    80.0/255.0,
+        green:  76.0/255.0,
+        blue:   80.0/255.0)
     let DigitKeyProperties = KeyProperties(
         textColor: Color(
             red:   236.0/255.0,
@@ -67,6 +71,8 @@ class Configuration {
         downAnimationTime: 0.1,
         upAnimationTime: 0.5)
 #else
+    let appBackgroundColor = Color(.black)
+
     let DigitKeyProperties = KeyProperties(
         textColor: Color.white,
         color: Color(

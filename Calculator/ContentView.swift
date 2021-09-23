@@ -72,7 +72,7 @@ struct ContentView: View {
                 }
             }
             .padding(.bottom, 40)
-            //.background(Color.green)
+            .background(Configuration.shared.appBackgroundColor)
         }
         .ignoresSafeArea()
     }
