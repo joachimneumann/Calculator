@@ -18,7 +18,7 @@ class Configuration {
     }
 
 #if targetEnvironment(macCatalyst)
-    let digits = 16
+    let digitsInSmallDisplay = 16
     let windowWidth: CGFloat = 575.0
     let windowHeight: CGFloat = 323.0
     let displayFontSize: CGFloat = 47
@@ -83,7 +83,7 @@ class Configuration {
         downAnimationTime: 0.1,
         upAnimationTime: 0.5)
 #else
-    let digits = 9
+    let digitsInSmallDisplay = 9
     let appBackgroundColor = Color(.black)
     let displayFontSize: CGFloat = 90
     let zoomButtonSize: CGFloat = 50

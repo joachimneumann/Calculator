@@ -25,6 +25,13 @@ struct DisplayString: Equatable {
         isScientificNotation = false
         content = invalid
     }
+    init(valid: String) {
+        isValidNumber = true
+        isNegative = false
+        higherPrecisionAvailable = true
+        isScientificNotation = false
+        content = valid
+    }
     init(
         isValidNumber: Bool,
         isNegative: Bool,

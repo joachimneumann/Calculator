@@ -201,7 +201,7 @@ class Gmp: CustomDebugStringConvertible {
     }
     
     var debugDescription: String {
-        return displayString(digits: 10).show()
+        return displayString(digits: 10, limitExponent: false).show()
     }
     
     
@@ -333,7 +333,7 @@ class Gmp: CustomDebugStringConvertible {
         return s
     }
     
-    func displayString(digits: Int) -> DisplayString {
+    func displayString(digits: Int, limitExponent: Bool) -> DisplayString {
         if mpfr_nan_p(&mpfr) != 0 {
             return DisplayString(invalid: "Not a Number")
         }
@@ -365,12 +365,12 @@ class Gmp: CustomDebugStringConvertible {
             negative = true
         }
 
-        if exponent > 160 {
-            return DisplayString(invalid: "too large")
+        if exponent > 160 && limitExponent {
+            return DisplayString(valid: "too large")
         }
         
-        if exponent < -160 {
-            return DisplayString(invalid: "too small")
+        if exponent < -160 && limitExponent {
+            return DisplayString(valid: "too small")
         }
         
         
@@ -450,6 +450,6 @@ class Gmp: CustomDebugStringConvertible {
 
 extension Gmp: Equatable {
     static func ==(lhs: Gmp, rhs: Gmp) -> Bool {
-        return lhs.displayString(digits: 100000) == rhs.displayString(digits: 100000)
+        return lhs.displayString(digits: 100000, limitExponent: false) == rhs.displayString(digits: 100000, limitExponent: false)
     }
 }
