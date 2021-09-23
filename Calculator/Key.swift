@@ -41,7 +41,7 @@ private struct Digit_0_to_9: ViewModifier {
     let size: CGSize
     let callback: (() -> Void)?
     func body(content: Content) -> some View {
-        let fontsize = size.height * 0.45
+        let fontsize = size.height * 0.48
         return content
             .foregroundColor(callback == nil ?  Color.gray : Configuration.shared.DigitKeyProperties.textColor)
             .addBackground(with: Configuration.shared.DigitKeyProperties, callback: callback)
@@ -66,23 +66,23 @@ private struct PlusMinus_percentage: ViewModifier {
     let size: CGSize
     let callback: (() -> Void)?
     func body(content: Content) -> some View {
-        let fontsize = size.height * 0.33
+        let fontsize = size.height * 0.36
         content
             .foregroundColor(callback == nil ?  Color.gray : Configuration.shared.LightGrayKeyProperties.textColor)
             .addBackground(with: Configuration.shared.LightGrayKeyProperties, callback: callback)
-            .font(.system(size: fontsize, weight: .semibold))
+            .font(.system(size: fontsize, weight: .bold))
     }
 }
 
-private struct ClearButton: ViewModifier {
+private struct ScientificButton: ViewModifier {
     let size: CGSize
     let callback: (() -> Void)?
     func body(content: Content) -> some View {
-        let fontsize = size.height * 0.42
+        let fontsize = size.height * 0.40
         content
             .foregroundColor(callback == nil ?  Color.gray : Configuration.shared.LightGrayKeyProperties.textColor)
             .addBackground(with: Configuration.shared.LightGrayKeyProperties, callback: callback)
-            .font(.system(size: fontsize, weight: .medium))
+            .font(.system(size: fontsize, weight: .regular))
     }
 }
 
@@ -116,9 +116,9 @@ extension View {
             .frame(width: size.width, height: size.height)
     }
     
-    func op_clear(size: CGSize, callback: (() -> Void)? = nil ) -> some View {
+    func scientific(size: CGSize, callback: (() -> Void)? = nil ) -> some View {
         self
-            .modifier(ClearButton(size: size, callback: callback))
+            .modifier(ScientificButton(size: size, callback: callback))
             .frame(width: size.width, height: size.height)
     }
 }
