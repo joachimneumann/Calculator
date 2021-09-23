@@ -432,9 +432,9 @@ class Gmp: CustomDebugStringConvertible {
                 content: "0")
         }
         
-        let charArrayLength = 15
+        let charArrayLength = Configuration.shared.digits + 5 // some extra bytes for debugging
         var exponent: mpfr_exp_t = 0
-        var charArray: Array<CChar> = Array(repeating: 0, count: charArrayLength+2) // +2 because: one for a possible - and one for zero termination
+        var charArray: Array<CChar> = Array(repeating: 0, count: charArrayLength)
         mpfr_get_str(&charArray, &exponent, 10, charArrayLength, &mpfr, MPFR_RNDN)
         
         exponent -= 1 /// This gives the actual power 10 exponent
@@ -476,7 +476,7 @@ class Gmp: CustomDebugStringConvertible {
         print("significantDigits=\(significantDigits)")
         
         // is it an Integer?
-        var availableDigits = negative ? 8 : 9
+        var availableDigits = negative ? Configuration.shared.digits-1 : Configuration.shared.digits
         if exponent >= 0 && exponent <= availableDigits && significantDigits <= exponent+1 {
             return ShortDisplayString(
                 isValidNumber: true,
@@ -487,7 +487,7 @@ class Gmp: CustomDebugStringConvertible {
         }
         
         // is it a floating point number, starting with 0. ?
-        availableDigits = negative ? 7 : 8 /// 9 minus one for "0." minus? negative
+        availableDigits = negative ? Configuration.shared.digits-2 : Configuration.shared.digits-1 /// 9 minus one for "0." minus? negative
         if exponent < 0 && significantDigits - exponent <= availableDigits {
             return ShortDisplayString(
                 isValidNumber: true,
@@ -497,7 +497,7 @@ class Gmp: CustomDebugStringConvertible {
                 content: getZeroDotString(charArray, exponent: exponent, significantDigits: significantDigits))
         }
         // is it a floating point number, starting with X. ?
-        availableDigits = negative ? 8 : 9 /// 9 minus one for "0." minus? negative
+        availableDigits = negative ? Configuration.shared.digits-1 : Configuration.shared.digits
         if exponent == 0 && significantDigits <= availableDigits {
             return ShortDisplayString(
                 isValidNumber: true,
@@ -509,7 +509,7 @@ class Gmp: CustomDebugStringConvertible {
         
         
         /// number that can be displayed in scientific notation without loss of precision?
-        availableDigits = 9
+        availableDigits = Configuration.shared.digits
         availableDigits -= 1 // for "e"
         if negative { availableDigits -= 1 }
         if exponent < 0 { availableDigits -= 1 }

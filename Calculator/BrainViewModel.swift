@@ -57,7 +57,7 @@ class BrainViewModel: ObservableObject {
                 if trailingZeroesString == nil {
                     trailingZeroesString = mainDisplay
                 }
-                if trailingZeroesString!.count < 9 {
+                if trailingZeroesString!.count < Configuration.shared.digits {
                     trailingZeroesString! += "0"
                     mainDisplay = trailingZeroesString!
                 }
