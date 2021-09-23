@@ -92,6 +92,7 @@
 			children = (
 				AA40C45626F8096700119D4F /* Calculator.entitlements */,
 				AA40C44426F808D800119D4F /* CalculatorApp.swift */,
+				AAF1F59026FBA9C7000A733F /* Configuration.swift */,
 				AA40C44626F808D800119D4F /* ContentView.swift */,
 				AA40C45426F8094700119D4F /* Gmp.swift */,
 				AA40C44826F808DA00119D4F /* Assets.xcassets */,
@@ -101,7 +102,6 @@
 				AA95563F26FA1C180029D94C /* Key.swift */,
 				AA95564126FA471D0029D94C /* Brain.swift */,
 				AA46B32526FAC48500F83939 /* BrainViewModel.swift */,
-				AAF1F59026FBA9C7000A733F /* Configuration.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -362,7 +362,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = /Users/joachim/projects/Calculator/dist/include/bridge.h;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,6";
 			};
 			name = Debug;
 		};
@@ -402,7 +402,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = /Users/joachim/projects/Calculator/dist/include/bridge.h;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,6";
 			};
 			name = Release;
 		};
