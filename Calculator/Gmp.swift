@@ -21,6 +21,25 @@ struct DisplayString: Equatable {
         if isNegative { ret = "-" + ret }
         return ret
     }
+    init(invalid: String) {
+        isValidNumber = false
+        isNegative = false
+        higherPrecisionAvailable = false
+        isScientificNotation = false
+        content = invalid
+    }
+    init(
+        isValidNumber: Bool,
+        isNegative: Bool,
+        higherPrecisionAvailable: Bool,
+        isScientificNotation: Bool,
+        content: String) {
+            self.isValidNumber = isValidNumber
+            self.isNegative = isNegative
+            self.higherPrecisionAvailable = higherPrecisionAvailable
+            self.isScientificNotation = isScientificNotation
+            self.content = content
+        }
 }
 
 extension String {
@@ -348,20 +367,10 @@ class Gmp: CustomDebugStringConvertible {
     
     func displayString(digits: Int) -> DisplayString {
         if mpfr_nan_p(&mpfr) != 0 {
-            return DisplayString(
-                isValidNumber: false,
-                isNegative: false,
-                higherPrecisionAvailable: false,
-                isScientificNotation: false,
-                content: "Not a Number")
+            return DisplayString(invalid: "Not a Number")
         }
         if mpfr_inf_p(&mpfr) != 0 {
-            return DisplayString(
-                isValidNumber: false,
-                isNegative: false,
-                higherPrecisionAvailable: false,
-                isScientificNotation: false,
-                content: "Infinity")
+            return DisplayString(invalid: "Infinity")
         }
         
         // set negative 0 to 0
@@ -389,21 +398,11 @@ class Gmp: CustomDebugStringConvertible {
         }
 
         if exponent > 160 {
-            return DisplayString(
-                isValidNumber: true,
-                isNegative: negative,
-                higherPrecisionAvailable: true,
-                isScientificNotation: false,
-                content: "too large")
+            return DisplayString(invalid: "too large")
         }
         
         if exponent < -160 {
-            return DisplayString(
-                isValidNumber: true,
-                isNegative: negative,
-                higherPrecisionAvailable: true,
-                isScientificNotation: false,
-                content: "too small")
+            return DisplayString(invalid: "too small")
         }
         
         

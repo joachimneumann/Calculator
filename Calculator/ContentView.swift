@@ -24,7 +24,7 @@ struct AllDigitsView: View {
             }
             VStack(spacing: 0) {
                 ScrollView(.vertical, showsIndicators: true) {
-                    Text(brainViewModel.longString)
+                    Text(brainViewModel.longString.show())
                         .foregroundColor(Color.white)
                         .font(Font.system(size: 30, design: .monospaced).monospacedDigit())
                         .multilineTextAlignment(.leading)

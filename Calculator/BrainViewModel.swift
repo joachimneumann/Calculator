@@ -9,7 +9,7 @@ import Foundation
 
 class BrainViewModel: ObservableObject {
     @Published private(set) var mainDisplay: String = ""
-    @Published private(set) var longString: String = ""
+    @Published private(set) var longString: DisplayString = DisplayString(invalid: "invalid")
     @Published private(set) var higherPrecisionAvailable: Bool = false
 
     private var shortDisplayString: DisplayString

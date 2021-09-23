@@ -20,12 +20,7 @@ class Brain {
         if let last = gmpStack.peek {
             return last.displayString(digits: Configuration.shared.digits)
         } else {
-            return DisplayString(
-                isValidNumber: false,
-                isNegative: false,
-                higherPrecisionAvailable: false,
-                isScientificNotation: false,
-                content: "not a number")
+            return DisplayString(invalid: "not a number")
         }
     }
     
@@ -71,11 +66,11 @@ class Brain {
         test()
     }
     
-    func longString() -> String {
+    func longString() -> DisplayString {
         if let last = gmpStack.peek {
-            return last.displayString(digits: 70000).show()
+            return last.displayString(digits: 70000)
         } else {
-            return "not a number"
+            return DisplayString(invalid: "not a number")
         }
     }
         
