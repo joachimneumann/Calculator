@@ -17,7 +17,7 @@ struct Key: View {
         "-":   "minus",
         "x":   "multiply",
         "/":   "divide",
-        "+/-": "plus.forwardslash.minus",
+        "+/-": "plus.slash.minus",
         "=":   "equal",
         "%":   "percent",
     ]
