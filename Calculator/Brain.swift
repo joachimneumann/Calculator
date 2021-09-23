@@ -56,7 +56,7 @@ class Brain {
         } else {
             gmpStack.replaceLast(with: Gmp(numberString!))
         }
-        print("after addDigi \(digit): gmps: \(gmpStack.count), ops: \(twoParameterOperationStack.count) numberString: \(numberString ?? "empty") w: \(waitingForNumber)")
+        print("after addDigi \(digit): gmps: \(gmpStack.count), ops: \(twoParameterOperationStack.count) numberString: \(numberString ?? "empty") w: \(waitingForNumber) )") //gmp.peek: \(gmpStack.peek
     }
     
     func reset() {
@@ -68,11 +68,12 @@ class Brain {
     
     init() {
         reset()
+        test()
     }
     
     //    private func fromLongString(_ string: String) -> Bool {
-    //        if isValidGmpString(s: string, precision: nBits) {
-    //            let value = Gmp(string, precision: nBits)
+    //        if isValidGmpString(s: string {
+    //            let value = Gmp(string
     //            n.push(value)
     //            XXX_OLD_STRING = value.toLongString()
     //            return true
@@ -106,7 +107,7 @@ class Brain {
     //        } else {
     //            XXX_OLD_STRING = "-" + XXX_OLD_STRING
     //        }
-    //        //        let n1 = Gmp(internalDisplay, precision: nBits)
+    //        //        let n1 = Gmp(internalDisplay
     //        //        changeSign(n1)
     //        //        if n.count() > 0 { n.removeLast() }
     //        //        n.push(n1)
@@ -117,7 +118,7 @@ class Brain {
         var sufficientNumbers = gmpStack.count >= 2
         var lastOperationNotTooHighPriority = false
         if twoParameterOperationStack.count > 0 {
-            if twoParameterOperationStack.peek!.priority <= maxPriority {
+            if twoParameterOperationStack.peek!.priority >= maxPriority {
                 lastOperationNotTooHighPriority = true
             }
         }
@@ -125,21 +126,21 @@ class Brain {
             let op = twoParameterOperationStack.pop()!
             let gmp1 = gmpStack.pop()!
             let gmp2 = gmpStack.pop()!
-            let result = op.op(gmp1, gmp2)
+            let result = op.op(gmp2, gmp1)
             gmpStack.push(result)
             
             pendingOperations = twoParameterOperationStack.count >= 1
             sufficientNumbers = gmpStack.count >= 2
             lastOperationNotTooHighPriority = false
             if twoParameterOperationStack.count > 0 {
-                if twoParameterOperationStack.peek!.priority <= maxPriority {
+                if twoParameterOperationStack.peek!.priority >= maxPriority {
                     lastOperationNotTooHighPriority = true
                 }
             }
-
+            
         }
     }
-
+    
     func operation(_ symbol: String) {
         numberString = nil
         if symbol == "C" {
@@ -147,14 +148,20 @@ class Brain {
             waitingForNumber = false
         } else if symbol == "=" {
             if !waitingForNumber {
-                executeEverythingUpTo(priority: 100)
+                executeEverythingUpTo(priority: -100)
                 waitingForNumber = false
             }
         } else if let op = inplaceDict[symbol] {
-            gmpStack.modifyLast(withOp: op)
-            waitingForNumber = false
+            if !waitingForNumber {
+                gmpStack.modifyLast(withOp: op)
+                waitingForNumber = false
+            }
         } else if let op = constDict[symbol] {
-            gmpStack.replaceLast(withOp: op)
+            if waitingForNumber {
+                gmpStack.push(withOp: op)
+            } else {
+                gmpStack.replaceLast(withOp: op)
+            }
             waitingForNumber = false
         } else if let op = twoParameterOperations[symbol] {
             if !waitingForNumber {
@@ -163,7 +170,7 @@ class Brain {
                 waitingForNumber = true
             }
         }
-        print("after operation \(symbol): gmps: \(gmpStack.count), ops: \(twoParameterOperationStack.count) numberString: \(numberString ?? "empty") w: \(waitingForNumber)")
+        print("after operation \(symbol): gmps: \(gmpStack.count), ops: \(twoParameterOperationStack.count) numberString: \(numberString ?? "empty") w: \(waitingForNumber) ")
     }
     
     fileprivate var inplaceDict: Dictionary <String, (Gmp) -> ()> = [
@@ -193,7 +200,7 @@ class Brain {
         "γ": γ,
     ]
     
-
+    
     fileprivate let twoParameterOperations: Dictionary <String, TwoParameterOperation> = [
         "+": TwoParameterOperation(add, 1),
         "-": TwoParameterOperation(min, 1),
@@ -203,97 +210,96 @@ class Brain {
         "pow_x_y": TwoParameterOperation(pow_x_y, 2),
         "x↑↑y": TwoParameterOperation(x_double_up_arrow_y, 2),
     ]
+
+
+
+private func test() {
+    
+    // 1 / 10
+    addDigitToNumberString("1")
+    addDigitToNumberString("0")
+    operation("oneOverX")
+    assert(gmpStack.peek! == Gmp("0.1"))
+    addDigitToNumberString("1")
+    assert(gmpStack.peek! == Gmp("1"))
+    addDigitToNumberString("6")
+    assert(gmpStack.peek! == Gmp("16"))
+    operation("oneOverX")
+    assert(gmpStack.peek! == Gmp("0.0625"))
+    
+    // clear
+    reset()
+    assert(gmpStack.count == 1)
+    assert(twoParameterOperationStack.count == 0)
+    
+    // 1+2+5+2= + 1/4 =
+    addDigitToNumberString("1")
+    assert(gmpStack.peek == Gmp("1"))
+    operation("+")
+    assert(gmpStack.peek == Gmp("1"))
+    addDigitToNumberString("2")
+    operation("+")
+    assert(gmpStack.peek == Gmp("3"))
+    addDigitToNumberString("5")
+    operation("+")
+    assert(gmpStack.peek == Gmp("8"))
+    addDigitToNumberString("2")
+    operation("=")
+    assert(gmpStack.peek == Gmp("10"))
+    operation("+")
+    assert(gmpStack.peek == Gmp("10"))
+    addDigitToNumberString("4")
+    operation("oneOverX")
+    assert(gmpStack.peek == Gmp("0.25"))
+    operation("=")
+    assert(gmpStack.peek == Gmp("10.25"))
+    
+    // 1+2*4=
+    reset()
+    addDigitToNumberString("1")
+    assert(gmpStack.peek == Gmp("1"))
+    operation("+")
+    addDigitToNumberString("2")
+    operation("x")
+    assert(gmpStack.peek == Gmp("2"))
+    addDigitToNumberString("4")
+    assert(gmpStack.peek == Gmp("4"))
+    operation("=")
+    assert(gmpStack.peek == Gmp("9"))
+    
+    reset()
+    addDigitToNumberString("1")
+    assert(gmpStack.peek == Gmp("1"))
+    operation("+")
+    addDigitToNumberString("2")
+    operation("x")
+    assert(gmpStack.peek == Gmp("2"))
+    addDigitToNumberString("4")
+    assert(gmpStack.peek == Gmp("4"))
+    operation("+")
+    assert(gmpStack.peek == Gmp("9"))
+    addDigitToNumberString("1")
+    addDigitToNumberString("0")
+    addDigitToNumberString("0")
+    assert(gmpStack.peek == Gmp("100"))
+    // User: =
+    operation("=")
+    assert(gmpStack.peek == Gmp("109"))
+    
+    reset()
+    operation("π")
+    operation("x")
+    addDigitToNumberString("2")
+    operation("=")
+    
+    reset()
+    addDigitToNumberString("2")
+    operation("pow_x_y")
+    addDigitToNumberString("1")
+    addDigitToNumberString("0")
+    operation("=")
+    assert(gmpStack.peek == Gmp("1024"))
+    reset()
 }
 
-
-/*
- private func test() {
- precision = 75
- 
- // 1 / 10
- digit("1")
- digit("0")
- operation("1\\x")
- assert(n.peek()! == Gmp("0.1", precision: nBits))
- digit("1")
- assert(n.peek()! == Gmp("1", precision: nBits))
- digit("6")
- assert(n.peek()! == Gmp("16", precision: nBits))
- operation("1\\x")
- assert(n.peek()! == Gmp("0.0625", precision: nBits))
- 
- // clear
- reset()
- assert(n.peek() == nil)
- assert(op.count() == 0)
- 
- // 1+2+5+2= + 1/4 =
- digit("1")
- assert(n.peek() == Gmp("1", precision: nBits))
- operation("+")
- assert(n.peek() == Gmp("1", precision: nBits))
- digit("2")
- operation("+")
- assert(n.peek() == Gmp("3", precision: nBits))
- digit("5")
- operation("+")
- assert(n.peek() == Gmp("8", precision: nBits))
- digit("2")
- operation("=")
- assert(n.peek() == Gmp("10", precision: nBits))
- operation("+")
- assert(n.peek() == Gmp("10", precision: nBits))
- digit("4")
- operation("1\\x")
- assert(n.peek() == Gmp("0.25", precision: nBits))
- operation("=")
- assert(n.peek() == Gmp("10.25", precision: nBits))
- 
- // 1+2*4=
- reset()
- digit("1")
- assert(n.peek() == Gmp("1", precision: nBits))
- operation("+")
- digit("2")
- operation("x")
- assert(n.peek() == Gmp("2", precision: nBits))
- digit("4")
- assert(n.peek() == Gmp("4", precision: nBits))
- operation("=")
- assert(n.peek() == Gmp("9", precision: nBits))
- 
- reset()
- digit("1")
- assert(n.peek() == Gmp("1", precision: nBits))
- operation("+")
- digit("2")
- operation("x")
- assert(n.peek() == Gmp("2", precision: nBits))
- digit("4")
- assert(n.peek() == Gmp("4", precision: nBits))
- operation("+")
- assert(n.peek() == Gmp("9", precision: nBits))
- digit("1")
- digit("0")
- digit("0")
- assert(n.peek() == Gmp("100", precision: nBits))
- // User: =
- operation("=")
- assert(n.peek() == Gmp("109", precision: nBits))
- 
- reset()
- operation("π")
- operation("x")
- digit("2")
- operation("=")
- 
- reset()
- digit("2")
- operation("pow_x_y")
- digit("1")
- digit("0")
- operation("=")
- assert(n.peek() == Gmp("1024", precision: nBits))
- reset()
- }
- */
+}
