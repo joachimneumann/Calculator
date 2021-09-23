@@ -31,7 +31,7 @@ struct Key: View {
         "oneOverX": AnyView(OneOverX()),
         "x^2":      AnyView(Pow(base:  "x", exponent: "2", additionalXOffset: 0.0)),
         "x^3":      AnyView(Pow(base:  "x", exponent: "3", additionalXOffset: 0.0)),
-        "x^y":      AnyView(Pow(base:  "x", exponent: "y", additionalXOffset: 0.0)),
+        "pow_x_y":  AnyView(Pow(base:  "x", exponent: "y", additionalXOffset: 0.0)),
         "e^x":      AnyView(Pow(base:  "e", exponent: "x", additionalXOffset: 0.0)),
         "10^x":     AnyView(Pow(base: "10", exponent: "x", additionalXOffset: 0.2)),
         "2nd":      AnyView(Pow(base: "2", exponent: "nd", additionalXOffset: 0.0)),

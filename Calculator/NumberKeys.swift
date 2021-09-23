@@ -19,9 +19,9 @@ struct NumberKeys: View {
         VStack(spacing: verticalSpace) {
             HStack(spacing: horizontalSpace) {
                 Key("C")
-                    .scientific(size: size)                          { model.reset() }
+                    .scientific(size: size)                          { model.operation("C") }
                 Key("+/-")
-                    .op_plusMinus_percentage(size: size)             { model.changeSign() }
+                    .op_plusMinus_percentage(size: size)             { model.operation("+/-")  }
                 Key("%")
                     .op_plusMinus_percentage(size: size)             // missing
                 Key("/")

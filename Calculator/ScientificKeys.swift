@@ -36,8 +36,8 @@ struct ScientificKeys: View {
                     .scientific(size: size) { model.operation("x^2") }
                 Key("x^3")
                     .scientific(size: size) { model.operation("x^3") }
-                Key("x^y")
-                    .scientific(size: size) { model.operation("x^y") }
+                Key("pow_x_y")
+                    .scientific(size: size) { model.operation("pow_x_y") }
                 Key("e^x")
                     .scientific(size: size) { model.operation("e^x") }
                 Key("10^x")

@@ -18,7 +18,7 @@ class BrainViewModel: ObservableObject {
     
     func digit(_ digit: Character) {
         if shortDisplayString.isValidNumber {
-            brain.digit(digit)
+            brain.addDigitToNumberString(digit)
             trailingZeroesString = nil
             shortDisplayString = brain.shortDisplayString()
             longString = brain.longString()
@@ -49,7 +49,7 @@ class BrainViewModel: ObservableObject {
     
     func zero() {
         if shortDisplayString.isValidNumber {
-            brain.digit("0")
+            brain.addDigitToNumberString("0")
             shortDisplayString = brain.shortDisplayString()
             longString = brain.longString()
             higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
@@ -69,7 +69,7 @@ class BrainViewModel: ObservableObject {
     
     func comma() {
         if shortDisplayString.isValidNumber {
-            brain.digit(".")
+            brain.addDigitToNumberString(",")
             shortDisplayString = brain.shortDisplayString()
             longString = brain.longString()
             higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable

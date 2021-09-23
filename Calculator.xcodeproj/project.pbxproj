@@ -24,6 +24,8 @@
 		AA95564226FA471D0029D94C /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95564126FA471D0029D94C /* Brain.swift */; };
 		AAE87B9326FC5F42009E6D80 /* Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE87B9226FC5F42009E6D80 /* Display.swift */; };
 		AAE87B9526FC7302009E6D80 /* Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE87B9426FC7302009E6D80 /* Symbols.swift */; };
+		AAE87B9726FCB210009E6D80 /* GmpStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE87B9626FCB210009E6D80 /* GmpStack.swift */; };
+		AAE87B9926FCB24C009E6D80 /* TwoParameterOperationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE87B9826FCB24C009E6D80 /* TwoParameterOperationStack.swift */; };
 		AAF1F59126FBA9C7000A733F /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF1F59026FBA9C7000A733F /* Configuration.swift */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +62,8 @@
 		AA95564126FA471D0029D94C /* Brain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brain.swift; sourceTree = "<group>"; };
 		AAE87B9226FC5F42009E6D80 /* Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Display.swift; sourceTree = "<group>"; };
 		AAE87B9426FC7302009E6D80 /* Symbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbols.swift; sourceTree = "<group>"; };
+		AAE87B9626FCB210009E6D80 /* GmpStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GmpStack.swift; sourceTree = "<group>"; };
+		AAE87B9826FCB24C009E6D80 /* TwoParameterOperationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoParameterOperationStack.swift; sourceTree = "<group>"; };
 		AAF1F59026FBA9C7000A733F /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -107,6 +111,8 @@
 				AA95563B26FA0E360029D94C /* AddBackGround.swift */,
 				AA95563F26FA1C180029D94C /* Key.swift */,
 				AA95564126FA471D0029D94C /* Brain.swift */,
+				AAE87B9626FCB210009E6D80 /* GmpStack.swift */,
+				AAE87B9826FCB24C009E6D80 /* TwoParameterOperationStack.swift */,
 				AA46B32526FAC48500F83939 /* BrainViewModel.swift */,
 				AA7CD3AA26FC322C00C714A6 /* ScientificKeys.swift */,
 				AAE87B9226FC5F42009E6D80 /* Display.swift */,
@@ -204,6 +210,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA40C44726F808D900119D4F /* ContentView.swift in Sources */,
+				AAE87B9926FCB24C009E6D80 /* TwoParameterOperationStack.swift in Sources */,
 				AA95563C26FA0E360029D94C /* AddBackGround.swift in Sources */,
 				AA7CD3AB26FC322C00C714A6 /* ScientificKeys.swift in Sources */,
 				AA2576B326F8F16600CDD8C9 /* NumberKeys.swift in Sources */,
@@ -214,6 +221,7 @@
 				AA40C44526F808D800119D4F /* CalculatorApp.swift in Sources */,
 				AAE87B9526FC7302009E6D80 /* Symbols.swift in Sources */,
 				AA95564026FA1C180029D94C /* Key.swift in Sources */,
+				AAE87B9726FCB210009E6D80 /* GmpStack.swift in Sources */,
 				AA46B32626FAC48500F83939 /* BrainViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

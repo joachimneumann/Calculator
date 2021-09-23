@@ -17,7 +17,7 @@ struct ShortDisplayString {
     let isScientificNotation: Bool
     let content: String
     func show() -> String {
-        var ret = content.replacingOccurrences(of: ".", with: ",")
+        var ret = content
         if isNegative { ret = "-" + ret }
         return ret
     }
@@ -112,9 +112,22 @@ func abs(_ me: Gmp) {
     mpfr_abs(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
 }
 
-func π(_ me: Gmp) {
-    mpfr_const_pi(&me.mpfr, MPFR_RNDN)
+func π() -> Gmp {
+    let ret = Gmp("0.0")
+    mpfr_const_pi(&ret.mpfr, MPFR_RNDN)
+    return ret
 }
+func e() -> Gmp {
+    let one = Gmp("1.0")
+    pow_e_x(one)
+    return one
+}
+func γ() -> Gmp {
+    let ret = Gmp("0.0")
+    mpfr_const_pi(&ret.mpfr, MPFR_RNDN)
+    return ret
+}
+
 func sqrt(_ me: Gmp) {
     mpfr_sqrt(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
 }
@@ -162,16 +175,6 @@ func acos(_ me: Gmp) {
 func atan(_ me: Gmp) {
     mpfr_atan(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
 }
-func e(_ me: Gmp) {
-    var one: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &dummyUnsignedLongInt)
-    mpfr_init2 (&one, mpfr_get_prec(&me.mpfr))
-    mpfr_set_d(&one, 1.0, MPFR_RNDN)
-    mpfr_exp(&me.mpfr, &one, MPFR_RNDN); // Strangely, this returns a status of -1
-    mpfr_clear(&one);
-}
-func γ(_ me: Gmp) {
-    mpfr_const_euler(&me.mpfr, MPFR_RNDN)
-}
 func pow_x_2(_ me: Gmp) {
     mpfr_sqr(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
 }
@@ -185,11 +188,10 @@ func pow_10_x(_ me: Gmp) {
     mpfr_exp10(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
 }
 
-func isValidGmpString(s: String, precision: CLong) -> Bool {
+func isValidGmpString(s: String) -> Bool {
     var temp_mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &dummyUnsignedLongInt)
-    let s1 = s.replacingOccurrences(of: " E", with: "e")
-    mpfr_init2 (&temp_mpfr, precision)
-    return mpfr_set_str (&temp_mpfr, s1, 10, MPFR_RNDN) == 0
+    mpfr_init2 (&temp_mpfr, 331146) // TODO precision
+    return mpfr_set_str (&temp_mpfr, s, 10, MPFR_RNDN) == 0
 }
 
 class Gmp: CustomDebugStringConvertible {
@@ -199,14 +201,13 @@ class Gmp: CustomDebugStringConvertible {
     
     // there is only ine initialzer that takes a string.
     // Implementing an initializer that accepts a double which is created from a string leads to a loss of precision.
-    init(_ s: String, precision: CLong) {
-        let s1 = s.replacingOccurrences(of: " E", with: "e")
-        mpfr_init2 (&mpfr, precision)
-        mpfr_set_str (&mpfr, s1, 10, MPFR_RNDN)
+    init(_ s: String) {
+        mpfr_init2 (&mpfr, 331146) // TODO precision
+        mpfr_set_str (&mpfr, s, 10, MPFR_RNDN)
     }
     
     func copy() -> Gmp {
-        let ret = Gmp("0.0", precision: mpfr_get_prec(&mpfr))
+        let ret = Gmp("0.0")
         mpfr_set(&ret.mpfr, &mpfr, MPFR_RNDN)
         return ret
     }
@@ -276,11 +277,11 @@ class Gmp: CustomDebugStringConvertible {
         // make sure the length of the float string is at least two characters
         while floatString.count < 2 { floatString += "0" }
         
-        floatString.insert(".", at: floatString.index(floatString.startIndex, offsetBy: 1))
+        floatString.insert(",", at: floatString.index(floatString.startIndex, offsetBy: 1))
         
         // if exponent is 0, drop it
         if expptr-1 != 0 {
-            floatString += " E"+String(expptr-1)
+            floatString += " e"+String(expptr-1)
         }
         
         if negative {
@@ -324,7 +325,7 @@ class Gmp: CustomDebugStringConvertible {
             }
             l += 1
         }
-        print("getIntegerString: \(s)")
+        //print("getIntegerString: \(s)")
         return s
     }
     
@@ -363,7 +364,7 @@ class Gmp: CustomDebugStringConvertible {
             l += 1
         }
 
-        s += "."
+        s += ","
         
         l = 0
         for c in a {
@@ -391,7 +392,7 @@ class Gmp: CustomDebugStringConvertible {
         let x2 = UnicodeScalar(x1)
         let x3 = String(x2)
         s += x3.withCString { String(format: "%s", $0) }
-        s += "."
+        s += ","
         
         var l = 0
         for c in a {
@@ -414,7 +415,7 @@ class Gmp: CustomDebugStringConvertible {
             s += String(exponent)
         }
         
-        print("getScientificString: \(s)")
+        //print("getScientificString: \(s)")
         return s
     }
     
@@ -478,14 +479,14 @@ class Gmp: CustomDebugStringConvertible {
             negative = true
         }
         
-        print("exponent=\(exponent) \(negative ? "negative" : "")")
-        printCharArray(charArray)
+        //print("exponent=\(exponent) \(negative ? "negative" : "")")
+        //printCharArray(charArray)
         
         // find last significant digit
         var lastSignificantIndex = charArray.count-1
         while (charArray[lastSignificantIndex] == 0 || charArray[lastSignificantIndex] == 48) && lastSignificantIndex > 0 { lastSignificantIndex -= 1 }
         let significantDigits = lastSignificantIndex + 1
-        print("significantDigits=\(significantDigits)")
+        //print("significantDigits=\(significantDigits)")
         
         // is it an Integer?
         var availableDigits = negative ? Configuration.shared.digits-1 : Configuration.shared.digits
