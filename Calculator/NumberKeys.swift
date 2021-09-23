@@ -23,7 +23,7 @@ struct NumberKeys: View {
                 Key("+/-")
                     .op_plusMinus_percentage(size: size) { model.changeSign() }
                 Key("%")
-                    .op_plusMinus_percentage(size: size) {}
+                    .op_plusMinus_percentage(size: size) 
                 Key("/")
                     .op_div_mul_add_sub_eq(size: slightlyLargerSize) { model.operation("/") }
             }

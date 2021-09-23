@@ -39,11 +39,11 @@ struct Key: View {
 
 private struct Digit_0_to_9: ViewModifier {
     let size: CGSize
-    let callback: () -> Void
+    let callback: (() -> Void)?
     func body(content: Content) -> some View {
         let fontsize = size.height * 0.45
-        content
-            .foregroundColor(Configuration.shared.DigitKeyProperties.textColor)
+        return content
+            .foregroundColor(callback == nil ?  Color.gray : Configuration.shared.DigitKeyProperties.textColor)
             .addBackground(with: Configuration.shared.DigitKeyProperties, callback: callback)
             .font(.system(size: fontsize))
     }
@@ -51,11 +51,11 @@ private struct Digit_0_to_9: ViewModifier {
 
 private struct Colorful_plus_minus_etc: ViewModifier {
     let size: CGSize
-    let callback: () -> Void
+    let callback: (() -> Void)?
     func body(content: Content) -> some View {
         let fontsize = size.height * 0.36
         content
-            .foregroundColor(Configuration.shared.OpKeyProperties.textColor)
+            .foregroundColor(callback == nil ?  Color.gray : Configuration.shared.OpKeyProperties.textColor)
             .addBackground(with: Configuration.shared.OpKeyProperties, callback: callback)
             .font(.system(size: fontsize, weight: .bold))
         
@@ -64,11 +64,11 @@ private struct Colorful_plus_minus_etc: ViewModifier {
 
 private struct PlusMinus_percentage: ViewModifier {
     let size: CGSize
-    let callback: () -> Void
+    let callback: (() -> Void)?
     func body(content: Content) -> some View {
         let fontsize = size.height * 0.33
         content
-            .foregroundColor(Configuration.shared.LightGrayKeyProperties.textColor)
+            .foregroundColor(callback == nil ?  Color.gray : Configuration.shared.LightGrayKeyProperties.textColor)
             .addBackground(with: Configuration.shared.LightGrayKeyProperties, callback: callback)
             .font(.system(size: fontsize, weight: .semibold))
     }
@@ -76,11 +76,11 @@ private struct PlusMinus_percentage: ViewModifier {
 
 private struct ClearButton: ViewModifier {
     let size: CGSize
-    let callback: () -> Void
+    let callback: (() -> Void)?
     func body(content: Content) -> some View {
         let fontsize = size.height * 0.42
         content
-            .foregroundColor(Configuration.shared.LightGrayKeyProperties.textColor)
+            .foregroundColor(callback == nil ?  Color.gray : Configuration.shared.LightGrayKeyProperties.textColor)
             .addBackground(with: Configuration.shared.LightGrayKeyProperties, callback: callback)
             .font(.system(size: fontsize, weight: .medium))
     }
@@ -88,13 +88,13 @@ private struct ClearButton: ViewModifier {
 
 
 extension View {
-    func digit_1_to_9(size: CGSize, callback: @escaping () -> Void) -> some View {
+    func digit_1_to_9(size: CGSize, callback: (() -> Void)? = nil ) -> some View {
         self
             .modifier(Digit_0_to_9(size: size, callback: callback))
             .frame(width: size.width, height: size.height)
     }
     
-    func digit_0(size: CGSize, horizontalSpace: CGFloat, callback: @escaping () -> Void) -> some View {
+    func digit_0(size: CGSize, horizontalSpace: CGFloat, callback: (() -> Void)? = nil ) -> some View {
         HStack {
             self
                 .padding(.leading, size.height * 0.4)
@@ -104,19 +104,19 @@ extension View {
         .frame(width: size.width*2+horizontalSpace, height: size.height)
     }
     
-    func op_div_mul_add_sub_eq(size: CGSize, callback: @escaping () -> Void) -> some View {
+    func op_div_mul_add_sub_eq(size: CGSize, callback: (() -> Void)? = nil ) -> some View {
         self
             .modifier(Colorful_plus_minus_etc(size: size, callback: callback))
             .frame(width: size.width, height: size.height)
     }
     
-    func op_plusMinus_percentage(size: CGSize, callback: @escaping () -> Void) -> some View {
+    func op_plusMinus_percentage(size: CGSize, callback: (() -> Void)? = nil ) -> some View {
         self
             .modifier(PlusMinus_percentage(size: size, callback: callback))
             .frame(width: size.width, height: size.height)
     }
     
-    func op_clear(size: CGSize, callback: @escaping () -> Void) -> some View {
+    func op_clear(size: CGSize, callback: (() -> Void)? = nil ) -> some View {
         self
             .modifier(ClearButton(size: size, callback: callback))
             .frame(width: size.width, height: size.height)
