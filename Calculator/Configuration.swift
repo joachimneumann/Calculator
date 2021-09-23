@@ -20,26 +20,26 @@ class Configuration {
 #if targetEnvironment(macCatalyst)
     let digits = 16
     let windowWidth: CGFloat = 575.0
-    let windowHeight: CGFloat = 321.0
-    let displayFontSize: CGFloat = 30
+    let windowHeight: CGFloat = 323.0
+    let displayFontSize: CGFloat = 47
     let zoomButtonSize: CGFloat = 30
     let appBackgroundColor = Color(
-        red:    72.0/255.0,
-        green:  63.0/255.0,
-        blue:   66.0/255.0)
+        red:    46.0/255.0,
+        green:  39.0/255.0,
+        blue:   38.0/255.0)
     let DigitKeyProperties = KeyProperties(
         textColor: Color(
-            red:   236.0/255.0,
-            green: 235.0/255.0,
-            blue:  235.0/255.0),
+            red:   231.0/255.0,
+            green: 231.0/255.0,
+            blue:  231.0/255.0),
         color: Color(
-            red:   129.0/255.0,
-            green: 121.0/255.0,
-            blue:  122.0/255.0),
+            red:   98.0/255.0,
+            green: 94.0/255.0,
+            blue:  92.0/255.0),
         downColor: Color(
-            red:   179.0/255.0,
-            green: 175.0/255.0,
-            blue:  176.0/255.0),
+            red:   160.0/255.0,
+            green: 159.0/255.0,
+            blue:  158.0/255.0),
         downAnimationTime: 0.1,
         upAnimationTime: 0.5)
 
@@ -66,13 +66,13 @@ class Configuration {
             green: 235.0/255.0,
             blue:  235.0/255.0),
         color: Color(
-            red:   103.0/255.0,
-            green:  94.0/255.0,
-            blue:   96.0/255.0),
+            red:    66.0/255.0,
+            green:  62.0/255.0,
+            blue:   59.0/255.0),
         downColor: Color(
-            red:   129.0/255.0,
-            green: 121.0/255.0,
-            blue:  122.0/255.0),
+            red:   124.0/255.0,
+            green: 125.0/255.0,
+            blue:  127.0/255.0),
         downAnimationTime: 0.1,
         upAnimationTime: 0.5)
 #else
