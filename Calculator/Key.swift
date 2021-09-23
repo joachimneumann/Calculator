@@ -115,14 +115,14 @@ extension View {
             .frame(width: size.width, height: size.height)
     }
     
-    func digit_0(size: CGSize, horizontalSpace: CGFloat, callback: (() -> Void)? = nil ) -> some View {
+    func digit_0(size: CGSize, space: CGFloat, callback: (() -> Void)? = nil ) -> some View {
         HStack {
             self
                 .padding(.leading, size.height * 0.4)
             Spacer()
         }
         .modifier(Digit_0_to_9(size: size, callback: callback))
-        .frame(width: size.width*2+horizontalSpace, height: size.height)
+        .frame(width: size.width*2+space, height: size.height)
     }
     
     func op_div_mul_add_sub_eq(size: CGSize, callback: (() -> Void)? = nil ) -> some View {
