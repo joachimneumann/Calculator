@@ -19,6 +19,7 @@
 		AA40C45526F8094700119D4F /* Gmp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA40C45426F8094700119D4F /* Gmp.swift */; };
 		AA46B32626FAC48500F83939 /* BrainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA46B32526FAC48500F83939 /* BrainViewModel.swift */; };
 		AA64980B26FD430900CFF9AA /* Zoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA64980A26FD430900CFF9AA /* Zoom.swift */; };
+		AA64980D26FD48F900CFF9AA /* DisplayString.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA64980C26FD48F900CFF9AA /* DisplayString.swift */; };
 		AA7CD3AB26FC322C00C714A6 /* ScientificKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CD3AA26FC322C00C714A6 /* ScientificKeys.swift */; };
 		AA95563C26FA0E360029D94C /* AddBackGround.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95563B26FA0E360029D94C /* AddBackGround.swift */; };
 		AA95564026FA1C180029D94C /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95563F26FA1C180029D94C /* Key.swift */; };
@@ -58,6 +59,7 @@
 		AA40C45626F8096700119D4F /* Calculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Calculator.entitlements; sourceTree = "<group>"; };
 		AA46B32526FAC48500F83939 /* BrainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrainViewModel.swift; sourceTree = "<group>"; };
 		AA64980A26FD430900CFF9AA /* Zoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zoom.swift; sourceTree = "<group>"; };
+		AA64980C26FD48F900CFF9AA /* DisplayString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayString.swift; sourceTree = "<group>"; };
 		AA7CD3AA26FC322C00C714A6 /* ScientificKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScientificKeys.swift; sourceTree = "<group>"; };
 		AA95563B26FA0E360029D94C /* AddBackGround.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBackGround.swift; sourceTree = "<group>"; };
 		AA95563F26FA1C180029D94C /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				AAE87B9226FC5F42009E6D80 /* Display.swift */,
 				AAE87B9426FC7302009E6D80 /* Symbols.swift */,
 				AA64980A26FD430900CFF9AA /* Zoom.swift */,
+				AA64980C26FD48F900CFF9AA /* DisplayString.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -223,6 +226,7 @@
 				AA40C45526F8094700119D4F /* Gmp.swift in Sources */,
 				AA95564226FA471D0029D94C /* Brain.swift in Sources */,
 				AA40C44526F808D800119D4F /* CalculatorApp.swift in Sources */,
+				AA64980D26FD48F900CFF9AA /* DisplayString.swift in Sources */,
 				AAE87B9526FC7302009E6D80 /* Symbols.swift in Sources */,
 				AA95564026FA1C180029D94C /* Key.swift in Sources */,
 				AAE87B9726FCB210009E6D80 /* GmpStack.swift in Sources */,
