@@ -17,57 +17,67 @@ class BrainViewModel: ObservableObject {
     private var trailingZeroesString: String?
     
     func digit(_ digit: Character) {
-        brain.digit(digit)
-        trailingZeroesString = nil
-        shortDisplayString = brain.shortDisplayString()
-        longString = brain.longString()
-        mainDisplay = shortDisplayString.show()
-        higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
+        if shortDisplayString.isValidNumber {
+            brain.digit(digit)
+            trailingZeroesString = nil
+            shortDisplayString = brain.shortDisplayString()
+            longString = brain.longString()
+            mainDisplay = shortDisplayString.show()
+            higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
+        }
     }
     
     func operation(_ op: String) {
-        brain.operation(op)
-        shortDisplayString = brain.shortDisplayString()
-        longString = brain.longString()
-        mainDisplay = shortDisplayString.show()
-        higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
+        if shortDisplayString.isValidNumber {
+            brain.operation(op)
+            shortDisplayString = brain.shortDisplayString()
+            longString = brain.longString()
+            mainDisplay = shortDisplayString.show()
+            higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
+        }
     }
     
     func changeSign() {
-        brain.operation("+/-")
-        shortDisplayString = brain.shortDisplayString()
-        longString = brain.longString()
-        mainDisplay = shortDisplayString.show()
-        higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
+        if shortDisplayString.isValidNumber {
+            brain.operation("+/-")
+            shortDisplayString = brain.shortDisplayString()
+            longString = brain.longString()
+            mainDisplay = shortDisplayString.show()
+            higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
+        }
     }
     
     func zero() {
-        brain.digit("0")
-        shortDisplayString = brain.shortDisplayString()
-        longString = brain.longString()
-        higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
-        if mainDisplay.contains(",") && !shortDisplayString.isScientificNotation {
-            if trailingZeroesString == nil {
-                trailingZeroesString = mainDisplay
+        if shortDisplayString.isValidNumber {
+            brain.digit("0")
+            shortDisplayString = brain.shortDisplayString()
+            longString = brain.longString()
+            higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
+            if mainDisplay.contains(",") {
+                if trailingZeroesString == nil {
+                    trailingZeroesString = mainDisplay
+                }
+                if trailingZeroesString!.count < 9 {
+                    trailingZeroesString! += "0"
+                    mainDisplay = trailingZeroesString!
+                }
+            } else {
+                mainDisplay = shortDisplayString.show()
             }
-            if trailingZeroesString!.count < 9 {
-                trailingZeroesString! += "0"
-                mainDisplay = trailingZeroesString!
-            }
-        } else {
-            mainDisplay = shortDisplayString.show()
         }
     }
     
     func comma() {
-        brain.digit(".")
-        shortDisplayString = brain.shortDisplayString()
-        longString = brain.longString()
-        higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
-        mainDisplay = shortDisplayString.show()
-        if !mainDisplay.contains(",") {
-            mainDisplay += ","
-            trailingZeroesString = mainDisplay
+        if shortDisplayString.isValidNumber {
+            brain.digit(".")
+            shortDisplayString = brain.shortDisplayString()
+            longString = brain.longString()
+            higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
+            mainDisplay = shortDisplayString.show()
+            if !mainDisplay.contains(",") {
+                mainDisplay += ","
+                trailingZeroesString = mainDisplay
+            }
         }
     }
     
