@@ -455,30 +455,31 @@ class Gmp: CustomDebugStringConvertible {
         
         exponent -= 1 /// This gives the actual power 10 exponent
         
-        if exponent > 160 {
-            return ShortDisplayString(
-                isValidNumber: false,
-                isNegative: false,
-                higherPrecisionAvailable: false,
-                isScientificNotation: false,
-                content: "too large")
-        }
-        
-        if exponent < -160 {
-            return ShortDisplayString(
-                isValidNumber: false,
-                isNegative: false,
-                higherPrecisionAvailable: false,
-                isScientificNotation: false,
-                content: "too small")
-        }
-        
         // negative?
         var negative = false
         if charArray[0] == 45 {
             charArray.removeFirst()
             negative = true
         }
+
+        if exponent > 160 {
+            return ShortDisplayString(
+                isValidNumber: true,
+                isNegative: negative,
+                higherPrecisionAvailable: true,
+                isScientificNotation: false,
+                content: "too large")
+        }
+        
+        if exponent < -160 {
+            return ShortDisplayString(
+                isValidNumber: true,
+                isNegative: negative,
+                higherPrecisionAvailable: true,
+                isScientificNotation: false,
+                content: "too small")
+        }
+        
         
         //print("exponent=\(exponent) \(negative ? "negative" : "")")
         //printCharArray(charArray)

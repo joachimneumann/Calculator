@@ -37,16 +37,6 @@ class BrainViewModel: ObservableObject {
         }
     }
 
-    func changeSign() {
-        if shortDisplayString.isValidNumber {
-            brain.operation("+/-")
-            shortDisplayString = brain.shortDisplayString()
-            longString = brain.longString()
-            mainDisplay = shortDisplayString.show()
-            higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
-        }
-    }
-    
     func zero() {
         if shortDisplayString.isValidNumber {
             brain.addDigitToNumberString("0")

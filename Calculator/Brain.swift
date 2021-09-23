@@ -84,34 +84,14 @@ class Brain {
     
     
     func longString() -> String {
-        //        var result = XXX_OLD_STRING
-        //        let maxPrecision = 70000
-        //        var resultArray = result.split(separator: "e")
-        //        if resultArray.count == 2 {
-        //            if resultArray[0].count > maxPrecision {
-        //                resultArray[0] = resultArray[0].prefix(maxPrecision)
-        //                result = String(resultArray[0])+"e"+String(resultArray[1])
-        //            }
-        //        } else {
-        //            // no E
-        //            result = String(resultArray[0].prefix(maxPrecision))
-        //        }
-        //        return result
-        return "longString()"
+        if let last = gmpStack.peek {
+            return last.toLongString()
+        } else {
+            return "not a number"
+        }
     }
     
-    
-    //    func changeSign_() {
-    //        if XXX_OLD_STRING.starts(with: "-") {
-    //            XXX_OLD_STRING = String(XXX_OLD_STRING.dropFirst())
-    //        } else {
-    //            XXX_OLD_STRING = "-" + XXX_OLD_STRING
-    //        }
-    //        //        let n1 = Gmp(internalDisplay
-    //        //        changeSign(n1)
-    //        //        if n.count() > 0 { n.removeLast() }
-    //        //        n.push(n1)
-    //    }
+
     
     func executeEverythingUpTo(priority maxPriority: Int) {
         var pendingOperations = twoParameterOperationStack.count >= 1
