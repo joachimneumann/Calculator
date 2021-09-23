@@ -32,8 +32,8 @@ class FSSceneDelegate: NSObject, UIWindowSceneDelegate, ObservableObject {
         UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
             .forEach { windowScene in
-                windowScene.sizeRestrictions?.minimumSize = CGSize(width: 575.0, height: 321.0)
-                windowScene.sizeRestrictions?.maximumSize = CGSize(width: 575.0, height: 321.0)
+                windowScene.sizeRestrictions?.minimumSize = CGSize(width: Configuration.shared.windowWidth, height: Configuration.shared.windowHeight)
+                windowScene.sizeRestrictions?.maximumSize = CGSize(width: Configuration.shared.windowWidth, height: Configuration.shared.windowHeight)
             }
         
         guard let windowScene = (scene as? UIWindowScene) else { return }

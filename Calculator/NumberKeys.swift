@@ -11,6 +11,7 @@ import SwiftUI
 struct NumberKeys: View {
     let model: BrainViewModel
     let size: CGSize
+    let slightlyLargerSize: CGSize
     let verticalSpace: CGFloat
     let horizontalSpace: CGFloat
 
@@ -24,7 +25,7 @@ struct NumberKeys: View {
                 Key("%")
                     .op_plusMinus_percentage(size: size) {}
                 Key("/")
-                    .op_div_mul_add_sub_eq(size: size) { model.operation("/") }
+                    .op_div_mul_add_sub_eq(size: slightlyLargerSize) { model.operation("/") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("7")
@@ -34,7 +35,7 @@ struct NumberKeys: View {
                 Key("9")
                     .digit_1_to_9(size: size) { model.digit("9") }
                 Key("x")
-                    .op_div_mul_add_sub_eq(size: size) { model.operation("x") }
+                    .op_div_mul_add_sub_eq(size: slightlyLargerSize) { model.operation("x") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("4")
@@ -44,7 +45,7 @@ struct NumberKeys: View {
                 Key("6")
                     .digit_1_to_9(size: size) { model.digit("6") }
                 Key("-")
-                    .op_div_mul_add_sub_eq(size: size) { model.operation("-") }
+                    .op_div_mul_add_sub_eq(size: slightlyLargerSize) { model.operation("-") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("1")
@@ -54,7 +55,7 @@ struct NumberKeys: View {
                 Key("3")
                     .digit_1_to_9(size: size) { model.digit("3") }
                 Key("+")
-                    .op_div_mul_add_sub_eq(size: size) { model.operation("+") }
+                    .op_div_mul_add_sub_eq(size: slightlyLargerSize) { model.operation("+") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("0")
@@ -62,16 +63,26 @@ struct NumberKeys: View {
                 Key(",")
                     .digit_1_to_9(size: size) { model.comma() }
                 Key("=")
-                    .op_div_mul_add_sub_eq(size: size) { model.operation("=") }
+                    .op_div_mul_add_sub_eq(size: slightlyLargerSize) { model.operation("=") }
             }
         }
     }
+    
     init(model: BrainViewModel, roundKeys: Bool, width totalWidth: CGFloat) {
         self.model = model
         horizontalSpace = Configuration.shared.horizontalSpace(forTotalWidth: totalWidth)
         verticalSpace   = Configuration.shared.verticalSpace(forTotalWidth: totalWidth)
         let w = (totalWidth - 3.0 * horizontalSpace) * 0.25
         size = CGSize(width: w, height: w)
+        slightlyLargerSize = CGSize(width: w, height: w)
+    }
+
+    init(model: BrainViewModel, keyWidth: CGFloat, keyHeight: CGFloat) {
+        self.model = model
+        horizontalSpace = Configuration.shared.horizontalSpace(forTotalWidth: keyWidth)
+        verticalSpace   = Configuration.shared.verticalSpace(forTotalWidth: keyHeight)
+        size = CGSize(width: keyWidth, height: keyHeight)
+        slightlyLargerSize = CGSize(width: keyWidth+2, height: keyHeight)
     }
 }
 

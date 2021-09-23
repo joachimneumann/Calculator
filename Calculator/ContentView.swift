@@ -9,40 +9,76 @@ import SwiftUI
 
 struct AllDigitsView: View {
     @ObservedObject var brainViewModel: BrainViewModel
+    @Binding var zoomed: Bool
     var body: some View {
-        Text(brainViewModel.longString)
-            .foregroundColor(Color.white)
-            .font(Font.system(size: 30, design: .monospaced).monospacedDigit())
-            .multilineTextAlignment(.leading)
-            .padding(.trailing, 20)
-            .padding(.bottom, 10)
-        Spacer()
+        HStack {
+            VStack {
+                Spacer()
+                Zoom(brainViewModel: brainViewModel, zoomed: $zoomed)            }
+            Spacer(minLength: 0)
+            VStack {
+                Text(brainViewModel.longString)
+                    .foregroundColor(Color.white)
+                    .font(Font.system(size: 30, design: .monospaced).monospacedDigit())
+                    .multilineTextAlignment(.leading)
+                    .padding(.trailing, 20)
+                    .padding(.bottom, 10)
+                Spacer(minLength: 0)
+            }
+            Spacer(minLength: 0)
+        }
     }
 }
 
 struct NormalView: View {
     @ObservedObject var brainViewModel: BrainViewModel
+    @Binding var zoomed: Bool
     var body: some View {
         VStack {
-            Spacer()
+            Spacer(minLength: 0)
             HStack {
+                Zoom(brainViewModel: brainViewModel, zoomed: $zoomed)
                 Spacer(minLength: 0)
                 Text(brainViewModel.mainDisplay)
                     .foregroundColor(Color.white)
-                    .font(Font.system(size: 90, design: .monospaced).monospacedDigit())
-//                        .font(system(size: 90, design: .monospaced).weight(.thin))
+                    .font(Font.system(size: Configuration.shared.displayFontSize, design: .monospaced).monospacedDigit())
                     .minimumScaleFactor(0.1)
                     .lineLimit(1)
                     .padding(.trailing, 20)
-                    .padding(.bottom, 10)
+//                    .padding(.bottom, 10)
                     //.background(Color.red)
             }
-            //.background(Color.orange)
+            
+#if targetEnvironment(macCatalyst)
+            HStack {
+                Spacer(minLength: 0)
+                NumberKeys(model: brainViewModel, keyWidth: 57, keyHeight: 47)
+            }
+#else
             NumberKeys(model: brainViewModel, roundKeys: true, width: 370)
-                //.background(Color.yellow)
+#endif
         }
     }
 }
+
+struct Zoom: View {
+    @ObservedObject var brainViewModel: BrainViewModel
+    @Binding var zoomed: Bool
+    var body: some View {
+        Image("zoom_in")
+            .resizable()
+            .frame(width: Configuration.shared.zoomButtonSize, height: Configuration.shared.zoomButtonSize)
+            .padding(.leading, Configuration.shared.zoomButtonSize/2)
+            .opacity(brainViewModel.higherPrecisionAvailable ? 1.0 : 0.5)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                if brainViewModel.higherPrecisionAvailable {
+                    zoomed.toggle()
+                }
+            }
+    }
+}
+
 
 struct ContentView: View {
     @ObservedObject var brainViewModel = BrainViewModel()
@@ -51,27 +87,12 @@ struct ContentView: View {
         ZStack {
             Rectangle()
             VStack (spacing: 0) {
-                HStack {
-                    Spacer()
-                    Image("zoom_in")
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .opacity(brainViewModel.higherPrecisionAvailable ? 1.0 : 0.5)
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            if brainViewModel.higherPrecisionAvailable {
-                                zoomed.toggle()
-                            }
-                        }
-                }
-                .padding()
                 if zoomed {
-                    AllDigitsView(brainViewModel: brainViewModel)
+                    AllDigitsView(brainViewModel: brainViewModel, zoomed: $zoomed)
                 } else {
-                    NormalView(brainViewModel: brainViewModel)
+                    NormalView(brainViewModel: brainViewModel, zoomed: $zoomed)
                 }
             }
-            .padding(.bottom, 40)
             .background(Configuration.shared.appBackgroundColor)
         }
         .ignoresSafeArea()
@@ -81,5 +102,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .frame(width: 575.0, height: 320.0)
     }
 }
