@@ -350,16 +350,24 @@ class Gmp: CustomDebugStringConvertible {
     
     func getXDotString(_ a: Array<CChar>, exponent: Int, significantDigits: Int) -> String {
         var s = ""
-        /// first digit
-        let x1 = UInt8(a[0])
-        let x2 = UnicodeScalar(x1)
-        let x3 = String(x2)
-        s += x3.withCString { String(format: "%s", $0) }
-        s += "."
         
+        /// digits before the dot
         var l = 0
         for c in a {
-            if c != 0 && l > 0 && l < significantDigits {
+            if c != 0 && l <= exponent {
+                let x1 = UInt8(c)
+                let x2 = UnicodeScalar(x1)
+                let x3 = String(x2)
+                s += x3.withCString { String(format: "%s", $0) }
+            }
+            l += 1
+        }
+
+        s += "."
+        
+        l = 0
+        for c in a {
+            if c != 0 && l > exponent && l < significantDigits {
                 let x1 = UInt8(c)
                 let x2 = UnicodeScalar(x1)
                 let x3 = String(x2)
@@ -475,9 +483,7 @@ class Gmp: CustomDebugStringConvertible {
         
         // find last significant digit
         var lastSignificantIndex = charArray.count-1
-        while (charArray[lastSignificantIndex] == 0 || charArray[lastSignificantIndex] == 48) && lastSignificantIndex > 0 {
-            lastSignificantIndex -= 1
-        }
+        while (charArray[lastSignificantIndex] == 0 || charArray[lastSignificantIndex] == 48) && lastSignificantIndex > 0 { lastSignificantIndex -= 1 }
         let significantDigits = lastSignificantIndex + 1
         print("significantDigits=\(significantDigits)")
         
@@ -502,9 +508,9 @@ class Gmp: CustomDebugStringConvertible {
                 isScientificNotation: false,
                 content: getZeroDotString(charArray, exponent: exponent, significantDigits: significantDigits))
         }
-        // is it a floating point number, starting with X. ?
+        // is it a floating point number, NOT starting with 0. ?
         availableDigits = negative ? Configuration.shared.digits-1 : Configuration.shared.digits
-        if exponent == 0 && significantDigits <= availableDigits {
+        if exponent >= 0 && significantDigits <= availableDigits {
             return ShortDisplayString(
                 isValidNumber: true,
                 isNegative: negative,
