@@ -10,7 +10,7 @@
 
 import Foundation
 
-struct ShortDisplayString {
+struct DisplayString: Equatable {
     let isValidNumber: Bool
     let isNegative: Bool
     let higherPrecisionAvailable: Bool
@@ -214,83 +214,9 @@ class Gmp: CustomDebugStringConvertible {
     }
     
     var debugDescription: String {
-        return toLongString()
+        return displayString(digits: 10).show()
     }
     
-    func toLongString() -> String {
-        if mpfr_nan_p(&mpfr) != 0 {
-            return "Not a Number"
-        }
-        if mpfr_inf_p(&mpfr) != 0 {
-            return "Infinity"
-        }
-        
-        // set negative 0 to 0
-        if mpfr_zero_p(&mpfr) != 0 {
-            return "0"
-        }
-        
-        let significantBytesEstimate = Int(round(0.302 * Double(mpfr_get_prec(&mpfr))))+1
-        var expptr: mpfr_exp_t = 0
-        var charArray: Array<CChar> = Array(repeating: 0, count: significantBytesEstimate+2) // +2 because: one for a possible - and one for zero termination
-        mpfr_get_str(&charArray, &expptr, 10, significantBytesEstimate, &mpfr, MPFR_RNDN)
-        
-        // for speed, we work a bit with the charArray before using swift string
-        
-        // negative?
-        var negative = false
-        if charArray[0] == 45 {
-            charArray.removeFirst()
-            negative = true
-        }
-        
-        // find last non-zero digit
-        var lastSignificantIndex = charArray.count-1
-        while (charArray[lastSignificantIndex] == 0 || charArray[lastSignificantIndex] == 48) && lastSignificantIndex > 0 {
-            lastSignificantIndex -= 1
-        }
-        let lastSignificantDigit = lastSignificantIndex + 1
-        
-        // is it an Integer?
-        if expptr > 0 && lastSignificantDigit <= expptr && expptr < significantBytesEstimate {
-            charArray[expptr] = 0
-            guard let integerString = String(validatingUTF8: charArray)
-            else { return "not a number" }
-            if negative {
-                return "-"+integerString
-            } else {
-                return integerString
-            }
-        }
-        
-        // do we have a simple double that can written in decimal notation?
-        let doubleDigits = 6
-        if lastSignificantDigit < doubleDigits && abs(expptr) < 10 {
-            let d = mpfr_get_d(&mpfr, MPFR_RNDN)
-            return String(d)
-        }
-        
-        charArray[lastSignificantDigit] = 0
-        
-        guard var floatString = String(validatingUTF8: charArray)
-        else { return "not a number" }
-        
-        // make sure the length of the float string is at least two characters
-        while floatString.count < 2 { floatString += "0" }
-        
-        floatString.insert(",", at: floatString.index(floatString.startIndex, offsetBy: 1))
-        
-        // if exponent is 0, drop it
-        if expptr-1 != 0 {
-            floatString += " e"+String(expptr-1)
-        }
-        
-        if negative {
-            return "-"+floatString
-        } else {
-            return floatString
-        }
-    }
     
     func printCharArray(_ a: Array<CChar>) {
         var s1 = "["
@@ -420,9 +346,9 @@ class Gmp: CustomDebugStringConvertible {
         return s
     }
     
-    func shortDisplayString() -> ShortDisplayString {
+    func displayString(digits: Int) -> DisplayString {
         if mpfr_nan_p(&mpfr) != 0 {
-            return ShortDisplayString(
+            return DisplayString(
                 isValidNumber: false,
                 isNegative: false,
                 higherPrecisionAvailable: false,
@@ -430,7 +356,7 @@ class Gmp: CustomDebugStringConvertible {
                 content: "Not a Number")
         }
         if mpfr_inf_p(&mpfr) != 0 {
-            return ShortDisplayString(
+            return DisplayString(
                 isValidNumber: false,
                 isNegative: false,
                 higherPrecisionAvailable: false,
@@ -440,7 +366,7 @@ class Gmp: CustomDebugStringConvertible {
         
         // set negative 0 to 0
         if mpfr_zero_p(&mpfr) != 0 {
-            return ShortDisplayString(
+            return DisplayString(
                 isValidNumber: true,
                 isNegative: false,
                 higherPrecisionAvailable: false,
@@ -448,7 +374,7 @@ class Gmp: CustomDebugStringConvertible {
                 content: "0")
         }
         
-        let charArrayLength = Configuration.shared.digits + 5 // some extra bytes for debugging
+        let charArrayLength = digits + 5 // some extra bytes for debugging
         var exponent: mpfr_exp_t = 0
         var charArray: Array<CChar> = Array(repeating: 0, count: charArrayLength)
         mpfr_get_str(&charArray, &exponent, 10, charArrayLength, &mpfr, MPFR_RNDN)
@@ -463,7 +389,7 @@ class Gmp: CustomDebugStringConvertible {
         }
 
         if exponent > 160 {
-            return ShortDisplayString(
+            return DisplayString(
                 isValidNumber: true,
                 isNegative: negative,
                 higherPrecisionAvailable: true,
@@ -472,7 +398,7 @@ class Gmp: CustomDebugStringConvertible {
         }
         
         if exponent < -160 {
-            return ShortDisplayString(
+            return DisplayString(
                 isValidNumber: true,
                 isNegative: negative,
                 higherPrecisionAvailable: true,
@@ -491,9 +417,9 @@ class Gmp: CustomDebugStringConvertible {
         //print("significantDigits=\(significantDigits)")
         
         // is it an Integer?
-        var availableDigits = negative ? Configuration.shared.digits-1 : Configuration.shared.digits
+        var availableDigits = negative ? digits-1 : digits
         if exponent >= 0 && exponent <= availableDigits && significantDigits <= exponent+1 {
-            return ShortDisplayString(
+            return DisplayString(
                 isValidNumber: true,
                 isNegative: negative,
                 higherPrecisionAvailable: false,
@@ -502,9 +428,9 @@ class Gmp: CustomDebugStringConvertible {
         }
         
         // is it a floating point number, starting with 0. ?
-        availableDigits = negative ? Configuration.shared.digits-2 : Configuration.shared.digits-1 /// 9 minus one for "0." minus? negative
+        availableDigits = negative ? digits-2 : digits-1 /// 9 minus one for "0." minus? negative
         if exponent < 0 && significantDigits - exponent <= availableDigits {
-            return ShortDisplayString(
+            return DisplayString(
                 isValidNumber: true,
                 isNegative: negative,
                 higherPrecisionAvailable: false,
@@ -512,9 +438,9 @@ class Gmp: CustomDebugStringConvertible {
                 content: getZeroDotString(charArray, exponent: exponent, significantDigits: significantDigits))
         }
         // is it a floating point number, NOT starting with 0. ?
-        availableDigits = negative ? Configuration.shared.digits-1 : Configuration.shared.digits
+        availableDigits = negative ? digits-1 : digits
         if exponent >= 0 && significantDigits <= availableDigits {
-            return ShortDisplayString(
+            return DisplayString(
                 isValidNumber: true,
                 isNegative: negative,
                 higherPrecisionAvailable: false,
@@ -524,7 +450,7 @@ class Gmp: CustomDebugStringConvertible {
         
         
         /// number that can be displayed in scientific notation without loss of precision?
-        availableDigits = Configuration.shared.digits
+        availableDigits = digits
         availableDigits -= 1 // for "e"
         if negative { availableDigits -= 1 }
         if exponent < 0 { availableDigits -= 1 }
@@ -533,7 +459,7 @@ class Gmp: CustomDebugStringConvertible {
             let log10e = Int(floor(log10(doubleExponent))) + 1
             availableDigits -= log10e
         }
-        return ShortDisplayString(
+        return DisplayString(
             isValidNumber: true,
             isNegative: negative,
             higherPrecisionAvailable: significantDigits > availableDigits,
@@ -557,6 +483,6 @@ class Gmp: CustomDebugStringConvertible {
 
 extension Gmp: Equatable {
     static func ==(lhs: Gmp, rhs: Gmp) -> Bool {
-        return lhs.toLongString() == rhs.toLongString()
+        return lhs.displayString(digits: 100000) == rhs.displayString(digits: 100000)
     }
 }

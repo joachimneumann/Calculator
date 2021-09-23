@@ -16,11 +16,11 @@ class Brain {
     
     private var waitingForNumber = false
     
-    func shortDisplayString() -> ShortDisplayString {
+    func shortDisplayString() -> DisplayString {
         if let last = gmpStack.peek {
-            return last.shortDisplayString()
+            return last.displayString(digits: Configuration.shared.digits)
         } else {
-            return ShortDisplayString(
+            return DisplayString(
                 isValidNumber: false,
                 isNegative: false,
                 higherPrecisionAvailable: false,
@@ -85,7 +85,7 @@ class Brain {
     
     func longString() -> String {
         if let last = gmpStack.peek {
-            return last.toLongString()
+            return last.displayString(digits: 70000).show()
         } else {
             return "not a number"
         }
