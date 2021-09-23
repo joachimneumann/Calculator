@@ -21,7 +21,6 @@ class BrainViewModel: ObservableObject {
             brain.addDigitToNumberString(digit)
             trailingZeroesString = nil
             shortDisplayString = brain.shortDisplayString()
-            longString = brain.longString()
             mainDisplay = shortDisplayString.show()
             higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
         }
@@ -31,7 +30,6 @@ class BrainViewModel: ObservableObject {
         if shortDisplayString.isValidNumber {
             brain.operation(op)
             shortDisplayString = brain.shortDisplayString()
-            longString = brain.longString()
             mainDisplay = shortDisplayString.show()
             higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
         }
@@ -41,7 +39,6 @@ class BrainViewModel: ObservableObject {
         if shortDisplayString.isValidNumber {
             brain.addDigitToNumberString("0")
             shortDisplayString = brain.shortDisplayString()
-            longString = brain.longString()
             higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
             if mainDisplay.contains(",") {
                 if trailingZeroesString == nil {
@@ -61,7 +58,6 @@ class BrainViewModel: ObservableObject {
         if shortDisplayString.isValidNumber {
             brain.addDigitToNumberString(",")
             shortDisplayString = brain.shortDisplayString()
-            longString = brain.longString()
             higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
             mainDisplay = shortDisplayString.show()
             if !mainDisplay.contains(",") {
@@ -75,17 +71,19 @@ class BrainViewModel: ObservableObject {
         brain.reset()
         trailingZeroesString = nil
         shortDisplayString = brain.shortDisplayString()
-        longString = brain.longString()
         higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
         mainDisplay = shortDisplayString.show()
         //        let temp = brain.shortString()
         //        mainDisplay = String(temp.prefix(10))
     }
     
+    func getLongString() {
+        longString = brain.longString()
+    }
+    
     init() {
         trailingZeroesString = nil
         shortDisplayString = brain.shortDisplayString()
-        longString = brain.longString()
         higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
         mainDisplay = shortDisplayString.show()
     }

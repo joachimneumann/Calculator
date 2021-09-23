@@ -71,18 +71,6 @@ class Brain {
         test()
     }
     
-    //    private func fromLongString(_ string: String) -> Bool {
-    //        if isValidGmpString(s: string {
-    //            let value = Gmp(string
-    //            n.push(value)
-    //            XXX_OLD_STRING = value.toLongString()
-    //            return true
-    //        } else {
-    //            return false
-    //        }
-    //    }
-    
-    
     func longString() -> String {
         if let last = gmpStack.peek {
             return last.displayString(digits: 70000).show()
@@ -90,9 +78,7 @@ class Brain {
             return "not a number"
         }
     }
-    
-
-    
+        
     func executeEverythingUpTo(priority maxPriority: Int) {
         var pendingOperations = twoParameterOperationStack.count >= 1
         var sufficientNumbers = gmpStack.count >= 2

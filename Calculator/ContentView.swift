@@ -10,12 +10,14 @@ import SwiftUI
 struct AllDigitsView: View {
     @ObservedObject var brainViewModel: BrainViewModel
     @Binding var zoomed: Bool
+    var getLongString: () -> Void
+
     var body: some View {
         HStack {
             VStack {
                 Zoom(
                     higherPrecisionAvailable: brainViewModel.higherPrecisionAvailable,
-                    zoomed: $zoomed)
+                    zoomed: $zoomed) { getLongString() }
                     .padding(.leading, Configuration.shared.zoomButtonSize/2)
                     .padding(.top, Configuration.shared.zoomButtonSize+9)
                 Spacer(minLength: 0)
@@ -45,7 +47,9 @@ struct NormalView: View {
             Display(
                 text: brainViewModel.mainDisplay,
                 higherPrecisionAvailable: brainViewModel.higherPrecisionAvailable,
-                zoomed: $zoomed)
+                zoomed: $zoomed) {
+                    brainViewModel.getLongString()
+                }
         
 #if targetEnvironment(macCatalyst)
             HStack(alignment: .top, spacing: 1) {
@@ -73,7 +77,7 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             if zoomed {
-                AllDigitsView(brainViewModel: brainViewModel, zoomed: $zoomed)
+                AllDigitsView(brainViewModel: brainViewModel, zoomed: $zoomed) { brainViewModel.getLongString() }
             } else {
                 NormalView(brainViewModel: brainViewModel, zoomed: $zoomed)
             }

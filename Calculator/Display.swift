@@ -7,32 +7,15 @@
 
 import SwiftUI
 
-
-struct Zoom: View {
-    var higherPrecisionAvailable: Bool
-    @Binding var zoomed: Bool
-    var body: some View {
-        Image("zoom_in")
-            .resizable()
-            .frame(width: Configuration.shared.zoomButtonSize, height: Configuration.shared.zoomButtonSize)
-            .opacity(higherPrecisionAvailable ? 1.0 : 0.5)
-            .contentShape(Rectangle())
-            .onTapGesture {
-                if higherPrecisionAvailable {
-                    zoomed.toggle()
-                }
-            }
-    }
-}
-
 struct Display: View {
     let text: String
     var higherPrecisionAvailable: Bool
     @Binding var zoomed: Bool
+    var getLongString: () -> Void
     
     var body: some View {
         HStack {
-            Zoom(higherPrecisionAvailable: higherPrecisionAvailable, zoomed: $zoomed)
+            Zoom(higherPrecisionAvailable: higherPrecisionAvailable, zoomed: $zoomed) { getLongString() }
                 .padding(.leading, Configuration.shared.zoomButtonSize/2)
             Spacer(minLength: 0)
             Text(text)
@@ -48,6 +31,6 @@ struct Display: View {
 
 struct Display_Previews: PreviewProvider {
     static var previews: some View {
-        Display(text: "0", higherPrecisionAvailable: false, zoomed: .constant(false))
+        Display(text: "0", higherPrecisionAvailable: false, zoomed: .constant(false)) {}
     }
 }
