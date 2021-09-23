@@ -23,6 +23,13 @@ class Configuration {
     let windowHeight: CGFloat = 323.0
     let displayFontSize: CGFloat = 47
     let zoomButtonSize: CGFloat = 30
+    
+    /// The MacOS Calculator is a bit transparent.
+    /// The colors specified here replicate the button colors
+    /// when the MacOS Calcuator is on a black background.
+    /// To make this app distinguashable from the
+    /// MacOS Calculator, the 5 rightmost buttons
+    /// are in a blue tint instead of Apple's orange.
     let appBackgroundColor = Color(
         red:    46.0/255.0,
         green:  39.0/255.0,
