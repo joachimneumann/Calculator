@@ -7,11 +7,6 @@
 
 import Foundation
 
-protocol BrainProtocol {
-    func pendingOperator(name: String)
-    func endPendingOperator(name: String)
-}
-
 class Brain {
     func shortDisplayString() -> ShortDisplayString {
         let tempGmp = Gmp(internalDisplay, precision: nBits)
@@ -59,23 +54,15 @@ class Brain {
     }
 
     private struct OpStack {
-        var brainProtocolDelegate: BrainProtocol? = nil
         fileprivate var array: [String] = []
         mutating func push(_ element: String) {
-            brainProtocolDelegate?.pendingOperator(name: element)
             array.append(element)
         }
         mutating func pop() -> String? {
-            if let last = array.last {
-                brainProtocolDelegate?.endPendingOperator(name: last)
-            }
             return array.popLast()
         }
         
         mutating func removeLast() {
-            if let last = array.last {
-                brainProtocolDelegate?.endPendingOperator(name: last)
-            }
             array.removeLast()
         }
         
@@ -86,9 +73,6 @@ class Brain {
             return array.count
         }
         mutating func clean() {
-            for s in array {
-                brainProtocolDelegate?.endPendingOperator(name: s)
-            }
             array.removeAll()
         }
     }
