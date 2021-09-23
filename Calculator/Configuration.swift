@@ -24,9 +24,9 @@ class Configuration {
     let displayFontSize: CGFloat = 30
     let zoomButtonSize: CGFloat = 30
     let appBackgroundColor = Color(
-        red:    80.0/255.0,
-        green:  76.0/255.0,
-        blue:   80.0/255.0)
+        red:    72.0/255.0,
+        green:  63.0/255.0,
+        blue:   66.0/255.0)
     let DigitKeyProperties = KeyProperties(
         textColor: Color(
             red:   236.0/255.0,

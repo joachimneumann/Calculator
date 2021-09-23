@@ -123,9 +123,8 @@ struct ContentView: View {
                     NormalView(brainViewModel: brainViewModel, zoomed: $zoomed)
                 }
             }
-            .background(Color.yellow.opacity(0.2))
+            .background(Configuration.shared.appBackgroundColor)
         }
-        .background(Color.yellow)//Configuration.shared.appBackgroundColor)
         .ignoresSafeArea()
     }
 }
