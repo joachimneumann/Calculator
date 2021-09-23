@@ -372,6 +372,7 @@ class Brain {
         "x": 2,
         "/": 2,
         "x^y": 2,
+        "y√": 2,
         "pow_x_y": 2,
         "x↑↑y": 2
     ]
@@ -381,6 +382,7 @@ class Brain {
         "-": min,
         "x": mul,
         "/": div,
+        "y√": sqrty,
         "x^y": pow_x_y,
         "pow_x_y": pow_x_y,
         "x↑↑y": x_double_up_arrow_y

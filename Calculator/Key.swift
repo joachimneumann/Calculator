@@ -26,7 +26,7 @@ struct Key: View {
     private let shapeNames: [String: AnyView] = [
         "√": AnyView(SquareRoot()),
         "3√": AnyView(CubeRoot()),
-        "pow_x_y": AnyView(YRoot()),
+        "y√": AnyView(YRoot()),
     ]
 
     var body: some View {

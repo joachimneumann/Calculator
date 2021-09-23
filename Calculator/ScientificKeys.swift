@@ -50,8 +50,8 @@ struct ScientificKeys: View {
                     .scientific(size: size) { model.operation("√") }
                 Key("3√")
                     .scientific(size: size) { model.operation("3√") }
-                Key("pow_x_y")
-                    .scientific(size: size) { model.operation("pow_x_y") }
+                Key("y√")
+                    .scientific(size: size) { model.operation("y√") }
                 Key("ln")
                     .scientific(size: size)
                 Key("log10")

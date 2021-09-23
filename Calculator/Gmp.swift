@@ -84,6 +84,12 @@ func pow_x_y(_ base: Gmp, exponent: Gmp) -> Gmp {
     return base
 }
 
+func sqrty(_ base: Gmp, exponent: Gmp) -> Gmp {
+    rez(exponent)
+    mpfr_pow(&exponent.mpfr, &exponent.copy().mpfr, &base.mpfr, MPFR_RNDN)
+    return base
+}
+
 func x_double_up_arrow_y(_ left: Gmp, right: Gmp) -> Gmp {
     var temp: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &dummyUnsignedLongInt)
     mpfr_init2 (&temp, mpfr_get_prec(&left.mpfr))
