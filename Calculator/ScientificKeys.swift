@@ -46,12 +46,12 @@ struct ScientificKeys: View {
             HStack(spacing: horizontalSpace) {
                 Key("1/x")
                     .scientific(size: size)
-                Key("sr")
-                    .scientific(size: size)
-                Key("tr")
-                    .scientific(size: size)
-                Key("yr")
-                    .scientific(size: size)
+                Key("√")
+                    .scientific(size: size) { model.operation("√") }
+                Key("3√")
+                    .scientific(size: size) { model.operation("3√") }
+                Key("pow_x_y")
+                    .scientific(size: size) { model.operation("pow_x_y") }
                 Key("ln")
                     .scientific(size: size)
                 Key("log10")

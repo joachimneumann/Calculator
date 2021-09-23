@@ -36,7 +36,7 @@ class BrainViewModel: ObservableObject {
             higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
         }
     }
-    
+
     func changeSign() {
         if shortDisplayString.isValidNumber {
             brain.operation("+/-")

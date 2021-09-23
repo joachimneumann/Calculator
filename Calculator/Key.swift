@@ -9,8 +9,9 @@ import SwiftUI
 
 
 struct Key: View {
-    private let asText: Text
+    private var asText: Text? = nil
     private var asImage: Image? = nil
+    private var asView: AnyView? = nil
     
     private let sfImageNames: [String: String] = [
         "+":   "plus",
@@ -21,18 +22,30 @@ struct Key: View {
         "=":   "equal",
         "%":   "percent",
     ]
-    
+
+    private let shapeNames: [String: AnyView] = [
+        "√": AnyView(SquareRoot()),
+        "3√": AnyView(CubeRoot()),
+        "pow_x_y": AnyView(YRoot()),
+    ]
+
     var body: some View {
         if let asImage = asImage {
             asImage
-        } else {
+        } else if let asView = asView {
+            asView
+        } else if let asText = asText {
             asText
         }
     }
+    
     init(_ text: String) {
-        asText = Text(text)
         if let sfImage = sfImageNames[text] {
             asImage = Image(systemName: sfImage)
+        } else if let shape = shapeNames[text] {
+            asView = shape
+        } else {
+            asText = Text(text)
         }
     }
 }
