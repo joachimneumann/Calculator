@@ -14,6 +14,8 @@ class Brain {
     private var twoParameterOperationStack = TwoParameterOperationStack()
     private var gmpStack = GmpStack()
     
+    private var waitingForNumber = false
+    
     func shortDisplayString() -> ShortDisplayString {
         if let last = gmpStack.peek {
             return last.shortDisplayString()
@@ -31,24 +33,30 @@ class Brain {
         if digit == "," {
             if numberString == nil {
                 numberString = "0,"
-                gmpStack.push(Gmp(numberString!))
             } else {
                 if !numberString!.contains(",") {
                     numberString!.append(",")
-                    gmpStack.replaceLast(with: Gmp(numberString!))
                 }
             }
         } else {
             // normal digit
             if numberString == nil {
                 numberString = String(digit)
-                gmpStack.push(Gmp(numberString!))
             } else {
-                numberString!.append(String(digit))
-                gmpStack.replaceLast(with: Gmp(numberString!))
+                if numberString == "0" {
+                    numberString = String(digit)
+                } else {
+                    numberString!.append(String(digit))
+                }
             }
         }
-        print("after addDigi \(digit): gmps: \(gmpStack.count), ops: \(twoParameterOperationStack.count) numberString: \(numberString ?? "empty")")
+        if waitingForNumber || gmpStack.count == 0 {
+            gmpStack.push(Gmp(numberString!))
+            waitingForNumber = false
+        } else {
+            gmpStack.replaceLast(with: Gmp(numberString!))
+        }
+        print("after addDigi \(digit): gmps: \(gmpStack.count), ops: \(twoParameterOperationStack.count) numberString: \(numberString ?? "empty") w: \(waitingForNumber)")
     }
     
     func reset() {
@@ -136,17 +144,26 @@ class Brain {
         numberString = nil
         if symbol == "C" {
             reset()
+            waitingForNumber = false
         } else if symbol == "=" {
-            executeEverythingUpTo(priority: 100)
+            if !waitingForNumber {
+                executeEverythingUpTo(priority: 100)
+                waitingForNumber = false
+            }
         } else if let op = inplaceDict[symbol] {
             gmpStack.modifyLast(withOp: op)
+            waitingForNumber = false
         } else if let op = constDict[symbol] {
             gmpStack.replaceLast(withOp: op)
+            waitingForNumber = false
         } else if let op = twoParameterOperations[symbol] {
-            executeEverythingUpTo(priority: op.priority)
-            twoParameterOperationStack.push(op)
+            if !waitingForNumber {
+                executeEverythingUpTo(priority: op.priority)
+                twoParameterOperationStack.push(op)
+                waitingForNumber = true
+            }
         }
-        print("after operation \(symbol): gmps: \(gmpStack.count), ops: \(twoParameterOperationStack.count) numberString: \(numberString ?? "empty")")
+        print("after operation \(symbol): gmps: \(gmpStack.count), ops: \(twoParameterOperationStack.count) numberString: \(numberString ?? "empty") w: \(waitingForNumber)")
     }
     
     fileprivate var inplaceDict: Dictionary <String, (Gmp) -> ()> = [
