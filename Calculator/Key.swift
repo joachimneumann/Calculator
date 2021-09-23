@@ -24,9 +24,11 @@ struct Key: View {
     ]
 
     private let shapeNames: [String: AnyView] = [
-        "√": AnyView(SquareRoot()),
-        "3√": AnyView(CubeRoot()),
-        "y√": AnyView(YRoot()),
+        "√": AnyView(Root("2")),
+        "3√": AnyView(Root("3")),
+        "y√": AnyView(Root("y")),
+        "log10": AnyView(Log10()),
+        "oneOverX": AnyView(OneOverX()),
     ]
 
     var body: some View {

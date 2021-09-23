@@ -341,7 +341,7 @@ class Brain {
 
     fileprivate var inplaceDict: Dictionary< String, (Gmp) -> () > = [
         "+/-": changeSign,
-        "1\\x": rez,
+        "oneOverX": rez,
         "x!": fac,
         "Z": Z,
         "ln": ln,

@@ -44,8 +44,8 @@ struct ScientificKeys: View {
                     .scientific(size: size)
             }
             HStack(spacing: horizontalSpace) {
-                Key("1/x")
-                    .scientific(size: size)
+                Key("oneOverX")
+                    .scientific(size: size) { model.operation("oneOverX") }
                 Key("√")
                     .scientific(size: size) { model.operation("√") }
                 Key("3√")
@@ -53,9 +53,9 @@ struct ScientificKeys: View {
                 Key("y√")
                     .scientific(size: size) { model.operation("y√") }
                 Key("ln")
-                    .scientific(size: size)
+                    .scientific(size: size) { model.operation("ln") }
                 Key("log10")
-                    .scientific(size: size)
+                    .scientific(size: size) { model.operation("log10") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("x!")

@@ -28,60 +28,83 @@ struct SquareRootShape: Shape {
         path.addLine(to: CGPoint(x: downX, y: downY))
         path.addLine(to: CGPoint(x: upX,   y: upY))
         path.addLine(to: CGPoint(x: endX,  y: endY))
-        
         return path
     }
 }
 
-struct SquareRoot: View {
-    var body: some View {
-        ZStack {
-            GeometryReader { geo in
-                let s = min(geo.size.width, geo.size.height)
-                Text("2")
-                    .font(.system(size: 10.0, weight: .semibold))
-                    .offset(x: 0.33*s, y: 0.25*s)
-                SquareRootShape()
-                    .stroke(Configuration.shared.LightGrayKeyProperties.textColor, style: StrokeStyle(lineWidth: 1.8, lineCap: CGLineCap.square, lineJoin: CGLineJoin.bevel))
-                Text("X")
-                    .font(.system(size: 13.0, weight: .semibold))
-                    .offset(x: 0.58*s, y: 0.37*s)
-            }
-        }
+struct SlashShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        let w = rect.size.width
+        let h = rect.size.height
+        let s = min(w,h)
+        let steepness = 1.5
+        let startX = 0.5 * s
+        let startY = 0.65 * s
+        let upX = startX+0.18*s
+        let upY = startY-0.18*steepness*s
+        
+        path.move(to: CGPoint(x: startX, y: startY))
+        path.addLine(to: CGPoint(x: upX,   y: upY))
+        return path
     }
 }
 
-struct CubeRoot: View {
+struct Root: View {
+    let x: String
     var body: some View {
         ZStack {
             GeometryReader { geo in
                 let s = min(geo.size.width, geo.size.height)
-                Text("3")
-                    .font(.system(size: 10.0, weight: .semibold))
+                Text(x)
+                    .font(.system(size: 10.0*s/47.0, weight: .semibold))
                     .offset(x: 0.33*s, y: 0.25*s)
                 SquareRootShape()
-                    .stroke(Configuration.shared.LightGrayKeyProperties.textColor, style: StrokeStyle(lineWidth: 1.8, lineCap: CGLineCap.square, lineJoin: CGLineJoin.bevel))
+                    .stroke(Configuration.shared.LightGrayKeyProperties.textColor, style: StrokeStyle(lineWidth: 1.6*s/47, lineCap: CGLineCap.square, lineJoin: CGLineJoin.bevel))
                 Text("X")
-                    .font(.system(size: 13.0, weight: .semibold))
+                    .font(.system(size: 13.0*s/47.0, weight: .semibold))
                     .offset(x: 0.58*s, y: 0.37*s)
             }
         }
+        //.background(Color.yellow)
+    }
+    init(_ x: String) {
+        self.x = x
     }
 }
 
-struct YRoot: View {
+struct OneOverX: View {
     var body: some View {
         ZStack {
             GeometryReader { geo in
                 let s = min(geo.size.width, geo.size.height)
-                Text("y")
-                    .font(.system(size: 10.0, weight: .semibold))
-                    .offset(x: 0.33*s, y: 0.25*s)
-                SquareRootShape()
-                    .stroke(Configuration.shared.LightGrayKeyProperties.textColor, style: StrokeStyle(lineWidth: 1.8, lineCap: CGLineCap.square, lineJoin: CGLineJoin.bevel))
-                Text("X")
-                    .font(.system(size: 13.0, weight: .semibold))
-                    .offset(x: 0.58*s, y: 0.37*s)
+                Text("1")
+                    .font(.system(size: s*0.25))
+                    .offset(x: 0.4*s, y: 0.3*s)
+                SlashShape()
+                    .stroke(Configuration.shared.LightGrayKeyProperties.textColor, style: StrokeStyle(lineWidth: 1.6*s/47, lineCap: CGLineCap.square, lineJoin: CGLineJoin.bevel))
+                Text("x")
+                    .font(.system(size: s*0.25))
+                    .offset(x: 0.65*s, y: 0.45*s)
+            }
+        }
+        //.background(Color.yellow)
+    }
+}
+
+
+
+struct Log10: View {
+    var body: some View {
+        ZStack {
+            GeometryReader { geo in
+                let s = min(geo.size.width, geo.size.height)
+                Text("log")
+                    .font(.system(size: s*0.4))
+                    .offset(x: 0.2*s, y: 0.25*s)
+                Text("10")
+                    .font(.system(size: s*0.25))
+                    .offset(x: 0.73*s, y: 0.5*s)
             }
         }
     }

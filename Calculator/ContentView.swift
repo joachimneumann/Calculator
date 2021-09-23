@@ -51,12 +51,12 @@ struct NormalView: View {
             HStack(alignment: .top, spacing: 1) {
                 ScientificKeys(
                     model: brainViewModel,
-                    keyWidth: 56.25-0,
-                    keyHeight: 47.0-0)
+                    keyWidth: 56.25+0,
+                    keyHeight: 47.0+0)
                 NumberKeys(
                     model: brainViewModel,
-                    keyWidth: 56.25-0,
-                    keyHeight: 47.0-0)
+                    keyWidth: 56.25+0,
+                    keyHeight: 47.0+0)
             }
             .padding(1.0)
             //.background(Color.green)
