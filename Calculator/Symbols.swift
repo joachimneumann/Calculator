@@ -103,9 +103,29 @@ struct Log10: View {
                     .font(.system(size: s*0.4))
                     .offset(x: 0.2*s, y: 0.25*s)
                 Text("10")
-                    .font(.system(size: s*0.25))
+                    .font(.system(size: s*0.22))
                     .offset(x: 0.73*s, y: 0.5*s)
             }
         }
     }
 }
+
+struct Pow: View {
+    let base: String
+    let exponent: String
+    let additionalXOffset: CGFloat
+    var body: some View {
+        ZStack {
+            GeometryReader { geo in
+                let s = min(geo.size.width, geo.size.height)
+                Text(base)
+                    .font(.system(size: s*0.4))
+                    .offset(x: 0.4*s, y: 0.25*s)
+                Text(exponent)
+                    .font(.system(size: s*0.22))
+                    .offset(x: (0.62+additionalXOffset)*s, y: 0.25*s)
+            }
+        }
+    }
+}
+

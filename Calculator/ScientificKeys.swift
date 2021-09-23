@@ -33,15 +33,15 @@ struct ScientificKeys: View {
                 Key("2nd")
                     .scientific(size: size)
                 Key("x^2")
-                    .scientific(size: size)
+                    .scientific(size: size) { model.operation("x^2") }
                 Key("x^3")
-                    .scientific(size: size)
+                    .scientific(size: size) { model.operation("x^3") }
                 Key("x^y")
-                    .scientific(size: size)
+                    .scientific(size: size) { model.operation("x^y") }
                 Key("e^x")
-                    .scientific(size: size)
+                    .scientific(size: size) { model.operation("e^x") }
                 Key("10^x")
-                    .scientific(size: size)
+                    .scientific(size: size) { model.operation("10^x") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("oneOverX")
@@ -59,15 +59,15 @@ struct ScientificKeys: View {
             }
             HStack(spacing: horizontalSpace) {
                 Key("x!")
-                    .scientific(size: size)
+                    .scientific(size: size) { model.operation("x!") }
                 Key("sin")
-                    .scientific(size: size)
+                    .scientific(size: size) { model.operation("sin") }
                 Key("cos")
-                    .scientific(size: size)
+                    .scientific(size: size) { model.operation("cos") }
                 Key("tan")
-                    .scientific(size: size)
+                    .scientific(size: size) { model.operation("tan") }
                 Key("e")
-                    .scientific(size: size)
+                    .scientific(size: size) { model.operation("e") }
                 Key("EE")
                     .scientific(size: size)
             }
@@ -80,8 +80,8 @@ struct ScientificKeys: View {
                     .scientific(size: size)
                 Key("tanh")
                     .scientific(size: size)
-                Key("pi")
-                    .scientific(size: size)
+                Key("π")
+                    .scientific(size: size) { model.operation("π") }
                 Key("Rand")
                     .scientific(size: size)
             }
