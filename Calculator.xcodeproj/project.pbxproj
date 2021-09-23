@@ -23,6 +23,7 @@
 		AA95564026FA1C180029D94C /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95563F26FA1C180029D94C /* Key.swift */; };
 		AA95564226FA471D0029D94C /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95564126FA471D0029D94C /* Brain.swift */; };
 		AAE87B9326FC5F42009E6D80 /* Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE87B9226FC5F42009E6D80 /* Display.swift */; };
+		AAE87B9526FC7302009E6D80 /* Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE87B9426FC7302009E6D80 /* Symbols.swift */; };
 		AAF1F59126FBA9C7000A733F /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF1F59026FBA9C7000A733F /* Configuration.swift */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +59,7 @@
 		AA95563F26FA1C180029D94C /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		AA95564126FA471D0029D94C /* Brain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brain.swift; sourceTree = "<group>"; };
 		AAE87B9226FC5F42009E6D80 /* Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Display.swift; sourceTree = "<group>"; };
+		AAE87B9426FC7302009E6D80 /* Symbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbols.swift; sourceTree = "<group>"; };
 		AAF1F59026FBA9C7000A733F /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -108,6 +110,7 @@
 				AA46B32526FAC48500F83939 /* BrainViewModel.swift */,
 				AA7CD3AA26FC322C00C714A6 /* ScientificKeys.swift */,
 				AAE87B9226FC5F42009E6D80 /* Display.swift */,
+				AAE87B9426FC7302009E6D80 /* Symbols.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -209,6 +212,7 @@
 				AA40C45526F8094700119D4F /* Gmp.swift in Sources */,
 				AA95564226FA471D0029D94C /* Brain.swift in Sources */,
 				AA40C44526F808D800119D4F /* CalculatorApp.swift in Sources */,
+				AAE87B9526FC7302009E6D80 /* Symbols.swift in Sources */,
 				AA95564026FA1C180029D94C /* Key.swift in Sources */,
 				AA46B32626FAC48500F83939 /* BrainViewModel.swift in Sources */,
 			);
