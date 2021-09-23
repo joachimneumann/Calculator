@@ -17,21 +17,21 @@ struct ScientificKeys: View {
         VStack(spacing: verticalSpace) {
             HStack(spacing: horizontalSpace) {
                 Key("(")
-                    .scientific(size: size)
+                    .scientific(size: size) // missing
                 Key(")")
-                    .scientific(size: size)
+                    .scientific(size: size) // missing
                 Key("mc")
-                    .scientific(size: size)
+                    .scientific(size: size) // missing
                 Key("m+")
-                    .scientific(size: size)
+                    .scientific(size: size) // missing
                 Key("m-")
-                    .scientific(size: size)
+                    .scientific(size: size) // missing
                 Key("mr")
-                    .scientific(size: size)
+                    .scientific(size: size) // missing
             }
             HStack(spacing: horizontalSpace) {
                 Key("2nd")
-                    .scientific(size: size)
+                    .scientific(size: size) // missing
                 Key("x^2")
                     .scientific(size: size) { model.operation("x^2") }
                 Key("x^3")
@@ -69,21 +69,21 @@ struct ScientificKeys: View {
                 Key("e")
                     .scientific(size: size) { model.operation("e") }
                 Key("EE")
-                    .scientific(size: size)
+                    .scientific(size: size) // missing
             }
             HStack(spacing: horizontalSpace) {
                 Key("Rad")
-                    .scientific(size: size)
+                    .scientific(size: size) // missing
                 Key("sinh")
-                    .scientific(size: size)
+                    .scientific(size: size) // missing
                 Key("cosh")
-                    .scientific(size: size)
+                    .scientific(size: size) // missing
                 Key("tanh")
-                    .scientific(size: size)
+                    .scientific(size: size) // missing
                 Key("π")
                     .scientific(size: size) { model.operation("π") }
                 Key("Rand")
-                    .scientific(size: size)
+                    .scientific(size: size) // missing
             }
         }
     }
