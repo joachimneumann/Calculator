@@ -19,11 +19,12 @@ struct Zoom: View {
             .contentShape(Rectangle())
             .onTapGesture {
                 if higherPrecisionAvailable {
-                    if !zoomed {
-                        getLongString()
+//                    if !zoomed {
+//                        getLongString()
+//                    }
+                    withAnimation(.linear(duration: 2)) {
+                        zoomed.toggle()
                     }
-                    zoomed.toggle()
-                    
                 }
             }
     }
