@@ -17,7 +17,7 @@ struct TwoParameterOperation {
 }
 
 struct TwoParameterOperationStack {
-    fileprivate var array: [TwoParameterOperation] = []
+    private var array: [TwoParameterOperation] = []
     mutating func push(_ element: TwoParameterOperation) {
         array.append(element)
     }
@@ -29,7 +29,7 @@ struct TwoParameterOperationStack {
         array.removeLast()
     }
     
-    var peek: TwoParameterOperation? {
+    var last: TwoParameterOperation? {
         array.last
     }
     var count: Int {

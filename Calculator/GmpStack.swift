@@ -8,7 +8,7 @@
 import Foundation
 
 struct GmpStack {
-    fileprivate var array: [Gmp] = []
+    private var array: [Gmp] = []
     mutating func push(_ element: Gmp) {
         array.append(element)
     }
@@ -28,9 +28,18 @@ struct GmpStack {
         array.append(op())
     }
 
-    var peek: Gmp? {
+    var last: Gmp? {
         array.last
     }
+
+    var secondLast: Gmp? {
+        if array.count >= 2 {
+            return array[array.count - 2]
+        } else {
+            return nil
+        }
+    }
+
     var count: Int {
         array.count
     }

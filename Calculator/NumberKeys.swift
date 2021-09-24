@@ -23,7 +23,7 @@ struct NumberKeys: View {
                 Key("+/-")
                     .op_plusMinus_percentage(size: size)             { model.operation("+/-")  }
                 Key("%")
-                    .op_plusMinus_percentage(size: size)             // missing
+                    .op_plusMinus_percentage(size: size)             { model.operation("%")  }
                 Key("/")
                     .op_div_mul_add_sub_eq(size: slightlyLargerSize) { model.operation("/") }
             }

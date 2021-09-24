@@ -26,7 +26,7 @@ class Brain {
     
     
     private func displayData(digits: Int) -> DisplayData {
-        if let last = gmpStack.peek {
+        if let last = gmpStack.last {
             return last.displayString(digits: digits, limitExponent: true)
         } else {
             return DisplayData(invalid: "not a number")
@@ -81,7 +81,7 @@ class Brain {
         var sufficientNumbers = gmpStack.count >= 2
         var lastOperationNotTooHighPriority = false
         if twoParameterOperationStack.count > 0 {
-            if twoParameterOperationStack.peek!.priority >= maxPriority {
+            if twoParameterOperationStack.last!.priority >= maxPriority {
                 lastOperationNotTooHighPriority = true
             }
         }
@@ -96,11 +96,30 @@ class Brain {
             sufficientNumbers = gmpStack.count >= 2
             lastOperationNotTooHighPriority = false
             if twoParameterOperationStack.count > 0 {
-                if twoParameterOperationStack.peek!.priority >= maxPriority {
+                if twoParameterOperationStack.last!.priority >= maxPriority {
                     lastOperationNotTooHighPriority = true
                 }
             }
             
+        }
+    }
+    
+    func percentage() {
+        if twoParameterOperationStack.count == 0 && gmpStack.count >= 1 {
+            if let x1 = gmpStack.last {
+                let x2 = Gmp("0.01")
+                let x3 = x1 * x2
+                gmpStack.replaceLast(with: x3)
+            }
+            
+        } else if twoParameterOperationStack.count >= 1 && gmpStack.count >= 2 {
+            if let x1 = gmpStack.last {
+                if let x2 = gmpStack.secondLast {
+                    let x3 = Gmp("0.01")
+                    let x4 = x1 * x2 * x3
+                    gmpStack.replaceLast(with: x4)
+                }
+            }
         }
     }
     
@@ -113,6 +132,10 @@ class Brain {
             if !waitingForNumber {
                 executeEverythingUpTo(priority: -100)
                 waitingForNumber = false
+            }
+        } else if symbol == "%" {
+            if !waitingForNumber {
+                percentage()
             }
         } else if let op = inplaceDict[symbol] {
             if !waitingForNumber {
@@ -190,13 +213,13 @@ private func test() {
     addDigitToNumberString("1")
     addDigitToNumberString("0")
     operation("oneOverX")
-    assert(gmpStack.peek! == Gmp("0.1"))
+    assert(gmpStack.last! == Gmp("0.1"))
     addDigitToNumberString("1")
-    assert(gmpStack.peek! == Gmp("1"))
+    assert(gmpStack.last! == Gmp("1"))
     addDigitToNumberString("6")
-    assert(gmpStack.peek! == Gmp("16"))
+    assert(gmpStack.last! == Gmp("16"))
     operation("oneOverX")
-    assert(gmpStack.peek! == Gmp("0.0625"))
+    assert(gmpStack.last! == Gmp("0.0625"))
     
     // clear
     reset()
@@ -205,57 +228,57 @@ private func test() {
     
     // 1+2+5+2= + 1/4 =
     addDigitToNumberString("1")
-    assert(gmpStack.peek == Gmp("1"))
+    assert(gmpStack.last == Gmp("1"))
     operation("+")
-    assert(gmpStack.peek == Gmp("1"))
+    assert(gmpStack.last == Gmp("1"))
     addDigitToNumberString("2")
     operation("+")
-    assert(gmpStack.peek == Gmp("3"))
+    assert(gmpStack.last == Gmp("3"))
     addDigitToNumberString("5")
     operation("+")
-    assert(gmpStack.peek == Gmp("8"))
+    assert(gmpStack.last == Gmp("8"))
     addDigitToNumberString("2")
     operation("=")
-    assert(gmpStack.peek == Gmp("10"))
+    assert(gmpStack.last == Gmp("10"))
     operation("+")
-    assert(gmpStack.peek == Gmp("10"))
+    assert(gmpStack.last == Gmp("10"))
     addDigitToNumberString("4")
     operation("oneOverX")
-    assert(gmpStack.peek == Gmp("0.25"))
+    assert(gmpStack.last == Gmp("0.25"))
     operation("=")
-    assert(gmpStack.peek == Gmp("10.25"))
+    assert(gmpStack.last == Gmp("10.25"))
     
     // 1+2*4=
     reset()
     addDigitToNumberString("1")
-    assert(gmpStack.peek == Gmp("1"))
+    assert(gmpStack.last == Gmp("1"))
     operation("+")
     addDigitToNumberString("2")
     operation("x")
-    assert(gmpStack.peek == Gmp("2"))
+    assert(gmpStack.last == Gmp("2"))
     addDigitToNumberString("4")
-    assert(gmpStack.peek == Gmp("4"))
+    assert(gmpStack.last == Gmp("4"))
     operation("=")
-    assert(gmpStack.peek == Gmp("9"))
+    assert(gmpStack.last == Gmp("9"))
     
     reset()
     addDigitToNumberString("1")
-    assert(gmpStack.peek == Gmp("1"))
+    assert(gmpStack.last == Gmp("1"))
     operation("+")
     addDigitToNumberString("2")
     operation("x")
-    assert(gmpStack.peek == Gmp("2"))
+    assert(gmpStack.last == Gmp("2"))
     addDigitToNumberString("4")
-    assert(gmpStack.peek == Gmp("4"))
+    assert(gmpStack.last == Gmp("4"))
     operation("+")
-    assert(gmpStack.peek == Gmp("9"))
+    assert(gmpStack.last == Gmp("9"))
     addDigitToNumberString("1")
     addDigitToNumberString("0")
     addDigitToNumberString("0")
-    assert(gmpStack.peek == Gmp("100"))
+    assert(gmpStack.last == Gmp("100"))
     // User: =
     operation("=")
-    assert(gmpStack.peek == Gmp("109"))
+    assert(gmpStack.last == Gmp("109"))
     
     reset()
     operation("π")
@@ -269,7 +292,7 @@ private func test() {
     addDigitToNumberString("1")
     addDigitToNumberString("0")
     operation("=")
-    assert(gmpStack.peek == Gmp("1024"))
+    assert(gmpStack.last == Gmp("1024"))
     reset()
 }
 
