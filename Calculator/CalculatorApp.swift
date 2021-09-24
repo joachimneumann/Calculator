@@ -16,9 +16,15 @@ struct CalculatorApp: App {
 #endif
     
     var body: some Scene {
+#if targetEnvironment(macCatalyst)
         WindowGroup {
-            ContentView()
+            CatalystContentView()
         }
+#else
+        WindowGroup {
+            IOSContentView()
+        }
+#endif
     }
 }
 

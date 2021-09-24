@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct ContentView: View {
+struct CatalystContentView: View {
     @ObservedObject var model = BrainViewModel()
     @State var zoomed: Bool = false
     var body: some View {
@@ -28,20 +28,12 @@ struct ContentView: View {
                 }
                 VStack {
                     Spacer()
-                    ExtractedView(model: model)
+                    LandscapeKeys(model: model)
                 }
                 .transition(.move(edge: .bottom))
             }
-            HStack {
-                VStack {
-                    Zoom(higherPrecisionAvailable: model.higherPrecisionAvailable, zoomed: $zoomed) {
-                        model.getLongString()
-                    }
-                    .padding(.leading, 5)
-                    .padding(.top, 5)
-                    Spacer(minLength: 0)
-                }
-                Spacer()
+            Zoom(higherPrecisionAvailable: model.higherPrecisionAvailable, zoomed: $zoomed) {
+                model.getLongString()
             }
         }
         .padding(.top, 28)
@@ -52,23 +44,9 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        CatalystContentView()
             .frame(width: 575.0, height: 320.0)
     }
 }
 
-struct ExtractedView: View {
-    var model: BrainViewModel
-    var body: some View {
-        HStack(alignment: .top, spacing: 1) {
-            ScientificKeys(
-                model: model,
-                keyWidth: 56.25+0,
-                keyHeight: 47.0-0)
-            NumberKeys(
-                model: model,
-                keyWidth: 56.25+0,
-                keyHeight: 47.0-0)
-        }
-    }
-}
+

@@ -62,7 +62,7 @@ private struct Digit_0_to_9: ViewModifier {
     let size: CGSize
     let callback: (() -> Void)?
     func body(content: Content) -> some View {
-        let fontsize = size.height * 0.48
+        let fontsize = size.height * CGFloat(0.48)
         return content
             .foregroundColor(callback == nil ?  Color.gray : Configuration.shared.DigitKeyProperties.textColor)
             .addBackground(with: Configuration.shared.DigitKeyProperties, callback: callback)
@@ -74,7 +74,7 @@ private struct Colorful_plus_minus_etc: ViewModifier {
     let size: CGSize
     let callback: (() -> Void)?
     func body(content: Content) -> some View {
-        let fontsize = size.height * 0.36
+        let fontsize = size.height * CGFloat(0.36)
         content
             .foregroundColor(callback == nil ?  Color.gray : Configuration.shared.OpKeyProperties.textColor)
             .addBackground(with: Configuration.shared.OpKeyProperties, callback: callback)
