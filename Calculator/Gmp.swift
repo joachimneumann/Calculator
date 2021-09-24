@@ -335,10 +335,10 @@ class Gmp: CustomDebugStringConvertible {
     
     func displayString(digits: Int, limitExponent: Bool) -> DisplayString {
         if mpfr_nan_p(&mpfr) != 0 {
-            return DisplayString(invalid: "Not a Number")
+            return DisplayString(invalid: "not a real number")
         }
         if mpfr_inf_p(&mpfr) != 0 {
-            return DisplayString(invalid: "Infinity")
+            return DisplayString(invalid: "almost infinity")
         }
         
         // set negative 0 to 0
@@ -406,7 +406,7 @@ class Gmp: CustomDebugStringConvertible {
         }
         // is it a floating point number, NOT starting with 0. ?
         availableDigits = negative ? digits-1 : digits
-        if exponent >= 0 && significantDigits <= availableDigits {
+        if exponent >= 0 && exponent < availableDigits-2 && significantDigits <= availableDigits {
             return DisplayString(
                 isValidNumber: true,
                 isNegative: negative,
@@ -419,6 +419,7 @@ class Gmp: CustomDebugStringConvertible {
         /// number that can be displayed in scientific notation without loss of precision?
         availableDigits = digits
         availableDigits -= 1 // for "e"
+        availableDigits -= 1 // for ","
         if negative { availableDigits -= 1 }
         if exponent < 0 { availableDigits -= 1 }
         if exponent != 0 {
