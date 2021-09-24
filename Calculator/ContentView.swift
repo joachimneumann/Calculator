@@ -59,7 +59,9 @@ struct ContentView: View {
                 Spacer()
             }
         }
+        .padding(.top, 28)
         .background(Configuration.shared.appBackgroundColor)
+        .ignoresSafeArea()
     }
 }
 
