@@ -16,6 +16,10 @@ class BrainViewModel: ObservableObject {
     private let brain = Brain()
     private var trailingZeroesString: String?
     
+    func secretDigit(_ digit: Character) {
+        brain.addDigitToNumberString(digit)
+    }
+
     func digit(_ digit: Character) {
         if shortDisplayString.isValidNumber {
             brain.addDigitToNumberString(digit)
@@ -26,6 +30,10 @@ class BrainViewModel: ObservableObject {
         }
     }
     
+    func secretOperation(_ op: String) {
+        brain.operation(op)
+    }
+
     func operation(_ op: String) {
         if shortDisplayString.isValidNumber {
             brain.operation(op)

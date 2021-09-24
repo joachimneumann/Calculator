@@ -69,7 +69,12 @@ struct ScientificKeys: View {
                 Key("e")
                     .scientific(size: size) { model.operation("e") }
                 Key("EE")
-                    .scientific(size: size) // missing
+                    .scientific(size: size) {
+                        model.operation("x")
+                        model.secretDigit("1")
+                        model.secretDigit("0")
+                        model.secretOperation("pow_x_y")
+                    }
             }
             HStack(spacing: horizontalSpace) {
                 Key("Rad")
