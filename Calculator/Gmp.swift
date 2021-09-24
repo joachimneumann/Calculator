@@ -333,17 +333,17 @@ class Gmp: CustomDebugStringConvertible {
         return s
     }
     
-    func displayString(digits: Int, limitExponent: Bool) -> DisplayString {
+    func displayString(digits: Int, limitExponent: Bool) -> DisplayData {
         if mpfr_nan_p(&mpfr) != 0 {
-            return DisplayString(invalid: "not a real number")
+            return DisplayData(invalid: "not a real number")
         }
         if mpfr_inf_p(&mpfr) != 0 {
-            return DisplayString(invalid: "almost infinity")
+            return DisplayData(invalid: "almost infinity")
         }
         
         // set negative 0 to 0
         if mpfr_zero_p(&mpfr) != 0 {
-            return DisplayString(
+            return DisplayData(
                 isValidNumber: true,
                 isNegative: false,
                 higherPrecisionAvailable: false,
@@ -366,11 +366,11 @@ class Gmp: CustomDebugStringConvertible {
         }
 
         if exponent > 160 && limitExponent {
-            return DisplayString(valid: "too large")
+            return DisplayData(valid: "too large")
         }
         
         if exponent < -160 && limitExponent {
-            return DisplayString(valid: "too small")
+            return DisplayData(valid: "too small")
         }
         
         
@@ -386,7 +386,7 @@ class Gmp: CustomDebugStringConvertible {
         // is it an Integer?
         var availableDigits = negative ? digits-1 : digits
         if exponent >= 0 && exponent <= availableDigits && significantDigits <= exponent+1 {
-            return DisplayString(
+            return DisplayData(
                 isValidNumber: true,
                 isNegative: negative,
                 higherPrecisionAvailable: false,
@@ -397,7 +397,7 @@ class Gmp: CustomDebugStringConvertible {
         // is it a floating point number, starting with 0. ?
         availableDigits = negative ? digits-2 : digits-1 /// 9 minus one for "0." minus? negative
         if exponent < 0 && significantDigits - exponent <= availableDigits {
-            return DisplayString(
+            return DisplayData(
                 isValidNumber: true,
                 isNegative: negative,
                 higherPrecisionAvailable: false,
@@ -407,7 +407,7 @@ class Gmp: CustomDebugStringConvertible {
         // is it a floating point number, NOT starting with 0. ?
         availableDigits = negative ? digits-1 : digits
         if exponent >= 0 && exponent < availableDigits-2 && significantDigits <= availableDigits {
-            return DisplayString(
+            return DisplayData(
                 isValidNumber: true,
                 isNegative: negative,
                 higherPrecisionAvailable: false,
@@ -427,7 +427,7 @@ class Gmp: CustomDebugStringConvertible {
             let log10e = Int(floor(log10(doubleExponent))) + 1
             availableDigits -= log10e
         }
-        return DisplayString(
+        return DisplayData(
             isValidNumber: true,
             isNegative: negative,
             higherPrecisionAvailable: significantDigits > availableDigits,

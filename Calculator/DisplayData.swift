@@ -1,5 +1,5 @@
 //
-//  DisplayString.swift
+//  DisplayData.swift
 //  Calculator
 //
 //  Created by Joachim Neumann on 24/09/2021.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct DisplayString: Equatable {
+struct DisplayData: Equatable {
     let isValidNumber: Bool
     let isNegative: Bool
     let higherPrecisionAvailable: Bool

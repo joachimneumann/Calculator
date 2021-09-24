@@ -10,19 +10,19 @@ import SwiftUI
 struct SquareRootShape: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        let w = rect.size.width
-        let h = rect.size.height
-        let s = min(w,h)
-        let steepness = 2.8
-        let f = 0.6
-        let startX = 0.4 * s
-        let startY = 0.55 * s
-        let downX = startX+f*0.08*s
-        let downY = startY+f*0.08*steepness*s
-        let upX = downX+f*0.2*s
-        let upY = downY-f*0.2*steepness*s
-        let endX = upX+f*0.35*s
-        let endY = upY
+        let w: CGFloat = rect.size.width
+        let h: CGFloat = rect.size.height
+        let s: CGFloat = min(w,h)
+        let steepness: CGFloat = 2.8
+        let f: CGFloat = 0.6
+        let startX: CGFloat = 0.4 * s
+        let startY: CGFloat = 0.55 * s
+        let downX: CGFloat = startX+f*0.08*s
+        let downY: CGFloat = startY+f*0.08*steepness*s
+        let upX: CGFloat = downX+f*0.2*s
+        let upY: CGFloat = downY-f*0.2*steepness*s
+        let endX: CGFloat = upX+f*0.35*s
+        let endY: CGFloat = upY
         
         path.move(to: CGPoint(x: startX, y: startY))
         path.addLine(to: CGPoint(x: downX, y: downY))
@@ -35,14 +35,14 @@ struct SquareRootShape: Shape {
 struct SlashShape: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        let w = rect.size.width
-        let h = rect.size.height
-        let s = min(w,h)
-        let steepness = 1.5
-        let startX = 0.5 * s
-        let startY = 0.65 * s
-        let upX = startX+0.18*s
-        let upY = startY-0.18*steepness*s
+        let w: CGFloat = rect.size.width
+        let h: CGFloat = rect.size.height
+        let s: CGFloat = min(w,h)
+        let steepness: CGFloat = 1.5
+        let startX: CGFloat = 0.5 * s
+        let startY: CGFloat = 0.65 * s
+        let upX: CGFloat = startX+0.18*s
+        let upY: CGFloat = startY-0.18*steepness*s
         
         path.move(to: CGPoint(x: startX, y: startY))
         path.addLine(to: CGPoint(x: upX,   y: upY))

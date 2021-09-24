@@ -25,13 +25,11 @@ struct Zoom: View {
                 .background(Color.clear)
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    if higherPrecisionAvailable {
-                        if !zoomed {
-                            getLongString()
-                        }
-                        withAnimation(.easeIn) {
-                            zoomed.toggle()
-                        }
+                    if !zoomed && higherPrecisionAvailable {
+                        getLongString()
+                    }
+                    withAnimation(.easeIn) {
+                        zoomed.toggle()
                     }
                 }
         }

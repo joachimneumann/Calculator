@@ -8,11 +8,11 @@
 import Foundation
 
 class BrainViewModel: ObservableObject {
-    @Published private(set) var mainDisplay: String = ""
-    @Published private(set) var longString: DisplayString = DisplayString(invalid: "invalid")
+    @Published private(set) var shortDisplayString: String = ""
+    @Published private(set) var shortDisplayData: DisplayData = DisplayData(invalid: "invalid")
+    @Published private(set) var longDisplayData: DisplayData = DisplayData(invalid: "invalid")
     @Published private(set) var higherPrecisionAvailable: Bool = false
 
-    private var shortDisplayString: DisplayString
     private let brain = Brain()
     private var trailingZeroesString: String?
     
@@ -21,12 +21,12 @@ class BrainViewModel: ObservableObject {
     }
 
     func digit(_ digit: Character) {
-        if shortDisplayString.isValidNumber {
+        if shortDisplayData.isValidNumber {
             brain.addDigitToNumberString(digit)
             trailingZeroesString = nil
-            shortDisplayString = brain.shortDisplayString()
-            mainDisplay = shortDisplayString.show()
-            higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
+            shortDisplayData = brain.shortDisplayData()
+            shortDisplayString = shortDisplayData.show()
+            higherPrecisionAvailable = shortDisplayData.higherPrecisionAvailable
         }
     }
     
@@ -35,42 +35,42 @@ class BrainViewModel: ObservableObject {
     }
 
     func operation(_ op: String) {
-        if shortDisplayString.isValidNumber {
+        if shortDisplayData.isValidNumber {
             brain.operation(op)
-            shortDisplayString = brain.shortDisplayString()
-            mainDisplay = shortDisplayString.show()
-            higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
+            shortDisplayData = brain.shortDisplayData()
+            shortDisplayString = shortDisplayData.show()
+            higherPrecisionAvailable = shortDisplayData.higherPrecisionAvailable
         }
     }
 
     func zero() {
-        if shortDisplayString.isValidNumber {
+        if shortDisplayData.isValidNumber {
             brain.addDigitToNumberString("0")
-            shortDisplayString = brain.shortDisplayString()
-            higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
-            if mainDisplay.contains(",") {
+            shortDisplayData = brain.shortDisplayData()
+            higherPrecisionAvailable = shortDisplayData.higherPrecisionAvailable
+            if shortDisplayString.contains(",") {
                 if trailingZeroesString == nil {
-                    trailingZeroesString = mainDisplay
+                    trailingZeroesString = shortDisplayString
                 }
                 if trailingZeroesString!.count < Configuration.shared.digitsInSmallDisplay {
                     trailingZeroesString! += "0"
-                    mainDisplay = trailingZeroesString!
+                    shortDisplayString = trailingZeroesString!
                 }
             } else {
-                mainDisplay = shortDisplayString.show()
+                shortDisplayString = shortDisplayData.show()
             }
         }
     }
     
     func comma() {
-        if shortDisplayString.isValidNumber {
+        if shortDisplayData.isValidNumber {
             brain.addDigitToNumberString(",")
-            shortDisplayString = brain.shortDisplayString()
-            higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
-            mainDisplay = shortDisplayString.show()
-            if !mainDisplay.contains(",") {
-                mainDisplay += ","
-                trailingZeroesString = mainDisplay
+            shortDisplayData = brain.shortDisplayData()
+            higherPrecisionAvailable = shortDisplayData.higherPrecisionAvailable
+            shortDisplayString = shortDisplayData.show()
+            if !shortDisplayString.contains(",") {
+                shortDisplayString += ","
+                trailingZeroesString = shortDisplayString
             }
         }
     }
@@ -78,21 +78,21 @@ class BrainViewModel: ObservableObject {
     func reset() {
         brain.reset()
         trailingZeroesString = nil
-        shortDisplayString = brain.shortDisplayString()
-        higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
-        mainDisplay = shortDisplayString.show()
+        shortDisplayData = brain.shortDisplayData()
+        higherPrecisionAvailable = shortDisplayData.higherPrecisionAvailable
+        shortDisplayString = shortDisplayData.show()
         //        let temp = brain.shortString()
         //        mainDisplay = String(temp.prefix(10))
     }
     
     func getLongString() {
-        longString = brain.longString()
+        longDisplayData = brain.longDisplayData()
     }
     
     init() {
         trailingZeroesString = nil
-        shortDisplayString = brain.shortDisplayString()
-        higherPrecisionAvailable = shortDisplayString.higherPrecisionAvailable
-        mainDisplay = shortDisplayString.show()
+        shortDisplayData = brain.shortDisplayData()
+        higherPrecisionAvailable = shortDisplayData.higherPrecisionAvailable
+        shortDisplayString = shortDisplayData.show()
     }
 }

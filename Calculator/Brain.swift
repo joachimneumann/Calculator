@@ -8,6 +8,14 @@
 import Foundation
 
 class Brain {
+    func shortDisplayData() -> DisplayData {
+        displayData(digits: Configuration.shared.digitsInSmallDisplay)
+    }
+    
+    func longDisplayData() -> DisplayData {
+        displayData(digits: 70000)
+    }
+
     private let debug = true
     private var numberString: String? = "0"
     
@@ -16,11 +24,12 @@ class Brain {
     
     private var waitingForNumber = false
     
-    func shortDisplayString() -> DisplayString {
+    
+    private func displayData(digits: Int) -> DisplayData {
         if let last = gmpStack.peek {
-            return last.displayString(digits: Configuration.shared.digitsInSmallDisplay, limitExponent: true)
+            return last.displayString(digits: digits, limitExponent: true)
         } else {
-            return DisplayString(invalid: "not a number")
+            return DisplayData(invalid: "not a number")
         }
     }
     
@@ -65,14 +74,7 @@ class Brain {
         reset()
         //test()
     }
-    
-    func longString() -> DisplayString {
-        if let last = gmpStack.peek {
-            return last.displayString(digits: 1000, limitExponent: false)
-        } else {
-            return DisplayString(invalid: "not a number")
-        }
-    }
+
         
     func executeEverythingUpTo(priority maxPriority: Int) {
         var pendingOperations = twoParameterOperationStack.count >= 1
@@ -125,7 +127,15 @@ class Brain {
             }
             waitingForNumber = false
         } else if let op = twoParameterOperations[symbol] {
-            if !waitingForNumber {
+            if waitingForNumber {
+                // The user seems to have changed his mind
+                // Drop the last operation and replace it with this one
+                if twoParameterOperationStack.count > 0 {
+                    // this should always be the case
+                    twoParameterOperationStack.removeLast()
+                    twoParameterOperationStack.push(op)
+                }
+            } else {
                 executeEverythingUpTo(priority: op.priority)
                 twoParameterOperationStack.push(op)
                 waitingForNumber = true
