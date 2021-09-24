@@ -167,9 +167,9 @@ class Brain {
         "-": TwoParameterOperation(min, 1),
         "x": TwoParameterOperation(mul, 2),
         "/": TwoParameterOperation(div, 2),
-        "y√": TwoParameterOperation(sqrty, 2),
-        "pow_x_y": TwoParameterOperation(pow_x_y, 2),
-        "x↑↑y": TwoParameterOperation(x_double_up_arrow_y, 2),
+        "y√": TwoParameterOperation(sqrty, 3),
+        "pow_x_y": TwoParameterOperation(pow_x_y, 3),
+        "x↑↑y": TwoParameterOperation(x_double_up_arrow_y, 3),
     ]
 
 
