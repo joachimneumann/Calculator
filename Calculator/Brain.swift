@@ -68,7 +68,7 @@ class Brain {
     
     func longString() -> DisplayString {
         if let last = gmpStack.peek {
-            return last.displayString(digits: 100, limitExponent: false)
+            return last.displayString(digits: 1000, limitExponent: false)
         } else {
             return DisplayString(invalid: "not a number")
         }

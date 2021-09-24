@@ -31,92 +31,95 @@ struct ContentView: View {
         ZStack {
             if zoomed {
                 VStack {
-                    Text("Zoomed")
+                    AllDigitsView(text: model.longString.show())
+                        .padding(.trailing, 15)
+                        .padding(.leading, 60)
                     Spacer()
                 }
             } else {
                 VStack {
-                    Text("NOT Zoomed")
+                    Display(text: model.mainDisplay)
+                        .padding(.trailing, 15)
                     Spacer()
                 }
                 VStack {
                     Spacer()
                     ExtractedView(model: model)
-                        .foregroundColor(Color.red.opacity(0.3))
                 }
                 .transition(.move(edge: .bottom))
             }
             HStack {
                 VStack {
-                    Button("Press to show details") {
-                        withAnimation(.linear(duration: 2)) {
-                            zoomed.toggle()
-                        }
+                    Zoom(higherPrecisionAvailable: model.higherPrecisionAvailable, zoomed: $zoomed) {
+                        model.getLongString()
                     }
+                    .padding(Configuration.shared.zoomButtonSize*0.35)
                     Spacer()
                 }
                 Spacer()
             }
         }
+        .background(Configuration.shared.appBackgroundColor)
     }
-    
-    //        var longText = ""
-    //        if zoomed {
-    //            let n = 2
-    //            for _ in 1..<n {
-    //                longText = longText + "\u{00a0}"
-    //            }
-    //            longText = longText + model.longString.show()
-    //        }
-    //        return ZStack {
-    //            if zoomed {
-    ////                Text("ZOOMED")
-    ////                    .foregroundColor(Color.white)
-    //                AllDigitsView(text: "sdflkgjdskjfdlkfjhglkjdfhgkdjhfg")
-    //                    //.background(Color.yellow.opacity(0.5))
-    //                    .padding(.trailing, 15)
-    //                    .padding(.leading, Configuration.shared.zoomButtonSize*1.3)
-    ////                    .transition(.move(edge: .bottom))
-    //            } else {
-    ////                Text("NOT ZOOMED")
-    ////                    .foregroundColor(Color.white)
-    //                VStack(spacing: 0) {
-    //                    Display(text: model.mainDisplay)
-    //                        //.background(Color.yellow.opacity(0.5))
-    //                    Spacer(minLength: 0)
-    //                    ExtractedView(model: model)
-    //                        .transition(.move(edge: .bottom))
-    ////#if targetEnvironment(macCatalyst)
-    ////#else
-    ////                    NumberKeys(model: brainViewModel, roundKeys: true, width: 370)
-    ////#endif
-    //                }
-    //            }
-    //            HStack {
-    //                VStack {
-    //                    Zoom(higherPrecisionAvailable: true, zoomed: $zoomed) { model.getLongString() // model.higherPrecisionAvailable
-    //                    }
-    //                    .padding(Configuration.shared.zoomButtonSize*0.35)
-    //                    Spacer(minLength: 0)
-    //                }
-    //                Spacer(minLength: 0)
-    //            }
-    //        }
-    //        .background(Color.red.opacity(0.2))
-    ////        ZStack {
-    ////            VStack {
-    ////                if zoomed {
-    ////                    AllDigitsView(brainViewModel: model)
-    ////                    .background(Color.yellow.opacity(0.5))
-    ////                } else {
-    //
-    ////                    }
-    ////                }
-    ////            }
-    ////        }
-    ////        .background(Configuration.shared.appBackgroundColor)
-    //    }
 }
+
+//        var longText = ""
+//        if zoomed {
+//            let n = 2
+//            for _ in 1..<n {
+//                longText = longText + "\u{00a0}"
+//            }
+//            longText = longText + model.longString.show()
+//        }
+//        return ZStack {
+//            if zoomed {
+////                Text("ZOOMED")
+////                    .foregroundColor(Color.white)
+//                AllDigitsView(text: "sdflkgjdskjfdlkfjhglkjdfhgkdjhfg")
+//                    //.background(Color.yellow.opacity(0.5))
+//                    .padding(.trailing, 15)
+//                    .padding(.leading, Configuration.shared.zoomButtonSize*1.3)
+////                    .transition(.move(edge: .bottom))
+//            } else {
+////                Text("NOT ZOOMED")
+////                    .foregroundColor(Color.white)
+//                VStack(spacing: 0) {
+//                    Display(text: model.mainDisplay)
+//                        //.background(Color.yellow.opacity(0.5))
+//                    Spacer(minLength: 0)
+//                    ExtractedView(model: model)
+//                        .transition(.move(edge: .bottom))
+////#if targetEnvironment(macCatalyst)
+////#else
+////                    NumberKeys(model: brainViewModel, roundKeys: true, width: 370)
+////#endif
+//                }
+//            }
+//            HStack {
+//                VStack {
+//                    Zoom(higherPrecisionAvailable: true, zoomed: $zoomed) { model.getLongString() // model.higherPrecisionAvailable
+//                    }
+//                    .padding(Configuration.shared.zoomButtonSize*0.35)
+//                    Spacer(minLength: 0)
+//                }
+//                Spacer(minLength: 0)
+//            }
+//        }
+//        .background(Color.red.opacity(0.2))
+////        ZStack {
+////            VStack {
+////                if zoomed {
+////                    AllDigitsView(brainViewModel: model)
+////                    .background(Color.yellow.opacity(0.5))
+////                } else {
+//
+////                    }
+////                }
+////            }
+////        }
+////        .background(Configuration.shared.appBackgroundColor)
+//    }
+//}
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

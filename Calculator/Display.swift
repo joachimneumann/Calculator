@@ -18,7 +18,6 @@ struct Display: View {
                 // CourierNewPSMT: space has same width as digit
                 .font(.custom("CourierNewPSMT", size: Configuration.shared.displayFontSize)).fontWeight(.ultraLight)
                 .lineLimit(1)
-                .padding(.trailing, 15)
         }
     }
 }
