@@ -16,7 +16,8 @@ struct AllDigitsView: View {
             ScrollView(.vertical, showsIndicators: true) {
                 Text(text)
                     .foregroundColor(Color.white)
-                    .font(.custom("CourierNewPSMT", size: Configuration.shared.displayFontSize)).fontWeight(.ultraLight)
+                    .font(Font.system(size: Configuration.shared.displayFontSize, weight: .thin).monospacedDigit())
+                    //.font(.custom("CourierNewPSMT", size: Configuration.shared.displayFontSize)).fontWeight(.ultraLight)
                     .multilineTextAlignment(.trailing)
                 //                    .padding(.trailing, 10)
             }
@@ -53,8 +54,9 @@ struct ContentView: View {
                     Zoom(higherPrecisionAvailable: model.higherPrecisionAvailable, zoomed: $zoomed) {
                         model.getLongString()
                     }
-                    .padding(Configuration.shared.zoomButtonSize*0.35)
-                    Spacer()
+                    .padding(.leading, 5)
+                    .padding(.top, 5)
+                    Spacer(minLength: 0)
                 }
                 Spacer()
             }

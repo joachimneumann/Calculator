@@ -22,7 +22,7 @@ class Configuration {
     let windowWidth: CGFloat = 575.0
     let windowHeight: CGFloat = 323.0
     let displayFontSize: CGFloat = 47
-    let zoomButtonSize: CGFloat = 30
+    let zoomButtonSize: CGFloat = 25
     
     /// The MacOS Calculator is a bit transparent.
     /// The colors specified here replicate the button colors
@@ -86,7 +86,7 @@ class Configuration {
     let digitsInSmallDisplay = 9
     let appBackgroundColor = Color(.black)
     let displayFontSize: CGFloat = 90
-    let zoomButtonSize: CGFloat = 50
+    let zoomButtonSize: CGFloat = 25
 
     let DigitKeyProperties = KeyProperties(
         textColor: Color.white,

@@ -15,8 +15,9 @@ struct Display: View {
             Spacer(minLength: 0)
             Text(text)
                 .foregroundColor(Color.white)
-                // CourierNewPSMT: space has same width as digit
-                .font(.custom("CourierNewPSMT", size: Configuration.shared.displayFontSize)).fontWeight(.thin)
+                .font(Font.system(size: Configuration.shared.displayFontSize, weight: .thin).monospacedDigit())
+                /// CourierNewPSMT: space has same width as digit
+                //.font(.custom("CourierNewPSMT", size: Configuration.shared.displayFontSize)).fontWeight(.thin)
                 .lineLimit(1)
         }
     }
