@@ -177,24 +177,24 @@ class Brain {
     }
     
     var inplaceDict: Dictionary <String, (Gmp) -> ()> = [
-        "+/-": changeSign,
-        "oneOverX": rez,
-        "x!": fac,
-        "Z": Z,
-        "ln": ln,
-        "log10": log10,
-        "√": sqrt,
-        "3√": sqrt3,
-        "sin": sin,
-        "cos": cos,
-        "tan": tan,
-        "asin": asin,
-        "acos": acos,
-        "atan": atan,
-        "x^2": pow_x_2,
-        "x^3": pow_x_3,
-        "e^x": pow_e_x,
-        "10^x": pow_10_x
+        "+/-": Gmp.changeSign,
+        "oneOverX": Gmp.rez,
+        "x!": Gmp.fac,
+        "Z": Gmp.Z,
+        "ln": Gmp.ln,
+        "log10": Gmp.log10,
+        "√": Gmp.sqrt,
+        "3√": Gmp.sqrt3,
+        "sin": Gmp.sin,
+        "cos": Gmp.cos,
+        "tan": Gmp.tan,
+        "asin": Gmp.asin,
+        "acos": Gmp.acos,
+        "atan": Gmp.atan,
+        "x^2": Gmp.pow_x_2,
+        "x^3": Gmp.pow_x_3,
+        "e^x": Gmp.pow_e_x,
+        "10^x": Gmp.pow_10_x
     ]
     
     var constDict: Dictionary <String, () -> (Gmp)> = [
@@ -205,13 +205,13 @@ class Brain {
     
     
     let twoParameterOperations: Dictionary <String, TwoParameterOperation> = [
-        "+": TwoParameterOperation(add, 1),
-        "-": TwoParameterOperation(min, 1),
-        "x": TwoParameterOperation(mul, 2),
-        "/": TwoParameterOperation(div, 2),
-        "y√": TwoParameterOperation(sqrty, 3),
-        "pow_x_y": TwoParameterOperation(pow_x_y, 3),
-        "x↑↑y": TwoParameterOperation(x_double_up_arrow_y, 3),
+        "+": TwoParameterOperation(Gmp.add, 1),
+        "-": TwoParameterOperation(Gmp.min, 1),
+        "x": TwoParameterOperation(Gmp.mul, 2),
+        "/": TwoParameterOperation(Gmp.div, 2),
+        "y√": TwoParameterOperation(Gmp.sqrty, 3),
+        "pow_x_y": TwoParameterOperation(Gmp.pow_x_y, 3),
+        "x↑↑y": TwoParameterOperation(Gmp.x_double_up_arrow_y, 3),
     ]
     
     
