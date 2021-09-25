@@ -62,11 +62,10 @@ private struct Digit_0_to_9: ViewModifier {
     let size: CGSize
     let callback: (() -> Void)?
     func body(content: Content) -> some View {
-        let fontsize = size.height * CGFloat(0.48)
-        return content
+        content
             .foregroundColor(callback == nil ?  Color.gray : Configuration.shared.DigitKeyProperties.textColor)
             .addBackground(with: Configuration.shared.DigitKeyProperties, callback: callback)
-            .font(.system(size: fontsize))
+            .font(.system(size: size.height * CGFloat(0.48)))
     }
 }
 
