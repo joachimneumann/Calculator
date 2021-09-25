@@ -24,7 +24,7 @@ class Brain {
     private var twoParameterOperationStack = TwoParameterOperationStack()
     private var gmpStack = GmpStack()
     
-    private var isTyping = false
+    private var expectingNumber = false
     
     
     private func displayData(digits: Int) -> DisplayData {
@@ -56,6 +56,7 @@ class Brain {
                 }
             }
         }
+        
         guard gmpStack.count >= 0 else {
             print("### ERROR")
             return
@@ -64,25 +65,25 @@ class Brain {
             print("### ERROR")
             return
         }
-        if isTyping {
-            gmpStack.replaceLast(with: Gmp(numberString!))
-        } else {
+        if expectingNumber {
             gmpStack.push(Gmp(numberString!))
-            isTyping = true
+            expectingNumber = false
+        } else {
+            gmpStack.replaceLast(with: Gmp(numberString!))
         }
         print("after add \"\(digit)\": " +
               "gmps: \(gmpStack.count), " +
               "ops: \(twoParameterOperationStack.count) " +
               "numberString: \(numberString ?? "empty") " +
-              "typing: \(isTyping)")
+              "expectingNumber: \(expectingNumber)")
     }
     
     func reset() {
         gmpStack.clean()
+        gmpStack.push(Gmp("0"))
         twoParameterOperationStack.clean()
         numberString = nil
-        isTyping = false
-        addDigitToNumberString("0")
+        expectingNumber = false
     }
     
     init() {
@@ -142,48 +143,37 @@ class Brain {
         numberString = nil
         if symbol == "C" {
             reset()
-            isTyping = false
+            expectingNumber = false
         } else if symbol == "=" {
             executeEverythingUpTo(priority: -100)
-            isTyping = false
+            expectingNumber = false
         } else if symbol == "%" {
-            if isTyping {
-                percentage()
-                isTyping = false
-            } else {
-                percentage()
-            }
+            percentage()
+            expectingNumber = false
         } else if let op = inplaceDict[symbol] {
-            if isTyping {
-                gmpStack.modifyLast(withOp: op)
-                isTyping = false
-            } else {
-                gmpStack.modifyLast(withOp: op)
-            }
+            gmpStack.modifyLast(withOp: op)
+            expectingNumber = false
         } else if let op = constDict[symbol] {
-            if isTyping {
-                gmpStack.replaceLastWithConstant(withOp: op)
-                isTyping = false
-            } else {
+            if expectingNumber {
                 gmpStack.push(withOp: op)
-                isTyping = false
+                expectingNumber = false
+            } else {
+                gmpStack.replaceLastWithConstant(withOp: op)
+                expectingNumber = false
             }
         } else if let op = twoParameterOperations[symbol] {
-            if isTyping {
+            if expectingNumber {
+                // the user seems to have changed his mind
+                // correct operation
+                twoParameterOperationStack.removeLast()
+                twoParameterOperationStack.push(op)
+            } else {
                 executeEverythingUpTo(priority: op.priority)
                 twoParameterOperationStack.push(op)
-                isTyping = false
-            } else {
-                // The user seems to have changed his mind
-                // Drop the last operation and replace it with this one
-                if twoParameterOperationStack.count > 0 {
-                    // this should always be the case
-                    twoParameterOperationStack.removeLast()
-                    twoParameterOperationStack.push(op)
-                }
+                expectingNumber = true
             }
         }
-        print("after operation \(symbol): gmps: \(gmpStack.count), ops: \(twoParameterOperationStack.count) numberString: \(numberString ?? "empty") w: \(isTyping) ")
+        print("after operation \(symbol): gmps: \(gmpStack.count), ops: \(twoParameterOperationStack.count) numberString: \(numberString ?? "empty") expectingNumber: \(expectingNumber) ")
     }
     
     var inplaceDict: Dictionary <String, (Gmp) -> ()> = [

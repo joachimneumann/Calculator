@@ -247,12 +247,6 @@ class Gmp {
             mantissa.removeLast()
         }
 
-        //        /// number of significant digits
-        //        var lastSignificantIndex = charArray.count-1
-        //        while (charArray[lastSignificantIndex] == 0 || charArray[lastSignificantIndex] == 48) && lastSignificantIndex > 0 { lastSignificantIndex -= 1 }
-        //        let significantDigits = lastSignificantIndex + 1
-        //        print("significantDigits=\(significantDigits)")
-
         exponent = exponent - 1
         var hasMoreDigits = false
         if mantissa.count > length {
