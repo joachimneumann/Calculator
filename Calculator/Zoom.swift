@@ -12,6 +12,8 @@ struct Zoom: View {
     @Binding var zoomed: Bool
     var getLongString: () -> Void
     var body: some View {
+        let symbolSize = Configuration.shared.displayFontSize*0.5
+        let yPadding = Configuration.shared.displayFontSize/2 - symbolSize/2
         HStack {
             VStack {
                 ZStack {
@@ -28,7 +30,7 @@ struct Zoom: View {
                     }
                     /// TODO why does animation not work here?
                     //.animation(.easeIn(duration: 2), value: zoomed)
-                    .font(Font.system(size: Configuration.shared.displayFontSize*0.8, weight: .bold).monospacedDigit())
+                    .font(Font.system(size: symbolSize, weight: .bold).monospacedDigit())
                     .foregroundColor(higherPrecisionAvailable ? Configuration.shared.OpKeyProperties.color : Configuration.shared.OpKeyProperties.textColor.opacity(0.5))
                     .background(Color.clear)
                     .contentShape(Rectangle())
@@ -44,8 +46,8 @@ struct Zoom: View {
                 .fixedSize(horizontal: true, vertical: true)
                 Spacer(minLength: 0)
             }
-            .padding(.leading, 5)
-            .padding(.top, 5)
+            .padding(.leading, symbolSize/2)
+            .padding(.top, yPadding)
             Spacer()
         }
     }

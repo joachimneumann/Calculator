@@ -15,7 +15,7 @@ class Brain {
     
     func longDisplayData() -> DisplayData {
         displayData(
-            digits: 10000) // TODO Bogus
+            digits: 10000-1) // TODO Bogus
     }
 
     private let debug = true

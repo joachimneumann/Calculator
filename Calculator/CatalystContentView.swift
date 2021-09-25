@@ -36,6 +36,7 @@ struct CatalystContentView: View {
                 model.getLongString()
             }
         }
+        .background(Color.yellow)
         .padding(.top, 28)
         .background(Configuration.shared.appBackgroundColor)
         .ignoresSafeArea()

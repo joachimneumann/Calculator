@@ -16,7 +16,7 @@ struct AllDigitsView: View {
             ScrollView(.vertical, showsIndicators: true) {
                 Text(text)
                     .foregroundColor(Color.white)
-                    .font(Font.system(size: Configuration.shared.displayFontSize, weight: .thin).monospacedDigit())
+                    .font(.custom("CourierNewPSMT", size: 20)).fontWeight(.ultraLight)
                     .multilineTextAlignment(.trailing)
             }
         }

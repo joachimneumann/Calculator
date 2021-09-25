@@ -325,7 +325,7 @@ class Gmp: CustomDebugStringConvertible {
         }
         
         if exponent != 0 {
-            s += " e "
+            s += " e"
             s += String(exponent)
         }
         
@@ -338,7 +338,7 @@ class Gmp: CustomDebugStringConvertible {
             return DisplayData(invalid: "not a real number")
         }
         if mpfr_inf_p(&mpfr) != 0 {
-            return DisplayData(invalid: "almost infinity")
+            return DisplayData(invalid: "(almost?) infinity")
         }
         
         // set negative 0 to 0
@@ -442,6 +442,6 @@ class Gmp: CustomDebugStringConvertible {
 
 extension Gmp: Equatable {
     static func ==(lhs: Gmp, rhs: Gmp) -> Bool {
-        return lhs.displayString(digits: 100000) == rhs.displayString(digits: 100000)
+        return lhs.displayString(digits: 0000) == rhs.displayString(digits: 9999)
     }
 }
