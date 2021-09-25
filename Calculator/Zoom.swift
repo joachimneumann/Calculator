@@ -29,7 +29,7 @@ struct Zoom: View {
                         Configuration.shared.OpKeyProperties.color :
                             Color(white: 0.5))
                     .contentShape(Rectangle())
-                    .padding(-2)
+                    .padding(-0.1*symbolSize)
                     .background(higherPrecisionAvailable ? Color.white : Color.clear)
                     .clipShape(Circle())
                     .onTapGesture {
