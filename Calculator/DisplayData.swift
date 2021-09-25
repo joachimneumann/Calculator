@@ -13,11 +13,7 @@ struct DisplayData: Equatable {
     let higherPrecisionAvailable: Bool
     let isScientificNotation: Bool
     let content: String
-    func show() -> String {
-        var ret = content
-        if isNegative { ret = "-" + ret }
-        return ret
-    }
+    var string: String { isNegative ? "-"+content : content }
     init(invalid: String) {
         isValidNumber = false
         isNegative = false

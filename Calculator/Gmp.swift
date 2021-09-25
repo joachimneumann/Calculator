@@ -201,7 +201,7 @@ class Gmp: CustomDebugStringConvertible {
     }
     
     var debugDescription: String {
-        return displayString(digits: 10).show()
+        return displayString(digits: 10).string
     }
     
     

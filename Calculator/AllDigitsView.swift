@@ -14,7 +14,7 @@ struct AllDigitsView: View {
         if model.shortDisplayString.count <= Configuration.shared.digitsInSmallDisplay {
             return (model.shortDisplayString, Font.custom("CourierNewPSMT", size: 20))// .fontWeight(.ultraLight))
         } else {
-            return (model.allDigits().show(), Font.custom("CourierNewPSMT", size: 20))//.fontWeight(.ultraLight))
+            return (model.allDigits().string, Font.custom("CourierNewPSMT", size: 20))//.fontWeight(.ultraLight))
         }
     }
     
