@@ -12,7 +12,7 @@ class BrainViewModel: ObservableObject {
     @Published private(set) var shortDisplayData: DisplayData = DisplayData()
     @Published private(set) var higherPrecisionAvailable: Bool = false
 
-    var allDigits: DisplayData { brain.allDigitsDisplayData }
+    var allDigitsDisplayData: DisplayData { brain.allDigitsDisplayData }
     private let brain = Brain()
     private var trailingZeroesString: String?
     

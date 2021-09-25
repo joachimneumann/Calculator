@@ -9,13 +9,11 @@ import Foundation
 
 class Brain {
     func shortDisplayData() -> DisplayData {
-        displayData(
-            digits: Configuration.shared.digitsInSmallDisplay)
+        displayData(digits: Configuration.shared.digitsInSmallDisplay)
     }
     
     var allDigitsDisplayData: DisplayData {
-        displayData(
-            digits: 10) // TODO Bogus
+        displayData(digits: 10000) // TODO Bogus
     }
     
     private let debug = true

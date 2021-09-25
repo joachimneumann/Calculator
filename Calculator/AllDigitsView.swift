@@ -10,33 +10,29 @@ import SwiftUI
 struct AllDigitsView: View {
     var model: BrainViewModel
     
-    func content() -> (string: String, font: Font, exponent: String?) {
-        if model.shortDisplayString.count <= Configuration.shared.digitsInSmallDisplay {
-            return (
-                model.shortDisplayString,
-                Font.custom("CourierNewPSMT", size: 20),
-                nil)
-        } else {
-            let ad = model.allDigits
-            return (
-                ad.string,
-                Font.custom("CourierNewPSMT", size: 20),
-                ad.exponent)
-        }
-    }
-    
     var body: some View {
-        let content = content()
-        VStack(alignment: .leading, spacing: 0) {
+        if model.shortDisplayData.higherPrecisionAvailable {
+            let ad = model.allDigitsDisplayData
             ScrollView(.vertical, showsIndicators: true) {
-                Text(content.string)
+                Text(ad.string)
                     .foregroundColor(Color.white)
-                    .font(content.font)
-                    .multilineTextAlignment(.trailing)
+                    .font(.custom("CourierNewPSMT", size: 20))
+                    .multilineTextAlignment(.leading)
             }
-            if let exponent = content.exponent {
-                Text(exponent)
-                    .font(content.font)
+            if let exponentString = ad.exponent {
+                HStack {
+                    Text(exponentString)
+                        .font(.custom("CourierNewPSMT", size: 20))
+                    Spacer(minLength: 0)
+                }
+            }
+        } else {
+            HStack {
+                Spacer(minLength: 0)
+                Text(model.shortDisplayString)
+                    .foregroundColor(Color.white)
+                    .font(.system(size: Configuration.shared.displayFontSize, weight: .thin).monospacedDigit())
+                    .multilineTextAlignment(.trailing)
             }
         }
     }

@@ -33,7 +33,7 @@ class Gmp {
     // Implementing an initializer that accepts a double which is created from a string leads to a loss of precision.
     init(_ s: String) {
         let s1 = s.replacingOccurrences(of: ",", with: ".")
-        mpfr_init2 (&mpfr, 1000)//331146) // TODO precision
+        mpfr_init2 (&mpfr, 331146) // TODO precision
         mpfr_set_str (&mpfr, s1, 10, MPFR_RNDN)
     }
     
