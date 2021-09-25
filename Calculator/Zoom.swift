@@ -10,7 +10,6 @@ import SwiftUI
 struct Zoom: View {
     var higherPrecisionAvailable: Bool
     @Binding var zoomed: Bool
-    var getLongString: () -> Void
     var body: some View {
         let symbolSize = Configuration.shared.displayFontSize*0.5
         let yPadding = Configuration.shared.displayFontSize/2 - symbolSize/2
@@ -35,9 +34,6 @@ struct Zoom: View {
                     .background(Color.clear)
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        if !zoomed && higherPrecisionAvailable {
-                            getLongString()
-                        }
                         withAnimation(.easeIn) {
                             zoomed.toggle()
                         }
@@ -56,6 +52,6 @@ struct Zoom: View {
 
 struct Zoom_Previews: PreviewProvider {
     static var previews: some View {
-        Zoom(higherPrecisionAvailable: true, zoomed: .constant(false)) {}
+        Zoom(higherPrecisionAvailable: true, zoomed: .constant(false))
     }
 }

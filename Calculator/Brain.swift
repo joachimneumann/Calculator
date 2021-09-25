@@ -13,7 +13,7 @@ class Brain {
             digits: Configuration.shared.digitsInSmallDisplay)
     }
     
-    func longDisplayData() -> DisplayData {
+    var allDigitsDisplayData: DisplayData {
         displayData(
             digits: 10000-1) // TODO Bogus
     }

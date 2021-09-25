@@ -30,7 +30,7 @@ struct IOSContentView: View {
             FrameCatcher(into: $frameSize)
             if zoomed {
                 VStack {
-                    AllDigitsView(text: model.higherPrecisionAvailable ? model.longDisplayData.show() : model.shortDisplayString )
+                    AllDigitsView(model: model)
                         .padding(.trailing, 15)
                         .padding(.leading, 60)
                     Spacer()
@@ -44,9 +44,7 @@ struct IOSContentView: View {
                 }
                 .transition(.move(edge: .bottom))
             }
-            Zoom(higherPrecisionAvailable: model.higherPrecisionAvailable, zoomed: $zoomed) {
-                model.getLongString()
-            }
+            Zoom(higherPrecisionAvailable: model.higherPrecisionAvailable, zoomed: $zoomed)
         }
         .padding(.top, 28)
         .padding(.bottom, 28)

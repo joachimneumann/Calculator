@@ -15,7 +15,7 @@ struct CatalystContentView: View {
         ZStack {
             if zoomed {
                 VStack {
-                    AllDigitsView(text: model.higherPrecisionAvailable ? model.longDisplayData.show() : model.shortDisplayString )
+                    AllDigitsView(model: model)
                         .padding(.trailing, 15)
                         .padding(.leading, 60)
                     Spacer()
@@ -32,9 +32,7 @@ struct CatalystContentView: View {
                 }
                 .transition(.move(edge: .bottom))
             }
-            Zoom(higherPrecisionAvailable: model.higherPrecisionAvailable, zoomed: $zoomed) {
-                model.getLongString()
-            }
+            Zoom(higherPrecisionAvailable: model.higherPrecisionAvailable, zoomed: $zoomed)
         }
         .background(Color.yellow)
         .padding(.top, 28)

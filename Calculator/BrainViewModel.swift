@@ -10,9 +10,11 @@ import Foundation
 class BrainViewModel: ObservableObject {
     @Published private(set) var shortDisplayString: String = ""
     @Published private(set) var shortDisplayData: DisplayData = DisplayData(invalid: "invalid")
-    @Published private(set) var longDisplayData: DisplayData = DisplayData(invalid: "invalid")
     @Published private(set) var higherPrecisionAvailable: Bool = false
 
+    func allDigits() -> DisplayData {
+        return brain.allDigitsDisplayData
+    }
     private let brain = Brain()
     private var trailingZeroesString: String?
     
@@ -83,10 +85,6 @@ class BrainViewModel: ObservableObject {
         shortDisplayString = shortDisplayData.show()
         //        let temp = brain.shortString()
         //        mainDisplay = String(temp.prefix(10))
-    }
-    
-    func getLongString() {
-        longDisplayData = brain.longDisplayData()
     }
     
     init() {
