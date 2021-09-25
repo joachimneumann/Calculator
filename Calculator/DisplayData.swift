@@ -94,8 +94,6 @@ class DisplayData: Equatable {
         
         /// can be displayed as  float number? I.e., not scientific notation
         availableDigits = digits
-        if data.exponent < 0 { availableDigits -= 1 } /// for "0" in "0,"
-        availableDigits -= 1                          /// for ","
         if data.negative { availableDigits -= 1 }     /// for "-" The "-" is added later, outside this function
         
         if abs(data.exponent) <= availableDigits - 2 { /// display sifficiently large?
@@ -134,7 +132,6 @@ class DisplayData: Equatable {
         /// lets go for scientific notation
         let exponentString = "e\(data.exponent)"
         availableDigits = digits
-        availableDigits -= 1                          /// for ","
         if data.negative { availableDigits -= 1 }     /// for "-" The "-" is added later, outside this function
         availableDigits -= exponentString.count
 
@@ -143,7 +140,7 @@ class DisplayData: Equatable {
         scientificString.insert(",", at: index)
         if scientificString.count <= 2 { scientificString += "0" } /// e.g. 1e16 -> 1,e16 -> 1,0e16
         
-        scientificString = String(scientificString.prefix(availableDigits))
+        scientificString = String(scientificString.prefix(availableDigits+1)) // +1 for the comma, which I do not count
         self.init(isValidNumber: true,
                   isNegative: data.negative,
                   hasMoreDigits: true,
