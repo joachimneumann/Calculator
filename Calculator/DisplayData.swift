@@ -11,7 +11,7 @@ class DisplayData: Equatable {
     
     var isValidNumber: Bool
     var isNegative: Bool
-    var higherPrecisionAvailable: Bool
+    var hasMoreDigits: Bool
     var exponent: String?
     var content: String
     
@@ -25,19 +25,19 @@ class DisplayData: Equatable {
     static func == (lhs: DisplayData, rhs: DisplayData) -> Bool {
         if lhs.isValidNumber != rhs.isValidNumber                       { return false }
         if lhs.isNegative != rhs.isNegative                             { return false }
-        if lhs.higherPrecisionAvailable != rhs.higherPrecisionAvailable { return false }
+        if lhs.hasMoreDigits != rhs.hasMoreDigits { return false }
         if lhs.exponent != rhs.exponent                                 { return false }
         if lhs.content != rhs.content                                   { return false }
         return true
     }
     private init(isValidNumber: Bool,
                  isNegative: Bool,
-                 higherPrecisionAvailable: Bool,
+                 hasMoreDigits: Bool,
                  exponent: String?,
                  content: String) {
         self.isValidNumber = isValidNumber
         self.isNegative = isNegative
-        self.higherPrecisionAvailable = higherPrecisionAvailable
+        self.hasMoreDigits = hasMoreDigits
         self.exponent = exponent
         self.content = content
     }
@@ -47,14 +47,14 @@ class DisplayData: Equatable {
     private convenience init(valid: String, negative: Bool) {
         self.init(isValidNumber: true,
                   isNegative: negative,
-                  higherPrecisionAvailable: false,
+                  hasMoreDigits: false,
                   exponent: nil,
                   content: valid)
     }
     private convenience init(invalid: String) {
         self.init(isValidNumber: false,
                   isNegative: false,
-                  higherPrecisionAvailable: false,
+                  hasMoreDigits: false,
                   exponent: nil,
                   content: invalid)
     }
@@ -112,7 +112,7 @@ class DisplayData: Equatable {
                 self.init(
                     isValidNumber: true,
                     isNegative: data.negative,
-                    higherPrecisionAvailable: data.hasMoreDigits,
+                    hasMoreDigits: data.hasMoreDigits,
                     exponent: nil,
                     content: floatString)
                     return
@@ -124,7 +124,7 @@ class DisplayData: Equatable {
                 self.init(
                     isValidNumber: true,
                     isNegative: data.negative,
-                    higherPrecisionAvailable: data.hasMoreDigits,
+                    hasMoreDigits: data.hasMoreDigits,
                     exponent: nil,
                     content: floatString)
                 return
@@ -146,7 +146,7 @@ class DisplayData: Equatable {
         scientificString = String(scientificString.prefix(availableDigits))
         self.init(isValidNumber: true,
                   isNegative: data.negative,
-                  higherPrecisionAvailable: true,
+                  hasMoreDigits: true,
                   exponent: "e\(data.exponent)",
                   content: scientificString)
     }

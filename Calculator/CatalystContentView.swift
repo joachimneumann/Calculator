@@ -32,7 +32,7 @@ struct CatalystContentView: View {
                 }
                 .transition(.move(edge: .bottom))
             }
-            Zoom(higherPrecisionAvailable: model.higherPrecisionAvailable, zoomed: $zoomed)
+            Zoom(hasMoreDigits: model.hasMoreDigits, zoomed: $zoomed)
         }
         .padding(.top, 28)
         .background(Configuration.shared.appBackgroundColor)

@@ -11,7 +11,7 @@ struct AllDigitsView: View {
     var model: BrainViewModel
     
     var body: some View {
-        if model.shortDisplayData.higherPrecisionAvailable {
+        if model.shortDisplayData.hasMoreDigits {
             let ad = model.allDigitsDisplayData
             ScrollView(.vertical, showsIndicators: true) {
                 Text(ad.string)

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Zoom: View {
-    var higherPrecisionAvailable: Bool
+    var hasMoreDigits: Bool
     @Binding var zoomed: Bool
     var body: some View {
         let symbolSize = Configuration.shared.displayFontSize*0.5
@@ -25,12 +25,12 @@ struct Zoom: View {
                     }
                     .font(Font.system(size: symbolSize, weight: .bold).monospacedDigit())
                     .foregroundColor(
-                        higherPrecisionAvailable ?
+                        hasMoreDigits ?
                         Configuration.shared.OpKeyProperties.color :
                             Color(white: 0.5))
                     .contentShape(Rectangle())
                     .padding(-0.1*symbolSize)
-                    .background(higherPrecisionAvailable ? Color.white : Color.clear)
+                    .background(hasMoreDigits ? Color.white : Color.clear)
                     .clipShape(Circle())
                     .onTapGesture {
                         withAnimation(.easeIn) {
@@ -51,6 +51,6 @@ struct Zoom: View {
 
 struct Zoom_Previews: PreviewProvider {
     static var previews: some View {
-        Zoom(higherPrecisionAvailable: true, zoomed: .constant(false))
+        Zoom(hasMoreDigits: true, zoomed: .constant(false))
     }
 }
