@@ -7,11 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA2576A626F8E6CE00CDD8C9 /* mpfr.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA2576A526F8E6CE00CDD8C9 /* mpfr.xcframework */; };
-		AA2576A726F8E6CE00CDD8C9 /* mpfr.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA2576A526F8E6CE00CDD8C9 /* mpfr.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AA2576B326F8F16600CDD8C9 /* NumberKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2576B226F8F16600CDD8C9 /* NumberKeys.swift */; };
-		AA3D6F7F26F8940800423E76 /* gmp.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA3D6F7E26F8940800423E76 /* gmp.xcframework */; };
-		AA3D6F8026F8940800423E76 /* gmp.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA3D6F7E26F8940800423E76 /* gmp.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AA40C44526F808D800119D4F /* CalculatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA40C44426F808D800119D4F /* CalculatorApp.swift */; };
 		AA40C44726F808D900119D4F /* CatalystContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA40C44626F808D800119D4F /* CatalystContentView.swift */; };
 		AA40C44926F808DA00119D4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA40C44826F808DA00119D4F /* Assets.xcassets */; };
@@ -27,6 +23,10 @@
 		AA95563C26FA0E360029D94C /* AddBackGround.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95563B26FA0E360029D94C /* AddBackGround.swift */; };
 		AA95564026FA1C180029D94C /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95563F26FA1C180029D94C /* Key.swift */; };
 		AA95564226FA471D0029D94C /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95564126FA471D0029D94C /* Brain.swift */; };
+		AAD9014526FF720900A7BCD5 /* gmp.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA3D6F7E26F8940800423E76 /* gmp.xcframework */; };
+		AAD9014626FF720900A7BCD5 /* gmp.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA3D6F7E26F8940800423E76 /* gmp.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AAD9014726FF720900A7BCD5 /* mpfr.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA2576A526F8E6CE00CDD8C9 /* mpfr.xcframework */; };
+		AAD9014826FF720900A7BCD5 /* mpfr.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA2576A526F8E6CE00CDD8C9 /* mpfr.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AAE87B9326FC5F42009E6D80 /* Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE87B9226FC5F42009E6D80 /* Display.swift */; };
 		AAE87B9526FC7302009E6D80 /* Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE87B9426FC7302009E6D80 /* Symbols.swift */; };
 		AAE87B9726FCB210009E6D80 /* GmpStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE87B9626FCB210009E6D80 /* GmpStack.swift */; };
@@ -35,14 +35,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		AAEDF1F026F848F1005C5E24 /* Embed Frameworks */ = {
+		AAD9014926FF720900A7BCD5 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				AA3D6F8026F8940800423E76 /* gmp.xcframework in Embed Frameworks */,
-				AA2576A726F8E6CE00CDD8C9 /* mpfr.xcframework in Embed Frameworks */,
+				AAD9014826FF720900A7BCD5 /* mpfr.xcframework in Embed Frameworks */,
+				AAD9014626FF720900A7BCD5 /* gmp.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -82,8 +82,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA3D6F7F26F8940800423E76 /* gmp.xcframework in Frameworks */,
-				AA2576A626F8E6CE00CDD8C9 /* mpfr.xcframework in Frameworks */,
+				AAD9014726FF720900A7BCD5 /* mpfr.xcframework in Frameworks */,
+				AAD9014526FF720900A7BCD5 /* gmp.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,7 +163,7 @@
 				AA40C43D26F808D800119D4F /* Sources */,
 				AA40C43E26F808D800119D4F /* Frameworks */,
 				AA40C43F26F808D800119D4F /* Resources */,
-				AAEDF1F026F848F1005C5E24 /* Embed Frameworks */,
+				AAD9014926FF720900A7BCD5 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

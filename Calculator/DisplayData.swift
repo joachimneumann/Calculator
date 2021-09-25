@@ -84,7 +84,7 @@ class DisplayData: Equatable {
             data.exponent <= availableDigits { /// display sifficiently large?
             var m = data.mantissa
             if m.count < data.exponent+1 {
-                for _ in 1..<data.exponent+1 {
+                for _ in 0..<(data.exponent+1-m.count) {
                     m += "0"
                 }
             }
