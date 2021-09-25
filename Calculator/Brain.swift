@@ -9,11 +9,13 @@ import Foundation
 
 class Brain {
     func shortDisplayData() -> DisplayData {
-        displayData(digits: Configuration.shared.digitsInSmallDisplay)
+        displayData(
+            digits: Configuration.shared.digitsInSmallDisplay)
     }
     
     func longDisplayData() -> DisplayData {
-        displayData(digits: 70000)
+        displayData(
+            digits: 10000) // TODO Bogus
     }
 
     private let debug = true
@@ -27,7 +29,7 @@ class Brain {
     
     private func displayData(digits: Int) -> DisplayData {
         if let last = gmpStack.last {
-            return last.displayString(digits: digits, limitExponent: true)
+            return last.displayString(digits: digits)
         } else {
             return DisplayData(invalid: "not a number")
         }

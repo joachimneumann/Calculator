@@ -17,9 +17,7 @@ struct AllDigitsView: View {
                 Text(text)
                     .foregroundColor(Color.white)
                     .font(Font.system(size: Configuration.shared.displayFontSize, weight: .thin).monospacedDigit())
-                    //.font(.custom("CourierNewPSMT", size: Configuration.shared.displayFontSize)).fontWeight(.ultraLight)
                     .multilineTextAlignment(.trailing)
-                //                    .padding(.trailing, 10)
             }
         }
     }
