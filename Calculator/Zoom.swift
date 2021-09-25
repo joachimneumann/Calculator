@@ -16,10 +16,6 @@ struct Zoom: View {
         HStack {
             VStack {
                 ZStack {
-                    Circle()
-                        .foregroundColor(higherPrecisionAvailable ? Color.white : Color.clear)
-                        .background(Color.clear)
-                        .padding(5)
                     Group {
                         if zoomed {
                             Image(systemName: "minus.circle.fill")
@@ -27,12 +23,15 @@ struct Zoom: View {
                             Image(systemName: "plus.circle.fill")
                         }
                     }
-                    /// TODO why does animation not work here?
-                    //.animation(.easeIn(duration: 2), value: zoomed)
                     .font(Font.system(size: symbolSize, weight: .bold).monospacedDigit())
-                    .foregroundColor(higherPrecisionAvailable ? Configuration.shared.OpKeyProperties.color : Configuration.shared.OpKeyProperties.textColor.opacity(0.5))
-                    .background(Color.clear)
+                    .foregroundColor(
+                        higherPrecisionAvailable ?
+                        Configuration.shared.OpKeyProperties.color :
+                            Color(white: 0.5))
                     .contentShape(Rectangle())
+                    .padding(-2)
+                    .background(higherPrecisionAvailable ? Color.white : Color.clear)
+                    .clipShape(Circle())
                     .onTapGesture {
                         withAnimation(.easeIn) {
                             zoomed.toggle()

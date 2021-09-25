@@ -10,18 +10,18 @@ import SwiftUI
 struct AllDigitsView: View {
     var model: BrainViewModel
     
-    func content() -> (string: String, font: Font, isScientific: Bool) {
+    func content() -> (string: String, font: Font, exponent: String?) {
         if model.shortDisplayString.count <= Configuration.shared.digitsInSmallDisplay {
             return (
                 model.shortDisplayString,
                 Font.custom("CourierNewPSMT", size: 20),
-                false)
+                nil)
         } else {
             let ad = model.allDigits
             return (
                 ad.string,
                 Font.custom("CourierNewPSMT", size: 20),
-                ad.isScientificNotation)
+                ad.exponent)
         }
     }
     
@@ -34,8 +34,8 @@ struct AllDigitsView: View {
                     .font(content.font)
                     .multilineTextAlignment(.trailing)
             }
-            if content.isScientific {
-                Text("exponent")
+            if let exponent = content.exponent {
+                Text(exponent)
                     .font(content.font)
             }
         }

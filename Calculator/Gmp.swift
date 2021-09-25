@@ -323,13 +323,6 @@ class Gmp: CustomDebugStringConvertible {
             /// the mantissa is of type "x."
             s += "0"
         }
-        
-        if exponent != 0 {
-            s += " e"
-            s += String(exponent)
-        }
-        
-        //print("getScientificString: \(s)")
         return s
     }
     
@@ -347,7 +340,7 @@ class Gmp: CustomDebugStringConvertible {
                 isValidNumber: true,
                 isNegative: false,
                 higherPrecisionAvailable: false,
-                isScientificNotation: false,
+                exponent: nil,
                 content: "0")
         }
         
@@ -381,7 +374,7 @@ class Gmp: CustomDebugStringConvertible {
                 isValidNumber: true,
                 isNegative: negative,
                 higherPrecisionAvailable: false,
-                isScientificNotation: false,
+                exponent: nil,
                 content: getIntegerString(charArray, exponent: exponent))
         }
         
@@ -392,7 +385,7 @@ class Gmp: CustomDebugStringConvertible {
                 isValidNumber: true,
                 isNegative: negative,
                 higherPrecisionAvailable: false,
-                isScientificNotation: false,
+                exponent: nil,
                 content: getZeroDotString(charArray, exponent: exponent, significantDigits: significantDigits))
         }
         // is it a floating point number, NOT starting with 0. ?
@@ -402,7 +395,7 @@ class Gmp: CustomDebugStringConvertible {
                 isValidNumber: true,
                 isNegative: negative,
                 higherPrecisionAvailable: false,
-                isScientificNotation: false,
+                exponent: nil,
                 content: getXDotString(charArray, exponent: exponent, significantDigits: significantDigits))
         }
         
@@ -422,7 +415,7 @@ class Gmp: CustomDebugStringConvertible {
             isValidNumber: true,
             isNegative: negative,
             higherPrecisionAvailable: significantDigits > availableDigits,
-            isScientificNotation: true,
+            exponent: String(exponent),
             content: getScientificString(charArray, exponent: exponent, significantDigits: significantDigits, availableDigits: availableDigits))
     }
     

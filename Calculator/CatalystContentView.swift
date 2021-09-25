@@ -34,7 +34,6 @@ struct CatalystContentView: View {
             }
             Zoom(higherPrecisionAvailable: model.higherPrecisionAvailable, zoomed: $zoomed)
         }
-        .background(Color.yellow)
         .padding(.top, 28)
         .background(Configuration.shared.appBackgroundColor)
         .ignoresSafeArea()
