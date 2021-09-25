@@ -243,7 +243,7 @@ class Gmp {
                 mantissa += x3.withCString { String(format: "%s", $0) }
             }
         }
-        while mantissa.last == "0" && mantissa.count > exponent {
+        while mantissa.last == "0" {
             mantissa.removeLast()
         }
 

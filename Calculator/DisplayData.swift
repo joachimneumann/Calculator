@@ -80,9 +80,15 @@ class DisplayData: Equatable {
         if data.negative { availableDigits -= 1 }
         
         if data.exponent >= 0 &&                      /// number >= 0?
-            data.mantissa.count == data.exponent+1 &&   /// no digits after the dot?
+            data.mantissa.count <= data.exponent+1 &&   /// no digits after the dot?
             data.exponent <= availableDigits { /// display sifficiently large?
-            self.init(valid: data.mantissa, negative: data.negative)
+            var m = data.mantissa
+            if m.count < data.exponent+1 {
+                for _ in 1..<data.exponent+1 {
+                    m += "0"
+                }
+            }
+            self.init(valid: m, negative: data.negative)
             return
         }
         
