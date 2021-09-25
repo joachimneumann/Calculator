@@ -23,7 +23,6 @@ extension String {
 
 var dummyUnsignedLongInt: CUnsignedLong = 0
 
-
 func toDouble(me: Gmp) -> Double {
     return mpfr_get_d(&me.mpfr, MPFR_RNDN)
 }
@@ -181,18 +180,29 @@ func isValidGmpString(s: String) -> Bool {
     return mpfr_set_str (&temp_mpfr, s, 10, MPFR_RNDN) == 0
 }
 
-class Gmp: CustomDebugStringConvertible {
+class Gmp {
     // Swift requires me to initialize the mpfr_t struc
     // I do this with zeros. The struct will be initialized correctly in mpfr_init2
-    fileprivate var mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &dummyUnsignedLongInt)
+    var mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &dummyUnsignedLongInt)
     
     // there is only ine initialzer that takes a string.
     // Implementing an initializer that accepts a double which is created from a string leads to a loss of precision.
     init(_ s: String) {
         let s1 = s.replacingOccurrences(of: ",", with: ".")
-        mpfr_init2 (&mpfr, 331146) // TODO precision
+        mpfr_init2 (&mpfr, 1000)//331146) // TODO precision
         mpfr_set_str (&mpfr, s1, 10, MPFR_RNDN)
     }
+    
+    var NaN: Bool {
+        mpfr_nan_p(&mpfr) != 0
+    }
+    var inf: Bool {
+        mpfr_inf_p(&mpfr) != 0
+    }
+    var isZero: Bool {
+        mpfr_zero_p(&mpfr) != 0
+    }
+    
     
     func copy() -> Gmp {
         let ret = Gmp("0.0")
@@ -201,30 +211,57 @@ class Gmp: CustomDebugStringConvertible {
     }
     
     var debugDescription: String {
-        return displayString(digits: 10).string
+        return "not implemented"//displayString(digits: 10).string
     }
     
+    struct Data {
+        let mantissa: String
+        let exponent: Int
+        let negative: Bool
+        let hasMoreDigits: Bool
+    }
     
-    func printCharArray(_ a: Array<CChar>) {
-        var s1 = "["
-        var s2 = "["
-        for c in a {
-            s1 += String(format: "%3i,", UInt8(c))
+    func data(length: Int) -> Data {
+        var exponent: mpfr_exp_t = 0
+        var charArray: Array<CChar> = Array(repeating: 0, count: length+5)
+        mpfr_get_str(&charArray, &exponent, 10, length+5, &mpfr, MPFR_RNDN)
+
+        var negative: Bool
+        if charArray[0] == 45 {
+            charArray.removeFirst()
+            negative = true
+        } else {
+            negative = false
+        }
+
+        var mantissa = ""
+        for c in charArray {
             if c != 0 {
                 let x1 = UInt8(c)
                 let x2 = UnicodeScalar(x1)
                 let x3 = String(x2)
-                s2 += x3.withCString { String(format: "%3s,", $0) }
-            } else {
-                s2 += "  -,"
+                mantissa += x3.withCString { String(format: "%s", $0) }
             }
         }
-        s1 = String(s1.dropLast())
-        s2 = String(s2.dropLast())
-        s1 += "]"
-        s2 += "]"
-        print(s1)
-        print(s2)
+        while mantissa.last == "0" && mantissa.count > exponent {
+            mantissa.removeLast()
+        }
+
+        //        /// number of significant digits
+        //        var lastSignificantIndex = charArray.count-1
+        //        while (charArray[lastSignificantIndex] == 0 || charArray[lastSignificantIndex] == 48) && lastSignificantIndex > 0 { lastSignificantIndex -= 1 }
+        //        let significantDigits = lastSignificantIndex + 1
+        //        print("significantDigits=\(significantDigits)")
+
+        exponent = exponent - 1
+        var hasMoreDigits = false
+        if mantissa.count > length {
+            // this is possible, because we added 5 at the top of this function
+            hasMoreDigits = true
+            mantissa = String(mantissa.prefix(length))
+        }
+        return Data(mantissa: mantissa, exponent: exponent, negative: negative, hasMoreDigits: hasMoreDigits)
+        //return Data(mantissa: "123", exponent: 2, negative: false)
     }
     
     func getIntegerString(_ a: Array<CChar>, exponent: Int) -> String {
@@ -277,7 +314,7 @@ class Gmp: CustomDebugStringConvertible {
             }
             l += 1
         }
-
+        
         s += ","
         
         l = 0
@@ -299,125 +336,127 @@ class Gmp: CustomDebugStringConvertible {
         exponent: Int,
         significantDigits: Int,
         availableDigits: Int) -> String {
-        var s = ""
-        
-        /// first digit
-        let x1 = UInt8(a[0])
-        let x2 = UnicodeScalar(x1)
-        let x3 = String(x2)
-        s += x3.withCString { String(format: "%s", $0) }
-        s += ","
-        
-        var l = 0
-        for c in a {
-            if l > 0 && c != 0 && l < min(significantDigits, availableDigits) {
-                let x1 = UInt8(c)
-                let x2 = UnicodeScalar(x1)
-                let x3 = String(x2)
-                s += x3.withCString { String(format: "%s", $0) }
+            var s = ""
+            
+            /// first digit
+            let x1 = UInt8(a[0])
+            let x2 = UnicodeScalar(x1)
+            let x3 = String(x2)
+            s += x3.withCString { String(format: "%s", $0) }
+            s += ","
+            
+            var l = 0
+            for c in a {
+                if l > 0 && c != 0 && l < min(significantDigits, availableDigits) {
+                    let x1 = UInt8(c)
+                    let x2 = UnicodeScalar(x1)
+                    let x3 = String(x2)
+                    s += x3.withCString { String(format: "%s", $0) }
+                }
+                l += 1
             }
-            l += 1
+            
+            if s.count == 2 {
+                /// the mantissa is of type "x."
+                s += "0"
+            }
+            return s
         }
-        
-        if s.count == 2 {
-            /// the mantissa is of type "x."
-            s += "0"
-        }
-        return s
-    }
     
-    func displayString(digits: Int) -> DisplayData {
-        if mpfr_nan_p(&mpfr) != 0 {
-            return DisplayData(invalid: "not a real number")
-        }
-        if mpfr_inf_p(&mpfr) != 0 {
-            return DisplayData(invalid: "(almost?) infinity")
-        }
-        
-        // set negative 0 to 0
-        if mpfr_zero_p(&mpfr) != 0 {
-            return DisplayData(
-                isValidNumber: true,
-                isNegative: false,
-                higherPrecisionAvailable: false,
-                exponent: nil,
-                content: "0")
-        }
-        
-        let charArrayLength = digits + 5 // some extra bytes for debugging
-        var exponent: mpfr_exp_t = 0
-        var charArray: Array<CChar> = Array(repeating: 0, count: charArrayLength)
-        mpfr_get_str(&charArray, &exponent, 10, charArrayLength, &mpfr, MPFR_RNDN)
-        
-        exponent -= 1 /// This gives the actual power 10 exponent
-        
-        // negative?
-        var negative = false
-        if charArray[0] == 45 {
-            charArray.removeFirst()
-            negative = true
-        }
-        
-        //print("exponent=\(exponent) \(negative ? "negative" : "")")
-        //printCharArray(charArray)
-        
-        // find last significant digit
-        var lastSignificantIndex = charArray.count-1
-        while (charArray[lastSignificantIndex] == 0 || charArray[lastSignificantIndex] == 48) && lastSignificantIndex > 0 { lastSignificantIndex -= 1 }
-        let significantDigits = lastSignificantIndex + 1
-        //print("significantDigits=\(significantDigits)")
-        
-        // is it an Integer?
-        var availableDigits = negative ? digits-1 : digits
-        if exponent >= 0 && exponent <= availableDigits && significantDigits <= exponent+1 {
-            return DisplayData(
-                isValidNumber: true,
-                isNegative: negative,
-                higherPrecisionAvailable: false,
-                exponent: nil,
-                content: getIntegerString(charArray, exponent: exponent))
-        }
-        
-        // is it a floating point number, starting with 0. ?
-        availableDigits = negative ? digits-2 : digits-1 /// 9 minus one for "0." minus? negative
-        if exponent < 0 && significantDigits - exponent <= availableDigits {
-            return DisplayData(
-                isValidNumber: true,
-                isNegative: negative,
-                higherPrecisionAvailable: false,
-                exponent: nil,
-                content: getZeroDotString(charArray, exponent: exponent, significantDigits: significantDigits))
-        }
-        // is it a floating point number, NOT starting with 0. ?
-        availableDigits = negative ? digits-1 : digits
-        if exponent >= 0 && exponent < availableDigits-2 && significantDigits <= availableDigits {
-            return DisplayData(
-                isValidNumber: true,
-                isNegative: negative,
-                higherPrecisionAvailable: false,
-                exponent: nil,
-                content: getXDotString(charArray, exponent: exponent, significantDigits: significantDigits))
-        }
-        
-        
-        /// number that can be displayed in scientific notation without loss of precision?
-        availableDigits = digits
-        availableDigits -= 1 // for "e"
-        availableDigits -= 1 // for ","
-        if negative { availableDigits -= 1 }
-        if exponent < 0 { availableDigits -= 1 }
-        if exponent != 0 {
-            let doubleExponent = Double(abs(exponent))
-            let log10e = Int(floor(log10(doubleExponent))) + 1
-            availableDigits -= log10e
-        }
-        return DisplayData(
-            isValidNumber: true,
-            isNegative: negative,
-            higherPrecisionAvailable: significantDigits > availableDigits,
-            exponent: String(exponent),
-            content: getScientificString(charArray, exponent: exponent, significantDigits: significantDigits, availableDigits: availableDigits))
-    }
+    //    func displayString(digits: Int) -> DisplayData {
+    //        if mpfr_nan_p(&mpfr) != 0 {
+    //            return DisplayData(invalid: "not a real number")
+    //        }
+    //        if mpfr_inf_p(&mpfr) != 0 {
+    //            return DisplayData(invalid: "(almost?) infinity")
+    //        }
+    //
+    //        // set negative 0 to 0
+    //        if mpfr_zero_p(&mpfr) != 0 {
+    //            return DisplayData(
+    //                isValidNumber: true,
+    //                isNegative: false,
+    //                higherPrecisionAvailable: false,
+    //                exponent: nil,
+    //                content: "0")
+    //        }
+    //
+    //        //let x = GmpAsArray(self)
+    //        let x = MpfrAsArray(mpfr)
+    //        let charArrayLength = digits + 5 // some extra bytes for debugging
+    //        var exponent: mpfr_exp_t = 0
+    //        var charArray: Array<CChar> = Array(repeating: 0, count: charArrayLength)
+    //        mpfr_get_str(&charArray, &exponent, 10, charArrayLength, &mpfr, MPFR_RNDN)
+    //
+    //        exponent -= 1 /// This gives the actual power 10 exponent
+    //
+    //        // negative?
+    //        var negative = false
+    //        if charArray[0] == 45 {
+    //            charArray.removeFirst()
+    //            negative = true
+    //        }
+    //
+    //        //print("exponent=\(exponent) \(negative ? "negative" : "")")
+    //        //printCharArray(charArray)
+    //
+    //        // find last significant digit
+    //        var lastSignificantIndex = charArray.count-1
+    //        while (charArray[lastSignificantIndex] == 0 || charArray[lastSignificantIndex] == 48) && lastSignificantIndex > 0 { lastSignificantIndex -= 1 }
+    //        let significantDigits = lastSignificantIndex + 1
+    //        //print("significantDigits=\(significantDigits)")
+    //
+    //        // is it an Integer?
+    //        var availableDigits = negative ? digits-1 : digits
+    //        if exponent >= 0 && exponent <= availableDigits && significantDigits <= exponent+1 {
+    //            return DisplayData(
+    //                isValidNumber: true,
+    //                isNegative: negative,
+    //                higherPrecisionAvailable: false,
+    //                exponent: nil,
+    //                content: getIntegerString(charArray, exponent: exponent))
+    //        }
+    //
+    //        // is it a floating point number, starting with 0. ?
+    //        availableDigits = negative ? digits-2 : digits-1 /// 9 minus one for "0." minus? negative
+    //        if exponent < 0 && significantDigits - exponent <= availableDigits {
+    //            return DisplayData(
+    //                isValidNumber: true,
+    //                isNegative: negative,
+    //                higherPrecisionAvailable: false,
+    //                exponent: nil,
+    //                content: getZeroDotString(charArray, exponent: exponent, significantDigits: significantDigits))
+    //        }
+    //        // is it a floating point number, NOT starting with 0. ?
+    //        availableDigits = negative ? digits-1 : digits
+    //        if exponent >= 0 && exponent < availableDigits-2 && significantDigits <= availableDigits {
+    //            return DisplayData(
+    //                isValidNumber: true,
+    //                isNegative: negative,
+    //                higherPrecisionAvailable: false,
+    //                exponent: nil,
+    //                content: getXDotString(charArray, exponent: exponent, significantDigits: significantDigits))
+    //        }
+    //
+    //
+    //        /// number that can be displayed in scientific notation without loss of precision?
+    //        availableDigits = digits
+    //        availableDigits -= 1 // for "e"
+    //        availableDigits -= 1 // for ","
+    //        if negative { availableDigits -= 1 }
+    //        if exponent < 0 { availableDigits -= 1 }
+    //        if exponent != 0 {
+    //            let doubleExponent = Double(abs(exponent))
+    //            let log10e = Int(floor(log10(doubleExponent))) + 1
+    //            availableDigits -= log10e
+    //        }
+    //        return DisplayData(
+    //            isValidNumber: true,
+    //            isNegative: negative,
+    //            higherPrecisionAvailable: significantDigits > availableDigits,
+    //            exponent: String(exponent),
+    //            content: getScientificString(charArray, exponent: exponent, significantDigits: significantDigits, availableDigits: availableDigits))
+    //    }
     
     func isNull() -> Bool {
         return mpfr_cmp_d(&mpfr, 0.0) == 0
@@ -435,6 +474,6 @@ class Gmp: CustomDebugStringConvertible {
 
 extension Gmp: Equatable {
     static func ==(lhs: Gmp, rhs: Gmp) -> Bool {
-        return lhs.displayString(digits: 0000) == rhs.displayString(digits: 9999)
+        DisplayData(gmp: lhs, digits: 10000-1) == DisplayData(gmp: rhs, digits: 10000-1)
     }
 }

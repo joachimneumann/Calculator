@@ -21,7 +21,7 @@ struct GmpStack {
     mutating func modifyLast(withOp op: (Gmp) -> ()) {
         op(array[array.count-1])
     }
-    mutating func replaceLast(withOp op: () -> (Gmp)) {
+    mutating func replaceLastWithConstant(withOp op: () -> (Gmp)) {
         array[array.count-1] = op()
     }
     mutating func push(withOp op: () -> (Gmp)) {

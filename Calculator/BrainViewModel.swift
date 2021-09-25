@@ -9,7 +9,7 @@ import Foundation
 
 class BrainViewModel: ObservableObject {
     @Published private(set) var shortDisplayString: String = ""
-    @Published private(set) var shortDisplayData: DisplayData = DisplayData(invalid: "invalid")
+    @Published private(set) var shortDisplayData: DisplayData = DisplayData()
     @Published private(set) var higherPrecisionAvailable: Bool = false
 
     var allDigits: DisplayData { brain.allDigitsDisplayData }
@@ -30,19 +30,6 @@ class BrainViewModel: ObservableObject {
         }
     }
     
-    func secretOperation(_ op: String) {
-        brain.operation(op)
-    }
-
-    func operation(_ op: String) {
-        if shortDisplayData.isValidNumber {
-            brain.operation(op)
-            shortDisplayData = brain.shortDisplayData()
-            shortDisplayString = shortDisplayData.string
-            higherPrecisionAvailable = shortDisplayData.higherPrecisionAvailable
-        }
-    }
-
     func zero() {
         if shortDisplayData.isValidNumber {
             brain.addDigitToNumberString("0")
@@ -75,6 +62,20 @@ class BrainViewModel: ObservableObject {
         }
     }
     
+    func secretOperation(_ op: String) {
+        brain.operation(op)
+    }
+
+    func operation(_ op: String) {
+        if shortDisplayData.isValidNumber {
+            brain.operation(op)
+            shortDisplayData = brain.shortDisplayData()
+            shortDisplayString = shortDisplayData.string
+            higherPrecisionAvailable = shortDisplayData.higherPrecisionAvailable
+            trailingZeroesString = nil
+        }
+    }
+
     func reset() {
         brain.reset()
         trailingZeroesString = nil

@@ -15,23 +15,23 @@ class Brain {
     
     var allDigitsDisplayData: DisplayData {
         displayData(
-            digits: 10000-1) // TODO Bogus
+            digits: 10) // TODO Bogus
     }
-
+    
     private let debug = true
     private var numberString: String? = "0"
     
     private var twoParameterOperationStack = TwoParameterOperationStack()
     private var gmpStack = GmpStack()
     
-    private var waitingForNumber = false
+    private var isTyping = false
     
     
     private func displayData(digits: Int) -> DisplayData {
         if let last = gmpStack.last {
-            return last.displayString(digits: digits)
+            return DisplayData(gmp: last, digits: digits)
         } else {
-            return DisplayData(invalid: "not a number")
+            return DisplayData()
         }
     }
     
@@ -56,19 +56,32 @@ class Brain {
                 }
             }
         }
-        if waitingForNumber || gmpStack.count == 0 {
-            gmpStack.push(Gmp(numberString!))
-            waitingForNumber = false
-        } else {
-            gmpStack.replaceLast(with: Gmp(numberString!))
+        guard gmpStack.count >= 0 else {
+            print("### ERROR")
+            return
         }
-        print("after addDigi \(digit): gmps: \(gmpStack.count), ops: \(twoParameterOperationStack.count) numberString: \(numberString ?? "empty") w: \(waitingForNumber) )") //gmp.peek: \(gmpStack.peek
+        guard numberString != nil else {
+            print("### ERROR")
+            return
+        }
+        if isTyping {
+            gmpStack.replaceLast(with: Gmp(numberString!))
+        } else {
+            gmpStack.push(Gmp(numberString!))
+            isTyping = true
+        }
+        print("after add \"\(digit)\": " +
+              "gmps: \(gmpStack.count), " +
+              "ops: \(twoParameterOperationStack.count) " +
+              "numberString: \(numberString ?? "empty") " +
+              "typing: \(isTyping)")
     }
     
     func reset() {
         gmpStack.clean()
         twoParameterOperationStack.clean()
         numberString = nil
+        isTyping = false
         addDigitToNumberString("0")
     }
     
@@ -76,8 +89,8 @@ class Brain {
         reset()
         //test()
     }
-
-        
+    
+    
     func executeEverythingUpTo(priority maxPriority: Int) {
         var pendingOperations = twoParameterOperationStack.count >= 1
         var sufficientNumbers = gmpStack.count >= 2
@@ -129,30 +142,38 @@ class Brain {
         numberString = nil
         if symbol == "C" {
             reset()
-            waitingForNumber = false
+            isTyping = false
         } else if symbol == "=" {
-            if !waitingForNumber {
-                executeEverythingUpTo(priority: -100)
-                waitingForNumber = false
-            }
+            executeEverythingUpTo(priority: -100)
+            isTyping = false
         } else if symbol == "%" {
-            if !waitingForNumber {
+            if isTyping {
+                percentage()
+                isTyping = false
+            } else {
                 percentage()
             }
         } else if let op = inplaceDict[symbol] {
-            if !waitingForNumber {
+            if isTyping {
                 gmpStack.modifyLast(withOp: op)
-                waitingForNumber = false
+                isTyping = false
+            } else {
+                gmpStack.modifyLast(withOp: op)
             }
         } else if let op = constDict[symbol] {
-            if waitingForNumber {
-                gmpStack.push(withOp: op)
+            if isTyping {
+                gmpStack.replaceLastWithConstant(withOp: op)
+                isTyping = false
             } else {
-                gmpStack.replaceLast(withOp: op)
+                gmpStack.push(withOp: op)
+                isTyping = false
             }
-            waitingForNumber = false
         } else if let op = twoParameterOperations[symbol] {
-            if waitingForNumber {
+            if isTyping {
+                executeEverythingUpTo(priority: op.priority)
+                twoParameterOperationStack.push(op)
+                isTyping = false
+            } else {
                 // The user seems to have changed his mind
                 // Drop the last operation and replace it with this one
                 if twoParameterOperationStack.count > 0 {
@@ -160,16 +181,12 @@ class Brain {
                     twoParameterOperationStack.removeLast()
                     twoParameterOperationStack.push(op)
                 }
-            } else {
-                executeEverythingUpTo(priority: op.priority)
-                twoParameterOperationStack.push(op)
-                waitingForNumber = true
             }
         }
-        print("after operation \(symbol): gmps: \(gmpStack.count), ops: \(twoParameterOperationStack.count) numberString: \(numberString ?? "empty") w: \(waitingForNumber) ")
+        print("after operation \(symbol): gmps: \(gmpStack.count), ops: \(twoParameterOperationStack.count) numberString: \(numberString ?? "empty") w: \(isTyping) ")
     }
     
-    fileprivate var inplaceDict: Dictionary <String, (Gmp) -> ()> = [
+    var inplaceDict: Dictionary <String, (Gmp) -> ()> = [
         "+/-": changeSign,
         "oneOverX": rez,
         "x!": fac,
@@ -190,14 +207,14 @@ class Brain {
         "10^x": pow_10_x
     ]
     
-    fileprivate var constDict: Dictionary <String, () -> (Gmp)> = [
+    var constDict: Dictionary <String, () -> (Gmp)> = [
         "π": π,
         "e": e,
         "γ": γ,
     ]
     
     
-    fileprivate let twoParameterOperations: Dictionary <String, TwoParameterOperation> = [
+    let twoParameterOperations: Dictionary <String, TwoParameterOperation> = [
         "+": TwoParameterOperation(add, 1),
         "-": TwoParameterOperation(min, 1),
         "x": TwoParameterOperation(mul, 2),
@@ -206,96 +223,96 @@ class Brain {
         "pow_x_y": TwoParameterOperation(pow_x_y, 3),
         "x↑↑y": TwoParameterOperation(x_double_up_arrow_y, 3),
     ]
-
-
-
-private func test() {
     
-    // 1 / 10
-    addDigitToNumberString("1")
-    addDigitToNumberString("0")
-    operation("oneOverX")
-    assert(gmpStack.last! == Gmp("0.1"))
-    addDigitToNumberString("1")
-    assert(gmpStack.last! == Gmp("1"))
-    addDigitToNumberString("6")
-    assert(gmpStack.last! == Gmp("16"))
-    operation("oneOverX")
-    assert(gmpStack.last! == Gmp("0.0625"))
     
-    // clear
-    reset()
-    assert(gmpStack.count == 1)
-    assert(twoParameterOperationStack.count == 0)
     
-    // 1+2+5+2= + 1/4 =
-    addDigitToNumberString("1")
-    assert(gmpStack.last == Gmp("1"))
-    operation("+")
-    assert(gmpStack.last == Gmp("1"))
-    addDigitToNumberString("2")
-    operation("+")
-    assert(gmpStack.last == Gmp("3"))
-    addDigitToNumberString("5")
-    operation("+")
-    assert(gmpStack.last == Gmp("8"))
-    addDigitToNumberString("2")
-    operation("=")
-    assert(gmpStack.last == Gmp("10"))
-    operation("+")
-    assert(gmpStack.last == Gmp("10"))
-    addDigitToNumberString("4")
-    operation("oneOverX")
-    assert(gmpStack.last == Gmp("0.25"))
-    operation("=")
-    assert(gmpStack.last == Gmp("10.25"))
+    private func test() {
+        
+        // 1 / 10
+        addDigitToNumberString("1")
+        addDigitToNumberString("0")
+        operation("oneOverX")
+        assert(gmpStack.last! == Gmp("0.1"))
+        addDigitToNumberString("1")
+        assert(gmpStack.last! == Gmp("1"))
+        addDigitToNumberString("6")
+        assert(gmpStack.last! == Gmp("16"))
+        operation("oneOverX")
+        assert(gmpStack.last! == Gmp("0.0625"))
+        
+        // clear
+        reset()
+        assert(gmpStack.count == 1)
+        assert(twoParameterOperationStack.count == 0)
+        
+        // 1+2+5+2= + 1/4 =
+        addDigitToNumberString("1")
+        assert(gmpStack.last == Gmp("1"))
+        operation("+")
+        assert(gmpStack.last == Gmp("1"))
+        addDigitToNumberString("2")
+        operation("+")
+        assert(gmpStack.last == Gmp("3"))
+        addDigitToNumberString("5")
+        operation("+")
+        assert(gmpStack.last == Gmp("8"))
+        addDigitToNumberString("2")
+        operation("=")
+        assert(gmpStack.last == Gmp("10"))
+        operation("+")
+        assert(gmpStack.last == Gmp("10"))
+        addDigitToNumberString("4")
+        operation("oneOverX")
+        assert(gmpStack.last == Gmp("0.25"))
+        operation("=")
+        assert(gmpStack.last == Gmp("10.25"))
+        
+        // 1+2*4=
+        reset()
+        addDigitToNumberString("1")
+        assert(gmpStack.last == Gmp("1"))
+        operation("+")
+        addDigitToNumberString("2")
+        operation("x")
+        assert(gmpStack.last == Gmp("2"))
+        addDigitToNumberString("4")
+        assert(gmpStack.last == Gmp("4"))
+        operation("=")
+        assert(gmpStack.last == Gmp("9"))
+        
+        reset()
+        addDigitToNumberString("1")
+        assert(gmpStack.last == Gmp("1"))
+        operation("+")
+        addDigitToNumberString("2")
+        operation("x")
+        assert(gmpStack.last == Gmp("2"))
+        addDigitToNumberString("4")
+        assert(gmpStack.last == Gmp("4"))
+        operation("+")
+        assert(gmpStack.last == Gmp("9"))
+        addDigitToNumberString("1")
+        addDigitToNumberString("0")
+        addDigitToNumberString("0")
+        assert(gmpStack.last == Gmp("100"))
+        // User: =
+        operation("=")
+        assert(gmpStack.last == Gmp("109"))
+        
+        reset()
+        operation("π")
+        operation("x")
+        addDigitToNumberString("2")
+        operation("=")
+        
+        reset()
+        addDigitToNumberString("2")
+        operation("pow_x_y")
+        addDigitToNumberString("1")
+        addDigitToNumberString("0")
+        operation("=")
+        assert(gmpStack.last == Gmp("1024"))
+        reset()
+    }
     
-    // 1+2*4=
-    reset()
-    addDigitToNumberString("1")
-    assert(gmpStack.last == Gmp("1"))
-    operation("+")
-    addDigitToNumberString("2")
-    operation("x")
-    assert(gmpStack.last == Gmp("2"))
-    addDigitToNumberString("4")
-    assert(gmpStack.last == Gmp("4"))
-    operation("=")
-    assert(gmpStack.last == Gmp("9"))
-    
-    reset()
-    addDigitToNumberString("1")
-    assert(gmpStack.last == Gmp("1"))
-    operation("+")
-    addDigitToNumberString("2")
-    operation("x")
-    assert(gmpStack.last == Gmp("2"))
-    addDigitToNumberString("4")
-    assert(gmpStack.last == Gmp("4"))
-    operation("+")
-    assert(gmpStack.last == Gmp("9"))
-    addDigitToNumberString("1")
-    addDigitToNumberString("0")
-    addDigitToNumberString("0")
-    assert(gmpStack.last == Gmp("100"))
-    // User: =
-    operation("=")
-    assert(gmpStack.last == Gmp("109"))
-    
-    reset()
-    operation("π")
-    operation("x")
-    addDigitToNumberString("2")
-    operation("=")
-    
-    reset()
-    addDigitToNumberString("2")
-    operation("pow_x_y")
-    addDigitToNumberString("1")
-    addDigitToNumberString("0")
-    operation("=")
-    assert(gmpStack.last == Gmp("1024"))
-    reset()
-}
-
 }
