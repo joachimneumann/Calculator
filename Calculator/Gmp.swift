@@ -98,22 +98,6 @@ func abs(_ me: Gmp) {
     mpfr_abs(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
 }
 
-func π() -> Gmp {
-    let ret = Gmp("0.0")
-    mpfr_const_pi(&ret.mpfr, MPFR_RNDN)
-    return ret
-}
-func e() -> Gmp {
-    let one = Gmp("1.0")
-    pow_e_x(one)
-    return one
-}
-func γ() -> Gmp {
-    let ret = Gmp("0.0")
-    mpfr_const_pi(&ret.mpfr, MPFR_RNDN)
-    return ret
-}
-
 func sqrt(_ me: Gmp) {
     mpfr_sqrt(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
 }
@@ -193,6 +177,22 @@ class Gmp {
         mpfr_set_str (&mpfr, s1, 10, MPFR_RNDN)
     }
     
+    static func π() -> Gmp {
+        let ret = Gmp("0.0")
+        mpfr_const_pi(&ret.mpfr, MPFR_RNDN)
+        return ret
+    }
+    static func e() -> Gmp {
+        let one = Gmp("1.0")
+        pow_e_x(one)
+        return one
+    }
+    static func γ() -> Gmp {
+        let ret = Gmp("0.0")
+        mpfr_const_pi(&ret.mpfr, MPFR_RNDN)
+        return ret
+    }
+
     var NaN: Bool {
         mpfr_nan_p(&mpfr) != 0
     }

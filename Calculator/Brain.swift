@@ -198,9 +198,9 @@ class Brain {
     ]
     
     var constDict: Dictionary <String, () -> (Gmp)> = [
-        "π": π,
-        "e": e,
-        "γ": γ,
+        "π": Gmp.π,
+        "e": Gmp.e,
+        "γ": Gmp.γ,
     ]
     
     
