@@ -120,7 +120,7 @@ struct Pow: View {
                 let s = min(geo.size.width, geo.size.height)
                 Text(base)
                     .font(.system(size: s*0.4))
-                    .offset(x: 0.4*s, y: 0.25*s)
+                    .offset(x: (0.4-additionalXOffset)*s, y: 0.25*s)
                 Text(exponent)
                     .font(.system(size: s*0.22))
                     .offset(x: (0.62+additionalXOffset)*s, y: 0.25*s)

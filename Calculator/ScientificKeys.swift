@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ScientificKeys: View {
-    let model: BrainViewModel
+    @ObservedObject var model: BrainViewModel
     let size: CGSize
     let verticalSpace: CGFloat
     let horizontalSpace: CGFloat
@@ -31,7 +31,7 @@ struct ScientificKeys: View {
             }
             HStack(spacing: horizontalSpace) {
                 Key("2nd")
-                    .scientific(size: size) // missing
+                    .scientific(size: size) { model.secondKeys.toggle() }
                 Key("x^2")
                     .scientific(size: size) { model.operation("x^2") }
                 Key("x^3")
@@ -60,12 +60,12 @@ struct ScientificKeys: View {
             HStack(spacing: horizontalSpace) {
                 Key("x!")
                     .scientific(size: size) { model.operation("x!") }
-                Key("sin")
-                    .scientific(size: size) { model.operation("sin") }
-                Key("cos")
-                    .scientific(size: size) { model.operation("cos") }
-                Key("tan")
-                    .scientific(size: size) { model.operation("tan") }
+                Key(model.secondKeys ? "asin" : "sin")
+                    .scientific(size: size) { model.operation(model.secondKeys ? "asin" : "sin") }
+                Key(model.secondKeys ? "acos" : "cos")
+                    .scientific(size: size) { model.operation(model.secondKeys ? "acos" : "cos") }
+                Key(model.secondKeys ? "atan" : "tan")
+                    .scientific(size: size) { model.operation(model.secondKeys ? "atan" : "tan") }
                 Key("e")
                     .scientific(size: size) { model.operation("e") }
                 Key("EE")
@@ -79,12 +79,12 @@ struct ScientificKeys: View {
             HStack(spacing: horizontalSpace) {
                 Key("Rad")
                     .scientific(size: size) // missing
-                Key("sinh")
-                    .scientific(size: size) { model.operation("sinh") }
-                Key("cosh")
-                    .scientific(size: size) { model.operation("cosh") }
-                Key("tanh")
-                    .scientific(size: size) { model.operation("tanh") }
+                Key(model.secondKeys ? "asinh" : "sinh")
+                    .scientific(size: size) { model.operation(model.secondKeys ? "asinh" : "sinh") }
+                Key(model.secondKeys ? "acosh" : "cosh")
+                    .scientific(size: size) { model.operation(model.secondKeys ? "acosh" : "cosh") }
+                Key(model.secondKeys ? "atanh" : "tanh")
+                    .scientific(size: size) { model.operation(model.secondKeys ? "atanh" : "tanh") }
                 Key("π")
                     .scientific(size: size) { model.operation("π") }
                 Key("Rand")

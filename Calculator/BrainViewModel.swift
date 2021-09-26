@@ -11,6 +11,8 @@ class BrainViewModel: ObservableObject {
     @Published private(set) var shortDisplayString: String = ""
     @Published private(set) var shortDisplayData: DisplayData = DisplayData()
 
+    @Published var secondKeys: Bool = false
+    
     var allDigitsDisplayData: DisplayData { brain.allDigitsDisplayData }
     private let brain = Brain()
     private var trailingZeroesString: String?
