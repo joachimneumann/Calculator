@@ -62,7 +62,7 @@ class Brain {
             return
         }
         if expectingNumber {
-            gmpStack.push(Gmp(numberString!))
+            gmpStack.append(Gmp(numberString!))
             expectingNumber = false
         } else {
             gmpStack.replaceLast(with: Gmp(numberString!))
@@ -75,8 +75,8 @@ class Brain {
     }
     
     func reset() {
-        gmpStack.clean()
-        gmpStack.push(Gmp("0"))
+        gmpStack.removeAll()
+        gmpStack.append(Gmp("0"))
         twoParameterOperationStack.clean()
         numberString = nil
         expectingNumber = false
@@ -99,10 +99,10 @@ class Brain {
         }
         while pendingOperations && sufficientNumbers && lastOperationNotTooHighPriority {
             let op = twoParameterOperationStack.pop()!
-            let gmp1 = gmpStack.pop()!
-            let gmp2 = gmpStack.pop()!
+            let gmp1 = gmpStack.popLast()!
+            let gmp2 = gmpStack.popLast()!
             let result = op.op(gmp2, gmp1)
-            gmpStack.push(result)
+            gmpStack.append(result)
             
             pendingOperations = twoParameterOperationStack.count >= 1
             sufficientNumbers = gmpStack.count >= 2
@@ -147,15 +147,15 @@ class Brain {
             percentage()
             expectingNumber = false
         } else if let op = inplaceOperations[symbol] {
-            gmpStack.inPlaceModifyLast(withOp: op)
+            gmpStack.modifyLast(withOp: op)
             expectingNumber = false
         } else if let op = constDict[symbol] {
             if expectingNumber {
-                gmpStack.push(Gmp())
-                gmpStack.inPlaceModifyLast(withOp: op)
+                gmpStack.append(Gmp())
+                gmpStack.modifyLast(withOp: op)
                 expectingNumber = false
             } else {
-                gmpStack.inPlaceModifyLast(withOp: op)
+                gmpStack.modifyLast(withOp: op)
                 expectingNumber = false
             }
         } else if let op = twoParameterOperations[symbol] {
