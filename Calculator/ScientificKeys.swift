@@ -80,11 +80,11 @@ struct ScientificKeys: View {
                 Key("Rad")
                     .scientific(size: size) // missing
                 Key("sinh")
-                    .scientific(size: size) // missing
+                    .scientific(size: size) { model.operation("sinh") }
                 Key("cosh")
-                    .scientific(size: size) // missing
+                    .scientific(size: size) { model.operation("cosh") }
                 Key("tanh")
-                    .scientific(size: size) // missing
+                    .scientific(size: size) { model.operation("tanh") }
                 Key("π")
                     .scientific(size: size) { model.operation("π") }
                 Key("Rand")

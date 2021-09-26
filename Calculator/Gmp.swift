@@ -62,6 +62,12 @@ class Gmp {
     func asin()       { mpfr_asin( &mpfr, &mpfr, MPFR_RNDN) }
     func acos()       { mpfr_acos( &mpfr, &mpfr, MPFR_RNDN) }
     func atan()       { mpfr_atan( &mpfr, &mpfr, MPFR_RNDN) }
+    func sinh()       { mpfr_sin(  &mpfr, &mpfr, MPFR_RNDN) }
+    func cosh()       { mpfr_cosh(  &mpfr, &mpfr, MPFR_RNDN) }
+    func tanh()       { mpfr_tanh(  &mpfr, &mpfr, MPFR_RNDN) }
+    func asinh()      { mpfr_asinh( &mpfr, &mpfr, MPFR_RNDN) }
+    func acosh()      { mpfr_acosh( &mpfr, &mpfr, MPFR_RNDN) }
+    func atanh()      { mpfr_atanh( &mpfr, &mpfr, MPFR_RNDN) }
     func pow_x_2()    { mpfr_sqr(  &mpfr, &mpfr, MPFR_RNDN) }
     func pow_e_x()    { mpfr_exp(  &mpfr, &mpfr, MPFR_RNDN) }
     func pow_10_x()   { mpfr_exp10(&mpfr, &mpfr, MPFR_RNDN) }
