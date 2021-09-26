@@ -22,6 +22,7 @@ class Configuration {
     let windowWidth: CGFloat = 575.0
     let windowHeight: CGFloat = 323.0
     let displayFontSize: CGFloat = 47
+    var zoomIconSize: CGFloat { displayFontSize*0.5 }
     let keyWidth: CGFloat = 56.25
     let keyHeight: CGFloat = 47.0
 
@@ -88,6 +89,8 @@ class Configuration {
     let digitsInSmallDisplay = 9
     let appBackgroundColor = Color(.black)
     let displayFontSize: CGFloat = 70
+    let keyWidth: CGFloat = 20 // TODO remove this
+    let keyHeight: CGFloat = 20
 
     let DigitKeyProperties = KeyProperties(
         textColor: Color.white,

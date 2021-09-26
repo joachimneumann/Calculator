@@ -11,8 +11,6 @@ struct Zoom: View {
     var hasMoreDigits: Bool
     @Binding var zoomed: Bool
     var body: some View {
-        let symbolSize = Configuration.shared.displayFontSize*0.5
-        let yPadding = Configuration.shared.displayFontSize/1.7 - symbolSize/2
         HStack {
             Spacer()
             VStack {
@@ -24,13 +22,13 @@ struct Zoom: View {
                             Image(systemName: "plus.circle.fill")
                         }
                     }
-                    .font(Font.system(size: symbolSize, weight: .bold).monospacedDigit())
+                    .font(Font.system(size: Configuration.shared.zoomIconSize, weight: .bold).monospacedDigit())
                     .foregroundColor(
                         hasMoreDigits ?
                         Configuration.shared.OpKeyProperties.color :
                             Color(white: 0.5))
                     .contentShape(Rectangle())
-                    .padding(-0.1*symbolSize)
+                    .padding(Configuration.shared.zoomIconSize * -0.1)
                     .background(hasMoreDigits ? Color.white : Color.clear)
                     .clipShape(Circle())
                     .onTapGesture {
@@ -42,8 +40,6 @@ struct Zoom: View {
                 .fixedSize(horizontal: true, vertical: true)
                 Spacer(minLength: 0)
             }
-            .padding(.trailing, symbolSize/2)
-            .padding(.top, yPadding)
         }
     }
 }

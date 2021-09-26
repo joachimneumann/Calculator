@@ -15,16 +15,10 @@ struct AllDigitsView: View {
         ScrollView(.vertical, showsIndicators: true) {
             Text(ad.string)
                 .foregroundColor(Color.white)
-                .font(.custom("CourierNewPSMT", size: 20))
+                .font(.custom("CourierNewPSMT", size: 19))
                 .multilineTextAlignment(.leading)
         }
-        if let exponentString = ad.exponent {
-            HStack {
-                Text(exponentString)
-                    .font(.custom("CourierNewPSMT", size: 20))
-                Spacer(minLength: 0)
-            }
-        }
+        .padding(.top, 0.2) /// This magically persuads the Scrollview to respect the SafeArea
     }
 }
 

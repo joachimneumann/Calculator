@@ -49,8 +49,6 @@ struct IOSContentView: View {
         .padding(.top, 28)
         .padding(.bottom, 28)
         .padding()
-        .background(Configuration.shared.appBackgroundColor)
-        .ignoresSafeArea()
     }
 }
 

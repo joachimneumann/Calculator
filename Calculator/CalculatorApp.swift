@@ -10,22 +10,29 @@ import SwiftUI
 @main
 struct CalculatorApp: App {
     
+#if targetEnvironment(macCatalyst)
     // force window size on Mac
-#if targetEnvironment(macCatalyst)
     @UIApplicationDelegateAdaptor var delegate: FSAppDelegate
-#endif
-    
     var body: some Scene {
-#if targetEnvironment(macCatalyst)
         WindowGroup {
-            CatalystContentView()
+            ZStack {
+                Configuration.shared.appBackgroundColor
+                    .ignoresSafeArea()
+                CatalystContentView()
+            }
         }
-#else
-        WindowGroup {
-            IOSContentView()
-        }
-#endif
     }
+#else
+    var body: some Scene {
+        WindowGroup {
+            ZStack {
+                Configuration.shared.appBackgroundColor
+                    .ignoresSafeArea()
+                IOSContentView()
+            }
+        }
+    }
+#endif
 }
 
 #if targetEnvironment(macCatalyst)
@@ -44,12 +51,10 @@ class FSSceneDelegate: NSObject, UIWindowSceneDelegate, ObservableObject {
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-#if targetEnvironment(macCatalyst)
         if let titlebar = windowScene.titlebar {
             titlebar.titleVisibility = .hidden
             titlebar.toolbar = nil
         }
-#endif
     }
 }
 
