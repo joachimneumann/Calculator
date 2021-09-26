@@ -17,7 +17,7 @@ class Brain {
     private let debug = true
     private var numberString: String? = "0"
     
-    private var twoParameterOperationStack = TwoParameterOperationStack()
+    private var op2Stack = Op2Stack()
     private var gmpStack = GmpStack()
     
     private var expectingNumber = false
@@ -69,7 +69,7 @@ class Brain {
         }
         print("after add \"\(digit)\": " +
               "gmps: \(gmpStack.count), " +
-              "ops: \(twoParameterOperationStack.count) " +
+              "ops: \(op2Stack.count) " +
               "numberString: \(numberString ?? "empty") " +
               "expectingNumber: \(expectingNumber)")
     }
@@ -77,7 +77,7 @@ class Brain {
     func reset() {
         gmpStack.removeAll()
         gmpStack.append(Gmp())
-        twoParameterOperationStack.clean()
+        op2Stack.clean()
         numberString = nil
         expectingNumber = false
     }
@@ -89,47 +89,39 @@ class Brain {
     
     
     func executeEverythingUpTo(priority maxPriority: Int) {
-        var pendingOperations = twoParameterOperationStack.count >= 1
-        var sufficientNumbers = gmpStack.count >= 2
-        var lastOperationNotTooHighPriority = false
-        if twoParameterOperationStack.count > 0 {
-            if twoParameterOperationStack.last!.priority >= maxPriority {
-                lastOperationNotTooHighPriority = true
-            }
-        }
-        while pendingOperations && sufficientNumbers && lastOperationNotTooHighPriority {
-            let op = twoParameterOperationStack.pop()!
-            let gmp1 = gmpStack.popLast()!
-            let gmp2 = gmpStack.popLast()!
-            let result = op.op(gmp2, gmp1)
-            gmpStack.append(result)
-            
-            pendingOperations = twoParameterOperationStack.count >= 1
-            sufficientNumbers = gmpStack.count >= 2
-            lastOperationNotTooHighPriority = false
-            if twoParameterOperationStack.count > 0 {
-                if twoParameterOperationStack.last!.priority >= maxPriority {
+        func moreOperations() -> Bool {
+            let pendingOperations = op2Stack.count >= 1
+            let sufficientNumbers = gmpStack.count >= 2
+            var lastOperationNotTooHighPriority = false
+            if op2Stack.count > 0 {
+                if op2Stack.last!.priority >= maxPriority {
                     lastOperationNotTooHighPriority = true
                 }
             }
-            
+            return pendingOperations && sufficientNumbers && lastOperationNotTooHighPriority
+        }
+        
+        while moreOperations() {
+            let op = op2Stack.pop()!
+            let gmp2 = gmpStack.popLast()!
+            let gmp1 = gmpStack.last!
+            gmp1.withOther(op: op.operation, other: gmp2)
         }
     }
     
     func percentage() {
-        if twoParameterOperationStack.count == 0 && gmpStack.count >= 1 {
-            if let x1 = gmpStack.last {
-                let x2 = Gmp("0.01")
-                let x3 = x1 * x2
-                gmpStack.replaceLast(with: x3)
+        if op2Stack.count == 0 && gmpStack.count >= 1 {
+            if let last = gmpStack.last {
+                last.mul(other: Gmp("0.01"))
+                gmpStack.replaceLast(with: last)
             }
             
-        } else if twoParameterOperationStack.count >= 1 && gmpStack.count >= 2 {
-            if let x1 = gmpStack.last {
-                if let x2 = gmpStack.secondLast {
-                    let x3 = Gmp("0.01")
-                    let x4 = x1 * x2 * x3
-                    gmpStack.replaceLast(with: x4)
+        } else if op2Stack.count >= 1 && gmpStack.count >= 2 {
+            if let last = gmpStack.last {
+                if let secondLast = gmpStack.secondLast {
+                    last.mul(other: Gmp("0.01"))
+                    last.mul(other: secondLast)
+                    gmpStack.replaceLast(with: last)
                 }
             }
         }
@@ -162,15 +154,15 @@ class Brain {
             if expectingNumber {
                 // the user seems to have changed his mind
                 // correct operation
-                twoParameterOperationStack.removeLast()
-                twoParameterOperationStack.push(op)
+                op2Stack.removeLast()
+                op2Stack.push(op)
             } else {
                 executeEverythingUpTo(priority: op.priority)
-                twoParameterOperationStack.push(op)
+                op2Stack.push(op)
                 expectingNumber = true
             }
         }
-        print("after operation \(symbol): gmps: \(gmpStack.count), ops: \(twoParameterOperationStack.count) numberString: \(numberString ?? "empty") expectingNumber: \(expectingNumber) ")
+        print("after operation \(symbol): gmps: \(gmpStack.count), ops: \(op2Stack.count) numberString: \(numberString ?? "empty") expectingNumber: \(expectingNumber) ")
     }
 
     let inplaceOperations: Dictionary <String, (Gmp) -> () -> ()> = [
@@ -230,7 +222,7 @@ class Brain {
         // clear
         reset()
         assert(gmpStack.count == 1)
-        assert(twoParameterOperationStack.count == 0)
+        assert(op2Stack.count == 0)
         
         // 1+2+5+2= + 1/4 =
         addDigitToNumberString("1")

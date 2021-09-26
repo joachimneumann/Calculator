@@ -40,13 +40,6 @@ class Gmp {
         self.init("0")
     }
     
-    static func π() -> Gmp {
-        let ret = Gmp()
-        mpfr_const_pi(&ret.mpfr, MPFR_RNDN)
-        return ret
-    }
-    
-    
     func isNull()       -> Bool { mpfr_cmp_d(&mpfr, 0.0) == 0 }
     func isNegtive()    -> Bool { mpfr_cmp_d(&mpfr, 0.0)  < 0 }
     func isNotANumber() -> Bool { mpfr_nan_p(&mpfr)      != 0 }
@@ -87,71 +80,27 @@ class Gmp {
         }
     }
     
-    static func + (left: Gmp, right: Gmp) -> Gmp {
-        mpfr_add(&left.mpfr, &left.copy().mpfr, &right.mpfr, MPFR_RNDN)
-        return left
-    }
-    static func add (left: Gmp, right: Gmp) -> Gmp {
-        mpfr_add(&left.mpfr, &left.copy().mpfr, &right.mpfr, MPFR_RNDN)
-        return left
-    }
+    func withOther(op: (Gmp) -> (Gmp) -> (), other: Gmp) { op(self)(other) }
+    func add (other: Gmp) { mpfr_add(&mpfr, &mpfr, &other.mpfr, MPFR_RNDN) }
+    func div (other: Gmp) { mpfr_div(&mpfr, &mpfr, &other.mpfr, MPFR_RNDN) }
+    func min (other: Gmp) { mpfr_sub(&mpfr, &mpfr, &other.mpfr, MPFR_RNDN) }
+    func mul (other: Gmp) { mpfr_mul(&mpfr, &mpfr, &other.mpfr, MPFR_RNDN) }
+
+    func pow_x_y(exponent: Gmp) { mpfr_pow(&mpfr, &mpfr, &exponent.mpfr, MPFR_RNDN) }
+    func sqrty(exponent: Gmp)   { exponent.rez(); pow_x_y(exponent: exponent) }
     
-    static func / (left: Gmp, right: Gmp) -> Gmp {
-        mpfr_div(&left.mpfr, &left.copy().mpfr, &right.mpfr, MPFR_RNDN)
-        return left
-    }
-    
-    static func div (left: Gmp, right: Gmp) -> Gmp {
-        mpfr_div(&left.mpfr, &left.copy().mpfr, &right.mpfr, MPFR_RNDN)
-        return left
-    }
-    
-    static func - (left: Gmp, right: Gmp) -> Gmp {
-        mpfr_sub(&left.mpfr, &left.copy().mpfr, &right.mpfr, MPFR_RNDN)
-        return left
-    }
-    
-    static func min (left: Gmp, right: Gmp) -> Gmp {
-        mpfr_sub(&left.mpfr, &left.copy().mpfr, &right.mpfr, MPFR_RNDN)
-        return left
-    }
-    
-    static func * (left: Gmp, right: Gmp) -> Gmp {
-        mpfr_mul(&left.mpfr, &left.copy().mpfr, &right.mpfr, MPFR_RNDN)
-        return left
-    }
-    
-    static func mul (left: Gmp, right: Gmp) -> Gmp {
-        mpfr_mul(&left.mpfr, &left.copy().mpfr, &right.mpfr, MPFR_RNDN)
-        return left
-    }
-    
-    static func pow_x_y(_ base: Gmp, exponent: Gmp) -> Gmp {
-        mpfr_pow(&base.mpfr, &base.copy().mpfr, &exponent.mpfr, MPFR_RNDN)
-        return base
-    }
-    
-    static func sqrty(_ base: Gmp, exponent: Gmp) -> Gmp {
-        exponent.rez()
-        mpfr_pow(&exponent.mpfr, &exponent.copy().mpfr, &base.mpfr, MPFR_RNDN)
-        return base
-    }
-    
-    static func x_double_up_arrow_y(_ left: Gmp, right: Gmp) -> Gmp {
+    func x_double_up_arrow_y(other: Gmp) {
         var temp: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
-        mpfr_init2 (&temp, mpfr_get_prec(&left.mpfr))
-        mpfr_set(&temp, &left.mpfr, MPFR_RNDN)
+        mpfr_init2 (&temp, mpfr_get_prec(&mpfr))
+        mpfr_set(&temp, &mpfr, MPFR_RNDN)
         
-        let counter: CLong = mpfr_get_si(&right.mpfr, MPFR_RNDN) - 1
-        guard counter > 0 else { return left }
+        let counter: CLong = mpfr_get_si(&other.mpfr, MPFR_RNDN) - 1
+        guard counter > 0 else { return }
         for _ in 0..<counter {
-            mpfr_pow(&left.mpfr, &temp, &left.copy().mpfr, MPFR_RNDN)
+            mpfr_pow(&mpfr, &temp, &mpfr, MPFR_RNDN)
         }
         mpfr_clear(&temp)
-        return left
     }
-    
-
     
     func isValidGmpString(s: String) -> Bool {
         var temp_mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)

@@ -8,15 +8,15 @@
 import Foundation
 
 struct Op2 {
-    let op: (Gmp, Gmp) -> (Gmp)
+    let operation: (Gmp) -> (Gmp) -> ()
     let priority: Int
-    init(_ op: @escaping (Gmp, Gmp) -> (Gmp), _ priority: Int) {
-        self.op = op
+    init(_ operation: @escaping (Gmp) -> (Gmp) -> (), _ priority: Int) {
+        self.operation = operation
         self.priority = priority
     }
 }
 
-struct TwoParameterOperationStack {
+struct Op2Stack {
     private var array: [Op2] = []
     mutating func push(_ element: Op2) {
         array.append(element)
