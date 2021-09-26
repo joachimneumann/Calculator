@@ -88,7 +88,7 @@ struct ScientificKeys: View {
                 Key("π")
                     .scientific(size: size) { model.operation("π") }
                 Key("Rand")
-                    .scientific(size: size) // missing
+                    .scientific(size: size) { model.operation("rand") }
             }
         }
     }

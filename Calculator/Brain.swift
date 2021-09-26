@@ -189,7 +189,8 @@ class Brain {
     let constDict: Dictionary <String, (Gmp) -> () -> ()> = [
         // same Gmp function as inplaceOperations, but handled differently
         "π": Gmp.π,
-        "e": Gmp.e
+        "e": Gmp.e,
+        "rand": Gmp.rand
     ]
     
     

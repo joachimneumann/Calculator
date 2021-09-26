@@ -23,7 +23,6 @@ extension String {
 
 var globalUnsignedLongInt: CUnsignedLong = 0
 
-
 class Gmp {
     // Swift requires me to initialize the mpfr_t struc
     // I do this with zeros. The struct will be initialized correctly in mpfr_init2
@@ -36,10 +35,13 @@ class Gmp {
         mpfr_init2 (&mpfr, 331146) // TODO precision
         mpfr_set_str (&mpfr, s1, 10, MPFR_RNDN)
     }
+    
     convenience init() {
         self.init("0")
     }
     
+    static var randstate: gmp_randstate_t? = nil
+
     func isNull()       -> Bool { mpfr_cmp_d(&mpfr, 0.0) == 0 }
     func isNegtive()    -> Bool { mpfr_cmp_d(&mpfr, 0.0)  < 0 }
     func isNotANumber() -> Bool { mpfr_nan_p(&mpfr)      != 0 }
@@ -67,7 +69,17 @@ class Gmp {
     
     func π()          { mpfr_const_pi(&mpfr, MPFR_RNDN) }
     func e()          { mpfr_exp( &Gmp("1.0").mpfr, &mpfr, MPFR_RNDN)}
+    
+    func rand() {
+        if Gmp.randstate == nil {
+            Gmp.randstate = gmp_randstate_t()
+            __gmp_randinit_mt(&Gmp.randstate!)
+            __gmp_randseed_ui(&Gmp.randstate!, UInt.random(in: 0..<UInt.max));
+        }
+        mpfr_urandom(&mpfr, &Gmp.randstate!, MPFR_RNDN)
+    }
 
+    
     func pow_x_3()    { mpfr_pow_ui(&mpfr, &mpfr, 3, MPFR_RNDN) }
     func rez()        { mpfr_ui_div(&mpfr, 1, &mpfr, MPFR_RNDN) }
     func fac() {
