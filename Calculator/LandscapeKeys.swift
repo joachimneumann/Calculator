@@ -13,12 +13,12 @@ struct LandscapeKeys: View {
         HStack(alignment: .top, spacing: 1) {
             ScientificKeys(
                 model: model,
-                keyWidth: 56.25,
-                keyHeight: 47.0)
+                keyWidth: Configuration.shared.keyWidth,
+                keyHeight: Configuration.shared.keyHeight)
             NumberKeys(
                 model: model,
-                keyWidth: 56.25,
-                keyHeight: 47.0)
+                keyWidth: Configuration.shared.keyWidth,
+                keyHeight: Configuration.shared.keyHeight)
         }
     }
 }

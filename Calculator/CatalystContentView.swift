@@ -14,16 +14,26 @@ struct CatalystContentView: View {
     var body: some View {
         ZStack {
             if zoomed {
-                VStack {
-                    AllDigitsView(model: model)
-                        .padding(.trailing, 15)
-                        .padding(.leading, 60)
-                    Spacer()
+                if model.shortDisplayData.hasMoreDigits {
+                    VStack {
+                        AllDigitsView(model: model)
+                            .background(Color.yellow)
+                            .padding(.trailing, Configuration.shared.keyWidth)
+                            .padding(.leading, 60)
+                        Spacer()
+                    }
+                } else {
+                    // zoomed, but not more digits
+                    VStack {
+                        Display(text: model.shortDisplayString)
+                            .padding(.trailing, Configuration.shared.keyWidth)
+                        Spacer()
+                    }
                 }
             } else {
                 VStack {
                     Display(text: model.shortDisplayString)
-                        .padding(.trailing, Configuration.shared.displayFontSize*1.0)
+                        .padding(.trailing, Configuration.shared.keyWidth)
                     Spacer()
                 }
                 VStack {
@@ -33,7 +43,9 @@ struct CatalystContentView: View {
                 .transition(.move(edge: .bottom))
             }
             Zoom(hasMoreDigits: model.shortDisplayData.hasMoreDigits, zoomed: $zoomed)
-            Rad(rad: $model.rad)
+            if !zoomed {
+                Rad(rad: $model.rad)
+            }
         }
         .padding(.top, 28)
         .background(Configuration.shared.appBackgroundColor)

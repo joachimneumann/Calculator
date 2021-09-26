@@ -11,28 +11,18 @@ struct AllDigitsView: View {
     var model: BrainViewModel
     
     var body: some View {
-        if model.shortDisplayData.hasMoreDigits {
-            let ad = model.allDigitsDisplayData
-            ScrollView(.vertical, showsIndicators: true) {
-                Text(ad.string)
-                    .foregroundColor(Color.white)
-                    .font(.custom("CourierNewPSMT", size: 20))
-                    .multilineTextAlignment(.leading)
-            }
-            if let exponentString = ad.exponent {
-                HStack {
-                    Text(exponentString)
-                        .font(.custom("CourierNewPSMT", size: 20))
-                    Spacer(minLength: 0)
-                }
-            }
-        } else {
+        let ad = model.allDigitsDisplayData
+        ScrollView(.vertical, showsIndicators: true) {
+            Text(ad.string)
+                .foregroundColor(Color.white)
+                .font(.custom("CourierNewPSMT", size: 20))
+                .multilineTextAlignment(.leading)
+        }
+        if let exponentString = ad.exponent {
             HStack {
+                Text(exponentString)
+                    .font(.custom("CourierNewPSMT", size: 20))
                 Spacer(minLength: 0)
-                Text(model.shortDisplayString)
-                    .foregroundColor(Color.white)
-                    .font(.system(size: Configuration.shared.displayFontSize, weight: .thin).monospacedDigit())
-                    .multilineTextAlignment(.trailing)
             }
         }
     }

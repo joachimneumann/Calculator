@@ -22,6 +22,9 @@ class Configuration {
     let windowWidth: CGFloat = 575.0
     let windowHeight: CGFloat = 323.0
     let displayFontSize: CGFloat = 47
+    let keyWidth: CGFloat = 56.25
+    let keyHeight: CGFloat = 47.0
+
     
     /// The MacOS Calculator is a bit transparent.
     /// The colors specified here replicate the button colors
