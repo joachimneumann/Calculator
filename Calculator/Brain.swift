@@ -151,10 +151,11 @@ class Brain {
             expectingNumber = false
         } else if let op = constDict[symbol] {
             if expectingNumber {
-                gmpStack.push(withOp: op)
+                gmpStack.push(Gmp())
+                gmpStack.inPlaceModifyLast(withOp: op)
                 expectingNumber = false
             } else {
-                gmpStack.replaceLastWithConstant(withOp: op)
+                gmpStack.inPlaceModifyLast(withOp: op)
                 expectingNumber = false
             }
         } else if let op = twoParameterOperations[symbol] {
@@ -190,13 +191,13 @@ class Brain {
         "atan": Gmp.atan,
         "x^3": Gmp.pow_x_3,
         "e^x": Gmp.pow_e_x,
-        "10^x": Gmp.pow_10_x
+        "10^x": Gmp.pow_10_x,
     ]
     
-    var constDict: Dictionary <String, () -> (Gmp)> = [
+    let constDict: Dictionary <String, (Gmp) -> () -> ()> = [
+        // same Gmp function as inplaceOperations, but handled differently
         "π": Gmp.π,
-        "e": Gmp.e,
-        "γ": Gmp.γ,
+        "e": Gmp.e
     ]
     
     

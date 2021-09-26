@@ -22,10 +22,9 @@ struct GmpStack {
         array.last?.inPlace(op: op)
     }
     mutating func modifyLast(withOp op: (Gmp) -> ()) {
-        op(array[array.count-1])
-    }
-    mutating func replaceLastWithConstant(withOp op: () -> (Gmp)) {
-        array[array.count-1] = op()
+        if let last = array.last {
+            op(last)
+        }
     }
     mutating func push(withOp op: () -> (Gmp)) {
         array.append(op())

@@ -36,45 +36,47 @@ class Gmp {
         mpfr_init2 (&mpfr, 331146) // TODO precision
         mpfr_set_str (&mpfr, s1, 10, MPFR_RNDN)
     }
+    convenience init() {
+        self.init("0")
+    }
     
     static func π() -> Gmp {
-        let ret = Gmp("0.0")
+        let ret = Gmp()
         mpfr_const_pi(&ret.mpfr, MPFR_RNDN)
         return ret
     }
-    static func e() -> Gmp {
-        let one = Gmp("1.0")
-        one.pow_e_x()
-        return one
-    }
-    static func γ() -> Gmp {
-        let ret = Gmp("0.0")
-        mpfr_const_pi(&ret.mpfr, MPFR_RNDN)
-        return ret
-    }
+    
+    
+    func isNull()       -> Bool { mpfr_cmp_d(&mpfr, 0.0) == 0 }
+    func isNegtive()    -> Bool { mpfr_cmp_d(&mpfr, 0.0)  < 0 }
+    func isNotANumber() -> Bool { mpfr_nan_p(&mpfr)      != 0 }
     
     func inPlace(op: (Gmp) -> () -> ()) { op(self)() }
+    /// in the second argument, I a simultaneously using the same memory
+    /// Option 1: &mpfr -> &copy().mpfr
+    /// Option 2: in the build settings set exclusiv access to memory to compiletime enfocement only
+    func abs()        { mpfr_abs(  &mpfr, &mpfr, MPFR_RNDN) }
+    func sqrt()       { mpfr_sqrt( &mpfr, &mpfr, MPFR_RNDN) }
+    func sqrt3()      { mpfr_cbrt( &mpfr, &mpfr, MPFR_RNDN) }
+    func Z()          { mpfr_zeta( &mpfr, &mpfr, MPFR_RNDN) }
+    func ln()         { mpfr_log(  &mpfr, &mpfr, MPFR_RNDN) }
+    func log10()      { mpfr_log10(&mpfr, &mpfr, MPFR_RNDN) }
+    func sin()        { mpfr_sin(  &mpfr, &mpfr, MPFR_RNDN) }
+    func cos()        { mpfr_cos(  &mpfr, &mpfr, MPFR_RNDN) }
+    func tan()        { mpfr_tan(  &mpfr, &mpfr, MPFR_RNDN) }
+    func asin()       { mpfr_asin( &mpfr, &mpfr, MPFR_RNDN) }
+    func acos()       { mpfr_acos( &mpfr, &mpfr, MPFR_RNDN) }
+    func atan()       { mpfr_atan( &mpfr, &mpfr, MPFR_RNDN) }
+    func pow_x_2()    { mpfr_sqr(  &mpfr, &mpfr, MPFR_RNDN) }
+    func pow_e_x()    { mpfr_exp(  &mpfr, &mpfr, MPFR_RNDN) }
+    func pow_10_x()   { mpfr_exp10(&mpfr, &mpfr, MPFR_RNDN) }
+    func changeSign() { mpfr_neg(  &mpfr, &mpfr, MPFR_RNDN) }
+    
+    func π()          { mpfr_const_pi(&mpfr, MPFR_RNDN) }
+    func e()          { mpfr_exp( &Gmp("1.0").mpfr, &mpfr, MPFR_RNDN)}
 
-    func abs() {
-        mpfr_abs(&mpfr, &copy().mpfr, MPFR_RNDN)
-    }
-    
-    func sqrt() {
-        mpfr_sqrt(&mpfr, &copy().mpfr, MPFR_RNDN)
-    }
-    
-    func sqrt3() {
-        mpfr_cbrt(&mpfr, &copy().mpfr, MPFR_RNDN)
-    }
-    
-    func rez() {
-        mpfr_ui_div(&mpfr, 1, &copy().mpfr, MPFR_RNDN)
-    }
-    
-    func Z() {
-        mpfr_zeta(&mpfr, &copy().mpfr, MPFR_RNDN)
-    }
-    
+    func pow_x_3()    { mpfr_pow_ui(&mpfr, &mpfr, 3, MPFR_RNDN) }
+    func rez()        { mpfr_ui_div(&mpfr, 1, &mpfr, MPFR_RNDN) }
     func fac() {
         let n = mpfr_get_si(&mpfr, MPFR_RNDN)
         if n >= 0 {
@@ -83,58 +85,6 @@ class Gmp {
         } else {
             mpfr_set_d(&mpfr, 0.0, MPFR_RNDN)
         }
-    }
-    
-    func ln() {
-        mpfr_log(&mpfr, &copy().mpfr, MPFR_RNDN)
-    }
-    
-    func log10() {
-        mpfr_log10(&mpfr, &copy().mpfr, MPFR_RNDN)
-    }
-    
-    func sin() {
-        mpfr_sin(&mpfr, &copy().mpfr, MPFR_RNDN)
-    }
-    
-    func cos() {
-        mpfr_cos(&mpfr, &copy().mpfr, MPFR_RNDN)
-    }
-    
-    func tan() {
-        mpfr_tan(&mpfr, &copy().mpfr, MPFR_RNDN)
-    }
-    
-    func asin() {
-        mpfr_asin(&mpfr, &copy().mpfr, MPFR_RNDN)
-    }
-    
-    func acos() {
-        mpfr_acos(&mpfr, &copy().mpfr, MPFR_RNDN)
-    }
-    
-    func atan() {
-        mpfr_atan(&mpfr, &copy().mpfr, MPFR_RNDN)
-    }
-    
-    func pow_x_2() {
-        mpfr_sqr(&mpfr, &copy().mpfr, MPFR_RNDN)
-    }
-    
-    func pow_x_3() {
-        mpfr_pow_ui(&mpfr, &copy().mpfr, 3, MPFR_RNDN)
-    }
-    
-    func pow_e_x() {
-        mpfr_exp(&mpfr, &copy().mpfr, MPFR_RNDN)
-    }
-    
-    func pow_10_x() {
-        mpfr_exp10(&mpfr, &copy().mpfr, MPFR_RNDN)
-    }
-
-    func changeSign() {
-        mpfr_neg(&mpfr, &copy().mpfr, MPFR_RNDN)
     }
     
     static func + (left: Gmp, right: Gmp) -> Gmp {
@@ -224,7 +174,7 @@ class Gmp {
     
     
     func copy() -> Gmp {
-        let ret = Gmp("0.0")
+        let ret = Gmp()
         mpfr_set(&ret.mpfr, &mpfr, MPFR_RNDN)
         return ret
     }
@@ -274,21 +224,6 @@ class Gmp {
             mantissa = String(mantissa.prefix(length))
         }
         return Data(mantissa: mantissa, exponent: exponent, negative: negative, hasMoreDigits: hasMoreDigits)
-    }
-    
-    func sin2() {
-        
-    }
-    func isNull() -> Bool {
-        return mpfr_cmp_d(&mpfr, 0.0) == 0
-    }
-    
-    func isNegtive() -> Bool {
-        return mpfr_cmp_d(&mpfr, 0.0) < 0
-    }
-    
-    func isNotANumber() -> Bool {
-        return mpfr_nan_p(&mpfr) != 0
     }
     
 }
