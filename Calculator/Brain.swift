@@ -5,8 +5,6 @@
 //  Created by Joachim Neumann on 22/09/2021.
 //
 
-import Foundation
-
 class Brain {
     func shortDisplayData() -> DisplayData {
         displayData(digits: Configuration.shared.digitsInSmallDisplay)
@@ -151,6 +149,9 @@ class Brain {
         } else if let op = inplaceDict[symbol] {
             gmpStack.modifyLast(withOp: op)
             expectingNumber = false
+        } else if let op = inplaceOperations[symbol] {
+            gmpStack.inPlaceModifyLast(withOp: op)
+            expectingNumber = false
         } else if let op = constDict[symbol] {
             if expectingNumber {
                 gmpStack.push(withOp: op)
@@ -173,7 +174,11 @@ class Brain {
         }
         print("after operation \(symbol): gmps: \(gmpStack.count), ops: \(twoParameterOperationStack.count) numberString: \(numberString ?? "empty") expectingNumber: \(expectingNumber) ")
     }
+
+    let inplaceOperations: Dictionary <String, (Gmp) -> () -> ()> = ["x^2":Gmp.pow_x_2]
     
+//    var ff: Dictionary < String, (Gmp) -> () -> () > = [ sin2 ]
+//    (Calculator.Gmp) -> () -> ()
     var inplaceDict: Dictionary <String, (Gmp) -> ()> = [
         "+/-": Gmp.changeSign,
         "oneOverX": Gmp.rez,
@@ -189,7 +194,7 @@ class Brain {
         "asin": Gmp.asin,
         "acos": Gmp.acos,
         "atan": Gmp.atan,
-        "x^2": Gmp.pow_x_2,
+        //"x^2": Gmp.pow_x_2,
         "x^3": Gmp.pow_x_3,
         "e^x": Gmp.pow_e_x,
         "10^x": Gmp.pow_10_x

@@ -18,6 +18,9 @@ struct GmpStack {
     mutating func removeLast() {
         array.removeLast()
     }
+    mutating func inPlaceModifyLast(withOp op: (Gmp) -> () -> ()) {
+        array.last?.perform(op: op)
+    }
     mutating func modifyLast(withOp op: (Gmp) -> ()) {
         op(array[array.count-1])
     }

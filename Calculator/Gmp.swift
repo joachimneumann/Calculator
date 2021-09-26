@@ -172,8 +172,12 @@ class Gmp {
     static func atan(_ me: Gmp) {
         mpfr_atan(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
     }
-    static func pow_x_2(_ me: Gmp) {
-        mpfr_sqr(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
+    func perform(op: (Gmp) -> () -> ()) {
+        let op2 = op(self)
+        op2()
+    }
+    func pow_x_2() {
+        mpfr_sqr(&mpfr, &copy().mpfr, MPFR_RNDN)
     }
     static func pow_x_3(_ me: Gmp) {
         mpfr_pow_ui(&me.mpfr, &me.copy().mpfr, 3, MPFR_RNDN)
@@ -256,10 +260,11 @@ class Gmp {
             mantissa = String(mantissa.prefix(length))
         }
         return Data(mantissa: mantissa, exponent: exponent, negative: negative, hasMoreDigits: hasMoreDigits)
-        //return Data(mantissa: "123", exponent: 2, negative: false)
     }
     
-    
+    func sin2() {
+        
+    }
     func isNull() -> Bool {
         return mpfr_cmp_d(&mpfr, 0.0) == 0
     }
