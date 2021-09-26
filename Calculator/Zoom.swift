@@ -12,8 +12,9 @@ struct Zoom: View {
     @Binding var zoomed: Bool
     var body: some View {
         let symbolSize = Configuration.shared.displayFontSize*0.5
-        let yPadding = Configuration.shared.displayFontSize/2 - symbolSize/2
+        let yPadding = Configuration.shared.displayFontSize/1.7 - symbolSize/2
         HStack {
+            Spacer()
             VStack {
                 ZStack {
                     Group {
@@ -41,9 +42,8 @@ struct Zoom: View {
                 .fixedSize(horizontal: true, vertical: true)
                 Spacer(minLength: 0)
             }
-            .padding(.leading, symbolSize/2)
+            .padding(.trailing, symbolSize/2)
             .padding(.top, yPadding)
-            Spacer()
         }
     }
 }
