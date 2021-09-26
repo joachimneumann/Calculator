@@ -13,7 +13,7 @@ struct Display: View {
     var body: some View {
         HStack {
             Spacer(minLength: 0)
-            Text(text.replacingOccurrences(of: "e", with: " e"))
+            Text(text)
                 .foregroundColor(Color.white)
                 .font(Font.system(size: Configuration.shared.displayFontSize, weight: .thin).monospacedDigit())
                 .lineLimit(1)

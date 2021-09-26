@@ -18,7 +18,9 @@ class DisplayData: Equatable {
     var string: String {
         var ret = content
         if isNegative { ret = "-" + ret }
-        if let exponent = exponent { ret += exponent }
+        if let exponent = exponent {
+            ret += " " + exponent // a space in front of the "e"
+        }
         return ret
     }
 

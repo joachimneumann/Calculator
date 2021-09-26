@@ -82,22 +82,18 @@ class Gmp {
             Gmp.deg2rad!.div(other: Gmp("180"))
         }
     }
-    func sinD()        {
-        x();
-        mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN);
-        mpfr_sin(  &mpfr, &mpfr, MPFR_RNDN)
-    }
+    func sinD()        { x(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_sin(  &mpfr, &mpfr, MPFR_RNDN) }
     func cosD()        { x(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_cos(  &mpfr, &mpfr, MPFR_RNDN) }
     func tanD()        { x(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_tan(  &mpfr, &mpfr, MPFR_RNDN) }
     func asinD()       { x(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_asin( &mpfr, &mpfr, MPFR_RNDN) }
     func acosD()       { x(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_acos( &mpfr, &mpfr, MPFR_RNDN) }
     func atanD()       { x(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_atan( &mpfr, &mpfr, MPFR_RNDN) }
-    func sinhD()       { x(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_sinh( &mpfr, &mpfr, MPFR_RNDN) }
-    func coshD()       { x(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_cosh( &mpfr, &mpfr, MPFR_RNDN) }
-    func tanhD()       { x(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_tanh( &mpfr, &mpfr, MPFR_RNDN) }
-    func asinhD()      { x(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_asinh(&mpfr, &mpfr, MPFR_RNDN) }
-    func acoshD()      { x(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_acosh(&mpfr, &mpfr, MPFR_RNDN) }
-    func atanhD()      { x(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_atanh(&mpfr, &mpfr, MPFR_RNDN) }
+    func sinhD()       { mpfr_sinh( &mpfr, &mpfr, MPFR_RNDN) }
+    func coshD()       { mpfr_cosh( &mpfr, &mpfr, MPFR_RNDN) }
+    func tanhD()       { mpfr_tanh( &mpfr, &mpfr, MPFR_RNDN) }
+    func asinhD()      { mpfr_asinh(&mpfr, &mpfr, MPFR_RNDN) }
+    func acoshD()      { mpfr_acosh(&mpfr, &mpfr, MPFR_RNDN) }
+    func atanhD()      { mpfr_atanh(&mpfr, &mpfr, MPFR_RNDN) }
     
     func π()          { mpfr_const_pi(&mpfr, MPFR_RNDN) }
     func e()          { mpfr_exp( &Gmp("1.0").mpfr, &mpfr, MPFR_RNDN)}
