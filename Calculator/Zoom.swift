@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Zoom: View {
-    var hasMoreDigits: Bool
+    var active: Bool
     @Binding var zoomed: Bool
     var body: some View {
         HStack {
@@ -23,13 +23,10 @@ struct Zoom: View {
                         }
                     }
                     .font(Font.system(size: Configuration.shared.zoomIconSize, weight: .bold).monospacedDigit())
-                    .foregroundColor(
-                        hasMoreDigits ?
-                        Configuration.shared.OpKeyProperties.color :
-                            Color(white: 0.5))
+                    .foregroundColor(active ? Configuration.shared.OpKeyProperties.color : Color(white: 0.5))
                     .contentShape(Rectangle())
                     .padding(Configuration.shared.zoomIconSize * -0.1)
-                    .background(hasMoreDigits ? Color.white : Color.clear)
+                    .background(active ? Color.white : Color.clear)
                     .clipShape(Circle())
                     .onTapGesture {
                         withAnimation(.easeIn) {
@@ -47,6 +44,6 @@ struct Zoom: View {
 
 struct Zoom_Previews: PreviewProvider {
     static var previews: some View {
-        Zoom(hasMoreDigits: true, zoomed: .constant(false))
+        Zoom(active: true, zoomed: .constant(false))
     }
 }
