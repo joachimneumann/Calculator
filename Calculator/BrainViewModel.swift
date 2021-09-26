@@ -23,12 +23,10 @@ class BrainViewModel: ObservableObject {
     }
 
     func digit(_ digit: Character) {
-        if shortDisplayData.isValidNumber {
-            brain.addDigitToNumberString(digit)
-            trailingZeroesString = nil
-            shortDisplayData = brain.shortDisplayData()
-            shortDisplayString = shortDisplayData.string
-        }
+        brain.addDigitToNumberString(digit)
+        trailingZeroesString = nil
+        shortDisplayData = brain.shortDisplayData()
+        shortDisplayString = shortDisplayData.string
     }
     
     func zero() {
