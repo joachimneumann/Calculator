@@ -146,9 +146,6 @@ class Brain {
         } else if symbol == "%" {
             percentage()
             expectingNumber = false
-        } else if let op = inplaceDict[symbol] {
-            gmpStack.modifyLast(withOp: op)
-            expectingNumber = false
         } else if let op = inplaceOperations[symbol] {
             gmpStack.inPlaceModifyLast(withOp: op)
             expectingNumber = false
@@ -175,12 +172,9 @@ class Brain {
         print("after operation \(symbol): gmps: \(gmpStack.count), ops: \(twoParameterOperationStack.count) numberString: \(numberString ?? "empty") expectingNumber: \(expectingNumber) ")
     }
 
-    let inplaceOperations: Dictionary <String, (Gmp) -> () -> ()> = ["x^2":Gmp.pow_x_2]
-    
-//    var ff: Dictionary < String, (Gmp) -> () -> () > = [ sin2 ]
-//    (Calculator.Gmp) -> () -> ()
-    var inplaceDict: Dictionary <String, (Gmp) -> ()> = [
+    let inplaceOperations: Dictionary <String, (Gmp) -> () -> ()> = [
         "+/-": Gmp.changeSign,
+        "x^2":Gmp.pow_x_2,
         "oneOverX": Gmp.rez,
         "x!": Gmp.fac,
         "Z": Gmp.Z,
@@ -194,7 +188,6 @@ class Brain {
         "asin": Gmp.asin,
         "acos": Gmp.acos,
         "atan": Gmp.atan,
-        //"x^2": Gmp.pow_x_2,
         "x^3": Gmp.pow_x_3,
         "e^x": Gmp.pow_e_x,
         "10^x": Gmp.pow_10_x

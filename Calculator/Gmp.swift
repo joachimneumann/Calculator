@@ -44,7 +44,7 @@ class Gmp {
     }
     static func e() -> Gmp {
         let one = Gmp("1.0")
-        pow_e_x(one)
+        one.pow_e_x()
         return one
     }
     static func γ() -> Gmp {
@@ -53,8 +53,88 @@ class Gmp {
         return ret
     }
     
-    static func changeSign(_ me: Gmp) {
-        mpfr_neg(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
+    func inPlace(op: (Gmp) -> () -> ()) { op(self)() }
+
+    func abs() {
+        mpfr_abs(&mpfr, &copy().mpfr, MPFR_RNDN)
+    }
+    
+    func sqrt() {
+        mpfr_sqrt(&mpfr, &copy().mpfr, MPFR_RNDN)
+    }
+    
+    func sqrt3() {
+        mpfr_cbrt(&mpfr, &copy().mpfr, MPFR_RNDN)
+    }
+    
+    func rez() {
+        mpfr_ui_div(&mpfr, 1, &copy().mpfr, MPFR_RNDN)
+    }
+    
+    func Z() {
+        mpfr_zeta(&mpfr, &copy().mpfr, MPFR_RNDN)
+    }
+    
+    func fac() {
+        let n = mpfr_get_si(&mpfr, MPFR_RNDN)
+        if n >= 0 {
+            let un = UInt(n)
+            mpfr_fac_ui(&mpfr, un, MPFR_RNDN)
+        } else {
+            mpfr_set_d(&mpfr, 0.0, MPFR_RNDN)
+        }
+    }
+    
+    func ln() {
+        mpfr_log(&mpfr, &copy().mpfr, MPFR_RNDN)
+    }
+    
+    func log10() {
+        mpfr_log10(&mpfr, &copy().mpfr, MPFR_RNDN)
+    }
+    
+    func sin() {
+        mpfr_sin(&mpfr, &copy().mpfr, MPFR_RNDN)
+    }
+    
+    func cos() {
+        mpfr_cos(&mpfr, &copy().mpfr, MPFR_RNDN)
+    }
+    
+    func tan() {
+        mpfr_tan(&mpfr, &copy().mpfr, MPFR_RNDN)
+    }
+    
+    func asin() {
+        mpfr_asin(&mpfr, &copy().mpfr, MPFR_RNDN)
+    }
+    
+    func acos() {
+        mpfr_acos(&mpfr, &copy().mpfr, MPFR_RNDN)
+    }
+    
+    func atan() {
+        mpfr_atan(&mpfr, &copy().mpfr, MPFR_RNDN)
+    }
+    
+    func pow_x_2() {
+        mpfr_sqr(&mpfr, &copy().mpfr, MPFR_RNDN)
+    }
+    
+    func pow_x_3() {
+        mpfr_pow_ui(&mpfr, &copy().mpfr, 3, MPFR_RNDN)
+    }
+    
+    func pow_e_x() {
+        mpfr_exp(&mpfr, &copy().mpfr, MPFR_RNDN)
+    }
+    
+    func pow_10_x() {
+        mpfr_exp10(&mpfr, &copy().mpfr, MPFR_RNDN)
+    }
+
+    func changeSign() {
+        mpfr_neg(&mpfr, &copy().mpfr, MPFR_RNDN)
     }
     
     static func + (left: Gmp, right: Gmp) -> Gmp {
@@ -102,7 +182,7 @@ class Gmp {
     }
     
     static func sqrty(_ base: Gmp, exponent: Gmp) -> Gmp {
-        rez(exponent)
+        exponent.rez()
         mpfr_pow(&exponent.mpfr, &exponent.copy().mpfr, &base.mpfr, MPFR_RNDN)
         return base
     }
@@ -121,73 +201,7 @@ class Gmp {
         return left
     }
     
-    static func abs(_ me: Gmp) {
-        mpfr_abs(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
-    }
-    
-    static func sqrt(_ me: Gmp) {
-        mpfr_sqrt(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
-    }
-    static func sqrt3(_ me: Gmp) {
-        mpfr_cbrt(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
-    }
-    static func rez(_ me: Gmp) {
-        mpfr_ui_div(&me.mpfr, 1, &me.copy().mpfr, MPFR_RNDN)
-    }
-    
-    static func Z(_ me: Gmp) {
-        mpfr_zeta(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
-    }
-    
-    static func fac(_ me: Gmp) {
-        let n = mpfr_get_si(&me.mpfr, MPFR_RNDN)
-        if n >= 0 {
-            let un = UInt(n)
-            mpfr_fac_ui(&me.mpfr, un, MPFR_RNDN)
-        } else {
-            mpfr_set_d(&me.mpfr, 0.0, MPFR_RNDN)
-        }
-    }
-    static func ln(_ me: Gmp) {
-        mpfr_log(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
-    }
-    static func log10(_ me: Gmp) {
-        mpfr_log10(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
-    }
-    static func sin(_ me: Gmp) {
-        mpfr_sin(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
-    }
-    static func cos(_ me: Gmp) {
-        mpfr_cos(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
-    }
-    static func tan(_ me: Gmp) {
-        mpfr_tan(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
-    }
-    static func asin(_ me: Gmp) {
-        mpfr_asin(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
-    }
-    static func acos(_ me: Gmp) {
-        mpfr_acos(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
-    }
-    static func atan(_ me: Gmp) {
-        mpfr_atan(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
-    }
-    func perform(op: (Gmp) -> () -> ()) {
-        let op2 = op(self)
-        op2()
-    }
-    func pow_x_2() {
-        mpfr_sqr(&mpfr, &copy().mpfr, MPFR_RNDN)
-    }
-    static func pow_x_3(_ me: Gmp) {
-        mpfr_pow_ui(&me.mpfr, &me.copy().mpfr, 3, MPFR_RNDN)
-    }
-    static func pow_e_x(_ me: Gmp) {
-        mpfr_exp(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
-    }
-    static func pow_10_x(_ me: Gmp) {
-        mpfr_exp10(&me.mpfr, &me.copy().mpfr, MPFR_RNDN)
-    }
+
     
     func isValidGmpString(s: String) -> Bool {
         var temp_mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
