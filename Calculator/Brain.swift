@@ -76,7 +76,7 @@ class Brain {
     
     func reset() {
         gmpStack.removeAll()
-        gmpStack.append(Gmp("0"))
+        gmpStack.append(Gmp())
         twoParameterOperationStack.clean()
         numberString = nil
         expectingNumber = false
@@ -158,7 +158,7 @@ class Brain {
                 gmpStack.modifyLast(withOp: op)
                 expectingNumber = false
             }
-        } else if let op = twoParameterOperations[symbol] {
+        } else if let op = op2[symbol] {
             if expectingNumber {
                 // the user seems to have changed his mind
                 // correct operation
@@ -201,14 +201,14 @@ class Brain {
     ]
     
     
-    let twoParameterOperations: Dictionary <String, TwoParameterOperation> = [
-        "+": TwoParameterOperation(Gmp.add, 1),
-        "-": TwoParameterOperation(Gmp.min, 1),
-        "x": TwoParameterOperation(Gmp.mul, 2),
-        "/": TwoParameterOperation(Gmp.div, 2),
-        "y√": TwoParameterOperation(Gmp.sqrty, 3),
-        "pow_x_y": TwoParameterOperation(Gmp.pow_x_y, 3),
-        "x↑↑y": TwoParameterOperation(Gmp.x_double_up_arrow_y, 3),
+    let op2: Dictionary <String, Op2> = [
+        "+": Op2(Gmp.add, 1),
+        "-": Op2(Gmp.min, 1),
+        "x": Op2(Gmp.mul, 2),
+        "/": Op2(Gmp.div, 2),
+        "y√": Op2(Gmp.sqrty, 3),
+        "pow_x_y": Op2(Gmp.pow_x_y, 3),
+        "x↑↑y": Op2(Gmp.x_double_up_arrow_y, 3),
     ]
     
     

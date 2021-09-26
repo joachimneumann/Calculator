@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TwoParameterOperation {
+struct Op2 {
     let op: (Gmp, Gmp) -> (Gmp)
     let priority: Int
     init(_ op: @escaping (Gmp, Gmp) -> (Gmp), _ priority: Int) {
@@ -17,11 +17,11 @@ struct TwoParameterOperation {
 }
 
 struct TwoParameterOperationStack {
-    private var array: [TwoParameterOperation] = []
-    mutating func push(_ element: TwoParameterOperation) {
+    private var array: [Op2] = []
+    mutating func push(_ element: Op2) {
         array.append(element)
     }
-    mutating func pop() -> TwoParameterOperation? {
+    mutating func pop() -> Op2? {
         return array.popLast()
     }
     
@@ -29,7 +29,7 @@ struct TwoParameterOperationStack {
         array.removeLast()
     }
     
-    var last: TwoParameterOperation? {
+    var last: Op2? {
         array.last
     }
     var count: Int {
