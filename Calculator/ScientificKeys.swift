@@ -61,11 +61,29 @@ struct ScientificKeys: View {
                 Key("x!")
                     .scientific(size: size) { model.operation("x!") }
                 Key(model.secondKeys ? "asin" : "sin")
-                    .scientific(size: size) { model.operation(model.secondKeys ? "asin" : "sin") }
+                    .scientific(size: size) {
+                        if model.rad {
+                            model.operation(model.secondKeys ? "asin" : "sin")
+                        } else {
+                            model.operation(model.secondKeys ? "asinD" : "sinD")
+                        }
+                    }
                 Key(model.secondKeys ? "acos" : "cos")
-                    .scientific(size: size) { model.operation(model.secondKeys ? "acos" : "cos") }
+                    .scientific(size: size) {
+                        if model.rad {
+                            model.operation(model.secondKeys ? "acos" : "cos")
+                        } else {
+                            model.operation(model.secondKeys ? "acosD" : "cosD")
+                        }
+                    }
                 Key(model.secondKeys ? "atan" : "tan")
-                    .scientific(size: size) { model.operation(model.secondKeys ? "atan" : "tan") }
+                    .scientific(size: size) {
+                        if model.rad {
+                            model.operation(model.secondKeys ? "atan" : "tan")
+                        } else {
+                            model.operation(model.secondKeys ? "atanD" : "tanD")
+                        }
+                    }
                 Key("e")
                     .scientific(size: size) { model.operation("e") }
                 Key("EE")
@@ -77,14 +95,32 @@ struct ScientificKeys: View {
                     }
             }
             HStack(spacing: horizontalSpace) {
-                Key("Rad")
-                    .scientific(size: size) // missing
+                Key(model.rad ? "Deg" : "Rad")
+                    .scientific(size: size) { model.rad.toggle() }
                 Key(model.secondKeys ? "asinh" : "sinh")
-                    .scientific(size: size) { model.operation(model.secondKeys ? "asinh" : "sinh") }
+                    .scientific(size: size) {
+                        if model.rad {
+                            model.operation(model.secondKeys ? "asinh" : "sinh")
+                        } else {
+                            model.operation(model.secondKeys ? "asinhD" : "sinhD")
+                        }
+                    }
                 Key(model.secondKeys ? "acosh" : "cosh")
-                    .scientific(size: size) { model.operation(model.secondKeys ? "acosh" : "cosh") }
+                    .scientific(size: size) {
+                        if model.rad {
+                            model.operation(model.secondKeys ? "acosh" : "cosh")
+                        } else {
+                            model.operation(model.secondKeys ? "acoshD" : "coshD")
+                        }
+                    }
                 Key(model.secondKeys ? "atanh" : "tanh")
-                    .scientific(size: size) { model.operation(model.secondKeys ? "atanh" : "tanh") }
+                    .scientific(size: size) {
+                        if model.rad {
+                            model.operation(model.secondKeys ? "atanh" : "tanh")
+                        } else {
+                            model.operation(model.secondKeys ? "atanhD" : "tanhD")
+                        }
+                    }
                 Key("π")
                     .scientific(size: size) { model.operation("π") }
                 Key("Rand")

@@ -11,7 +11,6 @@ import SwiftUI
 struct CatalystContentView: View {
     @ObservedObject var model = BrainViewModel()
     @State var zoomed: Bool = false
-    @State var rad: Bool = true
     var body: some View {
         ZStack {
             if zoomed {
@@ -34,7 +33,7 @@ struct CatalystContentView: View {
                 .transition(.move(edge: .bottom))
             }
             Zoom(hasMoreDigits: model.shortDisplayData.hasMoreDigits, zoomed: $zoomed)
-            Rad(rad: $rad)
+            Rad(rad: $model.rad)
         }
         .padding(.top, 28)
         .background(Configuration.shared.appBackgroundColor)

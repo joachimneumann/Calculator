@@ -10,8 +10,8 @@ import SwiftUI
 struct Rad: View {
     @Binding var rad: Bool
     var body: some View {
-        let radSize = Configuration.shared.displayFontSize*0.24
-        let yPadding = Configuration.shared.displayFontSize - radSize
+        let radSize = Configuration.shared.displayFontSize*0.25
+        let yPadding = Configuration.shared.displayFontSize - radSize*1.4
         HStack {
             VStack {
                 if rad {
@@ -23,7 +23,7 @@ struct Rad: View {
                 }
                 Spacer(minLength: 0)
             }
-            .padding(.leading, radSize/2)
+            .padding(.leading, radSize)
             .padding(.top, yPadding)
             Spacer()
         }
