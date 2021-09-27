@@ -46,7 +46,7 @@ class Gmp {
     func isNegtive()    -> Bool { mpfr_cmp_d(&mpfr, 0.0)  < 0 }
     func isNotANumber() -> Bool { mpfr_nan_p(&mpfr)      != 0 }
     
-    func inPlace(op: (Gmp) -> () -> ()) { op(self)() }
+    func inPlace(op: inplaceType) { op(self)() }
     /// in the second argument, I a simultaneously using the same memory
     /// Option 1: &mpfr -> &copy().mpfr
     /// Option 2: in the build settings set exclusiv access to memory to compiletime enfocement only
@@ -122,7 +122,7 @@ class Gmp {
         }
     }
     
-    func withOther(op: (Gmp) -> (Gmp) -> (), other: Gmp) { op(self)(other) }
+    func execute(_ op: twoOperantsType, with other: Gmp) { op(self)(other) }
     func add (other: Gmp) { mpfr_add(&mpfr, &mpfr, &other.mpfr, MPFR_RNDN) }
     func div (other: Gmp) { mpfr_div(&mpfr, &mpfr, &other.mpfr, MPFR_RNDN) }
     func min (other: Gmp) { mpfr_sub(&mpfr, &mpfr, &other.mpfr, MPFR_RNDN) }

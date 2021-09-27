@@ -20,6 +20,7 @@
 		AA59D79D26FDED8B00321F26 /* IOSContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA59D79C26FDED8B00321F26 /* IOSContentView.swift */; };
 		AA64980B26FD430900CFF9AA /* Zoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA64980A26FD430900CFF9AA /* Zoom.swift */; };
 		AA64980D26FD48F900CFF9AA /* DisplayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA64980C26FD48F900CFF9AA /* DisplayData.swift */; };
+		AA7242732701DDB50086CE91 /* Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7242722701DDB50086CE91 /* Operator.swift */; };
 		AA7CD3AB26FC322C00C714A6 /* ScientificKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CD3AA26FC322C00C714A6 /* ScientificKeys.swift */; };
 		AA95563C26FA0E360029D94C /* AddBackGround.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95563B26FA0E360029D94C /* AddBackGround.swift */; };
 		AA95564026FA1C180029D94C /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95563F26FA1C180029D94C /* Key.swift */; };
@@ -31,7 +32,7 @@
 		AAE87B9326FC5F42009E6D80 /* Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE87B9226FC5F42009E6D80 /* Display.swift */; };
 		AAE87B9526FC7302009E6D80 /* Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE87B9426FC7302009E6D80 /* Symbols.swift */; };
 		AAE87B9726FCB210009E6D80 /* GmpStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE87B9626FCB210009E6D80 /* GmpStack.swift */; };
-		AAE87B9926FCB24C009E6D80 /* Op2Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE87B9826FCB24C009E6D80 /* Op2Stack.swift */; };
+		AAE87B9926FCB24C009E6D80 /* OperatorStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE87B9826FCB24C009E6D80 /* OperatorStack.swift */; };
 		AAF1F59126FBA9C7000A733F /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF1F59026FBA9C7000A733F /* Configuration.swift */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +69,7 @@
 		AA59D79C26FDED8B00321F26 /* IOSContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOSContentView.swift; sourceTree = "<group>"; };
 		AA64980A26FD430900CFF9AA /* Zoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zoom.swift; sourceTree = "<group>"; };
 		AA64980C26FD48F900CFF9AA /* DisplayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayData.swift; sourceTree = "<group>"; };
+		AA7242722701DDB50086CE91 /* Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operator.swift; sourceTree = "<group>"; };
 		AA7CD3AA26FC322C00C714A6 /* ScientificKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScientificKeys.swift; sourceTree = "<group>"; };
 		AA95563B26FA0E360029D94C /* AddBackGround.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBackGround.swift; sourceTree = "<group>"; };
 		AA95563F26FA1C180029D94C /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
@@ -75,7 +77,7 @@
 		AAE87B9226FC5F42009E6D80 /* Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Display.swift; sourceTree = "<group>"; };
 		AAE87B9426FC7302009E6D80 /* Symbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbols.swift; sourceTree = "<group>"; };
 		AAE87B9626FCB210009E6D80 /* GmpStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GmpStack.swift; sourceTree = "<group>"; };
-		AAE87B9826FCB24C009E6D80 /* Op2Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Op2Stack.swift; sourceTree = "<group>"; };
+		AAE87B9826FCB24C009E6D80 /* OperatorStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorStack.swift; sourceTree = "<group>"; };
 		AAF1F59026FBA9C7000A733F /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -124,7 +126,7 @@
 				AA95563F26FA1C180029D94C /* Key.swift */,
 				AA95564126FA471D0029D94C /* Brain.swift */,
 				AAE87B9626FCB210009E6D80 /* GmpStack.swift */,
-				AAE87B9826FCB24C009E6D80 /* Op2Stack.swift */,
+				AAE87B9826FCB24C009E6D80 /* OperatorStack.swift */,
 				AA46B32526FAC48500F83939 /* BrainViewModel.swift */,
 				AA7CD3AA26FC322C00C714A6 /* ScientificKeys.swift */,
 				AAE87B9226FC5F42009E6D80 /* Display.swift */,
@@ -135,6 +137,7 @@
 				AA59D79A26FDEC1900321F26 /* LandscapeKeys.swift */,
 				AA59D79C26FDED8B00321F26 /* IOSContentView.swift */,
 				AA07C0182700852400BEECA8 /* Rad.swift */,
+				AA7242722701DDB50086CE91 /* Operator.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -228,9 +231,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA40C44726F808D900119D4F /* CatalystContentView.swift in Sources */,
-				AAE87B9926FCB24C009E6D80 /* Op2Stack.swift in Sources */,
+				AAE87B9926FCB24C009E6D80 /* OperatorStack.swift in Sources */,
 				AA64980B26FD430900CFF9AA /* Zoom.swift in Sources */,
 				AA95563C26FA0E360029D94C /* AddBackGround.swift in Sources */,
+				AA7242732701DDB50086CE91 /* Operator.swift in Sources */,
 				AA7CD3AB26FC322C00C714A6 /* ScientificKeys.swift in Sources */,
 				AA59D79B26FDEC1900321F26 /* LandscapeKeys.swift in Sources */,
 				AA2576B326F8F16600CDD8C9 /* NumberKeys.swift in Sources */,

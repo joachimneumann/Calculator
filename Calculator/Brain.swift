@@ -19,7 +19,7 @@ class Brain {
     private let debug = true
     private var numberString: String? = "0"
     
-    private var op2Stack = Op2Stack()
+    private var operatorStack = OperatorStack()
     private var gmpStack = GmpStack()
     
     private var expectingNumber = false
@@ -98,7 +98,7 @@ class Brain {
         }
         print("after add \"\(digit)\": " +
               "gmps: \(gmpStack.count), " +
-              "ops: \(op2Stack.count) " +
+              "ops: \(operatorStack.count) " +
               "numberString: \(numberString ?? "empty") " +
               "expectingNumber: \(expectingNumber)")
     }
@@ -106,7 +106,7 @@ class Brain {
     func reset() {
         gmpStack.removeAll()
         gmpStack.append(Gmp())
-        op2Stack.clean()
+        operatorStack.clean()
         numberString = nil
         expectingNumber = false
     }
@@ -119,11 +119,11 @@ class Brain {
     
     func executeEverythingUpTo(priority maxPriority: Int) {
         func moreOperations() -> Bool {
-            let pendingOperations = op2Stack.count >= 1
+            let pendingOperations = operatorStack.count >= 1
             let sufficientNumbers = gmpStack.count >= 2
             var lastOperationNotTooHighPriority = false
-            if op2Stack.count > 0 {
-                if op2Stack.last!.priority >= maxPriority {
+            if operatorStack.count > 0 {
+                if operatorStack.last!.priority >= maxPriority {
                     lastOperationNotTooHighPriority = true
                 }
             }
@@ -131,21 +131,23 @@ class Brain {
         }
         
         while moreOperations() {
-            let op = op2Stack.pop()!
-            let gmp2 = gmpStack.popLast()!
-            let gmp1 = gmpStack.last!
-            gmp1.withOther(op: op.operation, other: gmp2)
+            let op = operatorStack.pop()!
+            if let gmpTwoOperands = op as? TwoOperands {
+                let gmp2 = gmpStack.popLast()!
+                let gmp1 = gmpStack.last!
+                gmp1.execute(gmpTwoOperands.operation, with: gmp2)
+            }
         }
     }
     
     func percentage() {
-        if op2Stack.count == 0 && gmpStack.count >= 1 {
+        if operatorStack.count == 0 && gmpStack.count >= 1 {
             if let last = gmpStack.last {
                 last.mul(other: Gmp("0.01"))
                 gmpStack.replaceLast(with: last)
             }
             
-        } else if op2Stack.count >= 1 && gmpStack.count >= 2 {
+        } else if operatorStack.count >= 1 && gmpStack.count >= 2 {
             if let last = gmpStack.last {
                 if let secondLast = gmpStack.secondLast {
                     last.mul(other: Gmp("0.01"))
@@ -179,22 +181,22 @@ class Brain {
                 gmpStack.modifyLast(withOp: op)
                 expectingNumber = false
             }
-        } else if let op = op2[symbol] {
+        } else if let op = operators[symbol] {
             if expectingNumber {
                 // the user seems to have changed his mind
                 // correct operation
-                op2Stack.removeLast()
-                op2Stack.push(op)
+                operatorStack.removeLast()
+                operatorStack.push(op)
             } else {
                 executeEverythingUpTo(priority: op.priority)
-                op2Stack.push(op)
+                operatorStack.push(op)
                 expectingNumber = true
             }
         }
-        print("after operation \(symbol): gmps: \(gmpStack.count), ops: \(op2Stack.count) numberString: \(numberString ?? "empty") expectingNumber: \(expectingNumber) ")
+        print("after operation \(symbol): gmps: \(gmpStack.count), ops: \(operatorStack.count) numberString: \(numberString ?? "empty") expectingNumber: \(expectingNumber) ")
     }
 
-    let inplaceOperations: Dictionary <String, (Gmp) -> () -> ()> = [
+    let inplaceOperations: Dictionary <String, inplaceType> = [
         "+/-":    Gmp.changeSign,
         "x^2":    Gmp.pow_x_2,
         "oneOverX": Gmp.rez,
@@ -235,23 +237,25 @@ class Brain {
         "10^x":   Gmp.pow_10_x,
     ]
     
-    let constDict: Dictionary <String, (Gmp) -> () -> ()> = [
+    let constDict: Dictionary <String, inplaceType> = [
         // same Gmp function as inplaceOperations, but handled differently
         "π":    Gmp.π,
         "e":    Gmp.e,
         "rand": Gmp.rand
     ]
     
-    let op2: Dictionary <String, Op2> = [
-        "+":    Op2(Gmp.add, 1),
-        "-":    Op2(Gmp.min, 1),
-        "x":    Op2(Gmp.mul, 2),
-        "/":    Op2(Gmp.div, 2),
-        "y√":   Op2(Gmp.sqrty, 3),
-        "x^y":  Op2(Gmp.pow_x_y, 3),
-        "y^x":  Op2(Gmp.pow_y_x, 3),
-        "logy": Op2(Gmp.logy, 3),
-        "x↑↑y": Op2(Gmp.x_double_up_arrow_y, 3),
+    let operators: Dictionary <String, Operator> = [
+        "+":    TwoOperands(Gmp.add, 1),
+        "-":    TwoOperands(Gmp.min, 1),
+        "x":    TwoOperands(Gmp.mul, 2),
+        "/":    TwoOperands(Gmp.div, 2),
+        "y√":   TwoOperands(Gmp.sqrty, 3),
+        "x^y":  TwoOperands(Gmp.pow_x_y, 3),
+        "y^x":  TwoOperands(Gmp.pow_y_x, 3),
+        "logy": TwoOperands(Gmp.logy, 3),
+        "x↑↑y": TwoOperands(Gmp.x_double_up_arrow_y, 3),
+        "(":    Operator(4),
+        ")":    Operator(4)
     ]
     
     
@@ -273,7 +277,7 @@ class Brain {
         // clear
         reset()
         assert(gmpStack.count == 1)
-        assert(op2Stack.count == 0)
+        assert(operatorStack.count == 0)
         
         // 1+2+5+2= + 1/4 =
         addDigitToNumberString("1")
