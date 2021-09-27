@@ -56,14 +56,20 @@ struct Root: View {
         ZStack {
             GeometryReader { geo in
                 let s = min(geo.size.width, geo.size.height)
+                let fontSize1:CGFloat = CGFloat(0.21276) * s
+                let fontSize2:CGFloat = CGFloat(0.27659) * s
+                let offsetX1:CGFloat  = CGFloat(0.33) * s
+                let offsetY1:CGFloat  = CGFloat(0.25) * s
+                let offsetX2:CGFloat  = CGFloat(0.58) * s
+                let offsetY2:CGFloat  = CGFloat(0.37) * s
                 Text(x)
-                    .font(.system(size: 10.0*s/47.0, weight: .semibold))
-                    .offset(x: 0.33*s, y: 0.25*s)
+                    .font(.system(size: fontSize1, weight: .semibold))
+                    .offset(x: offsetX1, y: offsetY1)
                 SquareRootShape()
                     .stroke(Configuration.shared.LightGrayKeyProperties.textColor, style: StrokeStyle(lineWidth: 1.6*s/47, lineCap: CGLineCap.square, lineJoin: CGLineJoin.bevel))
                 Text("X")
-                    .font(.system(size: 13.0*s/47.0, weight: .semibold))
-                    .offset(x: 0.58*s, y: 0.37*s)
+                    .font(.system(size: fontSize2, weight: .semibold))
+                    .offset(x: offsetX2, y: offsetY2)
             }
         }
         //.background(Color.yellow)
