@@ -14,7 +14,7 @@ struct Display: View {
         HStack {
             Spacer(minLength: 0)
             Text(text)
-                .foregroundColor(Color.white)
+                .foregroundColor(Configuration.shared.DigitKeyProperties.textColor)
                 .font(Font.system(size: Configuration.shared.displayFontSize, weight: .thin).monospacedDigit())
                 .lineLimit(1)
         }

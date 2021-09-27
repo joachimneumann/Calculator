@@ -23,7 +23,7 @@ struct Zoom: View {
                             .resizable()
                     }
                 }
-                .foregroundColor(active ? Configuration.shared.OpKeyProperties.color : Color(white: 0.5))
+                .foregroundColor(active ? Configuration.shared.DigitKeyProperties.textColor : Color(white: 0.5))
                 .font(Font.system(size: 100, weight: .bold).monospacedDigit())
                 .minimumScaleFactor(0.01)
                 .frame(width: Configuration.shared.zoomIconSize, height: Configuration.shared.zoomIconSize, alignment: .center)
