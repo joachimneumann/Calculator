@@ -81,6 +81,27 @@ class BrainViewModel: ObservableObject {
         //        mainDisplay = String(temp.prefix(10))
     }
     
+    func clearmemory() {
+        brain.clearmemory()
+    }
+    func addToMemory() {
+        if let last = brain.last {
+            brain.addToMemory(last)
+        }
+    }
+    func subtractFromMemory() {
+        if let last = brain.last {
+            brain.substractFromMemory(last)
+        }
+    }
+    func memory() {
+        brain.getMemory()
+        shortDisplayData = brain.shortDisplayData()
+        shortDisplayString = shortDisplayData.string
+        trailingZeroesString = nil
+    }
+
+    
     init() {
         trailingZeroesString = nil
         shortDisplayData = brain.shortDisplayData()

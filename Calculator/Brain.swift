@@ -14,6 +14,8 @@ class Brain {
         displayData(digits: 10000) // TODO Bogus
     }
     
+    var memory: Gmp = Gmp()
+    
     private let debug = true
     private var numberString: String? = "0"
     
@@ -31,6 +33,33 @@ class Brain {
         }
     }
     
+    func clearmemory() {
+        memory = Gmp()
+    }
+    func addToMemory(_ plus: Gmp) {
+        memory.add(other: plus)
+        print("memory=\(memory.toDouble())")
+    }
+    func substractFromMemory(_ minus: Gmp) {
+        memory.min(other: minus)
+        print("memory=\(memory.toDouble())")
+    }
+    func getMemory() {
+        if expectingNumber {
+            gmpStack.append(memory)
+            expectingNumber = false
+        } else {
+            gmpStack.replaceLast(with: memory)
+            expectingNumber = false
+        }
+
+        print("memory=\(memory.toDouble())")
+        print("gmpStack.last?=\(gmpStack.last!.toDouble())")
+    }
+
+    var last: Gmp? {
+        gmpStack.last
+    }
     func addDigitToNumberString(_ digit: Character) {
         if digit == "," {
             if numberString == nil {
@@ -210,7 +239,6 @@ class Brain {
         "e":    Gmp.e,
         "rand": Gmp.rand
     ]
-    
     
     let op2: Dictionary <String, Op2> = [
         "+": Op2(Gmp.add, 1),

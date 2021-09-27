@@ -21,13 +21,13 @@ struct ScientificKeys: View {
                 Key(")")
                     .scientific(size: size) // missing
                 Key("mc")
-                    .scientific(size: size) // missing
+                    .scientific(size: size) { model.clearmemory() }
                 Key("m+")
-                    .scientific(size: size) // missing
+                    .scientific(size: size) { model.addToMemory() }
                 Key("m-")
-                    .scientific(size: size) // missing
+                    .scientific(size: size) { model.subtractFromMemory() }
                 Key("mr")
-                    .scientific(size: size) // missing
+                    .scientific(size: size) { model.memory() }
             }
             HStack(spacing: horizontalSpace) {
                 Key("2nd")
