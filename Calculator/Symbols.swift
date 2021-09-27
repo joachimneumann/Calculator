@@ -74,8 +74,8 @@ struct Root: View {
         }
         //.background(Color.yellow)
     }
-    init(_ x: String) {
-        self.x = x
+    init(_ root: String) {
+        self.root = root
     }
 }
 
