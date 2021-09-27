@@ -56,6 +56,7 @@ class Gmp {
     func Z()          { mpfr_zeta( &mpfr, &mpfr, MPFR_RNDN) }
     func ln()         { mpfr_log(  &mpfr, &mpfr, MPFR_RNDN) }
     func log10()      { mpfr_log10(&mpfr, &mpfr, MPFR_RNDN) }
+    func log2()       { mpfr_log2 (&mpfr, &mpfr, MPFR_RNDN) }
     func sin()        { mpfr_sin(  &mpfr, &mpfr, MPFR_RNDN) }
     func cos()        { mpfr_cos(  &mpfr, &mpfr, MPFR_RNDN) }
     func tan()        { mpfr_tan(  &mpfr, &mpfr, MPFR_RNDN) }
@@ -109,6 +110,7 @@ class Gmp {
 
     
     func pow_x_3()    { mpfr_pow_ui(&mpfr, &mpfr, 3, MPFR_RNDN) }
+    func pow_2_x()    { mpfr_ui_pow(&mpfr, 2, &mpfr, MPFR_RNDN) }
     func rez()        { mpfr_ui_div(&mpfr, 1, &mpfr, MPFR_RNDN) }
     func fac() {
         let n = mpfr_get_si(&mpfr, MPFR_RNDN)
@@ -127,8 +129,13 @@ class Gmp {
     func mul (other: Gmp) { mpfr_mul(&mpfr, &mpfr, &other.mpfr, MPFR_RNDN) }
 
     func pow_x_y(exponent: Gmp) { mpfr_pow(&mpfr, &mpfr, &exponent.mpfr, MPFR_RNDN) }
+    func pow_y_x(base: Gmp)     { mpfr_pow(&mpfr, &base.mpfr, &mpfr, MPFR_RNDN) }
     func sqrty(exponent: Gmp)   { exponent.rez(); pow_x_y(exponent: exponent) }
-    
+    func logy(base: Gmp) {
+        self.ln()
+        base.ln()
+        self.div(other: base)
+    }
     func x_double_up_arrow_y(other: Gmp) {
         var temp: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
         mpfr_init2 (&temp, mpfr_get_prec(&mpfr))

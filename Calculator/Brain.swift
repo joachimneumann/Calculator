@@ -195,13 +195,14 @@ class Brain {
     }
 
     let inplaceOperations: Dictionary <String, (Gmp) -> () -> ()> = [
-        "+/-": Gmp.changeSign,
-        "x^2":Gmp.pow_x_2,
+        "+/-":    Gmp.changeSign,
+        "x^2":    Gmp.pow_x_2,
         "oneOverX": Gmp.rez,
         "x!":     Gmp.fac,
         "Z":      Gmp.Z,
         "ln":     Gmp.ln,
         "log10":  Gmp.log10,
+        "log2":   Gmp.log2,
         "√":      Gmp.sqrt,
         "3√":     Gmp.sqrt3,
         "sin":    Gmp.sin,
@@ -228,6 +229,7 @@ class Brain {
         "asinhD": Gmp.asinhD,
         "acoshD": Gmp.acoshD,
         "atanhD": Gmp.atanhD,
+        "2^x":    Gmp.pow_2_x,
         "x^3":    Gmp.pow_x_3,
         "e^x":    Gmp.pow_e_x,
         "10^x":   Gmp.pow_10_x,
@@ -241,12 +243,14 @@ class Brain {
     ]
     
     let op2: Dictionary <String, Op2> = [
-        "+": Op2(Gmp.add, 1),
-        "-": Op2(Gmp.min, 1),
-        "x": Op2(Gmp.mul, 2),
-        "/": Op2(Gmp.div, 2),
-        "y√": Op2(Gmp.sqrty, 3),
-        "pow_x_y": Op2(Gmp.pow_x_y, 3),
+        "+":    Op2(Gmp.add, 1),
+        "-":    Op2(Gmp.min, 1),
+        "x":    Op2(Gmp.mul, 2),
+        "/":    Op2(Gmp.div, 2),
+        "y√":   Op2(Gmp.sqrty, 3),
+        "x^y":  Op2(Gmp.pow_x_y, 3),
+        "y^x":  Op2(Gmp.pow_y_x, 3),
+        "logy": Op2(Gmp.logy, 3),
         "x↑↑y": Op2(Gmp.x_double_up_arrow_y, 3),
     ]
     
@@ -333,7 +337,7 @@ class Brain {
         
         reset()
         addDigitToNumberString("2")
-        operation("pow_x_y")
+        operation("x^y")
         addDigitToNumberString("1")
         addDigitToNumberString("0")
         operation("=")

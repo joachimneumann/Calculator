@@ -36,12 +36,12 @@ struct ScientificKeys: View {
                     .scientific(size: size) { model.operation("x^2") }
                 Key("x^3")
                     .scientific(size: size) { model.operation("x^3") }
-                Key("pow_x_y")
-                    .scientific(size: size) { model.operation("pow_x_y") }
-                Key("e^x")
-                    .scientific(size: size) { model.operation("e^x") }
-                Key("10^x")
-                    .scientific(size: size) { model.operation("10^x") }
+                Key("x^y")
+                    .scientific(size: size) { model.operation("x^y") }
+                Key(model.secondKeys ? "y^x" : "e^x")
+                    .scientific(size: size) { model.operation(model.secondKeys ? "y^x" : "e^x") }
+                Key(model.secondKeys ? "2^x" : "10^x")
+                    .scientific(size: size) { model.operation(model.secondKeys ? "2^x" : "10^x") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("oneOverX")
@@ -52,10 +52,10 @@ struct ScientificKeys: View {
                     .scientific(size: size) { model.operation("3√") }
                 Key("y√")
                     .scientific(size: size) { model.operation("y√") }
-                Key("ln")
-                    .scientific(size: size) { model.operation("ln") }
-                Key("log10")
-                    .scientific(size: size) { model.operation("log10") }
+                Key(model.secondKeys ? "logy" : "ln")
+                    .scientific(size: size) { model.operation(model.secondKeys ? "logy" : "ln") }
+                Key(model.secondKeys ? "log2" : "log10")
+                    .scientific(size: size) { model.operation(model.secondKeys ? "log2" : "log10") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("x!")
@@ -91,7 +91,7 @@ struct ScientificKeys: View {
                         model.operation("x")
                         model.secretDigit("1")
                         model.secretDigit("0")
-                        model.secretOperation("pow_x_y")
+                        model.secretOperation("x^y")
                     }
             }
             HStack(spacing: horizontalSpace) {

@@ -110,20 +110,39 @@ struct Log10: View {
     }
 }
 
+struct Logx: View {
+    let base: String
+    var body: some View {
+        ZStack {
+            GeometryReader { geo in
+                let s = min(geo.size.width, geo.size.height)
+                Text("log")
+                    .font(.system(size: s*0.4))
+                    .offset(x: 0.25*s, y: 0.25*s)
+                Text(base)
+                    .font(.system(size: s*0.22))
+                    .offset(x: 0.78*s, y: 0.5*s)
+            }
+        }
+    }
+    init(_ base: String) { self.base = base }
+}
+
 struct Pow: View {
     let base: String
     let exponent: String
-    let additionalXOffset: CGFloat
+    let baseXOffset: CGFloat
+    let exponentXOffset: CGFloat
     var body: some View {
         ZStack {
             GeometryReader { geo in
                 let s = min(geo.size.width, geo.size.height)
                 Text(base)
                     .font(.system(size: s*0.4))
-                    .offset(x: (0.4-additionalXOffset)*s, y: 0.25*s)
+                    .offset(x: (0.4-exponentXOffset+baseXOffset)*s, y: 0.25*s)
                 Text(exponent)
                     .font(.system(size: s*0.22))
-                    .offset(x: (0.62+additionalXOffset)*s, y: 0.25*s)
+                    .offset(x: (0.62+exponentXOffset+baseXOffset)*s, y: 0.25*s)
             }
         }
     }
