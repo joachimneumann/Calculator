@@ -24,8 +24,10 @@ struct CatalystContentView: View {
                     Spacer(minLength: 0)
                     if !zoomed {
                         LandscapeKeys(model: model)
+                            .transition(.move(edge: .bottom))
                     }
                 }
+                .transition(.move(edge: .bottom))
             }
             Zoom(active: model.shortDisplayData.hasMoreDigits, zoomed: $zoomed)
                 .padding(.trailing, (Configuration.shared.keyWidth - Configuration.shared.displayFontSize/2) / 2)
