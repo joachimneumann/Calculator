@@ -51,7 +51,7 @@ struct SlashShape: Shape {
 }
 
 struct Root: View {
-    let x: String
+    let root: String
     var body: some View {
         ZStack {
             GeometryReader { geo in
@@ -62,7 +62,7 @@ struct Root: View {
                 let offsetY1:CGFloat  = CGFloat(0.25) * s
                 let offsetX2:CGFloat  = CGFloat(0.58) * s
                 let offsetY2:CGFloat  = CGFloat(0.37) * s
-                Text(x)
+                Text(root)
                     .font(.system(size: fontSize1, weight: .semibold))
                     .offset(x: offsetX1, y: offsetY1)
                 SquareRootShape()
