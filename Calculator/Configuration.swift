@@ -22,7 +22,7 @@ class Configuration {
     let windowWidth: CGFloat = 575.0
     let windowHeight: CGFloat = 323.0
     let displayFontSize: CGFloat = 47
-    var zoomIconSize: CGFloat { displayFontSize*0.5 }
+    var zoomIconSize: CGFloat = 30
     let keyWidth: CGFloat = 56.25
     let keyHeight: CGFloat = 47.0
 

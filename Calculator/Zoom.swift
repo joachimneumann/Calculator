@@ -12,29 +12,26 @@ struct Zoom: View {
     @Binding var zoomed: Bool
     var body: some View {
         HStack {
-            Spacer()
+            Spacer(minLength: 0)
             VStack {
                 ZStack {
-                    Group {
-                        if zoomed {
-                            Image(systemName: "minus.circle.fill")
-                        } else {
-                            Image(systemName: "plus.circle.fill")
-                        }
-                    }
-                    .font(Font.system(size: Configuration.shared.zoomIconSize, weight: .bold).monospacedDigit())
-                    .foregroundColor(active ? Configuration.shared.OpKeyProperties.color : Color(white: 0.5))
-                    .contentShape(Rectangle())
-                    .padding(Configuration.shared.zoomIconSize * -0.1)
-                    .background(active ? Color.white : Color.clear)
-                    .clipShape(Circle())
-                    .onTapGesture {
-                        withAnimation(.easeIn) {
-                            zoomed.toggle()
-                        }
+                    if zoomed {
+                    Image(systemName: "minus.circle.fill")
+                            .resizable()
+                    } else {
+                      Image(systemName: "plus.circle.fill")
+                            .resizable()
                     }
                 }
-                .fixedSize(horizontal: true, vertical: true)
+                .foregroundColor(active ? Configuration.shared.OpKeyProperties.color : Color(white: 0.5))
+                .font(Font.system(size: 100, weight: .bold).monospacedDigit())
+                .minimumScaleFactor(0.01)
+                .frame(width: Configuration.shared.zoomIconSize, height: Configuration.shared.zoomIconSize, alignment: .center)
+                .onTapGesture {
+                    withAnimation(.easeIn) {
+                        zoomed.toggle()
+                    }
+                }
                 Spacer(minLength: 0)
             }
         }
@@ -47,3 +44,4 @@ struct Zoom_Previews: PreviewProvider {
         Zoom(active: true, zoomed: .constant(false))
     }
 }
+

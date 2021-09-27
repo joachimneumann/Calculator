@@ -30,8 +30,8 @@ struct CatalystContentView: View {
                 .transition(.move(edge: .bottom))
             }
             Zoom(active: model.shortDisplayData.hasMoreDigits, zoomed: $zoomed)
-                .padding(.trailing, (Configuration.shared.keyWidth - Configuration.shared.displayFontSize/2) / 2)
-                .padding(.top, Configuration.shared.displayFontSize*0.3)
+                .padding(.trailing, Configuration.shared.keyWidth*0.5 - Configuration.shared.zoomIconSize*0.5)
+                .padding(.top, 12) // hardcoded. The correct height depends on the display font and I was lazy...
             if !zoomed {
                 Rad(rad: $model.rad)
             }
