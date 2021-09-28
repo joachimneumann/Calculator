@@ -30,7 +30,7 @@ class Brain {
             return DisplayData()
         }
     }
-    
+    var isValid: Bool { gmpStack.last!.isValid }
     func clearmemory() {
         memory = Gmp()
     }

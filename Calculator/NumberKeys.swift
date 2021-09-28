@@ -27,7 +27,7 @@ struct NumberKeys: View {
                     .op_plusMinus_percentage(
                         size: size,
                         isValidKey: model.inPlaceKeysValid )
-                { model.operation("+/-")  }
+                { model.operation("+/-") }
                 Key("%")
                     .op_plusMinus_percentage(
                         size: size,

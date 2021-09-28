@@ -44,7 +44,6 @@ class Gmp {
 
     func isNull()       -> Bool { mpfr_cmp_d(&mpfr, 0.0) == 0 }
     func isNegtive()    -> Bool { mpfr_cmp_d(&mpfr, 0.0)  < 0 }
-    func isNotANumber() -> Bool { mpfr_nan_p(&mpfr)      != 0 }
     
     func inPlace(op: inplaceType) { op(self)() }
     /// in the second argument, I a simultaneously using the same memory
@@ -157,7 +156,9 @@ class Gmp {
     func toDouble() -> Double {
         return mpfr_get_d(&mpfr, MPFR_RNDN)
     }
-    
+    var isValid: Bool {
+        mpfr_number_p(&mpfr) != 0
+    }
     var NaN: Bool {
         mpfr_nan_p(&mpfr) != 0
     }

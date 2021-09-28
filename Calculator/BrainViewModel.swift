@@ -12,12 +12,13 @@ class BrainViewModel: ObservableObject {
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
     var longDisplayString: String { brain.allDigitsDisplayData.string }
-    var inPlaceKeysValid: Bool { shortDisplayData.isValidNumber }
     var hasMoreDigits: Bool { shortDisplayData.hasMoreDigits }
     private var shortDisplayData: DisplayData = DisplayData()
     private let brain = Brain()
     private var trailingZeroesString: String?
     
+    var inPlaceKeysValid: Bool { brain.isValid }
+
     func secretDigit(_ digit: Character) {
         brain.addDigitToNumberString(digit)
     }
@@ -29,9 +30,7 @@ class BrainViewModel: ObservableObject {
         shortDisplayString = shortDisplayData.string
     }
     
-    var digitsValid: Bool {
-        false
-    }
+    var digitsValid: Bool { true }
     
     func zero() {
         if shortDisplayData.isValidNumber {

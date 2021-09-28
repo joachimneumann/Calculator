@@ -32,7 +32,7 @@ private struct AddBackGround: ViewModifier {
                         withAnimation(.easeIn(duration: properties.upAnimationTime)) {
                             down = false
                         }
-                        callback!()
+                        if isValidKey { callback!() }
                     }
                 }
         )

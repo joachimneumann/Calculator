@@ -29,22 +29,22 @@ struct ScientificKeys: View {
                 Key("mc")
                     .scientific(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: true)
                 { model.clearmemory() }
                 Key("m+")
                     .scientific(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.inPlaceKeysValid)
                 { model.addToMemory() }
                 Key("m-")
                     .scientific(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.inPlaceKeysValid)
                 { model.subtractFromMemory() }
                 Key("mr")
                     .scientific(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: true)
                 { model.memory() }
             }
             HStack(spacing: horizontalSpace) {
@@ -56,12 +56,12 @@ struct ScientificKeys: View {
                 Key("x^2")
                     .scientific(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.inPlaceKeysValid)
                 { model.operation("x^2") }
                 Key("x^3")
                     .scientific(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.inPlaceKeysValid)
                 { model.operation("x^3") }
                 Key("x^y")
                     .scientific(
@@ -76,24 +76,24 @@ struct ScientificKeys: View {
                 Key(model.secondKeys ? "2^x" : "10^x")
                     .scientific(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.inPlaceKeysValid)
                 { model.operation(model.secondKeys ? "2^x" : "10^x") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("oneOverX")
                     .scientific(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.inPlaceKeysValid)
                 { model.operation("oneOverX") }
                 Key("√")
                     .scientific(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.inPlaceKeysValid)
                 { model.operation("√") }
                 Key("3√")
                     .scientific(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.inPlaceKeysValid)
                 { model.operation("3√") }
                 Key("y√")
                     .scientific(
@@ -115,12 +115,12 @@ struct ScientificKeys: View {
                 Key("x!")
                     .scientific(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.inPlaceKeysValid)
                 { model.operation("x!") }
                 Key(model.secondKeys ? "asin" : "sin")
                     .scientific(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.inPlaceKeysValid)
                 {   if model.rad {
                         model.operation(model.secondKeys ? "asin" : "sin")
                     } else {
@@ -130,7 +130,7 @@ struct ScientificKeys: View {
                 Key(model.secondKeys ? "acos" : "cos")
                     .scientific(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.inPlaceKeysValid)
                 {   if model.rad {
                         model.operation(model.secondKeys ? "acos" : "cos")
                     } else {
@@ -140,7 +140,7 @@ struct ScientificKeys: View {
                 Key(model.secondKeys ? "atan" : "tan")
                     .scientific(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.inPlaceKeysValid)
                 {   if model.rad {
                         model.operation(model.secondKeys ? "atan" : "tan")
                     } else {
@@ -166,12 +166,12 @@ struct ScientificKeys: View {
                 Key(model.rad ? "Deg" : "Rad")
                     .scientific(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: true)
                 { model.rad.toggle() }
                 Key(model.secondKeys ? "asinh" : "sinh")
                     .scientific(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.inPlaceKeysValid)
                 {   if model.rad {
                         model.operation(model.secondKeys ? "asinh" : "sinh")
                     } else {
@@ -181,7 +181,7 @@ struct ScientificKeys: View {
                 Key(model.secondKeys ? "acosh" : "cosh")
                     .scientific(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.inPlaceKeysValid)
                 {   if model.rad {
                         model.operation(model.secondKeys ? "acosh" : "cosh")
                     } else {
@@ -191,7 +191,7 @@ struct ScientificKeys: View {
                 Key(model.secondKeys ? "atanh" : "tanh")
                     .scientific(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.inPlaceKeysValid)
                 {   if model.rad {
                         model.operation(model.secondKeys ? "atanh" : "tanh")
                     } else {
