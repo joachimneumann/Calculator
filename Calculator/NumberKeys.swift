@@ -21,7 +21,8 @@ struct NumberKeys: View {
                 Key("C")
                     .scientific(
                         size: size,
-                        isAllowed: true)
+                        isAllowed: true,
+                        isPending: false)
                 { model.operation("C") }
                 Key("+/-")
                     .op_plusMinus_percentage(
@@ -36,7 +37,8 @@ struct NumberKeys: View {
                 Key("/")
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
-                        isAllowed: model.inPlaceAllowed)
+                        isAllowed: model.inPlaceAllowed,
+                        isPending: model.isPending("/"))
                 { model.operation("/") }
             }
             HStack(spacing: horizontalSpace) {
@@ -58,7 +60,8 @@ struct NumberKeys: View {
                 Key("x")
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
-                        isAllowed: model.inPlaceAllowed)
+                        isAllowed: model.inPlaceAllowed,
+                        isPending: model.isPending("x"))
                 { model.operation("x") }
             }
             HStack(spacing: horizontalSpace) {
@@ -80,7 +83,8 @@ struct NumberKeys: View {
                 Key("-")
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
-                        isAllowed: model.inPlaceAllowed)
+                        isAllowed: model.inPlaceAllowed,
+                        isPending: model.isPending("-"))
                 { model.operation("-") }
             }
             HStack(spacing: horizontalSpace) {
@@ -102,7 +106,8 @@ struct NumberKeys: View {
                 Key("+")
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
-                        isAllowed: model.inPlaceAllowed)
+                        isAllowed: model.inPlaceAllowed,
+                        isPending: model.isPending("+"))
                 { model.operation("+") }
             }
             HStack(spacing: horizontalSpace) {
@@ -120,7 +125,8 @@ struct NumberKeys: View {
                 Key("=")
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
-                        isAllowed: model.inPlaceAllowed)
+                        isAllowed: model.inPlaceAllowed,
+                        isPending: false)
                 { model.operation("=") }
             }
         }

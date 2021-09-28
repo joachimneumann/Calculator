@@ -18,7 +18,12 @@ class BrainViewModel: ObservableObject {
     private var trailingZeroesString: String?
     
     var inPlaceAllowed: Bool { brain.isValid }
-
+    func isPending(_ symbol: String) -> Bool {
+        if let pendingOperator = brain.pendingOperator {
+            return pendingOperator == symbol
+        }
+        return false
+    }
     func secretDigit(_ digit: Character) {
         brain.addDigitToNumberString(digit)
     }
@@ -62,10 +67,9 @@ class BrainViewModel: ObservableObject {
         }
     }
     
-    func secretOperation(_ op: String) {
-        brain.operation(op)
+    func secretOperation(_ op: String, withPending: Bool = false) {
+        brain.operation(op, withPending: withPending)
     }
-
     
     func operation(_ op: String) {
         brain.operation(op)

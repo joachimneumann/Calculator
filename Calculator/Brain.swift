@@ -19,7 +19,7 @@ class Brain {
     
     private let debug = true
     private var displayString: String? = "0"
-    
+
     internal var operatorStack = OperatorStack() // TODO private after testing
     internal var gmpStack = GmpStack()
         
@@ -216,7 +216,10 @@ class Brain {
         }
     }
     
-    func operation(_ symbol: String) {
+    var pendingOperator: String?
+
+    func operation(_ symbol: String, withPending: Bool = true) {
+        pendingOperator = nil
         if symbol == "C" {
             reset()
         } else if symbol == "=" {
@@ -232,15 +235,9 @@ class Brain {
             gmpStack.modifyLast(withOp: op.operation)
             displayString = nil
         } else if let op = twoOperandOperators[symbol] {
-//            if displayString == nil {
-//                /// the user seems to have changed his mind
-//                /// correct operation
-//                operatorStack.removeLast()
-//                operatorStack.push(op)
-//            } else {
-                execute(priority: op.priority)
-                operatorStack.push(op)
-//            }
+            if withPending { pendingOperator = symbol }
+            execute(priority: op.priority)
+            operatorStack.push(op)
             displayString = nil
         }
         print("X after op  \"\(symbol)\": " +

@@ -75,7 +75,7 @@ private struct Digit_0_to_9: ViewModifier {
     func body(content: Content) -> some View {
         content
             .foregroundColor(callback == nil ?  Color.gray : Configuration.shared.DigitKeyProperties.textColor)
-            .addBackground(with: Configuration.shared.DigitKeyProperties, isAllowed: isAllowed, callback: callback)
+            .addBackground(with: Configuration.shared.DigitKeyProperties, isAllowed: isAllowed, isPending: false, callback: callback)
             .font(.system(size: size.height * CGFloat(0.48)))
     }
 }
@@ -83,12 +83,24 @@ private struct Digit_0_to_9: ViewModifier {
 private struct Colorful_plus_minus_etc: ViewModifier {
     let size: CGSize
     let isAllowed: Bool
+    let isPending: Bool
     let callback: (() -> Void)?
+    var fg: Color {
+        if callback == nil {
+            return Color.gray
+        } else {
+            if isPending {
+                return Configuration.shared.OpKeyProperties.color
+            } else {
+                return Configuration.shared.OpKeyProperties.textColor
+            }
+        }
+    }
     func body(content: Content) -> some View {
         let fontsize = size.height * CGFloat(0.36)
         content
-            .foregroundColor(callback == nil ?  Color.gray : Configuration.shared.OpKeyProperties.textColor)
-            .addBackground(with: Configuration.shared.OpKeyProperties, isAllowed: isAllowed, callback: callback)
+            .foregroundColor(fg)
+            .addBackground(with: Configuration.shared.OpKeyProperties, isAllowed: isAllowed, isPending: isPending, callback: callback)
             .font(.system(size: fontsize, weight: .bold))
         
     }
@@ -102,7 +114,7 @@ private struct PlusMinus_percentage: ViewModifier {
         let fontsize = size.height * 0.36
         content
             .foregroundColor(callback == nil ?  Color.gray : Configuration.shared.LightGrayKeyProperties.textColor)
-            .addBackground(with: Configuration.shared.LightGrayKeyProperties, isAllowed: isAllowed, callback: callback)
+            .addBackground(with: Configuration.shared.LightGrayKeyProperties, isAllowed: isAllowed, isPending: false, callback: callback)
             .font(.system(size: fontsize, weight: .bold))
     }
 }
@@ -110,12 +122,24 @@ private struct PlusMinus_percentage: ViewModifier {
 private struct ScientificButton: ViewModifier {
     let size: CGSize
     let isAllowed: Bool
+    let isPending: Bool
     let callback: (() -> Void)?
+    var fg: Color {
+        if callback == nil {
+            return Color.gray
+        } else {
+            if isPending {
+                return Configuration.shared.LightGrayKeyProperties.color
+            } else {
+                return Configuration.shared.LightGrayKeyProperties.textColor
+            }
+        }
+    }
     func body(content: Content) -> some View {
         let fontsize = size.height * 0.40
         content
-            .foregroundColor(callback == nil ?  Color.gray : Configuration.shared.LightGrayKeyProperties.textColor)
-            .addBackground(with: Configuration.shared.LightGrayKeyProperties, isAllowed: isAllowed, callback: callback)
+            .foregroundColor(fg)
+            .addBackground(with: Configuration.shared.LightGrayKeyProperties, isAllowed: isAllowed, isPending: isPending, callback: callback)
             .font(.system(size: fontsize, weight: .regular))
     }
 }
@@ -138,9 +162,9 @@ extension View {
         .frame(width: size.width*2+space, height: size.height)
     }
     
-    func op_div_mul_add_sub_eq(size: CGSize, isAllowed: Bool, callback: (() -> Void)? = nil ) -> some View {
+    func op_div_mul_add_sub_eq(size: CGSize, isAllowed: Bool, isPending: Bool, callback: (() -> Void)? = nil ) -> some View {
         self
-            .modifier(Colorful_plus_minus_etc(size: size, isAllowed: isAllowed, callback: callback))
+            .modifier(Colorful_plus_minus_etc(size: size, isAllowed: isAllowed, isPending: isPending, callback: callback))
             .frame(width: size.width, height: size.height)
     }
     
@@ -150,9 +174,9 @@ extension View {
             .frame(width: size.width, height: size.height)
     }
     
-    func scientific(size: CGSize, isAllowed: Bool, callback: (() -> Void)? = nil ) -> some View {
+    func scientific(size: CGSize, isAllowed: Bool, isPending: Bool, callback: (() -> Void)? = nil ) -> some View {
         self
-            .modifier(ScientificButton(size: size, isAllowed: isAllowed, callback: callback))
+            .modifier(ScientificButton(size: size, isAllowed: isAllowed, isPending: isPending, callback: callback))
             .frame(width: size.width, height: size.height)
     }
 }

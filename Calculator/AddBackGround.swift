@@ -10,12 +10,28 @@ import SwiftUI
 private struct AddBackGround: ViewModifier {
     let properties: Configuration.KeyProperties
     let isAllowed: Bool
+    let isPending: Bool
     let callback: (() -> Void)?
+    var bg: Color {
+        if down {
+            if isAllowed {
+                return properties.downColor
+            } else {
+                return Color.red
+            }
+        } else {
+            if isPending {
+                return properties.textColor
+            } else {
+                return properties.color
+            }
+        }
+    }
     @State var down: Bool = false
     func body(content: Content) -> some View {
         ZStack {
             Configuration.Background()
-                .foregroundColor(down ? (isAllowed ? properties.downColor : Color.red) : properties.color)
+                .foregroundColor(bg)
             content
         }
         .gesture(
@@ -40,7 +56,7 @@ private struct AddBackGround: ViewModifier {
 }
 
 extension View {
-    func addBackground(with properties: Configuration.KeyProperties, isAllowed: Bool, callback: (() -> Void)?) -> some View {
-        return self.modifier(AddBackGround(properties: properties, isAllowed: isAllowed, callback: callback))
+    func addBackground(with properties: Configuration.KeyProperties, isAllowed: Bool, isPending: Bool, callback: (() -> Void)?) -> some View {
+        return self.modifier(AddBackGround(properties: properties, isAllowed: isAllowed, isPending: isPending, callback: callback))
     }
 }
