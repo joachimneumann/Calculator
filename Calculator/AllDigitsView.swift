@@ -11,6 +11,7 @@ struct AllDigitsView: View {
     var model: BrainViewModel
     
     var body: some View {
+        let _ = print(model.longDisplayString)
         ScrollView(.vertical, showsIndicators: true) {
             Text(model.longDisplayString)
                 .foregroundColor(Color.white)

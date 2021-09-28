@@ -208,7 +208,7 @@ class Gmp {
         exponent = exponent - 1
         var hasMoreDigits = false
         if mantissa.count > length {
-            // this is possible, because we added 5 at the top of this function
+            // this is possible, because we added 5 byte to the mantissa at the top of this function
             hasMoreDigits = true
             mantissa = String(mantissa.prefix(length))
         }
