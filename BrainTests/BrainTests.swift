@@ -21,13 +21,13 @@ class BrainTests: XCTestCase {
         // 1/10 and 1/16
         brain.addDigitToNumberString("1")
         brain.addDigitToNumberString("0")
-        brain.operation("oneOverX")
+        brain.operation("One_x")
         XCTAssertEqual(brain.gmpStack.last!, Gmp("0.1"))
         brain.addDigitToNumberString("1")
         XCTAssertEqual(brain.gmpStack.last!, Gmp("1"))
         brain.addDigitToNumberString("6")
         XCTAssertEqual(brain.gmpStack.last!, Gmp("16"))
-        brain.operation("oneOverX")
+        brain.operation("One_x")
         XCTAssertEqual(brain.gmpStack.last!, Gmp("0.0625"))
         
         // clear
@@ -50,7 +50,7 @@ class BrainTests: XCTestCase {
         brain.operation("+")
         XCTAssertEqual(brain.gmpStack.last, Gmp("10"))
         brain.addDigitToNumberString("4")
-        brain.operation("oneOverX")
+        brain.operation("One_x")
         XCTAssertEqual(brain.gmpStack.last, Gmp("0.25"))
         brain.operation("=")
         XCTAssertEqual(brain.gmpStack.last, Gmp("10.25"))

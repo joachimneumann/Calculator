@@ -31,6 +31,10 @@ class Brain {
         }
     }
     var isValid: Bool { gmpStack.last!.isValid }
+    func isAllowed() -> Bool {
+        return true
+    }
+
     func clearmemory() {
         memory = Gmp()
     }
@@ -104,7 +108,73 @@ class Brain {
         addDigitToNumberString("0")
     }
     
+    var constantOperators:   Dictionary <String, Inplace> = [:]
+    var inplaceOperators:    Dictionary <String, Inplace> = [:]
+    var twoOperandOperators: Dictionary <String, TwoOperand> = [:]
+    var openParenthesis:   Operator = Operator(0, {true})
+    var closedParenthesis: Operator = Operator(0, {true})
+    var equalOperator:     Operator = Operator(0, {true})
+
     init() {
+        constantOperators = [
+            "π":    Inplace(Gmp.π,    0, isAllowed),
+            "e":    Inplace(Gmp.e,    0, isAllowed),
+            "rand": Inplace(Gmp.rand, 0, isAllowed)
+        ]
+        twoOperandOperators = [
+            "+":    TwoOperand(Gmp.add,     1, isAllowed),
+            "-":    TwoOperand(Gmp.sub,     1, isAllowed),
+            "x":    TwoOperand(Gmp.mul,     2, isAllowed),
+            "/":    TwoOperand(Gmp.div,     2, isAllowed),
+            "y√":   TwoOperand(Gmp.sqrty,   3, isAllowed),
+            "x^y":  TwoOperand(Gmp.pow_x_y, 3, isAllowed),
+            "y^x":  TwoOperand(Gmp.pow_y_x, 3, isAllowed),
+            "logy": TwoOperand(Gmp.logy,    3, isAllowed),
+            "x↑↑y": TwoOperand(Gmp.x_double_up_arrow_y, 3, isAllowed),
+        ]
+        inplaceOperators = [
+            "+/-":    Inplace(Gmp.changeSign,     1, isAllowed),
+            "x^2":    Inplace(Gmp.pow_x_2,     1, isAllowed),
+            "One_x":  Inplace(Gmp.rez,     1, isAllowed),
+            "x!":     Inplace(Gmp.fac,     1, isAllowed),
+            "Z":      Inplace(Gmp.Z,     1, isAllowed),
+            "ln":     Inplace(Gmp.ln,     1, isAllowed),
+            "log10":  Inplace(Gmp.log10,     1, isAllowed),
+            "log2":   Inplace(Gmp.log2,     1, isAllowed),
+            "√":      Inplace(Gmp.sqrt,     1, isAllowed),
+            "3√":     Inplace(Gmp.sqrt3,     1, isAllowed),
+            "sin":    Inplace(Gmp.sin,     1, isAllowed),
+            "cos":    Inplace(Gmp.cos,     1, isAllowed),
+            "tan":    Inplace(Gmp.tan,     1, isAllowed),
+            "asin":   Inplace(Gmp.asin,     1, isAllowed),
+            "acos":   Inplace(Gmp.acos,     1, isAllowed),
+            "atan":   Inplace(Gmp.atan,     1, isAllowed),
+            "sinh":   Inplace(Gmp.sinh,     1, isAllowed),
+            "cosh":   Inplace(Gmp.cosh,     1, isAllowed),
+            "tanh":   Inplace(Gmp.tanh,     1, isAllowed),
+            "asinh":  Inplace(Gmp.asinh,     1, isAllowed),
+            "acosh":  Inplace(Gmp.acosh,     1, isAllowed),
+            "atanh":  Inplace(Gmp.atanh,     1, isAllowed),
+            "sinD":   Inplace(Gmp.sinD,     1, isAllowed),
+            "cosD":   Inplace(Gmp.cosD,     1, isAllowed),
+            "tanD":   Inplace(Gmp.tanD,     1, isAllowed),
+            "asinD":  Inplace(Gmp.asinD,     1, isAllowed),
+            "acosD":  Inplace(Gmp.acosD,     1, isAllowed),
+            "atanD":  Inplace(Gmp.atanD,     1, isAllowed),
+            "sinhD":  Inplace(Gmp.sinhD,     1, isAllowed),
+            "coshD":  Inplace(Gmp.coshD,     1, isAllowed),
+            "tanhD":  Inplace(Gmp.tanhD,     1, isAllowed),
+            "asinhD": Inplace(Gmp.asinhD,     1, isAllowed),
+            "acoshD": Inplace(Gmp.acoshD,     1, isAllowed),
+            "atanhD": Inplace(Gmp.atanhD,     1, isAllowed),
+            "2^x":    Inplace(Gmp.pow_2_x,     1, isAllowed),
+            "x^3":    Inplace(Gmp.pow_x_3,     1, isAllowed),
+            "e^x":    Inplace(Gmp.pow_e_x,     1, isAllowed),
+            "10^x":   Inplace(Gmp.pow_10_x,     1, isAllowed)
+        ]
+        openParenthesis   = Operator(Operator.openParenthesesPriority, isAllowed)
+        closedParenthesis = Operator(Operator.openParenthesesPriority, isAllowed)
+        equalOperator     = Operator(Operator.equalPriority, isAllowed)
         reset()
     }
     
@@ -112,7 +182,7 @@ class Brain {
     func execute(priority newPriority: Int) {
         while !operatorStack.isEmpty && operatorStack.last!.priority >= newPriority {
             let op = operatorStack.pop()
-            if let twoOperand = op as? TwoOperands {
+            if let twoOperand = op as? TwoOperand {
                 if gmpStack.count >= 2 {
                     let gmp2 = gmpStack.popLast()!
                     let gmp1 = gmpStack.last!
@@ -153,27 +223,15 @@ class Brain {
             execute(priority: Operator.equalPriority)
             displayString = nil
         } else if symbol == "(" {
-            if let openParentheses = Brain.operators[symbol] {
-                operatorStack.push(openParentheses)
-            }
+            operatorStack.push(openParenthesis)
         } else if symbol == ")" {
-            if operatorStack.hasOpenParentheses {
-                execute(priority: Operator.closedParenthesesPriority)
-            }
+            execute(priority: Operator.closedParenthesesPriority)
         } else if symbol == "%" {
             percentage()
-        } else if let op = Brain.inplaceOperations[symbol] {
-            gmpStack.modifyLast(withOp: op)
+        } else if let op = inplaceOperators[symbol] {
+            gmpStack.modifyLast(withOp: op.operation)
             displayString = nil
-        } else if let op = Brain.constDict[symbol] {
-            if displayString == nil {
-                gmpStack.append(Gmp())
-                gmpStack.modifyLast(withOp: op)
-            } else {
-                gmpStack.modifyLast(withOp: op)
-            }
-            displayString = nil
-        } else if let op = Brain.operators[symbol] {
+        } else if let op = twoOperandOperators[symbol] {
 //            if displayString == nil {
 //                /// the user seems to have changed his mind
 //                /// correct operation
@@ -191,66 +249,5 @@ class Brain {
               "displayString: \(displayString ?? "nil")")
         print("X "+operatorStack.debugDescription)
     }
-
-    static let inplaceOperations: Dictionary <String, inplaceType> = [
-        "+/-":    Gmp.changeSign,
-        "x^2":    Gmp.pow_x_2,
-        "oneOverX": Gmp.rez,
-        "x!":     Gmp.fac,
-        "Z":      Gmp.Z,
-        "ln":     Gmp.ln,
-        "log10":  Gmp.log10,
-        "log2":   Gmp.log2,
-        "√":      Gmp.sqrt,
-        "3√":     Gmp.sqrt3,
-        "sin":    Gmp.sin,
-        "cos":    Gmp.cos,
-        "tan":    Gmp.tan,
-        "asin":   Gmp.asin,
-        "acos":   Gmp.acos,
-        "atan":   Gmp.atan,
-        "sinh":   Gmp.sinh,
-        "cosh":   Gmp.cosh,
-        "tanh":   Gmp.tanh,
-        "asinh":  Gmp.asinh,
-        "acosh":  Gmp.acosh,
-        "atanh":  Gmp.atanh,
-        "sinD":   Gmp.sinD,
-        "cosD":   Gmp.cosD,
-        "tanD":   Gmp.tanD,
-        "asinD":  Gmp.asinD,
-        "acosD":  Gmp.acosD,
-        "atanD":  Gmp.atanD,
-        "sinhD":  Gmp.sinhD,
-        "coshD":  Gmp.coshD,
-        "tanhD":  Gmp.tanhD,
-        "asinhD": Gmp.asinhD,
-        "acoshD": Gmp.acoshD,
-        "atanhD": Gmp.atanhD,
-        "2^x":    Gmp.pow_2_x,
-        "x^3":    Gmp.pow_x_3,
-        "e^x":    Gmp.pow_e_x,
-        "10^x":   Gmp.pow_10_x,
-    ]
-    
-    static let constDict: Dictionary <String, inplaceType> = [
-        // same Gmp function as inplaceOperations, but handled differently
-        "π":    Gmp.π,
-        "e":    Gmp.e,
-        "rand": Gmp.rand
-    ]
-    
-    static let operators: Dictionary <String, Operator> = [
-        "+":    TwoOperands(Gmp.add, 1),
-        "-":    TwoOperands(Gmp.sub, 1),
-        "x":    TwoOperands(Gmp.mul, 2),
-        "/":    TwoOperands(Gmp.div, 2),
-        "y√":   TwoOperands(Gmp.sqrty, 3),
-        "x^y":  TwoOperands(Gmp.pow_x_y, 3),
-        "y^x":  TwoOperands(Gmp.pow_y_x, 3),
-        "logy": TwoOperands(Gmp.logy, 3),
-        "x↑↑y": TwoOperands(Gmp.x_double_up_arrow_y, 3),
-        "(":    Operator(Operator.openParenthesesPriority),
-    ]
 
 }

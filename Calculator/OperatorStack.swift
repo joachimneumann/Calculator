@@ -10,25 +10,37 @@ import Foundation
 class Operator: Equatable, Identifiable {
     let id = UUID()
     let priority: Int
+    let isAllowed: () -> Bool
     static let openParenthesesPriority = -2
     static let closedParenthesesPriority = -1
     static let equalPriority = -3
-    init(_ priority: Int) {
+    init(_ priority: Int, _ isAllowed: @escaping () -> Bool) {
         self.priority = priority
+        self.isAllowed = isAllowed
     }
     static func == (lhs: Operator, rhs: Operator) -> Bool {
         return lhs.id == rhs.id
     }
 }
 
+
+
 typealias inplaceType = (Gmp) -> () -> ()
 typealias twoOperantsType = (Gmp) -> (Gmp) -> ()
 
-class TwoOperands: Operator {
-    let operation: twoOperantsType
-    init(_ op: @escaping twoOperantsType, _ priority: Int) {
+class Inplace: Operator {
+    let operation: inplaceType
+    init(_ op: @escaping inplaceType, _ priority: Int, _ isAllowed: @escaping () -> Bool) {
         operation = op
-        super.init(priority)
+        super.init(priority, isAllowed)
+    }
+}
+
+class TwoOperand: Operator {
+    let operation: twoOperantsType
+    init(_ op: @escaping twoOperantsType, _ priority: Int, _ isAllowed: @escaping () -> Bool) {
+        operation = op
+        super.init(priority, isAllowed)
     }
 }
 
@@ -61,14 +73,14 @@ struct OperatorStack: CustomDebugStringConvertible {
         array.removeAll()
     }
     var debugDescription: String {
-        var ret = "operatorStack: "
-        for toBePrinted in array {
-            for op in Brain.operators {
-                if op.value == toBePrinted {
-                    ret += ("op: \(op.key) priority: \(op.value.priority)\n")
-                }
-            }
-         }
+        let ret = "operatorStack: "
+//        for toBePrinted in array {
+//            for op in operators {
+//                if op.value == toBePrinted {
+//                    ret += ("op: \(op.key) priority: \(op.value.priority)\n")
+//                }
+//            }
+//         }
         return ret
     }
 }

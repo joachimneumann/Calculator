@@ -79,7 +79,7 @@ struct Root: View {
     }
 }
 
-struct OneOverX: View {
+struct One_x: View {
     var body: some View {
         ZStack {
             GeometryReader { geo in

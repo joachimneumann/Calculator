@@ -26,83 +26,83 @@ struct NumberKeys: View {
                 Key("+/-")
                     .op_plusMinus_percentage(
                         size: size,
-                        isValidKey: model.inPlaceKeysValid )
+                        isValidKey: model.inPlaceAllowed )
                 { model.operation("+/-") }
                 Key("%")
                     .op_plusMinus_percentage(
                         size: size,
-                        isValidKey: true)
+                        isValidKey: model.inPlaceAllowed)
                 { model.operation("%")  }
                 Key("/")
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.inPlaceAllowed)
                 { model.operation("/") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("7")
                     .digit_1_to_9(
                         size: size, isValidKey:
-                            model.digitsValid)
+                            model.digitsAllowed)
                 { model.digit("7") }
                 Key("8")
                     .digit_1_to_9(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.digitsAllowed)
                 { model.digit("8") }
                 Key("9")
                     .digit_1_to_9(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.digitsAllowed)
                 { model.digit("9") }
                 Key("x")
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.inPlaceAllowed)
                 { model.operation("x") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("4")
                     .digit_1_to_9(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.digitsAllowed)
                 { model.digit("4") }
                 Key("5")
                     .digit_1_to_9(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.digitsAllowed)
                 { model.digit("5") }
                 Key("6")
                     .digit_1_to_9(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.digitsAllowed)
                 { model.digit("6") }
                 Key("-")
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.inPlaceAllowed)
                 { model.operation("-") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("1")
                     .digit_1_to_9(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.digitsAllowed)
                 { model.digit("1") }
                 Key("2")
                     .digit_1_to_9(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.digitsAllowed)
                 { model.digit("2") }
                 Key("3")
                     .digit_1_to_9(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.digitsAllowed)
                 { model.digit("3") }
                 Key("+")
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.inPlaceAllowed)
                 { model.operation("+") }
             }
             HStack(spacing: horizontalSpace) {
@@ -110,17 +110,17 @@ struct NumberKeys: View {
                     .digit_0(
                         size: size,
                         space: horizontalSpace,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.digitsAllowed)
                 { model.zero() }
                 Key(",")
                     .digit_1_to_9(
                         size: size,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.digitsAllowed)
                 { model.comma() }
                 Key("=")
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
-                        isValidKey: model.digitsValid)
+                        isValidKey: model.inPlaceAllowed)
                 { model.operation("=") }
             }
         }

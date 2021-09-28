@@ -30,7 +30,7 @@ struct Key: View {
         "log10":    AnyView(Log10()),
         "log2":     AnyView(Logx("2")),
         "logy":     AnyView(Logx("y")),
-        "oneOverX": AnyView(OneOverX()),
+        "One_x":    AnyView(One_x()),
         "x^2":      AnyView(Pow(base:  "x",   exponent: "2",  baseXOffset: 0.0,   exponentXOffset: 0.0)),
         "x^3":      AnyView(Pow(base:  "x",   exponent: "3",  baseXOffset: 0.0,   exponentXOffset: 0.0)),
         "x^y":      AnyView(Pow(base:  "x",   exponent: "y",  baseXOffset: 0.0,   exponentXOffset: 0.0)),
