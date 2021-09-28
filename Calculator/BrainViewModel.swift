@@ -9,11 +9,11 @@ import Foundation
 
 class BrainViewModel: ObservableObject {
     @Published private(set) var shortDisplayString: String = ""
-    @Published private(set) var hasMoreDigits: Bool = false
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
     var longDisplayString: String { brain.allDigitsDisplayData.string }
-    
+    var inPlaceKeysValid: Bool { shortDisplayData.isValidNumber }
+    var hasMoreDigits: Bool { shortDisplayData.hasMoreDigits }
     private var shortDisplayData: DisplayData = DisplayData()
     private let brain = Brain()
     private var trailingZeroesString: String?
@@ -27,7 +27,6 @@ class BrainViewModel: ObservableObject {
         trailingZeroesString = nil
         shortDisplayData = brain.shortDisplayData()
         shortDisplayString = shortDisplayData.string
-        hasMoreDigits = shortDisplayData.hasMoreDigits
     }
     
     var digitsValid: Bool {
@@ -48,7 +47,6 @@ class BrainViewModel: ObservableObject {
                 }
             } else {
                 shortDisplayString = shortDisplayData.string
-                hasMoreDigits = shortDisplayData.hasMoreDigits
             }
         }
     }
@@ -58,7 +56,6 @@ class BrainViewModel: ObservableObject {
             brain.addDigitToNumberString(",")
             shortDisplayData = brain.shortDisplayData()
             shortDisplayString = shortDisplayData.string
-            hasMoreDigits = shortDisplayData.hasMoreDigits
             if !shortDisplayString.contains(",") {
                 shortDisplayString += ","
                 trailingZeroesString = shortDisplayString
@@ -70,14 +67,12 @@ class BrainViewModel: ObservableObject {
         brain.operation(op)
     }
 
+    
     func operation(_ op: String) {
-        if shortDisplayData.isValidNumber {
-            brain.operation(op)
-            shortDisplayData = brain.shortDisplayData()
-            shortDisplayString = shortDisplayData.string
-            hasMoreDigits = shortDisplayData.hasMoreDigits
-            trailingZeroesString = nil
-        }
+        brain.operation(op)
+        shortDisplayData = brain.shortDisplayData()
+        shortDisplayString = shortDisplayData.string
+        trailingZeroesString = nil
     }
 
     func reset() {
@@ -85,7 +80,6 @@ class BrainViewModel: ObservableObject {
         trailingZeroesString = nil
         shortDisplayData = brain.shortDisplayData()
         shortDisplayString = shortDisplayData.string
-        hasMoreDigits = shortDisplayData.hasMoreDigits
         //        let temp = brain.shortString()
         //        mainDisplay = String(temp.prefix(10))
     }
@@ -107,7 +101,6 @@ class BrainViewModel: ObservableObject {
         brain.getMemory()
         shortDisplayData = brain.shortDisplayData()
         shortDisplayString = shortDisplayData.string
-        hasMoreDigits = shortDisplayData.hasMoreDigits
         trailingZeroesString = nil
     }
 
@@ -116,6 +109,5 @@ class BrainViewModel: ObservableObject {
         trailingZeroesString = nil
         shortDisplayData = brain.shortDisplayData()
         shortDisplayString = shortDisplayData.string
-        hasMoreDigits = shortDisplayData.hasMoreDigits
     }
 }

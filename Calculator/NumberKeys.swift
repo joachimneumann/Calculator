@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct NumberKeys: View {
-    let model: BrainViewModel
+    @ObservedObject var model: BrainViewModel
     let size: CGSize
     let slightlyLargerSize: CGSize
     let verticalSpace: CGFloat
@@ -19,11 +19,11 @@ struct NumberKeys: View {
         VStack(spacing: verticalSpace) {
             HStack(spacing: horizontalSpace) {
                 Key("C")
-                    .scientific(size: size, isValidKey: true)                          { model.operation("C") }
+                    .scientific(size: size, isValidKey: true)        { model.operation("C") }
                 Key("+/-")
-                    .op_plusMinus_percentage(size: size)             { model.operation("+/-")  }
+                    .op_plusMinus_percentage(size: size, isValidKey: model.inPlaceKeysValid ) { model.operation("+/-")  }
                 Key("%")
-                    .op_plusMinus_percentage(size: size)             { model.operation("%")  }
+                    .op_plusMinus_percentage(size: size, isValidKey: true)             { model.operation("%")  }
                 Key("/")
                     .op_div_mul_add_sub_eq(size: slightlyLargerSize, isValidKey: model.digitsValid) { model.operation("/") }
             }
