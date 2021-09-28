@@ -19,51 +19,51 @@ struct NumberKeys: View {
         VStack(spacing: verticalSpace) {
             HStack(spacing: horizontalSpace) {
                 Key("C")
-                    .scientific(size: size)                          { model.operation("C") }
+                    .scientific(size: size, isValidKey: true)                          { model.operation("C") }
                 Key("+/-")
                     .op_plusMinus_percentage(size: size)             { model.operation("+/-")  }
                 Key("%")
                     .op_plusMinus_percentage(size: size)             { model.operation("%")  }
                 Key("/")
-                    .op_div_mul_add_sub_eq(size: slightlyLargerSize) { model.operation("/") }
+                    .op_div_mul_add_sub_eq(size: slightlyLargerSize, isValidKey: model.digitsValid) { model.operation("/") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("7")
-                    .digit_1_to_9(size: size)                        { model.digit("7") }
+                    .digit_1_to_9(size: size, isValidKey: model.digitsValid)                        { model.digit("7") }
                 Key("8")
-                    .digit_1_to_9(size: size)                        { model.digit("8") }
+                    .digit_1_to_9(size: size, isValidKey: model.digitsValid)                        { model.digit("8") }
                 Key("9")
-                    .digit_1_to_9(size: size)                        { model.digit("9") }
+                    .digit_1_to_9(size: size, isValidKey: model.digitsValid)                        { model.digit("9") }
                 Key("x")
-                    .op_div_mul_add_sub_eq(size: slightlyLargerSize) { model.operation("x") }
+                    .op_div_mul_add_sub_eq(size: slightlyLargerSize, isValidKey: model.digitsValid) { model.operation("x") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("4")
-                    .digit_1_to_9(size: size)                        { model.digit("4") }
+                    .digit_1_to_9(size: size, isValidKey: model.digitsValid)                        { model.digit("4") }
                 Key("5")
-                    .digit_1_to_9(size: size)                        { model.digit("5") }
+                    .digit_1_to_9(size: size, isValidKey: model.digitsValid)                        { model.digit("5") }
                 Key("6")
-                    .digit_1_to_9(size: size)                        { model.digit("6") }
+                    .digit_1_to_9(size: size, isValidKey: model.digitsValid)                        { model.digit("6") }
                 Key("-")
-                    .op_div_mul_add_sub_eq(size: slightlyLargerSize) { model.operation("-") }
+                    .op_div_mul_add_sub_eq(size: slightlyLargerSize, isValidKey: model.digitsValid) { model.operation("-") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("1")
-                    .digit_1_to_9(size: size)                        { model.digit("1") }
+                    .digit_1_to_9(size: size, isValidKey: model.digitsValid)                        { model.digit("1") }
                 Key("2")
-                    .digit_1_to_9(size: size)                        { model.digit("2") }
+                    .digit_1_to_9(size: size, isValidKey: model.digitsValid)                        { model.digit("2") }
                 Key("3")
-                    .digit_1_to_9(size: size)                        { model.digit("3") }
+                    .digit_1_to_9(size: size, isValidKey: model.digitsValid)                        { model.digit("3") }
                 Key("+")
-                    .op_div_mul_add_sub_eq(size: slightlyLargerSize) { model.operation("+") }
+                    .op_div_mul_add_sub_eq(size: slightlyLargerSize, isValidKey: model.digitsValid) { model.operation("+") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("0")
-                    .digit_0(size: size, space: horizontalSpace)     { model.zero() }
+                    .digit_0(size: size, space: horizontalSpace, isValidKey: model.digitsValid)     { model.zero() }
                 Key(",")
-                    .digit_1_to_9(size: size)                        { model.comma() }
+                    .digit_1_to_9(size: size, isValidKey: model.digitsValid)                        { model.comma() }
                 Key("=")
-                    .op_div_mul_add_sub_eq(size: slightlyLargerSize) { model.operation("=") }
+                    .op_div_mul_add_sub_eq(size: slightlyLargerSize, isValidKey: model.digitsValid) { model.operation("=") }
             }
         }
     }

@@ -30,6 +30,10 @@ class BrainViewModel: ObservableObject {
         hasMoreDigits = shortDisplayData.hasMoreDigits
     }
     
+    var digitsValid: Bool {
+        false
+    }
+    
     func zero() {
         if shortDisplayData.isValidNumber {
             brain.addDigitToNumberString("0")

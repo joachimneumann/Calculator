@@ -6,6 +6,7 @@
 //
 
 class Brain {
+    var legalkey: Bool = false
     func shortDisplayData() -> DisplayData {
         displayData(digits: Configuration.shared.digitsInSmallDisplay)
     }

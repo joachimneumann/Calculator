@@ -17,51 +17,51 @@ struct ScientificKeys: View {
         VStack(spacing: verticalSpace) {
             HStack(spacing: horizontalSpace) {
                 Key("(")
-                    .scientific(size: size) { model.operation("(") }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.operation("(") }
                 Key(")")
-                    .scientific(size: size) { model.operation(")") }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.operation(")") }
                 Key("mc")
-                    .scientific(size: size) { model.clearmemory() }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.clearmemory() }
                 Key("m+")
-                    .scientific(size: size) { model.addToMemory() }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.addToMemory() }
                 Key("m-")
-                    .scientific(size: size) { model.subtractFromMemory() }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.subtractFromMemory() }
                 Key("mr")
-                    .scientific(size: size) { model.memory() }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.memory() }
             }
             HStack(spacing: horizontalSpace) {
                 Key("2nd")
-                    .scientific(size: size) { model.secondKeys.toggle() }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.secondKeys.toggle() }
                 Key("x^2")
-                    .scientific(size: size) { model.operation("x^2") }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.operation("x^2") }
                 Key("x^3")
-                    .scientific(size: size) { model.operation("x^3") }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.operation("x^3") }
                 Key("x^y")
-                    .scientific(size: size) { model.operation("x^y") }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.operation("x^y") }
                 Key(model.secondKeys ? "y^x" : "e^x")
-                    .scientific(size: size) { model.operation(model.secondKeys ? "y^x" : "e^x") }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.operation(model.secondKeys ? "y^x" : "e^x") }
                 Key(model.secondKeys ? "2^x" : "10^x")
-                    .scientific(size: size) { model.operation(model.secondKeys ? "2^x" : "10^x") }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.operation(model.secondKeys ? "2^x" : "10^x") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("oneOverX")
-                    .scientific(size: size) { model.operation("oneOverX") }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.operation("oneOverX") }
                 Key("√")
-                    .scientific(size: size) { model.operation("√") }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.operation("√") }
                 Key("3√")
-                    .scientific(size: size) { model.operation("3√") }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.operation("3√") }
                 Key("y√")
-                    .scientific(size: size) { model.operation("y√") }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.operation("y√") }
                 Key(model.secondKeys ? "logy" : "ln")
-                    .scientific(size: size) { model.operation(model.secondKeys ? "logy" : "ln") }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.operation(model.secondKeys ? "logy" : "ln") }
                 Key(model.secondKeys ? "log2" : "log10")
-                    .scientific(size: size) { model.operation(model.secondKeys ? "log2" : "log10") }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.operation(model.secondKeys ? "log2" : "log10") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("x!")
-                    .scientific(size: size) { model.operation("x!") }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.operation("x!") }
                 Key(model.secondKeys ? "asin" : "sin")
-                    .scientific(size: size) {
+                    .scientific(size: size, isValidKey: model.digitsValid) {
                         if model.rad {
                             model.operation(model.secondKeys ? "asin" : "sin")
                         } else {
@@ -69,7 +69,7 @@ struct ScientificKeys: View {
                         }
                     }
                 Key(model.secondKeys ? "acos" : "cos")
-                    .scientific(size: size) {
+                    .scientific(size: size, isValidKey: model.digitsValid) {
                         if model.rad {
                             model.operation(model.secondKeys ? "acos" : "cos")
                         } else {
@@ -77,7 +77,7 @@ struct ScientificKeys: View {
                         }
                     }
                 Key(model.secondKeys ? "atan" : "tan")
-                    .scientific(size: size) {
+                    .scientific(size: size, isValidKey: model.digitsValid) {
                         if model.rad {
                             model.operation(model.secondKeys ? "atan" : "tan")
                         } else {
@@ -85,9 +85,9 @@ struct ScientificKeys: View {
                         }
                     }
                 Key("e")
-                    .scientific(size: size) { model.operation("e") }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.operation("e") }
                 Key("EE")
-                    .scientific(size: size) {
+                    .scientific(size: size, isValidKey: model.digitsValid) {
                         model.operation("x")
                         model.secretDigit("1")
                         model.secretDigit("0")
@@ -96,9 +96,9 @@ struct ScientificKeys: View {
             }
             HStack(spacing: horizontalSpace) {
                 Key(model.rad ? "Deg" : "Rad")
-                    .scientific(size: size) { model.rad.toggle() }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.rad.toggle() }
                 Key(model.secondKeys ? "asinh" : "sinh")
-                    .scientific(size: size) {
+                    .scientific(size: size, isValidKey: model.digitsValid) {
                         if model.rad {
                             model.operation(model.secondKeys ? "asinh" : "sinh")
                         } else {
@@ -106,7 +106,7 @@ struct ScientificKeys: View {
                         }
                     }
                 Key(model.secondKeys ? "acosh" : "cosh")
-                    .scientific(size: size) {
+                    .scientific(size: size, isValidKey: model.digitsValid) {
                         if model.rad {
                             model.operation(model.secondKeys ? "acosh" : "cosh")
                         } else {
@@ -114,7 +114,7 @@ struct ScientificKeys: View {
                         }
                     }
                 Key(model.secondKeys ? "atanh" : "tanh")
-                    .scientific(size: size) {
+                    .scientific(size: size, isValidKey: model.digitsValid) {
                         if model.rad {
                             model.operation(model.secondKeys ? "atanh" : "tanh")
                         } else {
@@ -122,9 +122,9 @@ struct ScientificKeys: View {
                         }
                     }
                 Key("π")
-                    .scientific(size: size) { model.operation("π") }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.operation("π") }
                 Key("Rand")
-                    .scientific(size: size) { model.operation("rand") }
+                    .scientific(size: size, isValidKey: model.digitsValid) { model.operation("rand") }
             }
         }
     }

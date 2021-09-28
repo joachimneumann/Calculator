@@ -70,23 +70,25 @@ struct Key: View {
 
 private struct Digit_0_to_9: ViewModifier {
     let size: CGSize
+    let isValidKey: Bool
     let callback: (() -> Void)?
     func body(content: Content) -> some View {
         content
             .foregroundColor(callback == nil ?  Color.gray : Configuration.shared.DigitKeyProperties.textColor)
-            .addBackground(with: Configuration.shared.DigitKeyProperties, callback: callback)
+            .addBackground(with: Configuration.shared.DigitKeyProperties, callback: callback, isValidKey: isValidKey)
             .font(.system(size: size.height * CGFloat(0.48)))
     }
 }
 
 private struct Colorful_plus_minus_etc: ViewModifier {
     let size: CGSize
+    let isValidKey: Bool
     let callback: (() -> Void)?
     func body(content: Content) -> some View {
         let fontsize = size.height * CGFloat(0.36)
         content
             .foregroundColor(callback == nil ?  Color.gray : Configuration.shared.OpKeyProperties.textColor)
-            .addBackground(with: Configuration.shared.OpKeyProperties, callback: callback)
+            .addBackground(with: Configuration.shared.OpKeyProperties, callback: callback, isValidKey: true)
             .font(.system(size: fontsize, weight: .bold))
         
     }
@@ -99,44 +101,45 @@ private struct PlusMinus_percentage: ViewModifier {
         let fontsize = size.height * 0.36
         content
             .foregroundColor(callback == nil ?  Color.gray : Configuration.shared.LightGrayKeyProperties.textColor)
-            .addBackground(with: Configuration.shared.LightGrayKeyProperties, callback: callback)
+            .addBackground(with: Configuration.shared.LightGrayKeyProperties, callback: callback, isValidKey: true)
             .font(.system(size: fontsize, weight: .bold))
     }
 }
 
 private struct ScientificButton: ViewModifier {
     let size: CGSize
+    let isValidKey: Bool
     let callback: (() -> Void)?
     func body(content: Content) -> some View {
         let fontsize = size.height * 0.40
         content
             .foregroundColor(callback == nil ?  Color.gray : Configuration.shared.LightGrayKeyProperties.textColor)
-            .addBackground(with: Configuration.shared.LightGrayKeyProperties, callback: callback)
+            .addBackground(with: Configuration.shared.LightGrayKeyProperties, callback: callback, isValidKey: isValidKey)
             .font(.system(size: fontsize, weight: .regular))
     }
 }
 
 
 extension View {
-    func digit_1_to_9(size: CGSize, callback: (() -> Void)? = nil ) -> some View {
+    func digit_1_to_9(size: CGSize, isValidKey: Bool, callback: (() -> Void)? = nil) -> some View {
         self
-            .modifier(Digit_0_to_9(size: size, callback: callback))
+            .modifier(Digit_0_to_9(size: size, isValidKey: isValidKey, callback: callback))
             .frame(width: size.width, height: size.height)
     }
     
-    func digit_0(size: CGSize, space: CGFloat, callback: (() -> Void)? = nil ) -> some View {
+    func digit_0(size: CGSize, space: CGFloat, isValidKey: Bool, callback: (() -> Void)? = nil ) -> some View {
         HStack {
             self
                 .padding(.leading, size.height * 0.4)
             Spacer()
         }
-        .modifier(Digit_0_to_9(size: size, callback: callback))
+        .modifier(Digit_0_to_9(size: size, isValidKey: isValidKey, callback: callback))
         .frame(width: size.width*2+space, height: size.height)
     }
     
-    func op_div_mul_add_sub_eq(size: CGSize, callback: (() -> Void)? = nil ) -> some View {
+    func op_div_mul_add_sub_eq(size: CGSize, isValidKey: Bool, callback: (() -> Void)? = nil ) -> some View {
         self
-            .modifier(Colorful_plus_minus_etc(size: size, callback: callback))
+            .modifier(Colorful_plus_minus_etc(size: size, isValidKey: isValidKey, callback: callback))
             .frame(width: size.width, height: size.height)
     }
     
@@ -146,9 +149,9 @@ extension View {
             .frame(width: size.width, height: size.height)
     }
     
-    func scientific(size: CGSize, callback: (() -> Void)? = nil ) -> some View {
+    func scientific(size: CGSize, isValidKey: Bool, callback: (() -> Void)? = nil ) -> some View {
         self
-            .modifier(ScientificButton(size: size, callback: callback))
+            .modifier(ScientificButton(size: size, isValidKey: isValidKey, callback: callback))
             .frame(width: size.width, height: size.height)
     }
 }

@@ -10,11 +10,12 @@ import SwiftUI
 private struct AddBackGround: ViewModifier {
     let properties: Configuration.KeyProperties
     let callback: (() -> Void)?
+    let isValidKey: Bool
     @State var down: Bool = false
     func body(content: Content) -> some View {
         ZStack {
             Configuration.Background()
-                .foregroundColor(down ? properties.downColor : properties.color)
+                .foregroundColor(down ? (isValidKey ? properties.downColor : Color.red) : properties.color)
             content
         }
         .gesture(
@@ -39,7 +40,7 @@ private struct AddBackGround: ViewModifier {
 }
 
 extension View {
-    func addBackground(with properties: Configuration.KeyProperties, callback: (() -> Void)? ) -> some View {
-        return self.modifier(AddBackGround(properties: properties, callback: callback))
+    func addBackground(with properties: Configuration.KeyProperties, callback: (() -> Void)?, isValidKey: Bool) -> some View {
+        return self.modifier(AddBackGround(properties: properties, callback: callback, isValidKey: isValidKey))
     }
 }
