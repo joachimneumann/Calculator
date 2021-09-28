@@ -231,6 +231,9 @@ class Brain {
             execute(priority: Operator.closedParenthesesPriority)
         } else if symbol == "%" {
             percentage()
+        } else if let op = constantOperators[symbol] {
+            gmpStack.modifyLast(withOp: op.operation)
+            displayString = nil
         } else if let op = inplaceOperators[symbol] {
             gmpStack.modifyLast(withOp: op.operation)
             displayString = nil
