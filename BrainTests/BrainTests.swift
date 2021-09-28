@@ -12,13 +12,13 @@ class BrainTests: XCTestCase {
     let brain = Brain()
     
     func test() throws {
-        // clear
+        /// clear
         brain.reset()
         XCTAssertEqual(brain.gmpStack.count, 1)
         XCTAssertEqual(brain.operatorStack.count, 0)
         
         
-        // 1/10 and 1/16
+        /// 1/10 and 1/16
         brain.addDigitToNumberString("1")
         brain.addDigitToNumberString("0")
         brain.operation("One_x")
@@ -30,10 +30,7 @@ class BrainTests: XCTestCase {
         brain.operation("One_x")
         XCTAssertEqual(brain.gmpStack.last!, Gmp("0.0625"))
         
-        // clear
-        brain.reset()
-        
-        // 1+2+5+2= + 1/4 =
+        /// 1+2+5+2= + 1/4 =
         brain.addDigitToNumberString("1")
         XCTAssertEqual(brain.gmpStack.last, Gmp("1"))
         brain.operation("+")
@@ -55,7 +52,7 @@ class BrainTests: XCTestCase {
         brain.operation("=")
         XCTAssertEqual(brain.gmpStack.last, Gmp("10.25"))
         
-        // 1+2*4=
+        /// 1+2*4=
         brain.reset()
         brain.addDigitToNumberString("1")
         XCTAssertEqual(brain.gmpStack.last, Gmp("1"))
@@ -68,7 +65,7 @@ class BrainTests: XCTestCase {
         brain.operation("=")
         XCTAssertEqual(brain.gmpStack.last, Gmp("9"))
 
-        // 2*3*4*5=
+        /// 2*3*4*5=
         brain.reset()
         brain.addDigitToNumberString("2")
         XCTAssertEqual(brain.gmpStack.last, Gmp("2"))
@@ -84,7 +81,7 @@ class BrainTests: XCTestCase {
         brain.operation("=")
         XCTAssertEqual(brain.gmpStack.last, Gmp("120"))
 
-        // 1+2*4
+        /// 1+2*4
         brain.reset()
         brain.addDigitToNumberString("1")
         XCTAssertEqual(brain.gmpStack.last, Gmp("1"))
@@ -100,7 +97,7 @@ class BrainTests: XCTestCase {
         brain.addDigitToNumberString("0")
         brain.addDigitToNumberString("0")
         XCTAssertEqual(brain.gmpStack.last, Gmp("100"))
-        // User: =
+        /// User: =
         brain.operation("=")
         XCTAssertEqual(brain.gmpStack.last, Gmp("109"))
         
@@ -126,7 +123,7 @@ class BrainTests: XCTestCase {
         brain.operation("=")
         XCTAssertEqual(brain.gmpStack.last, Gmp("1024"))
         
-        // 2x(6+4)
+        /// 2x(6+4)
         brain.reset()
         brain.addDigitToNumberString("2")
         XCTAssertEqual(brain.gmpStack.last, Gmp("2"))
@@ -150,7 +147,7 @@ class BrainTests: XCTestCase {
         brain.operation("=")
         XCTAssertEqual(brain.gmpStack.last, Gmp("20"))
 
-        // 2x(6+4*(5+9))
+        /// 2x(6+4*(5+9))
         brain.reset()
         brain.addDigitToNumberString("2")
         brain.operation("x")
@@ -168,7 +165,30 @@ class BrainTests: XCTestCase {
         brain.operation("=")
         XCTAssertEqual(brain.gmpStack.last, Gmp("124"))
 
+        /// 1+2=3
+        brain.reset()
+        brain.addDigitToNumberString("1")
+        brain.operation("+")
+        brain.addDigitToNumberString("2")
+        brain.operation("=")
+        brain.addDigitToNumberString("2")
+        XCTAssertEqual(brain.gmpStack.count, 1)
         
+        brain.reset()
+        brain.operation("π")
+        XCTAssertEqual(brain.gmpStack.last!.toDouble(), 3.14159265358979, accuracy: 0.00000001)
+
+        brain.reset()
+        brain.addDigitToNumberString("0")
+        brain.addDigitToNumberString(",")
+        brain.addDigitToNumberString("0")
+        brain.addDigitToNumberString("1")
+        brain.operation("/")
+        brain.addDigitToNumberString("1")
+        brain.operation("EE")
+        brain.addDigitToNumberString("4")
+        XCTAssertEqual(brain.gmpStack.last!.toDouble(), 0.000001)
+
     }
     
     //    func testPerformanceExample() throws {
