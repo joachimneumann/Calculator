@@ -24,6 +24,7 @@
 		AA95563C26FA0E360029D94C /* AddBackGround.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95563B26FA0E360029D94C /* AddBackGround.swift */; };
 		AA95564026FA1C180029D94C /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95563F26FA1C180029D94C /* Key.swift */; };
 		AA95564226FA471D0029D94C /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95564126FA471D0029D94C /* Brain.swift */; };
+		AAA9CFFA2702CB47001C403B /* BrainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9CFF92702CB46001C403B /* BrainTests.swift */; };
 		AAD9014526FF720900A7BCD5 /* gmp.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA3D6F7E26F8940800423E76 /* gmp.xcframework */; };
 		AAD9014626FF720900A7BCD5 /* gmp.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA3D6F7E26F8940800423E76 /* gmp.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AAD9014726FF720900A7BCD5 /* mpfr.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA2576A526F8E6CE00CDD8C9 /* mpfr.xcframework */; };
@@ -34,6 +35,16 @@
 		AAE87B9926FCB24C009E6D80 /* OperatorStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE87B9826FCB24C009E6D80 /* OperatorStack.swift */; };
 		AAF1F59126FBA9C7000A733F /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF1F59026FBA9C7000A733F /* Configuration.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AAA9CFFB2702CB47001C403B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AA40C43926F808D800119D4F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AA40C44026F808D800119D4F;
+			remoteInfo = Calculator;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		AAD9014926FF720900A7BCD5 /* Embed Frameworks */ = {
@@ -72,6 +83,8 @@
 		AA95563B26FA0E360029D94C /* AddBackGround.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBackGround.swift; sourceTree = "<group>"; };
 		AA95563F26FA1C180029D94C /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		AA95564126FA471D0029D94C /* Brain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brain.swift; sourceTree = "<group>"; };
+		AAA9CFF72702CB46001C403B /* BrainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BrainTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAA9CFF92702CB46001C403B /* BrainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrainTests.swift; sourceTree = "<group>"; };
 		AAE87B9226FC5F42009E6D80 /* Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Display.swift; sourceTree = "<group>"; };
 		AAE87B9426FC7302009E6D80 /* Symbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbols.swift; sourceTree = "<group>"; };
 		AAE87B9626FCB210009E6D80 /* GmpStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GmpStack.swift; sourceTree = "<group>"; };
@@ -89,6 +102,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AAA9CFF42702CB46001C403B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -96,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				AA40C44326F808D800119D4F /* Calculator */,
+				AAA9CFF82702CB46001C403B /* BrainTests */,
 				AA40C44226F808D800119D4F /* Products */,
 				AA40C45A26F8182700119D4F /* Frameworks */,
 			);
@@ -105,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				AA40C44126F808D800119D4F /* Calculator.app */,
+				AAA9CFF72702CB46001C403B /* BrainTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -156,6 +178,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		AAA9CFF82702CB46001C403B /* BrainTests */ = {
+			isa = PBXGroup;
+			children = (
+				AAA9CFF92702CB46001C403B /* BrainTests.swift */,
+			);
+			path = BrainTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -177,6 +207,24 @@
 			productReference = AA40C44126F808D800119D4F /* Calculator.app */;
 			productType = "com.apple.product-type.application";
 		};
+		AAA9CFF62702CB46001C403B /* BrainTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AAA9CFFF2702CB47001C403B /* Build configuration list for PBXNativeTarget "BrainTests" */;
+			buildPhases = (
+				AAA9CFF32702CB46001C403B /* Sources */,
+				AAA9CFF42702CB46001C403B /* Frameworks */,
+				AAA9CFF52702CB46001C403B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AAA9CFFC2702CB47001C403B /* PBXTargetDependency */,
+			);
+			name = BrainTests;
+			productName = BrainTests;
+			productReference = AAA9CFF72702CB46001C403B /* BrainTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -189,6 +237,10 @@
 				TargetAttributes = {
 					AA40C44026F808D800119D4F = {
 						CreatedOnToolsVersion = 13.0;
+					};
+					AAA9CFF62702CB46001C403B = {
+						CreatedOnToolsVersion = 13.0;
+						TestTargetID = AA40C44026F808D800119D4F;
 					};
 				};
 			};
@@ -206,6 +258,7 @@
 			projectRoot = "";
 			targets = (
 				AA40C44026F808D800119D4F /* Calculator */,
+				AAA9CFF62702CB46001C403B /* BrainTests */,
 			);
 		};
 /* End PBXProject section */
@@ -217,6 +270,13 @@
 			files = (
 				AA40C44C26F808DA00119D4F /* Preview Assets.xcassets in Resources */,
 				AA40C44926F808DA00119D4F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AAA9CFF52702CB46001C403B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,7 +310,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AAA9CFF32702CB46001C403B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AAA9CFFA2702CB47001C403B /* BrainTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AAA9CFFC2702CB47001C403B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AA40C44026F808D800119D4F /* Calculator */;
+			targetProxy = AAA9CFFB2702CB47001C403B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		AA40C44D26F808DA00119D4F /* Debug */ = {
@@ -452,6 +528,52 @@
 			};
 			name = Release;
 		};
+		AAA9CFFD2702CB47001C403B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8A4DL788W9;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joachimneumann.BrainTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Calculator.app/Calculator";
+			};
+			name = Debug;
+		};
+		AAA9CFFE2702CB47001C403B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8A4DL788W9;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joachimneumann.BrainTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Calculator.app/Calculator";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -469,6 +591,15 @@
 			buildConfigurations = (
 				AA40C45026F808DA00119D4F /* Debug */,
 				AA40C45126F808DA00119D4F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AAA9CFFF2702CB47001C403B /* Build configuration list for PBXNativeTarget "BrainTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AAA9CFFD2702CB47001C403B /* Debug */,
+				AAA9CFFE2702CB47001C403B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

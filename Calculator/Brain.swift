@@ -17,14 +17,11 @@ class Brain {
     var memory: Gmp = Gmp()
     
     private let debug = true
-    private var numberString: String? = "0"
+    private var displayString: String? = "0"
     
-    private var operatorStack = OperatorStack()
-    private var gmpStack = GmpStack()
-    
-    private var expectingNumber = false
-    
-    
+    internal var operatorStack = OperatorStack() // TODO private after testing
+    internal var gmpStack = GmpStack()
+        
     private func displayData(digits: Int) -> DisplayData {
         if let last = gmpStack.last {
             return DisplayData(gmp: last, digits: digits)
@@ -38,23 +35,23 @@ class Brain {
     }
     func addToMemory(_ plus: Gmp) {
         memory.add(other: plus)
-        print("memory=\(memory.toDouble())")
+        print("X memory=\(memory.toDouble())")
+        displayString = nil
     }
     func substractFromMemory(_ minus: Gmp) {
         memory.sub(other: minus)
-        print("memory=\(memory.toDouble())")
+        print("X memory=\(memory.toDouble())")
+        displayString = nil
     }
     func getMemory() {
-        if expectingNumber {
+        if displayString == nil {
             gmpStack.append(memory)
-            expectingNumber = false
         } else {
             gmpStack.replaceLast(with: memory)
-            expectingNumber = false
         }
 
-        print("memory=\(memory.toDouble())")
-        print("gmpStack.last?=\(gmpStack.last!.toDouble())")
+        print("X memory=\(memory.toDouble())")
+        print("X gmpStack.last?=\(gmpStack.last!.toDouble())")
     }
 
     var last: Gmp? {
@@ -62,58 +59,52 @@ class Brain {
     }
     func addDigitToNumberString(_ digit: Character) {
         if digit == "," {
-            if numberString == nil {
-                numberString = "0,"
+            if displayString == nil {
+                displayString = "0,"
+                gmpStack.replaceLast(with: Gmp(displayString!))
             } else {
-                if !numberString!.contains(",") {
-                    numberString!.append(",")
+                if !displayString!.contains(",") {
+                    displayString!.append(",")
+                    // do nothing with the gmpStack
                 }
             }
         } else {
             // normal digit
-            if numberString == nil {
-                numberString = String(digit)
+            if displayString == nil {
+                displayString = String(digit)
+                gmpStack.append(Gmp(displayString!))
+            } else if displayString == "0" {
+                displayString = String(digit)
+                gmpStack.replaceLast(with: Gmp(displayString!))
             } else {
-                if numberString == "0" {
-                    numberString = String(digit)
-                } else {
-                    numberString!.append(String(digit))
-                }
+                displayString!.append(digit)
+                gmpStack.replaceLast(with: Gmp(displayString!))
             }
         }
         
-        guard gmpStack.count >= 0 else {
-            print("### ERROR")
+        if gmpStack.count == 0 {
+            print("X ### ERROR")
             return
         }
-        guard numberString != nil else {
-            print("### ERROR")
+        if displayString == nil {
+            print("X ### ERROR")
             return
         }
-        if expectingNumber {
-            gmpStack.append(Gmp(numberString!))
-            expectingNumber = false
-        } else {
-            gmpStack.replaceLast(with: Gmp(numberString!))
-        }
-        print("after add \"\(digit)\": " +
+        print("X after add \"\(digit)\": " +
               "gmps: \(gmpStack.count), " +
               "ops: \(operatorStack.count) " +
-              "numberString: \(numberString ?? "empty") " +
-              "expectingNumber: \(expectingNumber)")
+              "displayString: \(displayString ?? "nil")")
     }
     
     func reset() {
+        operatorStack.removeAll()
         gmpStack.removeAll()
-        gmpStack.append(Gmp())
-        operatorStack.clean()
-        numberString = nil
-        expectingNumber = false
+        displayString = nil
+        addDigitToNumberString("0")
     }
     
     init() {
         reset()
-        //test()
     }
     
     
@@ -155,13 +146,11 @@ class Brain {
     }
     
     func operation(_ symbol: String) {
-        numberString = nil
         if symbol == "C" {
             reset()
-            expectingNumber = false
         } else if symbol == "=" {
             execute(priority: Operator.equalPriority)
-            expectingNumber = false
+            displayString = nil
         } else if symbol == "(" {
             if let openParentheses = Brain.operators[symbol] {
                 operatorStack.push(openParentheses)
@@ -172,33 +161,34 @@ class Brain {
             }
         } else if symbol == "%" {
             percentage()
-            expectingNumber = false
         } else if let op = Brain.inplaceOperations[symbol] {
             gmpStack.modifyLast(withOp: op)
-            expectingNumber = false
+            displayString = nil
         } else if let op = Brain.constDict[symbol] {
-            if expectingNumber {
+            if displayString == nil {
                 gmpStack.append(Gmp())
                 gmpStack.modifyLast(withOp: op)
-                expectingNumber = false
             } else {
                 gmpStack.modifyLast(withOp: op)
-                expectingNumber = false
             }
+            displayString = nil
         } else if let op = Brain.operators[symbol] {
-            if expectingNumber {
-                /// the user seems to have changed his mind
-                /// correct operation
-                operatorStack.removeLast()
-                operatorStack.push(op)
-            } else {
+//            if displayString == nil {
+//                /// the user seems to have changed his mind
+//                /// correct operation
+//                operatorStack.removeLast()
+//                operatorStack.push(op)
+//            } else {
                 execute(priority: op.priority)
                 operatorStack.push(op)
-                expectingNumber = true
-            }
+//            }
+            displayString = nil
         }
-        print("after operation \(symbol): gmps: \(gmpStack.count), ops: \(operatorStack.count) numberString: \(numberString ?? "empty") expectingNumber: \(expectingNumber) ")
-        print(operatorStack)
+        print("X after op  \"\(symbol)\": " +
+              "gmps: \(gmpStack.count), " +
+              "ops: \(operatorStack.count) " +
+              "displayString: \(displayString ?? "nil")")
+        print("X "+operatorStack.debugDescription)
     }
 
     static let inplaceOperations: Dictionary <String, inplaceType> = [
@@ -261,96 +251,5 @@ class Brain {
         "x↑↑y": TwoOperands(Gmp.x_double_up_arrow_y, 3),
         "(":    Operator(Operator.openParenthesesPriority),
     ]
-    
-    
-    
-    private func test() {
-        
-        // 1 / 10
-        addDigitToNumberString("1")
-        addDigitToNumberString("0")
-        operation("oneOverX")
-        assert(gmpStack.last! == Gmp("0.1"))
-        addDigitToNumberString("1")
-        assert(gmpStack.last! == Gmp("1"))
-        addDigitToNumberString("6")
-        assert(gmpStack.last! == Gmp("16"))
-        operation("oneOverX")
-        assert(gmpStack.last! == Gmp("0.0625"))
-        
-        // clear
-        reset()
-        assert(gmpStack.count == 1)
-        assert(operatorStack.count == 0)
-        
-        // 1+2+5+2= + 1/4 =
-        addDigitToNumberString("1")
-        assert(gmpStack.last == Gmp("1"))
-        operation("+")
-        assert(gmpStack.last == Gmp("1"))
-        addDigitToNumberString("2")
-        operation("+")
-        assert(gmpStack.last == Gmp("3"))
-        addDigitToNumberString("5")
-        operation("+")
-        assert(gmpStack.last == Gmp("8"))
-        addDigitToNumberString("2")
-        operation("=")
-        assert(gmpStack.last == Gmp("10"))
-        operation("+")
-        assert(gmpStack.last == Gmp("10"))
-        addDigitToNumberString("4")
-        operation("oneOverX")
-        assert(gmpStack.last == Gmp("0.25"))
-        operation("=")
-        assert(gmpStack.last == Gmp("10.25"))
-        
-        // 1+2*4=
-        reset()
-        addDigitToNumberString("1")
-        assert(gmpStack.last == Gmp("1"))
-        operation("+")
-        addDigitToNumberString("2")
-        operation("x")
-        assert(gmpStack.last == Gmp("2"))
-        addDigitToNumberString("4")
-        assert(gmpStack.last == Gmp("4"))
-        operation("=")
-        assert(gmpStack.last == Gmp("9"))
-        
-        reset()
-        addDigitToNumberString("1")
-        assert(gmpStack.last == Gmp("1"))
-        operation("+")
-        addDigitToNumberString("2")
-        operation("x")
-        assert(gmpStack.last == Gmp("2"))
-        addDigitToNumberString("4")
-        assert(gmpStack.last == Gmp("4"))
-        operation("+")
-        assert(gmpStack.last == Gmp("9"))
-        addDigitToNumberString("1")
-        addDigitToNumberString("0")
-        addDigitToNumberString("0")
-        assert(gmpStack.last == Gmp("100"))
-        // User: =
-        operation("=")
-        assert(gmpStack.last == Gmp("109"))
-        
-        reset()
-        operation("π")
-        operation("x")
-        addDigitToNumberString("2")
-        operation("=")
-        
-        reset()
-        addDigitToNumberString("2")
-        operation("x^y")
-        addDigitToNumberString("1")
-        addDigitToNumberString("0")
-        operation("=")
-        assert(gmpStack.last == Gmp("1024"))
-        reset()
-    }
-    
+
 }

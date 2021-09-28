@@ -57,11 +57,11 @@ struct OperatorStack: CustomDebugStringConvertible {
         array.count
     }
     var isEmpty: Bool { array.count == 0 }
-    mutating func clean() {
+    mutating func removeAll() {
         array.removeAll()
     }
     var debugDescription: String {
-        var ret = ""
+        var ret = "operatorStack: "
         for toBePrinted in array {
             for op in Brain.operators {
                 if op.value == toBePrinted {

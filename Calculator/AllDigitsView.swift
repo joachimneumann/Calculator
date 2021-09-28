@@ -11,9 +11,8 @@ struct AllDigitsView: View {
     var model: BrainViewModel
     
     var body: some View {
-        let ad = model.allDigitsDisplayData
         ScrollView(.vertical, showsIndicators: true) {
-            Text(ad.string)
+            Text(model.longDisplayString)
                 .foregroundColor(Color.white)
                 .font(.custom("CourierNewPSMT", size: 19))
                 .multilineTextAlignment(.leading)

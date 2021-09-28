@@ -9,12 +9,13 @@ import Foundation
 
 class BrainViewModel: ObservableObject {
     @Published private(set) var shortDisplayString: String = ""
-    @Published private(set) var shortDisplayData: DisplayData = DisplayData()
-
+    @Published private(set) var hasMoreDigits: Bool = false
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
+    
+    var longDisplayString: String { brain.allDigitsDisplayData.string }
 
-    var allDigitsDisplayData: DisplayData { brain.allDigitsDisplayData }
+    private var shortDisplayData: DisplayData = DisplayData()
     private let brain = Brain()
     private var trailingZeroesString: String?
     

@@ -13,7 +13,7 @@ struct CatalystContentView: View {
     @State var zoomed: Bool = false
     var body: some View {
         ZStack {
-            if zoomed && model.shortDisplayData.hasMoreDigits {
+            if zoomed && model.hasMoreDigits {
                 AllDigitsView(model: model)
                     .padding(.trailing, Configuration.shared.keyWidth)
                     .padding(.leading, 10)
@@ -29,7 +29,7 @@ struct CatalystContentView: View {
                 }
                 .transition(.move(edge: .bottom))
             }
-            Zoom(active: model.shortDisplayData.hasMoreDigits, zoomed: $zoomed)
+            Zoom(active: model.hasMoreDigits, zoomed: $zoomed)
                 .padding(.trailing, Configuration.shared.keyWidth*0.5 - Configuration.shared.zoomIconSize*0.5)
                 .padding(.top, 12) // hardcoded. The correct height depends on the display font and I was lazy...
             if !zoomed {
