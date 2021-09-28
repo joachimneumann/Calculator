@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GmpStack {
+struct GmpStack: CustomDebugStringConvertible{
     private var array: [Gmp] = []
 
     var last: Gmp? { array.last }
@@ -33,5 +33,11 @@ struct GmpStack {
             return nil
         }
     }
-
+    var debugDescription: String {
+        var ret = "gmpStack \(array.count): "
+        for gmp in array {
+            ret += ("\(gmp.toDouble()) ")
+         }
+        return ret
+    }
 }
