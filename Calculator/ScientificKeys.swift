@@ -17,9 +17,9 @@ struct ScientificKeys: View {
         VStack(spacing: verticalSpace) {
             HStack(spacing: horizontalSpace) {
                 Key("(")
-                    .scientific(size: size) // missing
+                    .scientific(size: size) { model.operation("(") }
                 Key(")")
-                    .scientific(size: size) // missing
+                    .scientific(size: size) { model.operation(")") }
                 Key("mc")
                     .scientific(size: size) { model.clearmemory() }
                 Key("m+")

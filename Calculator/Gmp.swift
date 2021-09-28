@@ -124,9 +124,9 @@ class Gmp {
     
     func execute(_ op: twoOperantsType, with other: Gmp) { op(self)(other) }
     func add (other: Gmp) { mpfr_add(&mpfr, &mpfr, &other.mpfr, MPFR_RNDN) }
-    func div (other: Gmp) { mpfr_div(&mpfr, &mpfr, &other.mpfr, MPFR_RNDN) }
-    func min (other: Gmp) { mpfr_sub(&mpfr, &mpfr, &other.mpfr, MPFR_RNDN) }
+    func sub (other: Gmp) { mpfr_sub(&mpfr, &mpfr, &other.mpfr, MPFR_RNDN) }
     func mul (other: Gmp) { mpfr_mul(&mpfr, &mpfr, &other.mpfr, MPFR_RNDN) }
+    func div (other: Gmp) { mpfr_div(&mpfr, &mpfr, &other.mpfr, MPFR_RNDN) }
 
     func pow_x_y(exponent: Gmp) { mpfr_pow(&mpfr, &mpfr, &exponent.mpfr, MPFR_RNDN) }
     func pow_y_x(base: Gmp)     { mpfr_pow(&mpfr, &base.mpfr, &mpfr, MPFR_RNDN) }

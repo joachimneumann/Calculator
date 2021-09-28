@@ -7,10 +7,17 @@
 
 import Foundation
 
-class Operator {
+class Operator: Equatable, Identifiable {
+    let id = UUID()
     let priority: Int
+    static let openParenthesesPriority = -2
+    static let closedParenthesesPriority = -1
+    static let equalPriority = -3
     init(_ priority: Int) {
         self.priority = priority
+    }
+    static func == (lhs: Operator, rhs: Operator) -> Bool {
+        return lhs.id == rhs.id
     }
 }
 
@@ -25,7 +32,7 @@ class TwoOperands: Operator {
     }
 }
 
-struct OperatorStack {
+struct OperatorStack: CustomDebugStringConvertible {
     private var array: [Operator] = []
     mutating func push(_ element: Operator) {
         array.append(element)
@@ -37,15 +44,32 @@ struct OperatorStack {
     mutating func removeLast() {
         array.removeLast()
     }
-    
+    var hasOpenParentheses: Bool {
+        for op in array {
+             if op.priority == Operator.openParenthesesPriority { return true }
+         }
+         return false
+    }
     var last: Operator? {
         array.last
     }
     var count: Int {
         array.count
     }
+    var isEmpty: Bool { array.count == 0 }
     mutating func clean() {
         array.removeAll()
     }
+    var debugDescription: String {
+        var ret = ""
+        for toBePrinted in array {
+            for op in Brain.operators {
+                if op.value == toBePrinted {
+                    ret += ("op: \(op.key) priority: \(op.value.priority)\n")
+                }
+            }
+         }
+        return ret
+    }
 }
-    
+
