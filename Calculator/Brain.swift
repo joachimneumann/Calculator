@@ -123,6 +123,7 @@ class Brain {
             "y^x":  TwoOperand(Gmp.pow_y_x, 3, isAllowed),
             "logy": TwoOperand(Gmp.logy,    3, isAllowed),
             "x↑↑y": TwoOperand(Gmp.x_double_up_arrow_y, 3, isAllowed),
+            "EE":   TwoOperand(Gmp.EE,      3, isAllowed),
         ]
         inplaceOperators = [
             "+/-":    Inplace(Gmp.changeSign,     1, isAllowed),
@@ -190,16 +191,14 @@ class Brain {
     }
     
     func percentage() {
-//        if operatorStack.count == 0 {
-//            gmpStack.last.mul(other: Gmp("0.01"))
-//            gmpStack.replaceLast(with: gmpStack.last)
-//        } else if operatorStack.count >= 1 && gmpStack.count >= 2 {
-//            if let secondLast = gmpStack.secondLast {
-//                gmpStack.last.mul(other: Gmp("0.01"))
-//                gmpStack.last.mul(other: secondLast)
-//                gmpStack.replaceLast(with: gmpStack.last)
-//            }
-//        }
+        if operatorStack.count == 0 {
+            n.last.gmp.mul(other: Gmp("0.01"))
+        } else if operatorStack.count >= 1 && n.count >= 2 {
+            if let secondLast = n.secondLast {
+                n.last.gmp.mul(other: Gmp("0.01"))
+                n.last.gmp.mul(other: secondLast.gmp)
+            }
+        }
     }
         
     func operation(_ symbol: String, withPending: Bool = true) {
@@ -210,8 +209,6 @@ class Brain {
         } else if symbol == "(" {
             operatorStack.push(openParenthesis)
         } else if symbol == ")" {
-            execute(priority: Operator.closedParenthesesPriority)
-        } else if symbol == "EE" {
             execute(priority: Operator.closedParenthesesPriority)
         } else if symbol == "%" {
             percentage()

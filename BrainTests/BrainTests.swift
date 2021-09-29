@@ -269,7 +269,24 @@ class BrainTests: XCTestCase {
         brain.digit(1)
         brain.operation("EE")
         brain.digit(4)
+        brain.operation("=")
         XCTAssertEqual(brain.last.gmp.toDouble(), 0.000001)
+
+        brain.reset()
+        brain.digit(8)
+        brain.digit(8)
+        brain.operation("%")
+        XCTAssertEqual(brain.last.gmp.toDouble(), 0.88)
+
+        brain.reset()
+        brain.digit(4)
+        brain.zero()
+        brain.operation("+")
+        brain.digit(1)
+        brain.zero()
+        brain.operation("%")
+        brain.operation("=")
+        XCTAssertEqual(brain.last.gmp.toDouble(), 44.0)
 
     }
     

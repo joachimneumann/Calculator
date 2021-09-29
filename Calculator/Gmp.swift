@@ -135,6 +135,10 @@ class Gmp {
         base.ln()
         self.div(other: base)
     }
+    func EE(other: Gmp) {
+        other.pow_10_x()
+        self.mul(other: other)
+    }
     func x_double_up_arrow_y(other: Gmp) {
         var temp: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
         mpfr_init2 (&temp, mpfr_get_prec(&mpfr))
