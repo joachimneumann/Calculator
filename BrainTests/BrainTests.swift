@@ -18,6 +18,14 @@ class BrainTests: XCTestCase {
         brain.zero()
         XCTAssertEqual(brain.display, "0")
 
+        // 12
+        brain.reset()
+        XCTAssertEqual(brain.display, "0")
+        brain.digit(1)
+        XCTAssertEqual(brain.display, "1")
+        brain.digit(2)
+        XCTAssertEqual(brain.display, "12")
+
         /// 0,0000010
         brain.reset()
         brain.zero()

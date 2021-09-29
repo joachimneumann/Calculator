@@ -35,6 +35,12 @@ class Gmp {
         mpfr_init2 (&mpfr, 331146) // TODO precision
         mpfr_set_str (&mpfr, s1, 10, MPFR_RNDN)
     }
+    convenience init(_ s: String?) {
+        if s == nil {
+            assert(false)
+        }
+        self.init(s!)
+    }
     
     convenience init() {
         self.init("0")

@@ -5,6 +5,8 @@
 //  Created by Joachim Neumann on 22/09/2021.
 //
 
+import Foundation
+
 class Brain {
     private var n = NumberStack()
     var display: String {
@@ -72,7 +74,7 @@ class Brain {
     func isAllowed() -> Bool {
         return true
     }
-    func clearmemory() {
+    func clearMemory() {
         memory = nil
     }
     func addToMemory(_ plus: Gmp) {

@@ -33,7 +33,7 @@ struct ScientificKeys: View {
                         size: size,
                         isAllowed: true,
                         isPending: false)
-                { model.clearmemory() }
+                { model.clearMemory() }
                 Key("m+")
                     .scientific(
                         size: size,

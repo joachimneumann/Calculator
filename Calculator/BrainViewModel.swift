@@ -15,7 +15,6 @@ class BrainViewModel: ObservableObject {
     var hasMoreDigits: Bool { brain.hasMoreDigits }
     private let brain = Brain()
     
-    var inPlaceAllowed: Bool { brain.isValid }
     func isPending(_ symbol: String) -> Bool {
         if let pendingOperator = brain.pendingOperator {
             return pendingOperator == symbol
@@ -25,22 +24,25 @@ class BrainViewModel: ObservableObject {
 
     func digit(_ digit: Int) {
         brain.digit(digit)
+        objectWillChange.send()
     }
     
     var digitsAllowed: Bool { true }
+    var inPlaceAllowed: Bool { brain.isValid }
     func zero() { brain.zero() }
     func comma() { brain.comma() }
-    func operation(_ op: String) { brain.operation(op) }
+    func operation(_ op: String) {
+        brain.operation(op)
+        objectWillChange.send()
+    }
     func reset() { brain.reset() }
-    func clearmemory() { brain.clearmemory() }
+    func clearMemory() { brain.clearMemory() }
     func addToMemory() {
         brain.addToMemory(brain.last.gmp)
     }
     func subtractFromMemory() {
         brain.substractFromMemory(brain.last.gmp)
     }
-    func memory() {
-        brain.getMemory()
-    }
+    func getMemory() { brain.getMemory() }
 
 }

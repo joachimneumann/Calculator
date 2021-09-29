@@ -9,6 +9,8 @@ import Foundation
 
 class Number {
     var str: String?
+    var isValid: Bool = true
+    var hasMoreDigits: Bool = false
     private var _gmp: Gmp
     var gmp: Gmp {
         if str != nil {
@@ -17,20 +19,44 @@ class Number {
         }
         return _gmp
     }
+    func check() {
+        let temp: Gmp
+        if str != nil {
+            temp = Gmp(str)
+        } else {
+            temp = _gmp
+        }
+        isValid = temp.isValid
+        hasMoreDigits = DisplayData(gmp: temp, digits: Configuration.shared.digitsInSmallDisplay).hasMoreDigits
+    }
     func inPlace(op: inplaceType) {
         gmp.inPlace(op: op)
+        check()
     }
-    init(_ str: String) { self.str = str; _gmp = Gmp() }
-    init(_ gmp: Gmp)    { self._gmp = gmp;   str = nil }
-    init()              { self._gmp = Gmp(); str = nil }
+    init(_ str: String) {
+        self.str = str
+        _gmp = Gmp()
+        check()
+    }
+    init(_ gmp: Gmp)    {
+        self._gmp = gmp
+        str = nil
+        check()
+    }
+    init()              {
+        self._gmp = Gmp()
+        str = nil
+        check()
+    }
     
     // && str != "0" { append("0") } }
     func zero()  {
         if str == nil || str == "0" {
             str = "0"
         } else {
-            str?.append("0")
+            str!.append("0")
         }
+        check()
     }
     func comma() {
         if str == nil {
@@ -38,6 +64,7 @@ class Number {
         } else {
             str!.append(",")
         }
+        check()
     }
     func digit(_ digit: Int) {
         assert( digit > 0)
@@ -47,39 +74,37 @@ class Number {
         } else {
             str!.append(String(digit))
         }
+        check()
     }
 }
 
 struct NumberStack: CustomDebugStringConvertible{
     private var array: [Number] = []
-//    var display: String {
-//        let temp: Gmp
-//        if let str = last.str {
-//            if str.count <= Configuration.shared.digitsInSmallDisplay {
-//                return str
-//            } else {
-//                temp = Gmp(str)
-//            }
-//        } else {
-//            temp = last.gmp
-//        }
-//        let dd = DisplayData(gmp: temp, digits: Configuration.shared.digitsInSmallDisplay)
-//        return dd.string
-//    }
-//
     var display: String {
-        return DisplayData(gmp: last.gmp, digits: Configuration.shared.digitsInSmallDisplay).string
+        let temp: Gmp
+        if let str = last.str {
+            if str.count <= Configuration.shared.digitsInSmallDisplay {
+                return str
+            } else {
+                temp = Gmp(str)
+            }
+        } else {
+            temp = last.gmp
+        }
+        let dd = DisplayData(gmp: temp, digits: Configuration.shared.digitsInSmallDisplay)
+        return dd.string
     }
+
+    
     var longDisplay: String {
         return DisplayData(gmp: last.gmp, digits: 10000-1).string // TODO only calculate DisplayData once
     }
     var hasMoreDigits: Bool {
-        return DisplayData(gmp: last.gmp, digits: 10000-1).hasMoreDigits
+        return last.hasMoreDigits
     }
     
-    
     var isValid: Bool {
-        return last.gmp.isValid
+        return last.isValid
     }
     
     var last: Number {
