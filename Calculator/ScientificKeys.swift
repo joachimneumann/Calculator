@@ -180,12 +180,7 @@ struct ScientificKeys: View {
                         size: size,
                         isAllowed: model.digitsAllowed,
                         isPending: false)
-                {
-                    model.operation("x")
-                    model.secretDigit(1)
-                    model.secretDigit(0)
-                    model.secretOperation("x^y", withPending: false)
-                }
+                { model.operation("EE") }
             }
             HStack(spacing: horizontalSpace) {
                 Key(model.rad ? "Deg" : "Rad")

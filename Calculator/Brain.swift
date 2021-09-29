@@ -5,11 +5,6 @@
 //  Created by Joachim Neumann on 22/09/2021.
 //
 
-enum DisplayIsBasedOn {
-    case typing
-    case Gmp
-}
-
 class Brain {
     private var n = NumberStack()
     var display: String {

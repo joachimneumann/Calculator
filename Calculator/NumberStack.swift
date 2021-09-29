@@ -52,21 +52,24 @@ class Number {
 
 struct NumberStack: CustomDebugStringConvertible{
     private var array: [Number] = []
+//    var display: String {
+//        let temp: Gmp
+//        if let str = last.str {
+//            if str.count <= Configuration.shared.digitsInSmallDisplay {
+//                return str
+//            } else {
+//                temp = Gmp(str)
+//            }
+//        } else {
+//            temp = last.gmp
+//        }
+//        let dd = DisplayData(gmp: temp, digits: Configuration.shared.digitsInSmallDisplay)
+//        return dd.string
+//    }
+//
     var display: String {
-        let temp: Gmp
-        if let str = last.str {
-            if str.count <= Configuration.shared.digitsInSmallDisplay {
-                return str
-            } else {
-                temp = Gmp(str)
-            }
-        } else {
-            temp = last.gmp
-        }
-        let dd = DisplayData(gmp: temp, digits: Configuration.shared.digitsInSmallDisplay)
-        return dd.string
+        return DisplayData(gmp: last.gmp, digits: Configuration.shared.digitsInSmallDisplay).string
     }
-    
     var longDisplay: String {
         return DisplayData(gmp: last.gmp, digits: 10000-1).string // TODO only calculate DisplayData once
     }
