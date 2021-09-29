@@ -38,7 +38,7 @@ struct IOSContentView: View {
             } else {
                 VStack {
                     Spacer()
-                    Display(text: model.shortDisplayString)
+                    Display(text: model.displayString)
                         .padding(.trailing, 15)
                     NumberKeys(model: model, roundKeys: true, width: frameSize.width)
                 }

@@ -19,7 +19,7 @@ struct CatalystContentView: View {
                     .padding(.leading, 10)
             } else {
                 VStack {
-                    Display(text: model.shortDisplayString)
+                    Display(text: model.displayString)
                         .padding(.trailing, Configuration.shared.keyWidth)
                     Spacer(minLength: 0)
                     if !zoomed {

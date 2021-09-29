@@ -8,12 +8,11 @@
 import Foundation
 
 class BrainViewModel: ObservableObject {
-    @Published private(set) var shortDisplayString: String = ""
+    var displayString: String { brain.display }
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
-    var longDisplayString: String { brain.allDigitsDisplayData.string }
-    var hasMoreDigits: Bool { shortDisplayData.hasMoreDigits }
-    private var shortDisplayData: DisplayData = DisplayData()
+    var longDisplayString: String { brain.longDisplay }
+    var hasMoreDigits: Bool { brain.hasMoreDigits }
     private let brain = Brain()
     private var trailingZeroesString: String?
     
@@ -24,47 +23,38 @@ class BrainViewModel: ObservableObject {
         }
         return false
     }
-    func secretDigit(_ digit: Character) {
-        brain.addDigitToNumberString(digit)
+    func secretDigit(_ digit: Int) {
+        brain.digit(digit)
     }
 
-    func digit(_ digit: Character) {
-        brain.addDigitToNumberString(digit)
+    func digit(_ digit: Int) {
+        brain.digit(digit)
         trailingZeroesString = nil
-        shortDisplayData = brain.shortDisplayData()
-        shortDisplayString = shortDisplayData.string
     }
     
     var digitsAllowed: Bool { true }
     
     func zero() {
-        if shortDisplayData.isValidNumber {
-            brain.addDigitToNumberString("0")
-            shortDisplayData = brain.shortDisplayData()
-            if shortDisplayString.contains(",") {
-                if trailingZeroesString == nil {
-                    trailingZeroesString = shortDisplayString
-                }
-                if trailingZeroesString!.count < Configuration.shared.digitsInSmallDisplay {
-                    trailingZeroesString! += "0"
-                    shortDisplayString = trailingZeroesString!
-                }
-            } else {
-                shortDisplayString = shortDisplayData.string
-            }
-        }
+            brain.zero()
+//            if shortDisplayString.contains(",") {
+//                if trailingZeroesString == nil {
+//                    trailingZeroesString = shortDisplayString
+//                }
+//                if trailingZeroesString!.count < Configuration.shared.digitsInSmallDisplay {
+//                    trailingZeroesString! += "0"
+//                    shortDisplayString = trailingZeroesString!
+//                }
+//            } else {
+//                shortDisplayString = shortDisplayData.string
+//            }
     }
     
     func comma() {
-        if shortDisplayData.isValidNumber {
-            brain.addDigitToNumberString(",")
-            shortDisplayData = brain.shortDisplayData()
-            shortDisplayString = shortDisplayData.string
-            if !shortDisplayString.contains(",") {
-                shortDisplayString += ","
-                trailingZeroesString = shortDisplayString
-            }
-        }
+//        if !shortDisplayString.contains(",") {
+//            shortDisplayString += ","
+//            trailingZeroesString = shortDisplayString
+//        }
+        brain.comma()
     }
     
     func secretOperation(_ op: String, withPending: Bool = false) {
@@ -73,16 +63,12 @@ class BrainViewModel: ObservableObject {
     
     func operation(_ op: String) {
         brain.operation(op)
-        shortDisplayData = brain.shortDisplayData()
-        shortDisplayString = shortDisplayData.string
         trailingZeroesString = nil
     }
 
     func reset() {
         brain.reset()
         trailingZeroesString = nil
-        shortDisplayData = brain.shortDisplayData()
-        shortDisplayString = shortDisplayData.string
         //        let temp = brain.shortString()
         //        mainDisplay = String(temp.prefix(10))
     }
@@ -91,26 +77,18 @@ class BrainViewModel: ObservableObject {
         brain.clearmemory()
     }
     func addToMemory() {
-        if let last = brain.last {
-            brain.addToMemory(last)
-        }
+        brain.addToMemory(brain.last.gmp)
     }
     func subtractFromMemory() {
-        if let last = brain.last {
-            brain.substractFromMemory(last)
-        }
+        brain.substractFromMemory(brain.last.gmp)
     }
     func memory() {
         brain.getMemory()
-        shortDisplayData = brain.shortDisplayData()
-        shortDisplayString = shortDisplayData.string
         trailingZeroesString = nil
     }
 
     
     init() {
         trailingZeroesString = nil
-        shortDisplayData = brain.shortDisplayData()
-        shortDisplayString = shortDisplayData.string
     }
 }

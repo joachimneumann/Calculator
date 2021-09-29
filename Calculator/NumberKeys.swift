@@ -46,17 +46,17 @@ struct NumberKeys: View {
                     .digit_1_to_9(
                         size: size, isAllowed:
                             model.digitsAllowed)
-                { model.digit("7") }
+                { model.digit(7) }
                 Key("8")
                     .digit_1_to_9(
                         size: size,
                         isAllowed: model.digitsAllowed)
-                { model.digit("8") }
+                { model.digit(8) }
                 Key("9")
                     .digit_1_to_9(
                         size: size,
                         isAllowed: model.digitsAllowed)
-                { model.digit("9") }
+                { model.digit(9) }
                 Key("x")
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
@@ -69,17 +69,17 @@ struct NumberKeys: View {
                     .digit_1_to_9(
                         size: size,
                         isAllowed: model.digitsAllowed)
-                { model.digit("4") }
+                { model.digit(4) }
                 Key("5")
                     .digit_1_to_9(
                         size: size,
                         isAllowed: model.digitsAllowed)
-                { model.digit("5") }
+                { model.digit(5) }
                 Key("6")
                     .digit_1_to_9(
                         size: size,
                         isAllowed: model.digitsAllowed)
-                { model.digit("6") }
+                { model.digit(6) }
                 Key("-")
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
@@ -92,17 +92,17 @@ struct NumberKeys: View {
                     .digit_1_to_9(
                         size: size,
                         isAllowed: model.digitsAllowed)
-                { model.digit("1") }
+                { model.digit(1) }
                 Key("2")
                     .digit_1_to_9(
                         size: size,
                         isAllowed: model.digitsAllowed)
-                { model.digit("2") }
+                { model.digit(2) }
                 Key("3")
                     .digit_1_to_9(
                         size: size,
                         isAllowed: model.digitsAllowed)
-                { model.digit("3") }
+                { model.digit(3) }
                 Key("+")
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,

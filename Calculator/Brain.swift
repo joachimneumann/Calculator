@@ -5,107 +5,99 @@
 //  Created by Joachim Neumann on 22/09/2021.
 //
 
-class Brain {
-    var legalkey: Bool = false
-    func shortDisplayData() -> DisplayData {
-        displayData(digits: Configuration.shared.digitsInSmallDisplay)
-    }
-    
-    var allDigitsDisplayData: DisplayData {
-        displayData(digits: 10000) // TODO Bogus
-    }
-    
-    var memory: Gmp = Gmp()
-    
-    private let debug = true
-    private var displayString: String? = "0"
+enum DisplayIsBasedOn {
+    case typing
+    case Gmp
+}
 
-    internal var operatorStack = OperatorStack() // TODO private after testing
-    internal var gmpStack = GmpStack()
-        
-    private func displayData(digits: Int) -> DisplayData {
-        if let last = gmpStack.last {
-            return DisplayData(gmp: last, digits: digits)
-        } else {
-            return DisplayData()
-        }
+class Brain {
+    private var n = NumberStack()
+    var display: String {
+        n.display
     }
-    var isValid: Bool { gmpStack.last!.isValid }
+    var longDisplay: String { n.longDisplay }
+    var hasMoreDigits: Bool { n.hasMoreDigits }
+
+    var pendingOperator: String?
+
+    func reset() {
+        operatorStack.removeAll()
+        n.removeAll()
+        typedString = "0"
+        pendingOperator = nil
+        n.append(Gmp())
+    }
+    
+    func digit(_ digit: Int) {
+        if pendingOperator != nil {
+            n.append(Gmp())
+            pendingOperator = nil
+        }
+        n.last.digit(digit)
+    }
+    
+    private var typedString: String = "0"
+
+    func typed(_ new: String) {
+        typedString += new
+        print("X after typed(\"\(new)\": " +
+              "numbers: \(n.count), " +
+              "ops: \(operatorStack.count), " +
+              "typedString: \(typedString), " +
+              "display: \(display)")
+        //print("X "+operatorStack.debugDescription)
+    }
+    func comma() {
+        if pendingOperator != nil {
+            n.append(Gmp())
+            pendingOperator = nil
+        }
+        n.last.comma()
+    }
+    
+    func zero() {
+        if pendingOperator != nil {
+            n.append(Gmp())
+            pendingOperator = nil
+        }
+        n.last.zero()
+    }
+    
+    var memory: Gmp? = nil
+        
+    var operatorStack = OperatorStack() // TODO private after testing
+    
+    var isValid: Bool {
+        n.isValid
+    }
+    var last: Number {
+        n.last
+    }
+    var nn: Int { n.count }
     func isAllowed() -> Bool {
         return true
     }
-
     func clearmemory() {
-        memory = Gmp()
+        memory = nil
     }
     func addToMemory(_ plus: Gmp) {
-        memory.add(other: plus)
-        print("X memory=\(memory.toDouble())")
-        displayString = nil
+        if memory == nil {
+            memory = plus
+        } else {
+            memory!.add(other: plus)
+        }
+        print("X memory=\(memory!.toDouble())")
     }
     func substractFromMemory(_ minus: Gmp) {
-        memory.sub(other: minus)
-        print("X memory=\(memory.toDouble())")
-        displayString = nil
+        if memory == nil {
+            memory = minus
+        } else {
+            memory!.sub(other: minus)
+        }
+        print("X memory=\(memory!.toDouble())")
     }
     func getMemory() {
-        if displayString == nil {
-            gmpStack.append(memory)
-        } else {
-            gmpStack.replaceLast(with: memory)
-        }
-
-        print("X memory=\(memory.toDouble())")
-        print("X gmpStack.last?=\(gmpStack.last!.toDouble())")
-    }
-
-    var last: Gmp? {
-        gmpStack.last
-    }
-    func addDigitToNumberString(_ digit: Character) {
-        if digit == "," {
-            if displayString == nil {
-                displayString = "0,"
-                gmpStack.replaceLast(with: Gmp(displayString!))
-            } else {
-                if !displayString!.contains(",") {
-                    displayString!.append(",")
-                    // do nothing with the gmpStack
-                }
-            }
-        } else {
-            // normal digit
-            if displayString == nil {
-                displayString = String(digit)
-                gmpStack.append(Gmp(displayString!))
-            } else if displayString == "0" {
-                displayString = String(digit)
-                gmpStack.replaceLast(with: Gmp(displayString!))
-            } else {
-                displayString!.append(digit)
-                gmpStack.replaceLast(with: Gmp(displayString!))
-            }
-        }
-        
-        if gmpStack.count == 0 {
-            print("X ### ERROR")
-            return
-        }
-        if displayString == nil {
-            print("X ### ERROR")
-            return
-        }
-        print("X after add \"\(digit)\": " +
-              "gmps: \(gmpStack.count), " +
-              "ops: \(operatorStack.count) " +
-              "displayString: \(displayString ?? "nil")")
-    }
-    
-    func reset() {
-        operatorStack.removeAll()
-        gmpStack.removeAll()
-        displayString = nil
-        addDigitToNumberString("0")
+        n.replaceLast(with: Number(memory!))
     }
     
     var constantOperators:   Dictionary <String, Inplace> = [:]
@@ -114,7 +106,7 @@ class Brain {
     var openParenthesis:   Operator = Operator(0, {true})
     var closedParenthesis: Operator = Operator(0, {true})
     var equalOperator:     Operator = Operator(0, {true})
-
+    
     init() {
         constantOperators = [
             "π":    Inplace(Gmp.π,    0, isAllowed),
@@ -183,71 +175,64 @@ class Brain {
         while !operatorStack.isEmpty && operatorStack.last!.priority >= newPriority {
             let op = operatorStack.pop()
             if let twoOperand = op as? TwoOperand {
-                if gmpStack.count >= 2 {
-                    let gmp2 = gmpStack.popLast()!
-                    let gmp1 = gmpStack.last!
-                    gmp1.execute(twoOperand.operation, with: gmp2)
+                if n.count >= 2 {
+                    let gmp2 = n.popLast()!.gmp
+                    n.last.gmp.execute(twoOperand.operation, with: gmp2)
                 }
             }
         }
         if
             newPriority == Operator.closedParenthesesPriority &&
-            !operatorStack.isEmpty &&
-            operatorStack.last!.priority == Operator.openParenthesesPriority {
+                !operatorStack.isEmpty &&
+                operatorStack.last!.priority == Operator.openParenthesesPriority {
             operatorStack.removeLast()
         }
     }
     
     func percentage() {
-        if operatorStack.count == 0 && gmpStack.count >= 1 {
-            if let last = gmpStack.last {
-                last.mul(other: Gmp("0.01"))
-                gmpStack.replaceLast(with: last)
-            }
-            
-        } else if operatorStack.count >= 1 && gmpStack.count >= 2 {
-            if let last = gmpStack.last {
-                if let secondLast = gmpStack.secondLast {
-                    last.mul(other: Gmp("0.01"))
-                    last.mul(other: secondLast)
-                    gmpStack.replaceLast(with: last)
-                }
-            }
-        }
+//        if operatorStack.count == 0 {
+//            gmpStack.last.mul(other: Gmp("0.01"))
+//            gmpStack.replaceLast(with: gmpStack.last)
+//        } else if operatorStack.count >= 1 && gmpStack.count >= 2 {
+//            if let secondLast = gmpStack.secondLast {
+//                gmpStack.last.mul(other: Gmp("0.01"))
+//                gmpStack.last.mul(other: secondLast)
+//                gmpStack.replaceLast(with: gmpStack.last)
+//            }
+//        }
     }
-    
-    var pendingOperator: String?
-
+        
     func operation(_ symbol: String, withPending: Bool = true) {
-        pendingOperator = nil
         if symbol == "C" {
             reset()
         } else if symbol == "=" {
             execute(priority: Operator.equalPriority)
-            displayString = nil
         } else if symbol == "(" {
             operatorStack.push(openParenthesis)
         } else if symbol == ")" {
             execute(priority: Operator.closedParenthesesPriority)
+        } else if symbol == "EE" {
+            execute(priority: Operator.closedParenthesesPriority)
         } else if symbol == "%" {
             percentage()
         } else if let op = constantOperators[symbol] {
-            gmpStack.modifyLast(withOp: op.operation)
-            displayString = nil
+            if pendingOperator != nil {
+                n.append(Gmp())
+                pendingOperator = nil
+            }
+            n.modifyLast(withOp: op.operation)
         } else if let op = inplaceOperators[symbol] {
-            gmpStack.modifyLast(withOp: op.operation)
-            displayString = nil
+            n.modifyLast(withOp: op.operation)
         } else if let op = twoOperandOperators[symbol] {
             if withPending { pendingOperator = symbol }
             execute(priority: op.priority)
             operatorStack.push(op)
-            displayString = nil
         }
-        print("X after op  \"\(symbol)\": " +
-              "gmps: \(gmpStack.count), " +
-              "ops: \(operatorStack.count) " +
-              "displayString: \(displayString ?? "nil")")
-        print("X "+operatorStack.debugDescription)
+        print("X after op   (\"\(symbol)\": " +
+              "numbers: \(n.count), " +
+              "ops: \(operatorStack.count), " +
+              "typedString: \(typedString), " +
+              "display: \(display)")
     }
-
+    
 }
