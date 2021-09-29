@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Number {
+class Number: CustomDebugStringConvertible {
     var str: String?
     var isValid: Bool = true
     var hasMoreDigits: Bool = false
@@ -76,6 +76,13 @@ class Number {
         }
         check()
     }
+    var debugDescription: String {
+        if str != nil {
+            return "\(str)) "
+        } else {
+            return "\(_gmp.toDouble()) "
+        }
+    }
 }
 
 struct NumberStack: CustomDebugStringConvertible{
@@ -139,13 +146,9 @@ struct NumberStack: CustomDebugStringConvertible{
     }
     
     var debugDescription: String {
-        var ret = "gmpStack \(array.count): "
+        var ret = "numberStack \(array.count): "
         for number in array {
-            if let str = number.str {
-                ret += "\(str)) "
-            } else {
-                ret += "\(number.gmp.toDouble()) "
-            }
+            ret += "\(number) "
         }
         return ret
     }

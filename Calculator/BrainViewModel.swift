@@ -29,20 +29,38 @@ class BrainViewModel: ObservableObject {
     
     var digitsAllowed: Bool { true }
     var inPlaceAllowed: Bool { brain.isValid }
-    func zero() { brain.zero() }
-    func comma() { brain.comma() }
+    
+    func zero() {
+        brain.zero()
+        objectWillChange.send()
+    }
+    func comma() {
+        brain.comma()
+        objectWillChange.send()
+    }
     func operation(_ op: String) {
         brain.operation(op)
         objectWillChange.send()
     }
-    func reset() { brain.reset() }
-    func clearMemory() { brain.clearMemory() }
+    func reset() {
+        brain.reset()
+        objectWillChange.send()
+    }
+    func clearMemory() {
+        brain.clearMemory()
+        objectWillChange.send()
+    }
     func addToMemory() {
         brain.addToMemory(brain.last.gmp)
+        objectWillChange.send()
     }
     func subtractFromMemory() {
-        brain.substractFromMemory(brain.last.gmp)
+        brain.subtractFromMemory(brain.last.gmp)
+        objectWillChange.send()
     }
-    func getMemory() { brain.getMemory() }
+    func getMemory() {
+        brain.getMemory()
+        objectWillChange.send()
+    }
 
 }

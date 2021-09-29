@@ -26,6 +26,23 @@ class BrainTests: XCTestCase {
         brain.digit(2)
         XCTAssertEqual(brain.display, "12")
 
+        /// memory
+        brain.reset()
+        brain.digit(1)
+        brain.digit(2)
+        XCTAssertEqual(brain.display, "12")
+        brain.clearMemory()
+        XCTAssertEqual(brain.display, "12")
+        brain.addToMemory(brain.last.gmp)
+        XCTAssertEqual(brain.display, "12")
+        brain.addToMemory(brain.last.gmp)
+        XCTAssertEqual(brain.display, "12")
+        brain.getMemory()
+        XCTAssertEqual(brain.display, "24")
+        brain.subtractFromMemory(brain.last.gmp)
+        XCTAssertEqual(brain.display, "24")
+        brain.getMemory()
+        XCTAssertEqual(brain.display, "0")
         /// 0,0000010
         brain.reset()
         brain.zero()

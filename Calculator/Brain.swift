@@ -20,7 +20,6 @@ class Brain {
     func reset() {
         operatorStack.removeAll()
         n.removeAll()
-        typedString = "0"
         pendingOperator = nil
         n.append(Gmp())
     }
@@ -33,17 +32,6 @@ class Brain {
         n.last.digit(digit)
     }
     
-    private var typedString: String = "0"
-
-    func typed(_ new: String) {
-        typedString += new
-        print("X after typed(\"\(new)\": " +
-              "numbers: \(n.count), " +
-              "ops: \(operatorStack.count), " +
-              "typedString: \(typedString), " +
-              "display: \(display)")
-        //print("X "+operatorStack.debugDescription)
-    }
     func comma() {
         if pendingOperator != nil {
             n.append(Gmp())
@@ -85,7 +73,7 @@ class Brain {
         }
         print("X memory=\(memory!.toDouble())")
     }
-    func substractFromMemory(_ minus: Gmp) {
+    func subtractFromMemory(_ minus: Gmp) {
         if memory == nil {
             memory = minus
         } else {
@@ -221,11 +209,12 @@ class Brain {
             if withPending { pendingOperator = symbol }
             execute(priority: op.priority)
             operatorStack.push(op)
+        } else {
+            assert(false)
         }
         print("X after op   (\"\(symbol)\": " +
               "numbers: \(n.count), " +
               "ops: \(operatorStack.count), " +
-              "typedString: \(typedString), " +
               "display: \(display)")
     }
     
