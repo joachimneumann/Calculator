@@ -9,12 +9,13 @@ import SwiftUI
 
 struct AllDigitsView: View {
     var brain: Brain
+    let textColor: Color // for copy/paste animation
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: true) {
             Text(brain.longDisplayString)
-                .foregroundColor(Color.white)
-                .font(.custom("CourierNewPSMT", size: 19))
+                .foregroundColor(textColor)
+                .font(Configuration.shared.allDigitsFont)
                 .multilineTextAlignment(.leading)
         }
         .padding(.top, 0.2) /// TODO: Unterstand why this magically persuads the Scrollview to respect the SafeArea
@@ -23,6 +24,6 @@ struct AllDigitsView: View {
 
 struct AllDigitsView_Previews: PreviewProvider {
     static var previews: some View {
-        AllDigitsView(brain: Brain())
+        AllDigitsView(brain: Brain(), textColor: Color.white)
     }
 }

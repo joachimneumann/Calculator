@@ -28,7 +28,7 @@ class Configuration {
     var zoomIconSize: CGFloat = 30
     let keyWidth: CGFloat = 56.25
     let keyHeight: CGFloat = 47.0
-
+    let allDigitsFont = Font.custom("CourierNewPSMT", size: 19)
     
     /// The MacOS Calculator is a bit transparent.
     /// The colors specified here replicate the button colors

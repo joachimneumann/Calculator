@@ -228,4 +228,15 @@ class Brain: ObservableObject {
         equalOperator     = Operator(Operator.equalPriority)
         reset()
     }
+    
+    func fromPasteboard(_ fromPasteboard: String) {
+        let gmp = Gmp(fromPasteboard)
+        if pendingOperator != nil {
+            n.append(gmp)
+            pendingOperator = nil
+        }
+        n.replaceLast(with: Number(gmp))
+    }
+
+    
 }

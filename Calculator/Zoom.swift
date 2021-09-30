@@ -11,28 +11,22 @@ struct Zoom: View {
     var active: Bool
     @Binding var zoomed: Bool
     var body: some View {
-        HStack {
-            Spacer(minLength: 0)
-            VStack {
-                ZStack {
-                    if zoomed {
-                    Image(systemName: "minus.circle.fill")
-                            .resizable()
-                    } else {
-                      Image(systemName: "plus.circle.fill")
-                            .resizable()
-                    }
-                }
-                .foregroundColor(active ? Configuration.shared.DigitKeyProperties.textColor : Color(white: 0.5))
-                .font(Font.system(size: 100, weight: .bold).monospacedDigit())
-                .minimumScaleFactor(0.01)
-                .frame(width: Configuration.shared.zoomIconSize, height: Configuration.shared.zoomIconSize, alignment: .center)
-                .onTapGesture {
-                    withAnimation(.easeIn) {
-                        zoomed.toggle()
-                    }
-                }
-                Spacer(minLength: 0)
+        ZStack {
+            if zoomed {
+                Image(systemName: "minus.circle.fill")
+                    .resizable()
+            } else {
+                Image(systemName: "plus.circle.fill")
+                    .resizable()
+            }
+        }
+        .foregroundColor(active ? Configuration.shared.DigitKeyProperties.textColor : Color(white: 0.5))
+        .font(Font.system(size: 100, weight: .bold).monospacedDigit())
+        .minimumScaleFactor(0.01)
+        .frame(width: Configuration.shared.zoomIconSize, height: Configuration.shared.zoomIconSize)
+        .onTapGesture {
+            withAnimation(.easeIn) {
+                zoomed.toggle()
             }
         }
     }

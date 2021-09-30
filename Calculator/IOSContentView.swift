@@ -30,7 +30,7 @@ struct IOSContentView: View {
             FrameCatcher(into: $frameSize)
             if zoomed {
                 VStack {
-                    AllDigitsView(brain: brain)
+                    AllDigitsView(brain: brain, textColor: Color.white)
                         .padding(.trailing, 15)
                         .padding(.leading, 60)
                     Spacer()
@@ -38,7 +38,9 @@ struct IOSContentView: View {
             } else {
                 VStack {
                     Spacer()
-                    Display(text: brain.display)
+                    Display(
+                        text: brain.display,
+                        textColor: Configuration.shared.DigitKeyProperties.textColor)
                         .padding(.trailing, 15)
                     NumberKeys(brain: brain, roundKeys: true, width: frameSize.width)
                 }

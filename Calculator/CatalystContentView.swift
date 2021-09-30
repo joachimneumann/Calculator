@@ -11,16 +11,21 @@ import SwiftUI
 struct CatalystContentView: View {
     @ObservedObject var brain = Brain()
     @State var zoomed: Bool = false
+    @State var copyPasteHighlight = false
     var body: some View {
         ZStack {
             if zoomed && brain.hasMoreDigits {
-                AllDigitsView(brain: brain)
+                AllDigitsView(
+                    brain: brain,
+                    textColor: copyPasteHighlight ? Color.orange : Configuration.shared.DigitKeyProperties.textColor)
                     .padding(.trailing, Configuration.shared.keyWidth)
                     .padding(.leading, 10)
             } else {
                 ZStack {
                     VStack {
-                        Display(text: brain.display)
+                        Display(
+                            text: brain.display,
+                            textColor: copyPasteHighlight ? Color.orange : Configuration.shared.DigitKeyProperties.textColor)
                             .padding(.trailing, Configuration.shared.keyWidth)
                         Spacer(minLength: 0)
                         if !zoomed {
@@ -35,9 +40,43 @@ struct CatalystContentView: View {
                 }
                 .transition(.move(edge: .bottom))
             }
-            Zoom(active: brain.hasMoreDigits, zoomed: $zoomed)
-                .padding(.trailing, Configuration.shared.keyWidth*0.5 - Configuration.shared.zoomIconSize*0.5)
-                .padding(.top, 12) // hardcoded. The correct height depends on the display font and I was lazy...
+            HStack(spacing: 0) {
+                Spacer(minLength: 0)
+                // from here on: trailing
+                VStack(spacing: 0) {
+                    HStack(spacing: 0) {
+                        Spacer(minLength: 0)
+                        Zoom(active: brain.hasMoreDigits, zoomed: $zoomed)
+                            .padding(.top, 12) // hardcoded. The correct height depends on the display font and I was lazy...
+                        Spacer(minLength: 0)
+                    }
+                    if zoomed {
+                        Copy(longString: brain.longDisplayString) {
+                            copyPasteHighlight = true
+                            let now = DispatchTime.now()
+                            var whenWhen: DispatchTime
+                            whenWhen = now + DispatchTimeInterval.milliseconds(300)
+                            DispatchQueue.main.asyncAfter(deadline: whenWhen) {
+                                copyPasteHighlight = false
+                            }
+                        }
+                        .padding(.top, 40)
+                        Paste() { fromPasteboard in
+                            copyPasteHighlight = true
+                            let now = DispatchTime.now()
+                            var whenWhen: DispatchTime
+                            whenWhen = now + DispatchTimeInterval.milliseconds(300)
+                            DispatchQueue.main.asyncAfter(deadline: whenWhen) {
+                                copyPasteHighlight = false
+                            }
+                            brain.fromPasteboard(fromPasteboard)
+                        }
+                        .padding(.top, 20)
+                    }
+                    Spacer()
+                }
+                .frame(maxWidth: Configuration.shared.keyWidth+3)
+            }
         }
     }
 }

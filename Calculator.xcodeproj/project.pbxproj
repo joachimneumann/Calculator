@@ -32,6 +32,7 @@
 		AAE87B9526FC7302009E6D80 /* Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE87B9426FC7302009E6D80 /* Symbols.swift */; };
 		AAE87B9926FCB24C009E6D80 /* OperatorStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE87B9826FCB24C009E6D80 /* OperatorStack.swift */; };
 		AAEDA0E127047BB400005E04 /* NumberStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEDA0E027047BB400005E04 /* NumberStack.swift */; };
+		AAEDA0E32705993F00005E04 /* CopyPaste.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEDA0E22705993F00005E04 /* CopyPaste.swift */; };
 		AAF1F59126FBA9C7000A733F /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF1F59026FBA9C7000A733F /* Configuration.swift */; };
 /* End PBXBuildFile section */
 
@@ -87,6 +88,7 @@
 		AAE87B9426FC7302009E6D80 /* Symbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbols.swift; sourceTree = "<group>"; };
 		AAE87B9826FCB24C009E6D80 /* OperatorStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorStack.swift; sourceTree = "<group>"; };
 		AAEDA0E027047BB400005E04 /* NumberStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberStack.swift; sourceTree = "<group>"; };
+		AAEDA0E22705993F00005E04 /* CopyPaste.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyPaste.swift; sourceTree = "<group>"; };
 		AAF1F59026FBA9C7000A733F /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -154,6 +156,7 @@
 				AA59D79C26FDED8B00321F26 /* IOSContentView.swift */,
 				AA07C0182700852400BEECA8 /* Rad.swift */,
 				AAEDA0E027047BB400005E04 /* NumberStack.swift */,
+				AAEDA0E22705993F00005E04 /* CopyPaste.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -292,6 +295,7 @@
 				AA7CD3AB26FC322C00C714A6 /* ScientificKeys.swift in Sources */,
 				AA59D79B26FDEC1900321F26 /* LandscapeKeys.swift in Sources */,
 				AA2576B326F8F16600CDD8C9 /* NumberKeys.swift in Sources */,
+				AAEDA0E32705993F00005E04 /* CopyPaste.swift in Sources */,
 				AAF1F59126FBA9C7000A733F /* Configuration.swift in Sources */,
 				AAE87B9326FC5F42009E6D80 /* Display.swift in Sources */,
 				AA40C45526F8094700119D4F /* Gmp.swift in Sources */,
