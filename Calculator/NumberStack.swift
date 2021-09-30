@@ -78,9 +78,9 @@ class Number: CustomDebugStringConvertible {
     }
     var debugDescription: String {
         if str != nil {
-            return "\(str)) "
+            return "\(str!) s "
         } else {
-            return "\(_gmp.toDouble()) "
+            return "\(_gmp.toDouble()) g "
         }
     }
 }

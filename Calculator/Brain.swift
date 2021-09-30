@@ -67,22 +67,28 @@ class Brain {
     }
     func addToMemory(_ plus: Gmp) {
         if memory == nil {
-            memory = plus
+            memory = plus.copy()
         } else {
             memory!.add(other: plus)
         }
         print("X memory=\(memory!.toDouble())")
+        print("X n=\(n)")
     }
     func subtractFromMemory(_ minus: Gmp) {
         if memory == nil {
-            memory = minus
+            memory = minus.copy()
+            memory!.changeSign()
         } else {
             memory!.sub(other: minus)
         }
         print("X memory=\(memory!.toDouble())")
     }
     func getMemory() {
-        n.replaceLast(with: Number(memory!))
+        if memory != nil {
+            let temp = memory!.copy()
+            let num = Number(temp)
+            n.replaceLast(with: num)
+        }
     }
     
     var constantOperators:   Dictionary <String, Inplace> = [:]

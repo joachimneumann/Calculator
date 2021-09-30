@@ -51,7 +51,7 @@ struct ScientificKeys: View {
                         size: size,
                         isAllowed: model.inPlaceAllowed,
                         isPending: false)
-                { model.subtractFromMemory() }
+                { model.getMemory() }
             }
             HStack(spacing: horizontalSpace) {
                 Key("2nd")

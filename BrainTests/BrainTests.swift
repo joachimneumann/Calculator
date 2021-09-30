@@ -43,6 +43,7 @@ class BrainTests: XCTestCase {
         XCTAssertEqual(brain.display, "24")
         brain.getMemory()
         XCTAssertEqual(brain.display, "0")
+        
         /// 0,0000010
         brain.reset()
         brain.zero()

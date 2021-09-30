@@ -46,6 +46,12 @@ class Gmp {
         self.init("0")
     }
     
+    func copy() -> Gmp {
+        let ret = Gmp()
+        mpfr_set(&ret.mpfr, &mpfr, MPFR_RNDN)
+        return ret
+    }
+    
     static var randstate: gmp_randstate_t? = nil
 
     func isNull()       -> Bool { mpfr_cmp_d(&mpfr, 0.0) == 0 }
