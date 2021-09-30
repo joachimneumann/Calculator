@@ -15,7 +15,10 @@ class Brain: ObservableObject {
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
     var display: String           { n.display }
-    var longDisplayString: String { n.longDisplay }
+    var longDisplayString: (String, String?) { n.longDisplay }
+    func combinedLongDisplayString(longDisplayString: (String, String?)) -> String {
+        longDisplayString.1 == nil ? longDisplayString.0 : longDisplayString.0+" "+longDisplayString.1!
+    }
     var hasMoreDigits: Bool       { n.hasMoreDigits }
     var pendingOperator: String?
     var memory: Gmp? = nil
@@ -92,7 +95,35 @@ class Brain: ObservableObject {
             }
         }
     }
-    
+    func operationWorker(_ symbol: String, withPending: Bool = true) {
+        if symbol == "=" {
+            self.execute(priority: Operator.equalPriority)
+        } else if symbol == "(" {
+            self.operatorStack.push(self.openParenthesis)
+        } else if symbol == ")" {
+            self.execute(priority: Operator.closedParenthesesPriority)
+        } else if symbol == "%" {
+            self.percentage()
+        } else if let op = self.constantOperators[symbol] {
+            if self.pendingOperator != nil {
+                self.n.append(Gmp())
+                self.pendingOperator = nil
+            }
+            self.n.modifyLast(withOp: op.operation)
+        } else if let op = self.inplaceOperators[symbol] {
+            self.n.modifyLast(withOp: op.operation)
+        } else if let op = self.twoOperandOperators[symbol] {
+            if withPending { self.pendingOperator = symbol }
+            self.execute(priority: op.priority)
+            self.self.operatorStack.push(op)
+        } else {
+            assert(false)
+        }
+//        print("X after op   (\"\(symbol)\": " +
+//              "numbers: \(n.count), " +
+//              "ops: \(operatorStack.count), " +
+//              "display: \(display)")
+    }
     func operation(_ symbol: String, withPending: Bool = true) {
         self.calculating = true
         DispatchQueue.global().async {
@@ -102,33 +133,8 @@ class Brain: ObservableObject {
                 }
             }
             
-            if symbol == "=" {
-                self.execute(priority: Operator.equalPriority)
-            } else if symbol == "(" {
-                self.operatorStack.push(self.openParenthesis)
-            } else if symbol == ")" {
-                self.execute(priority: Operator.closedParenthesesPriority)
-            } else if symbol == "%" {
-                self.percentage()
-            } else if let op = self.constantOperators[symbol] {
-                if self.pendingOperator != nil {
-                    self.n.append(Gmp())
-                    self.pendingOperator = nil
-                }
-                self.n.modifyLast(withOp: op.operation)
-            } else if let op = self.inplaceOperators[symbol] {
-                self.n.modifyLast(withOp: op.operation)
-            } else if let op = self.twoOperandOperators[symbol] {
-                if withPending { self.pendingOperator = symbol }
-                self.execute(priority: op.priority)
-                self.self.operatorStack.push(op)
-            } else {
-                assert(false)
-            }
-    //        print("X after op   (\"\(symbol)\": " +
-    //              "numbers: \(n.count), " +
-    //              "ops: \(operatorStack.count), " +
-    //              "display: \(display)")
+            self.operationWorker(symbol, withPending: withPending)
+
             DispatchQueue.main.async {
                 self.calculating = false
                 self.showCalculating = false

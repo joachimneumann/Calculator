@@ -11,6 +11,7 @@ class Number: CustomDebugStringConvertible {
     var str: String?
     var isValid: Bool = true
     var hasMoreDigits: Bool = false
+    var exponent: String?
     private var _gmp: Gmp
     var gmp: Gmp {
         if str != nil {
@@ -27,7 +28,9 @@ class Number: CustomDebugStringConvertible {
             temp = _gmp
         }
         isValid = temp.isValid
-        hasMoreDigits = DisplayData(gmp: temp, digits: Configuration.shared.digitsInSmallDisplay).hasMoreDigits
+        let dd = DisplayData(gmp: temp, digits: Configuration.shared.digitsInSmallDisplay)
+        hasMoreDigits = dd.hasMoreDigits
+        exponent = dd.exponent
     }
     func execute(_ op: twoOperantsType, with other: Gmp) {
         gmp.execute(op, with: other)
@@ -109,16 +112,12 @@ struct NumberStack: CustomDebugStringConvertible{
     }
 
     
-    var longDisplay: String {
-        return DisplayData(gmp: last.gmp, digits: 10000-1).string // TODO only calculate DisplayData once
+    var longDisplay: (String, String?) {
+        let dd = DisplayData(gmp: last.gmp, digits: 10000-1)
+        return (dd.string, dd.exponent)
     }
-    var hasMoreDigits: Bool {
-        return last.hasMoreDigits
-    }
-    
-    var isValid: Bool {
-        return last.isValid
-    }
+    var hasMoreDigits: Bool {  last.hasMoreDigits }
+    var isValid: Bool { last.isValid }
     
     var last: Number {
         assert(array.last != nil)

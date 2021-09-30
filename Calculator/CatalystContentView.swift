@@ -51,7 +51,7 @@ struct CatalystContentView: View {
                         Spacer(minLength: 0)
                     }
                     if zoomed {
-                        Copy(longString: brain.longDisplayString) {
+                        Copy(longString: brain.combinedLongDisplayString(longDisplayString: brain.longDisplayString)) {
                             copyPasteHighlight = true
                             let now = DispatchTime.now()
                             var whenWhen: DispatchTime

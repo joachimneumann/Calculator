@@ -13,13 +13,19 @@ struct AllDigitsView: View {
     
     var body: some View {
         HStack(spacing: 0) {
-            ScrollView(.vertical, showsIndicators: true) {
-                Text(brain.longDisplayString)
-                    .foregroundColor(textColor)
-                    .font(Configuration.shared.allDigitsFont)
-                    .multilineTextAlignment(.leading)
+            VStack {
+                ScrollView(.vertical, showsIndicators: true) {
+                    Text(brain.longDisplayString.0)
+                        .foregroundColor(textColor)
+                        .font(Configuration.shared.allDigitsFont)
+                        .multilineTextAlignment(.leading)
+                }
+                if brain.longDisplayString.1 != nil {
+                    Text(brain.longDisplayString.1!)
+                }
+                Spacer(minLength: 0)
             }
-            Spacer()
+            Spacer(minLength: 0)
         }
         .padding(.top, 0.2) /// TODO: Unterstand why this magically persuads the Scrollview to respect the SafeArea
     }
