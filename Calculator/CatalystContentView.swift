@@ -18,13 +18,18 @@ struct CatalystContentView: View {
                     .padding(.trailing, Configuration.shared.keyWidth)
                     .padding(.leading, 10)
             } else {
-                VStack {
-                    Display(text: brain.display)
-                        .padding(.trailing, Configuration.shared.keyWidth)
-                    Spacer(minLength: 0)
-                    if !zoomed {
-                        LandscapeKeys(brain: brain)
-                            .transition(.move(edge: .bottom))
+                ZStack {
+                    VStack {
+                        Display(text: brain.display)
+                            .padding(.trailing, Configuration.shared.keyWidth)
+                        Spacer(minLength: 0)
+                        if !zoomed {
+                            LandscapeKeys(brain: brain)
+                                .transition(.move(edge: .bottom))
+                        }
+                    }
+                    if brain.rad && !zoomed {
+                        Rad()
                     }
                 }
                 .transition(.move(edge: .bottom))
@@ -32,9 +37,6 @@ struct CatalystContentView: View {
             Zoom(active: brain.hasMoreDigits, zoomed: $zoomed)
                 .padding(.trailing, Configuration.shared.keyWidth*0.5 - Configuration.shared.zoomIconSize*0.5)
                 .padding(.top, 12) // hardcoded. The correct height depends on the display font and I was lazy...
-            if !zoomed {
-                Rad(rad: $brain.rad)
-            }
         }
     }
 }
