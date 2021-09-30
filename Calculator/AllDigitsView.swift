@@ -12,11 +12,14 @@ struct AllDigitsView: View {
     let textColor: Color // for copy/paste animation
     
     var body: some View {
-        ScrollView(.vertical, showsIndicators: true) {
-            Text(brain.longDisplayString)
-                .foregroundColor(textColor)
-                .font(Configuration.shared.allDigitsFont)
-                .multilineTextAlignment(.leading)
+        HStack(spacing: 0) {
+            ScrollView(.vertical, showsIndicators: true) {
+                Text(brain.longDisplayString)
+                    .foregroundColor(textColor)
+                    .font(Configuration.shared.allDigitsFont)
+                    .multilineTextAlignment(.leading)
+            }
+            Spacer()
         }
         .padding(.top, 0.2) /// TODO: Unterstand why this magically persuads the Scrollview to respect the SafeArea
     }
