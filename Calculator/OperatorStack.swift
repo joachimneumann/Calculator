@@ -10,13 +10,11 @@ import Foundation
 class Operator: Equatable, Identifiable {
     let id = UUID()
     let priority: Int
-    let isAllowed: () -> Bool
     static let openParenthesesPriority = -2
     static let closedParenthesesPriority = -1
     static let equalPriority = -3
-    init(_ priority: Int, _ isAllowed: @escaping () -> Bool) {
+    init(_ priority: Int) {
         self.priority = priority
-        self.isAllowed = isAllowed
     }
     static func == (lhs: Operator, rhs: Operator) -> Bool {
         return lhs.id == rhs.id
@@ -30,17 +28,17 @@ typealias twoOperantsType = (Gmp) -> (Gmp) -> ()
 
 class Inplace: Operator {
     let operation: inplaceType
-    init(_ op: @escaping inplaceType, _ priority: Int, _ isAllowed: @escaping () -> Bool) {
+    init(_ op: @escaping inplaceType, _ priority: Int) {
         operation = op
-        super.init(priority, isAllowed)
+        super.init(priority)
     }
 }
 
 class TwoOperand: Operator {
     let operation: twoOperantsType
-    init(_ op: @escaping twoOperantsType, _ priority: Int, _ isAllowed: @escaping () -> Bool) {
+    init(_ op: @escaping twoOperantsType, _ priority: Int) {
         operation = op
-        super.init(priority, isAllowed)
+        super.init(priority)
     }
 }
 

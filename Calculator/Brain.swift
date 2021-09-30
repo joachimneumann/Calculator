@@ -23,9 +23,9 @@ class Brain: ObservableObject {
     var constantOperators:   Dictionary <String, Inplace> = [:]
     var inplaceOperators:    Dictionary <String, Inplace> = [:]
     var twoOperandOperators: Dictionary <String, TwoOperand> = [:]
-    var openParenthesis:   Operator = Operator(0, {true})
-    var closedParenthesis: Operator = Operator(0, {true})
-    var equalOperator:     Operator = Operator(0, {true})
+    var openParenthesis:   Operator = Operator(0)
+    var closedParenthesis: Operator = Operator(0)
+    var equalOperator:     Operator = Operator(0)
 
     func isPending(_ symbol: String) -> Bool {
         if pendingOperator != nil {
@@ -167,65 +167,65 @@ class Brain: ObservableObject {
 
     init() {
         constantOperators = [
-            "π":    Inplace(Gmp.π,    0, isAllowed),
-            "e":    Inplace(Gmp.e,    0, isAllowed),
-            "rand": Inplace(Gmp.rand, 0, isAllowed)
+            "π":    Inplace(Gmp.π,    0),
+            "e":    Inplace(Gmp.e,    0),
+            "rand": Inplace(Gmp.rand, 0)
         ]
         twoOperandOperators = [
-            "+":    TwoOperand(Gmp.add,     1, isAllowed),
-            "-":    TwoOperand(Gmp.sub,     1, isAllowed),
-            "x":    TwoOperand(Gmp.mul,     2, isAllowed),
-            "/":    TwoOperand(Gmp.div,     2, isAllowed),
-            "y√":   TwoOperand(Gmp.sqrty,   3, isAllowed),
-            "x^y":  TwoOperand(Gmp.pow_x_y, 3, isAllowed),
-            "y^x":  TwoOperand(Gmp.pow_y_x, 3, isAllowed),
-            "logy": TwoOperand(Gmp.logy,    3, isAllowed),
-            "x↑↑y": TwoOperand(Gmp.x_double_up_arrow_y, 3, isAllowed),
-            "EE":   TwoOperand(Gmp.EE,      3, isAllowed),
+            "+":    TwoOperand(Gmp.add,     1),
+            "-":    TwoOperand(Gmp.sub,     1),
+            "x":    TwoOperand(Gmp.mul,     2),
+            "/":    TwoOperand(Gmp.div,     2),
+            "y√":   TwoOperand(Gmp.sqrty,   3),
+            "x^y":  TwoOperand(Gmp.pow_x_y, 3),
+            "y^x":  TwoOperand(Gmp.pow_y_x, 3),
+            "logy": TwoOperand(Gmp.logy,    3),
+            "x↑↑y": TwoOperand(Gmp.x_double_up_arrow_y, 3),
+            "EE":   TwoOperand(Gmp.EE,      3)
         ]
         inplaceOperators = [
-            "+/-":    Inplace(Gmp.changeSign,     1, isAllowed),
-            "x^2":    Inplace(Gmp.pow_x_2,     1, isAllowed),
-            "One_x":  Inplace(Gmp.rez,     1, isAllowed),
-            "x!":     Inplace(Gmp.fac,     1, isAllowed),
-            "Z":      Inplace(Gmp.Z,     1, isAllowed),
-            "ln":     Inplace(Gmp.ln,     1, isAllowed),
-            "log10":  Inplace(Gmp.log10,     1, isAllowed),
-            "log2":   Inplace(Gmp.log2,     1, isAllowed),
-            "√":      Inplace(Gmp.sqrt,     1, isAllowed),
-            "3√":     Inplace(Gmp.sqrt3,     1, isAllowed),
-            "sin":    Inplace(Gmp.sin,     1, isAllowed),
-            "cos":    Inplace(Gmp.cos,     1, isAllowed),
-            "tan":    Inplace(Gmp.tan,     1, isAllowed),
-            "asin":   Inplace(Gmp.asin,     1, isAllowed),
-            "acos":   Inplace(Gmp.acos,     1, isAllowed),
-            "atan":   Inplace(Gmp.atan,     1, isAllowed),
-            "sinh":   Inplace(Gmp.sinh,     1, isAllowed),
-            "cosh":   Inplace(Gmp.cosh,     1, isAllowed),
-            "tanh":   Inplace(Gmp.tanh,     1, isAllowed),
-            "asinh":  Inplace(Gmp.asinh,     1, isAllowed),
-            "acosh":  Inplace(Gmp.acosh,     1, isAllowed),
-            "atanh":  Inplace(Gmp.atanh,     1, isAllowed),
-            "sinD":   Inplace(Gmp.sinD,     1, isAllowed),
-            "cosD":   Inplace(Gmp.cosD,     1, isAllowed),
-            "tanD":   Inplace(Gmp.tanD,     1, isAllowed),
-            "asinD":  Inplace(Gmp.asinD,     1, isAllowed),
-            "acosD":  Inplace(Gmp.acosD,     1, isAllowed),
-            "atanD":  Inplace(Gmp.atanD,     1, isAllowed),
-            "sinhD":  Inplace(Gmp.sinhD,     1, isAllowed),
-            "coshD":  Inplace(Gmp.coshD,     1, isAllowed),
-            "tanhD":  Inplace(Gmp.tanhD,     1, isAllowed),
-            "asinhD": Inplace(Gmp.asinhD,     1, isAllowed),
-            "acoshD": Inplace(Gmp.acoshD,     1, isAllowed),
-            "atanhD": Inplace(Gmp.atanhD,     1, isAllowed),
-            "2^x":    Inplace(Gmp.pow_2_x,     1, isAllowed),
-            "x^3":    Inplace(Gmp.pow_x_3,     1, isAllowed),
-            "e^x":    Inplace(Gmp.pow_e_x,     1, isAllowed),
-            "10^x":   Inplace(Gmp.pow_10_x,     1, isAllowed)
+            "+/-":    Inplace(Gmp.changeSign,     1),
+            "x^2":    Inplace(Gmp.pow_x_2,     1),
+            "One_x":  Inplace(Gmp.rez,     1),
+            "x!":     Inplace(Gmp.fac,     1),
+            "Z":      Inplace(Gmp.Z,     1),
+            "ln":     Inplace(Gmp.ln,     1),
+            "log10":  Inplace(Gmp.log10,     1),
+            "log2":   Inplace(Gmp.log2,     1),
+            "√":      Inplace(Gmp.sqrt,     1),
+            "3√":     Inplace(Gmp.sqrt3,     1),
+            "sin":    Inplace(Gmp.sin,     1),
+            "cos":    Inplace(Gmp.cos,     1),
+            "tan":    Inplace(Gmp.tan,     1),
+            "asin":   Inplace(Gmp.asin,     1),
+            "acos":   Inplace(Gmp.acos,     1),
+            "atan":   Inplace(Gmp.atan,     1),
+            "sinh":   Inplace(Gmp.sinh,     1),
+            "cosh":   Inplace(Gmp.cosh,     1),
+            "tanh":   Inplace(Gmp.tanh,     1),
+            "asinh":  Inplace(Gmp.asinh,     1),
+            "acosh":  Inplace(Gmp.acosh,     1),
+            "atanh":  Inplace(Gmp.atanh,     1),
+            "sinD":   Inplace(Gmp.sinD,     1),
+            "cosD":   Inplace(Gmp.cosD,     1),
+            "tanD":   Inplace(Gmp.tanD,     1),
+            "asinD":  Inplace(Gmp.asinD,     1),
+            "acosD":  Inplace(Gmp.acosD,     1),
+            "atanD":  Inplace(Gmp.atanD,     1),
+            "sinhD":  Inplace(Gmp.sinhD,     1),
+            "coshD":  Inplace(Gmp.coshD,     1),
+            "tanhD":  Inplace(Gmp.tanhD,     1),
+            "asinhD": Inplace(Gmp.asinhD,     1),
+            "acoshD": Inplace(Gmp.acoshD,     1),
+            "atanhD": Inplace(Gmp.atanhD,     1),
+            "2^x":    Inplace(Gmp.pow_2_x,     1),
+            "x^3":    Inplace(Gmp.pow_x_3,     1),
+            "e^x":    Inplace(Gmp.pow_e_x,     1),
+            "10^x":   Inplace(Gmp.pow_10_x,     1)
         ]
-        openParenthesis   = Operator(Operator.openParenthesesPriority, isAllowed)
-        closedParenthesis = Operator(Operator.openParenthesesPriority, isAllowed)
-        equalOperator     = Operator(Operator.equalPriority, isAllowed)
+        openParenthesis   = Operator(Operator.openParenthesesPriority)
+        closedParenthesis = Operator(Operator.openParenthesesPriority)
+        equalOperator     = Operator(Operator.equalPriority)
         reset()
     }
 }
