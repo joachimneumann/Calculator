@@ -30,6 +30,7 @@ struct CatalystContentView: View {
                     }
                     if brain.rad && !zoomed {
                         Rad()
+                            .transition(.move(edge: .bottom))
                     }
                 }
                 .transition(.move(edge: .bottom))
