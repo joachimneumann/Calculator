@@ -81,6 +81,7 @@ struct Root: View {
 }
 
 struct One_x: View {
+    let strokeColor: Color
     var body: some View {
         ZStack {
             GeometryReader { geo in
@@ -89,7 +90,7 @@ struct One_x: View {
                     .font(.system(size: s*0.25))
                     .offset(x: 0.4*s, y: 0.3*s)
                 SlashShape()
-                    .stroke(Configuration.shared.LightGrayKeyProperties.textColor, style: StrokeStyle(lineWidth: 1.6*s/47, lineCap: CGLineCap.square, lineJoin: CGLineJoin.bevel))
+                    .stroke(strokeColor, style: StrokeStyle(lineWidth: 1.6*s/47, lineCap: CGLineCap.square, lineJoin: CGLineJoin.bevel))
                 Text("x")
                     .font(.system(size: s*0.25))
                     .offset(x: 0.65*s, y: 0.45*s)

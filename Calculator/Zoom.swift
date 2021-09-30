@@ -15,14 +15,22 @@ struct Zoom: View {
         ZStack {
             if showCalculating {
                 ProgressView()
+                    .scaleEffect(1.5, anchor: .center)
                     .frame(width: Configuration.shared.zoomIconSize, height: Configuration.shared.zoomIconSize)
             } else {
-                if zoomed {
-                    Image(systemName: "minus.circle.fill")
-                        .resizable()
-                } else {
-                    Image(systemName: "plus.circle.fill")
-                        .resizable()
+                Group {
+                    if zoomed {
+                        Image(systemName: "minus.circle.fill")
+                            .resizable()
+                    } else {
+                        Image(systemName: "plus.circle.fill")
+                            .resizable()
+                    }
+                }
+                .onTapGesture {
+                    withAnimation(.easeIn) {
+                        zoomed.toggle()
+                    }
                 }
             }
         }
@@ -30,11 +38,6 @@ struct Zoom: View {
         .font(Font.system(size: 100, weight: .bold).monospacedDigit())
         .minimumScaleFactor(0.01)
         .frame(width: Configuration.shared.zoomIconSize, height: Configuration.shared.zoomIconSize)
-        .onTapGesture {
-            withAnimation(.easeIn) {
-                zoomed.toggle()
-            }
-        }
     }
 }
 

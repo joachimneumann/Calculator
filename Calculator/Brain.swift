@@ -157,7 +157,9 @@ class Brain: ObservableObject {
         n.removeAll()
         pendingOperator = nil
         n.append(Gmp())
-        objectWillChange.send()
+        DispatchQueue.main.async {
+            self.objectWillChange.send()
+        }
     }
     func clearMemory() {
         memory = nil

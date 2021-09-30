@@ -93,25 +93,26 @@ struct ScientificKeys: View {
                 { brain.operation(brain.secondKeys ? "2^x" : "10^x") }
             }
             HStack(spacing: horizontalSpace) {
-                Key("One_x")
+                Key("One_x", isActive: brain.notCalculating)
                     .scientific(
                         size: size,
                         isAllowed: brain.inPlaceAllowed,
-                        isPending: false)
+                        isPending: false,
+                        isActive: brain.notCalculating)
                 { brain.operation("One_x") }
-                Key("√")
+                Key("√", isActive: brain.notCalculating)
                     .scientific(
                         size: size,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation("√") }
-                Key("3√")
+                Key("3√", isActive: brain.notCalculating)
                     .scientific(
                         size: size,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation("3√") }
-                Key("y√", isPending: brain.isPending("y√")) // isPending for strokeColor
+                Key("y√", isPending: brain.isPending("y√"), isActive: brain.notCalculating) // isPending for strokeColor
                     .scientific(
                         size: size,
                         isAllowed: brain.inPlaceAllowed,

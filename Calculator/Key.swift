@@ -31,7 +31,7 @@ struct Key: View {
         case "log10":    return AnyView(Log10())
         case "log2":     return AnyView(Logx("2"))
         case "logy":     return AnyView(Logx("y"))
-        case "One_x":    return AnyView(One_x())
+        case "One_x":    return AnyView(One_x(strokeColor: strokeColor))
         case "x^2":      return AnyView(Pow(base:  "x",   exponent: "2",  baseXOffset: 0.0,   exponentXOffset: 0.0))
         case "x^3":      return AnyView(Pow(base:  "x",   exponent: "3",  baseXOffset: 0.0,   exponentXOffset: 0.0))
         case "x^y":      return AnyView(Pow(base:  "x",   exponent: "y",  baseXOffset: 0.0,   exponentXOffset: 0.0))
@@ -60,8 +60,8 @@ struct Key: View {
         }
     }
     
-    init(_ text: String, isPending: Bool = false) {
-        let strokeColor = isPending ? Configuration.shared.LightGrayKeyProperties.color : Configuration.shared.LightGrayKeyProperties.textColor
+    init(_ text: String, isPending: Bool = false, isActive: Bool = true) {
+        let strokeColor = !isActive ? Color.gray : (isPending ? Configuration.shared.LightGrayKeyProperties.color : Configuration.shared.LightGrayKeyProperties.textColor)
         if let sfImage = sfImageNames[text] {
             asImage = Image(systemName: sfImage)
         } else if let shape = shape(name: text, strokeColor: strokeColor) {
@@ -75,10 +75,11 @@ struct Key: View {
 private struct Digit_0_to_9: ViewModifier {
     let size: CGSize
     let isAllowed: Bool
+    let isActive: Bool
     let callback: (() -> Void)?
     func body(content: Content) -> some View {
         content
-            .foregroundColor(callback == nil ?  Color.gray : Configuration.shared.DigitKeyProperties.textColor)
+            .foregroundColor(callback == nil || !isActive ?  Color.gray : Configuration.shared.DigitKeyProperties.textColor)
             .addBackground(with: Configuration.shared.DigitKeyProperties, isAllowed: isAllowed, isPending: false, callback: callback)
             .font(.system(size: size.height * CGFloat(0.48)))
     }
@@ -88,9 +89,10 @@ private struct Colorful_plus_minus_etc: ViewModifier {
     let size: CGSize
     let isAllowed: Bool
     let isPending: Bool
+    let isActive: Bool
     let callback: (() -> Void)?
     var fg: Color {
-        if callback == nil {
+        if callback == nil || !isActive {
             return Color.gray
         } else {
             if isPending {
@@ -113,11 +115,12 @@ private struct Colorful_plus_minus_etc: ViewModifier {
 private struct PlusMinus_percentage: ViewModifier {
     let size: CGSize
     let isAllowed: Bool
+    let isActive: Bool
     let callback: (() -> Void)?
     func body(content: Content) -> some View {
         let fontsize = size.height * 0.36
         content
-            .foregroundColor(callback == nil ?  Color.gray : Configuration.shared.LightGrayKeyProperties.textColor)
+            .foregroundColor(callback == nil || !isActive ?  Color.gray : Configuration.shared.LightGrayKeyProperties.textColor)
             .addBackground(with: Configuration.shared.LightGrayKeyProperties, isAllowed: isAllowed, isPending: false, callback: callback)
             .font(.system(size: fontsize, weight: .bold))
     }
@@ -130,7 +133,7 @@ private struct ScientificButton: ViewModifier {
     let isActive: Bool
     let callback: (() -> Void)?
     var fg: Color {
-        if callback == nil {
+        if callback == nil || !isActive {
             return Color.gray
         } else {
             if isPending {
@@ -151,37 +154,37 @@ private struct ScientificButton: ViewModifier {
 
 
 extension View {
-    func digit_1_to_9(size: CGSize, isAllowed: Bool, callback: (() -> Void)? = nil) -> some View {
+    func digit_1_to_9(size: CGSize, isAllowed: Bool, isActive: Bool = true, callback: (() -> Void)? = nil) -> some View {
         self
-            .modifier(Digit_0_to_9(size: size, isAllowed: isAllowed, callback: callback))
+            .modifier(Digit_0_to_9(size: size, isAllowed: isAllowed, isActive: isActive && isAllowed, callback: callback))
             .frame(width: size.width, height: size.height)
     }
     
-    func digit_0(size: CGSize, space: CGFloat, isAllowed: Bool, callback: (() -> Void)? = nil ) -> some View {
+    func digit_0(size: CGSize, space: CGFloat, isAllowed: Bool, isActive: Bool = true, callback: (() -> Void)? = nil ) -> some View {
         HStack {
             self
                 .padding(.leading, size.height * 0.4)
             Spacer()
         }
-        .modifier(Digit_0_to_9(size: size, isAllowed: isAllowed, callback: callback))
+        .modifier(Digit_0_to_9(size: size, isAllowed: isAllowed, isActive: isActive && isAllowed, callback: callback))
         .frame(width: size.width*2+space, height: size.height)
     }
     
-    func op_div_mul_add_sub_eq(size: CGSize, isAllowed: Bool, isPending: Bool, callback: (() -> Void)? = nil ) -> some View {
+    func op_div_mul_add_sub_eq(size: CGSize, isAllowed: Bool, isPending: Bool, isActive: Bool = true, callback: (() -> Void)? = nil ) -> some View {
         self
-            .modifier(Colorful_plus_minus_etc(size: size, isAllowed: isAllowed, isPending: isPending, callback: callback))
+            .modifier(Colorful_plus_minus_etc(size: size, isAllowed: isAllowed, isPending: isPending, isActive: isActive && isAllowed, callback: callback))
             .frame(width: size.width, height: size.height)
     }
     
-    func op_plusMinus_percentage(size: CGSize, isAllowed: Bool, callback: (() -> Void)? = nil ) -> some View {
+    func op_plusMinus_percentage(size: CGSize, isAllowed: Bool, isActive: Bool = true, callback: (() -> Void)? = nil ) -> some View {
         self
-            .modifier(PlusMinus_percentage(size: size, isAllowed: isAllowed, callback: callback))
+            .modifier(PlusMinus_percentage(size: size, isAllowed: isAllowed, isActive: isActive && isAllowed, callback: callback))
             .frame(width: size.width, height: size.height)
     }
     
     func scientific(size: CGSize, isAllowed: Bool, isPending: Bool, isActive: Bool = true, callback: (() -> Void)? = nil ) -> some View {
         self
-            .modifier(ScientificButton(size: size, isAllowed: isAllowed, isPending: isPending, isActive: isActive, callback: callback))
+            .modifier(ScientificButton(size: size, isAllowed: isAllowed, isPending: isPending, isActive: isActive && isAllowed, callback: callback))
             .frame(width: size.width, height: size.height)
     }
 }
