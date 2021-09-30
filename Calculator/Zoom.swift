@@ -10,14 +10,20 @@ import SwiftUI
 struct Zoom: View {
     var active: Bool
     @Binding var zoomed: Bool
+    let showCalculating: Bool
     var body: some View {
         ZStack {
-            if zoomed {
-                Image(systemName: "minus.circle.fill")
-                    .resizable()
+            if showCalculating {
+                ProgressView()
+                    .frame(width: Configuration.shared.zoomIconSize, height: Configuration.shared.zoomIconSize)
             } else {
-                Image(systemName: "plus.circle.fill")
-                    .resizable()
+                if zoomed {
+                    Image(systemName: "minus.circle.fill")
+                        .resizable()
+                } else {
+                    Image(systemName: "plus.circle.fill")
+                        .resizable()
+                }
             }
         }
         .foregroundColor(active ? Configuration.shared.DigitKeyProperties.textColor : Color(white: 0.5))
@@ -35,7 +41,7 @@ struct Zoom: View {
 
 struct Zoom_Previews: PreviewProvider {
     static var previews: some View {
-        Zoom(active: true, zoomed: .constant(false))
+        Zoom(active: true, zoomed: .constant(false), showCalculating: true)
     }
 }
 

@@ -10,8 +10,8 @@ import Foundation
 class Brain: ObservableObject {
     private var n = NumberStack()
     var operatorStack = OperatorStack() // TODO private after testing
-
-    
+    @Published var calculating: Bool = false
+    @Published var showCalculating: Bool = false
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
     var display: String           { n.display }
@@ -43,8 +43,9 @@ class Brain: ObservableObject {
         objectWillChange.send()
     }
     
-    var digitsAllowed: Bool { true }
-    var inPlaceAllowed: Bool { n.isValid }
+    var notCalculating: Bool { calculating == false }
+    var digitsAllowed: Bool { notCalculating }
+    var inPlaceAllowed: Bool { n.isValid && notCalculating }
     
     func zero() {
         if pendingOperator != nil {
@@ -92,37 +93,64 @@ class Brain: ObservableObject {
         }
     }
     
-    func operation(_ symbol: String, withPending: Bool = true) {
-        if symbol == "C" {
-            reset()
-        } else if symbol == "=" {
-            execute(priority: Operator.equalPriority)
-        } else if symbol == "(" {
-            operatorStack.push(openParenthesis)
-        } else if symbol == ")" {
-            execute(priority: Operator.closedParenthesesPriority)
-        } else if symbol == "%" {
-            percentage()
-        } else if let op = constantOperators[symbol] {
-            if pendingOperator != nil {
-                n.append(Gmp())
-                pendingOperator = nil
+    func asyncOperation(_ symbol: String, withPending: Bool = true) {
+        DispatchQueue.global().async {
+            self.calculating = true
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                if self.calculating {
+                    self.showCalculating = true
+                }
             }
-            n.modifyLast(withOp: op.operation)
-        } else if let op = inplaceOperators[symbol] {
-            n.modifyLast(withOp: op.operation)
-        } else if let op = twoOperandOperators[symbol] {
-            if withPending { pendingOperator = symbol }
-            execute(priority: op.priority)
-            operatorStack.push(op)
-        } else {
-            assert(false)
+            self.operation(symbol, withPending: withPending)
+            self.calculating = false
+            self.showCalculating = false
         }
-//        print("X after op   (\"\(symbol)\": " +
-//              "numbers: \(n.count), " +
-//              "ops: \(operatorStack.count), " +
-//              "display: \(display)")
-        objectWillChange.send()
+    }
+    func operation(_ symbol: String, withPending: Bool = true) {
+        self.calculating = true
+        DispatchQueue.global().async {
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                if self.calculating {
+                    self.showCalculating = true
+                }
+            }
+            
+            if symbol == "C" {
+                self.reset()
+            } else if symbol == "=" {
+                self.execute(priority: Operator.equalPriority)
+            } else if symbol == "(" {
+                self.operatorStack.push(self.openParenthesis)
+            } else if symbol == ")" {
+                self.execute(priority: Operator.closedParenthesesPriority)
+            } else if symbol == "%" {
+                self.percentage()
+            } else if let op = self.constantOperators[symbol] {
+                if self.pendingOperator != nil {
+                    self.n.append(Gmp())
+                    self.pendingOperator = nil
+                }
+                self.n.modifyLast(withOp: op.operation)
+            } else if let op = self.inplaceOperators[symbol] {
+                self.n.modifyLast(withOp: op.operation)
+            } else if let op = self.twoOperandOperators[symbol] {
+                if withPending { self.pendingOperator = symbol }
+                self.execute(priority: op.priority)
+                self.self.operatorStack.push(op)
+            } else {
+                assert(false)
+            }
+    //        print("X after op   (\"\(symbol)\": " +
+    //              "numbers: \(n.count), " +
+    //              "ops: \(operatorStack.count), " +
+    //              "display: \(display)")
+            DispatchQueue.main.async {
+                self.calculating = false
+                self.showCalculating = false
+                self.objectWillChange.send()
+            }
+        }
+
     }
     func reset() {
         operatorStack.removeAll()
@@ -161,7 +189,6 @@ class Brain: ObservableObject {
         objectWillChange.send()
     }
 
-    func isAllowed() -> Bool { return true } /// TODO: needed?
     var nn: Int { n.count }
     var last: Number { n.last }
 

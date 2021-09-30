@@ -31,7 +31,7 @@ struct ScientificKeys: View {
                 Key("mc")
                     .scientific(
                         size: size,
-                        isAllowed: true,
+                        isAllowed: brain.notCalculating,
                         isPending: false)
                 { brain.clearMemory() }
                 Key("m+")
@@ -49,7 +49,7 @@ struct ScientificKeys: View {
                 Key("mr")
                     .scientific(
                         size: size,
-                        isAllowed: brain.memory != nil,
+                        isAllowed: brain.memory != nil && brain.notCalculating,
                         isPending: false,
                         isActive: brain.memory != nil)
                 { brain.getMemory() }
@@ -187,7 +187,7 @@ struct ScientificKeys: View {
                 Key(brain.rad ? "Deg" : "Rad")
                     .scientific(
                         size: size,
-                        isAllowed: true,
+                        isAllowed: brain.notCalculating,
                         isPending: false)
                 { brain.rad.toggle() }
                 Key(brain.secondKeys ? "asinh" : "sinh")

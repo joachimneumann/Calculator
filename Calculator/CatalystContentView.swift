@@ -46,7 +46,7 @@ struct CatalystContentView: View {
                 VStack(spacing: 0) {
                     HStack(spacing: 0) {
                         Spacer(minLength: 0)
-                        Zoom(active: brain.hasMoreDigits, zoomed: $zoomed)
+                        Zoom(active: brain.hasMoreDigits, zoomed: $zoomed, showCalculating: brain.showCalculating)
                             .padding(.top, 12) // hardcoded. The correct height depends on the display font and I was lazy...
                         Spacer(minLength: 0)
                     }

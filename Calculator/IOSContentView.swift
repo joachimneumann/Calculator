@@ -46,7 +46,7 @@ struct IOSContentView: View {
                 }
                 .transition(.move(edge: .bottom))
             }
-            Zoom(active: brain.hasMoreDigits, zoomed: $zoomed)
+            Zoom(active: brain.hasMoreDigits, zoomed: $zoomed, showCalculating: false)
         }
         .padding(.top, 28)
         .padding(.bottom, 28)
