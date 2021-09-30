@@ -28,8 +28,12 @@ class Number: CustomDebugStringConvertible {
         }
         isValid = temp.isValid
         hasMoreDigits = DisplayData(gmp: temp, digits: Configuration.shared.digitsInSmallDisplay).hasMoreDigits
-        print("X hasMoreDigits3= \(hasMoreDigits)")
     }
+    func execute(_ op: twoOperantsType, with other: Gmp) {
+        gmp.execute(op, with: other)
+        check()
+    }
+
     func inPlace(op: inplaceType) {
         gmp.inPlace(op: op)
         check()
@@ -109,7 +113,6 @@ struct NumberStack: CustomDebugStringConvertible{
         return DisplayData(gmp: last.gmp, digits: 10000-1).string // TODO only calculate DisplayData once
     }
     var hasMoreDigits: Bool {
-        print("X hasMoreDigits2= \(last.hasMoreDigits)")
         return last.hasMoreDigits
     }
     

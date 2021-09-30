@@ -12,11 +12,11 @@ class Brain: ObservableObject {
     var operatorStack = OperatorStack() // TODO private after testing
 
     
-    var display: String { n.display }
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
+    var display: String           { n.display }
     var longDisplayString: String { n.longDisplay }
-    var hasMoreDigits: Bool { print("X hasMoreDigits13= \(n.hasMoreDigits)"); return n.hasMoreDigits }
+    var hasMoreDigits: Bool       { n.hasMoreDigits }
     var pendingOperator: String?
     var memory: Gmp? = nil
 
@@ -69,7 +69,7 @@ class Brain: ObservableObject {
             if let twoOperand = op as? TwoOperand {
                 if n.count >= 2 {
                     let gmp2 = n.popLast()!.gmp
-                    n.last.gmp.execute(twoOperand.operation, with: gmp2)
+                    n.last.execute(twoOperand.operation, with: gmp2)
                 }
             }
         }
@@ -83,11 +83,11 @@ class Brain: ObservableObject {
 
     func percentage() {
         if operatorStack.count == 0 {
-            n.last.gmp.mul(other: Gmp("0.01"))
+            n.last.execute(Gmp.mul, with: Gmp("0.01"))
         } else if operatorStack.count >= 1 && n.count >= 2 {
             if let secondLast = n.secondLast {
-                n.last.gmp.mul(other: Gmp("0.01"))
-                n.last.gmp.mul(other: secondLast.gmp)
+                n.last.execute(Gmp.mul, with: Gmp("0.01"))
+                n.last.execute(Gmp.mul, with: secondLast.gmp)
             }
         }
     }
@@ -118,10 +118,10 @@ class Brain: ObservableObject {
         } else {
             assert(false)
         }
-        print("X after op   (\"\(symbol)\": " +
-              "numbers: \(n.count), " +
-              "ops: \(operatorStack.count), " +
-              "display: \(display)")
+//        print("X after op   (\"\(symbol)\": " +
+//              "numbers: \(n.count), " +
+//              "ops: \(operatorStack.count), " +
+//              "display: \(display)")
         objectWillChange.send()
     }
     func reset() {

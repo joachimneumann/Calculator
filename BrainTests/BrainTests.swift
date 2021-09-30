@@ -150,8 +150,10 @@ class BrainTests: XCTestCase {
         /// pi
         brain.reset()
         brain.operation("π")
+        let correct = "3,1415926535897932384626433832795028841971"
         XCTAssertEqual(brain.last.gmp.toDouble(), Double.pi)
-        XCTAssertEqual(brain.display, String("3,1415926535897932384626433832795028841971".prefix(Configuration.shared.digitsInSmallDisplay+1)))
+        XCTAssertEqual(brain.display, String(correct.prefix(Configuration.shared.digitsInSmallDisplay+1)))
+        XCTAssertEqual(String(brain.longDisplayString.prefix(correct.count)), correct)
 
         /// 1+pi
         brain.reset()
