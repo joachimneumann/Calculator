@@ -52,6 +52,7 @@ struct SlashShape: Shape {
 
 struct Root: View {
     let root: String
+    let strokeColor: Color
     var body: some View {
         ZStack {
             GeometryReader { geo in
@@ -66,15 +67,15 @@ struct Root: View {
                     .font(.system(size: fontSize1, weight: .semibold))
                     .offset(x: offsetX1, y: offsetY1)
                 SquareRootShape()
-                    .stroke(Configuration.shared.LightGrayKeyProperties.textColor, style: StrokeStyle(lineWidth: 1.6*s/47, lineCap: CGLineCap.square, lineJoin: CGLineJoin.bevel))
+                    .stroke(strokeColor, style: StrokeStyle(lineWidth: 1.6*s/47, lineCap: CGLineCap.square, lineJoin: CGLineJoin.bevel))
                 Text("X")
                     .font(.system(size: fontSize2, weight: .semibold))
                     .offset(x: offsetX2, y: offsetY2)
             }
         }
-        //.background(Color.yellow)
     }
-    init(_ root: String) {
+    init(_ root: String, strokeColor: Color) {
+        self.strokeColor = strokeColor
         self.root = root
     }
 }

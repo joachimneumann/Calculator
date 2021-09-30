@@ -134,7 +134,7 @@ class Configuration {
 #endif
 
 
-    struct Background: View {
+    struct ButtonShape: View {
         var body: some View {
             #if targetEnvironment(macCatalyst)
                 Rectangle()

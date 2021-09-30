@@ -23,29 +23,32 @@ struct Key: View {
         "%":   "percent",
     ]
 
-    private let shapeNames: [String: AnyView] = [
-        "√":        AnyView(Root("2")),
-        "3√":       AnyView(Root("3")),
-        "y√":       AnyView(Root("y")),
-        "log10":    AnyView(Log10()),
-        "log2":     AnyView(Logx("2")),
-        "logy":     AnyView(Logx("y")),
-        "One_x":    AnyView(One_x()),
-        "x^2":      AnyView(Pow(base:  "x",   exponent: "2",  baseXOffset: 0.0,   exponentXOffset: 0.0)),
-        "x^3":      AnyView(Pow(base:  "x",   exponent: "3",  baseXOffset: 0.0,   exponentXOffset: 0.0)),
-        "x^y":      AnyView(Pow(base:  "x",   exponent: "y",  baseXOffset: 0.0,   exponentXOffset: 0.0)),
-        "e^x":      AnyView(Pow(base:  "e",   exponent: "x",  baseXOffset: 0.0,   exponentXOffset: 0.0)),
-        "y^x":      AnyView(Pow(base:  "y",   exponent: "x",  baseXOffset: 0.0,   exponentXOffset: 0.0)),
-        "2^x":      AnyView(Pow(base:  "2",   exponent: "x",  baseXOffset: 0.0,   exponentXOffset: 0.0)),
-        "10^x":     AnyView(Pow(base: "10",   exponent: "x",  baseXOffset: 0.0,   exponentXOffset: 0.1)),
-        "2nd":      AnyView(Pow(base: "2",    exponent: "nd", baseXOffset: -0.05, exponentXOffset: 0.0)),
-        "asin":     AnyView(Pow(base: "sin",  exponent: "-1", baseXOffset: 0.0,   exponentXOffset: 0.14)),
-        "acos":     AnyView(Pow(base: "cos",  exponent: "-1", baseXOffset: 0.0,   exponentXOffset: 0.2)),
-        "atan":     AnyView(Pow(base: "tan",  exponent: "-1", baseXOffset: 0.0,   exponentXOffset: 0.18)),
-        "asinh":    AnyView(Pow(base: "sinh", exponent: "-1", baseXOffset: 0.0,   exponentXOffset: 0.25)),
-        "acosh":    AnyView(Pow(base: "cosh", exponent: "-1", baseXOffset: 0.0,   exponentXOffset: 0.30)),
-        "atanh":    AnyView(Pow(base: "tanh", exponent: "-1", baseXOffset: 0.0,   exponentXOffset: 0.29)),
-    ]
+    private func shape(name: String, strokeColor: Color) -> AnyView? {
+        switch name {
+        case "√":        return AnyView(Root("2", strokeColor: strokeColor))
+        case "3√":       return AnyView(Root("3", strokeColor: strokeColor))
+        case "y√":       return AnyView(Root("y", strokeColor: strokeColor))
+        case "log10":    return AnyView(Log10())
+        case "log2":     return AnyView(Logx("2"))
+        case "logy":     return AnyView(Logx("y"))
+        case "One_x":    return AnyView(One_x())
+        case "x^2":      return AnyView(Pow(base:  "x",   exponent: "2",  baseXOffset: 0.0,   exponentXOffset: 0.0))
+        case "x^3":      return AnyView(Pow(base:  "x",   exponent: "3",  baseXOffset: 0.0,   exponentXOffset: 0.0))
+        case "x^y":      return AnyView(Pow(base:  "x",   exponent: "y",  baseXOffset: 0.0,   exponentXOffset: 0.0))
+        case "e^x":      return AnyView(Pow(base:  "e",   exponent: "x",  baseXOffset: 0.0,   exponentXOffset: 0.0))
+        case "y^x":      return AnyView(Pow(base:  "y",   exponent: "x",  baseXOffset: 0.0,   exponentXOffset: 0.0))
+        case "2^x":      return AnyView(Pow(base:  "2",   exponent: "x",  baseXOffset: 0.0,   exponentXOffset: 0.0))
+        case "10^x":     return AnyView(Pow(base: "10",   exponent: "x",  baseXOffset: 0.0,   exponentXOffset: 0.1))
+        case "2nd":      return AnyView(Pow(base: "2",    exponent: "nd", baseXOffset: -0.05, exponentXOffset: 0.0))
+        case "asin":     return AnyView(Pow(base: "sin",  exponent: "-1", baseXOffset: 0.0,   exponentXOffset: 0.14))
+        case "acos":     return AnyView(Pow(base: "cos",  exponent: "-1", baseXOffset: 0.0,   exponentXOffset: 0.2))
+        case "atan":     return AnyView(Pow(base: "tan",  exponent: "-1", baseXOffset: 0.0,   exponentXOffset: 0.18))
+        case "asinh":    return AnyView(Pow(base: "sinh", exponent: "-1", baseXOffset: 0.0,   exponentXOffset: 0.25))
+        case "acosh":    return AnyView(Pow(base: "cosh", exponent: "-1", baseXOffset: 0.0,   exponentXOffset: 0.30))
+        case "atanh":    return AnyView(Pow(base: "tanh", exponent: "-1", baseXOffset: 0.0,   exponentXOffset: 0.29))
+        default: return nil
+        }
+    }
 
     var body: some View {
         if let asImage = asImage {
@@ -57,10 +60,11 @@ struct Key: View {
         }
     }
     
-    init(_ text: String) {
+    init(_ text: String, isPending: Bool = false) {
+        let strokeColor = isPending ? Configuration.shared.LightGrayKeyProperties.color : Configuration.shared.LightGrayKeyProperties.textColor
         if let sfImage = sfImageNames[text] {
             asImage = Image(systemName: sfImage)
-        } else if let shape = shapeNames[text] {
+        } else if let shape = shape(name: text, strokeColor: strokeColor) {
             asView = shape
         } else {
             asText = Text(text)

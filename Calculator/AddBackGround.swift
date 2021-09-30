@@ -30,7 +30,7 @@ private struct AddBackGround: ViewModifier {
     @State var down: Bool = false
     func body(content: Content) -> some View {
         ZStack {
-            Configuration.Background()
+            Configuration.ButtonShape()
                 .foregroundColor(bg)
             content
         }

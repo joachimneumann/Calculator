@@ -58,7 +58,7 @@ struct ScientificKeys: View {
                     .scientific(
                         size: size,
                         isAllowed: brain.digitsAllowed,
-                        isPending: false)
+                        isPending: brain.secondKeys)
                 { brain.secondKeys.toggle() }
                 Key("x^2")
                     .scientific(
@@ -110,7 +110,7 @@ struct ScientificKeys: View {
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation("3√") }
-                Key("y√")
+                Key("y√", isPending: brain.isPending("y√")) // isPending for strokeColor
                     .scientific(
                         size: size,
                         isAllowed: brain.inPlaceAllowed,
