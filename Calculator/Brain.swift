@@ -93,31 +93,16 @@ class Brain: ObservableObject {
         }
     }
     
-    func asyncOperation(_ symbol: String, withPending: Bool = true) {
-        DispatchQueue.global().async {
-            self.calculating = true
-            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
-                if self.calculating {
-                    self.showCalculating = true
-                }
-            }
-            self.operation(symbol, withPending: withPending)
-            self.calculating = false
-            self.showCalculating = false
-        }
-    }
     func operation(_ symbol: String, withPending: Bool = true) {
         self.calculating = true
         DispatchQueue.global().async {
-            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.25) {
                 if self.calculating {
                     self.showCalculating = true
                 }
             }
             
-            if symbol == "C" {
-                self.reset()
-            } else if symbol == "=" {
+            if symbol == "=" {
                 self.execute(priority: Operator.equalPriority)
             } else if symbol == "(" {
                 self.operatorStack.push(self.openParenthesis)
@@ -157,9 +142,7 @@ class Brain: ObservableObject {
         n.removeAll()
         pendingOperator = nil
         n.append(Gmp())
-        DispatchQueue.main.async {
-            self.objectWillChange.send()
-        }
+        self.objectWillChange.send()
     }
     func clearMemory() {
         memory = nil

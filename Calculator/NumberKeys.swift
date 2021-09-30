@@ -21,9 +21,9 @@ struct NumberKeys: View {
                 Key("C")
                     .scientific(
                         size: size,
-                        isAllowed: true,
+                        isAllowed: brain.notCalculating,
                         isPending: false)
-                { brain.operation("C") }
+                { brain.reset() }
                 Key("+/-")
                     .op_plusMinus_percentage(
                         size: size,
