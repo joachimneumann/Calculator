@@ -9,31 +9,31 @@ import SwiftUI
 
 
 struct CatalystContentView: View {
-    @ObservedObject var model = BrainViewModel()
+    @ObservedObject var brain = Brain()
     @State var zoomed: Bool = false
     var body: some View {
         ZStack {
-            if zoomed && model.hasMoreDigits {
-                AllDigitsView(model: model)
+            if zoomed && brain.hasMoreDigits {
+                AllDigitsView(brain: brain)
                     .padding(.trailing, Configuration.shared.keyWidth)
                     .padding(.leading, 10)
             } else {
                 VStack {
-                    Display(text: model.displayString)
+                    Display(text: brain.display)
                         .padding(.trailing, Configuration.shared.keyWidth)
                     Spacer(minLength: 0)
                     if !zoomed {
-                        LandscapeKeys(model: model)
+                        LandscapeKeys(brain: brain)
                             .transition(.move(edge: .bottom))
                     }
                 }
                 .transition(.move(edge: .bottom))
             }
-            Zoom(active: model.hasMoreDigits, zoomed: $zoomed)
+            Zoom(active: brain.hasMoreDigits, zoomed: $zoomed)
                 .padding(.trailing, Configuration.shared.keyWidth*0.5 - Configuration.shared.zoomIconSize*0.5)
                 .padding(.top, 12) // hardcoded. The correct height depends on the display font and I was lazy...
             if !zoomed {
-                Rad(rad: $model.rad)
+                Rad(rad: $brain.rad)
             }
         }
     }

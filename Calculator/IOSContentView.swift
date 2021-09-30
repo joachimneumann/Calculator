@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct IOSContentView: View {
-    @ObservedObject var model = BrainViewModel()
+    @ObservedObject var brain = Brain()
     @State var zoomed: Bool = false
     @State private var frameSize = CGSize(width: 1.0, height: 1.0)
 
@@ -30,7 +30,7 @@ struct IOSContentView: View {
             FrameCatcher(into: $frameSize)
             if zoomed {
                 VStack {
-                    AllDigitsView(model: model)
+                    AllDigitsView(brain: brain)
                         .padding(.trailing, 15)
                         .padding(.leading, 60)
                     Spacer()
@@ -38,13 +38,13 @@ struct IOSContentView: View {
             } else {
                 VStack {
                     Spacer()
-                    Display(text: model.displayString)
+                    Display(text: brain.display)
                         .padding(.trailing, 15)
-                    NumberKeys(model: model, roundKeys: true, width: frameSize.width)
+                    NumberKeys(brain: brain, roundKeys: true, width: frameSize.width)
                 }
                 .transition(.move(edge: .bottom))
             }
-            Zoom(active: model.hasMoreDigits, zoomed: $zoomed)
+            Zoom(active: brain.hasMoreDigits, zoomed: $zoomed)
         }
         .padding(.top, 28)
         .padding(.bottom, 28)

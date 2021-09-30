@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct AllDigitsView: View {
-    var model: BrainViewModel
+    var brain: Brain
     
     var body: some View {
-        let _ = print(model.longDisplayString)
+        let _ = print(brain.longDisplayString)
         ScrollView(.vertical, showsIndicators: true) {
-            Text(model.longDisplayString)
+            Text(brain.longDisplayString)
                 .foregroundColor(Color.white)
                 .font(.custom("CourierNewPSMT", size: 19))
                 .multilineTextAlignment(.leading)
@@ -24,6 +24,6 @@ struct AllDigitsView: View {
 
 struct AllDigitsView_Previews: PreviewProvider {
     static var previews: some View {
-        AllDigitsView(model: BrainViewModel())
+        AllDigitsView(brain: Brain())
     }
 }

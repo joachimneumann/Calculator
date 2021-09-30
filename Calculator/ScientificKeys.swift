@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ScientificKeys: View {
-    @ObservedObject var model: BrainViewModel
+    @ObservedObject var brain: Brain
     let size: CGSize
     let verticalSpace: CGFloat
     let horizontalSpace: CGFloat
@@ -19,227 +19,227 @@ struct ScientificKeys: View {
                 Key("(")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: false)
-                { model.operation("(") }
+                { brain.operation("(") }
                 Key(")")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: false)
-                { model.operation(")") }
+                { brain.operation(")") }
                 Key("mc")
                     .scientific(
                         size: size,
                         isAllowed: true,
                         isPending: false)
-                { model.clearMemory() }
+                { brain.clearMemory() }
                 Key("m+")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: false)
-                { model.addToMemory() }
+                { brain.addToMemory() }
                 Key("m-")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: false)
-                { model.subtractFromMemory() }
+                { brain.subtractFromMemory() }
                 Key("mr")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: false)
-                { model.getMemory() }
+                { brain.getMemory() }
             }
             HStack(spacing: horizontalSpace) {
                 Key("2nd")
                     .scientific(
                         size: size,
-                        isAllowed: model.digitsAllowed,
+                        isAllowed: brain.digitsAllowed,
                         isPending: false)
-                { model.secondKeys.toggle() }
+                { brain.secondKeys.toggle() }
                 Key("x^2")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: false)
-                { model.operation("x^2") }
+                { brain.operation("x^2") }
                 Key("x^3")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: false)
-                { model.operation("x^3") }
+                { brain.operation("x^3") }
                 Key("x^y")
                     .scientific(
                         size: size,
-                        isAllowed: model.digitsAllowed,
-                        isPending: model.isPending("x^y"))
-                { model.operation("x^y") }
-                Key(model.secondKeys ? "y^x" : "e^x")
+                        isAllowed: brain.digitsAllowed,
+                        isPending: brain.isPending("x^y"))
+                { brain.operation("x^y") }
+                Key(brain.secondKeys ? "y^x" : "e^x")
                     .scientific(
                         size: size,
-                        isAllowed: model.secondKeys ? model.digitsAllowed : model.inPlaceAllowed,
-                        isPending: model.secondKeys ? model.isPending("y^x") : false)
-                { model.operation(model.secondKeys ? "y^x" : "e^x") }
-                Key(model.secondKeys ? "2^x" : "10^x")
+                        isAllowed: brain.secondKeys ? brain.digitsAllowed : brain.inPlaceAllowed,
+                        isPending: brain.secondKeys ? brain.isPending("y^x") : false)
+                { brain.operation(brain.secondKeys ? "y^x" : "e^x") }
+                Key(brain.secondKeys ? "2^x" : "10^x")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: false)
-                { model.operation(model.secondKeys ? "2^x" : "10^x") }
+                { brain.operation(brain.secondKeys ? "2^x" : "10^x") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("One_x")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: false)
-                { model.operation("One_x") }
+                { brain.operation("One_x") }
                 Key("√")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: false)
-                { model.operation("√") }
+                { brain.operation("√") }
                 Key("3√")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: false)
-                { model.operation("3√") }
+                { brain.operation("3√") }
                 Key("y√")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
-                        isPending: model.isPending("y√"))
-                { model.operation("y√") }
-                Key(model.secondKeys ? "logy" : "ln")
+                        isAllowed: brain.inPlaceAllowed,
+                        isPending: brain.isPending("y√"))
+                { brain.operation("y√") }
+                Key(brain.secondKeys ? "logy" : "ln")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
-                        isPending: model.secondKeys ? model.isPending("logy") : false)
-                { model.operation(model.secondKeys ? "logy" : "ln") }
-                Key(model.secondKeys ? "log2" : "log10")
+                        isAllowed: brain.inPlaceAllowed,
+                        isPending: brain.secondKeys ? brain.isPending("logy") : false)
+                { brain.operation(brain.secondKeys ? "logy" : "ln") }
+                Key(brain.secondKeys ? "log2" : "log10")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: false)
-                { model.operation(model.secondKeys ? "log2" : "log10") }
+                { brain.operation(brain.secondKeys ? "log2" : "log10") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("x!")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: false)
-                { model.operation("x!") }
-                Key(model.secondKeys ? "asin" : "sin")
+                { brain.operation("x!") }
+                Key(brain.secondKeys ? "asin" : "sin")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: false)
-                {   if model.rad {
-                        model.operation(model.secondKeys ? "asin" : "sin")
+                {   if brain.rad {
+                        brain.operation(brain.secondKeys ? "asin" : "sin")
                     } else {
-                        model.operation(model.secondKeys ? "asinD" : "sinD")
+                        brain.operation(brain.secondKeys ? "asinD" : "sinD")
                     }
                 }
-                Key(model.secondKeys ? "acos" : "cos")
+                Key(brain.secondKeys ? "acos" : "cos")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: false)
-                {   if model.rad {
-                        model.operation(model.secondKeys ? "acos" : "cos")
+                {   if brain.rad {
+                        brain.operation(brain.secondKeys ? "acos" : "cos")
                     } else {
-                        model.operation(model.secondKeys ? "acosD" : "cosD")
+                        brain.operation(brain.secondKeys ? "acosD" : "cosD")
                     }
                 }
-                Key(model.secondKeys ? "atan" : "tan")
+                Key(brain.secondKeys ? "atan" : "tan")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: false)
-                {   if model.rad {
-                        model.operation(model.secondKeys ? "atan" : "tan")
+                {   if brain.rad {
+                        brain.operation(brain.secondKeys ? "atan" : "tan")
                     } else {
-                        model.operation(model.secondKeys ? "atanD" : "tanD")
+                        brain.operation(brain.secondKeys ? "atanD" : "tanD")
                     }
                 }
                 Key("e")
                     .scientific(
                         size: size,
-                        isAllowed: model.digitsAllowed,
+                        isAllowed: brain.digitsAllowed,
                         isPending: false)
-                { model.operation("e") }
+                { brain.operation("e") }
                 Key("EE")
                     .scientific(
                         size: size,
-                        isAllowed: model.digitsAllowed,
+                        isAllowed: brain.digitsAllowed,
                         isPending: false)
-                { model.operation("EE") }
+                { brain.operation("EE") }
             }
             HStack(spacing: horizontalSpace) {
-                Key(model.rad ? "Deg" : "Rad")
+                Key(brain.rad ? "Deg" : "Rad")
                     .scientific(
                         size: size,
                         isAllowed: true,
                         isPending: false)
-                { model.rad.toggle() }
-                Key(model.secondKeys ? "asinh" : "sinh")
+                { brain.rad.toggle() }
+                Key(brain.secondKeys ? "asinh" : "sinh")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: false)
-                {   if model.rad {
-                        model.operation(model.secondKeys ? "asinh" : "sinh")
+                {   if brain.rad {
+                        brain.operation(brain.secondKeys ? "asinh" : "sinh")
                     } else {
-                        model.operation(model.secondKeys ? "asinhD" : "sinhD")
+                        brain.operation(brain.secondKeys ? "asinhD" : "sinhD")
                     }
                 }
-                Key(model.secondKeys ? "acosh" : "cosh")
+                Key(brain.secondKeys ? "acosh" : "cosh")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: false)
-                {   if model.rad {
-                        model.operation(model.secondKeys ? "acosh" : "cosh")
+                {   if brain.rad {
+                        brain.operation(brain.secondKeys ? "acosh" : "cosh")
                     } else {
-                        model.operation(model.secondKeys ? "acoshD" : "coshD")
+                        brain.operation(brain.secondKeys ? "acoshD" : "coshD")
                     }
                 }
-                Key(model.secondKeys ? "atanh" : "tanh")
+                Key(brain.secondKeys ? "atanh" : "tanh")
                     .scientific(
                         size: size,
-                        isAllowed: model.inPlaceAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: false)
-                {   if model.rad {
-                        model.operation(model.secondKeys ? "atanh" : "tanh")
+                {   if brain.rad {
+                        brain.operation(brain.secondKeys ? "atanh" : "tanh")
                     } else {
-                        model.operation(model.secondKeys ? "atanhD" : "tanhD")
+                        brain.operation(brain.secondKeys ? "atanhD" : "tanhD")
                     }
                 }
                 Key("π")
                     .scientific(
                         size: size,
-                        isAllowed: model.digitsAllowed,
+                        isAllowed: brain.digitsAllowed,
                         isPending: false)
-                { model.operation("π") }
+                { brain.operation("π") }
                 Key("Rand")
                     .scientific(
                         size: size,
-                        isAllowed: model.digitsAllowed,
+                        isAllowed: brain.digitsAllowed,
                         isPending: false)
-                { model.operation("rand") }
+                { brain.operation("rand") }
             }
         }
     }
 
-    init(model: BrainViewModel, keyWidth: CGFloat, keyHeight: CGFloat) {
-        self.model = model
+    init(brain: Brain, keyWidth: CGFloat, keyHeight: CGFloat) {
+        self.brain = brain
         horizontalSpace = Configuration.shared.horizontalSpace(forTotalWidth: keyWidth)
         verticalSpace   = Configuration.shared.verticalSpace(forTotalWidth: keyHeight)
         size = CGSize(width: keyWidth, height: keyHeight)
@@ -248,6 +248,6 @@ struct ScientificKeys: View {
 
 struct ScientificKeys_Previews: PreviewProvider {
     static var previews: some View {
-        ScientificKeys(model: BrainViewModel(), keyWidth: 50, keyHeight: 30)
+        ScientificKeys(brain: Brain(), keyWidth: 50, keyHeight: 30)
     }
 }

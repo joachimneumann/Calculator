@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct LandscapeKeys: View {
-    var model: BrainViewModel
+    var brain: Brain
     var body: some View {
         HStack(alignment: .top, spacing: 1) {
             ScientificKeys(
-                model: model,
+                brain: brain,
                 keyWidth: Configuration.shared.keyWidth,
                 keyHeight: Configuration.shared.keyHeight)
             NumberKeys(
-                model: model,
+                brain: brain,
                 keyWidth: Configuration.shared.keyWidth,
                 keyHeight: Configuration.shared.keyHeight)
         }
@@ -25,6 +25,6 @@ struct LandscapeKeys: View {
 
 struct LandscapeKeys_Previews: PreviewProvider {
     static var previews: some View {
-        LandscapeKeys(model: BrainViewModel())
+        LandscapeKeys(brain: Brain())
     }
 }

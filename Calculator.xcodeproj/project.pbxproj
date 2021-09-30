@@ -14,7 +14,7 @@
 		AA40C44926F808DA00119D4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA40C44826F808DA00119D4F /* Assets.xcassets */; };
 		AA40C44C26F808DA00119D4F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA40C44B26F808DA00119D4F /* Preview Assets.xcassets */; };
 		AA40C45526F8094700119D4F /* Gmp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA40C45426F8094700119D4F /* Gmp.swift */; };
-		AA46B32626FAC48500F83939 /* BrainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA46B32526FAC48500F83939 /* BrainViewModel.swift */; };
+		AA46B32626FAC48500F83939 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA46B32526FAC48500F83939 /* Brain.swift */; };
 		AA59D79926FDDEA800321F26 /* AllDigitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA59D79826FDDEA800321F26 /* AllDigitsView.swift */; };
 		AA59D79B26FDEC1900321F26 /* LandscapeKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA59D79A26FDEC1900321F26 /* LandscapeKeys.swift */; };
 		AA59D79D26FDED8B00321F26 /* IOSContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA59D79C26FDED8B00321F26 /* IOSContentView.swift */; };
@@ -23,7 +23,6 @@
 		AA7CD3AB26FC322C00C714A6 /* ScientificKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CD3AA26FC322C00C714A6 /* ScientificKeys.swift */; };
 		AA95563C26FA0E360029D94C /* AddBackGround.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95563B26FA0E360029D94C /* AddBackGround.swift */; };
 		AA95564026FA1C180029D94C /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95563F26FA1C180029D94C /* Key.swift */; };
-		AA95564226FA471D0029D94C /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95564126FA471D0029D94C /* Brain.swift */; };
 		AAA9CFFA2702CB47001C403B /* BrainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9CFF92702CB46001C403B /* BrainTests.swift */; };
 		AAD9014526FF720900A7BCD5 /* gmp.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA3D6F7E26F8940800423E76 /* gmp.xcframework */; };
 		AAD9014626FF720900A7BCD5 /* gmp.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA3D6F7E26F8940800423E76 /* gmp.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -73,7 +72,7 @@
 		AA40C44B26F808DA00119D4F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AA40C45426F8094700119D4F /* Gmp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gmp.swift; sourceTree = "<group>"; };
 		AA40C45626F8096700119D4F /* Calculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Calculator.entitlements; sourceTree = "<group>"; };
-		AA46B32526FAC48500F83939 /* BrainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrainViewModel.swift; sourceTree = "<group>"; };
+		AA46B32526FAC48500F83939 /* Brain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brain.swift; sourceTree = "<group>"; };
 		AA59D79826FDDEA800321F26 /* AllDigitsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDigitsView.swift; sourceTree = "<group>"; };
 		AA59D79A26FDEC1900321F26 /* LandscapeKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandscapeKeys.swift; sourceTree = "<group>"; };
 		AA59D79C26FDED8B00321F26 /* IOSContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOSContentView.swift; sourceTree = "<group>"; };
@@ -82,7 +81,6 @@
 		AA7CD3AA26FC322C00C714A6 /* ScientificKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScientificKeys.swift; sourceTree = "<group>"; };
 		AA95563B26FA0E360029D94C /* AddBackGround.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBackGround.swift; sourceTree = "<group>"; };
 		AA95563F26FA1C180029D94C /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
-		AA95564126FA471D0029D94C /* Brain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brain.swift; sourceTree = "<group>"; };
 		AAA9CFF72702CB46001C403B /* BrainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BrainTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAA9CFF92702CB46001C403B /* BrainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrainTests.swift; sourceTree = "<group>"; };
 		AAE87B9226FC5F42009E6D80 /* Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Display.swift; sourceTree = "<group>"; };
@@ -144,9 +142,8 @@
 				AA2576B226F8F16600CDD8C9 /* NumberKeys.swift */,
 				AA95563B26FA0E360029D94C /* AddBackGround.swift */,
 				AA95563F26FA1C180029D94C /* Key.swift */,
-				AA95564126FA471D0029D94C /* Brain.swift */,
 				AAE87B9826FCB24C009E6D80 /* OperatorStack.swift */,
-				AA46B32526FAC48500F83939 /* BrainViewModel.swift */,
+				AA46B32526FAC48500F83939 /* Brain.swift */,
 				AA7CD3AA26FC322C00C714A6 /* ScientificKeys.swift */,
 				AAE87B9226FC5F42009E6D80 /* Display.swift */,
 				AAE87B9426FC7302009E6D80 /* Symbols.swift */,
@@ -298,13 +295,12 @@
 				AAF1F59126FBA9C7000A733F /* Configuration.swift in Sources */,
 				AAE87B9326FC5F42009E6D80 /* Display.swift in Sources */,
 				AA40C45526F8094700119D4F /* Gmp.swift in Sources */,
-				AA95564226FA471D0029D94C /* Brain.swift in Sources */,
 				AA40C44526F808D800119D4F /* CalculatorApp.swift in Sources */,
 				AA64980D26FD48F900CFF9AA /* DisplayData.swift in Sources */,
 				AA59D79D26FDED8B00321F26 /* IOSContentView.swift in Sources */,
 				AAE87B9526FC7302009E6D80 /* Symbols.swift in Sources */,
 				AA95564026FA1C180029D94C /* Key.swift in Sources */,
-				AA46B32626FAC48500F83939 /* BrainViewModel.swift in Sources */,
+				AA46B32626FAC48500F83939 /* Brain.swift in Sources */,
 				AA59D79926FDDEA800321F26 /* AllDigitsView.swift in Sources */,
 				AA07C0192700852400BEECA8 /* Rad.swift in Sources */,
 			);
