@@ -16,7 +16,7 @@ class Brain: ObservableObject {
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
     var longDisplayString: String { n.longDisplay }
-    var hasMoreDigits: Bool { n.hasMoreDigits }
+    var hasMoreDigits: Bool { print("X hasMoreDigits13= \(n.hasMoreDigits)"); return n.hasMoreDigits }
     var pendingOperator: String?
     var memory: Gmp? = nil
 

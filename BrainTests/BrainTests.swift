@@ -26,6 +26,38 @@ class BrainTests: XCTestCase {
         brain.digit(2)
         XCTAssertEqual(brain.display, "12")
 
+        // 01
+        brain.reset()
+        XCTAssertEqual(brain.display, "0")
+        brain.zero()
+        XCTAssertEqual(brain.display, "0")
+        brain.digit(1)
+        XCTAssertEqual(brain.display, "1")
+
+        /// 1234567890123456
+        brain.reset()
+        brain.digit(1)
+        brain.digit(2)
+        brain.digit(3)
+        brain.digit(4)
+        brain.digit(5)
+        brain.digit(6)
+        brain.digit(7)
+        brain.digit(8)
+        brain.digit(9)
+        brain.zero()
+        brain.digit(1)
+        brain.digit(2)
+        brain.digit(3)
+        brain.digit(4)
+        brain.digit(5)
+        XCTAssertEqual(brain.display, "123456789012345")
+        brain.digit(6)
+        XCTAssertEqual(brain.display, "1234567890123456")
+        brain.digit(7)
+        XCTAssertEqual(brain.display, "1,234567890123 e16")
+
+        
         /// memory
         brain.reset()
         brain.digit(1)
@@ -102,6 +134,18 @@ class BrainTests: XCTestCase {
             /// prefix + 1 for the comma
             XCTAssertEqual(brain.display, String(res.prefix(Configuration.shared.digitsInSmallDisplay+1)))
         }
+
+        /// 1/7*7 --> has more digits?
+        brain.reset()
+        brain.digit(7)
+        brain.operation("One_x")
+        brain.operation("x")
+        brain.digit(7)
+        brain.operation("=")
+        XCTAssertEqual(brain.display, "1")
+        XCTAssertEqual(brain.hasMoreDigits, false)
+
+
 
         /// pi
         brain.reset()

@@ -227,8 +227,8 @@ class Gmp {
         if mantissa.count > length {
             // this is possible, because we added 5 byte to the mantissa at the top of this function
             hasMoreDigits = true
-            mantissa = String(mantissa.prefix(length))
         }
+        print("X hasMoreDigits14 \(hasMoreDigits)")
         return Data(mantissa: mantissa, exponent: exponent, negative: negative, hasMoreDigits: hasMoreDigits)
     }
     

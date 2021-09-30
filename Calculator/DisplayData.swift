@@ -39,6 +39,7 @@ class DisplayData: Equatable {
                  content: String) {
         self.isValidNumber = isValidNumber
         self.isNegative = isNegative
+        print("X hasMoreDigits11= \(hasMoreDigits)")
         self.hasMoreDigits = hasMoreDigits
         self.exponent = exponent
         self.content = content
@@ -47,6 +48,7 @@ class DisplayData: Equatable {
         self.init(invalid: "invalid")
     }
     private convenience init(valid: String, negative: Bool) {
+        print("X hasMoreDigits9 always false")
         self.init(isValidNumber: true,
                   isNegative: negative,
                   hasMoreDigits: false,
@@ -54,6 +56,7 @@ class DisplayData: Equatable {
                   content: valid)
     }
     private convenience init(invalid: String) {
+        print("X hasMoreDigits8 always false")
         self.init(isValidNumber: false,
                   isNegative: false,
                   hasMoreDigits: false,
@@ -77,12 +80,13 @@ class DisplayData: Equatable {
         
         let data = gmp.data(length: digits)
         
-        /// can be perfectly represented as Integer?
         var availableDigits = digits
         if data.negative { availableDigits -= 1 }
         
+        /// can be perfectly represented as Integer?
         if data.exponent >= 0 &&                      /// number >= 0?
             data.mantissa.count <= data.exponent+1 &&   /// no digits after the dot?
+            data.mantissa.count <= availableDigits &&   /// display sifficiently large?
             data.exponent <= availableDigits { /// display sifficiently large?
             var m = data.mantissa
             if m.count < data.exponent+1 {
@@ -109,6 +113,7 @@ class DisplayData: Equatable {
                 }
                 floatString += data.mantissa
                 floatString = String(floatString.prefix(availableDigits))
+                print("X hasMoreDigits7= \(data.hasMoreDigits)")
                 self.init(
                     isValidNumber: true,
                     isNegative: data.negative,
@@ -121,12 +126,14 @@ class DisplayData: Equatable {
                 floatString = data.mantissa
                 let index = floatString.index(floatString.startIndex, offsetBy: data.exponent+1)
                 floatString.insert(",", at: index)
+                print("X hasMoreDigits6= \(data.hasMoreDigits)")
+                let ret = String(floatString.prefix(Configuration.shared.digitsInSmallDisplay+1))
                 self.init(
                     isValidNumber: true,
                     isNegative: data.negative,
                     hasMoreDigits: data.hasMoreDigits,
                     exponent: nil,
-                    content: floatString)
+                    content: ret)
                 return
             }
         }
@@ -143,6 +150,7 @@ class DisplayData: Equatable {
         if scientificString.count <= 2 { scientificString += "0" } /// e.g. 1e16 -> 1,e16 -> 1,0e16
         
         scientificString = String(scientificString.prefix(availableDigits+1)) // +1 for the comma, which I do not count
+        print("X hasMoreDigits5 alwasy true")
         self.init(isValidNumber: true,
                   isNegative: data.negative,
                   hasMoreDigits: true,
