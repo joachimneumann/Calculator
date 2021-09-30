@@ -49,8 +49,9 @@ struct ScientificKeys: View {
                 Key("mr")
                     .scientific(
                         size: size,
-                        isAllowed: brain.inPlaceAllowed,
-                        isPending: false)
+                        isAllowed: brain.memory != nil,
+                        isPending: false,
+                        isActive: brain.memory != nil)
                 { brain.getMemory() }
             }
             HStack(spacing: horizontalSpace) {

@@ -16,7 +16,10 @@ class Configuration {
         let downAnimationTime: Double
         let upAnimationTime: Double
     }
-
+    let red = Color(
+        red:   229.0/255.0,
+        green:  99.0/255.0,
+        blue:   97.0/255.0)
 #if targetEnvironment(macCatalyst)
     let digitsInSmallDisplay = 16
     let windowWidth: CGFloat = 575.0

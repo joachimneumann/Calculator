@@ -17,7 +17,7 @@ private struct AddBackGround: ViewModifier {
             if isAllowed {
                 return properties.downColor
             } else {
-                return Color.red
+                return Configuration.shared.red
             }
         } else {
             if isPending {

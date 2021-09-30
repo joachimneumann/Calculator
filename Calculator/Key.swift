@@ -127,6 +127,7 @@ private struct ScientificButton: ViewModifier {
     let size: CGSize
     let isAllowed: Bool
     let isPending: Bool
+    let isActive: Bool
     let callback: (() -> Void)?
     var fg: Color {
         if callback == nil {
@@ -135,7 +136,7 @@ private struct ScientificButton: ViewModifier {
             if isPending {
                 return Configuration.shared.LightGrayKeyProperties.color
             } else {
-                return Configuration.shared.LightGrayKeyProperties.textColor
+                return isActive ? Configuration.shared.LightGrayKeyProperties.textColor : Color(white: 0.5)
             }
         }
     }
@@ -178,9 +179,9 @@ extension View {
             .frame(width: size.width, height: size.height)
     }
     
-    func scientific(size: CGSize, isAllowed: Bool, isPending: Bool, callback: (() -> Void)? = nil ) -> some View {
+    func scientific(size: CGSize, isAllowed: Bool, isPending: Bool, isActive: Bool = true, callback: (() -> Void)? = nil ) -> some View {
         self
-            .modifier(ScientificButton(size: size, isAllowed: isAllowed, isPending: isPending, callback: callback))
+            .modifier(ScientificButton(size: size, isAllowed: isAllowed, isPending: isPending, isActive: isActive, callback: callback))
             .frame(width: size.width, height: size.height)
     }
 }
