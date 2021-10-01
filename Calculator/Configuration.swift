@@ -26,7 +26,7 @@ class Configuration {
     static func slightlyLargerNumberKeySize(appFrame: CGSize) -> CGSize { CGSize(width: 56.25+2.0, height: 47.0) }
     static func scientificKeySize(appFrame: CGSize) -> CGSize { numberKeySize(appFrame: appFrame) }
     static func spaceBetweenkeys(appFrame: CGSize) -> CGFloat { 1.0 }
-    static let allDigitsFont = Font.custom("CourierNewPSMT", keySize: 19)
+    static let allDigitsFont = Font.custom("CourierNewPSMT", size: 19)
     
     /// The MacOS Calculator is a bit transparent.
     /// The colors specified here are the button colors

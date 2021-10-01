@@ -73,16 +73,16 @@ struct ScientificKeys: View {
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation("x^3") }
-                Key("x^y")
+                Key("x^y", isActive: brain.inPlaceAllowed)
                     .scientific(
                         size: keySize,
-                        isAllowed: brain.digitsAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: brain.isPending("x^y"))
                 { brain.operation("x^y") }
-                Key(brain.secondKeys ? "y^x" : "e^x")
+                Key(brain.secondKeys ? "y^x" : "e^x", isActive: brain.inPlaceAllowed)
                     .scientific(
                         size: keySize,
-                        isAllowed: brain.secondKeys ? brain.digitsAllowed : brain.inPlaceAllowed,
+                        isAllowed: brain.secondKeys ? brain.inPlaceAllowed : brain.inPlaceAllowed,
                         isPending: brain.secondKeys ? brain.isPending("y^x") : false)
                 { brain.operation(brain.secondKeys ? "y^x" : "e^x") }
                 Key(brain.secondKeys ? "2^x" : "10^x")
@@ -93,26 +93,26 @@ struct ScientificKeys: View {
                 { brain.operation(brain.secondKeys ? "2^x" : "10^x") }
             }
             HStack(spacing: horizontalSpace) {
-                Key("One_x", isActive: brain.notCalculating)
+                Key("One_x", isActive: brain.inPlaceAllowed)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false,
-                        isActive: brain.notCalculating)
+                        isActive: brain.inPlaceAllowed)
                 { brain.operation("One_x") }
-                Key("√", isActive: brain.notCalculating)
+                Key("√", isActive: brain.inPlaceAllowed)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation("√") }
-                Key("3√", isActive: brain.notCalculating)
+                Key("3√", isActive: brain.inPlaceAllowed)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation("3√") }
-                Key("y√", isPending: brain.isPending("y√"), isActive: brain.notCalculating) // isPending for strokeColor
+                Key("y√", isPending: brain.isPending("y√"), isActive: brain.inPlaceAllowed) // isPending for strokeColor
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
