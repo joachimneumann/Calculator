@@ -10,7 +10,7 @@ import SwiftUI
 
 struct NumberKeys: View {
     @ObservedObject var brain: Brain
-    let size: CGSize
+    let keySize: CGSize
     let slightlyLargerSize: CGSize
     let verticalSpace: CGFloat
     let horizontalSpace: CGFloat
@@ -20,18 +20,18 @@ struct NumberKeys: View {
             HStack(spacing: horizontalSpace) {
                 Key("C")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.notCalculating,
                         isPending: false)
                 { brain.reset() }
                 Key("+/-")
                     .op_plusMinus_percentage(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed )
                 { brain.operation("+/-") }
                 Key("%")
                     .op_plusMinus_percentage(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed)
                 { brain.operation("%")  }
                 Key("/")
@@ -44,17 +44,17 @@ struct NumberKeys: View {
             HStack(spacing: horizontalSpace) {
                 Key("7")
                     .digit_1_to_9(
-                        size: size, isAllowed:
+                        size: keySize, isAllowed:
                             brain.digitsAllowed)
                 { brain.digit(7) }
                 Key("8")
                     .digit_1_to_9(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.digitsAllowed)
                 { brain.digit(8) }
                 Key("9")
                     .digit_1_to_9(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.digitsAllowed)
                 { brain.digit(9) }
                 Key("x")
@@ -67,17 +67,17 @@ struct NumberKeys: View {
             HStack(spacing: horizontalSpace) {
                 Key("4")
                     .digit_1_to_9(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.digitsAllowed)
                 { brain.digit(4) }
                 Key("5")
                     .digit_1_to_9(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.digitsAllowed)
                 { brain.digit(5) }
                 Key("6")
                     .digit_1_to_9(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.digitsAllowed)
                 { brain.digit(6) }
                 Key("-")
@@ -90,17 +90,17 @@ struct NumberKeys: View {
             HStack(spacing: horizontalSpace) {
                 Key("1")
                     .digit_1_to_9(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.digitsAllowed)
                 { brain.digit(1) }
                 Key("2")
                     .digit_1_to_9(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.digitsAllowed)
                 { brain.digit(2) }
                 Key("3")
                     .digit_1_to_9(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.digitsAllowed)
                 { brain.digit(3) }
                 Key("+")
@@ -113,13 +113,13 @@ struct NumberKeys: View {
             HStack(spacing: horizontalSpace) {
                 Key("0")
                     .digit_0(
-                        size: size,
+                        size: keySize,
                         space: horizontalSpace,
                         isAllowed: brain.digitsAllowed)
                 { brain.zero() }
                 Key(",")
                     .digit_1_to_9(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.digitsAllowed)
                 { brain.comma() }
                 Key("=")
@@ -136,7 +136,7 @@ struct NumberKeys: View {
         self.brain = brain
         horizontalSpace = Configuration.spaceBetweenkeys(appFrame: appFrame)
         verticalSpace   = Configuration.spaceBetweenkeys(appFrame: appFrame)
-        size = Configuration.numberKeySize(appFrame: appFrame)
+        keySize = Configuration.numberKeySize(appFrame: appFrame)
         slightlyLargerSize = Configuration.slightlyLargerNumberKeySize(appFrame: appFrame)
     }
 }

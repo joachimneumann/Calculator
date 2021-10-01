@@ -101,7 +101,7 @@ struct IOSContentView: View {
                             }
                             Spacer()
                         }
-//                        .frame(maxWidth: Configuration.numberKeySize(appFrame: appFrame).width+3)
+                        //                        .frame(maxWidth: Configuration.numberKeySize(appFrame: appFrame).width+3)
                     }
                 }
             }

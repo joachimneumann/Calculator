@@ -15,9 +15,11 @@ struct LandscapeKeys: View {
             ScientificKeys(
                 brain: brain,
                 appFrame: appFrame)
+                //.background(Color.yellow)
             NumberKeys(
                 brain: brain,
                 appFrame: appFrame)
+                //.background(Color.orange)
         }
     }
     init(brain: Brain, appFrame: CGSize) {

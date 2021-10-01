@@ -26,7 +26,7 @@ class Configuration {
     static func slightlyLargerNumberKeySize(appFrame: CGSize) -> CGSize { CGSize(width: 56.25+2.0, height: 47.0) }
     static func scientificKeySize(appFrame: CGSize) -> CGSize { numberKeySize(appFrame: appFrame) }
     static func spaceBetweenkeys(appFrame: CGSize) -> CGFloat { 1.0 }
-    static let allDigitsFont = Font.custom("CourierNewPSMT", size: 19)
+    static let allDigitsFont = Font.custom("CourierNewPSMT", keySize: 19)
     
     /// The MacOS Calculator is a bit transparent.
     /// The colors specified here are the button colors
@@ -92,17 +92,34 @@ class Configuration {
     ///
     static let digitsInSmallDisplay = 9
     static let appBackgroundColor = Color(.black)
-    static let displayFontSize: CGFloat = 70
-    static var zoomIconSize: CGFloat = 30
-    static func spaceBetweenkeys(appFrame: CGSize) -> CGFloat { appFrame.width * 0.01 }
+    static let displayFontSize: CGFloat = 70.0
+    static var zoomIconSize: CGFloat = 30.0
+    static let landscapeAspectRatio = 2.489
+    static let landscapepadding: CGFloat = 100.0
+    static let spacingFration = 0.01
+    static let numberPadFration = (0.4+3.0*spacingFration)/(1.0+9.0*spacingFration)
+    
+    static func spaceBetweenkeys(appFrame: CGSize) -> CGFloat { appFrame.width * spacingFration }
     static func numberKeySize(appFrame: CGSize) -> CGSize {
+        let allKeysWidth  = appFrame.width-landscapepadding
+        let allKeysHeight = allKeysWidth / landscapeAspectRatio
+        let numberPadWidth = allKeysWidth * numberPadFration
         print("numberKeySize appFrame=\(appFrame)")
-        let numberPadWidth = appFrame.width*0.3
         let keywidth = (numberPadWidth - 3.0*spaceBetweenkeys(appFrame: appFrame)) * 0.25
-        return CGSize(width: keywidth, height: keywidth)
+        let keyheight = (allKeysHeight - 4.0*spaceBetweenkeys(appFrame: appFrame)) * 0.20
+        return CGSize(width: keywidth, height: keyheight)
     }
     static func slightlyLargerNumberKeySize(appFrame: CGSize) -> CGSize { numberKeySize(appFrame: appFrame) }
-    static func scientificKeySize(appFrame: CGSize) -> CGSize { numberKeySize(appFrame: appFrame) }
+    static func scientificKeySize(appFrame: CGSize) -> CGSize {
+            print("scientificKeySize appFrame=\(appFrame)")
+        let allKeysWidth  = appFrame.width-landscapepadding
+        let allKeysHeight = allKeysWidth / landscapeAspectRatio
+        let numberPadWidth = allKeysWidth * numberPadFration
+        let scientificPadWidth = allKeysWidth - numberPadWidth
+        let keywidth = (scientificPadWidth - 5.0*spaceBetweenkeys(appFrame: appFrame)) / 6.0
+        let keyheight = (allKeysHeight - 4.0*spaceBetweenkeys(appFrame: appFrame)) * 0.2
+        return CGSize(width: keywidth, height: keyheight)
+    }
 
     static func verticalSpace(forTotalWidth w: CGFloat)   -> CGFloat { 0.03 * w }
     static func horizontalSpace(forTotalWidth w: CGFloat) -> CGFloat { 0.03 * w }

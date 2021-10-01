@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ScientificKeys: View {
     @ObservedObject var brain: Brain
-    let size: CGSize
+    let keySize: CGSize
     let verticalSpace: CGFloat
     let horizontalSpace: CGFloat
 
@@ -18,37 +18,37 @@ struct ScientificKeys: View {
             HStack(spacing: horizontalSpace) {
                 Key("(")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation("(") }
                 Key(")")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation(")") }
                 Key("mc")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.notCalculating,
                         isPending: false)
                 { brain.clearMemory() }
                 Key("m+")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.addToMemory() }
                 Key("m-")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.subtractFromMemory() }
                 Key("mr")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.memory != nil && brain.notCalculating,
                         isPending: false,
                         isActive: brain.memory != nil)
@@ -57,37 +57,37 @@ struct ScientificKeys: View {
             HStack(spacing: horizontalSpace) {
                 Key("2nd")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.digitsAllowed,
                         isPending: brain.secondKeys)
                 { brain.secondKeys.toggle() }
                 Key("x^2")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation("x^2") }
                 Key("x^3")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation("x^3") }
                 Key("x^y")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.digitsAllowed,
                         isPending: brain.isPending("x^y"))
                 { brain.operation("x^y") }
                 Key(brain.secondKeys ? "y^x" : "e^x")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.secondKeys ? brain.digitsAllowed : brain.inPlaceAllowed,
                         isPending: brain.secondKeys ? brain.isPending("y^x") : false)
                 { brain.operation(brain.secondKeys ? "y^x" : "e^x") }
                 Key(brain.secondKeys ? "2^x" : "10^x")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation(brain.secondKeys ? "2^x" : "10^x") }
@@ -95,38 +95,38 @@ struct ScientificKeys: View {
             HStack(spacing: horizontalSpace) {
                 Key("One_x", isActive: brain.notCalculating)
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false,
                         isActive: brain.notCalculating)
                 { brain.operation("One_x") }
                 Key("√", isActive: brain.notCalculating)
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation("√") }
                 Key("3√", isActive: brain.notCalculating)
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation("3√") }
                 Key("y√", isPending: brain.isPending("y√"), isActive: brain.notCalculating) // isPending for strokeColor
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: brain.isPending("y√"))
                 { brain.operation("y√") }
                 Key(brain.secondKeys ? "logy" : "ln")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: brain.secondKeys ? brain.isPending("logy") : false)
                 { brain.operation(brain.secondKeys ? "logy" : "ln") }
                 Key(brain.secondKeys ? "log2" : "log10")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation(brain.secondKeys ? "log2" : "log10") }
@@ -134,13 +134,13 @@ struct ScientificKeys: View {
             HStack(spacing: horizontalSpace) {
                 Key("x!")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation("x!") }
                 Key(brain.secondKeys ? "asin" : "sin")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 {   if brain.rad {
@@ -151,7 +151,7 @@ struct ScientificKeys: View {
                 }
                 Key(brain.secondKeys ? "acos" : "cos")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 {   if brain.rad {
@@ -162,7 +162,7 @@ struct ScientificKeys: View {
                 }
                 Key(brain.secondKeys ? "atan" : "tan")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 {   if brain.rad {
@@ -173,13 +173,13 @@ struct ScientificKeys: View {
                 }
                 Key("e")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.digitsAllowed,
                         isPending: false)
                 { brain.operation("e") }
                 Key("EE")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.digitsAllowed,
                         isPending: false)
                 { brain.operation("EE") }
@@ -187,13 +187,13 @@ struct ScientificKeys: View {
             HStack(spacing: horizontalSpace) {
                 Key(brain.rad ? "Deg" : "Rad")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.notCalculating,
                         isPending: false)
                 { brain.rad.toggle() }
                 Key(brain.secondKeys ? "asinh" : "sinh")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 {   if brain.rad {
@@ -204,7 +204,7 @@ struct ScientificKeys: View {
                 }
                 Key(brain.secondKeys ? "acosh" : "cosh")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 {   if brain.rad {
@@ -215,7 +215,7 @@ struct ScientificKeys: View {
                 }
                 Key(brain.secondKeys ? "atanh" : "tanh")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 {   if brain.rad {
@@ -226,13 +226,13 @@ struct ScientificKeys: View {
                 }
                 Key("π")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.digitsAllowed,
                         isPending: false)
                 { brain.operation("π") }
                 Key("Rand")
                     .scientific(
-                        size: size,
+                        size: keySize,
                         isAllowed: brain.digitsAllowed,
                         isPending: false)
                 { brain.operation("rand") }
@@ -244,7 +244,7 @@ struct ScientificKeys: View {
         self.brain = brain
         horizontalSpace = Configuration.spaceBetweenkeys(appFrame: appFrame)
         verticalSpace   = Configuration.spaceBetweenkeys(appFrame: appFrame)
-        size = Configuration.scientificKeySize(appFrame: appFrame)
+        keySize = Configuration.scientificKeySize(appFrame: appFrame)
     }
 }
 
