@@ -132,21 +132,12 @@ struct NumberKeys: View {
         }
     }
     
-    init(brain: Brain, roundKeys: Bool, width totalWidth: CGFloat) {
+    init(brain: Brain, appFrame: CGSize) {
         self.brain = brain
-        horizontalSpace = Configuration.horizontalSpace(forTotalWidth: totalWidth)
-        verticalSpace   = Configuration.verticalSpace(forTotalWidth: totalWidth)
-        let w = (totalWidth - 3.0 * horizontalSpace) * 0.25
-        size = CGSize(width: w, height: w)
-        slightlyLargerSize = CGSize(width: w, height: w)
-    }
-
-    init(brain: Brain, keyWidth: CGFloat, keyHeight: CGFloat) {
-        self.brain = brain
-        horizontalSpace = Configuration.horizontalSpace(forTotalWidth: keyWidth)
-        verticalSpace   = Configuration.verticalSpace(forTotalWidth: keyHeight)
-        size = CGSize(width: keyWidth, height: keyHeight)
-        slightlyLargerSize = CGSize(width: keyWidth+2, height: keyHeight)
+        horizontalSpace = Configuration.spaceBetweenkeys(appFrame: appFrame)
+        verticalSpace   = Configuration.spaceBetweenkeys(appFrame: appFrame)
+        size = Configuration.numberKeySize(appFrame: appFrame)
+        slightlyLargerSize = CGSize(width: size.width+2, height: size.height)
     }
 }
 
@@ -154,7 +145,7 @@ struct NumberKeys_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             Rectangle()
-            NumberKeys(brain: Brain(), roundKeys: true, width: 320)
+            NumberKeys(brain: Brain(), appFrame: CGSize(width: 200, height: 200))
         }
             .background(Color.black)
     }

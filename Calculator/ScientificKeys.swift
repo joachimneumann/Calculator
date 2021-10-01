@@ -240,16 +240,16 @@ struct ScientificKeys: View {
         }
     }
 
-    init(brain: Brain, keyWidth: CGFloat, keyHeight: CGFloat) {
+    init(brain: Brain, appFrame: CGSize) {
         self.brain = brain
-        horizontalSpace = Configuration.horizontalSpace(forTotalWidth: keyWidth)
-        verticalSpace   = Configuration.verticalSpace(forTotalWidth: keyHeight)
-        size = CGSize(width: keyWidth, height: keyHeight)
+        horizontalSpace = Configuration.spaceBetweenkeys(appFrame: appFrame)
+        verticalSpace   = Configuration.spaceBetweenkeys(appFrame: appFrame)
+        size = Configuration.scientificKeySize(appFrame: appFrame)
     }
 }
 
 struct ScientificKeys_Previews: PreviewProvider {
     static var previews: some View {
-        ScientificKeys(brain: Brain(), keyWidth: 50, keyHeight: 30)
+        ScientificKeys(brain: Brain(), appFrame: CGSize(width: 200, height: 200))
     }
 }

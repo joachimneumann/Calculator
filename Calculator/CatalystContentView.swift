@@ -7,18 +7,19 @@
 
 import SwiftUI
 
-
+#if targetEnvironment(macCatalyst)
 struct CatalystContentView: View {
     @ObservedObject var brain = Brain()
     @State var zoomed: Bool = false
     @State var copyPasteHighlight = false
+    let appFrame = CGSize (width: 0, height: 0) // not used in catalyst, the sizes are gard-coded
     var body: some View {
         ZStack {
             if zoomed && brain.hasMoreDigits {
                 AllDigitsView(
                     brain: brain,
                     textColor: copyPasteHighlight ? Color.orange : Configuration.DigitKeyProperties.textColor)
-                    .padding(.trailing, Configuration.keyWidth)
+                    .padding(.trailing, Configuration.scientificKeySize(appFrame: appFrame).width)
                     .padding(.leading, 10)
             } else {
                 ZStack {
@@ -26,10 +27,10 @@ struct CatalystContentView: View {
                         Display(
                             text: brain.display,
                             textColor: copyPasteHighlight ? Color.orange : Configuration.DigitKeyProperties.textColor)
-                            .padding(.trailing, Configuration.keyWidth)
+                            .padding(.trailing, Configuration.scientificKeySize(appFrame: appFrame).width)
                         Spacer(minLength: 0)
                         if !zoomed {
-                            LandscapeKeys(brain: brain)
+                            LandscapeKeys(brain: brain, appFrame: appFrame)
                                 .transition(.move(edge: .bottom))
                         }
                     }
@@ -75,7 +76,7 @@ struct CatalystContentView: View {
                     }
                     Spacer()
                 }
-                .frame(maxWidth: Configuration.keyWidth+3)
+                .frame(maxWidth: Configuration.scientificKeySize(appFrame: appFrame).width+3)
             }
         }
     }
@@ -87,5 +88,7 @@ struct ContentView_Previews: PreviewProvider {
             .frame(width: 575.0, height: 320.0)
     }
 }
+#endif
+
 
 

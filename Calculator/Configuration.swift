@@ -16,25 +16,22 @@ class Configuration {
         let downAnimationTime: Double
         let upAnimationTime: Double
     }
-    static let red = Color(
-        red:   229.0/255.0,
-        green:  99.0/255.0,
-        blue:   97.0/255.0)
 #if targetEnvironment(macCatalyst)
     static let digitsInSmallDisplay = 16
     static let windowWidth: CGFloat = 575.0
     static let windowHeight: CGFloat = 323.0
     static let displayFontSize: CGFloat = 47
     static var zoomIconSize: CGFloat = 30
-    static let keyWidth: CGFloat = 56.25
-    static let keyHeight: CGFloat = 47.0
+    static func numberKeySize(appFrame: CGSize) -> CGSize { CGSize(width: 56.25, height: 47.0) }
+    static func scientificKeySize(appFrame: CGSize) -> CGSize { numberKeySize(appFrame: appFrame) }
+    static func spaceBetweenkeys(appFrame: CGSize) -> CGFloat { 1.0 }
     static let allDigitsFont = Font.custom("CourierNewPSMT", size: 19)
     
     /// The MacOS Calculator is a bit transparent.
-    /// The colors specified here replicate the button colors
+    /// The colors specified here are the button colors
     /// when the MacOS Calcuator is on a black background.
-    /// To make this app distinguashable from the
-    /// MacOS Calculator, the 5 rightmost buttons
+    /// To make this appeasily  distinguashable from the
+    /// Apple MacOS Calculator, the 5 rightmost buttons
     /// are in a blue tint instead of Apple's orange.
     static let appBackgroundColor = Color(
         red:    46.0/255.0,
@@ -89,13 +86,29 @@ class Configuration {
         downAnimationTime: 0.1,
         upAnimationTime: 0.5)
 #else
+    ///
+    /// iOS
+    ///
     static let digitsInSmallDisplay = 9
     static let appBackgroundColor = Color(.black)
-    let displayFontSize: CGFloat = 70
-    let keyWidth: CGFloat = 20 // TODO remove this
-    let keyHeight: CGFloat = 20
+    static let displayFontSize: CGFloat = 70
+    static var zoomIconSize: CGFloat = 30
+    static func spaceBetweenkeys(appFrame: CGSize) -> CGFloat { appFrame.width * 0.01 }
+    static func numberKeySize(appFrame: CGSize) -> CGSize {
+        print("numberKeySize appFrame=\(appFrame)")
+        let numberPadWidth = appFrame.width*0.5
+        let keywidth = (numberPadWidth - 3.0*spaceBetweenkeys(appFrame: appFrame)) * 0.25
+        return CGSize(width: keywidth, height: keywidth)
+    }
+    static func scientificKeySize(appFrame: CGSize) -> CGSize {
+        numberKeySize(appFrame: appFrame)
+    }
 
-    let DigitKeyProperties = KeyProperties(
+    static func verticalSpace(forTotalWidth w: CGFloat)   -> CGFloat { 0.03 * w }
+    static func horizontalSpace(forTotalWidth w: CGFloat) -> CGFloat { 0.03 * w }
+    static let allDigitsFont = Font.custom("CourierNewPSMT", size: 19)
+
+    static let DigitKeyProperties = KeyProperties(
         textColor: Color.white,
         color: Color(
             red:    51.0/255.0,
@@ -109,7 +122,7 @@ class Configuration {
         upAnimationTime: 0.5)
 
 
-    let OpKeyProperties = KeyProperties(
+    static let OpKeyProperties = KeyProperties(
         textColor: Color.white,
         color: Color(
             red:   105.0/255.0,
@@ -122,7 +135,7 @@ class Configuration {
         downAnimationTime: 0.1,
         upAnimationTime: 0.3)
 
-    let LightGrayKeyProperties = KeyProperties(
+    static let LightGrayKeyProperties = KeyProperties(
         textColor: Color.black,
         color: Color(
             red:   165.0/255.0,
@@ -147,16 +160,4 @@ class Configuration {
         }
     }
     
-#if targetEnvironment(macCatalyst)
-    static func verticalSpace(forTotalWidth w: CGFloat)   -> CGFloat { 1.0 }
-    static func horizontalSpace(forTotalWidth w: CGFloat) -> CGFloat { 1.0 }
-#else
-    static func verticalSpace(forTotalWidth w: CGFloat)   -> CGFloat { 0.03 * w }
-    static func horizontalSpace(forTotalWidth w: CGFloat) -> CGFloat { 0.03 * w }
-#endif
-
-    /// singleton: private init and static shared object
-    static var shared = Configuration()
-    private init() {
-    }
 }
