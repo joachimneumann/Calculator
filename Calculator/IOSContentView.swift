@@ -40,7 +40,7 @@ struct IOSContentView: View {
                     Spacer()
                     Display(
                         text: brain.display,
-                        textColor: Configuration.shared.DigitKeyProperties.textColor)
+                        textColor: Configuration.DigitKeyProperties.textColor)
                         .padding(.trailing, 15)
                     NumberKeys(brain: brain, roundKeys: true, width: frameSize.width)
                 }

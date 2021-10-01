@@ -95,6 +95,7 @@ class Brain: ObservableObject {
             }
         }
     }
+    
     func operationWorker(_ symbol: String, withPending: Bool = true) {
         if symbol == "=" {
             self.execute(priority: Operator.equalPriority)
@@ -117,6 +118,7 @@ class Brain: ObservableObject {
             self.execute(priority: op.priority)
             self.self.operatorStack.push(op)
         } else {
+            print("### non-existing operation \(symbol)")
             assert(false)
         }
 //        print("X after op   (\"\(symbol)\": " +
@@ -124,25 +126,28 @@ class Brain: ObservableObject {
 //              "ops: \(operatorStack.count), " +
 //              "display: \(display)")
     }
+    
+    // TODO: make this work in the app: 9 % % % % x^2 x^2 x^2
+    // it wworks in test, using the worker
     func operation(_ symbol: String, withPending: Bool = true) {
-        self.calculating = true
-        DispatchQueue.global().async {
-            DispatchQueue.main.asyncAfter(deadline: .now()+0.25) {
-                if self.calculating {
-                    self.showCalculating = true
+        if !self.calculating {
+            self.calculating = true
+            DispatchQueue.global().async {
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.25) {
+                    if self.calculating {
+                        self.showCalculating = true
+                    }
+                }
+                self.operationWorker(symbol, withPending: withPending)
+                DispatchQueue.main.async {
+                    self.calculating = false
+                    self.showCalculating = false
+                    self.objectWillChange.send()
                 }
             }
-            
-            self.operationWorker(symbol, withPending: withPending)
-
-            DispatchQueue.main.async {
-                self.calculating = false
-                self.showCalculating = false
-                self.objectWillChange.send()
-            }
         }
-
     }
+    
     func reset() {
         operatorStack.removeAll()
         n.removeAll()

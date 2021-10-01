@@ -17,16 +17,16 @@ struct CatalystContentView: View {
             if zoomed && brain.hasMoreDigits {
                 AllDigitsView(
                     brain: brain,
-                    textColor: copyPasteHighlight ? Color.orange : Configuration.shared.DigitKeyProperties.textColor)
-                    .padding(.trailing, Configuration.shared.keyWidth)
+                    textColor: copyPasteHighlight ? Color.orange : Configuration.DigitKeyProperties.textColor)
+                    .padding(.trailing, Configuration.keyWidth)
                     .padding(.leading, 10)
             } else {
                 ZStack {
                     VStack {
                         Display(
                             text: brain.display,
-                            textColor: copyPasteHighlight ? Color.orange : Configuration.shared.DigitKeyProperties.textColor)
-                            .padding(.trailing, Configuration.shared.keyWidth)
+                            textColor: copyPasteHighlight ? Color.orange : Configuration.DigitKeyProperties.textColor)
+                            .padding(.trailing, Configuration.keyWidth)
                         Spacer(minLength: 0)
                         if !zoomed {
                             LandscapeKeys(brain: brain)
@@ -75,7 +75,7 @@ struct CatalystContentView: View {
                     }
                     Spacer()
                 }
-                .frame(maxWidth: Configuration.shared.keyWidth+3)
+                .frame(maxWidth: Configuration.keyWidth+3)
             }
         }
     }

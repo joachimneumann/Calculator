@@ -61,7 +61,7 @@ struct Key: View {
     }
     
     init(_ text: String, isPending: Bool = false, isActive: Bool = true) {
-        let strokeColor = !isActive ? Color.gray : (isPending ? Configuration.shared.LightGrayKeyProperties.color : Configuration.shared.LightGrayKeyProperties.textColor)
+        let strokeColor = !isActive ? Color.gray : (isPending ? Configuration.LightGrayKeyProperties.color : Configuration.LightGrayKeyProperties.textColor)
         if let sfImage = sfImageNames[text] {
             asImage = Image(systemName: sfImage)
         } else if let shape = shape(name: text, strokeColor: strokeColor) {
@@ -79,8 +79,8 @@ private struct Digit_0_to_9: ViewModifier {
     let callback: (() -> Void)?
     func body(content: Content) -> some View {
         content
-            .foregroundColor(callback == nil || !isActive ?  Color.gray : Configuration.shared.DigitKeyProperties.textColor)
-            .addBackground(with: Configuration.shared.DigitKeyProperties, isAllowed: isAllowed, isPending: false, callback: callback)
+            .foregroundColor(callback == nil || !isActive ?  Color.gray : Configuration.DigitKeyProperties.textColor)
+            .addBackground(with: Configuration.DigitKeyProperties, isAllowed: isAllowed, isPending: false, callback: callback)
             .font(.system(size: size.height * CGFloat(0.48)))
     }
 }
@@ -96,9 +96,9 @@ private struct Colorful_plus_minus_etc: ViewModifier {
             return Color.gray
         } else {
             if isPending {
-                return Configuration.shared.OpKeyProperties.color
+                return Configuration.OpKeyProperties.color
             } else {
-                return Configuration.shared.OpKeyProperties.textColor
+                return Configuration.OpKeyProperties.textColor
             }
         }
     }
@@ -106,7 +106,7 @@ private struct Colorful_plus_minus_etc: ViewModifier {
         let fontsize = size.height * CGFloat(0.36)
         content
             .foregroundColor(fg)
-            .addBackground(with: Configuration.shared.OpKeyProperties, isAllowed: isAllowed, isPending: isPending, callback: callback)
+            .addBackground(with: Configuration.OpKeyProperties, isAllowed: isAllowed, isPending: isPending, callback: callback)
             .font(.system(size: fontsize, weight: .bold))
         
     }
@@ -120,8 +120,8 @@ private struct PlusMinus_percentage: ViewModifier {
     func body(content: Content) -> some View {
         let fontsize = size.height * 0.36
         content
-            .foregroundColor(callback == nil || !isActive ?  Color.gray : Configuration.shared.LightGrayKeyProperties.textColor)
-            .addBackground(with: Configuration.shared.LightGrayKeyProperties, isAllowed: isAllowed, isPending: false, callback: callback)
+            .foregroundColor(callback == nil || !isActive ?  Color.gray : Configuration.LightGrayKeyProperties.textColor)
+            .addBackground(with: Configuration.LightGrayKeyProperties, isAllowed: isAllowed, isPending: false, callback: callback)
             .font(.system(size: fontsize, weight: .bold))
     }
 }
@@ -137,9 +137,9 @@ private struct ScientificButton: ViewModifier {
             return Color.gray
         } else {
             if isPending {
-                return Configuration.shared.LightGrayKeyProperties.color
+                return Configuration.LightGrayKeyProperties.color
             } else {
-                return isActive ? Configuration.shared.LightGrayKeyProperties.textColor : Color(white: 0.5)
+                return isActive ? Configuration.LightGrayKeyProperties.textColor : Color(white: 0.5)
             }
         }
     }
@@ -147,7 +147,7 @@ private struct ScientificButton: ViewModifier {
         let fontsize = size.height * 0.40
         content
             .foregroundColor(fg)
-            .addBackground(with: Configuration.shared.LightGrayKeyProperties, isAllowed: isAllowed, isPending: isPending, callback: callback)
+            .addBackground(with: Configuration.LightGrayKeyProperties, isAllowed: isAllowed, isPending: isPending, callback: callback)
             .font(.system(size: fontsize, weight: .regular))
     }
 }

@@ -16,7 +16,7 @@ struct Display: View {
             Spacer(minLength: 0)
             Text(text)
                 .foregroundColor(textColor)
-                .font(Font.system(size: Configuration.shared.displayFontSize, weight: .thin).monospacedDigit())
+                .font(Font.system(size: Configuration.displayFontSize, weight: .thin).monospacedDigit())
                 .lineLimit(1)
         }
     }

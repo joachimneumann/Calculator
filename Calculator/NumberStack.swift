@@ -28,7 +28,7 @@ class Number: CustomDebugStringConvertible {
             temp = _gmp
         }
         isValid = temp.isValid
-        let dd = DisplayData(gmp: temp, digits: Configuration.shared.digitsInSmallDisplay)
+        let dd = DisplayData(gmp: temp, digits: Configuration.digitsInSmallDisplay)
         hasMoreDigits = dd.hasMoreDigits
         exponent = dd.exponent
     }
@@ -99,7 +99,7 @@ struct NumberStack: CustomDebugStringConvertible{
     var display: String {
         let temp: Gmp
         if let str = last.str {
-            if str.count <= Configuration.shared.digitsInSmallDisplay {
+            if str.count <= Configuration.digitsInSmallDisplay {
                 return str
             } else {
                 temp = Gmp(str)
@@ -107,7 +107,7 @@ struct NumberStack: CustomDebugStringConvertible{
         } else {
             temp = last.gmp
         }
-        let dd = DisplayData(gmp: temp, digits: Configuration.shared.digitsInSmallDisplay)
+        let dd = DisplayData(gmp: temp, digits: Configuration.digitsInSmallDisplay)
         return dd.string
     }
 

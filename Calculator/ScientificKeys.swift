@@ -242,8 +242,8 @@ struct ScientificKeys: View {
 
     init(brain: Brain, keyWidth: CGFloat, keyHeight: CGFloat) {
         self.brain = brain
-        horizontalSpace = Configuration.shared.horizontalSpace(forTotalWidth: keyWidth)
-        verticalSpace   = Configuration.shared.verticalSpace(forTotalWidth: keyHeight)
+        horizontalSpace = Configuration.horizontalSpace(forTotalWidth: keyWidth)
+        verticalSpace   = Configuration.verticalSpace(forTotalWidth: keyHeight)
         size = CGSize(width: keyWidth, height: keyHeight)
     }
 }

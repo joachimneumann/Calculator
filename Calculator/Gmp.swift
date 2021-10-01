@@ -200,7 +200,7 @@ class Gmp {
         var exponent: mpfr_exp_t = 0
         var charArray: Array<CChar> = Array(repeating: 0, count: length+5)
         mpfr_get_str(&charArray, &exponent, 10, length+5, &mpfr, MPFR_RNDN)
-        
+        // todo 0.0000000....00000333 -> abort
         var negative: Bool
         if charArray[0] == 45 {
             charArray.removeFirst()

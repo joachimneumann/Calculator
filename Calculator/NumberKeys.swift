@@ -134,8 +134,8 @@ struct NumberKeys: View {
     
     init(brain: Brain, roundKeys: Bool, width totalWidth: CGFloat) {
         self.brain = brain
-        horizontalSpace = Configuration.shared.horizontalSpace(forTotalWidth: totalWidth)
-        verticalSpace   = Configuration.shared.verticalSpace(forTotalWidth: totalWidth)
+        horizontalSpace = Configuration.horizontalSpace(forTotalWidth: totalWidth)
+        verticalSpace   = Configuration.verticalSpace(forTotalWidth: totalWidth)
         let w = (totalWidth - 3.0 * horizontalSpace) * 0.25
         size = CGSize(width: w, height: w)
         slightlyLargerSize = CGSize(width: w, height: w)
@@ -143,8 +143,8 @@ struct NumberKeys: View {
 
     init(brain: Brain, keyWidth: CGFloat, keyHeight: CGFloat) {
         self.brain = brain
-        horizontalSpace = Configuration.shared.horizontalSpace(forTotalWidth: keyWidth)
-        verticalSpace   = Configuration.shared.verticalSpace(forTotalWidth: keyHeight)
+        horizontalSpace = Configuration.horizontalSpace(forTotalWidth: keyWidth)
+        verticalSpace   = Configuration.verticalSpace(forTotalWidth: keyHeight)
         size = CGSize(width: keyWidth, height: keyHeight)
         slightlyLargerSize = CGSize(width: keyWidth+2, height: keyHeight)
     }

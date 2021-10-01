@@ -16,7 +16,7 @@ struct CalculatorApp: App {
     var body: some Scene {
         WindowGroup {
             ZStack {
-                Configuration.shared.appBackgroundColor
+                Configuration.appBackgroundColor
                     .ignoresSafeArea()
                 CatalystContentView()
             }
@@ -26,7 +26,7 @@ struct CalculatorApp: App {
     var body: some Scene {
         WindowGroup {
             ZStack {
-                Configuration.shared.appBackgroundColor
+                Configuration.appBackgroundColor
                     .ignoresSafeArea()
                 IOSContentView()
             }
@@ -45,8 +45,8 @@ class FSSceneDelegate: NSObject, UIWindowSceneDelegate, ObservableObject {
         UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
             .forEach { windowScene in
-                windowScene.sizeRestrictions?.minimumSize = CGSize(width: Configuration.shared.windowWidth, height: Configuration.shared.windowHeight)
-                windowScene.sizeRestrictions?.maximumSize = CGSize(width: Configuration.shared.windowWidth, height: Configuration.shared.windowHeight)
+                windowScene.sizeRestrictions?.minimumSize = CGSize(width: Configuration.windowWidth, height: Configuration.windowHeight)
+                windowScene.sizeRestrictions?.maximumSize = CGSize(width: Configuration.windowWidth, height: Configuration.windowHeight)
             }
         
         guard let windowScene = (scene as? UIWindowScene) else { return }

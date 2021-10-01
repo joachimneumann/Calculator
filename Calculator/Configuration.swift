@@ -16,19 +16,19 @@ class Configuration {
         let downAnimationTime: Double
         let upAnimationTime: Double
     }
-    let red = Color(
+    static let red = Color(
         red:   229.0/255.0,
         green:  99.0/255.0,
         blue:   97.0/255.0)
 #if targetEnvironment(macCatalyst)
-    let digitsInSmallDisplay = 16
-    let windowWidth: CGFloat = 575.0
-    let windowHeight: CGFloat = 323.0
-    let displayFontSize: CGFloat = 47
-    var zoomIconSize: CGFloat = 30
-    let keyWidth: CGFloat = 56.25
-    let keyHeight: CGFloat = 47.0
-    let allDigitsFont = Font.custom("CourierNewPSMT", size: 19)
+    static let digitsInSmallDisplay = 16
+    static let windowWidth: CGFloat = 575.0
+    static let windowHeight: CGFloat = 323.0
+    static let displayFontSize: CGFloat = 47
+    static var zoomIconSize: CGFloat = 30
+    static let keyWidth: CGFloat = 56.25
+    static let keyHeight: CGFloat = 47.0
+    static let allDigitsFont = Font.custom("CourierNewPSMT", size: 19)
     
     /// The MacOS Calculator is a bit transparent.
     /// The colors specified here replicate the button colors
@@ -36,11 +36,11 @@ class Configuration {
     /// To make this app distinguashable from the
     /// MacOS Calculator, the 5 rightmost buttons
     /// are in a blue tint instead of Apple's orange.
-    let appBackgroundColor = Color(
+    static let appBackgroundColor = Color(
         red:    46.0/255.0,
         green:  39.0/255.0,
         blue:   38.0/255.0)
-    let DigitKeyProperties = KeyProperties(
+    static let DigitKeyProperties = KeyProperties(
         textColor: Color(
             red:   231.0/255.0,
             green: 231.0/255.0,
@@ -57,7 +57,7 @@ class Configuration {
         upAnimationTime: 0.5)
 
 
-    let OpKeyProperties = KeyProperties(
+    static let OpKeyProperties = KeyProperties(
         textColor: Color(
             red:   236.0/255.0,
             green: 235.0/255.0,
@@ -73,7 +73,7 @@ class Configuration {
         downAnimationTime: 0.1,
         upAnimationTime: 0.3)
 
-    let LightGrayKeyProperties = KeyProperties(
+    static let LightGrayKeyProperties = KeyProperties(
         textColor: Color(
             red:   236.0/255.0,
             green: 235.0/255.0,
@@ -89,8 +89,8 @@ class Configuration {
         downAnimationTime: 0.1,
         upAnimationTime: 0.5)
 #else
-    let digitsInSmallDisplay = 9
-    let appBackgroundColor = Color(.black)
+    static let digitsInSmallDisplay = 9
+    static let appBackgroundColor = Color(.black)
     let displayFontSize: CGFloat = 70
     let keyWidth: CGFloat = 20 // TODO remove this
     let keyHeight: CGFloat = 20
@@ -148,11 +148,11 @@ class Configuration {
     }
     
 #if targetEnvironment(macCatalyst)
-    func verticalSpace(forTotalWidth w: CGFloat)   -> CGFloat { 1.0 }
-    func horizontalSpace(forTotalWidth w: CGFloat) -> CGFloat { 1.0 }
+    static func verticalSpace(forTotalWidth w: CGFloat)   -> CGFloat { 1.0 }
+    static func horizontalSpace(forTotalWidth w: CGFloat) -> CGFloat { 1.0 }
 #else
-    func verticalSpace(forTotalWidth w: CGFloat)   -> CGFloat { 0.03 * w }
-    func horizontalSpace(forTotalWidth w: CGFloat) -> CGFloat { 0.03 * w }
+    static func verticalSpace(forTotalWidth w: CGFloat)   -> CGFloat { 0.03 * w }
+    static func horizontalSpace(forTotalWidth w: CGFloat) -> CGFloat { 0.03 * w }
 #endif
 
     /// singleton: private init and static shared object

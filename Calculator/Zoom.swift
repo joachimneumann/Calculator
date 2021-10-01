@@ -16,7 +16,7 @@ struct Zoom: View {
             if showCalculating {
                 ProgressView()
                     .scaleEffect(1.5, anchor: .center)
-                    .frame(width: Configuration.shared.zoomIconSize, height: Configuration.shared.zoomIconSize)
+                    .frame(width: Configuration.zoomIconSize, height: Configuration.zoomIconSize)
             } else {
                 Group {
                     if zoomed {
@@ -34,10 +34,10 @@ struct Zoom: View {
                 }
             }
         }
-        .foregroundColor(active ? Configuration.shared.DigitKeyProperties.textColor : Color(white: 0.5))
+        .foregroundColor(active ? Configuration.DigitKeyProperties.textColor : Color(white: 0.5))
         .font(Font.system(size: 100, weight: .bold).monospacedDigit())
         .minimumScaleFactor(0.01)
-        .frame(width: Configuration.shared.zoomIconSize, height: Configuration.shared.zoomIconSize)
+        .frame(width: Configuration.zoomIconSize, height: Configuration.zoomIconSize)
     }
 }
 

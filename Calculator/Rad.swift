@@ -9,8 +9,8 @@ import SwiftUI
 
 struct Rad: View {
     var body: some View {
-        let radSize = Configuration.shared.displayFontSize*0.25
-        let yPadding = Configuration.shared.displayFontSize - radSize*1.4
+        let radSize = Configuration.displayFontSize*0.25
+        let yPadding = Configuration.displayFontSize - radSize*1.4
         HStack {
             VStack {
                 Text("Rad")
