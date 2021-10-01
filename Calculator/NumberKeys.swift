@@ -137,7 +137,7 @@ struct NumberKeys: View {
         horizontalSpace = Configuration.spaceBetweenkeys(appFrame: appFrame)
         verticalSpace   = Configuration.spaceBetweenkeys(appFrame: appFrame)
         size = Configuration.numberKeySize(appFrame: appFrame)
-        slightlyLargerSize = CGSize(width: size.width+2, height: size.height)
+        slightlyLargerSize = Configuration.slightlyLargerNumberKeySize(appFrame: appFrame)
     }
 }
 

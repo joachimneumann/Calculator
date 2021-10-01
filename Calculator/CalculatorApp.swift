@@ -81,7 +81,7 @@ struct SizeKey: PreferenceKey {
 }
 
 extension View {
-    func captureSize(in binding: Binding<CGSize>) -> some View {
+    func captureSize(in binding: Binding<CGSize?>) -> some View {
         return overlay(GeometryReader { proxy in
             Color.clear.preference(key: SizeKey.self, value: proxy.size)
         })

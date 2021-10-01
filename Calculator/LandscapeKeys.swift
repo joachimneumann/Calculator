@@ -11,13 +11,13 @@ struct LandscapeKeys: View {
     var brain: Brain
     let appFrame: CGSize
     var body: some View {
-        HStack(alignment: .top, spacing: 1) {
+        HStack(alignment: .top, spacing: Configuration.spaceBetweenkeys(appFrame: appFrame)) {
             ScientificKeys(
                 brain: brain,
-                appFrame: Configuration.scientificKeySize(appFrame: appFrame))
+                appFrame: appFrame)
             NumberKeys(
                 brain: brain,
-                appFrame: Configuration.numberKeySize(appFrame: appFrame))
+                appFrame: appFrame)
         }
     }
     init(brain: Brain, appFrame: CGSize) {
