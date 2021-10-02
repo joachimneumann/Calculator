@@ -141,12 +141,3 @@ struct NumberKeys: View {
     }
 }
 
-struct NumberKeys_Previews: PreviewProvider {
-    static var previews: some View {
-        ZStack {
-            Rectangle()
-            NumberKeys(brain: Brain(), c: Configuration(appFrame: CGSize(width: 100, height: 100)))
-        }
-            .background(Color.black)
-    }
-}

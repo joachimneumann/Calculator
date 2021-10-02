@@ -247,9 +247,3 @@ struct ScientificKeys: View {
         keySize = c.scientificKeySize
     }
 }
-
-struct ScientificKeys_Previews: PreviewProvider {
-    static var previews: some View {
-        ScientificKeys(brain: Brain(), c: Configuration(appFrame: CGSize(width: 100, height: 100)))
-    }
-}

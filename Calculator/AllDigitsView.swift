@@ -13,7 +13,7 @@ struct AllDigitsView: View {
     
     var body: some View {
         HStack(spacing: 0) {
-            VStack {
+            VStack(spacing: 0) {
                 ScrollView(.vertical, showsIndicators: true) {
                     Text(brain.longDisplayString.0)
                         .foregroundColor(textColor)
@@ -27,7 +27,7 @@ struct AllDigitsView: View {
             }
             Spacer(minLength: 0)
         }
-        .padding(.top, 0.2) /// TODO: Unterstand why this magically persuads the Scrollview to respect the SafeArea
+        .padding(.top, 0.2) /// TODO: Unterstand why this magically persuades the Scrollview to respect the SafeArea
     }
 }
 

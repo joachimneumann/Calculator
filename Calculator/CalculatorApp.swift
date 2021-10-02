@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct CalculatorApp: App {
-    
+    let brain = Brain()
 #if targetEnvironment(macCatalyst)
     // force window size on Mac
     @UIApplicationDelegateAdaptor var delegate: FSAppDelegate
@@ -22,7 +22,7 @@ struct CalculatorApp: App {
             CatalystContentView()
                 .background(Configuration.appBackgroundColor)
 #else
-            IOSContentView()
+            iOSSize(brain: brain) //IOSContentView()
                 .background(Rectangle()
                                 .frame(width: deviceSize, height: deviceSize, alignment: .center)
                                 .foregroundColor(Configuration.appBackgroundColor) //Color.yellow.opacity(0.5))

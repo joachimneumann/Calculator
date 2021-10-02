@@ -131,13 +131,13 @@ class Configuration {
         downAnimationTime: 0.1,
         upAnimationTime: 0.5)
 
-    static let digitsInSmallDisplay = 14
-    static let displayFontSize: CGFloat = 47.0
+    static let digitsInSmallDisplay = 16
     static let zoomIconSize: CGFloat = 30.0
-    static let spacingFration: CGFloat = 0.01
+    static let spacingFration: CGFloat = 0.03
     static let numberPadFration: CGFloat = 0.4//(0.4+3.0*spacingFration)/(1.0+9.0*spacingFration)
     
-    var landscapeAspectRatio: CGFloat = 0.0
+    var displayFontSize: CGFloat = 0.0
+    var isLandscape: Bool = false
     var spaceBetweenkeys: CGFloat = 0.0
     var numberPadWidth: CGFloat = 0.0
     var scientificPadWidth: CGFloat = 0.0
@@ -146,29 +146,31 @@ class Configuration {
     var slightlyLargerNumberKeySize: CGSize = CGSize(width: 0.0, height: 0.0)
     var scientificKeySize: CGSize = CGSize(width: 0.0, height: 0.0)
     init(appFrame: CGSize) {
+        isLandscape = appFrame.width > appFrame.height
         print("calc() appFrame=\(appFrame)")
-        landscapeAspectRatio = (10.0 + 9.0 * Self.spacingFration) / (5 + 4.0 * Self.spacingFration) /// iPhone 11 Pro Max: 2.489
-        spaceBetweenkeys = appFrame.width * Self.spacingFration
+        let landscapeAspectRatio = (10.0 + 9.0 * Self.spacingFration) / (5 + 4.0 * Self.spacingFration)
+        let portraitAspectRatio = (4.0 + 3.0 * Self.spacingFration) / (5 + 4.0 * Self.spacingFration)
         
-        // numberKeys
-        let aspectRatio = max(landscapeAspectRatio, appFrame.width / (appFrame.height*0.8))
-        //let landscapePadding = spaceBetweenkeys
-        let allKeysWidth  = appFrame.width//-landscapePadding
+        let aspectRatio = max(isLandscape ? landscapeAspectRatio : portraitAspectRatio, appFrame.width / (appFrame.height*0.8))
+
+        let allKeysWidth  = appFrame.width
         allKeysHeight = allKeysWidth / aspectRatio
-        numberPadWidth = allKeysWidth * Self.numberPadFration
+        numberPadWidth = allKeysWidth * (isLandscape ? Self.numberPadFration : 1.0)
+        displayFontSize = allKeysHeight * 0.2
+        spaceBetweenkeys = numberPadWidth * Self.spacingFration
         // print("numberKeySize appFrame=\(appFrame)")
         var keywidth = (numberPadWidth - 3.0*spaceBetweenkeys) * 0.25
         var keyheight = (allKeysHeight - 4.0*spaceBetweenkeys) * 0.20
-        let n = keywidth*4+3*spaceBetweenkeys
-        print(n)
+        //let n = keywidth*4+3*spaceBetweenkeys
+        //print(n)
         numberKeySize = CGSize(width: keywidth, height: keyheight)
         slightlyLargerNumberKeySize = numberKeySize
         
         scientificPadWidth = allKeysWidth - numberPadWidth - spaceBetweenkeys
         keywidth = (scientificPadWidth - 5.0*spaceBetweenkeys) / 6.0
-        let s = keywidth*6+5*spaceBetweenkeys
-        print(s)
-        print(n+s+spaceBetweenkeys)
+        //let s = keywidth*6+5*spaceBetweenkeys
+        //print(s)
+        //print(n+s+spaceBetweenkeys)
         keyheight = (allKeysHeight - 4.0*spaceBetweenkeys) * 0.2
         scientificKeySize = CGSize(width: keywidth, height: keyheight)
     }
