@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct Rad: View {
+    let radSize: CGFloat
+    let yPadding: CGFloat
     var body: some View {
-        let radSize = Configuration.displayFontSize*0.25
-        let yPadding = Configuration.displayFontSize - radSize*1.4
         HStack {
             VStack {
                 Text("Rad")
@@ -22,11 +22,5 @@ struct Rad: View {
             .padding(.top, yPadding)
             Spacer()
         }
-    }
-}
-
-struct Rad_Previews: PreviewProvider {
-    static var previews: some View {
-        Rad()
     }
 }

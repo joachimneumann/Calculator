@@ -235,6 +235,6 @@ class Gmp {
 
 extension Gmp: Equatable {
     static func ==(lhs: Gmp, rhs: Gmp) -> Bool {
-        DisplayData(gmp: lhs, digits: 10000-1) == DisplayData(gmp: rhs, digits: 10000-1)
+        DisplayData(gmp: lhs, digits: Configuration.digitsInAllDigitsDisplay) == DisplayData(gmp: rhs, digits: Configuration.digitsInAllDigitsDisplay)
     }
 }

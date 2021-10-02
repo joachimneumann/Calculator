@@ -13,26 +13,25 @@ struct CalculatorApp: App {
 #if targetEnvironment(macCatalyst)
     // force window size on Mac
     @UIApplicationDelegateAdaptor var delegate: FSAppDelegate
-    var body: some Scene {
-        WindowGroup {
-            ZStack {
-                Configuration.appBackgroundColor
-                    .ignoresSafeArea()
-                CatalystContentView()
-            }
-        }
-    }
-#else
-    var body: some Scene {
-        WindowGroup {
-            ZStack {
-                Configuration.appBackgroundColor
-                    .ignoresSafeArea()
-                IOSContentView()
-            }
-        }
-    }
 #endif
+    var body: some Scene {
+        WindowGroup {
+            // a little hack to prevent that which background creeps up during device orientation chang rotation
+            let deviceSize = 1.5*max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
+#if targetEnvironment(macCatalyst)
+            CatalystContentView()
+                .background(Configuration.appBackgroundColor)
+#else
+            IOSContentView()
+                .background(Rectangle()
+                                .frame(width: deviceSize, height: deviceSize, alignment: .center)
+                            //.frame(width: 100, height: 100, alignment: .center)
+                                .foregroundColor(Configuration.appBackgroundColor)
+                                .ignoresSafeArea()
+                )
+#endif
+        }
+    }
 }
 
 #if targetEnvironment(macCatalyst)

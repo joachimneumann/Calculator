@@ -9,6 +9,7 @@ import SwiftUI
 
 struct Display: View {
     let text: String
+    let fontSize: CGFloat
     let textColor: Color
 
     var body: some View {
@@ -16,14 +17,9 @@ struct Display: View {
             Spacer(minLength: 0)
             Text(text)
                 .foregroundColor(textColor)
-                .font(Font.system(size: Configuration.displayFontSize, weight: .thin).monospacedDigit())
+                .font(Font.system(size: fontSize, weight: .thin).monospacedDigit())
                 .lineLimit(1)
         }
     }
 }
 
-struct Display_Previews: PreviewProvider {
-    static var previews: some View {
-        Display(text: "0", textColor: Color.white)
-    }
-}

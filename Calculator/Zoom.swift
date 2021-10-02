@@ -9,6 +9,8 @@ import SwiftUI
 
 struct Zoom: View {
     var active: Bool
+    let iconSize: CGFloat
+    let textColor: Color
     @Binding var zoomed: Bool
     let showCalculating: Bool
     var body: some View {
@@ -16,7 +18,7 @@ struct Zoom: View {
             if showCalculating {
                 ProgressView()
                     .scaleEffect(1.5, anchor: .center)
-                    .frame(width: Configuration.zoomIconSize, height: Configuration.zoomIconSize)
+                    .frame(width: iconSize, height: iconSize)
             } else {
                 Group {
                     if zoomed {
@@ -34,17 +36,11 @@ struct Zoom: View {
                 }
             }
         }
-        .foregroundColor(active ? Configuration.DigitKeyProperties.textColor : Color(white: 0.5))
+        .foregroundColor(active ? textColor : Color(white: 0.5))
         .font(Font.system(size: 100, weight: .bold).monospacedDigit())
         .minimumScaleFactor(0.01)
-        .frame(width: Configuration.zoomIconSize, height: Configuration.zoomIconSize)
+        .frame(width: iconSize, height: iconSize)
     }
 }
 
-
-struct Zoom_Previews: PreviewProvider {
-    static var previews: some View {
-        Zoom(active: true, zoomed: .constant(false), showCalculating: true)
-    }
-}
 

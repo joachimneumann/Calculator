@@ -10,12 +10,14 @@ import SwiftUI
 struct RootShape: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        let w: CGFloat = rect.size.width
-        let h: CGFloat = rect.size.height
+        var w: CGFloat = rect.size.width
+        var h: CGFloat = rect.size.height
         let steepness: CGFloat = 2.8
         let f: CGFloat = 0.6
-        let startX: CGFloat = 0.3 * w
-        let startY: CGFloat = 0.55 * h
+        let startX: CGFloat = (0.5 - 0.2*Configuration.iPhoneScientificFontSizeReduction) * w
+        let startY: CGFloat = (0.5 + 0.05*Configuration.iPhoneScientificFontSizeReduction) * h
+        w *= Configuration.iPhoneScientificFontSizeReduction
+        h *= Configuration.iPhoneScientificFontSizeReduction
         let downX: CGFloat = startX + f * 0.08 * w
         let downY: CGFloat = startY + f * 0.08 * h * steepness
         let upX: CGFloat = downX + f * 0.2 * w
@@ -36,10 +38,11 @@ struct SlashShape: Shape {
         var path = Path()
         let w: CGFloat = rect.size.width
         let h: CGFloat = rect.size.height
-        let sw = 0.2*w
+        var sw = 0.2*w
         let steepness: CGFloat = 1.3
-        let startX: CGFloat = 0.5 * w - 0.5 * sw
-        let startY: CGFloat = 0.5 * h + 0.5 * steepness * sw
+        let startX: CGFloat = 0.5 * w - 0.5 * sw * Configuration.iPhoneScientificFontSizeReduction
+        let startY: CGFloat = 0.5 * h + 0.5 * sw * steepness * Configuration.iPhoneScientificFontSizeReduction
+        sw *= Configuration.iPhoneScientificFontSizeReduction
         let upX: CGFloat = startX+sw
         let upY: CGFloat = startY-sw*steepness
         
@@ -55,8 +58,8 @@ struct Root: View {
     var body: some View {
         ZStack {
             GeometryReader { geo in
-                let w = geo.size.width
-                let h = geo.size.height
+                let w = geo.size.width*Configuration.iPhoneScientificFontSizeReduction
+                let h = geo.size.height*Configuration.iPhoneScientificFontSizeReduction
                 VStack(spacing:0) {
                     Spacer(minLength: 0)
                     HStack(spacing:0) {
@@ -91,12 +94,12 @@ struct One_x: View {
     var body: some View {
         ZStack {
             GeometryReader { geo in
-                let w = geo.size.width
-                let h = geo.size.height
+                let w: CGFloat = geo.size.width*Configuration.iPhoneScientificFontSizeReduction
+                let h: CGFloat = geo.size.height*Configuration.iPhoneScientificFontSizeReduction
                 VStack(spacing:0) {
-                    Spacer(minLength: 0)
-                    HStack(spacing:0) {
-                        Spacer(minLength: 0)
+                    Spacer(minLength: 0.0)
+                    HStack(spacing: 0.0) {
+                        Spacer(minLength: 0.0)
                         ZStack {
                             Text("1")
                                 .font(.system(size: h*0.25))
@@ -122,7 +125,7 @@ struct Logx: View {
     var body: some View {
         ZStack {
             GeometryReader { geo in
-                let s = min(geo.size.width, geo.size.height)
+                let s = min(geo.size.width, geo.size.height)*Configuration.iPhoneScientificFontSizeReduction
                 VStack(spacing:0) {
                     Spacer(minLength: 0)
                     HStack(spacing:0) {
@@ -148,7 +151,7 @@ struct Pow: View {
     var body: some View {
         ZStack {
             GeometryReader { geo in
-                let s = min(geo.size.width, geo.size.height)
+                let s = min(geo.size.width, geo.size.height)*Configuration.iPhoneScientificFontSizeReduction
                 VStack(spacing:0) {
                     Spacer(minLength: 0)
                     HStack(spacing:0) {

@@ -8,7 +8,7 @@
 import Foundation
 
 class Brain: ObservableObject {
-    private var n = NumberStack()
+    private var n = NumberStack(digitsInDisplay: Configuration.digitsInSmallDisplay)
     var operatorStack = OperatorStack() // TODO private after testing
     @Published var calculating: Bool = false
     @Published var showCalculating: Bool = false
@@ -17,7 +17,11 @@ class Brain: ObservableObject {
     var display: String           { n.display }
     var longDisplayString: (String, String?) { n.longDisplay }
     func combinedLongDisplayString(longDisplayString: (String, String?)) -> String {
-        longDisplayString.1 == nil ? longDisplayString.0 : longDisplayString.0+" "+longDisplayString.1!
+        if longDisplayString.1 == nil {
+            return longDisplayString.0
+        } else {
+            return longDisplayString.0+" "+longDisplayString.1!
+        }
     }
     var hasMoreDigits: Bool       { n.hasMoreDigits }
     var pendingOperator: String?

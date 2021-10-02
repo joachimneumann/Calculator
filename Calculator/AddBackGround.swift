@@ -8,14 +8,14 @@
 import SwiftUI
 
 private struct AddBackGround: ViewModifier {
-    let properties: Configuration.KeyProperties
+    let keyProperties: KeyProperties
     let isAllowed: Bool
     let isPending: Bool
     let callback: (() -> Void)?
     var bg: Color {
         if down {
             if isAllowed {
-                return properties.downColor
+                return keyProperties.downColor
             } else {
                 return Color(
                     red:   229.0/255.0,
@@ -24,9 +24,9 @@ private struct AddBackGround: ViewModifier {
             }
         } else {
             if isPending {
-                return properties.textColor
+                return keyProperties.textColor
             } else {
-                return properties.color
+                return keyProperties.bgColor
             }
         }
     }
@@ -41,14 +41,14 @@ private struct AddBackGround: ViewModifier {
             DragGesture(minimumDistance: 0.0)
                 .onChanged() { value in
                     if callback != nil {
-                        withAnimation(.easeIn(duration: properties.downAnimationTime)) {
+                        withAnimation(.easeIn(duration: keyProperties.downAnimationTime)) {
                             down = true
                         }
                     }
                 }
                 .onEnded() { value in
                     if callback != nil {
-                        withAnimation(.easeIn(duration: properties.upAnimationTime)) {
+                        withAnimation(.easeIn(duration: keyProperties.upAnimationTime)) {
                             down = false
                         }
                         if isAllowed { callback!() }
@@ -59,7 +59,7 @@ private struct AddBackGround: ViewModifier {
 }
 
 extension View {
-    func addBackground(with properties: Configuration.KeyProperties, isAllowed: Bool, isPending: Bool, callback: (() -> Void)?) -> some View {
-        return self.modifier(AddBackGround(properties: properties, isAllowed: isAllowed, isPending: isPending, callback: callback))
+    func addBackground(with keyProperties: KeyProperties, isAllowed: Bool, isPending: Bool, callback: (() -> Void)?) -> some View {
+        return self.modifier(AddBackGround(keyProperties: keyProperties, isAllowed: isAllowed, isPending: isPending, callback: callback))
     }
 }
