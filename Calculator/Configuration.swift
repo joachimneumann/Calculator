@@ -131,8 +131,8 @@ class Configuration {
         downAnimationTime: 0.1,
         upAnimationTime: 0.5)
 
-    static let digitsInSmallDisplay = 9
-    static let displayFontSize: CGFloat = 10.0
+    static let digitsInSmallDisplay = 14
+    static let displayFontSize: CGFloat = 47.0
     static let zoomIconSize: CGFloat = 30.0
     static let spacingFration: CGFloat = 0.01
     static let numberPadFration: CGFloat = 0.4//(0.4+3.0*spacingFration)/(1.0+9.0*spacingFration)

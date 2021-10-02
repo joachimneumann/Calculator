@@ -13,6 +13,7 @@ struct Copy: View {
     var body: some View {
         Text("Copy")
             .font(.system(size: 14))
+            .foregroundColor(Color.white)
             .onTapGesture {
                 animationCallback()
                 UIPasteboard.general.string = longString
@@ -25,6 +26,7 @@ struct Paste: View {
     var body: some View {
         Text("Paste")
             .font(.system(size: 14))
+            .foregroundColor(Color.white)
             .onTapGesture {
                 if let content = UIPasteboard.general.string {
                     pasteAndAnimationCallback(content)

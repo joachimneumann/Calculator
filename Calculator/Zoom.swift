@@ -16,8 +16,10 @@ struct Zoom: View {
     var body: some View {
         ZStack {
             if showCalculating {
+                Circle()
+                    .foregroundColor(Color.yellow.opacity(1.0))
                 ProgressView()
-                    .scaleEffect(1.5, anchor: .center)
+                    .scaleEffect(1.3, anchor: .center)
                     .frame(width: iconSize, height: iconSize)
             } else {
                 Group {

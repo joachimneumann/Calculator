@@ -25,7 +25,7 @@ struct CalculatorApp: App {
             IOSContentView()
                 .background(Rectangle()
                                 .frame(width: deviceSize, height: deviceSize, alignment: .center)
-                                .foregroundColor(Color.yellow)//Configuration.appBackgroundColor)
+                                .foregroundColor(Configuration.appBackgroundColor) //Color.yellow.opacity(0.5))
                                 .ignoresSafeArea()
                 )
 #endif

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 class Brain: ObservableObject {
     private var n = NumberStack(digitsInDisplay: Configuration.digitsInSmallDisplay)
@@ -137,15 +138,19 @@ class Brain: ObservableObject {
         if !self.calculating {
             self.calculating = true
             DispatchQueue.global().async {
-                DispatchQueue.main.asyncAfter(deadline: .now()+0.25) {
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.0) {
                     if self.calculating {
-                        self.showCalculating = true
+                        withAnimation() {
+                            self.showCalculating = true
+                        }
                     }
                 }
                 self.operationWorker(symbol, withPending: withPending)
                 DispatchQueue.main.async {
                     self.calculating = false
-                    self.showCalculating = false
+                    withAnimation() {
+                        self.showCalculating = false
+                    }
                     self.objectWillChange.send()
                 }
             }

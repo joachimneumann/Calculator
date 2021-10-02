@@ -19,6 +19,7 @@ struct Display: View {
                 .foregroundColor(textColor)
                 .font(Font.system(size: fontSize, weight: .thin).monospacedDigit())
                 .lineLimit(1)
+                .minimumScaleFactor(0.5)
         }
     }
 }

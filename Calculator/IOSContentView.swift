@@ -33,9 +33,90 @@ struct IOSContentView: View {
         bottomPaddingNeeded   = (insets.bottom == 0)
     }
     
+    struct ZoomAndCo: View {
+        @Binding var zoomed: Bool
+        @Binding var copyPasteHighlight: Bool
+        let active: Bool
+        let showCalculating: Bool
+        let c: Configuration
+        let brain: Brain
+        let trailingPadding: CGFloat
+        var body: some View {
+            HStack(spacing: 0) {
+                Spacer(minLength: 0)
+                ZStack {
+                    VStack(spacing: 0) {
+                        Spacer(minLength: 0)
+                        Zoom(active: active,
+                             iconSize: c.numberKeySize.height*0.75,
+                             textColor: Color.white,
+                             zoomed: $zoomed,
+                             showCalculating: showCalculating)
+                            .frame(width: c.numberKeySize.width)
+                            .padding(.trailing, trailingPadding)
+                    }
+                    .padding(.bottom, c.allKeysHeight + c.numberKeySize.height * 0.125)
+                    VStack(spacing: 0) {
+                        Spacer(minLength: 0)
+                        Copy(longString: brain.combinedLongDisplayString(longDisplayString: brain.longDisplayString)) {
+                            copyPasteHighlight = true
+                            let now = DispatchTime.now()
+                            var whenWhen: DispatchTime
+                            whenWhen = now + DispatchTimeInterval.milliseconds(300)
+                            DispatchQueue.main.asyncAfter(deadline: whenWhen) {
+                                copyPasteHighlight = false
+                            }
+                        }
+                        .transition(.move(edge: .bottom))
+                        .padding(.bottom, c.allKeysHeight + c.numberKeySize.height * 0.125 - 80.0)
+                    }
+                    VStack(spacing: 0) {
+                        Spacer(minLength: 0)
+                        Paste() { fromPasteboard in
+                            copyPasteHighlight = true
+                            let now = DispatchTime.now()
+                            var whenWhen: DispatchTime
+                            whenWhen = now + DispatchTimeInterval.milliseconds(300)
+                            DispatchQueue.main.asyncAfter(deadline: whenWhen) {
+                                copyPasteHighlight = false
+                            }
+                            brain.fromPasteboard(fromPasteboard)
+                        }
+                        .padding(.bottom, c.allKeysHeight + c.numberKeySize.height * 0.125 - 120.0)
+                    }
+                }
+//                    Copy(longString: brain.combinedLongDisplayString(longDisplayString: brain.longDisplayString)) {
+//                        copyPasteHighlight = true
+//                        let now = DispatchTime.now()
+//                        var whenWhen: DispatchTime
+//                        whenWhen = now + DispatchTimeInterval.milliseconds(300)
+//                        DispatchQueue.main.asyncAfter(deadline: whenWhen) {
+//                            copyPasteHighlight = false
+//                        }
+//                    }
+//                    .padding(.trailing, trailingPadding)
+////                    .padding(.top, 40)
+//                    Paste() { fromPasteboard in
+//                        copyPasteHighlight = true
+//                        let now = DispatchTime.now()
+//                        var whenWhen: DispatchTime
+//                        whenWhen = now + DispatchTimeInterval.milliseconds(300)
+//                        DispatchQueue.main.asyncAfter(deadline: whenWhen) {
+//                            copyPasteHighlight = false
+//                        }
+//                        brain.fromPasteboard(fromPasteboard)
+//                    }
+//                    .padding(.top, 20)
+//                }
+            }
+        }
+    }
+    
+    
+
     var body: some View {
-        return ZStack {
-            GeometryReader { geo in
+        GeometryReader { geo in
+            ZStack {
                 
                 /// make the app frame smaller if there is no safe area.
                 /// If there already is safe area, no padding is needed
@@ -49,25 +130,60 @@ struct IOSContentView: View {
                     width: geo.size.width * horizontalFactor,
                     height: geo.size.height * verticalFactor)
                 let c = Configuration(appFrame: appFrame)
-                
-                VStack {
-                    Spacer(minLength: 0)
-                    HStack(spacing: 0) {
-                        Spacer(minLength: leadingPaddingNeeded ? c.spaceBetweenkeys : 0)
-                        ScientificKeys(
-                            brain: brain, c: c)
-                            .frame(width: c.scientificPadWidth, height: c.allKeysHeight)
-                            .background(Color.orange)
-                        Spacer(minLength: c.spaceBetweenkeys)
-                        NumberKeys(
-                            brain: brain, c: c)
-                            .background(Color.orange)
-                            .frame(width: c.numberPadWidth, height: c.allKeysHeight)
-                        Spacer(minLength: trailingPaddingNeeded ? c.spaceBetweenkeys : 0)
+                let leadingPadding = leadingPaddingNeeded ? c.spaceBetweenkeys : 0
+                let trailingPadding = trailingPaddingNeeded ? c.spaceBetweenkeys : 0
+
+                ZoomAndCo(
+                    zoomed: $zoomed,
+                    copyPasteHighlight: $copyPasteHighlight,
+                    active: brain.hasMoreDigits,
+                    showCalculating: brain.showCalculating,
+                    c: c,
+                    brain: brain,
+                    trailingPadding: trailingPadding)
+
+                if zoomed && brain.hasMoreDigits {
+                    AllDigitsView(
+                        brain: brain,
+                        textColor: copyPasteHighlight ? Color.orange : Configuration.DigitKeyProperties.textColor)
+                        .padding(.trailing, c.numberKeySize.width + 0.5 * c.spaceBetweenkeys + trailingPadding)
+                        .padding(.leading, leadingPadding)
+                } else {
+                    VStack(spacing: 0) {
+                        Spacer(minLength: 0)
+                        Display(
+                            text: brain.display,
+                            fontSize: Configuration.displayFontSize,
+                            textColor: copyPasteHighlight ? Color.orange : Configuration.DigitKeyProperties.textColor)
+                            //.background(Color.red)
+                            .padding(.trailing, c.numberKeySize.width + 0.5 * c.spaceBetweenkeys + trailingPadding)
+                            .padding(.leading, leadingPadding)
+                            .padding(.bottom, c.allKeysHeight)// + c.numberKeySize.height * 0.125)
                     }
-                    .background(Color.green)
+                    .transition(.move(edge: .bottom))
+                    if !zoomed {
+                        VStack(spacing: 0) {
+                            Spacer(minLength: 0)
+                            HStack(spacing: 0) {
+                                Spacer(minLength: leadingPadding)
+                                ScientificKeys(
+                                    brain: brain, c: c)
+                                    .frame(width: c.scientificPadWidth, height: c.allKeysHeight)
+                                    //.background(Color.orange)
+                                Spacer(minLength: c.spaceBetweenkeys)
+                                NumberKeys(
+                                    brain: brain, c: c)
+                                    //.background(Color.orange)
+                                    .frame(width: c.numberPadWidth, height: c.allKeysHeight)
+                                Spacer(minLength: trailingPadding)
+                            }
+                            .background(Configuration.appBackgroundColor)
+                            .transition(.move(edge: .bottom))
+                        }
+                        .padding(.bottom, bottomPaddingNeeded ? c.spaceBetweenkeys : 0)
+                        .transition(.move(edge: .bottom))
+                    }
                 }
-                .padding(.bottom, bottomPaddingNeeded ? c.spaceBetweenkeys : 0)
             }
         }
         .onRotate() { calculatePadding() }
@@ -89,10 +205,10 @@ struct IOSContentView: View {
         //                    } else {
         //                        ZStack {
         //                            VStack {
-        ////                                Display(
-        ////                                    text: brain.display,
-        ////                                    textColor: copyPasteHighlight ? Color.orange : Configuration.DigitKeyProperties.textColor)
-        ////                                    .padding(.trailing, Configuration.numberKeySize(appFrame: appFrame).width)
+        //                                Display(
+        //                                    text: brain.display,
+        //                                    textColor: copyPasteHighlight ? Color.orange : Configuration.DigitKeyProperties.textColor)
+        //                                    .padding(.trailing, Configuration.numberKeySize(appFrame: appFrame).width)
         //                                Spacer(minLength: 0)
         //                                if !zoomed {
         //                                    LandscapeKeys(brain: brain, appFrame: appFrame)
