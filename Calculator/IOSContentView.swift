@@ -38,33 +38,35 @@ struct IOSContentView: View {
                             .padding(.trailing, 0)//trailingPadding)
                     }
                     .padding(.bottom, c.allKeysHeight + c.numberKeySize.height * 0.125)
-                    VStack(spacing: 0) {
-                        Spacer(minLength: 0)
-                        Copy(longString: brain.combinedLongDisplayString(longDisplayString: brain.longDisplayString)) {
-                            copyPasteHighlight = true
-                            let now = DispatchTime.now()
-                            var whenWhen: DispatchTime
-                            whenWhen = now + DispatchTimeInterval.milliseconds(300)
-                            DispatchQueue.main.asyncAfter(deadline: whenWhen) {
-                                copyPasteHighlight = false
+                    if zoomed {
+                        VStack(spacing: 0) {
+                            Spacer(minLength: 0)
+                            Copy(longString: brain.combinedLongDisplayString(longDisplayString: brain.longDisplayString)) {
+                                copyPasteHighlight = true
+                                let now = DispatchTime.now()
+                                var whenWhen: DispatchTime
+                                whenWhen = now + DispatchTimeInterval.milliseconds(300)
+                                DispatchQueue.main.asyncAfter(deadline: whenWhen) {
+                                    copyPasteHighlight = false
+                                }
                             }
+                            .transition(.move(edge: .bottom))
+                            .padding(.bottom, c.allKeysHeight + c.numberKeySize.height * 0.125 - 80.0)
                         }
-                        .transition(.move(edge: .bottom))
-                        .padding(.bottom, c.allKeysHeight + c.numberKeySize.height * 0.125 - 80.0)
-                    }
-                    VStack(spacing: 0) {
-                        Spacer(minLength: 0)
-                        Paste() { fromPasteboard in
-                            copyPasteHighlight = true
-                            let now = DispatchTime.now()
-                            var whenWhen: DispatchTime
-                            whenWhen = now + DispatchTimeInterval.milliseconds(300)
-                            DispatchQueue.main.asyncAfter(deadline: whenWhen) {
-                                copyPasteHighlight = false
+                        VStack(spacing: 0) {
+                            Spacer(minLength: 0)
+                            Paste() { fromPasteboard in
+                                copyPasteHighlight = true
+                                let now = DispatchTime.now()
+                                var whenWhen: DispatchTime
+                                whenWhen = now + DispatchTimeInterval.milliseconds(300)
+                                DispatchQueue.main.asyncAfter(deadline: whenWhen) {
+                                    copyPasteHighlight = false
+                                }
+                                brain.fromPasteboard(fromPasteboard)
                             }
-                            brain.fromPasteboard(fromPasteboard)
+                            .padding(.bottom, c.allKeysHeight + c.numberKeySize.height * 0.125 - 120.0)
                         }
-                        .padding(.bottom, c.allKeysHeight + c.numberKeySize.height * 0.125 - 120.0)
                     }
                 }
             }
