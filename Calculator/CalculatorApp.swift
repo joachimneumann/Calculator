@@ -25,8 +25,7 @@ struct CalculatorApp: App {
             IOSContentView()
                 .background(Rectangle()
                                 .frame(width: deviceSize, height: deviceSize, alignment: .center)
-                            //.frame(width: 100, height: 100, alignment: .center)
-                                .foregroundColor(Configuration.appBackgroundColor)
+                                .foregroundColor(Color.yellow)//Configuration.appBackgroundColor)
                                 .ignoresSafeArea()
                 )
 #endif
@@ -79,15 +78,19 @@ struct SizeKey: PreferenceKey {
     }
 }
 
-extension View {
-    func captureSize(in binding: Binding<CGSize?>) -> some View {
-        return overlay(GeometryReader { proxy in
-            Color.clear.preference(key: SizeKey.self, value: proxy.size)
-        })
-            .onPreferenceChange(SizeKey.self) { size in
-                DispatchQueue.main.async {
-                    binding.wrappedValue = size
-                }
-            }
+extension UIDevice {
+    /// Use with UIDevice.current.orientation
+    var safeAreaInsets: UIEdgeInsets {
+        let windowCandidate = UIApplication
+            .shared
+            .connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow }
+        if let window = windowCandidate {
+            return window.safeAreaInsets
+        } else {
+            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        }
     }
 }

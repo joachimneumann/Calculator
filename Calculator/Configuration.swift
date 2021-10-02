@@ -135,7 +135,7 @@ class Configuration {
     static let displayFontSize: CGFloat = 10.0
     static let zoomIconSize: CGFloat = 30.0
     static let spacingFration: CGFloat = 0.01
-    static let numberPadFration: CGFloat = 0.3//(0.4+3.0*spacingFration)/(1.0+9.0*spacingFration)
+    static let numberPadFration: CGFloat = 0.4//(0.4+3.0*spacingFration)/(1.0+9.0*spacingFration)
     
     var landscapeAspectRatio: CGFloat = 0.0
     var spaceBetweenkeys: CGFloat = 0.0
