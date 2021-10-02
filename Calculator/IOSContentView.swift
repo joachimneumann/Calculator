@@ -160,7 +160,22 @@ struct IOSContentView: View {
                             .padding(.leading, leadingPadding)
                             .padding(.bottom, c.allKeysHeight)// + c.numberKeySize.height * 0.125)
                     }
-                    .transition(.move(edge: .bottom))
+                    if brain.rad && !zoomed {
+                        VStack(spacing: 0) {
+                            Spacer(minLength: 0)
+                            HStack(spacing: 0) {
+                                let radFontSize: CGFloat = Configuration.displayFontSize*0.33
+                                Text("Rad")
+                                    .font(Font.system(size: radFontSize).monospacedDigit())
+                                    .foregroundColor(Configuration.DigitKeyProperties.textColor)
+                                    .padding(.trailing, c.numberKeySize.width + 0.5 * c.spaceBetweenkeys + trailingPadding)
+                                    .padding(.leading, leadingPadding + 0.5 * c.numberKeySize.width - radFontSize)
+                                    .padding(.bottom, c.allKeysHeight + c.numberKeySize.height * 0.125)
+                                Spacer(minLength: 0)
+                            }
+                        }
+                        .transition(.move(edge: .bottom))
+                    }
                     if !zoomed {
                         VStack(spacing: 0) {
                             Spacer(minLength: 0)
