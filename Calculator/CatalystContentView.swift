@@ -18,16 +18,16 @@ struct CatalystContentView: View {
             if zoomed && brain.hasMoreDigits {
                 AllDigitsView(
                     brain: brain,
-                    textColor: copyPasteHighlight ? Color.orange : Configuration.shared.DigitKeyProperties.textColor)
-                    .padding(.trailing, Configuration.shared.scientificKeySize(appFrame: appFrame).width)
+                    textColor: copyPasteHighlight ? Color.orange : TargetEnvironment.shared.DigitKeyProperties.textColor)
+                    .padding(.trailing, TargetEnvironment.shared.scientificKeySize(appFrame: appFrame).width)
                     .padding(.leading, 10)
             } else {
                 ZStack {
                     VStack {
                         Display(
                             text: brain.display,
-                            textColor: copyPasteHighlight ? Color.orange : Configuration.shared.DigitKeyProperties.textColor)
-                            .padding(.trailing, Configuration.shared.scientificKeySize(appFrame: appFrame).width)
+                            textColor: copyPasteHighlight ? Color.orange : TargetEnvironment.shared.DigitKeyProperties.textColor)
+                            .padding(.trailing, TargetEnvironment.shared.scientificKeySize(appFrame: appFrame).width)
                         Spacer(minLength: 0)
                         if !zoomed {
                             LandscapeKeys(brain: brain, appFrame: appFrame)
@@ -43,12 +43,12 @@ struct CatalystContentView: View {
             }
             HStack(spacing: 0) {
                 Spacer(minLength: 0)
-                // from here on: trailing
+                /// from here on: trailing
                 VStack(spacing: 0) {
                     HStack(spacing: 0) {
                         Spacer(minLength: 0)
                         Zoom(active: brain.hasMoreDigits, zoomed: $zoomed, showCalculating: brain.showCalculating)
-                            .padding(.top, 12) // hardcoded. The correct height depends on the display font and I was lazy...
+                            .padding(.top, 12) /// hardcoded. The correct height depends on the display font and I was lazy...
                         Spacer(minLength: 0)
                     }
                     if zoomed {
@@ -76,7 +76,7 @@ struct CatalystContentView: View {
                     }
                     Spacer()
                 }
-                .frame(maxWidth: Configuration.shared.scientificKeySize(appFrame: appFrame).width+3)
+                .frame(maxWidth: TargetEnvironment.shared.scientificKeySize(appFrame: appFrame).width+3)
             }
         }
     }

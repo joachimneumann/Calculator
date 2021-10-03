@@ -103,13 +103,13 @@ class BrainTests: XCTestCase {
         brain.comma()
         XCTAssertEqual(brain.display, "0,")
         var res = "0,"
-        for _ in 1..<Configuration.digitsInSmallDisplay-1 {
+        for _ in 1..<TargetEnvironment.digitsInSmallDisplay-1 {
             res += "0"
             brain.zero()
             XCTAssertEqual(brain.display, res)
         }
         brain.digit(1)
-        XCTAssertEqual(brain.display, "1,0 e-\(Configuration.digitsInSmallDisplay-1)")
+        XCTAssertEqual(brain.display, "1,0 e-\(TargetEnvironment.digitsInSmallDisplay-1)")
 
         /// 32456.2244
         brain.reset()
@@ -128,11 +128,11 @@ class BrainTests: XCTestCase {
         XCTAssertEqual(brain.display, "32456,2244")
         
         /// 32456.2244333333333333333333333333
-        for _ in res.count..<Configuration.digitsInSmallDisplay+20 {
+        for _ in res.count..<TargetEnvironment.digitsInSmallDisplay+20 {
             res += "3"
             brain.digit(3)
             /// prefix + 1 for the comma
-            XCTAssertEqual(brain.display, String(res.prefix(Configuration.digitsInSmallDisplay+1)))
+            XCTAssertEqual(brain.display, String(res.prefix(TargetEnvironment.digitsInSmallDisplay+1)))
         }
 
         /// 1/7*7 --> has more digits?
@@ -163,7 +163,7 @@ class BrainTests: XCTestCase {
         brain.operationWorker("π")
         let correct = "3,1415926535897932384626433832795028841971"
         XCTAssertEqual(brain.last.gmp.toDouble(), Double.pi)
-        XCTAssertEqual(brain.display, String(correct.prefix(Configuration.digitsInSmallDisplay+1)))
+        XCTAssertEqual(brain.display, String(correct.prefix(TargetEnvironment.digitsInSmallDisplay+1)))
         let c = brain.combinedLongDisplayString(longDisplayString: brain.longDisplayString)
         XCTAssertEqual(String(c.prefix(correct.count)), correct)
 
@@ -177,10 +177,10 @@ class BrainTests: XCTestCase {
         XCTAssertEqual(brain.last.gmp.toDouble(), 1.0)
         brain.operationWorker("π")
         XCTAssertEqual(brain.last.gmp.toDouble(), Double.pi)
-        XCTAssertEqual(brain.display, String("3,1415926535897932384626433832795028841971".prefix(Configuration.digitsInSmallDisplay+1)))
+        XCTAssertEqual(brain.display, String("3,1415926535897932384626433832795028841971".prefix(TargetEnvironment.digitsInSmallDisplay+1)))
         brain.operationWorker("=")
         XCTAssertEqual(brain.last.gmp.toDouble(), 1.0+Double.pi)
-        XCTAssertEqual(brain.display, String("4,1415926535897932384626433832795028841971".prefix(Configuration.digitsInSmallDisplay+1)))
+        XCTAssertEqual(brain.display, String("4,1415926535897932384626433832795028841971".prefix(TargetEnvironment.digitsInSmallDisplay+1)))
 
         /// 1/10 and 1/16
         brain.reset()
@@ -371,14 +371,5 @@ class BrainTests: XCTestCase {
         brain.operationWorker("%")
         brain.operationWorker("=")
         XCTAssertEqual(brain.last.gmp.toDouble(), 44.0)
-
     }
-    
-    //    func testPerformanceExample() throws {
-    //        // This is an example of a performance test case.
-    //        measure {
-    //            // Put the code you want to measure the time of here.
-    //        }
-    //    }
-    
 }

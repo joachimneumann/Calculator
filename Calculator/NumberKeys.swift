@@ -18,23 +18,23 @@ struct NumberKeys: View {
     var body: some View {
         VStack(spacing: verticalSpace) {
             HStack(spacing: horizontalSpace) {
-                Key("C", keyProperties: Configuration.LightGrayKeyProperties)
+                Key("C", keyProperties: TargetEnvironment.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.notCalculating,
                         isPending: false)
                 { brain.reset() }
-                Key("+/-", keyProperties: Configuration.LightGrayKeyProperties)
+                Key("+/-", keyProperties: TargetEnvironment.LightGrayKeyProperties)
                     .op_plusMinus_percentage(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed )
                 { brain.operation("+/-") }
-                Key("%", keyProperties: Configuration.LightGrayKeyProperties)
+                Key("%", keyProperties: TargetEnvironment.LightGrayKeyProperties)
                     .op_plusMinus_percentage(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed)
                 { brain.operation("%")  }
-                Key("/", keyProperties: Configuration.OpKeyProperties)
+                Key("/", keyProperties: TargetEnvironment.OpKeyProperties)
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
                         isAllowed: brain.inPlaceAllowed,
@@ -42,22 +42,22 @@ struct NumberKeys: View {
                 { brain.operation("/") }
             }
             HStack(spacing: horizontalSpace) {
-                Key("7", keyProperties: Configuration.DigitKeyProperties)
+                Key("7", keyProperties: TargetEnvironment.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize, isAllowed:
                             brain.digitsAllowed)
                 { brain.digit(7) }
-                Key("8", keyProperties: Configuration.DigitKeyProperties)
+                Key("8", keyProperties: TargetEnvironment.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: brain.digitsAllowed)
                 { brain.digit(8) }
-                Key("9", keyProperties: Configuration.DigitKeyProperties)
+                Key("9", keyProperties: TargetEnvironment.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: brain.digitsAllowed)
                 { brain.digit(9) }
-                Key("x", keyProperties: Configuration.OpKeyProperties)
+                Key("x", keyProperties: TargetEnvironment.OpKeyProperties)
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
                         isAllowed: brain.inPlaceAllowed,
@@ -65,22 +65,22 @@ struct NumberKeys: View {
                 { brain.operation("x") }
             }
             HStack(spacing: horizontalSpace) {
-                Key("4", keyProperties: Configuration.DigitKeyProperties)
+                Key("4", keyProperties: TargetEnvironment.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: brain.digitsAllowed)
                 { brain.digit(4) }
-                Key("5", keyProperties: Configuration.DigitKeyProperties)
+                Key("5", keyProperties: TargetEnvironment.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: brain.digitsAllowed)
                 { brain.digit(5) }
-                Key("6", keyProperties: Configuration.DigitKeyProperties)
+                Key("6", keyProperties: TargetEnvironment.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: brain.digitsAllowed)
                 { brain.digit(6) }
-                Key("-", keyProperties: Configuration.OpKeyProperties)
+                Key("-", keyProperties: TargetEnvironment.OpKeyProperties)
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
                         isAllowed: brain.inPlaceAllowed,
@@ -88,22 +88,22 @@ struct NumberKeys: View {
                 { brain.operation("-") }
             }
             HStack(spacing: horizontalSpace) {
-                Key("1", keyProperties: Configuration.DigitKeyProperties)
+                Key("1", keyProperties: TargetEnvironment.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: brain.digitsAllowed)
                 { brain.digit(1) }
-                Key("2", keyProperties: Configuration.DigitKeyProperties)
+                Key("2", keyProperties: TargetEnvironment.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: brain.digitsAllowed)
                 { brain.digit(2) }
-                Key("3", keyProperties: Configuration.DigitKeyProperties)
+                Key("3", keyProperties: TargetEnvironment.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: brain.digitsAllowed)
                 { brain.digit(3) }
-                Key("+", keyProperties: Configuration.OpKeyProperties)
+                Key("+", keyProperties: TargetEnvironment.OpKeyProperties)
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
                         isAllowed: brain.inPlaceAllowed,
@@ -111,18 +111,18 @@ struct NumberKeys: View {
                 { brain.operation("+") }
             }
             HStack(spacing: horizontalSpace) {
-                Key("0", keyProperties: Configuration.DigitKeyProperties)
+                Key("0", keyProperties: TargetEnvironment.DigitKeyProperties)
                     .digit_0(
                         size: keySize,
                         space: horizontalSpace,
                         isAllowed: brain.digitsAllowed)
                 { brain.zero() }
-                Key(",", keyProperties: Configuration.DigitKeyProperties)
+                Key(",", keyProperties: TargetEnvironment.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: brain.digitsAllowed)
                 { brain.comma() }
-                Key("=", keyProperties: Configuration.OpKeyProperties)
+                Key("=", keyProperties: TargetEnvironment.OpKeyProperties)
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
                         isAllowed: brain.inPlaceAllowed,
@@ -132,12 +132,12 @@ struct NumberKeys: View {
         }
     }
     
-    init(brain: Brain, c: Configuration) {
+    init(brain: Brain, t: TargetEnvironment) {
         self.brain = brain
-        horizontalSpace = c.spaceBetweenkeys
-        verticalSpace   = c.spaceBetweenkeys
-        keySize = c.numberKeySize
-        slightlyLargerSize = c.slightlyLargerNumberKeySize
+        horizontalSpace = t.spaceBetweenkeys
+        verticalSpace   = t.spaceBetweenkeys
+        keySize = t.numberKeySize
+        slightlyLargerSize = t.slightlyLargerNumberKeySize
     }
 }
 

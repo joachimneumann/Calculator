@@ -1,5 +1,5 @@
 //
-//  Configuration.swift
+//  TargetEnvironment.swift
 //  Calculator
 //
 //  Created by Joachim Neumann on 23/09/2021.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class Configuration {
+class TargetEnvironment {
     static let iPhoneScientificFontSizeReduction: CGFloat = 0.8
     static let digitsInAllDigitsDisplay = 10000-1
 

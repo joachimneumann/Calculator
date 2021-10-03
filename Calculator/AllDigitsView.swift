@@ -17,7 +17,7 @@ struct AllDigitsView: View {
                 ScrollView(.vertical, showsIndicators: true) {
                     Text(brain.longDisplayString.0)
                         .foregroundColor(textColor)
-                        .font(Configuration.allDigitsFont)
+                        .font(TargetEnvironment.allDigitsFont)
                         .multilineTextAlignment(.leading)
                 }
                 if brain.longDisplayString.1 != nil {

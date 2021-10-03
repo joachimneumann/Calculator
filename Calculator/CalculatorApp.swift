@@ -20,12 +20,12 @@ struct CalculatorApp: App {
             let deviceSize = 1.5*max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
 #if targetEnvironment(macCatalyst)
             CatalystContentView()
-                .background(Configuration.appBackgroundColor)
+                .background(TargetEnvironment.appBackgroundColor)
 #else
             iOSSize(brain: brain) //IOSContentView()
                 .background(Rectangle()
                                 .frame(width: deviceSize, height: deviceSize, alignment: .center)
-                                .foregroundColor(Configuration.appBackgroundColor) //Color.yellow.opacity(0.5))
+                                .foregroundColor(TargetEnvironment.appBackgroundColor) //Color.yellow.opacity(0.5))
                                 .ignoresSafeArea()
                 )
 #endif
@@ -43,8 +43,8 @@ class FSSceneDelegate: NSObject, UIWindowSceneDelegate, ObservableObject {
         UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
             .forEach { windowScene in
-                windowScene.sizeRestrictions?.minimumSize = CGSize(width: Configuration.windowWidth, height: Configuration.windowHeight)
-                windowScene.sizeRestrictions?.maximumSize = CGSize(width: Configuration.windowWidth, height: Configuration.windowHeight)
+                windowScene.sizeRestrictions?.minimumSize = CGSize(width: TargetEnvironment.windowWidth, height: TargetEnvironment.windowHeight)
+                windowScene.sizeRestrictions?.maximumSize = CGSize(width: TargetEnvironment.windowWidth, height: TargetEnvironment.windowHeight)
             }
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
@@ -59,10 +59,10 @@ class FSSceneDelegate: NSObject, UIWindowSceneDelegate, ObservableObject {
 class FSAppDelegate: NSObject, UIApplicationDelegate {
     func application(
         _ application: UIApplication,
-        configurationForConnecting connectingSceneSession: UISceneSession,
+        TargetEnvironmentForConnecting connectingSceneSession: UISceneSession,
         options: UIScene.ConnectionOptions
-    ) -> UISceneConfiguration {
-        let sceneConfig = UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
+    ) -> UISceneTargetEnvironment {
+        let sceneConfig = UISceneTargetEnvironment(name: nil, sessionRole: connectingSceneSession.role)
         sceneConfig.delegateClass = FSSceneDelegate.self
         return sceneConfig
     }

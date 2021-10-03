@@ -12,7 +12,7 @@ import SwiftUI
 #else
 struct IOSContentView: View {
     @ObservedObject var brain: Brain
-    let c: Configuration
+    let t: TargetEnvironment
     @State var zoomed: Bool = false
     @State var copyPasteHighlight = false
     
@@ -21,7 +21,7 @@ struct IOSContentView: View {
         @Binding var copyPasteHighlight: Bool
         let active: Bool
         let showCalculating: Bool
-        let c: Configuration
+        let t: TargetEnvironment
         let brain: Brain
         var body: some View {
             HStack(spacing: 0) {
@@ -30,14 +30,14 @@ struct IOSContentView: View {
                     VStack(spacing: 0) {
                         Spacer(minLength: 0)
                         Zoom(active: active,
-                             iconSize: c.numberKeySize.height*0.75,
+                             iconSize: t.numberKeySize.height*0.75,
                              textColor: Color.white,
                              zoomed: $zoomed,
                              showCalculating: showCalculating)
-                            .frame(width: c.numberKeySize.width)
+                            .frame(width: t.numberKeySize.width)
                             .padding(.trailing, 0)//trailingPadding)
                     }
-                    .padding(.bottom, c.allKeysHeight + c.numberKeySize.height * 0.125)
+                    .padding(.bottom, t.allKeysHeight + t.numberKeySize.height * 0.125)
                     if zoomed {
                         VStack(spacing: 0) {
                             Spacer(minLength: 0)
@@ -51,7 +51,7 @@ struct IOSContentView: View {
                                 }
                             }
                             .transition(.move(edge: .bottom))
-                            .padding(.bottom, c.allKeysHeight + c.numberKeySize.height * 0.125 - 80.0)
+                            .padding(.bottom, t.allKeysHeight + t.numberKeySize.height * 0.125 - 80.0)
                         }
                         VStack(spacing: 0) {
                             Spacer(minLength: 0)
@@ -65,7 +65,7 @@ struct IOSContentView: View {
                                 }
                                 brain.fromPasteboard(fromPasteboard)
                             }
-                            .padding(.bottom, c.allKeysHeight + c.numberKeySize.height * 0.125 - 120.0)
+                            .padding(.bottom, t.allKeysHeight + t.numberKeySize.height * 0.125 - 120.0)
                         }
                     }
                 }
@@ -82,14 +82,14 @@ struct IOSContentView: View {
                 copyPasteHighlight: $copyPasteHighlight,
                 active: brain.hasMoreDigits,
                 showCalculating: brain.showCalculating,
-                c: c,
+                t: t,
                 brain: brain)
             
             if zoomed {//} && brain.hasMoreDigits {
                 AllDigitsView(
                     brain: brain,
-                    textColor: copyPasteHighlight ? Color.orange : Configuration.DigitKeyProperties.textColor)
-                    .padding(.trailing, c.numberKeySize.width + 0.5 * c.spaceBetweenkeys)
+                    textColor: copyPasteHighlight ? Color.orange : TargetEnvironment.DigitKeyProperties.textColor)
+                    .padding(.trailing, t.numberKeySize.width + 0.5 * t.spaceBetweenkeys)
 
                 
             } else {
@@ -97,24 +97,23 @@ struct IOSContentView: View {
                     Spacer(minLength: 0)
                     Display(
                         text: brain.display,
-                        fontSize: c.displayFontSize,
-                        textColor: copyPasteHighlight ? Color.orange : Configuration.DigitKeyProperties.textColor)
-                    //.background(Color.red)
-                        .padding(.trailing, c.numberKeySize.width + 0.5 * c.spaceBetweenkeys + 0)
+                        fontSize: t.displayFontSize,
+                        textColor: copyPasteHighlight ? Color.orange : TargetEnvironment.DigitKeyProperties.textColor)
+                        .padding(.trailing, t.numberKeySize.width + 0.5 * t.spaceBetweenkeys + 0)
                         .padding(.leading, 0)
-                        .padding(.bottom, c.allKeysHeight)// + c.numberKeySize.height * 0.125)
+                        .padding(.bottom, t.allKeysHeight)
                 }
                 if brain.rad && !zoomed {
                     VStack(spacing: 0) {
                         Spacer(minLength: 0)
                         HStack(spacing: 0) {
-                            let radFontSize: CGFloat = c.displayFontSize*0.33
+                            let radFontSize: CGFloat = t.displayFontSize*0.33
                             Text("Rad")
                                 .font(Font.system(size: radFontSize).monospacedDigit())
-                                .foregroundColor(Configuration.DigitKeyProperties.textColor)
-                                .padding(.trailing, c.numberKeySize.width + 0.5 * c.spaceBetweenkeys + 0)
-                                .padding(.leading, 0 + 0.5 * c.numberKeySize.width - radFontSize)
-                                .padding(.bottom, c.allKeysHeight + c.numberKeySize.height * 0.125)
+                                .foregroundColor(TargetEnvironment.DigitKeyProperties.textColor)
+                                .padding(.trailing, t.numberKeySize.width + 0.5 * t.spaceBetweenkeys + 0)
+                                .padding(.leading, 0 + 0.5 * t.numberKeySize.width - radFontSize)
+                                .padding(.bottom, t.allKeysHeight + t.numberKeySize.height * 0.125)
                             Spacer(minLength: 0)
                         }
                     }
@@ -125,18 +124,18 @@ struct IOSContentView: View {
                         Spacer(minLength: 0)
                         HStack(spacing: 0) {
                             Spacer(minLength: 0)
-                            if c.isLandscape {
+                            if t.isLandscape {
                                 ScientificKeys(
-                                    brain: brain, c: c)
-                                    .frame(width: c.scientificPadWidth, height: c.allKeysHeight)
-                                Spacer(minLength: c.spaceBetweenkeys)
+                                    brain: brain, t: t)
+                                    .frame(width: t.scientificPadWidth, height: t.allKeysHeight)
+                                Spacer(minLength: t.spaceBetweenkeys)
                             }
                             NumberKeys(
-                                brain: brain, c: c)
-                                .frame(width: c.numberPadWidth, height: c.allKeysHeight)
+                                brain: brain, t: t)
+                                .frame(width: t.numberPadWidth, height: t.allKeysHeight)
                             Spacer(minLength: 0)
                         }
-                        .background(Configuration.appBackgroundColor)
+                        .background(TargetEnvironment.appBackgroundColor)
                         .transition(.move(edge: .bottom))
                     }
                     .transition(.move(edge: .bottom))

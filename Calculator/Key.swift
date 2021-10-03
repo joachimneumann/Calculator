@@ -189,7 +189,7 @@ extension Key {
 #if targetEnvironment(macCatalyst)
         let fontSize = size.height*0.4
 #else
-        let fontSize = size.height*0.4*Configuration.iPhoneScientificFontSizeReduction
+        let fontSize = size.height*0.4*TargetEnvironment.iPhoneScientificFontSizeReduction
 #endif
         return self
             .modifier(ScientificButton(keyProperties: keyProperties, fontSize: fontSize, isAllowed: isAllowed, isPending: isPending, isActive: isActive && isAllowed, callback: callback))

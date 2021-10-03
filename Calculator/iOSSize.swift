@@ -27,23 +27,23 @@ struct iOSSize: View {
                 let bottomPaddingNeeded   = insets.bottom == 0
                 
                 let horizontalFactor:CGFloat = 1.0 -
-                (leadingPaddingNeeded ? Configuration.spacingFration : 0) -
-                (trailingPaddingNeeded ? Configuration.spacingFration : 0 )
+                (leadingPaddingNeeded ? TargetEnvironment.spacingFration : 0) -
+                (trailingPaddingNeeded ? TargetEnvironment.spacingFration : 0 )
                 let verticalFactor:CGFloat = 1.0 -
-                (bottomPaddingNeeded ? Configuration.spacingFration : 0.0)
+                (bottomPaddingNeeded ? TargetEnvironment.spacingFration : 0.0)
                 
                 let appFrame = CGSize(
                     width: geo.size.width * horizontalFactor,
                     height: geo.size.height * verticalFactor)
                 
-                let c = Configuration(appFrame: appFrame)
+                let t = TargetEnvironment(appFrame: appFrame)
                 
                 /// make the app frame smaller if there is no safe area.
                 /// If there already is safe area, no padding is needed
-                IOSContentView(brain: brain, c: c)
-                    .padding(.leading, leadingPaddingNeeded ? c.spaceBetweenkeys : 0)
-                    .padding(.trailing, trailingPaddingNeeded ? c.spaceBetweenkeys : 0)
-                    .padding(.bottom, bottomPaddingNeeded ? c.spaceBetweenkeys : 0)
+                IOSContentView(brain: brain, t: t)
+                    .padding(.leading, leadingPaddingNeeded ? t.spaceBetweenkeys : 0)
+                    .padding(.trailing, trailingPaddingNeeded ? t.spaceBetweenkeys : 0)
+                    .padding(.bottom, bottomPaddingNeeded ? t.spaceBetweenkeys : 0)
             }
         }
     }
