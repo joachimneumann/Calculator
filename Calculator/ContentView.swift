@@ -24,31 +24,47 @@ struct ContentView: View {
             let iconSize = t.numberKeySize.height * 0.7
             HStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
+                let zoomTopPadding  = t.isLandscape  ? 0.0 : iconSize * 0.5
+                let copyTopPadding  = iconSize * 2.5
+                let pasteTopPadding = iconSize * 3.5
                 ZStack {
-                    VStack(spacing: 0.0) {
-                        Spacer(minLength: 0.0)
-                        Zoom(active: active,
-                             iconSize: iconSize,
-                             textColor: TE.DigitKeyProperties.textColor,
-                             zoomed: $zoomed,
-                             showCalculating: showCalculating)
-                            .frame(width: t.widerNumberKeySize.width, height: t.widerNumberKeySize.height, alignment: .center)
-                        Spacer(minLength: 0.0)
-                    }
-                    .padding(.bottom, t.allKeysHeight)
+                        VStack(spacing: 0.0) {
+                            if t.isLandscape {
+                                Spacer(minLength: 0.0)
+                            }
+                            Zoom(active: active,
+                                 iconSize: iconSize,
+                                 textColor: TE.DigitKeyProperties.textColor,
+                                 zoomed: $zoomed,
+                                 showCalculating: showCalculating)
+                                .frame(width: t.widerNumberKeySize.width, height: t.widerNumberKeySize.height, alignment: .center)
+                                .padding(.top, zoomTopPadding)
+                                //.background(Color.yellow.opacity(0.3))
+                            Spacer(minLength: 0.0)
+                        }
+                        .padding(.bottom, t.allKeysHeight)
                     if zoomed {
                         VStack(spacing: 0.0) {
-                            Spacer(minLength: 0.0)
+                            if t.isLandscape {
+                                Spacer(minLength: 0.0)
+                            }
                             Copy(
                                 longString: brain.combinedLongDisplayString(longDisplayString: brain.longDisplayString),
                                 copyPasteHighlight: $copyPasteHighlight) 
-                            .transition(.move(edge: .bottom))
-                            .padding(.bottom, t.allKeysHeight + t.numberKeySize.height * 0.125 - 80.0)
+                                .padding(.top, copyTopPadding)
+                                .transition(.move(edge: .bottom))
+                                .padding(.bottom, t.allKeysHeight + t.numberKeySize.height * 0.125 - 80.0)
+                                //.background(Color.yellow.opacity(0.3))
+                            Spacer(minLength: 0.0)
                         }
                         VStack(spacing: 0.0) {
-                            Spacer(minLength: 0.0)
+                            if t.isLandscape {
+                                Spacer(minLength: 0.0)
+                            }
                             Paste(copyPasteHighlight: $copyPasteHighlight, brain: brain)
-                            .padding(.bottom, t.allKeysHeight + t.numberKeySize.height * 0.125 - 120.0)
+                                .padding(.top, pasteTopPadding)
+                                .padding(.bottom, t.allKeysHeight + t.numberKeySize.height * 0.125 - 120.0)
+                            Spacer(minLength: 0.0)
                         }
                     }
                 }
@@ -82,7 +98,7 @@ struct ContentView: View {
                         text: brain.display,
                         fontSize: t.displayFontSize,
                         textColor: copyPasteHighlight ? Color.orange : TE.DigitKeyProperties.textColor)
-                        .padding(.trailing, t.numberKeySize.width + 0.5 * t.spaceBetweenkeys + 0)
+                        .padding(.trailing, (t.isLandscape ? t.numberKeySize.width : 0.0) + 0.5 * t.spaceBetweenkeys + 0)
                         .padding(.leading, 0)
                         .padding(.bottom, t.allKeysHeight)
                 }
