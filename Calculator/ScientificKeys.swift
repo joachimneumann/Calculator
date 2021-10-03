@@ -244,6 +244,6 @@ struct ScientificKeys: View {
         self.brain = brain
         horizontalSpace = t.spaceBetweenkeys
         verticalSpace   = t.spaceBetweenkeys
-        keySize = t.scientificKeySize
+        keySize = t.keySize
     }
 }

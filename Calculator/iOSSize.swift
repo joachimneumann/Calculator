@@ -29,13 +29,14 @@ struct iOSSize: View {
                     let leadingPaddingNeeded  = insets.left   == 0
                     let trailingPaddingNeeded = insets.right  == 0
                     let bottomPaddingNeeded   = insets.bottom == 0
-
+                    
+                    let land = geo.size.width > geo.size.height
                     let horizontalFactor:CGFloat = 1.0 -
-                    (leadingPaddingNeeded ? TE.spacingFration : 0) -
-                    (trailingPaddingNeeded ? TE.spacingFration : 0 )
+                    (leadingPaddingNeeded ? (land ? TE.landscapeSpacingFration : TE.portraitSpacingFration) : 0) -
+                    (trailingPaddingNeeded ? (land ? TE.landscapeSpacingFration : TE.portraitSpacingFration) : 0 )
                     let verticalFactor:CGFloat = 1.0 -
-                    (bottomPaddingNeeded ? TE.spacingFration : 0.0)
-                        
+                    (bottomPaddingNeeded ? (land ? TE.landscapeSpacingFration : TE.portraitSpacingFration) : 0.0)
+                    
                     let appFrame = CGSize(
                             width: geo.size.width * horizontalFactor,
                             height: geo.size.height * verticalFactor)
@@ -44,6 +45,7 @@ struct iOSSize: View {
                     /// make the app frame smaller if there is no safe area.
                     /// If there already is safe area, no padding is needed
                     ContentView(brain: brain, t: t)
+                        .background(Color.yellow)
                         .padding(.leading, leadingPaddingNeeded ? t.spaceBetweenkeys : 0)
                         .padding(.trailing, trailingPaddingNeeded ? t.spaceBetweenkeys : 0)
                         .padding(.bottom, bottomPaddingNeeded ? t.spaceBetweenkeys : 0)

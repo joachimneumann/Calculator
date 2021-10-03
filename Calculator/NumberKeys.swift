@@ -136,8 +136,8 @@ struct NumberKeys: View {
         self.brain = brain
         horizontalSpace = t.spaceBetweenkeys
         verticalSpace   = t.spaceBetweenkeys
-        keySize = t.numberKeySize
-        slightlyLargerSize = t.widerNumberKeySize
+        keySize = t.keySize
+        slightlyLargerSize = t.widerKeySize
     }
 }
 

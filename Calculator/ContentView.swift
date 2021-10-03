@@ -21,12 +21,9 @@ struct ContentView: View {
         let t: TE
         let brain: Brain
         var body: some View {
-            let iconSize = t.numberKeySize.height * 0.7
+            let iconSize = t.keySize.height * 0.7
             HStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
-                let zoomTopPadding  = t.isLandscape  ? 0.0 : iconSize * 0.5
-                let copyTopPadding  = iconSize * 2.5
-                let pasteTopPadding = iconSize * 3.5
                 ZStack {
                         VStack(spacing: 0.0) {
                             if t.isLandscape {
@@ -37,12 +34,10 @@ struct ContentView: View {
                                  textColor: TE.DigitKeyProperties.textColor,
                                  zoomed: $zoomed,
                                  showCalculating: showCalculating)
-                                .frame(width: t.widerNumberKeySize.width, height: t.widerNumberKeySize.height, alignment: .center)
-                                .padding(.top, zoomTopPadding)
-                                //.background(Color.yellow.opacity(0.3))
+                                .frame(width: t.widerKeySize.width, height: t.widerKeySize.height, alignment: .center)
+                                .background(Color.yellow.opacity(0.3))
                             Spacer(minLength: 0.0)
                         }
-                        .padding(.bottom, t.allKeysHeight)
                     if zoomed {
                         VStack(spacing: 0.0) {
                             if t.isLandscape {
@@ -51,9 +46,7 @@ struct ContentView: View {
                             Copy(
                                 longString: brain.combinedLongDisplayString(longDisplayString: brain.longDisplayString),
                                 copyPasteHighlight: $copyPasteHighlight) 
-                                .padding(.top, copyTopPadding)
                                 .transition(.move(edge: .bottom))
-                                .padding(.bottom, t.allKeysHeight + t.numberKeySize.height * 0.125 - 80.0)
                                 //.background(Color.yellow.opacity(0.3))
                             Spacer(minLength: 0.0)
                         }
@@ -62,8 +55,6 @@ struct ContentView: View {
                                 Spacer(minLength: 0.0)
                             }
                             Paste(copyPasteHighlight: $copyPasteHighlight, brain: brain)
-                                .padding(.top, pasteTopPadding)
-                                .padding(.bottom, t.allKeysHeight + t.numberKeySize.height * 0.125 - 120.0)
                             Spacer(minLength: 0.0)
                         }
                     }
@@ -74,72 +65,89 @@ struct ContentView: View {
     
     
     
+//    var body: some View {
+//        ZStack {
+//            ZoomAndCo(
+//                zoomed: $zoomed,
+//                copyPasteHighlight: $copyPasteHighlight,
+//                active: brain.hasMoreDigits,
+//                showCalculating: brain.showCalculating,
+//                t: t,
+//                brain: brain)
+//
+//            if zoomed {//} && brain.hasMoreDigits {
+//                AllDigitsView(
+//                    brain: brain,
+//                    textColor: copyPasteHighlight ? Color.orange : TE.DigitKeyProperties.textColor)
+//            } else {
+//                VStack(spacing: 0.0) {
+//                    Spacer(minLength: 0.0)
+//                    Display(
+//                        text: brain.display,
+//                        fontSize: t.displayFontSize,
+//                        textColor: copyPasteHighlight ? Color.orange : TE.DigitKeyProperties.textColor)
+//                }
+//                if brain.rad && !zoomed {
+//                    VStack(spacing: 0.0) {
+//                        Spacer(minLength: 0.0)
+//                        HStack(spacing: 0.0) {
+//                            let radFontSize: CGFloat = t.displayFontSize*0.33
+//                            Text("Rad")
+//                                .font(Font.system(size: radFontSize).monospacedDigit())
+//                                .foregroundColor(TE.DigitKeyProperties.textColor)
+//                            Spacer(minLength: 0.0)
+//                        }
+//                    }
+//                    .transition(.move(edge: .bottom))
+//                }
+//                if !zoomed {
+//                    VStack(spacing: 0.0) {
+//                        Spacer(minLength: 0.0)
+//                        HStack(spacing: 0.0) {
+//                            Spacer(minLength: 0.0)
+//                            if t.isLandscape {
+//                                ScientificKeys(
+//                                    brain: brain, t: t)
+//                                Spacer(minLength: t.spaceBetweenkeys)
+//                            }
+//                            NumberKeys(
+//                                brain: brain, t: t)
+//                                //.background(TE.appBackgroundColor)
+//                                .background(Color.yellow.opacity(0.3))
+//                            Spacer(minLength: 0.0)
+//                        }
+//                        .background(TE.appBackgroundColor)
+//                        .transition(.move(edge: .bottom))
+//                    }
+//                    .transition(.move(edge: .bottom))
+//                }
+//            }
+//        }
+//    }
+    
     var body: some View {
-        ZStack {
-            ZoomAndCo(
-                zoomed: $zoomed,
-                copyPasteHighlight: $copyPasteHighlight,
-                active: brain.hasMoreDigits,
-                showCalculating: brain.showCalculating,
-                t: t,
-                brain: brain)
+        VStack(spacing: 0.0) {
+            Spacer(minLength: 0.0)
             
-            if zoomed {//} && brain.hasMoreDigits {
-                AllDigitsView(
-                    brain: brain,
-                    textColor: copyPasteHighlight ? Color.orange : TE.DigitKeyProperties.textColor)
-                    .padding(.trailing, t.numberKeySize.width + 0.5 * t.spaceBetweenkeys)
-
-                
-            } else {
-                VStack(spacing: 0.0) {
-                    Spacer(minLength: 0.0)
-                    Display(
-                        text: brain.display,
-                        fontSize: t.displayFontSize,
-                        textColor: copyPasteHighlight ? Color.orange : TE.DigitKeyProperties.textColor)
-                        .padding(.trailing, (t.isLandscape ? t.numberKeySize.width : 0.0) + 0.5 * t.spaceBetweenkeys + 0)
-                        .padding(.leading, 0)
-                        .padding(.bottom, t.allKeysHeight)
-                }
+            ZStack {
                 if brain.rad && !zoomed {
-                    VStack(spacing: 0.0) {
-                        Spacer(minLength: 0.0)
-                        HStack(spacing: 0.0) {
-                            let radFontSize: CGFloat = t.displayFontSize*0.33
-                            Text("Rad")
-                                .font(Font.system(size: radFontSize).monospacedDigit())
-                                .foregroundColor(TE.DigitKeyProperties.textColor)
-                                .padding(.trailing, t.numberKeySize.width + 0.5 * t.spaceBetweenkeys + 0)
-                                .padding(.leading, 0 + 0.5 * t.numberKeySize.width - radFontSize)
-                                .padding(.bottom, t.allKeysHeight + t.numberKeySize.height * 0.125)
-                            Spacer(minLength: 0.0)
-                        }
+                    HStack(spacing: 0.0) {
+                        Text("Rad")
+                            .font(Font.system(size: t.keySize.height*0.27).monospacedDigit())
+                            .foregroundColor(TE.DigitKeyProperties.textColor)
+                            .padding(.leading, t.keySize.height*0.27)
+                            .padding(.bottom, t.keySize.height*0.1)
+                        Spacer()
                     }
-                    .transition(.move(edge: .bottom))
                 }
-                if !zoomed {
-                    VStack(spacing: 0.0) {
-                        Spacer(minLength: 0.0)
-                        HStack(spacing: 0.0) {
-                            Spacer(minLength: 0.0)
-                            if t.isLandscape {
-                                ScientificKeys(
-                                    brain: brain, t: t)
-                                    .frame(width: t.scientificPadWidth, height: t.allKeysHeight)
-                                Spacer(minLength: t.spaceBetweenkeys)
-                            }
-                            NumberKeys(
-                                brain: brain, t: t)
-                                .frame(width: t.numberPadWidth, height: t.allKeysHeight)
-                                .background(TE.appBackgroundColor)
-                            Spacer(minLength: 0.0)
-                        }
-                        .background(TE.appBackgroundColor)
-                        .transition(.move(edge: .bottom))
-                    }
-                    .transition(.move(edge: .bottom))
+            }
+            HStack(spacing: 0.0) {
+                if t.isLandscape {
+                    ScientificKeys(brain: brain, t: t)
+                        .padding(.trailing, t.spaceBetweenkeys)
                 }
+                NumberKeys(brain: brain, t: t)
+                Spacer(minLength: 0.0)
             }
         }
     }

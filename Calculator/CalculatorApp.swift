@@ -32,9 +32,10 @@ struct CalculatorApp: App {
             let expandedDeviceSize = 1.5*max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
             iOSSize(brain: brain)
                 .statusBar(hidden: true)
+                //.background(Color.yellow)
                 .background(Rectangle()
                                 .frame(width: expandedDeviceSize, height: expandedDeviceSize, alignment: .center)
-                                .foregroundColor(TE.appBackgroundColor)
+                                .foregroundColor(Color.green)//TE.appBackgroundColor)
                                 .ignoresSafeArea())
         }
     }
