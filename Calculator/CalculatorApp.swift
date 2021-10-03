@@ -17,9 +17,9 @@ struct CalculatorApp: App {
     var body: some Scene {
         WindowGroup {
             ZStack {
-                let t = TE() // sizes are hardcoded for Mac
-                ContentView(brain: brain, t: t)
-                    .background(TE.appBackgroundColor)
+                TE.appBackgroundColor
+                    .ignoresSafeArea()
+                ContentView(brain: brain, t: TE()) // sizes are hardcoded for Mac
             }
         }
     }
@@ -49,8 +49,8 @@ class FSSceneDelegate: NSObject, UIWindowSceneDelegate, ObservableObject {
         UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
             .forEach { windowScene in
-                windowScene.sizeRestrictions?.minimumSize = CGSize(width: TE.windowWidth, height: TE.windowHeight)
-                windowScene.sizeRestrictions?.maximumSize = CGSize(width: TE.windowWidth, height: TE.windowHeight)
+                windowScene.sizeRestrictions?.minimumSize = CGSize(width: TE.macWindowWidth, height: TE.macWindowHeight)
+                windowScene.sizeRestrictions?.maximumSize = CGSize(width: TE.macWindowWidth, height: TE.macWindowHeight)
             }
         
         guard let windowScene = (scene as? UIWindowScene) else { return }

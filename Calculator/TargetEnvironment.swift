@@ -77,13 +77,13 @@ class TE {
 
     static let digitsInSmallDisplay = 16
     static let zoomIconSize: CGFloat = 30.0
-    static let windowWidth: CGFloat = 9.0*TE.kw+TE.wkw+9.0*TE.sp
-    static let windowHeight: CGFloat = 419.5
-    static let kh = 63.0
-    static let kw = 72.75
-    static let wkw = 77.0
-    static let sp = 1.5
-    static let nf = 0.4
+    static let macWindowWidth: CGFloat = 9.0*TE.kw+TE.wkw+9.0*TE.sp
+    static let macWindowHeight: CGFloat = 419.5
+    static let kh  = 63.0  // key height
+    static let kw  = 72.75 // key width
+    static let wkw = 77.0  // wider with for +-*/= keys
+    static let sp  = 1.5   // space between keys
+    static let nf  = 0.4   // part of numberPad
 
     let isLandscape: Bool = true
     let spaceBetweenkeys: CGFloat   = TE.sp
