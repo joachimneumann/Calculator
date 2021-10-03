@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct CalculatorApp: App {
     let brain = Brain()
-
+    
 #if targetEnvironment(macCatalyst)
     // force window size on Mac
     @UIApplicationDelegateAdaptor var delegate: FSAppDelegate
@@ -29,10 +29,10 @@ struct CalculatorApp: App {
     var body: some Scene {
         WindowGroup {
             // a little hack to prevent that which background creeps up during device orientation chang rotation
-            let deviceSize = 1.5*max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
+            let expandedDeviceSize = 1.5*max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
             iOSSize(brain: brain)
                 .background(Rectangle()
-                                .frame(width: deviceSize, height: deviceSize, alignment: .center)
+                                .frame(width: expandedDeviceSize, height: expandedDeviceSize, alignment: .center)
                                 .foregroundColor(TE.appBackgroundColor) //Color.yellow.opacity(0.5))
                                 .ignoresSafeArea())
         }

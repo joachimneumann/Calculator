@@ -14,7 +14,7 @@ struct Display: View {
 
     var body: some View {
         HStack {
-            Spacer(minLength: 0)
+            Spacer(minLength: 0.0)
             Text(text)
                 .foregroundColor(textColor)
                 .font(Font.system(size: fontSize, weight: .thin).monospacedDigit())

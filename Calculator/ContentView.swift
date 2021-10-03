@@ -22,23 +22,23 @@ struct ContentView: View {
         let brain: Brain
         var body: some View {
             let iconSize = t.numberKeySize.height * 0.7
-            HStack(spacing: 0) {
-                Spacer(minLength: 0)
+            HStack(spacing: 0.0) {
+                Spacer(minLength: 0.0)
                 ZStack {
-                    VStack(spacing: 0) {
-                        Spacer(minLength: 0)
+                    VStack(spacing: 0.0) {
+                        Spacer(minLength: 0.0)
                         Zoom(active: active,
                              iconSize: iconSize,
                              textColor: TE.DigitKeyProperties.textColor,
                              zoomed: $zoomed,
                              showCalculating: showCalculating)
                             .frame(width: t.widerNumberKeySize.width, height: t.widerNumberKeySize.height, alignment: .center)
-                        Spacer(minLength: 0)
+                        Spacer(minLength: 0.0)
                     }
                     .padding(.bottom, t.allKeysHeight)
                     if zoomed {
-                        VStack(spacing: 0) {
-                            Spacer(minLength: 0)
+                        VStack(spacing: 0.0) {
+                            Spacer(minLength: 0.0)
                             Copy(longString: brain.combinedLongDisplayString(longDisplayString: brain.longDisplayString)) {
                                 copyPasteHighlight = true
                                 let now = DispatchTime.now()
@@ -51,8 +51,8 @@ struct ContentView: View {
                             .transition(.move(edge: .bottom))
                             .padding(.bottom, t.allKeysHeight + t.numberKeySize.height * 0.125 - 80.0)
                         }
-                        VStack(spacing: 0) {
-                            Spacer(minLength: 0)
+                        VStack(spacing: 0.0) {
+                            Spacer(minLength: 0.0)
                             Paste() { fromPasteboard in
                                 copyPasteHighlight = true
                                 let now = DispatchTime.now()
@@ -91,8 +91,8 @@ struct ContentView: View {
 
                 
             } else {
-                VStack(spacing: 0) {
-                    Spacer(minLength: 0)
+                VStack(spacing: 0.0) {
+                    Spacer(minLength: 0.0)
                     Display(
                         text: brain.display,
                         fontSize: t.displayFontSize,
@@ -102,9 +102,9 @@ struct ContentView: View {
                         .padding(.bottom, t.allKeysHeight)
                 }
                 if brain.rad && !zoomed {
-                    VStack(spacing: 0) {
-                        Spacer(minLength: 0)
-                        HStack(spacing: 0) {
+                    VStack(spacing: 0.0) {
+                        Spacer(minLength: 0.0)
+                        HStack(spacing: 0.0) {
                             let radFontSize: CGFloat = t.displayFontSize*0.33
                             Text("Rad")
                                 .font(Font.system(size: radFontSize).monospacedDigit())
@@ -112,16 +112,16 @@ struct ContentView: View {
                                 .padding(.trailing, t.numberKeySize.width + 0.5 * t.spaceBetweenkeys + 0)
                                 .padding(.leading, 0 + 0.5 * t.numberKeySize.width - radFontSize)
                                 .padding(.bottom, t.allKeysHeight + t.numberKeySize.height * 0.125)
-                            Spacer(minLength: 0)
+                            Spacer(minLength: 0.0)
                         }
                     }
                     .transition(.move(edge: .bottom))
                 }
                 if !zoomed {
-                    VStack(spacing: 0) {
-                        Spacer(minLength: 0)
-                        HStack(spacing: 0) {
-                            Spacer(minLength: 0)
+                    VStack(spacing: 0.0) {
+                        Spacer(minLength: 0.0)
+                        HStack(spacing: 0.0) {
+                            Spacer(minLength: 0.0)
                             if t.isLandscape {
                                 ScientificKeys(
                                     brain: brain, t: t)
@@ -132,7 +132,7 @@ struct ContentView: View {
                                 brain: brain, t: t)
                                 .frame(width: t.numberPadWidth, height: t.allKeysHeight)
                                 .background(TE.appBackgroundColor)
-                            Spacer(minLength: 0)
+                            Spacer(minLength: 0.0)
                         }
                         .background(TE.appBackgroundColor)
                         .transition(.move(edge: .bottom))

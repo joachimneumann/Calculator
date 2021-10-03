@@ -60,11 +60,11 @@ struct Root: View {
             GeometryReader { geo in
                 let w = geo.size.width*TE.iPhoneScientificFontSizeReduction
                 let h = geo.size.height*TE.iPhoneScientificFontSizeReduction
-                VStack(spacing:0) {
-                    Spacer(minLength: 0)
-                    HStack(spacing:0) {
+                VStack(spacing:0.0) {
+                    Spacer(minLength: 0.0)
+                    HStack(spacing:0.0) {
                         ZStack {
-                            Spacer(minLength: 0)
+                            Spacer(minLength: 0.0)
                             let fontSize1:CGFloat = CGFloat(0.21276) * h
                             let fontSize2:CGFloat = CGFloat(0.27659) * h
                             Text(root)
@@ -76,9 +76,9 @@ struct Root: View {
                                 .font(.system(size: fontSize2, weight: .semibold))
                                 .offset(x: 0.08*w, y: 0.05*h)
                         }
-                        Spacer(minLength: 0)
+                        Spacer(minLength: 0.0)
                     }
-                    Spacer(minLength: 0)
+                    Spacer(minLength: 0.0)
                 }
             }
         }
@@ -96,7 +96,7 @@ struct One_x: View {
             GeometryReader { geo in
                 let w: CGFloat = geo.size.width*TE.iPhoneScientificFontSizeReduction
                 let h: CGFloat = geo.size.height*TE.iPhoneScientificFontSizeReduction
-                VStack(spacing:0) {
+                VStack(spacing:0.0) {
                     Spacer(minLength: 0.0)
                     HStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
@@ -110,9 +110,9 @@ struct One_x: View {
                                 .font(.system(size: h*0.25))
                                 .offset(x: 0.10*w, y: 0.07*h)
                         }
-                        Spacer(minLength: 0)
+                        Spacer(minLength: 0.0)
                     }
-                    Spacer(minLength: 0)
+                    Spacer(minLength: 0.0)
                 }
             }
         }
@@ -126,18 +126,18 @@ struct Logx: View {
         ZStack {
             GeometryReader { geo in
                 let s = min(geo.size.width, geo.size.height)*TE.iPhoneScientificFontSizeReduction
-                VStack(spacing:0) {
-                    Spacer(minLength: 0)
-                    HStack(spacing:0) {
-                        Spacer(minLength: 0)
+                VStack(spacing:0.0) {
+                    Spacer(minLength: 0.0)
+                    HStack(spacing:0.0) {
+                        Spacer(minLength: 0.0)
                         Text("log")
-                            .font(.system(size: s*0.4))
+                            .font(.system(size: s * 0.4))
                         Text(base)
-                            .font(.system(size: s*0.22))
-                            .offset(x: 0.0, y: 0.13*s)
-                        Spacer(minLength: 0)
+                            .font(.system(size: s * 0.22))
+                            .offset(x: 0.0, y: 0.13 * s)
+                        Spacer(minLength: 0.0)
                     }
-                    Spacer(minLength: 0)
+                    Spacer(minLength: 0.0)
                 }
             }
         }
@@ -152,18 +152,18 @@ struct Pow: View {
         ZStack {
             GeometryReader { geo in
                 let s = min(geo.size.width, geo.size.height)*TE.iPhoneScientificFontSizeReduction
-                VStack(spacing:0) {
-                    Spacer(minLength: 0)
-                    HStack(spacing:0) {
-                        Spacer(minLength: 0)
+                VStack(spacing:0.0) {
+                    Spacer(minLength: 0.0)
+                    HStack(spacing:0.0) {
+                        Spacer(minLength: 0.0)
                         Text(base)
                             .font(.system(size: s*0.4))
                         Text(exponent)
                             .font(.system(size: s*0.22))
                             .offset(x: 0.0, y: -0.13*s)
-                        Spacer(minLength: 0)
+                        Spacer(minLength: 0.0)
                     }
-                    Spacer(minLength: 0)
+                    Spacer(minLength: 0.0)
                 }
             }
         }
