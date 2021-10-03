@@ -19,7 +19,9 @@ struct CalculatorApp: App {
             ZStack {
                 TE.appBackgroundColor
                     .ignoresSafeArea()
-                ContentView(brain: brain, t: TE()) // sizes are hardcoded for Mac
+                // Sizes are hardcoded for Mac
+                // I call the ContentView directly with TE()
+                ContentView(brain: brain, t: TE())
             }
         }
     }

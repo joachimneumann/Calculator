@@ -21,20 +21,21 @@ struct ContentView: View {
         let t: TE
         let brain: Brain
         var body: some View {
+            let iconSize = t.numberKeySize.height * 0.7
             HStack(spacing: 0) {
                 Spacer(minLength: 0)
                 ZStack {
                     VStack(spacing: 0) {
                         Spacer(minLength: 0)
                         Zoom(active: active,
-                             iconSize: t.numberKeySize.height*0.75,
-                             textColor: Color.white,
+                             iconSize: iconSize,
+                             textColor: TE.DigitKeyProperties.textColor,
                              zoomed: $zoomed,
                              showCalculating: showCalculating)
-                            .frame(width: t.numberKeySize.width)
-                            .padding(.trailing, 0)//trailingPadding)
+                            .frame(width: t.widerNumberKeySize.width)
+                            .padding(.trailing, 0)
                     }
-                    .padding(.bottom, t.allKeysHeight + t.numberKeySize.height * 0.125)
+                    .padding(.bottom, t.allKeysHeight + t.spaceBetweenkeys + t.numberKeySize.height * 0.5 - iconSize * 0.5)
                     if zoomed {
                         VStack(spacing: 0) {
                             Spacer(minLength: 0)

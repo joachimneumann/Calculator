@@ -30,9 +30,3 @@ struct AllDigitsView: View {
         .padding(.top, 0.2) /// TODO: Unterstand why this magically persuades the Scrollview to respect the SafeArea
     }
 }
-
-struct AllDigitsView_Previews: PreviewProvider {
-    static var previews: some View {
-        AllDigitsView(brain: Brain(), textColor: Color.white)
-    }
-}
