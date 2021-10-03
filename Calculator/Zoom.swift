@@ -19,7 +19,6 @@ struct Zoom: View {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
                     .scaleEffect(1.4, anchor: .center)
-                    .frame(width: iconSize, height: iconSize)
             } else {
                 Group {
                     if zoomed {
@@ -38,8 +37,6 @@ struct Zoom: View {
                 }
             }
         }
-        .font(Font.system(size: 100, weight: .bold).monospacedDigit())
-        .minimumScaleFactor(0.01)
         .frame(width: iconSize, height: iconSize)
     }
 }
