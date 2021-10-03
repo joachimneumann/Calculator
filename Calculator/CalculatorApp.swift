@@ -33,7 +33,7 @@ struct CalculatorApp: App {
             iOSSize(brain: brain)
                 .background(Rectangle()
                                 .frame(width: expandedDeviceSize, height: expandedDeviceSize, alignment: .center)
-                                .foregroundColor(TE.appBackgroundColor) //Color.yellow.opacity(0.5))
+                                .foregroundColor(TE.appBackgroundColor)
                                 .ignoresSafeArea())
         }
     }

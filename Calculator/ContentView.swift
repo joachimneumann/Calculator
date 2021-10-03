@@ -39,30 +39,15 @@ struct ContentView: View {
                     if zoomed {
                         VStack(spacing: 0.0) {
                             Spacer(minLength: 0.0)
-                            Copy(longString: brain.combinedLongDisplayString(longDisplayString: brain.longDisplayString)) {
-                                copyPasteHighlight = true
-                                let now = DispatchTime.now()
-                                var whenWhen: DispatchTime
-                                whenWhen = now + DispatchTimeInterval.milliseconds(300)
-                                DispatchQueue.main.asyncAfter(deadline: whenWhen) {
-                                    copyPasteHighlight = false
-                                }
-                            }
+                            Copy(
+                                longString: brain.combinedLongDisplayString(longDisplayString: brain.longDisplayString),
+                                copyPasteHighlight: $copyPasteHighlight) 
                             .transition(.move(edge: .bottom))
                             .padding(.bottom, t.allKeysHeight + t.numberKeySize.height * 0.125 - 80.0)
                         }
                         VStack(spacing: 0.0) {
                             Spacer(minLength: 0.0)
-                            Paste() { fromPasteboard in
-                                copyPasteHighlight = true
-                                let now = DispatchTime.now()
-                                var whenWhen: DispatchTime
-                                whenWhen = now + DispatchTimeInterval.milliseconds(300)
-                                DispatchQueue.main.asyncAfter(deadline: whenWhen) {
-                                    copyPasteHighlight = false
-                                }
-                                brain.fromPasteboard(fromPasteboard)
-                            }
+                            Paste(copyPasteHighlight: $copyPasteHighlight, brain: brain)
                             .padding(.bottom, t.allKeysHeight + t.numberKeySize.height * 0.125 - 120.0)
                         }
                     }

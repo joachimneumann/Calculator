@@ -9,13 +9,19 @@ import SwiftUI
 
 struct Copy: View {
     let longString: String
-    var animationCallback: () -> ()
+    @Binding var copyPasteHighlight: Bool
     var body: some View {
         Text("Copy")
             .font(.system(size: 15).bold())
             .foregroundColor(TE.DigitKeyProperties.textColor)
             .onTapGesture {
-                animationCallback()
+                copyPasteHighlight = true
+                let now = DispatchTime.now()
+                var whenWhen: DispatchTime
+                whenWhen = now + DispatchTimeInterval.milliseconds(300)
+                DispatchQueue.main.asyncAfter(deadline: whenWhen) {
+                    copyPasteHighlight = false
+                }
                 // A popup message seem to appear in the simulaor only
                 UIPasteboard.general.string = longString
             }
@@ -23,20 +29,24 @@ struct Copy: View {
 }
 
 struct Paste: View {
-    var pasteAndAnimationCallback: (String) -> ()
+    @Binding var copyPasteHighlight: Bool
+    let brain: Brain
     var body: some View {
         Text("Paste")
             .font(.system(size: 15).bold())
             .foregroundColor(TE.DigitKeyProperties.textColor)
             .onTapGesture {
                 if let content = UIPasteboard.general.string {
-                    pasteAndAnimationCallback(content)
+                    copyPasteHighlight = true
+                    let now = DispatchTime.now()
+                    var whenWhen: DispatchTime
+                    whenWhen = now + DispatchTimeInterval.milliseconds(300)
+                    DispatchQueue.main.asyncAfter(deadline: whenWhen) {
+                        copyPasteHighlight = false
+                    }
+                    brain.fromPasteboard(content)
                 }
             }
     }
 }
-struct Copy_Previews: PreviewProvider {
-    static var previews: some View {
-        Copy(longString: "xx") {}
-    }
-}
+
