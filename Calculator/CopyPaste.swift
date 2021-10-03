@@ -16,6 +16,7 @@ struct Copy: View {
             .foregroundColor(TE.DigitKeyProperties.textColor)
             .onTapGesture {
                 animationCallback()
+                // A popup message seem to appear in the simulaor only
                 UIPasteboard.general.string = longString
             }
     }
