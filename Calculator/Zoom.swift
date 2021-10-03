@@ -16,10 +16,9 @@ struct Zoom: View {
     var body: some View {
         ZStack {
             if showCalculating {
-                Circle()
-                    .foregroundColor(Color.yellow.opacity(1.0))
                 ProgressView()
-                    .scaleEffect(1.3, anchor: .center)
+                    .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
+                    .scaleEffect(1.4, anchor: .center)
                     .frame(width: iconSize, height: iconSize)
             } else {
                 Group {
@@ -31,6 +30,7 @@ struct Zoom: View {
                             .resizable()
                     }
                 }
+                .foregroundColor(active ? textColor : Color(white: 0.5))
                 .onTapGesture {
                     withAnimation(.easeIn) {
                         zoomed.toggle()
@@ -38,7 +38,6 @@ struct Zoom: View {
                 }
             }
         }
-        .foregroundColor(active ? textColor : Color(white: 0.5))
         .font(Font.system(size: 100, weight: .bold).monospacedDigit())
         .minimumScaleFactor(0.01)
         .frame(width: iconSize, height: iconSize)
