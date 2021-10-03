@@ -32,10 +32,10 @@ struct ContentView: View {
                              textColor: TE.DigitKeyProperties.textColor,
                              zoomed: $zoomed,
                              showCalculating: showCalculating)
-                            .frame(width: t.widerNumberKeySize.width)
-                            .padding(.trailing, 0)
+                            .frame(width: TE.wkw, height: TE.kh, alignment: .center)
+                        Spacer(minLength: 0)
                     }
-                    .padding(.bottom, t.allKeysHeight + t.spaceBetweenkeys + t.numberKeySize.height * 0.5 - iconSize * 0.5)
+                    .padding(.bottom, t.allKeysHeight)
                     if zoomed {
                         VStack(spacing: 0) {
                             Spacer(minLength: 0)
