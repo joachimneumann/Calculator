@@ -32,7 +32,7 @@ struct ContentView: View {
                              textColor: TE.DigitKeyProperties.textColor,
                              zoomed: $zoomed,
                              showCalculating: showCalculating)
-                            .frame(width: TE.wkw, height: TE.kh, alignment: .center)
+                            .frame(width: t.widerNumberKeySize.width, height: t.widerNumberKeySize.height, alignment: .center)
                         Spacer(minLength: 0)
                     }
                     .padding(.bottom, t.allKeysHeight)
