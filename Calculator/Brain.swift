@@ -10,12 +10,12 @@ import SwiftUI
 
 class Brain: ObservableObject {
     private var n = NumberStack(digitsInDisplay: TE.digitsInSmallDisplay)
-    var operatorStack = OperatorStack() // TODO private after testing
+    private var operatorStack = OperatorStack()
     @Published var calculating: Bool = false
     @Published var showCalculating: Bool = false
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
-    var display: String           { n.display }
+    var display: String { n.display }
     var longDisplayString: (String, String?) { n.longDisplay }
     func combinedLongDisplayString(longDisplayString: (String, String?)) -> String {
         if longDisplayString.1 == nil {
@@ -24,7 +24,7 @@ class Brain: ObservableObject {
             return longDisplayString.0+" "+longDisplayString.1!
         }
     }
-    var hasMoreDigits: Bool       { n.hasMoreDigits }
+    var hasMoreDigits: Bool { n.hasMoreDigits }
     var pendingOperator: String?
     var memory: Gmp? = nil
 
@@ -195,6 +195,7 @@ class Brain: ObservableObject {
     }
 
     var nn: Int { n.count }
+    var no: Int { operatorStack.count }
     var last: Number { n.last }
 
     init() {
