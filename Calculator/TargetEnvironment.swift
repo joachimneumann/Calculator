@@ -1,5 +1,5 @@
 //
-//  TargetEnvironment.swift
+//  TE.swift
 //  Calculator
 //
 //  Created by Joachim Neumann on 23/09/2021.
@@ -7,17 +7,11 @@
 
 import SwiftUI
 
-class TargetEnvironment {
+class TE {
     static let iPhoneScientificFontSizeReduction: CGFloat = 0.8
     static let digitsInAllDigitsDisplay = 10000-1
 
 #if targetEnvironment(macCatalyst)
-    static let digitsInSmallDisplay = 16
-    static let windowWidth: CGFloat = 575.0
-    static let windowHeight: CGFloat = 323.0
-    static let displayFontSize: CGFloat = 47
-    static let zoomIconSize: CGFloat = 30
-
     /// The MacOS Calculator is a bit transparent.
     /// The colors specified here are the button colors
     /// when the MacOS Calcuator is on a black background.
@@ -28,6 +22,9 @@ class TargetEnvironment {
         red:    46.0/255.0,
         green:  39.0/255.0,
         blue:   38.0/255.0)
+
+    static let allDigitsFont = Font.custom("CourierNewPSMT", size: 19)
+
     static let DigitKeyProperties = KeyProperties(
         textColor: Color(
             red:   231.0/255.0,
@@ -77,12 +74,27 @@ class TargetEnvironment {
         downAnimationTime: 0.1,
         upAnimationTime: 0.5)
 
-//    static let numberKeySize:CGSize = CGSize(width: 56.25, height: 47.0)
-//    func slightlyLargerNumberKeySize(appFrame: CGSize) -> CGSize { CGSize(width: 56.25+2.0, height: 47.0) }
-//    func scientificKeySize(appFrame: CGSize) -> CGSize { numberKeySize(appFrame: appFrame) }
-//    func spaceBetweenkeys(appFrame: CGSize) -> CGFloat { 1.0 }
-//    let allDigitsFont = Font.custom("CourierNewPSMT", fontSize: 19)
-    
+
+    static let digitsInSmallDisplay = 16
+    static let zoomIconSize: CGFloat = 30.0
+    static let windowWidth: CGFloat = 9.0*TE.kw+TE.wkw+9.0*TE.sp
+    static let windowHeight: CGFloat = 419.5
+    static let kh = 63.0
+    static let kw = 72.75
+    static let wkw = 77.0
+    static let sp = 1.5
+    static let nf = 0.4
+
+    let isLandscape: Bool = true
+    let spaceBetweenkeys: CGFloat   = TE.sp
+    let numberPadWidth: CGFloat     = 3.0*TE.kw+TE.wkw+3.0*TE.sp
+    let scientificPadWidth: CGFloat = 6.0*TE.kw+5.0*TE.sp
+    let allKeysHeight: CGFloat      = (5.0 * TE.kh + 4.0 * TE.sp)
+    let displayFontSize: CGFloat    = (5.0 * TE.kw + 4.0 * TE.sp) * 0.175
+    let numberKeySize: CGSize       = CGSize(width: TE.kw,  height: TE.kh)
+    let widerNumberKeySize: CGSize  = CGSize(width: TE.wkw, height: TE.kh)
+    let scientificKeySize: CGSize   = CGSize(width: TE.kw,  height: TE.kh)
+    // no init needed
 #else
     ///
     /// iOS
@@ -134,8 +146,7 @@ class TargetEnvironment {
     static let digitsInSmallDisplay = 16
     static let zoomIconSize: CGFloat = 30.0
     static let spacingFration: CGFloat = 0.03
-    static let numberPadFration: CGFloat = 0.4//(0.4+3.0*spacingFration)/(1.0+9.0*spacingFration)
-    
+
     var displayFontSize: CGFloat = 0.0
     var isLandscape: Bool = false
     var spaceBetweenkeys: CGFloat = 0.0
@@ -143,9 +154,10 @@ class TargetEnvironment {
     var scientificPadWidth: CGFloat = 0.0
     var allKeysHeight: CGFloat = 0.0
     var numberKeySize: CGSize = CGSize(width: 0.0, height: 0.0)
-    var slightlyLargerNumberKeySize: CGSize = CGSize(width: 0.0, height: 0.0)
+    var widerNumberKeySize: CGSize = CGSize(width: 0.0, height: 0.0)
     var scientificKeySize: CGSize = CGSize(width: 0.0, height: 0.0)
     init(appFrame: CGSize) {
+        let numberPadFration: CGFloat = 0.4//(0.4+3.0*spacingFration)/(1.0+9.0*spacingFration)
         isLandscape = appFrame.width > appFrame.height
         print("calc() appFrame=\(appFrame)")
         let landscapeAspectRatio = (10.0 + 9.0 * Self.spacingFration) / (5 + 4.0 * Self.spacingFration)
@@ -155,7 +167,7 @@ class TargetEnvironment {
 
         let allKeysWidth  = appFrame.width
         allKeysHeight = allKeysWidth / aspectRatio
-        numberPadWidth = allKeysWidth * (isLandscape ? Self.numberPadFration : 1.0)
+        numberPadWidth = allKeysWidth * (isLandscape ? numberPadFration : 1.0)
         displayFontSize = allKeysHeight * 0.2
         spaceBetweenkeys = numberPadWidth * Self.spacingFration
         // print("numberKeySize appFrame=\(appFrame)")
@@ -164,7 +176,7 @@ class TargetEnvironment {
         //let n = keywidth*4+3*spaceBetweenkeys
         //print(n)
         numberKeySize = CGSize(width: keywidth, height: keyheight)
-        slightlyLargerNumberKeySize = numberKeySize
+        widerNumberKeySize = numberKeySize
         
         scientificPadWidth = allKeysWidth - numberPadWidth - spaceBetweenkeys
         keywidth = (scientificPadWidth - 5.0*spaceBetweenkeys) / 6.0
@@ -174,9 +186,6 @@ class TargetEnvironment {
         keyheight = (allKeysHeight - 4.0*spaceBetweenkeys) * 0.2
         scientificKeySize = CGSize(width: keywidth, height: keyheight)
     }
-
-//    func verticalSpace(forTotalWidth w: CGFloat)   -> CGFloat { 0.03 * w }
-//    func horizontalSpace(forTotalWidth w: CGFloat) -> CGFloat { 0.03 * w }
 
 #endif
 

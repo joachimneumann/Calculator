@@ -16,37 +16,37 @@ struct ScientificKeys: View {
     var body: some View {
         VStack(spacing: verticalSpace) {
             HStack(spacing: horizontalSpace) {
-                Key("(", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key("(", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation("(") }
-                Key(")", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key(")", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation(")") }
-                Key("mc", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key("mc", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.notCalculating,
                         isPending: false)
                 { brain.clearMemory() }
-                Key("m+", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key("m+", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.addToMemory() }
-                Key("m-", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key("m-", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.subtractFromMemory() }
-                Key("mr", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key("mr", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.memory != nil && brain.notCalculating,
@@ -55,37 +55,37 @@ struct ScientificKeys: View {
                 { brain.getMemory() }
             }
             HStack(spacing: horizontalSpace) {
-                Key("2nd", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key("2nd", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.digitsAllowed,
                         isPending: brain.secondKeys)
                 { brain.secondKeys.toggle() }
-                Key("x^2", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key("x^2", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation("x^2") }
-                Key("x^3", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key("x^3", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation("x^3") }
-                Key("x^y", keyProperties: TargetEnvironment.LightGrayKeyProperties, isActive: brain.inPlaceAllowed)
+                Key("x^y", keyProperties: TE.LightGrayKeyProperties, isActive: brain.inPlaceAllowed)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: brain.isPending("x^y"))
                 { brain.operation("x^y") }
-                Key(brain.secondKeys ? "y^x" : "e^x", keyProperties: TargetEnvironment.LightGrayKeyProperties, isActive: brain.inPlaceAllowed)
+                Key(brain.secondKeys ? "y^x" : "e^x", keyProperties: TE.LightGrayKeyProperties, isActive: brain.inPlaceAllowed)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.secondKeys ? brain.inPlaceAllowed : brain.inPlaceAllowed,
                         isPending: brain.secondKeys ? brain.isPending("y^x") : false)
                 { brain.operation(brain.secondKeys ? "y^x" : "e^x") }
-                Key(brain.secondKeys ? "2^x" : "10^x", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key(brain.secondKeys ? "2^x" : "10^x", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
@@ -93,38 +93,38 @@ struct ScientificKeys: View {
                 { brain.operation(brain.secondKeys ? "2^x" : "10^x") }
             }
             HStack(spacing: horizontalSpace) {
-                Key("One_x", keyProperties: TargetEnvironment.LightGrayKeyProperties, isActive: brain.inPlaceAllowed)
+                Key("One_x", keyProperties: TE.LightGrayKeyProperties, isActive: brain.inPlaceAllowed)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false,
                         isActive: brain.inPlaceAllowed)
                 { brain.operation("One_x") }
-                Key("√", keyProperties: TargetEnvironment.LightGrayKeyProperties, isActive: brain.inPlaceAllowed)
+                Key("√", keyProperties: TE.LightGrayKeyProperties, isActive: brain.inPlaceAllowed)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation("√") }
-                Key("3√", keyProperties: TargetEnvironment.LightGrayKeyProperties, isActive: brain.inPlaceAllowed)
+                Key("3√", keyProperties: TE.LightGrayKeyProperties, isActive: brain.inPlaceAllowed)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation("3√") }
-                Key("y√", keyProperties: TargetEnvironment.LightGrayKeyProperties, isPending: brain.isPending("y√"), isActive: brain.inPlaceAllowed) // isPending for strokeColor
+                Key("y√", keyProperties: TE.LightGrayKeyProperties, isPending: brain.isPending("y√"), isActive: brain.inPlaceAllowed) // isPending for strokeColor
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: brain.isPending("y√"))
                 { brain.operation("y√") }
-                Key(brain.secondKeys ? "logy" : "ln", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key(brain.secondKeys ? "logy" : "ln", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: brain.secondKeys ? brain.isPending("logy") : false)
                 { brain.operation(brain.secondKeys ? "logy" : "ln") }
-                Key(brain.secondKeys ? "log2" : "log10", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key(brain.secondKeys ? "log2" : "log10", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
@@ -132,13 +132,13 @@ struct ScientificKeys: View {
                 { brain.operation(brain.secondKeys ? "log2" : "log10") }
             }
             HStack(spacing: horizontalSpace) {
-                Key("x!", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key("x!", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
                         isPending: false)
                 { brain.operation("x!") }
-                Key(brain.secondKeys ? "asin" : "sin", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key(brain.secondKeys ? "asin" : "sin", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
@@ -149,7 +149,7 @@ struct ScientificKeys: View {
                         brain.operation(brain.secondKeys ? "asinD" : "sinD")
                     }
                 }
-                Key(brain.secondKeys ? "acos" : "cos", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key(brain.secondKeys ? "acos" : "cos", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
@@ -160,7 +160,7 @@ struct ScientificKeys: View {
                         brain.operation(brain.secondKeys ? "acosD" : "cosD")
                     }
                 }
-                Key(brain.secondKeys ? "atan" : "tan", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key(brain.secondKeys ? "atan" : "tan", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
@@ -171,13 +171,13 @@ struct ScientificKeys: View {
                         brain.operation(brain.secondKeys ? "atanD" : "tanD")
                     }
                 }
-                Key("e", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key("e", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.digitsAllowed,
                         isPending: false)
                 { brain.operation("e") }
-                Key("EE", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key("EE", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.digitsAllowed,
@@ -185,13 +185,13 @@ struct ScientificKeys: View {
                 { brain.operation("EE") }
             }
             HStack(spacing: horizontalSpace) {
-                Key(brain.rad ? "Deg" : "Rad", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key(brain.rad ? "Deg" : "Rad", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.notCalculating,
                         isPending: false)
                 { brain.rad.toggle() }
-                Key(brain.secondKeys ? "asinh" : "sinh", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key(brain.secondKeys ? "asinh" : "sinh", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
@@ -202,7 +202,7 @@ struct ScientificKeys: View {
                         brain.operation(brain.secondKeys ? "asinhD" : "sinhD")
                     }
                 }
-                Key(brain.secondKeys ? "acosh" : "cosh", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key(brain.secondKeys ? "acosh" : "cosh", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
@@ -213,7 +213,7 @@ struct ScientificKeys: View {
                         brain.operation(brain.secondKeys ? "acoshD" : "coshD")
                     }
                 }
-                Key(brain.secondKeys ? "atanh" : "tanh", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key(brain.secondKeys ? "atanh" : "tanh", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.inPlaceAllowed,
@@ -224,13 +224,13 @@ struct ScientificKeys: View {
                         brain.operation(brain.secondKeys ? "atanhD" : "tanhD")
                     }
                 }
-                Key("π", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key("π", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.digitsAllowed,
                         isPending: false)
                 { brain.operation("π") }
-                Key("Rand", keyProperties: TargetEnvironment.LightGrayKeyProperties)
+                Key("Rand", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         isAllowed: brain.digitsAllowed,
@@ -240,7 +240,7 @@ struct ScientificKeys: View {
         }
     }
 
-    init(brain: Brain, t: TargetEnvironment) {
+    init(brain: Brain, t: TE) {
         self.brain = brain
         horizontalSpace = t.spaceBetweenkeys
         verticalSpace   = t.spaceBetweenkeys

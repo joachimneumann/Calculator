@@ -170,7 +170,7 @@ extension Key {
             Spacer()
         }
         .modifier(Digit_0_to_9(keyProperties: keyProperties, size: size, isAllowed: isAllowed, isActive: isActive && isAllowed, callback: callback))
-        .frame(width: size.width*2+space, height: size.height)
+        .frame(width: size.width*2.0+space, height: size.height)
     }
     
     func op_div_mul_add_sub_eq(size: CGSize, isAllowed: Bool, isPending: Bool, isActive: Bool = true, callback: (() -> Void)? = nil ) -> some View {
@@ -189,7 +189,7 @@ extension Key {
 #if targetEnvironment(macCatalyst)
         let fontSize = size.height*0.4
 #else
-        let fontSize = size.height*0.4*TargetEnvironment.iPhoneScientificFontSizeReduction
+        let fontSize = size.height*0.4*TE.iPhoneScientificFontSizeReduction
 #endif
         return self
             .modifier(ScientificButton(keyProperties: keyProperties, fontSize: fontSize, isAllowed: isAllowed, isPending: isPending, isActive: isActive && isAllowed, callback: callback))

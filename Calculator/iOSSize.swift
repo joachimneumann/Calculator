@@ -5,6 +5,10 @@
 //  Created by Joachim Neumann on 02/10/2021.
 //
 
+#if targetEnvironment(macCatalyst)
+// nothing to compile here...
+#else
+
 import SwiftUI
 
 struct iOSSize: View {
@@ -27,20 +31,20 @@ struct iOSSize: View {
                 let bottomPaddingNeeded   = insets.bottom == 0
                 
                 let horizontalFactor:CGFloat = 1.0 -
-                (leadingPaddingNeeded ? TargetEnvironment.spacingFration : 0) -
-                (trailingPaddingNeeded ? TargetEnvironment.spacingFration : 0 )
+                (leadingPaddingNeeded ? TE.spacingFration : 0) -
+                (trailingPaddingNeeded ? TE.spacingFration : 0 )
                 let verticalFactor:CGFloat = 1.0 -
-                (bottomPaddingNeeded ? TargetEnvironment.spacingFration : 0.0)
+                (bottomPaddingNeeded ? TE.spacingFration : 0.0)
                 
                 let appFrame = CGSize(
                     width: geo.size.width * horizontalFactor,
                     height: geo.size.height * verticalFactor)
                 
-                let t = TargetEnvironment(appFrame: appFrame)
+                let t = TE(appFrame: appFrame)
                 
                 /// make the app frame smaller if there is no safe area.
                 /// If there already is safe area, no padding is needed
-                IOSContentView(brain: brain, t: t)
+                ContentView(brain: brain, t: t)
                     .padding(.leading, leadingPaddingNeeded ? t.spaceBetweenkeys : 0)
                     .padding(.trailing, trailingPaddingNeeded ? t.spaceBetweenkeys : 0)
                     .padding(.bottom, bottomPaddingNeeded ? t.spaceBetweenkeys : 0)
@@ -49,3 +53,4 @@ struct iOSSize: View {
     }
 }
 
+#endif

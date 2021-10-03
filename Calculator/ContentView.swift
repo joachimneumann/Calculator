@@ -1,5 +1,5 @@
 //
-//  IOSContentView.swift
+//  ContentView.swift
 //  Calculator
 //
 //  Created by Joachim Neumann on 24/09/2021.
@@ -7,12 +7,9 @@
 
 import SwiftUI
 
-#if targetEnvironment(macCatalyst)
-// nothing to compile here...
-#else
-struct IOSContentView: View {
+struct ContentView: View {
     @ObservedObject var brain: Brain
-    let t: TargetEnvironment
+    let t: TE
     @State var zoomed: Bool = false
     @State var copyPasteHighlight = false
     
@@ -21,7 +18,7 @@ struct IOSContentView: View {
         @Binding var copyPasteHighlight: Bool
         let active: Bool
         let showCalculating: Bool
-        let t: TargetEnvironment
+        let t: TE
         let brain: Brain
         var body: some View {
             HStack(spacing: 0) {
@@ -88,7 +85,7 @@ struct IOSContentView: View {
             if zoomed {//} && brain.hasMoreDigits {
                 AllDigitsView(
                     brain: brain,
-                    textColor: copyPasteHighlight ? Color.orange : TargetEnvironment.DigitKeyProperties.textColor)
+                    textColor: copyPasteHighlight ? Color.orange : TE.DigitKeyProperties.textColor)
                     .padding(.trailing, t.numberKeySize.width + 0.5 * t.spaceBetweenkeys)
 
                 
@@ -98,7 +95,7 @@ struct IOSContentView: View {
                     Display(
                         text: brain.display,
                         fontSize: t.displayFontSize,
-                        textColor: copyPasteHighlight ? Color.orange : TargetEnvironment.DigitKeyProperties.textColor)
+                        textColor: copyPasteHighlight ? Color.orange : TE.DigitKeyProperties.textColor)
                         .padding(.trailing, t.numberKeySize.width + 0.5 * t.spaceBetweenkeys + 0)
                         .padding(.leading, 0)
                         .padding(.bottom, t.allKeysHeight)
@@ -110,7 +107,7 @@ struct IOSContentView: View {
                             let radFontSize: CGFloat = t.displayFontSize*0.33
                             Text("Rad")
                                 .font(Font.system(size: radFontSize).monospacedDigit())
-                                .foregroundColor(TargetEnvironment.DigitKeyProperties.textColor)
+                                .foregroundColor(TE.DigitKeyProperties.textColor)
                                 .padding(.trailing, t.numberKeySize.width + 0.5 * t.spaceBetweenkeys + 0)
                                 .padding(.leading, 0 + 0.5 * t.numberKeySize.width - radFontSize)
                                 .padding(.bottom, t.allKeysHeight + t.numberKeySize.height * 0.125)
@@ -133,9 +130,10 @@ struct IOSContentView: View {
                             NumberKeys(
                                 brain: brain, t: t)
                                 .frame(width: t.numberPadWidth, height: t.allKeysHeight)
+                                .background(TE.appBackgroundColor)
                             Spacer(minLength: 0)
                         }
-                        .background(TargetEnvironment.appBackgroundColor)
+                        .background(TE.appBackgroundColor)
                         .transition(.move(edge: .bottom))
                     }
                     .transition(.move(edge: .bottom))
@@ -145,4 +143,3 @@ struct IOSContentView: View {
     }
 }
 
-#endif

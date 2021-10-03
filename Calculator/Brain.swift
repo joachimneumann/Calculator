@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 class Brain: ObservableObject {
-    private var n = NumberStack(digitsInDisplay: TargetEnvironment.digitsInSmallDisplay)
+    private var n = NumberStack(digitsInDisplay: TE.digitsInSmallDisplay)
     var operatorStack = OperatorStack() // TODO private after testing
     @Published var calculating: Bool = false
     @Published var showCalculating: Bool = false

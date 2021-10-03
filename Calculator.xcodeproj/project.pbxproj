@@ -15,7 +15,7 @@
 		AA40C45526F8094700119D4F /* Gmp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA40C45426F8094700119D4F /* Gmp.swift */; };
 		AA46B32626FAC48500F83939 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA46B32526FAC48500F83939 /* Brain.swift */; };
 		AA59D79926FDDEA800321F26 /* AllDigitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA59D79826FDDEA800321F26 /* AllDigitsView.swift */; };
-		AA59D79D26FDED8B00321F26 /* IOSContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA59D79C26FDED8B00321F26 /* IOSContentView.swift */; };
+		AA59D79D26FDED8B00321F26 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA59D79C26FDED8B00321F26 /* ContentView.swift */; };
 		AA64980B26FD430900CFF9AA /* Zoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA64980A26FD430900CFF9AA /* Zoom.swift */; };
 		AA64980D26FD48F900CFF9AA /* DisplayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA64980C26FD48F900CFF9AA /* DisplayData.swift */; };
 		AA7CD3AB26FC322C00C714A6 /* ScientificKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CD3AA26FC322C00C714A6 /* ScientificKeys.swift */; };
@@ -74,7 +74,7 @@
 		AA40C45626F8096700119D4F /* Calculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Calculator.entitlements; sourceTree = "<group>"; };
 		AA46B32526FAC48500F83939 /* Brain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brain.swift; sourceTree = "<group>"; };
 		AA59D79826FDDEA800321F26 /* AllDigitsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDigitsView.swift; sourceTree = "<group>"; };
-		AA59D79C26FDED8B00321F26 /* IOSContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOSContentView.swift; sourceTree = "<group>"; };
+		AA59D79C26FDED8B00321F26 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AA64980A26FD430900CFF9AA /* Zoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zoom.swift; sourceTree = "<group>"; };
 		AA64980C26FD48F900CFF9AA /* DisplayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayData.swift; sourceTree = "<group>"; };
 		AA7CD3AA26FC322C00C714A6 /* ScientificKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScientificKeys.swift; sourceTree = "<group>"; };
@@ -153,7 +153,7 @@
 				AA64980A26FD430900CFF9AA /* Zoom.swift */,
 				AA64980C26FD48F900CFF9AA /* DisplayData.swift */,
 				AA59D79826FDDEA800321F26 /* AllDigitsView.swift */,
-				AA59D79C26FDED8B00321F26 /* IOSContentView.swift */,
+				AA59D79C26FDED8B00321F26 /* ContentView.swift */,
 				AAEDA0E027047BB400005E04 /* NumberStack.swift */,
 				AAEDA0E22705993F00005E04 /* CopyPaste.swift */,
 			);
@@ -300,7 +300,7 @@
 				AA40C45526F8094700119D4F /* Gmp.swift in Sources */,
 				AA40C44526F808D800119D4F /* CalculatorApp.swift in Sources */,
 				AA64980D26FD48F900CFF9AA /* DisplayData.swift in Sources */,
-				AA59D79D26FDED8B00321F26 /* IOSContentView.swift in Sources */,
+				AA59D79D26FDED8B00321F26 /* ContentView.swift in Sources */,
 				AAE87B9526FC7302009E6D80 /* Symbols.swift in Sources */,
 				AA95564026FA1C180029D94C /* Key.swift in Sources */,
 				AA46B32626FAC48500F83939 /* Brain.swift in Sources */,
