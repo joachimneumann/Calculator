@@ -17,9 +17,7 @@ struct KeyProperties {
 
 struct Key: View {
     private let keyProperties: KeyProperties
-    private var asText: Text? = nil
-    private var asImage: Image? = nil
-    private var asView: AnyView? = nil
+    private var button: AnyView?
     
     private let sfImageNames: [String: String] = [
         "+":   "plus",
@@ -31,53 +29,46 @@ struct Key: View {
         "%":   "percent",
     ]
 
-    private func shape(name: String, strokeColor: Color) -> AnyView? {
-        switch name {
-        case "√":        return AnyView(Root("2", strokeColor: strokeColor))
-        case "3√":       return AnyView(Root("3", strokeColor: strokeColor))
-        case "y√":       return AnyView(Root("y", strokeColor: strokeColor))
-        case "log10":    return AnyView(Logx("10"))
-        case "log2":     return AnyView(Logx("2"))
-        case "logy":     return AnyView(Logx("y"))
-        case "One_x":    return AnyView(One_x(strokeColor: strokeColor))
-        case "x^2":      return AnyView(Pow(base:  "x",   exponent: "2"))
-        case "x^3":      return AnyView(Pow(base:  "x",   exponent: "3"))
-        case "x^y":      return AnyView(Pow(base:  "x",   exponent: "y"))
-        case "e^x":      return AnyView(Pow(base:  "e",   exponent: "x"))
-        case "y^x":      return AnyView(Pow(base:  "y",   exponent: "x"))
-        case "2^x":      return AnyView(Pow(base:  "2",   exponent: "x"))
-        case "10^x":     return AnyView(Pow(base: "10",   exponent: "x"))
-        case "2nd":      return AnyView(Pow(base: "2",    exponent: "nd"))
-        case "asin":     return AnyView(Pow(base: "sin",  exponent: "-1"))
-        case "acos":     return AnyView(Pow(base: "cos",  exponent: "-1"))
-        case "atan":     return AnyView(Pow(base: "tan",  exponent: "-1"))
-        case "asinh":    return AnyView(Pow(base: "sinh", exponent: "-1"))
-        case "acosh":    return AnyView(Pow(base: "cosh", exponent: "-1"))
-        case "atanh":    return AnyView(Pow(base: "tanh", exponent: "-1"))
-        default: return nil
+    @ViewBuilder func makeButton(label: String, strokeColor: Color) -> some View {
+        switch label {
+        case "√":     Root("2", strokeColor: strokeColor)
+        case "3√":    Root("3", strokeColor: strokeColor)
+        case "y√":    Root("y", strokeColor: strokeColor)
+        case "log10": Logx("10")
+        case "log2":  Logx("2")
+        case "logy":  Logx("y")
+        case "One_x": One_x(strokeColor: strokeColor)
+        case "x^2":   Pow(base:  "x",   exponent: "2")
+        case "x^3":   Pow(base:  "x",   exponent: "3")
+        case "x^y":   Pow(base:  "x",   exponent: "y")
+        case "e^x":   Pow(base:  "e",   exponent: "x")
+        case "y^x":   Pow(base:  "y",   exponent: "x")
+        case "2^x":   Pow(base:  "2",   exponent: "x")
+        case "10^x":  Pow(base: "10",   exponent: "x")
+        case "2nd":   Pow(base: "2",    exponent: "nd")
+        case "asin":  Pow(base: "sin",  exponent: "-1")
+        case "acos":  Pow(base: "cos",  exponent: "-1")
+        case "atan":  Pow(base: "tan",  exponent: "-1")
+        case "asinh": Pow(base: "sinh", exponent: "-1")
+        case "acosh": Pow(base: "cosh", exponent: "-1")
+        case "atanh": Pow(base: "tanh", exponent: "-1")
+        default:
+            if let sfImage = sfImageNames[label] {
+                Image(systemName: sfImage)
+            } else {
+                Text(label)
+            }
         }
     }
 
     var body: some View {
-        if let asImage = asImage {
-            asImage
-        } else if let asView = asView {
-            asView
-        } else if let asText = asText {
-            asText
-        }
+        button
     }
     
     init(_ text: String, keyProperties: KeyProperties, isPending: Bool = false, isActive: Bool = true) {
         self.keyProperties = keyProperties
         let strokeColor = !isActive ? Color.gray : (isPending ? keyProperties.bgColor : keyProperties.textColor)
-        if let sfImage = sfImageNames[text] {
-            asImage = Image(systemName: sfImage)
-        } else if let shape = shape(name: text, strokeColor: strokeColor) {
-            asView = shape
-        } else {
-            asText = Text(text)
-        }
+        button = AnyView(makeButton(label: text, strokeColor: strokeColor))
     }
 }
 

@@ -41,6 +41,7 @@ struct iOSSize: View {
                 let appFrame = CGSize(
                     width: geo.size.width * horizontalFactor,
                     height: geo.size.height * verticalFactor)
+                
                 let c = Configuration(appFrame: appFrame)
                 
                 /// make the app frame smaller if there is no safe area.
