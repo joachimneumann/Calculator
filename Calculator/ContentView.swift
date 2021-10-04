@@ -135,8 +135,6 @@ struct ContentView: View {
         let _dd: DisplayData = DisplayData(number: brain.last, digits: t.digitsInSmallDisplay)
         let _ = brain.inPlaceAllowed = _dd.isValidNumber
         VStack(spacing: 0.0) {
-            Spacer(minLength: 0.0)
-            
             HStack(spacing: 0.0) {
                 if brain.rad && !zoomed && t.isLandscape {
                     VStack(spacing: 0.0) {
@@ -159,7 +157,7 @@ struct ContentView: View {
                         .frame(maxHeight: t.remainingAboveKeys, alignment: .bottom)
                         .padding(.trailing, t.keySize.width * 0.5 - t.displayFontSize * 0.28)
                         .padding(.leading, t.keySize.width * 0.5 - t.displayFontSize * 0.28)
-                        .background(Color.orange)
+                        .padding(.bottom, zoomed ? t.allkeysHeight : 0.0)
                         .animation(nil, value: _dd.hasMoreDigits)
                 }
                 if t.isLandscape {
@@ -172,17 +170,20 @@ struct ContentView: View {
                              showCalculating: brain.showCalculating)
                             .frame(width: t.keySize.width, height: t.keySize.height, alignment: .center)
                             .background(Color.black)
-                            .padding(.bottom, t.spaceBetweenkeys)
+                            .padding(.bottom, t.spaceBetweenkeys + (zoomed ? t.allkeysHeight : 0.0))
                     }
                 }
             }
-            HStack(spacing: 0.0) {
-                if t.isLandscape {
-                    ScientificKeys(brain: brain, t: t)
-                        .padding(.trailing, t.spaceBetweenkeys)
+            if !zoomed {
+                HStack(spacing: 0.0) {
+                    if t.isLandscape {
+                        ScientificKeys(brain: brain, t: t)
+                            .padding(.trailing, t.spaceBetweenkeys)
+                    }
+                    NumberKeys(brain: brain, t: t)
+                    Spacer(minLength: 0.0)
                 }
-                NumberKeys(brain: brain, t: t)
-                Spacer(minLength: 0.0)
+                .transition(.move(edge: .bottom))
             }
         }
     }

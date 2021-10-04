@@ -45,7 +45,6 @@ struct iOSSize: View {
                     /// make the app frame smaller if there is no safe area.
                     /// If there already is safe area, no padding is needed
                     ContentView(brain: brain, t: t)
-                        .background(Color.brown)
                         .padding(.leading, leadingPaddingNeeded ? t.spaceBetweenkeys : 0)
                         .padding(.trailing, trailingPaddingNeeded ? t.spaceBetweenkeys : 0)
                         .padding(.bottom, bottomPaddingNeeded ? t.spaceBetweenkeys : 0)

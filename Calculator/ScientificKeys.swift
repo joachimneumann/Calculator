@@ -10,12 +10,12 @@ import SwiftUI
 struct ScientificKeys: View {
     @ObservedObject var brain: Brain
     let keySize: CGSize
-    let verticalSpace: CGFloat
-    let horizontalSpace: CGFloat
+    let vSpacing: CGFloat
+    let hSpacing: CGFloat
     
     var body: some View {
-        VStack(spacing: verticalSpace) {
-            HStack(spacing: horizontalSpace) {
+        VStack(spacing: vSpacing) {
+            HStack(spacing: hSpacing) {
                 Key("(", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
@@ -54,7 +54,7 @@ struct ScientificKeys: View {
                         isActive: brain.memory != nil)
                 { brain.getMemory() }
             }
-            HStack(spacing: horizontalSpace) {
+            HStack(spacing: hSpacing) {
                 Key("2nd", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
@@ -92,7 +92,7 @@ struct ScientificKeys: View {
                         isPending: false)
                 { brain.operation(brain.secondKeys ? "2^x" : "10^x") }
             }
-            HStack(spacing: horizontalSpace) {
+            HStack(spacing: hSpacing) {
                 Key("One_x", keyProperties: TE.LightGrayKeyProperties, isActive: brain.inPlaceAllowed)
                     .scientific(
                         size: keySize,
@@ -131,7 +131,7 @@ struct ScientificKeys: View {
                         isPending: false)
                 { brain.operation(brain.secondKeys ? "log2" : "log10") }
             }
-            HStack(spacing: horizontalSpace) {
+            HStack(spacing: hSpacing) {
                 Key("x!", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
@@ -184,7 +184,7 @@ struct ScientificKeys: View {
                         isPending: false)
                 { brain.operation("EE") }
             }
-            HStack(spacing: horizontalSpace) {
+            HStack(spacing: hSpacing) {
                 Key(brain.rad ? "Deg" : "Rad", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
@@ -242,8 +242,8 @@ struct ScientificKeys: View {
 
     init(brain: Brain, t: TE) {
         self.brain = brain
-        horizontalSpace = t.spaceBetweenkeys
-        verticalSpace   = t.spaceBetweenkeys
+        hSpacing = t.spaceBetweenkeys
+        vSpacing   = t.spaceBetweenkeys
         keySize = t.keySize
     }
 }

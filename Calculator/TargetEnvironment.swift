@@ -150,7 +150,7 @@ class TE {
     var spaceBetweenkeys: CGFloat = 0.0
     var keySize: CGSize = CGSize(width: 0.0, height: 0.0)
     var widerKeySize: CGSize = CGSize(width: 0.0, height: 0.0)
-    var allkeysHeight: CGFloat { 5.0 * keySize.height - 4.0 * spaceBetweenkeys }
+    var allkeysHeight: CGFloat { 5.0 * keySize.height + 4.0 * spaceBetweenkeys }
     var remainingAboveKeys: CGFloat = 0.0
     var digitsInSmallDisplay: Int = 3
     init(appFrame: CGSize) {
@@ -174,9 +174,9 @@ class TE {
             keySize = CGSize(width: w, height: w)
             digitsInSmallDisplay = 9
         }
-        remainingAboveKeys = appFrame.height - allkeysHeight
         displayFontSize = keySize.height
         widerKeySize = keySize
+        remainingAboveKeys = appFrame.height - allkeysHeight
     }
 
 #endif
