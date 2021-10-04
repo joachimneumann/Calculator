@@ -60,6 +60,10 @@ class DisplayData: Equatable {
                   exponent: nil,
                   content: invalid)
     }
+    convenience init(number: Number, digits: Int) {
+        let gmp = number.str == nil ? number.convertIntoGmp : Gmp(number.str)
+        self.init(gmp: gmp, digits: digits)
+    }
     convenience init(gmp: Gmp, digits: Int) {
         if gmp.NaN {
             self.init(invalid: "not a real number")

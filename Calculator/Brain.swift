@@ -15,7 +15,6 @@ class Brain: ObservableObject {
     @Published var showCalculating: Bool = false
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
-    func display(_ digitsInDisplay: Int) -> String { n.display(digitsInDisplay) }
     var longDisplayString: (String, String?) { n.longDisplay }
     func combinedLongDisplayString(longDisplayString: (String, String?)) -> String {
         if longDisplayString.1 == nil {
@@ -24,7 +23,6 @@ class Brain: ObservableObject {
             return longDisplayString.0+" "+longDisplayString.1!
         }
     }
-    func hasMoreDigits(_ digits: Int) -> Bool { n.hasMoreDigits(digits) }
     var pendingOperator: String?
     var memory: Gmp? = nil
 
@@ -53,8 +51,7 @@ class Brain: ObservableObject {
     
     var notCalculating: Bool { calculating == false }
     var digitsAllowed: Bool { notCalculating }
-    var inPlaceAllowed: Bool { n.isValid && notCalculating }
-    
+    var inPlaceAllowed = true
     func zero() {
         if pendingOperator != nil {
             n.append(Gmp())
@@ -77,7 +74,7 @@ class Brain: ObservableObject {
             let op = operatorStack.pop()
             if let twoOperand = op as? TwoOperand {
                 if n.count >= 2 {
-                    let gmp2 = n.popLast()!.gmp
+                    let gmp2 = n.popLast()!.convertIntoGmp
                     n.last.execute(twoOperand.operation, with: gmp2)
                 }
             }
@@ -96,7 +93,7 @@ class Brain: ObservableObject {
         } else if operatorStack.count >= 1 && n.count >= 2 {
             if let secondLast = n.secondLast {
                 n.last.execute(Gmp.mul, with: Gmp("0.01"))
-                n.last.execute(Gmp.mul, with: secondLast.gmp)
+                n.last.execute(Gmp.mul, with: secondLast.convertIntoGmp)
             }
         }
     }
@@ -170,18 +167,18 @@ class Brain: ObservableObject {
     }
     func addToMemory() {
         if memory == nil {
-            memory = n.last.gmp.copy()
+            memory = n.last.convertIntoGmp.copy()
         } else {
-            memory!.add(other: n.last.gmp)
+            memory!.add(other: n.last.convertIntoGmp)
         }
         objectWillChange.send()
     }
     func subtractFromMemory() {
         if memory == nil {
-            memory = n.last.gmp.copy()
+            memory = n.last.convertIntoGmp.copy()
             memory!.changeSign()
         } else {
-            memory!.sub(other: n.last.gmp)
+            memory!.sub(other: n.last.convertIntoGmp)
         }
         objectWillChange.send()
     }

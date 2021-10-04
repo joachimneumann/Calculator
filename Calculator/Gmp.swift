@@ -232,9 +232,3 @@ class Gmp {
     }
     
 }
-
-extension Gmp: Equatable {
-    static func ==(lhs: Gmp, rhs: Gmp) -> Bool {
-        DisplayData(gmp: lhs, digits: TE.digitsInAllDigitsDisplay) == DisplayData(gmp: rhs, digits: TE.digitsInAllDigitsDisplay)
-    }
-}

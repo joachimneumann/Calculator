@@ -132,8 +132,8 @@ struct ContentView: View {
 //    }
     
     var body: some View {
-        let _displayText:String = brain.display(t.digitsInSmallDisplay)
-        let _hasMoreDigits: Bool = brain.hasMoreDigits(t.digitsInSmallDisplay)
+        let _dd: DisplayData = DisplayData(number: brain.last, digits: t.digitsInSmallDisplay)
+        let _ = brain.inPlaceAllowed = _dd.isValidNumber
         VStack(spacing: 0.0) {
             Spacer(minLength: 0.0)
             
@@ -151,7 +151,7 @@ struct ContentView: View {
                 Spacer(minLength: 0.0)
                 VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    Text(_displayText)
+                    Text(_dd.string)
                         .foregroundColor(TE.DigitKeyProperties.textColor)
                         .font(Font.system(size: t.displayFontSize, weight: .thin).monospacedDigit())
                         .lineLimit(1)
@@ -160,12 +160,12 @@ struct ContentView: View {
                         .padding(.trailing, t.keySize.width * 0.5 - t.displayFontSize * 0.28)
                         .padding(.leading, t.keySize.width * 0.5 - t.displayFontSize * 0.28)
                         .background(Color.orange)
-                        .animation(nil, value: _hasMoreDigits)
+                        .animation(nil, value: _dd.hasMoreDigits)
                 }
                 if t.isLandscape {
                     VStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
-                        Zoom(active: _hasMoreDigits,
+                        Zoom(active: _dd.hasMoreDigits,
                              iconSize: t.keySize.height * 0.7,
                              textColor: TE.DigitKeyProperties.textColor,
                              zoomed: $zoomed,

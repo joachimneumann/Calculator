@@ -9,11 +9,8 @@ import Foundation
 
 class Number: CustomDebugStringConvertible {
     var str: String?
-    var isValid: Bool = true
-    var hasMoreDigits: Bool = false
-    var exponent: String?
     private var _gmp: Gmp
-    var gmp: Gmp {
+    var convertIntoGmp: Gmp {
         if str != nil {
             _gmp = Gmp(str!)
             str = nil
@@ -22,10 +19,10 @@ class Number: CustomDebugStringConvertible {
     }
 
     func execute(_ op: twoOperantsType, with other: Gmp) {
-        gmp.execute(op, with: other)
+        convertIntoGmp.execute(op, with: other)
     }
     func inPlace(op: inplaceType) {
-        gmp.inPlace(op: op)
+        convertIntoGmp.inPlace(op: op)
     }
     
     init(_ str: String) {
@@ -79,30 +76,11 @@ class Number: CustomDebugStringConvertible {
 
 struct NumberStack: CustomDebugStringConvertible{
     private var array: [Number] = []
-
-    func display(_ digits: Int) -> String {
-        let temp: Gmp
-        if let str = last.str {
-            if str.count <= digits {
-                return str
-            } else {
-                temp = Gmp(str)
-            }
-        } else {
-            temp = last.gmp
-        }
-        let dd = DisplayData(gmp: temp, digits: digits)
-        return dd.string
-    }
     
     var longDisplay: (String, String?) {
-        let dd = DisplayData(gmp: last.gmp, digits: TE.digitsInAllDigitsDisplay)
+        let dd = DisplayData(gmp: last.convertIntoGmp, digits: TE.digitsInAllDigitsDisplay)
         return (dd.string, dd.exponent)
     }
-    func hasMoreDigits(_ digits: Int) -> Bool {
-        DisplayData(gmp: last.gmp, digits: digits).hasMoreDigits
-    }
-    var isValid: Bool { last.isValid }
     
     var last: Number {
         assert(array.last != nil)
