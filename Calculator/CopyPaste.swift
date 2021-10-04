@@ -15,12 +15,16 @@ struct Copy: View {
             .font(.system(size: 15).bold())
             .foregroundColor(TE.DigitKeyProperties.textColor)
             .onTapGesture {
-                copyPasteHighlight = true
+                withAnimation() {
+                    copyPasteHighlight = true
+                }
                 let now = DispatchTime.now()
                 var whenWhen: DispatchTime
-                whenWhen = now + DispatchTimeInterval.milliseconds(300)
+                whenWhen = now + DispatchTimeInterval.milliseconds(200)
                 DispatchQueue.main.asyncAfter(deadline: whenWhen) {
-                    copyPasteHighlight = false
+                    withAnimation() {
+                        copyPasteHighlight = false
+                    }
                 }
                 // A popup message seem to appear in the simulaor only
                 UIPasteboard.general.string = longString
