@@ -125,17 +125,19 @@ struct ContentView: View {
     //        }
     //    }
     
-//    struct Rad: View {
-//        let keySize: CGSize
-//        var body: some View {
-//        }
-//    }
+    //    struct Rad: View {
+    //        let keySize: CGSize
+    //        var body: some View {
+    //        }
+    //    }
     
     var body: some View {
         let _dd: DisplayData = DisplayData(number: brain.last, digits: t.digitsInSmallDisplay)
         let _ = brain.inPlaceAllowed = _dd.isValidNumber
         VStack(spacing: 0.0) {
+            // everything is in here
             HStack(spacing: 0.0) {
+                // everyting above the keys
                 if brain.rad && !zoomed && t.isLandscape {
                     VStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
@@ -148,17 +150,31 @@ struct ContentView: View {
                 }
                 Spacer(minLength: 0.0)
                 VStack(spacing: 0.0) {
+                    if !t.isLandscape {
+                        HStack(spacing: 0.0) {
+                            Spacer(minLength: 0.0)
+                            Zoom(active: _dd.hasMoreDigits,
+                                 iconSize: t.keySize.height * 0.7,
+                                 textColor: TE.DigitKeyProperties.textColor,
+                                 zoomed: $zoomed,
+                                 showCalculating: brain.showCalculating)
+                                .frame(width: t.widerKeySize.width, height: t.keySize.height, alignment: .center)
+                        }
+                    }
                     Spacer(minLength: 0.0)
-                    Text(_dd.string)
-                        .foregroundColor(TE.DigitKeyProperties.textColor)
-                        .font(Font.system(size: t.displayFontSize, weight: .thin).monospacedDigit())
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.1)
-                        .frame(maxHeight: t.remainingAboveKeys, alignment: .bottom)
-                        .padding(.trailing, t.keySize.width * 0.5 - t.displayFontSize * 0.28 - TE.reducedTrailing)
-                        .padding(.leading, t.keySize.width * 0.5 - t.displayFontSize * 0.28)
-                        .padding(.bottom, zoomed ? t.allkeysHeight : 0.0)
-                        .animation(nil, value: _dd.hasMoreDigits)
+                    HStack(spacing: 0) {
+                        Spacer(minLength: 0.0)
+                        Text(_dd.string)
+                            .foregroundColor(TE.DigitKeyProperties.textColor)
+                            .font(Font.system(size: t.displayFontSize, weight: .thin).monospacedDigit())
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.1)
+                            .frame(maxHeight: t.remainingAboveKeys, alignment: .bottom)
+                            .padding(.trailing, t.keySize.width * 0.5 - t.displayFontSize * 0.28 - TE.reducedTrailing)
+                            .padding(.leading, t.keySize.width * 0.5 - t.displayFontSize * 0.28)
+                            .padding(.bottom, zoomed ? t.allkeysHeight : 0.0)
+                            .animation(nil, value: _dd.hasMoreDigits)
+                    }
                 }
                 if t.isLandscape {
                     VStack(spacing: 0.0) {
@@ -174,6 +190,7 @@ struct ContentView: View {
                 }
             }
             if !zoomed {
+                // the keys
                 HStack(spacing: 0.0) {
                     if t.isLandscape {
                         ScientificKeys(brain: brain, t: t)

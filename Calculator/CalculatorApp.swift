@@ -35,7 +35,7 @@ struct CalculatorApp: App {
                 //.background(Color.yellow)
                 .background(Rectangle()
                                 .frame(width: expandedDeviceSize, height: expandedDeviceSize, alignment: .center)
-                                .foregroundColor(Color.green)//TE.appBackgroundColor)
+                                .foregroundColor(Color.white)//TE.appBackgroundColor)
                                 .ignoresSafeArea())
         }
     }
