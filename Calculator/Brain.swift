@@ -9,13 +9,13 @@ import Foundation
 import SwiftUI
 
 class Brain: ObservableObject {
-    private var n = NumberStack(digitsInDisplay: TE.digitsInSmallDisplay)
+    private var n = NumberStack()
     private var operatorStack = OperatorStack()
     @Published var calculating: Bool = false
     @Published var showCalculating: Bool = false
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
-    var display: String { n.display }
+    func display(_ digitsInDisplay: Int) -> String { n.display(digitsInDisplay) }
     var longDisplayString: (String, String?) { n.longDisplay }
     func combinedLongDisplayString(longDisplayString: (String, String?)) -> String {
         if longDisplayString.1 == nil {
@@ -24,7 +24,7 @@ class Brain: ObservableObject {
             return longDisplayString.0+" "+longDisplayString.1!
         }
     }
-    var hasMoreDigits: Bool { n.hasMoreDigits }
+    func hasMoreDigits(_ digits: Int) -> Bool { n.hasMoreDigits(digits) }
     var pendingOperator: String?
     var memory: Gmp? = nil
 

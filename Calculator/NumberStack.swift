@@ -20,60 +20,43 @@ class Number: CustomDebugStringConvertible {
         }
         return _gmp
     }
-    func check() {
-        let temp: Gmp
-        if str != nil {
-            temp = Gmp(str)
-        } else {
-            temp = _gmp
-        }
-        isValid = temp.isValid
-        let dd = DisplayData(gmp: temp, digits: TE.digitsInSmallDisplay)
-        hasMoreDigits = dd.hasMoreDigits
-        exponent = dd.exponent
-    }
+
     func execute(_ op: twoOperantsType, with other: Gmp) {
         gmp.execute(op, with: other)
-        check()
     }
-
     func inPlace(op: inplaceType) {
         gmp.inPlace(op: op)
-        check()
     }
+    
     init(_ str: String) {
         self.str = str
         _gmp = Gmp()
-        check()
     }
     init(_ gmp: Gmp) {
         self._gmp = gmp
         str = nil
-        check()
     }
     init() {
         self._gmp = Gmp()
         str = nil
-        check()
     }
     
-    // && str != "0" { append("0") } }
     func zero()  {
         if str == nil || str == "0" {
             str = "0"
         } else {
             str!.append("0")
         }
-        check()
     }
+    
     func comma() {
         if str == nil {
             str = "0,"
         } else {
             str!.append(",")
         }
-        check()
     }
+    
     func digit(_ digit: Int) {
         assert( digit > 0)
         assert( digit < 10)
@@ -83,8 +66,8 @@ class Number: CustomDebugStringConvertible {
         } else {
             str!.append(digitString)
         }
-        check()
     }
+    
     var debugDescription: String {
         if str != nil {
             return "\(str!) s "
@@ -95,14 +78,12 @@ class Number: CustomDebugStringConvertible {
 }
 
 struct NumberStack: CustomDebugStringConvertible{
-    let digitsInDisplay: Int
     private var array: [Number] = []
 
-    init(digitsInDisplay: Int) { self.digitsInDisplay = digitsInDisplay }
-    var display: String {
+    func display(_ digits: Int) -> String {
         let temp: Gmp
         if let str = last.str {
-            if str.count <= digitsInDisplay {
+            if str.count <= digits {
                 return str
             } else {
                 temp = Gmp(str)
@@ -110,16 +91,17 @@ struct NumberStack: CustomDebugStringConvertible{
         } else {
             temp = last.gmp
         }
-        let dd = DisplayData(gmp: temp, digits: digitsInDisplay)
+        let dd = DisplayData(gmp: temp, digits: digits)
         return dd.string
     }
-
     
     var longDisplay: (String, String?) {
         let dd = DisplayData(gmp: last.gmp, digits: TE.digitsInAllDigitsDisplay)
         return (dd.string, dd.exponent)
     }
-    var hasMoreDigits: Bool {  last.hasMoreDigits }
+    func hasMoreDigits(_ digits: Int) -> Bool {
+        DisplayData(gmp: last.gmp, digits: digits).hasMoreDigits
+    }
     var isValid: Bool { last.isValid }
     
     var last: Number {

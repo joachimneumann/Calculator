@@ -76,7 +76,6 @@ class TE {
         upAnimationTime: 0.5)
 
 
-    static let digitsInSmallDisplay = 16
     static let zoomIconSize: CGFloat = 30.0
     static let macWindowWidth: CGFloat = 9.0*TE.kw+TE.wkw+9.0*TE.sp
     static let macWindowHeight: CGFloat = 419.5
@@ -86,6 +85,7 @@ class TE {
     static private let wkw = 77.0  // wider with for +-*/= keys
     static private let sp  = 1.5   // space between keys
 
+    static let digitsInSmallDisplay: Int = 3
     let isLandscape: Bool = true
     let spaceBetweenkeys: CGFloat   = TE.sp
     let displayFontSize: CGFloat    = (5.0 * TE.kw + 4.0 * TE.sp) * 0.175
@@ -141,7 +141,6 @@ class TE {
         downAnimationTime: 0.1,
         upAnimationTime: 0.5)
 
-    static let digitsInSmallDisplay = 16
     static let zoomIconSize: CGFloat = 30.0
     static let portraitSpacingFration: CGFloat = 0.03
     static let landscapeSpacingFration: CGFloat = 0.01
@@ -151,6 +150,9 @@ class TE {
     var spaceBetweenkeys: CGFloat = 0.0
     var keySize: CGSize = CGSize(width: 0.0, height: 0.0)
     var widerKeySize: CGSize = CGSize(width: 0.0, height: 0.0)
+    var allkeysHeight: CGFloat { 5.0 * keySize.height - 4.0 * spaceBetweenkeys }
+    var remainingAboveKeys: CGFloat = 0.0
+    var digitsInSmallDisplay: Int = 3
     init(appFrame: CGSize) {
         isLandscape = appFrame.width > appFrame.height
         print("calc() appFrame=\(appFrame)")
@@ -164,13 +166,16 @@ class TE {
             let factor:CGFloat = min(1.0, appFrame.height * 0.8 / squareKeysHeight)
             keySize = CGSize(width: w, height: w * factor)
             widerKeySize = keySize
+            digitsInSmallDisplay = 16
         } else {
             /// portrait
             spaceBetweenkeys = appFrame.width * Self.portraitSpacingFration
             let w = (appFrame.width - 3.0 * spaceBetweenkeys) * 0.25
             keySize = CGSize(width: w, height: w)
+            digitsInSmallDisplay = 9
         }
-        displayFontSize = keySize.height * 0.2
+        remainingAboveKeys = appFrame.height - allkeysHeight
+        displayFontSize = keySize.height
         widerKeySize = keySize
     }
 
