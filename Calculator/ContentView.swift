@@ -162,6 +162,7 @@ struct ContentView: View {
                                        zoomHeight: t.keySize.height)
                 }
             }
+            
             VStack(spacing: 0.0) {
                 // everything is in here
                 HStack(spacing: 0.0) {
@@ -182,14 +183,20 @@ struct ContentView: View {
                                               zoomHeight: t.keySize.height)
                         }
                         Spacer(minLength: 0.0)
-                        SmallDisplay(text: _dd.string,
-                                     fg: (copyPasteHighlight ? Color.orange : TE.DigitKeyProperties.textColor),
-                                     font: Font.system(size: t.displayFontSize, weight: .thin).monospacedDigit(),
-                                     maxHeight: t.remainingAboveKeys,
-                                     trailing: (t.isLandscape && !t.isPad ? t.widerKeySize.width : t.widerKeySize.width*0.2) - TE.reducedTrailing,
-                                     leading: t.keySize.width * 0.5 - t.displayFontSize * 0.28,
-                                     bottom: (zoomed ? t.allkeysHeight : 0.0))
-                            .animation(nil, value: _dd.hasMoreDigits)
+                        if !zoomed || !_dd.hasMoreDigits {
+                            SmallDisplay(text: _dd.string,
+                                         fg: (copyPasteHighlight ? Color.orange : TE.DigitKeyProperties.textColor),
+                                         font: Font.system(size: t.displayFontSize, weight: .thin).monospacedDigit(),
+                                         maxHeight: t.remainingAboveKeys,
+                                         trailing: (t.isLandscape && !t.isPad ? t.widerKeySize.width : t.widerKeySize.width*0.2) - TE.reducedTrailing,
+                                         leading: t.keySize.width * 0.5 - t.displayFontSize * 0.28,
+                                         bottom: (zoomed ? t.allkeysHeight : 0.0))
+                                .animation(nil, value: _dd.hasMoreDigits)
+                        } else {
+                            AllDigitsView(brain: brain,
+                                          textColor: TE.DigitKeyProperties.textColor)
+                                .padding(.trailing, (t.isLandscape && !t.isPad) ? t.widerKeySize.width : 0.0 )
+                        }
                     }
                 }
                 if !zoomed {

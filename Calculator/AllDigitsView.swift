@@ -27,6 +27,7 @@ struct AllDigitsView: View {
             }
             Spacer(minLength: 0.0)
         }
-        .padding(.top, 0.2) /// TODO: Unterstand why this magically persuades the Scrollview to respect the SafeArea
+        .padding(.top, 0.5) /// TODO: Unterstand why this magically persuades the Scrollview to respect the SafeArea
+        .padding(.bottom, 0.5) /// TODO: Unterstand why this magically persuades the Scrollview to respect the SafeArea
     }
 }
