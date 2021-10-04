@@ -29,7 +29,7 @@ struct CalculatorApp: App {
     var body: some Scene {
         WindowGroup {
             // a little hack to prevent that which background creeps up during device orientation chang rotation
-            let expandedDeviceSize = 1.5*max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
+            let expandedDeviceSize: CGFloat = 1.5 * max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
             iOSSize(brain: brain)
                 .statusBar(hidden: true)
                 //.background(Color.yellow)

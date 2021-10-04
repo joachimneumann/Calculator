@@ -168,8 +168,7 @@ struct ContentView: View {
                              textColor: TE.DigitKeyProperties.textColor,
                              zoomed: $zoomed,
                              showCalculating: brain.showCalculating)
-                            .frame(width: t.keySize.width, height: t.keySize.height, alignment: .center)
-                            .background(Color.black)
+                            .frame(width: t.widerKeySize.width, height: t.keySize.height, alignment: .center)
                             .padding(.bottom, t.spaceBetweenkeys + (zoomed ? t.allkeysHeight : 0.0))
                     }
                 }

@@ -85,13 +85,15 @@ class TE {
     static private let wkw = 77.0  // wider with for +-*/= keys
     static private let sp  = 1.5   // space between keys
 
-    static let digitsInSmallDisplay: Int = 3
+    let digitsInSmallDisplay: Int = 16
     let isLandscape: Bool = true
     let spaceBetweenkeys: CGFloat   = TE.sp
     let displayFontSize: CGFloat    = (5.0 * TE.kw + 4.0 * TE.sp) * 0.175
     let keySize: CGSize       = CGSize(width: TE.kw,  height: TE.kh)
     let widerKeySize: CGSize  = CGSize(width: TE.wkw, height: TE.kh)
     let scientificKeySize: CGSize   = CGSize(width: TE.kw,  height: TE.kh)
+    let allkeysHeight: CGFloat = 5.0 * TE.kh + 4.0 * TE.sp
+    let remainingAboveKeys: CGFloat = TE.macWindowHeight - (5.0 * TE.kh + 4.0 * TE.sp)
     // no init needed
 #else
     ///
