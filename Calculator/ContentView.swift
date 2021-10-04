@@ -149,18 +149,28 @@ struct ContentView: View {
                 Spacer(minLength: 0.0)
                 VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
+                    #if targetEnvironment(macCatalyst)
+                    let reducedTrailing: CGFloat = 12
+                    #else
+                    let reducedTrailing: CGFloat = 0
+                    #endif
                     Text(_dd.string)
                         .foregroundColor(TE.DigitKeyProperties.textColor)
                         .font(Font.system(size: t.displayFontSize, weight: .thin).monospacedDigit())
                         .lineLimit(1)
                         .minimumScaleFactor(0.1)
                         .frame(maxHeight: t.remainingAboveKeys, alignment: .bottom)
-                        .padding(.trailing, t.keySize.width * 0.5 - t.displayFontSize * 0.28)
+                        .padding(.trailing, t.keySize.width * 0.5 - t.displayFontSize * 0.28 - reducedTrailing)
                         .padding(.leading, t.keySize.width * 0.5 - t.displayFontSize * 0.28)
                         .padding(.bottom, zoomed ? t.allkeysHeight : 0.0)
                         .animation(nil, value: _dd.hasMoreDigits)
                 }
                 if t.isLandscape {
+                    #if targetEnvironment(macCatalyst)
+                    let additionalBottomSpacing: CGFloat = 7
+                    #else
+                    let additionalBottomSpacing: CGFloat = 0
+                    #endif
                     VStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
                         Zoom(active: _dd.hasMoreDigits,
@@ -169,7 +179,7 @@ struct ContentView: View {
                              zoomed: $zoomed,
                              showCalculating: brain.showCalculating)
                             .frame(width: t.widerKeySize.width, height: t.keySize.height, alignment: .center)
-                            .padding(.bottom, t.spaceBetweenkeys + (zoomed ? t.allkeysHeight : 0.0))
+                            .padding(.bottom, t.spaceBetweenkeys + additionalBottomSpacing + (zoomed ? t.allkeysHeight : 0.0))
                     }
                 }
             }
