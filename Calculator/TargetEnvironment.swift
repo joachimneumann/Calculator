@@ -79,7 +79,9 @@ class TE {
     static let zoomIconSize: CGFloat = 30.0
     static let macWindowWidth: CGFloat = 9.0*TE.kw+TE.wkw+9.0*TE.sp
     static let macWindowHeight: CGFloat = 419.5
-    
+    static let reducedTrailing: CGFloat = 12.0
+    static let additionalBottomSpacing: CGFloat = 7.0
+
     static private let kh  = 63.0  // key height
     static private let kw  = 72.75 // key width
     static private let wkw = 77.0  // wider with for +-*/= keys
@@ -146,6 +148,8 @@ class TE {
     static let zoomIconSize: CGFloat = 30.0
     static let portraitSpacingFration: CGFloat = 0.03
     static let landscapeSpacingFration: CGFloat = 0.01
+    static let reducedTrailing: CGFloat = 0.0
+    static let additionalBottomSpacing: CGFloat = 0.0
 
     var displayFontSize: CGFloat = 0.0
     var isLandscape: Bool = false
