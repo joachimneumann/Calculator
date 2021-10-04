@@ -130,30 +130,12 @@ class Brain: ObservableObject {
     }
     
     // TODO: make this work in the app: 9 % % % % x^2 x^2 x^2
-    // it wworks in test, using the worker
+    // it works in test, using the worker
     func operation(_ symbol: String, withPending: Bool = true) {
-        if !self.calculating {
-            self.calculating = true
-            DispatchQueue.global().async {
-                DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
-                    if self.calculating {
-                        withAnimation() {
-                            self.showCalculating = true
-                            print("showCalculating=\(self.showCalculating)")
-                        }
-                    }
-                }
-                self.operationWorker(symbol, withPending: withPending)
-                DispatchQueue.main.async {
-                    self.calculating = false
-                    withAnimation() {
-                        self.showCalculating = false
-                        print("showCalculating=\(self.showCalculating)")
-                    }
-                    self.objectWillChange.send()
-                }
-            }
-        }
+        self.operationWorker(symbol, withPending: withPending)
+        self.objectWillChange.send()
+        // TODO assert that this works for make this work in the app: 9 % % % % x^2 x^2 x^2 x^2
+        // TODO use iOS 15 async
     }
     
     func reset() {

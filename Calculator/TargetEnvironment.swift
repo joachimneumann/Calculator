@@ -159,11 +159,12 @@ class TE {
     var allkeysHeight: CGFloat { 5.0 * keySize.height + 4.0 * spaceBetweenkeys }
     var remainingAboveKeys: CGFloat = 0.0
     var digitsInSmallDisplay: Int = 3
-    init(appFrame: CGSize) {
-        switch UIDevice.current.userInterfaceIdiom {
-        case .pad:
+    var isPad: Bool = false
+    init(appFrame: CGSize, isPad: Bool) {
+        self.isPad = isPad
+        if isPad {
             isLandscape = true
-        default:
+        } else {
             isLandscape = appFrame.width > appFrame.height
         }
         print("calc() appFrame=\(appFrame)")

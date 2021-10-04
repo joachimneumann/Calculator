@@ -9,10 +9,11 @@ import SwiftUI
 
 struct Copy: View {
     let longString: String
+    let fontSize: CGFloat
     @Binding var copyPasteHighlight: Bool
     var body: some View {
         Text("Copy")
-            .font(.system(size: 15).bold())
+            .font(Font.system(size: fontSize))
             .foregroundColor(TE.DigitKeyProperties.textColor)
             .onTapGesture {
                 withAnimation() {
@@ -33,11 +34,12 @@ struct Copy: View {
 }
 
 struct Paste: View {
+    let fontSize: CGFloat
     @Binding var copyPasteHighlight: Bool
     let brain: Brain
     var body: some View {
         Text("Paste")
-            .font(.system(size: 15).bold())
+            .font(Font.system(size: fontSize))
             .foregroundColor(TE.DigitKeyProperties.textColor)
             .onTapGesture {
                 if let content = UIPasteboard.general.string {

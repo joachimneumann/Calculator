@@ -39,6 +39,7 @@ struct ContentView: View {
         let brain: Brain
         let active: Bool
         let iconSize: CGFloat
+        let fontSize: CGFloat
         let zoomWidth: CGFloat
         let zoomHeight: CGFloat
         var body: some View {
@@ -57,24 +58,29 @@ struct ContentView: View {
                     VStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
                         Copy(longString: brain.combinedLongDisplayString(longDisplayString: brain.longDisplayString),
+                             fontSize: fontSize,
                              copyPasteHighlight: $copyPasteHighlight)
-                            .padding(.bottom, t.allkeysHeight + t.spaceBetweenkeys - 40.0)
+                            .padding(.bottom, t.allkeysHeight + t.spaceBetweenkeys - 2.0 * fontSize)
                     }
                     VStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
-                        Paste(copyPasteHighlight: $copyPasteHighlight, brain: brain)
-                            .padding(.bottom, t.allkeysHeight + t.spaceBetweenkeys - 80.0)
+                        Paste(fontSize: fontSize,
+                              copyPasteHighlight: $copyPasteHighlight,
+                              brain: brain)
+                            .padding(.bottom, t.allkeysHeight + t.spaceBetweenkeys - 4.0 * fontSize)
                     }
                 }
             }
         }
     }
+    
     struct PortraitZoomAndCo : View {
         @Binding var copyPasteHighlight: Bool
         @Binding var zoomed: Bool
         let brain: Brain
         let active: Bool
         let iconSize: CGFloat
+        let fontSize: CGFloat
         let zoomWidth: CGFloat
         let zoomHeight: CGFloat
         var body: some View {
@@ -82,9 +88,12 @@ struct ContentView: View {
                 Spacer(minLength: 0.0)
                 if zoomed {
                     Copy(longString: brain.combinedLongDisplayString(longDisplayString: brain.longDisplayString),
+                         fontSize: fontSize,
                          copyPasteHighlight: $copyPasteHighlight)
                         .padding(.trailing, 20)
-                    Paste(copyPasteHighlight: $copyPasteHighlight, brain: brain)
+                    Paste(fontSize: fontSize,
+                          copyPasteHighlight: $copyPasteHighlight,
+                          brain: brain)
                         .padding(.trailing, 20)
                 }
                 Zoom(active: active,
@@ -96,6 +105,7 @@ struct ContentView: View {
             }
         }
     }
+    
     struct SmallDisplay: View {
         let text: String
         let fg: Color
@@ -133,11 +143,12 @@ struct ContentView: View {
             }
         }
     }
+    
     var body: some View {
         let _dd: DisplayData = DisplayData(number: brain.last, digits: t.digitsInSmallDisplay)
         let _ = brain.inPlaceAllowed = _dd.isValidNumber
         ZStack {
-            if t.isLandscape {
+            if t.isLandscape && !t.isPad {
                 HStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
                     LandscapeZoomAndCo(copyPasteHighlight: $copyPasteHighlight,
@@ -146,6 +157,7 @@ struct ContentView: View {
                                        brain: brain,
                                        active: _dd.hasMoreDigits,
                                        iconSize: t.keySize.height * 0.7,
+                                       fontSize: t.keySize.height*0.27,
                                        zoomWidth: t.widerKeySize.width,
                                        zoomHeight: t.keySize.height)
                 }
@@ -159,12 +171,13 @@ struct ContentView: View {
                     }
                     Spacer(minLength: 0.0)
                     VStack(spacing: 0.0) {
-                        if !t.isLandscape {
+                        if !t.isLandscape || t.isPad {
                             PortraitZoomAndCo(copyPasteHighlight: $copyPasteHighlight,
                                               zoomed: $zoomed,
                                               brain: brain,
                                               active: _dd.hasMoreDigits,
                                               iconSize: t.keySize.height * 0.7,
+                                              fontSize: t.keySize.height*0.27,
                                               zoomWidth: t.widerKeySize.width,
                                               zoomHeight: t.keySize.height)
                         }
@@ -173,7 +186,7 @@ struct ContentView: View {
                                      fg: (copyPasteHighlight ? Color.orange : TE.DigitKeyProperties.textColor),
                                      font: Font.system(size: t.displayFontSize, weight: .thin).monospacedDigit(),
                                      maxHeight: t.remainingAboveKeys,
-                                     trailing: (t.isLandscape ? t.widerKeySize.width : t.widerKeySize.width*0.2) - TE.reducedTrailing,
+                                     trailing: (t.isLandscape && !t.isPad ? t.widerKeySize.width : t.widerKeySize.width*0.2) - TE.reducedTrailing,
                                      leading: t.keySize.width * 0.5 - t.displayFontSize * 0.28,
                                      bottom: (zoomed ? t.allkeysHeight : 0.0))
                             .animation(nil, value: _dd.hasMoreDigits)

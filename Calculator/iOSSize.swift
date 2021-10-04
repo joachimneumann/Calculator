@@ -23,6 +23,9 @@ struct iOSSize: View {
                     .compactMap { $0 as? UIWindowScene }
                     .flatMap { $0.windows }
                     .first { $0.isKeyWindow }
+
+                /// make the app frame smaller if there is no safe area.
+                /// If there already is safe area, no padding is needed
                 if windowCandidate != nil {
                     let insets = windowCandidate!.safeAreaInsets
 
@@ -30,7 +33,8 @@ struct iOSSize: View {
                     let trailingPaddingNeeded = insets.right  == 0
                     let bottomPaddingNeeded   = insets.bottom == 0
                     
-                    let isLandscape: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : geo.size.width > geo.size.height
+                    let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
+                    let isLandscape: Bool = isPad ? true : geo.size.width > geo.size.height
                     let horizontalFactor:CGFloat = 1.0 -
                     (leadingPaddingNeeded ? (isLandscape ? TE.landscapeSpacingFration : TE.portraitSpacingFration) : 0) -
                     (trailingPaddingNeeded ? (isLandscape ? TE.landscapeSpacingFration : TE.portraitSpacingFration) : 0 )
@@ -41,11 +45,11 @@ struct iOSSize: View {
                             width: geo.size.width * horizontalFactor,
                             height: geo.size.height * verticalFactor)
                     
-                    let t = TE(appFrame: appFrame)
+                    let t = TE(appFrame: appFrame, isPad: isPad)
                     /// make the app frame smaller if there is no safe area.
                     /// If there already is safe area, no padding is needed
                     ContentView(brain: brain, t: t)
-                        .background(Color.green.opacity(0.3))
+                        //.background(Color.green.opacity(0.3))
                         .padding(.leading, leadingPaddingNeeded ? t.spaceBetweenkeys : 0)
                         .padding(.trailing, trailingPaddingNeeded ? t.spaceBetweenkeys : 0)
                         .padding(.bottom, bottomPaddingNeeded ? t.spaceBetweenkeys : 0)
@@ -54,9 +58,7 @@ struct iOSSize: View {
                             width: geo.size.width,
                             height: geo.size.height)
                     
-                    let t = TE(appFrame: appFrame)
-                    /// make the app frame smaller if there is no safe area.
-                    /// If there already is safe area, no padding is needed
+                    let t = TE(appFrame: appFrame, isPad: false)
                     ContentView(brain: brain, t: t)
                 }
                 
