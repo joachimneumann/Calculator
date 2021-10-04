@@ -135,10 +135,11 @@ class Brain: ObservableObject {
         if !self.calculating {
             self.calculating = true
             DispatchQueue.global().async {
-                DispatchQueue.main.asyncAfter(deadline: .now()+0.0) {
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
                     if self.calculating {
                         withAnimation() {
                             self.showCalculating = true
+                            print("showCalculating=\(self.showCalculating)")
                         }
                     }
                 }
@@ -147,6 +148,7 @@ class Brain: ObservableObject {
                     self.calculating = false
                     withAnimation() {
                         self.showCalculating = false
+                        print("showCalculating=\(self.showCalculating)")
                     }
                     self.objectWillChange.send()
                 }

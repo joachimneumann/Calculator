@@ -30,12 +30,12 @@ struct iOSSize: View {
                     let trailingPaddingNeeded = insets.right  == 0
                     let bottomPaddingNeeded   = insets.bottom == 0
                     
-                    let land = geo.size.width > geo.size.height
+                    let isLandscape: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : geo.size.width > geo.size.height
                     let horizontalFactor:CGFloat = 1.0 -
-                    (leadingPaddingNeeded ? (land ? TE.landscapeSpacingFration : TE.portraitSpacingFration) : 0) -
-                    (trailingPaddingNeeded ? (land ? TE.landscapeSpacingFration : TE.portraitSpacingFration) : 0 )
+                    (leadingPaddingNeeded ? (isLandscape ? TE.landscapeSpacingFration : TE.portraitSpacingFration) : 0) -
+                    (trailingPaddingNeeded ? (isLandscape ? TE.landscapeSpacingFration : TE.portraitSpacingFration) : 0 )
                     let verticalFactor:CGFloat = 1.0 -
-                    (bottomPaddingNeeded ? (land ? TE.landscapeSpacingFration : TE.portraitSpacingFration) : 0.0)
+                    (bottomPaddingNeeded ? (isLandscape ? TE.landscapeSpacingFration : TE.portraitSpacingFration) : 0.0)
                     
                     let appFrame = CGSize(
                             width: geo.size.width * horizontalFactor,

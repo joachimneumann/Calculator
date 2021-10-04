@@ -160,18 +160,22 @@ class TE {
     var remainingAboveKeys: CGFloat = 0.0
     var digitsInSmallDisplay: Int = 3
     init(appFrame: CGSize) {
-        isLandscape = appFrame.width > appFrame.height
+        switch UIDevice.current.userInterfaceIdiom {
+        case .pad:
+            isLandscape = true
+        default:
+            isLandscape = appFrame.width > appFrame.height
+        }
         print("calc() appFrame=\(appFrame)")
         
         if isLandscape {
             spaceBetweenkeys = appFrame.width * Self.landscapeSpacingFration
-            let w = (appFrame.width -  9.0 * spaceBetweenkeys) * 0.1
+            let w = (appFrame.width - 9.0 * spaceBetweenkeys) * 0.1
 
             // I need space for the display
             let squareKeysHeight = 5.0 * w + 4.0 * spaceBetweenkeys
             let factor:CGFloat = min(1.0, appFrame.height * 0.8 / squareKeysHeight)
             keySize = CGSize(width: w, height: w * factor)
-            widerKeySize = keySize
             digitsInSmallDisplay = 16
         } else {
             /// portrait

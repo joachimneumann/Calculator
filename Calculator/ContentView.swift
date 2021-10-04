@@ -119,7 +119,7 @@ struct ContentView: View {
             }
         }
     }
-
+    
     struct Rad: View {
         let keySize: CGSize
         var body: some View {
@@ -161,12 +161,12 @@ struct ContentView: View {
                     VStack(spacing: 0.0) {
                         if !t.isLandscape {
                             PortraitZoomAndCo(copyPasteHighlight: $copyPasteHighlight,
-                                               zoomed: $zoomed,
-                                               brain: brain,
-                                               active: _dd.hasMoreDigits,
-                                               iconSize: t.keySize.height * 0.7,
-                                               zoomWidth: t.widerKeySize.width,
-                                               zoomHeight: t.keySize.height)
+                                              zoomed: $zoomed,
+                                              brain: brain,
+                                              active: _dd.hasMoreDigits,
+                                              iconSize: t.keySize.height * 0.7,
+                                              zoomWidth: t.widerKeySize.width,
+                                              zoomHeight: t.keySize.height)
                         }
                         Spacer(minLength: 0.0)
                         SmallDisplay(text: _dd.string,
@@ -176,7 +176,7 @@ struct ContentView: View {
                                      trailing: (t.isLandscape ? t.widerKeySize.width : t.widerKeySize.width*0.2) - TE.reducedTrailing,
                                      leading: t.keySize.width * 0.5 - t.displayFontSize * 0.28,
                                      bottom: (zoomed ? t.allkeysHeight : 0.0))
-                        .animation(nil, value: _dd.hasMoreDigits)
+                            .animation(nil, value: _dd.hasMoreDigits)
                     }
                 }
                 if !zoomed {
@@ -185,7 +185,8 @@ struct ContentView: View {
                          brain: brain,
                          t: t)
                 }
-            }        }
+            }
+        }
     }
 }
 
