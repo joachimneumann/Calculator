@@ -96,6 +96,7 @@ class TE {
     let scientificKeySize: CGSize   = CGSize(width: TE.kw,  height: TE.kh)
     let allkeysHeight: CGFloat = 5.0 * TE.kh + 4.0 * TE.sp
     let remainingAboveKeys: CGFloat = TE.macWindowHeight - (5.0 * TE.kh + 4.0 * TE.sp)
+    let isPad: Bool = false
     // no init needed
 #else
     ///
