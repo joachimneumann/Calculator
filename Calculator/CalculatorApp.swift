@@ -13,9 +13,10 @@ struct CalculatorApp: App {
     
 #if targetEnvironment(macCatalyst)
     // force window size on Mac
-    @UIApplicationDelegateAdaptor var delegate: AppDelegate
+    @UIApplicationDelegateAdaptor var mydelegate: MyAppDelegate
     var body: some Scene {
         WindowGroup {
+            let _ = mydelegate.brain = brain
             ZStack {
                 TE.appBackgroundColor
                     .ignoresSafeArea()
@@ -67,27 +68,32 @@ class SceneDelegate: NSObject, UIWindowSceneDelegate, ObservableObject {
     }
 }
 
-class AppDelegate: UIResponder, UIApplicationDelegate {
+
+
+class MyAppDelegate: UIResponder, UIApplicationDelegate {
     //        func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
     //            return true
     //        }
-        
-    
-        
+
+    var brain: Brain?
+
     override func buildMenu(with builder: UIMenuBuilder) {
+
         super.buildMenu(with: builder)
 
-
-        let copyShort = UIAction(title: "Copy short") { (_) in
+        let copyShort = UIAction(title: "⌘c Copy") { (_) in
+            print("copy short")
+            if let brain = self.brain { brain.reset() }
         }
-        let copyLong = UIAction(title: "Copy long") { (_) in
+        let copyLong = UIAction(title: "⌘C Copy all digits") { (_) in
+            print("copy long")
+            if let brain = self.brain { brain.reset() }
         }
-        let paste = UIAction(title: "Paste") { (_) in
+        let paste = UIAction(title: "⌘v Paste") { (_) in
+            print("paste")
+            if let brain = self.brain { brain.reset() }
         }
         let copyPasteMenu = UIMenu(title: "Copy & Paste", children: [copyShort, copyLong, paste])
-
-//        builder.insertSibling(MenuController.citiesMenu(), beforeMenu: .window)
-
         builder.insertSibling(copyPasteMenu, beforeMenu: .file)
         builder.remove(menu: .file)
         builder.remove(menu: .services)
@@ -105,9 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         builder.remove(menu: .format)
         builder.remove(menu: .toolbar)
     }
-    
-    @objc func copyShort() {}
-    
+
     func application(
         _ application: UIApplication,
         configurationForConnecting connectingSceneSession: UISceneSession,
@@ -116,6 +120,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let sceneConfig = UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
         sceneConfig.delegateClass = SceneDelegate.self
         return sceneConfig
+    }
+    
+    convenience init(brain: Brain) {
+        self.init()
     }
 }
 
