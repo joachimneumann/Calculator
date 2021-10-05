@@ -12,10 +12,7 @@ struct Copy: View {
     let fontSize: CGFloat
     @Binding var copyPasteHighlight: Bool
     var body: some View {
-        Text("Copy")
-            .font(Font.system(size: fontSize))
-            .foregroundColor(TE.DigitKeyProperties.textColor)
-            .onTapGesture {
+            Button("Copy") {
                 withAnimation() {
                     copyPasteHighlight = true
                 }
@@ -30,6 +27,9 @@ struct Copy: View {
                 // A popup message seem to appear in the simulaor only
                 UIPasteboard.general.string = longString
             }
+            .font(Font.system(size: fontSize))
+            .foregroundColor(TE.DigitKeyProperties.textColor)
+            .keyboardShortcut("c")
     }
 }
 
@@ -38,21 +38,21 @@ struct Paste: View {
     @Binding var copyPasteHighlight: Bool
     let brain: Brain
     var body: some View {
-        Text("Paste")
+        Button("Paste") {
+            if let content = UIPasteboard.general.string {
+                copyPasteHighlight = true
+                let now = DispatchTime.now()
+                var whenWhen: DispatchTime
+                whenWhen = now + DispatchTimeInterval.milliseconds(300)
+                DispatchQueue.main.asyncAfter(deadline: whenWhen) {
+                    copyPasteHighlight = false
+                }
+                brain.fromPasteboard(content)
+            }
+        }
             .font(Font.system(size: fontSize))
             .foregroundColor(TE.DigitKeyProperties.textColor)
-            .onTapGesture {
-                if let content = UIPasteboard.general.string {
-                    copyPasteHighlight = true
-                    let now = DispatchTime.now()
-                    var whenWhen: DispatchTime
-                    whenWhen = now + DispatchTimeInterval.milliseconds(300)
-                    DispatchQueue.main.asyncAfter(deadline: whenWhen) {
-                        copyPasteHighlight = false
-                    }
-                    brain.fromPasteboard(content)
-                }
-            }
+            .keyboardShortcut("v")
     }
 }
 
