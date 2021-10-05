@@ -72,8 +72,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //            return true
     //        }
         
+    
+        
     override func buildMenu(with builder: UIMenuBuilder) {
         super.buildMenu(with: builder)
+
+
         let copyShort = UIAction(title: "Copy short") { (_) in
         }
         let copyLong = UIAction(title: "Copy long") { (_) in
@@ -81,6 +85,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let paste = UIAction(title: "Paste") { (_) in
         }
         let copyPasteMenu = UIMenu(title: "Copy & Paste", children: [copyShort, copyLong, paste])
+
+//        builder.insertSibling(MenuController.citiesMenu(), beforeMenu: .window)
 
         builder.insertSibling(copyPasteMenu, beforeMenu: .file)
         builder.remove(menu: .file)
