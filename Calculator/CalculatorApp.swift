@@ -81,15 +81,15 @@ class MyAppDelegate: UIResponder, UIApplicationDelegate {
 
         super.buildMenu(with: builder)
 
-        let copyShort = UIAction(title: "⌘c Copy") { (_) in
+        let copyShort = UIAction(title: "⌘C  Copy") { (_) in
             print("copy short")
             if let brain = self.brain { brain.reset() }
         }
-        let copyLong = UIAction(title: "⌘C Copy all digits") { (_) in
+        let copyLong = UIAction(title: "⬆⌘C Copy all digits") { (_) in
             print("copy long")
             if let brain = self.brain { brain.reset() }
         }
-        let paste = UIAction(title: "⌘v Paste") { (_) in
+        let paste = UIAction(title: "⌘V  Paste") { (_) in
             print("paste")
             if let brain = self.brain { brain.reset() }
         }

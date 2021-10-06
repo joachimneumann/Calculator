@@ -10,6 +10,7 @@ import SwiftUI
 struct Copy: View {
     let longString: String
     let fontSize: CGFloat
+    let copyCallback: () -> ()
     @Binding var copyPasteHighlight: Bool
     var body: some View {
             Button("Copy") {
@@ -25,18 +26,17 @@ struct Copy: View {
                     }
                 }
                 // A popup message seem to appear in the simulaor only
-                UIPasteboard.general.string = longString
+                copyCallback()
             }
             .font(Font.system(size: fontSize))
             .foregroundColor(TE.DigitKeyProperties.textColor)
-            .keyboardShortcut("c")
     }
 }
 
 struct Paste: View {
     let fontSize: CGFloat
     @Binding var copyPasteHighlight: Bool
-    let brain: Brain
+    let pasteCallback: (_ s: String) -> ()
     var body: some View {
         Button("Paste") {
             if let content = UIPasteboard.general.string {
@@ -47,12 +47,11 @@ struct Paste: View {
                 DispatchQueue.main.asyncAfter(deadline: whenWhen) {
                     copyPasteHighlight = false
                 }
-                brain.fromPasteboard(content)
+                pasteCallback(content)
             }
         }
             .font(Font.system(size: fontSize))
             .foregroundColor(TE.DigitKeyProperties.textColor)
-            .keyboardShortcut("v")
     }
 }
 

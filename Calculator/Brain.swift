@@ -15,6 +15,7 @@ class Brain: ObservableObject {
     @Published var showCalculating: Bool = false
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
+    var dd: DisplayData = DisplayData()
     var longDisplayString: (String, String?) { n.longDisplay }
     func combinedLongDisplayString(longDisplayString: (String, String?)) -> String {
         if longDisplayString.1 == nil {
