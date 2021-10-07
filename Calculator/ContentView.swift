@@ -170,31 +170,27 @@ struct ContentView: View {
         let pasteShortCallback: (_ s: String) -> ()
 
         var body: some View {
-            /// copy the display, except when zoomed, then get all digits
+            /// ⌘C copy the display, except when zoomed, then get all digits
             if zoomed {
                 Button("") {
-                    print("c->C")
                     copyLongCallback()
                 }
                 .keyboardShortcut("c")
             } else {
                 Button("") {
-                    print("c")
                     copyShortCallback()
                 }
                 .keyboardShortcut("c")
             }
             
-            /// get all digits
+            /// ⬆⌘C get all digits
             Button("") {
-                print("C")
                 copyLongCallback()
             }
             .keyboardShortcut("c", modifiers: [.command, .shift])
             
-            /// paste
+            /// ⌘V paste
             Button("") {
-                print("v")
                 if let content = UIPasteboard.general.string {
                     pasteShortCallback(content)
                 }
