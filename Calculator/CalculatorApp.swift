@@ -25,6 +25,9 @@ struct CalculatorApp: App {
                 ContentView(brain: brain, t: TE())
             }
         }
+        .commands() {
+            CalculatorCommands(brain: brain)
+        }
     }
 #else
     var body: some Scene {
@@ -80,21 +83,6 @@ class MyAppDelegate: UIResponder, UIApplicationDelegate {
     override func buildMenu(with builder: UIMenuBuilder) {
 
         super.buildMenu(with: builder)
-
-        let copyShort = UIAction(title: "⌘C  Copy") { (_) in
-            print("copy short")
-            if let brain = self.brain { brain.reset() }
-        }
-        let copyLong = UIAction(title: "⬆⌘C Copy all digits") { (_) in
-            print("copy long")
-            if let brain = self.brain { brain.reset() }
-        }
-        let paste = UIAction(title: "⌘V  Paste") { (_) in
-            print("paste")
-            if let brain = self.brain { brain.reset() }
-        }
-        let copyPasteMenu = UIMenu(title: "Copy & Paste", children: [copyShort, copyLong, paste])
-        builder.insertSibling(copyPasteMenu, beforeMenu: .file)
         builder.remove(menu: .file)
         builder.remove(menu: .services)
         builder.remove(menu: .help)
