@@ -9,21 +9,19 @@ import SwiftUI
 
 struct CalculatorCommands: Commands {
     var brain: Brain
-//    @FocusedBinding(\.garden) private var garden: Garden?
-//    @FocusedBinding(\.selection) private var selection: Set<Plant.ID>?
-
     var body: some Commands {
         CommandMenu("Copy&Paste") {
-            CopyShortCommand(brain: brain)
-            CopyLongCommand(brain: brain)
+            CopyCommand(brain: brain)
             PasteCommand(brain: brain)
         }
     }
 }
 
-struct CopyLongCommand: View {
-    var brain: Brain
+struct CopyCommand: View {
+    @ObservedObject var brain: Brain
     var body: some View {
+        let digits = brain.dd.hasMoreDigits ? brain.combinedLongDisplayString(longDisplayString: brain.longDisplayString).count : brain.dd.string.count
+        let digitsString = brain.dd.isValidNumber ? "" : ((digits == 1) ? "\(digits) digit" : "\(digits) characters")
         Button {
             if brain.dd.hasMoreDigits {
                 UIPasteboard.general.string = brain.combinedLongDisplayString(longDisplayString: brain.longDisplayString)
@@ -31,23 +29,10 @@ struct CopyLongCommand: View {
                 UIPasteboard.general.string = brain.dd.string
             }
         } label: {
-            Label("Copy all digits", systemImage: "drop")
-        }
-        .keyboardShortcut("C", modifiers: [.command, .shift])
-        //.disabled(!brain.dd.hasMoreDigits) ///needs binding
-    }
-}
-
-struct CopyShortCommand: View {
-    var brain: Brain
-    var body: some View {
-        Button {
-            UIPasteboard.general.string = brain.dd.string
-        } label: {
-            Label("Copy", systemImage: "drop")
+            Label("Copy (\(digitsString))", systemImage: "copy")
         }
         .keyboardShortcut("C", modifiers: [.command])
-        //.disabled(brain.dd.hasMoreDigits)
+        .disabled(!brain.dd.isValidNumber)
     }
 }
 
@@ -60,6 +45,6 @@ struct PasteCommand: View {
             Label("Paste", systemImage: "drop")
         }
         .keyboardShortcut("V", modifiers: [.command])
-        //.disabled(brain.dd.hasMoreDigits)
+        .disabled(!UIPasteboard.general.hasStrings)
     }
 }
