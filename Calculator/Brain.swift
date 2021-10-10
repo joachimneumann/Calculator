@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 class Brain: ObservableObject {
-    @Published var t = TE()
+    @Published var t: TE
     @Published var highPrecision: Bool = false
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
@@ -180,7 +180,7 @@ class Brain: ObservableObject {
     var no: Int { operatorStack.count }
 //    var last: Number { n.last() }
 
-    init() {
+    init(t: TE) {
         constantOperators = [
             "π":    Inplace(Gmp.π,    0),
             "e":    Inplace(Gmp.e,    0),
@@ -241,6 +241,7 @@ class Brain: ObservableObject {
         openParenthesis   = Operator(Operator.openParenthesesPriority)
         closedParenthesis = Operator(Operator.openParenthesesPriority)
         equalOperator     = Operator(Operator.equalPriority)
+        self.t = t
         reset()
     }
     

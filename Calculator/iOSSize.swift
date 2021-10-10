@@ -12,8 +12,6 @@
 import SwiftUI
 
 struct iOSSize: View {
-    let brain: Brain
-    
     var body: some View {
         ZStack {
             GeometryReader { geo in
@@ -27,28 +25,28 @@ struct iOSSize: View {
                 /// make the app frame smaller if there is no safe area.
                 /// If there already is safe area, no padding is needed
                 if windowCandidate != nil {
-                    let insets = windowCandidate!.safeAreaInsets
+                    let insets: UIEdgeInsets = windowCandidate!.safeAreaInsets
 
-                    let leadingPaddingNeeded  = insets.left   == 0
-                    let trailingPaddingNeeded = insets.right  == 0
-                    let bottomPaddingNeeded   = insets.bottom == 0
+                    let leadingPaddingNeeded: Bool  = (insets.left   == 0)
+                    let trailingPaddingNeeded: Bool = (insets.right  == 0)
+                    let bottomPaddingNeeded: Bool   = (insets.bottom == 0)
                     
                     let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
                     let isLandscape: Bool = isPad ? true : geo.size.width > geo.size.height
-                    let horizontalFactor:CGFloat = 1.0 -
+                    let horizontalFactor: CGFloat = 1.0 -
                     (leadingPaddingNeeded ? (isLandscape ? TE.landscapeSpacingFration : TE.portraitSpacingFration) : 0) -
                     (trailingPaddingNeeded ? (isLandscape ? TE.landscapeSpacingFration : TE.portraitSpacingFration) : 0 )
-                    let verticalFactor:CGFloat = 1.0 -
+                    let verticalFactor: CGFloat = 1.0 -
                     (bottomPaddingNeeded ? (isLandscape ? TE.landscapeSpacingFration : TE.portraitSpacingFration) : 0.0)
                     
                     let appFrame = CGSize(
                             width: geo.size.width * horizontalFactor,
                             height: geo.size.height * verticalFactor)
                     
-                    brain.t = TE(appFrame: appFrame, isPad: isPad)
                     /// make the app frame smaller if there is no safe area.
                     /// If there already is safe area, no padding is needed
-                    ContentView(brain: brain)
+                    let t: TE = TE(appFrame: appFrame, isPad: isPad)
+                    ContentView(brain: Brain(t: t))
                         //.background(Color.green.opacity(0.3))
                         .padding(.leading, leadingPaddingNeeded ? t.spaceBetweenkeys : 0)
                         .padding(.trailing, trailingPaddingNeeded ? t.spaceBetweenkeys : 0)
@@ -57,9 +55,8 @@ struct iOSSize: View {
                     let appFrame = CGSize(
                             width: geo.size.width,
                             height: geo.size.height)
-                    
-                    brain.t = TE(appFrame: appFrame, isPad: false)
-                    ContentView(brain: brain)
+                    let t = TE(appFrame: appFrame, isPad: false)
+                    ContentView(brain: Brain(t: t))
                 }
             }
         }
