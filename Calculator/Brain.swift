@@ -10,12 +10,16 @@ import SwiftUI
 
 class Brain: ObservableObject {
     @Published var t = TE()
+    @Published var highPrecision: Bool = false
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
     @Published var calculating: Bool = false
     @Published var showCalculating: Bool = false
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
+    var debugLastDouble: Double { n.debugLastDouble }
+    var debugLastGmp: Gmp { n.debugLastGmp }
+    
     var sString: String { n.sString(t.digitsInSmallDisplay) }
     var lString: String { n.lString(TE.digitsInAllDigitsDisplay) }
     var isValidNumber: Bool { n.isValidNumber(t.digitsInSmallDisplay) }

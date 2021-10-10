@@ -23,7 +23,11 @@ extension String {
 
 var globalUnsignedLongInt: CUnsignedLong = 0
 
-class Gmp {
+class Gmp: Equatable {
+    static func == (lhs: Gmp, rhs: Gmp) -> Bool {
+        DisplayData(gmp: lhs, digits: 10000).string == DisplayData(gmp: rhs, digits: 10000).string
+    }
+    
     // Swift requires me to initialize the mpfr_t struc
     // I do this with zeros. The struct will be initialized correctly in mpfr_init2
     var mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
@@ -183,10 +187,6 @@ class Gmp {
     }
     var isZero: Bool {
         mpfr_zero_p(&mpfr) != 0
-    }
-    
-    var debugDescription: String {
-        return "not implemented"//displayString(digits: 10).string
     }
     
     struct Data {

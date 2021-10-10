@@ -83,7 +83,10 @@ struct NumberStack: CustomDebugStringConvertible{
     private var array: [Number] = []
 
     mutating func sString(_ digits: Int) -> String {
-        if dsLen != digits {
+        if let str = array.last!.str {
+            dsLen = -1; dlLen = -1
+            return str
+        } else if dsLen != digits {
             ds = DisplayData(number: array.last!, digits: digits)
             dsLen = digits
         }
@@ -97,7 +100,8 @@ struct NumberStack: CustomDebugStringConvertible{
         }
         return dl.string
     }
-    
+    var debugLastDouble: Double { array.last!.convertIntoGmp.toDouble() }
+    var debugLastGmp: Gmp { array.last!.convertIntoGmp }
     mutating func isValidNumber(_ digits: Int) -> Bool {
         if dsLen != digits {
             ds = DisplayData(number: array.last!, digits: digits)

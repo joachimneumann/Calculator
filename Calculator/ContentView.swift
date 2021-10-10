@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var brain: Brain
-    @State var zoomed: Bool = false
     @State var copyPasteHighlight = false
 
     
@@ -196,7 +195,7 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             KeyboardShortcuts(
-                zoomed: zoomed,
+                zoomed: brain.highPrecision,
                 copyLongCallback: copyLong,
                 copyShortCallback: copyShort,
                 pasteShortCallback: paste)
@@ -204,7 +203,7 @@ struct ContentView: View {
                 HStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
                     LandscapeZoomAndCo(copyPasteHighlight: $copyPasteHighlight,
-                                       zoomed: $zoomed,
+                                       zoomed: $brain.highPrecision,
                                        brain: brain,
                                        active: brain.hasMoreDigits,
                                        iconSize: brain.t.keySize.height * 0.7,
@@ -220,14 +219,14 @@ struct ContentView: View {
                 // everything is in here
                 HStack(spacing: 0.0) {
                     // everyting above the keys
-                    if brain.rad && !zoomed && brain.t.isLandscape {
+                    if brain.rad && !brain.highPrecision && brain.t.isLandscape {
                         Rad(keySize: brain.t.keySize)
                     }
                     Spacer(minLength: 0.0)
                     VStack(spacing: 0.0) {
                         if !brain.t.isLandscape || brain.t.isPad {
                             PortraitZoomAndCo(copyPasteHighlight: $copyPasteHighlight,
-                                              zoomed: $zoomed,
+                                              zoomed: $brain.highPrecision,
                                               brain: brain,
                                               active: brain.hasMoreDigits,
                                               iconSize: brain.t.keySize.height * 0.7,
@@ -238,14 +237,14 @@ struct ContentView: View {
                                               pasteCallback: paste)
                         }
                         Spacer(minLength: 0.0)
-                        if !zoomed || !brain.hasMoreDigits {
+                        if !brain.highPrecision || !brain.hasMoreDigits {
                             SmallDisplay(text: brain.sString,
                                          fg: (copyPasteHighlight ? Color.orange : TE.DigitKeyProperties.textColor),
                                          font: Font.system(size: brain.t.displayFontSize, weight: .thin).monospacedDigit(),
                                          maxHeight: brain.t.remainingAboveKeys,
                                          trailing: (brain.t.isLandscape && !brain.t.isPad ? brain.t.widerKeySize.width : brain.t.widerKeySize.width*0.2) - TE.reducedTrailing,
                                          leading: brain.t.keySize.width * 0.5 - brain.t.displayFontSize * 0.28,
-                                         bottom: (zoomed ? brain.t.allkeysHeight : 0.0))
+                                         bottom: (brain.highPrecision ? brain.t.allkeysHeight : 0.0))
                                 .animation(nil, value: brain.hasMoreDigits)
                         } else {
                             AllDigitsView(brain: brain)
@@ -253,7 +252,7 @@ struct ContentView: View {
                         }
                     }
                 }
-                if !zoomed {
+                if !brain.highPrecision {
                     Keys(brain: brain)
                 }
             }

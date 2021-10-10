@@ -23,9 +23,6 @@ struct CalculatorApp: App {
                 /// Sizes are hardcoded for Mac.
                 /// Therefore, I can call the ContentView directly with uninitialized TE.
                 ContentView(brain: brain)
-                    .onAppear() {
-                        //brain.dd = DisplayData(gmp: Gmp(), digits: brain.t.digitsInSmallDisplay)
-                    }
             }
         }
         .commands() {

@@ -21,7 +21,7 @@ struct CopyCommand: View {
     @ObservedObject var brain: Brain
     var body: some View {
         Button {
-            if brain.hasMoreDigits {
+            if brain.highPrecision {
                 UIPasteboard.general.string = brain.lString
             } else {
                 UIPasteboard.general.string = brain.sString
