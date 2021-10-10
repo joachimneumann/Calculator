@@ -38,7 +38,7 @@ class Number: CustomDebugStringConvertible {
         str = nil
     }
     
-    func zero()  {
+    func addZero()  {
         if str == nil || str == "0" {
             str = "0"
         } else {
@@ -46,7 +46,7 @@ class Number: CustomDebugStringConvertible {
         }
     }
     
-    func comma() {
+    func addComma() {
         if str == nil {
             str = "0,"
         } else {
@@ -54,7 +54,7 @@ class Number: CustomDebugStringConvertible {
         }
     }
     
-    func digit(_ digit: Int) {
+    func addDigit(_ digit: Int) {
         assert( digit > 0)
         assert( digit < 10)
         let digitString = String(digit)
@@ -75,35 +75,84 @@ class Number: CustomDebugStringConvertible {
 }
 
 struct NumberStack: CustomDebugStringConvertible{
+    private var ds: DisplayData = DisplayData()
+    private var dl: DisplayData = DisplayData()
+    private var dsLen = -1
+    private var dlLen = -1
+
     private var array: [Number] = []
-    
-    var longDisplay: (String, String?) {
-        let dd = DisplayData(gmp: last.convertIntoGmp, digits: TE.digitsInAllDigitsDisplay)
-        return (dd.string, dd.exponent)
-    }
-    
-    var last: Number {
-        assert(array.last != nil)
-        return array.last!
-    }
-    
-    var count: Int { array.count }
-    
-    mutating func append(_ str: String)    { array.append(Number(str)) }
-    mutating func append(_ gmp: Gmp)       { array.append(Number(gmp)) }
-    mutating func popLast() -> Number?     { assert(array.count > 0); return array.popLast() }
-    mutating func removeLast()             { assert(array.count > 0); array.removeLast() }
-    mutating func removeAll()              { array.removeAll() }
-    
-    func modifyLast(withOp op: inplaceType) {
-        if let last = array.last {
-            last.inPlace(op: op)
+
+    mutating func sString(_ digits: Int) -> String {
+        if dsLen != digits {
+            ds = DisplayData(number: array.last!, digits: digits)
+            dsLen = digits
         }
+        return ds.string
+    }
+
+    mutating func lString(_ digits: Int) -> String {
+        if dlLen != digits {
+            dl = DisplayData(number: array.last!, digits: digits)
+            dlLen = digits
+        }
+        return dl.string
+    }
+    
+    mutating func isValidNumber(_ digits: Int) -> Bool {
+        if dsLen != digits {
+            ds = DisplayData(number: array.last!, digits: digits)
+            dsLen = digits
+        }
+        return ds.isValidNumber
+    }
+    mutating func hasMoreDigits(_ digits: Int) -> Bool {
+        if dsLen != digits {
+            ds = DisplayData(number: array.last!, digits: digits)
+            dsLen = digits
+        }
+        return ds.hasMoreDigits
+    }
+
+    mutating func lastDigit(_ digit: Int) {
+        array.last!.addDigit(digit)
+        dsLen = -1; dlLen = -1
+    }
+    mutating func lastZero() {
+        array.last!.addZero()
+        dsLen = -1; dlLen = -1
+    }
+    mutating func lastComma() {
+        array.last!.addComma()
+        dsLen = -1; dlLen = -1
+    }
+    mutating func lastExecute(_ op: twoOperantsType, with other: Gmp) {
+        array.last!.execute(op, with: other)
+        dsLen = -1; dlLen = -1
+    }
+    mutating func modifyLast(withOp op: inplaceType) {
+        array.last!.inPlace(op: op)
+        dsLen = -1; dlLen = -1
     }
     mutating func replaceLast(with number: Number) {
         array.removeLast()
         array.append(number)
+        dsLen = -1; dlLen = -1
     }
+
+    var lastConvertIntoGmp: Gmp {
+        array.last!.convertIntoGmp
+    }
+
+//    func last() -> Number { array.last! }
+
+    var count: Int { array.count }
+    
+    mutating func append(_ str: String)    { array.append(Number(str)); dsLen = -1; dlLen = -1 }
+    mutating func append(_ gmp: Gmp)       { array.append(Number(gmp)); dsLen = -1; dlLen = -1 }
+    mutating func popLast() -> Number?     { assert(array.count > 0); dsLen = -1; dlLen = -1; return array.popLast() }
+    mutating func removeLast()             { assert(array.count > 0); array.removeLast(); dsLen = -1; dlLen = -1 }
+    mutating func removeAll()              { array.removeAll(); dsLen = -1; dlLen = -1 }
+    
     
     var secondLast: Number? {
         if count >= 2 {

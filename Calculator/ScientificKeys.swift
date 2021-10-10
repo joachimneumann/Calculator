@@ -240,10 +240,10 @@ struct ScientificKeys: View {
         }
     }
 
-    init(brain: Brain, t: TE) {
+    init(brain: Brain) {
         self.brain = brain
-        hSpacing = t.spaceBetweenkeys
-        vSpacing   = t.spaceBetweenkeys
-        keySize = t.keySize
+        hSpacing = brain.t.spaceBetweenkeys
+        vSpacing   = brain.t.spaceBetweenkeys
+        keySize = brain.t.keySize
     }
 }

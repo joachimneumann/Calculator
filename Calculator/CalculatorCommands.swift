@@ -20,19 +20,17 @@ struct CalculatorCommands: Commands {
 struct CopyCommand: View {
     @ObservedObject var brain: Brain
     var body: some View {
-        let digits = brain.dd.hasMoreDigits ? brain.combinedLongDisplayString(longDisplayString: brain.longDisplayString).count : brain.dd.string.count
-        let digitsString = brain.dd.isValidNumber ? "" : ((digits == 1) ? "\(digits) digit" : "\(digits) characters")
         Button {
-            if brain.dd.hasMoreDigits {
-                UIPasteboard.general.string = brain.combinedLongDisplayString(longDisplayString: brain.longDisplayString)
+            if brain.hasMoreDigits {
+                UIPasteboard.general.string = brain.lString
             } else {
-                UIPasteboard.general.string = brain.dd.string
+                UIPasteboard.general.string = brain.sString
             }
         } label: {
-            Label("Copy (\(digitsString))", systemImage: "copy")
+            Label("Copy)", systemImage: "copy")
         }
         .keyboardShortcut("C", modifiers: [.command])
-        .disabled(!brain.dd.isValidNumber)
+        .disabled(!brain.isValidNumber)
     }
 }
 

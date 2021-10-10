@@ -45,10 +45,10 @@ struct iOSSize: View {
                             width: geo.size.width * horizontalFactor,
                             height: geo.size.height * verticalFactor)
                     
-                    let t = TE(appFrame: appFrame, isPad: isPad)
+                    brain.t = TE(appFrame: appFrame, isPad: isPad)
                     /// make the app frame smaller if there is no safe area.
                     /// If there already is safe area, no padding is needed
-                    ContentView(brain: brain, t: t)
+                    ContentView(brain: brain)
                         //.background(Color.green.opacity(0.3))
                         .padding(.leading, leadingPaddingNeeded ? t.spaceBetweenkeys : 0)
                         .padding(.trailing, trailingPaddingNeeded ? t.spaceBetweenkeys : 0)
@@ -58,10 +58,9 @@ struct iOSSize: View {
                             width: geo.size.width,
                             height: geo.size.height)
                     
-                    let t = TE(appFrame: appFrame, isPad: false)
-                    ContentView(brain: brain, t: t)
+                    brain.t = TE(appFrame: appFrame, isPad: false)
+                    ContentView(brain: brain)
                 }
-                
             }
         }
     }

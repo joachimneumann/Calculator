@@ -65,6 +65,7 @@ class DisplayData: Equatable {
         self.init(gmp: gmp, digits: digits)
     }
     convenience init(gmp: Gmp, digits: Int) {
+        print("dd \(digits)")
         if gmp.NaN {
             self.init(invalid: "not a real number")
             return

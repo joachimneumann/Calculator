@@ -9,21 +9,16 @@ import Foundation
 import SwiftUI
 
 class Brain: ObservableObject {
+    @Published var t = TE()
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
     @Published var calculating: Bool = false
     @Published var showCalculating: Bool = false
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
-    var dd: DisplayData = DisplayData()
-    var longDisplayString: (String, String?) { n.longDisplay }
-    func combinedLongDisplayString(longDisplayString: (String, String?)) -> String {
-        if longDisplayString.1 == nil {
-            return longDisplayString.0
-        } else {
-            return longDisplayString.0+" "+longDisplayString.1!
-        }
-    }
+    var sString: String { n.sString(t.digitsInSmallDisplay) }
+    var lString: String { n.lString(TE.digitsInAllDigitsDisplay) }
+    var isValidNumber: Bool { n.isValidNumber(t.digitsInSmallDisplay) }
     var pendingOperator: String?
     var memory: Gmp? = nil
 
@@ -46,19 +41,20 @@ class Brain: ObservableObject {
             n.append(Gmp())
             pendingOperator = nil
         }
-        n.last.digit(digit)
+        n.lastDigit(digit)
         objectWillChange.send()
     }
     
     var notCalculating: Bool { calculating == false }
     var digitsAllowed: Bool { notCalculating }
-    var inPlaceAllowed = true
+    var inPlaceAllowed: Bool { n.isValidNumber(t.digitsInSmallDisplay) }
+    var hasMoreDigits: Bool { n.hasMoreDigits(t.digitsInSmallDisplay) }
     func zero() {
         if pendingOperator != nil {
             n.append(Gmp())
             pendingOperator = nil
         }
-        n.last.zero()
+        n.lastZero()
         objectWillChange.send()
     }
     func comma() {
@@ -66,7 +62,7 @@ class Brain: ObservableObject {
             n.append(Gmp())
             pendingOperator = nil
         }
-        n.last.comma()
+        n.lastComma()
         objectWillChange.send()
     }
     
@@ -76,7 +72,7 @@ class Brain: ObservableObject {
             if let twoOperand = op as? TwoOperand {
                 if n.count >= 2 {
                     let gmp2 = n.popLast()!.convertIntoGmp
-                    n.last.execute(twoOperand.operation, with: gmp2)
+                    n.lastExecute(twoOperand.operation, with: gmp2)
                 }
             }
         }
@@ -90,11 +86,11 @@ class Brain: ObservableObject {
 
     func percentage() {
         if operatorStack.count == 0 {
-            n.last.execute(Gmp.mul, with: Gmp("0.01"))
+            n.lastExecute(Gmp.mul, with: Gmp("0.01"))
         } else if operatorStack.count >= 1 && n.count >= 2 {
             if let secondLast = n.secondLast {
-                n.last.execute(Gmp.mul, with: Gmp("0.01"))
-                n.last.execute(Gmp.mul, with: secondLast.convertIntoGmp)
+                n.lastExecute(Gmp.mul, with: Gmp("0.01"))
+                n.lastExecute(Gmp.mul, with: secondLast.convertIntoGmp)
             }
         }
     }
@@ -152,18 +148,18 @@ class Brain: ObservableObject {
     }
     func addToMemory() {
         if memory == nil {
-            memory = n.last.convertIntoGmp.copy()
+            memory = n.lastConvertIntoGmp.copy()
         } else {
-            memory!.add(other: n.last.convertIntoGmp)
+            memory!.add(other: n.lastConvertIntoGmp)
         }
         objectWillChange.send()
     }
     func subtractFromMemory() {
         if memory == nil {
-            memory = n.last.convertIntoGmp.copy()
+            memory = n.lastConvertIntoGmp.copy()
             memory!.changeSign()
         } else {
-            memory!.sub(other: n.last.convertIntoGmp)
+            memory!.sub(other: n.lastConvertIntoGmp)
         }
         objectWillChange.send()
     }
@@ -178,7 +174,7 @@ class Brain: ObservableObject {
 
     var nn: Int { n.count }
     var no: Int { operatorStack.count }
-    var last: Number { n.last }
+//    var last: Number { n.last() }
 
     init() {
         constantOperators = [

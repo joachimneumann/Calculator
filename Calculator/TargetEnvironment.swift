@@ -9,7 +9,7 @@ import SwiftUI
 
 class TE {
     static let iPhoneScientificFontSizeReduction: CGFloat = 0.8
-    static let digitsInAllDigitsDisplay = 10000-1
+    static let digitsInAllDigitsDisplay = 100-1
     static let numberPadFration: CGFloat = 0.4
 
 #if targetEnvironment(macCatalyst)
