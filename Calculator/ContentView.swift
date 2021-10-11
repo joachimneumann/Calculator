@@ -37,8 +37,6 @@ struct ContentView: View {
         let fontSize: CGFloat
         let zoomWidth: CGFloat
         let zoomHeight: CGFloat
-        let copyCallback: () -> ()
-        let pasteCallback: (_ s: String) -> ()
         var body: some View {
             ZStack {
                 VStack(spacing: 0.0) {
@@ -63,8 +61,6 @@ struct ContentView: View {
         let fontSize: CGFloat
         let zoomWidth: CGFloat
         let zoomHeight: CGFloat
-        let copyCallback: () -> ()
-        let pasteCallback: (_ s: String) -> ()
         var body: some View {
             HStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
@@ -77,8 +73,8 @@ struct ContentView: View {
             }
         }
     }
-
-
+    
+    
     struct Rad: View {
         let keySize: CGSize
         var body: some View {
@@ -93,18 +89,6 @@ struct ContentView: View {
         }
     }
     
-    func copyShort() {
-        UIPasteboard.general.string = brain.sString(t.digitsInSmallDisplay)
-    }
-
-    func copyLong() {
-        UIPasteboard.general.string = brain.lString
-    }
-
-    func paste(_ s: String) {
-        brain.fromPasteboard(s)
-    }
-    
     var body: some View {
         ZStack {
             if t.isLandscape && !t.isPad {
@@ -117,12 +101,10 @@ struct ContentView: View {
                                        iconSize: t.keySize.height * 0.7,
                                        fontSize: t.keySize.height*0.27,
                                        zoomWidth: t.widerKeySize.width,
-                                       zoomHeight: t.keySize.height,
-                                       copyCallback: copyLong,
-                                       pasteCallback: paste)
+                                       zoomHeight: t.keySize.height)
                 }
             }
-
+            
             VStack(spacing: 0.0) {
                 // everything is in here
                 HStack(spacing: 0.0) {
@@ -133,15 +115,13 @@ struct ContentView: View {
                     Spacer(minLength: 0.0)
                     VStack(spacing: 0.0) {
                         if !t.isLandscape || t.isPad {
-                        PortraitZoomAndCo(zoomed: $brain.highPrecision,
-                                          brain: brain,
-                                          active: brain.hasMoreDigits(t.digitsInSmallDisplay),
-                                          iconSize: t.keySize.height * 0.7,
-                                          fontSize: t.keySize.height*0.27,
-                                          zoomWidth: t.widerKeySize.width,
-                                          zoomHeight: t.keySize.height,
-                                          copyCallback: copyLong,
-                                          pasteCallback: paste)
+                            PortraitZoomAndCo(zoomed: $brain.highPrecision,
+                                              brain: brain,
+                                              active: brain.hasMoreDigits(t.digitsInSmallDisplay),
+                                              iconSize: t.keySize.height * 0.7,
+                                              fontSize: t.keySize.height*0.27,
+                                              zoomWidth: t.widerKeySize.width,
+                                              zoomHeight: t.keySize.height)
                         }
                         Spacer(minLength: 0.0)
                         if !brain.highPrecision || !brain.hasMoreDigits(t.digitsInSmallDisplay) {
@@ -154,6 +134,7 @@ struct ContentView: View {
                             let bottom: CGFloat = (brain.highPrecision ? t.allkeysHeight : 0.0)
                             HStack(spacing: 0) {
                                 Spacer(minLength: 0.0)
+#if targetEnvironment(macCatalyst)
                                 Text(text)
                                     .foregroundColor(fg)
                                     .font(font)
@@ -163,6 +144,33 @@ struct ContentView: View {
                                     .padding(.trailing, trailing)
                                     .padding(.leading, leading)
                                     .padding(.bottom, bottom)
+#else
+                                Text(text)
+                                    .foregroundColor(fg)
+                                    .font(font)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.1)
+                                    .padding(.trailing, trailing)
+                                    .padding(.leading, leading)
+                                    .contextMenu {
+                                        Button(action: {
+                                            UIPasteboard.general.string = brain.sString(t.digitsInSmallDisplay)
+                                        }) {
+                                            Text("Copy to clipboard")
+                                            Image(systemName: "doc.on.doc")
+                                        }
+                                        if UIPasteboard.general.hasStrings {
+                                            Button(action: {
+                                                brain.fromPasteboard()
+                                            }) {
+                                                Text("Paste from clipboard")
+                                                Image(systemName: "doc.on.clipboard")
+                                            }
+                                        }
+                                    }
+                                    .frame(maxHeight: maxHeight, alignment: .bottom)
+                                    .padding(.bottom, bottom)
+#endif
                             }
                             .animation(nil, value: brain.hasMoreDigits(t.digitsInSmallDisplay))
                         } else {

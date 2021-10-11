@@ -17,6 +17,22 @@ struct AllDigitsView: View {
                         .foregroundColor(TE.DigitKeyProperties.textColor)
                         .font(TE.allDigitsFont)
                         .multilineTextAlignment(.leading)
+                        .contextMenu {
+                            Button(action: {
+                                UIPasteboard.general.string = brain.lString
+                            }) {
+                                Text("Copy to clipboard")
+                                Image(systemName: "doc.on.doc")
+                            }
+                            if UIPasteboard.general.hasStrings {
+                                Button(action: {
+                                    brain.fromPasteboard()
+                                }) {
+                                    Text("Paste from clipboard")
+                                    Image(systemName: "doc.on.clipboard")
+                                }
+                            }
+                        }
                 }
 //                if brain.longDisplayString.1 != nil {
 //                    Text(brain.longDisplayString.1!)

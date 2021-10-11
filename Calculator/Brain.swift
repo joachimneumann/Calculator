@@ -243,14 +243,16 @@ class Brain: ObservableObject {
         reset()
     }
     
-    func fromPasteboard(_ fromPasteboard: String) {
-        let gmp = Gmp(fromPasteboard)
-        if pendingOperator != nil {
-            n.append(gmp)
-            pendingOperator = nil
+    func fromPasteboard() {
+        if let s = UIPasteboard.general.string {
+            let gmp = Gmp(s)
+            if pendingOperator != nil {
+                n.append(gmp)
+                pendingOperator = nil
+            }
+            n.replaceLast(with: Number(gmp))
+            objectWillChange.send()
         }
-        n.replaceLast(with: Number(gmp))
     }
-
     
 }

@@ -39,7 +39,7 @@ struct PasteCommand: View {
     var brain: Brain
     var body: some View {
         Button {
-            brain.fromPasteboard("3.14")
+            brain.fromPasteboard()
         } label: {
             Label("Paste", systemImage: "drop")
         }
