@@ -168,7 +168,6 @@ class TE {
         } else {
             isLandscape = appFrame.width > appFrame.height
         }
-        print("calc() appFrame=\(appFrame)")
         
         if isLandscape {
             spaceBetweenkeys = appFrame.width * Self.landscapeSpacingFration

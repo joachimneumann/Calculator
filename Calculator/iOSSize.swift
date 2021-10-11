@@ -33,7 +33,7 @@ struct iOSSize: View {
                     let bottomPaddingNeeded: Bool   = (insets.bottom == 0)
 
                     let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
-                    let isLandscape: Bool = isPad ? true : geo.size.width > geo.size.height
+                    let isLandscape: Bool = isPad ? true : (geo.size.width > geo.size.height)
                     let horizontalFactor: CGFloat = 1.0 -
                     (leadingPaddingNeeded ? (isLandscape ? TE.landscapeSpacingFration : TE.portraitSpacingFration) : 0) -
                     (trailingPaddingNeeded ? (isLandscape ? TE.landscapeSpacingFration : TE.portraitSpacingFration) : 0 )
@@ -43,7 +43,7 @@ struct iOSSize: View {
                     let appFrame = CGSize(
                             width: geo.size.width * horizontalFactor,
                             height: geo.size.height * verticalFactor)
-                    let t = TE(appFrame: appFrame, isPad: false)
+                    let t = TE(appFrame: appFrame, isPad: isPad)
                     ContentView(brain: brain, t: t)
 //                        //.background(Color.green.opacity(0.3))
                         .padding(.leading,   leadingPaddingNeeded ? t.spaceBetweenkeys : 0)
