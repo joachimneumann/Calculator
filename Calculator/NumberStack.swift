@@ -83,10 +83,15 @@ struct NumberStack: CustomDebugStringConvertible{
     private var array: [Number] = []
 
     mutating func sString(_ digits: Int) -> String {
+        // ok as string?
         if let str = array.last!.str {
-            dsLen = -1; dlLen = -1
-            return str
-        } else if dsLen != digits {
+            if str.count <= digits {
+                dsLen = -1; dlLen = -1
+                return str
+            }
+        }
+        // --> GMP
+        if dsLen != digits {
             ds = DisplayData(number: array.last!, digits: digits)
             dsLen = digits
         }
