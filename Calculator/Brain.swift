@@ -179,7 +179,7 @@ class Brain: ObservableObject {
     var no: Int { operatorStack.count }
 //    var last: Number { n.last() }
 
-    init(t: TE) {
+    init() {
         constantOperators = [
             "π":    Inplace(Gmp.π,    0),
             "e":    Inplace(Gmp.e,    0),

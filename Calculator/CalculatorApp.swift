@@ -11,7 +11,8 @@ import SwiftUI
 struct CalculatorApp: App {
 
 #if targetEnvironment(macCatalyst)
-    let brain = Brain(t: TE())
+    let t: TE = TE()
+    let brain = Brain()
     // force window size on Mac
     @UIApplicationDelegateAdaptor var mydelegate: MyAppDelegate
     var body: some Scene {
@@ -22,15 +23,15 @@ struct CalculatorApp: App {
                     .ignoresSafeArea()
                 /// Sizes are hardcoded for Mac.
                 /// Therefore, I can call the ContentView directly with uninitialized TE.
-                ContentView(brain: brain)
+                ContentView(brain: brain, t: t)
             }
         }
         .commands() {
-            CalculatorCommands(brain: brain, t: TE())
+            CalculatorCommands(brain: brain, t: t)
         }
     }
 #else
-    let brain = Brain(t: TE(appFrame: CGSize(width: 1.0, height: 2.0), isPad: false))
+    let brain = Brain()
     var body: some Scene {
         WindowGroup {
             // a little hack to prevent that which background creeps up during device orientation chang rotation

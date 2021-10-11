@@ -78,30 +78,7 @@ struct ContentView: View {
         }
     }
 
-    struct SmallDisplay: View {
-        let text: String
-        let fg: Color
-        let font: Font
-        let maxHeight: CGFloat
-        let trailing: CGFloat
-        let leading: CGFloat
-        let bottom: CGFloat
-        var body: some View {
-            HStack(spacing: 0) {
-                Spacer(minLength: 0.0)
-                Text(text)
-                    .foregroundColor(fg)
-                    .font(font)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.1)
-                    .frame(maxHeight: maxHeight, alignment: .bottom)
-                    .padding(.trailing, trailing)
-                    .padding(.leading, leading)
-                    .padding(.bottom, bottom)
-            }
-        }
-    }
-    
+
     struct Rad: View {
         let keySize: CGSize
         var body: some View {
