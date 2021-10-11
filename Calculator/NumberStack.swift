@@ -74,6 +74,27 @@ class Number: CustomDebugStringConvertible {
     }
 }
 
+struct LongString {
+    let mantissa: String
+    let exponent: String?
+    var combined: String {
+        var ret = mantissa
+        if let exponent = exponent {
+            ret += " e"+exponent
+        }
+        return ret
+    }
+    init(d: DisplayData) {
+        if let e = d.exponent {
+            mantissa = d.content
+            exponent = e
+        } else {
+            mantissa = d.content
+            exponent = nil
+        }
+    }
+}
+
 struct NumberStack: CustomDebugStringConvertible{
     private var ds: DisplayData = DisplayData()
     private var dl: DisplayData = DisplayData()
@@ -98,7 +119,15 @@ struct NumberStack: CustomDebugStringConvertible{
         return ds.string
     }
 
-    mutating func lString(_ digits: Int) -> String {
+    mutating func lString(_ digits: Int) -> LongString {
+        if dlLen != digits {
+            dl = DisplayData(number: array.last!, digits: digits)
+            dlLen = digits
+        }
+        return LongString(d: dl)
+    }
+    
+    mutating func lExponent(_ digits: Int) -> String {
         if dlLen != digits {
             dl = DisplayData(number: array.last!, digits: digits)
             dlLen = digits

@@ -21,7 +21,7 @@ class Brain: ObservableObject {
     
     func sString(_ digits: Int) -> String { n.sString(digits) }
     func hasMoreDigits(_ digits: Int) -> Bool { n.hasMoreDigits(digits) }
-    var lString: String { n.lString(TE.digitsInAllDigitsDisplay) }
+    var lString: LongString { n.lString(TE.digitsInAllDigitsDisplay) }
     var isValidNumber: Bool { n.isValidNumber }
     var inPlaceAllowed: Bool { n.isValidNumber }
     var pendingOperator: String?

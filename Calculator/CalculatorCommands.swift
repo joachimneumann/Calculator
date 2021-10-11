@@ -24,7 +24,7 @@ struct CopyCommand: View {
     var body: some View {
         Button {
             if brain.highPrecision {
-                UIPasteboard.general.string = brain.lString
+                UIPasteboard.general.string = brain.lString.combined
             } else {
                 UIPasteboard.general.string = brain.sString(t.digitsInSmallDisplay)
             }
