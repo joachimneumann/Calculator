@@ -102,13 +102,7 @@ struct NumberStack: CustomDebugStringConvertible{
     }
     var debugLastDouble: Double { array.last!.convertIntoGmp.toDouble() }
     var debugLastGmp: Gmp { array.last!.convertIntoGmp }
-    mutating func isValidNumber(_ digits: Int) -> Bool {
-        if dsLen != digits {
-            ds = DisplayData(number: array.last!, digits: digits)
-            dsLen = digits
-        }
-        return ds.isValidNumber
-    }
+    var isValidNumber: Bool { ds.isValidNumber }
     mutating func hasMoreDigits(_ digits: Int) -> Bool {
         if dsLen != digits {
             ds = DisplayData(number: array.last!, digits: digits)

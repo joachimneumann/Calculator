@@ -26,15 +26,16 @@ struct CalculatorApp: App {
             }
         }
         .commands() {
-            CalculatorCommands(brain: brain)
+            CalculatorCommands(brain: brain, t: TE())
         }
     }
 #else
+    let brain = Brain(t: TE(appFrame: CGSize(width: 1.0, height: 2.0), isPad: false))
     var body: some Scene {
         WindowGroup {
             // a little hack to prevent that which background creeps up during device orientation chang rotation
             let expandedDeviceSize: CGFloat = 1.5 * max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
-            iOSSize()
+            iOSSize(brain: brain)
                 .statusBar(hidden: true)
             //.background(Color.yellow)
                 .background(Rectangle()

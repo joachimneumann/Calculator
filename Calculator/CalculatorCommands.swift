@@ -9,9 +9,10 @@ import SwiftUI
 
 struct CalculatorCommands: Commands {
     var brain: Brain
+    let t: TE
     var body: some Commands {
         CommandMenu("Copy&Paste") {
-            CopyCommand(brain: brain)
+            CopyCommand(brain: brain, t: t)
             PasteCommand(brain: brain)
         }
     }
@@ -19,18 +20,18 @@ struct CalculatorCommands: Commands {
 
 struct CopyCommand: View {
     @ObservedObject var brain: Brain
+    let t: TE
     var body: some View {
         Button {
             if brain.highPrecision {
                 UIPasteboard.general.string = brain.lString
             } else {
-                UIPasteboard.general.string = brain.sString
+                UIPasteboard.general.string = brain.sString(t.digitsInSmallDisplay)
             }
         } label: {
             Label("Copy)", systemImage: "copy")
         }
         .keyboardShortcut("C", modifiers: [.command])
-        .disabled(!brain.isValidNumber)
     }
 }
 

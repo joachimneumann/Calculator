@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AA2576B326F8F16600CDD8C9 /* NumberKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2576B226F8F16600CDD8C9 /* NumberKeys.swift */; };
+		AA3AFB692713AFB000F2744C /* Dimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3AFB682713AFB000F2744C /* Dimensions.swift */; };
 		AA40C44526F808D800119D4F /* CalculatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA40C44426F808D800119D4F /* CalculatorApp.swift */; };
 		AA40C44926F808DA00119D4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA40C44826F808DA00119D4F /* Assets.xcassets */; };
 		AA40C44C26F808DA00119D4F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA40C44B26F808DA00119D4F /* Preview Assets.xcassets */; };
@@ -32,7 +33,6 @@
 		AAE87B9526FC7302009E6D80 /* Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE87B9426FC7302009E6D80 /* Symbols.swift */; };
 		AAE87B9926FCB24C009E6D80 /* OperatorStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE87B9826FCB24C009E6D80 /* OperatorStack.swift */; };
 		AAEDA0E127047BB400005E04 /* NumberStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEDA0E027047BB400005E04 /* NumberStack.swift */; };
-		AAEDA0E32705993F00005E04 /* CopyPaste.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEDA0E22705993F00005E04 /* CopyPaste.swift */; };
 		AAF1F59126FBA9C7000A733F /* TargetEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF1F59026FBA9C7000A733F /* TargetEnvironment.swift */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +65,7 @@
 		AA024565270618B900478429 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		AA2576A526F8E6CE00CDD8C9 /* mpfr.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = mpfr.xcframework; path = dist/mpfr.xcframework; sourceTree = "<group>"; };
 		AA2576B226F8F16600CDD8C9 /* NumberKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberKeys.swift; sourceTree = "<group>"; };
+		AA3AFB682713AFB000F2744C /* Dimensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dimensions.swift; sourceTree = "<group>"; };
 		AA3D6F7E26F8940800423E76 /* gmp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = gmp.xcframework; path = dist/gmp.xcframework; sourceTree = "<group>"; };
 		AA40C44126F808D800119D4F /* Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA40C44426F808D800119D4F /* CalculatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorApp.swift; sourceTree = "<group>"; };
@@ -89,7 +90,6 @@
 		AAE87B9426FC7302009E6D80 /* Symbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbols.swift; sourceTree = "<group>"; };
 		AAE87B9826FCB24C009E6D80 /* OperatorStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorStack.swift; sourceTree = "<group>"; };
 		AAEDA0E027047BB400005E04 /* NumberStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberStack.swift; sourceTree = "<group>"; };
-		AAEDA0E22705993F00005E04 /* CopyPaste.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyPaste.swift; sourceTree = "<group>"; };
 		AAF1F59026FBA9C7000A733F /* TargetEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetEnvironment.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -144,7 +144,6 @@
 				AAE87B9226FC5F42009E6D80 /* Display.swift */,
 				AA59D79826FDDEA800321F26 /* AllDigitsView.swift */,
 				AA64980A26FD430900CFF9AA /* Zoom.swift */,
-				AAEDA0E22705993F00005E04 /* CopyPaste.swift */,
 				AA95563F26FA1C180029D94C /* Key.swift */,
 				AAE87B9426FC7302009E6D80 /* Symbols.swift */,
 				AA95563B26FA0E360029D94C /* AddBackGround.swift */,
@@ -159,6 +158,7 @@
 				AA40C44A26F808DA00119D4F /* Preview Content */,
 				AA52BEC6270BF456007FB24F /* Credits.rtf */,
 				AA89A9CE27113C72008A329A /* CalculatorCommands.swift */,
+				AA3AFB682713AFB000F2744C /* Dimensions.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -298,7 +298,6 @@
 				AA89A9CF27113C72008A329A /* CalculatorCommands.swift in Sources */,
 				AA7CD3AB26FC322C00C714A6 /* ScientificKeys.swift in Sources */,
 				AA2576B326F8F16600CDD8C9 /* NumberKeys.swift in Sources */,
-				AAEDA0E32705993F00005E04 /* CopyPaste.swift in Sources */,
 				AAF1F59126FBA9C7000A733F /* TargetEnvironment.swift in Sources */,
 				AAE87B9326FC5F42009E6D80 /* Display.swift in Sources */,
 				AA40C45526F8094700119D4F /* Gmp.swift in Sources */,
@@ -306,6 +305,7 @@
 				AA64980D26FD48F900CFF9AA /* DisplayData.swift in Sources */,
 				AA59D79D26FDED8B00321F26 /* ContentView.swift in Sources */,
 				AAE87B9526FC7302009E6D80 /* Symbols.swift in Sources */,
+				AA3AFB692713AFB000F2744C /* Dimensions.swift in Sources */,
 				AA95564026FA1C180029D94C /* Key.swift in Sources */,
 				AA46B32626FAC48500F83939 /* Brain.swift in Sources */,
 				AA59D79926FDDEA800321F26 /* AllDigitsView.swift in Sources */,

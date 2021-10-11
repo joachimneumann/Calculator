@@ -82,7 +82,7 @@ struct ScientificKeys: View {
                 Key(brain.secondKeys ? "y^x" : "e^x", keyProperties: TE.LightGrayKeyProperties, isActive: brain.inPlaceAllowed)
                     .scientific(
                         size: keySize,
-                        isAllowed: brain.secondKeys ? brain.inPlaceAllowed : brain.inPlaceAllowed,
+                        isAllowed: brain.inPlaceAllowed,
                         isPending: brain.secondKeys ? brain.isPending("y^x") : false)
                 { brain.operation(brain.secondKeys ? "y^x" : "e^x") }
                 Key(brain.secondKeys ? "2^x" : "10^x", keyProperties: TE.LightGrayKeyProperties)
@@ -240,10 +240,10 @@ struct ScientificKeys: View {
         }
     }
 
-    init(brain: Brain) {
+    init(brain: Brain, t: TE) {
         self.brain = brain
-        hSpacing = brain.t.spaceBetweenkeys
-        vSpacing   = brain.t.spaceBetweenkeys
-        keySize = brain.t.keySize
+        hSpacing = t.spaceBetweenkeys
+        vSpacing = t.spaceBetweenkeys
+        keySize  = t.keySize
     }
 }

@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 class Brain: ObservableObject {
-    @Published var t: TE
     @Published var highPrecision: Bool = false
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
@@ -20,9 +19,11 @@ class Brain: ObservableObject {
     var debugLastDouble: Double { n.debugLastDouble }
     var debugLastGmp: Gmp { n.debugLastGmp }
     
-    var sString: String { n.sString(t.digitsInSmallDisplay) }
+    func sString(_ digits: Int) -> String { n.sString(digits) }
+    func hasMoreDigits(_ digits: Int) -> Bool { n.hasMoreDigits(digits) }
     var lString: String { n.lString(TE.digitsInAllDigitsDisplay) }
-    var isValidNumber: Bool { n.isValidNumber(t.digitsInSmallDisplay) }
+    var isValidNumber: Bool { n.isValidNumber }
+    var inPlaceAllowed: Bool { n.isValidNumber }
     var pendingOperator: String?
     var memory: Gmp? = nil
 
@@ -51,8 +52,6 @@ class Brain: ObservableObject {
     
     var notCalculating: Bool { calculating == false }
     var digitsAllowed: Bool { notCalculating }
-    var inPlaceAllowed: Bool { n.isValidNumber(t.digitsInSmallDisplay) }
-    var hasMoreDigits: Bool { n.hasMoreDigits(t.digitsInSmallDisplay) }
     func zero() {
         if pendingOperator != nil {
             n.append(Gmp())
@@ -241,7 +240,6 @@ class Brain: ObservableObject {
         openParenthesis   = Operator(Operator.openParenthesesPriority)
         closedParenthesis = Operator(Operator.openParenthesesPriority)
         equalOperator     = Operator(Operator.equalPriority)
-        self.t = t
         reset()
     }
     

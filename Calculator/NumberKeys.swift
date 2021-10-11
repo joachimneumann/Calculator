@@ -132,12 +132,12 @@ struct NumberKeys: View {
         }
     }
     
-    init(brain: Brain) {
+    init(brain: Brain, t: TE) {
         self.brain = brain
-        horizontalSpace = brain.t.spaceBetweenkeys
-        verticalSpace   = brain.t.spaceBetweenkeys
-        keySize = brain.t.keySize
-        slightlyLargerSize = brain.t.widerKeySize
+        horizontalSpace = t.spaceBetweenkeys
+        verticalSpace   = t.spaceBetweenkeys
+        keySize = t.keySize
+        slightlyLargerSize = t.widerKeySize
     }
 }
 
