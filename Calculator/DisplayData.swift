@@ -10,14 +10,12 @@ import SwiftUI
 class DisplayData: Equatable {
     
     var isValidNumber: Bool
-    var isNegative: Bool
     var hasMoreDigits: Bool
     var exponent: String?
     var mantissa: String
     
     var string: String {
         var ret = mantissa
-        if isNegative { ret = "-" + ret }
         if let exponent = exponent {
             ret += " " + exponent // a space in front of the "e"
         }
@@ -25,20 +23,18 @@ class DisplayData: Equatable {
     }
 
     static func == (lhs: DisplayData, rhs: DisplayData) -> Bool {
-        if lhs.isValidNumber != rhs.isValidNumber                       { return false }
-        if lhs.isNegative != rhs.isNegative                             { return false }
+        if lhs.isValidNumber != rhs.isValidNumber { return false }
         if lhs.hasMoreDigits != rhs.hasMoreDigits { return false }
-        if lhs.exponent != rhs.exponent                                 { return false }
-        if lhs.mantissa != rhs.mantissa                                   { return false }
+        if lhs.exponent != rhs.exponent           { return false }
+        if lhs.mantissa != rhs.mantissa           { return false }
         return true
     }
+    
     private init(isValidNumber: Bool,
-                 isNegative: Bool,
                  hasMoreDigits: Bool,
                  exponent: String?,
                  content: String) {
         self.isValidNumber = isValidNumber
-        self.isNegative = isNegative
         self.hasMoreDigits = hasMoreDigits
         self.exponent = exponent
         self.mantissa = content
@@ -46,16 +42,14 @@ class DisplayData: Equatable {
     convenience init() {
         self.init(invalid: "invalid")
     }
-    private convenience init(valid: String, negative: Bool) {
+    private convenience init(valid: String) {
         self.init(isValidNumber: true,
-                  isNegative: negative,
                   hasMoreDigits: false,
                   exponent: nil,
                   content: valid)
     }
     private convenience init(invalid: String) {
         self.init(isValidNumber: false,
-                  isNegative: false,
                   hasMoreDigits: false,
                   exponent: nil,
                   content: invalid)
@@ -76,7 +70,7 @@ class DisplayData: Equatable {
         }
         
         if gmp.isZero {
-            self.init(valid: "0", negative: false)
+            self.init(valid: "0")
             return
         }
         
@@ -97,7 +91,8 @@ class DisplayData: Equatable {
                     m += "0"
                 }
             }
-            self.init(valid: m, negative: data.negative)
+            if data.negative { m = "-" + m }
+            self.init(valid: m)
             return
         }
         
@@ -116,9 +111,10 @@ class DisplayData: Equatable {
                 }
                 floatString += data.mantissa
                 floatString = String(floatString.prefix(availableDigits+1)) /// +1 for the comma
+                if data.negative { floatString = "-" + floatString }
+
                 self.init(
                     isValidNumber: true,
-                    isNegative: data.negative,
                     hasMoreDigits: data.hasMoreDigits,
                     exponent: nil,
                     content: floatString)
@@ -128,10 +124,11 @@ class DisplayData: Equatable {
                 floatString = data.mantissa
                 let index = floatString.index(floatString.startIndex, offsetBy: data.exponent+1)
                 floatString.insert(",", at: index)
-                let ret = String(floatString.prefix(digits+1))
+                var ret = String(floatString.prefix(digits+1))
+                if data.negative { ret = "-" + ret }
+
                 self.init(
                     isValidNumber: true,
-                    isNegative: data.negative,
                     hasMoreDigits: data.hasMoreDigits,
                     exponent: nil,
                     content: ret)
@@ -151,8 +148,9 @@ class DisplayData: Equatable {
         if scientificString.count <= 2 { scientificString += "0" } /// e.g. 1e16 -> 1,e16 -> 1,0e16
         
         scientificString = String(scientificString.prefix(availableDigits+1)) // +1 for the comma, which I do not count
+        if data.negative { scientificString = "-" + scientificString }
+
         self.init(isValidNumber: true,
-                  isNegative: data.negative,
                   hasMoreDigits: true,
                   exponent: "e\(data.exponent)",
                   content: scientificString)
