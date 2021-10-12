@@ -13,13 +13,13 @@ struct AllDigitsView: View {
         HStack(spacing: 0.0) {
             VStack(spacing: 0.0) {
                 ScrollView(.vertical, showsIndicators: true) {
-                    Text(brain.lString)
+                    Text(brain.lString.combined)
                         .foregroundColor(TE.DigitKeyProperties.textColor)
                         .font(TE.allDigitsFont)
                         .multilineTextAlignment(.leading)
                         .contextMenu {
                             Button(action: {
-                                UIPasteboard.general.string = brain.lString
+                                UIPasteboard.general.string = brain.lString.combined
                             }) {
                                 Text("Copy to clipboard")
                                 Image(systemName: "doc.on.doc")
