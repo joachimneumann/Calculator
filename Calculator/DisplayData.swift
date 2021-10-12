@@ -13,10 +13,10 @@ class DisplayData: Equatable {
     var isNegative: Bool
     var hasMoreDigits: Bool
     var exponent: String?
-    var content: String
+    var mantissa: String
     
     var string: String {
-        var ret = content
+        var ret = mantissa
         if isNegative { ret = "-" + ret }
         if let exponent = exponent {
             ret += " " + exponent // a space in front of the "e"
@@ -29,7 +29,7 @@ class DisplayData: Equatable {
         if lhs.isNegative != rhs.isNegative                             { return false }
         if lhs.hasMoreDigits != rhs.hasMoreDigits { return false }
         if lhs.exponent != rhs.exponent                                 { return false }
-        if lhs.content != rhs.content                                   { return false }
+        if lhs.mantissa != rhs.mantissa                                   { return false }
         return true
     }
     private init(isValidNumber: Bool,
@@ -41,7 +41,7 @@ class DisplayData: Equatable {
         self.isNegative = isNegative
         self.hasMoreDigits = hasMoreDigits
         self.exponent = exponent
-        self.content = content
+        self.mantissa = content
     }
     convenience init() {
         self.init(invalid: "invalid")
@@ -60,11 +60,11 @@ class DisplayData: Equatable {
                   exponent: nil,
                   content: invalid)
     }
-    convenience init(number: Number, digits: Int) {
+    convenience init(number: Number, digits: Int, favourScientific: Bool) {
         let gmp = number.str == nil ? number.convertIntoGmp : Gmp(number.str)
-        self.init(gmp: gmp, digits: digits)
+        self.init(gmp: gmp, digits: digits, favourScientific: favourScientific)
     }
-    convenience init(gmp: Gmp, digits: Int) {
+    convenience init(gmp: Gmp, digits: Int, favourScientific: Bool) {
         print("dd \(digits)")
         if gmp.NaN {
             self.init(invalid: "not a real number")
@@ -86,10 +86,11 @@ class DisplayData: Equatable {
         if data.negative { availableDigits -= 1 }
         
         /// can be perfectly represented as Integer?
-        if data.exponent >= 0 &&                      /// number >= 0?
+        if data.exponent >= 0 &&                        /// number >= 0?
             data.mantissa.count <= data.exponent+1 &&   /// no digits after the dot?
             data.mantissa.count <= availableDigits &&   /// display sifficiently large?
-            data.exponent <= availableDigits { /// display sifficiently large?
+            data.exponent <= availableDigits &&         /// display sifficiently large?
+            (!favourScientific || abs(data.exponent) <= 4) {
             var m = data.mantissa
             if m.count < data.exponent+1 {
                 for _ in 0..<(data.exponent+1-m.count) {

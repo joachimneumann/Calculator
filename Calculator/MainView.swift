@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  MainView.swift
 //  Calculator
 //
 //  Created by Joachim Neumann on 24/09/2021.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct MainView: View {
     @ObservedObject var brain: Brain
     var t: TE
     

@@ -23,7 +23,7 @@ struct CalculatorApp: App {
                     .ignoresSafeArea()
                 /// Sizes are hardcoded for Mac.
                 /// Therefore, I can call the ContentView directly with uninitialized TE.
-                ContentView(brain: brain, t: t)
+                MainView(brain: brain, t: t)
             }
         }
         .commands() {

@@ -25,7 +25,7 @@ var globalUnsignedLongInt: CUnsignedLong = 0
 
 class Gmp: Equatable {
     static func == (lhs: Gmp, rhs: Gmp) -> Bool {
-        DisplayData(gmp: lhs, digits: 10000).string == DisplayData(gmp: rhs, digits: 10000).string
+        DisplayData(gmp: lhs, digits: 10000, favourScientific: true).string == DisplayData(gmp: rhs, digits: 10000, favourScientific: true).string
     }
     
     // Swift requires me to initialize the mpfr_t struc
