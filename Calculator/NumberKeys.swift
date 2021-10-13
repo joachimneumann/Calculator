@@ -10,6 +10,7 @@ import SwiftUI
 
 struct NumberKeys: View {
     @ObservedObject var brain: Brain
+    let t: TE
     let keySize: CGSize
     let slightlyLargerSize: CGSize
     let verticalSpace: CGFloat
@@ -46,17 +47,17 @@ struct NumberKeys: View {
                     .digit_1_to_9(
                         size: keySize, isAllowed:
                             brain.digitsAllowed)
-                { brain.digit(7) }
+                { brain.digit(7, digits: t.digitsInSmallDisplay) }
                 Key("8", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: brain.digitsAllowed)
-                { brain.digit(8) }
+                { brain.digit(8, digits: t.digitsInSmallDisplay) }
                 Key("9", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: brain.digitsAllowed)
-                { brain.digit(9) }
+                { brain.digit(9, digits: t.digitsInSmallDisplay) }
                 Key("x", keyProperties: TE.OpKeyProperties)
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
@@ -69,17 +70,17 @@ struct NumberKeys: View {
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: brain.digitsAllowed)
-                { brain.digit(4) }
+                { brain.digit(4, digits: t.digitsInSmallDisplay) }
                 Key("5", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: brain.digitsAllowed)
-                { brain.digit(5) }
+                { brain.digit(5, digits: t.digitsInSmallDisplay) }
                 Key("6", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: brain.digitsAllowed)
-                { brain.digit(6) }
+                { brain.digit(6, digits: t.digitsInSmallDisplay) }
                 Key("-", keyProperties: TE.OpKeyProperties)
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
@@ -92,17 +93,17 @@ struct NumberKeys: View {
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: brain.digitsAllowed)
-                { brain.digit(1) }
+                { brain.digit(1, digits: t.digitsInSmallDisplay) }
                 Key("2", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: brain.digitsAllowed)
-                { brain.digit(2) }
+                { brain.digit(2, digits: t.digitsInSmallDisplay) }
                 Key("3", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: brain.digitsAllowed)
-                { brain.digit(3) }
+                { brain.digit(3, digits: t.digitsInSmallDisplay) }
                 Key("+", keyProperties: TE.OpKeyProperties)
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
@@ -116,7 +117,7 @@ struct NumberKeys: View {
                         size: keySize,
                         space: horizontalSpace,
                         isAllowed: brain.digitsAllowed)
-                { brain.zero() }
+                { brain.zero(digits: t.digitsInSmallDisplay) }
                 Key(",", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
@@ -134,6 +135,7 @@ struct NumberKeys: View {
     
     init(brain: Brain, t: TE) {
         self.brain = brain
+        self.t = t
         horizontalSpace = t.spaceBetweenkeys
         verticalSpace   = t.spaceBetweenkeys
         keySize = t.keySize

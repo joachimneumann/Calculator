@@ -9,7 +9,7 @@ import SwiftUI
 
 class TE {
     static let iPhoneScientificFontSizeReduction: CGFloat = 0.8
-    static let digitsInAllDigitsDisplay: Int = 100
+    static let digitsInAllDigitsDisplay: Int = 200
     static let numberPadFration: CGFloat = 0.4
 
 #if targetEnvironment(macCatalyst)
@@ -23,8 +23,6 @@ class TE {
         red:    46.0/255.0,
         green:  39.0/255.0,
         blue:   38.0/255.0)
-
-    static let allDigitsFont = Font.custom("CourierNewPSMT", size: 19)
 
     static let DigitKeyProperties = KeyProperties(
         textColor: Color(
@@ -86,11 +84,12 @@ class TE {
     static private let kw  = 72.75 // key width
     static private let wkw = 77.0  // wider with for +-*/= keys
     static private let sp  = 1.5   // space between keys
-
+    static private let numberPadWidth = 5.0 * TE.kw + 4.0 * TE.sp
+    
     let digitsInSmallDisplay: Int = 16
     let isLandscape: Bool = true
-    let spaceBetweenkeys: CGFloat   = TE.sp
-    let displayFontSize: CGFloat    = (5.0 * TE.kw + 4.0 * TE.sp) * 0.175
+    let spaceBetweenkeys: CGFloat = TE.sp
+    let displayFont: Font = Font.system(size: TE.numberPadWidth * 0.148, weight: .thin).monospacedDigit()
     let keySize: CGSize       = CGSize(width: TE.kw,  height: TE.kh)
     let widerKeySize: CGSize  = CGSize(width: TE.wkw, height: TE.kh)
     let scientificKeySize: CGSize   = CGSize(width: TE.kw,  height: TE.kh)
@@ -104,7 +103,6 @@ class TE {
     ///
     
     static let appBackgroundColor = Color(.black)
-    static let allDigitsFont = Font.custom("CourierNewPSMT", size: 19)
 
     static let DigitKeyProperties = KeyProperties(
         textColor: Color.white,

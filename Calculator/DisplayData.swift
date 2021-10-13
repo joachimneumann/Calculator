@@ -13,23 +13,7 @@ class DisplayData: Equatable {
     var hasMoreDigits: Bool
     var exponent: String?
     var mantissa: String
-    
-    var string: String {
-        var ret = mantissa
-        if let exponent = exponent {
-            ret += " " + exponent // a space in front of the "e"
-        }
-        return ret
-    }
 
-    static func == (lhs: DisplayData, rhs: DisplayData) -> Bool {
-        if lhs.isValidNumber != rhs.isValidNumber { return false }
-        if lhs.hasMoreDigits != rhs.hasMoreDigits { return false }
-        if lhs.exponent != rhs.exponent           { return false }
-        if lhs.mantissa != rhs.mantissa           { return false }
-        return true
-    }
-    
     private init(isValidNumber: Bool,
                  hasMoreDigits: Bool,
                  exponent: String?,
@@ -39,26 +23,47 @@ class DisplayData: Equatable {
         self.exponent = exponent
         self.mantissa = content
     }
+    
     convenience init() {
         self.init(invalid: "invalid")
     }
+    
     private convenience init(valid: String) {
         self.init(isValidNumber: true,
                   hasMoreDigits: false,
                   exponent: nil,
                   content: valid)
     }
+    
     private convenience init(invalid: String) {
         self.init(isValidNumber: false,
                   hasMoreDigits: false,
                   exponent: nil,
                   content: invalid)
     }
-    convenience init(number: Number, digits: Int, favourScientific: Bool) {
-        let gmp = number.str == nil ? number.convertIntoGmp : Gmp(number.str)
-        self.init(gmp: gmp, digits: digits, favourScientific: favourScientific)
+    
+    convenience init(number: Number,
+                     digits: Int,
+                     favourScientific: Bool) {
+        if let str = number.str {
+            if str.count <= digits {
+                self.init(valid: str)
+            } else {
+                let gmp = Gmp(str)
+                self.init(gmp: gmp,
+                          digits: digits,
+                          favourScientific: favourScientific)
+            }
+        } else {
+            self.init(gmp: number.gmp,
+                      digits: digits,
+                      favourScientific: favourScientific)
+        }
     }
-    convenience init(gmp: Gmp, digits: Int, favourScientific: Bool) {
+    
+    convenience init(gmp: Gmp,
+                     digits: Int,
+                     favourScientific: Bool) {
         print("dd \(digits)")
         if gmp.NaN {
             self.init(invalid: "not a real number")
@@ -83,8 +88,7 @@ class DisplayData: Equatable {
         if data.exponent >= 0 &&                        /// number >= 0?
             data.mantissa.count <= data.exponent+1 &&   /// no digits after the dot?
             data.mantissa.count <= availableDigits &&   /// display sifficiently large?
-            data.exponent <= availableDigits &&         /// display sifficiently large?
-            (!favourScientific || abs(data.exponent) <= 4) {
+            data.exponent <= availableDigits {
             var m = data.mantissa
             if m.count < data.exponent+1 {
                 for _ in 0..<(data.exponent+1-m.count) {
@@ -100,7 +104,8 @@ class DisplayData: Equatable {
         availableDigits = digits
         if data.negative { availableDigits -= 1 }     /// for "-" The "-" is added later, outside this function
         
-        if abs(data.exponent) <= availableDigits - 2 { /// display sifficiently large?
+        if (abs(data.exponent) <= availableDigits - 2) &&
+            (!favourScientific || abs(data.exponent) <= 4) { /// display sifficiently large?
             var floatString = ""
             if data.exponent < 0 {
                 /// abs(number) < 1
@@ -155,4 +160,13 @@ class DisplayData: Equatable {
                   exponent: "e\(data.exponent)",
                   content: scientificString)
     }
+    
+    static func == (lhs: DisplayData, rhs: DisplayData) -> Bool {
+        if lhs.isValidNumber != rhs.isValidNumber { return false }
+        if lhs.hasMoreDigits != rhs.hasMoreDigits { return false }
+        if lhs.exponent != rhs.exponent           { return false }
+        if lhs.mantissa != rhs.mantissa           { return false }
+        return true
+    }
+    
 }

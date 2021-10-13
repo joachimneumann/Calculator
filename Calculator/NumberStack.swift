@@ -9,32 +9,34 @@ import Foundation
 
 class Number: CustomDebugStringConvertible {
     var str: String?
-    private var _gmp: Gmp
-    var convertIntoGmp: Gmp {
+    var gmp: Gmp
+    
+    func convertToGmp() {
         if str != nil {
-            _gmp = Gmp(str!)
+            gmp = Gmp(str!)
             str = nil
         }
-        return _gmp
     }
 
     func execute(_ op: twoOperantsType, with other: Gmp) {
-        convertIntoGmp.execute(op, with: other)
+        convertToGmp()
+        gmp.execute(op, with: other)
     }
     func inPlace(op: inplaceType) {
-        convertIntoGmp.inPlace(op: op)
+        convertToGmp()
+        gmp.inPlace(op: op)
     }
     
     init(_ str: String) {
         self.str = str
-        _gmp = Gmp()
+        gmp = Gmp()
     }
     init(_ gmp: Gmp) {
-        self._gmp = gmp
+        self.gmp = gmp
         str = nil
     }
     init() {
-        self._gmp = Gmp()
+        self.gmp = Gmp()
         str = nil
     }
     
@@ -69,31 +71,12 @@ class Number: CustomDebugStringConvertible {
         if str != nil {
             return "\(str!) s "
         } else {
-            return "\(_gmp.toDouble()) g "
+            return "\(gmp.toDouble()) g "
         }
     }
 }
 
-struct LongString {
-    let mantissa: String
-    let exponent: String?
-    var combined: String {
-        var ret = mantissa
-        if let exponent = exponent {
-            ret += " e"+exponent
-        }
-        return ret
-    }
-    init(d: DisplayData) {
-        if let e = d.exponent {
-            mantissa = d.mantissa
-            exponent = e
-        } else {
-            mantissa = d.mantissa
-            exponent = nil
-        }
-    }
-}
+
 
 struct NumberStack: CustomDebugStringConvertible{
     private var ds: DisplayData = DisplayData()
@@ -103,41 +86,68 @@ struct NumberStack: CustomDebugStringConvertible{
 
     private var array: [Number] = []
 
-    mutating func sString(_ digits: Int) -> String {
-        // ok as string?
-        if let str = array.last!.str {
-            if str.count <= digits {
-                dsLen = -1; dlLen = -1
-                return str
-            }
-        }
-        // --> GMP
+//    mutating func sString(_ digits: Int) -> String {
+//        // ok as string?
+//        if let str = array.last!.str {
+//            if str.count <= digits {
+//                dsLen = -1; dlLen = -1
+//                return str
+//            }
+//        }
+//        // --> GMP
+//        if dsLen != digits {
+//            ds = DisplayData(number: array.last!, digits: digits, favourScientific: false)
+//            dsLen = digits
+//        }
+//        return ds.string
+//    }
+
+
+    mutating func sMantissa(_ digits: Int) -> String {
         if dsLen != digits {
             ds = DisplayData(number: array.last!, digits: digits, favourScientific: false)
             dsLen = digits
         }
-        return ds.string
+        print("ds.mantissa \(ds.mantissa)")
+        return ds.mantissa
+    }
+    mutating func sExponent(_ digits: Int) -> String? {
+//        if array.last!.str != nil {
+//            return nil
+//        }
+        if dsLen != digits {
+            ds = DisplayData(number: array.last!, digits: digits, favourScientific: false)
+            dsLen = digits
+        }
+        return ds.exponent
     }
 
-    mutating func lString(_ digits: Int) -> LongString {
+    mutating func lMantissa(_ digits: Int) -> String {
+//        if let str = array.last!.str {
+//            return str
+//        }
         if dlLen != digits {
             dl = DisplayData(number: array.last!, digits: digits, favourScientific: true)
             dlLen = digits
         }
-        return LongString(d: dl)
+        return dl.mantissa
     }
-    
+
     mutating func lExponent(_ digits: Int) -> String? {
-        if dlLen != digits {
-            assert(false)
-            dl = DisplayData(number: array.last!, digits: digits, favourScientific: true)
-            dlLen = digits
+        if array.last!.str != nil {
+            return nil
         }
-        return dl.exponent
+        if dsLen != digits {
+            ds = DisplayData(number: array.last!, digits: digits, favourScientific: true)
+            dsLen = digits
+        }
+        return ds.exponent
     }
-    var debugLastDouble: Double { array.last!.convertIntoGmp.toDouble() }
-    var debugLastGmp: Gmp { array.last!.convertIntoGmp }
+
+    var debugLastDouble: Double { array.last!.convertToGmp(); return array.last!.gmp.toDouble() }
+    var debugLastGmp: Gmp { array.last!.convertToGmp(); return array.last!.gmp }
     var isValidNumber: Bool { ds.isValidNumber }
+
     mutating func hasMoreDigits(_ digits: Int) -> Bool {
         if dsLen != digits {
             ds = DisplayData(number: array.last!, digits: digits, favourScientific: false)
@@ -173,7 +183,8 @@ struct NumberStack: CustomDebugStringConvertible{
     }
 
     var lastConvertIntoGmp: Gmp {
-        array.last!.convertIntoGmp
+        array.last!.convertToGmp()
+        return array.last!.gmp
     }
 
 //    func last() -> Number { array.last! }

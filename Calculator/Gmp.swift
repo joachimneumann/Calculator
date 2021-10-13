@@ -25,7 +25,11 @@ var globalUnsignedLongInt: CUnsignedLong = 0
 
 class Gmp: Equatable {
     static func == (lhs: Gmp, rhs: Gmp) -> Bool {
-        DisplayData(gmp: lhs, digits: 10000, favourScientific: true).string == DisplayData(gmp: rhs, digits: 10000, favourScientific: true).string
+        let l = DisplayData(gmp: lhs, digits: 10000, favourScientific: true)
+        let r = DisplayData(gmp: rhs, digits: 10000, favourScientific: true)
+        if l.mantissa != r.mantissa { return false }
+        if l.exponent != r.exponent { return false }
+        return true
     }
     
     // Swift requires me to initialize the mpfr_t struc

@@ -19,9 +19,14 @@ class Brain: ObservableObject {
     var debugLastDouble: Double { n.debugLastDouble }
     var debugLastGmp: Gmp { n.debugLastGmp }
     
-    func sString(_ digits: Int) -> String { n.sString(digits) }
+    func sMantissa(_ digits: Int) -> String  { n.sMantissa(digits) }
+    func sExponent(_ digits: Int) -> String? { n.sExponent(digits) }
+    func lMantissa(_ digits: Int) -> String  { n.lMantissa(digits) }
+    func lExponent(_ digits: Int) -> String? { n.lExponent(digits) }
+
+    //    func sString(_ digits: Int) -> String { n.sString(digits) }
+    //func sString(_ digits: Int) -> String { "6.734" }
     func hasMoreDigits(_ digits: Int) -> Bool { n.hasMoreDigits(digits) }
-    var lString: LongString { n.lString(TE.digitsInAllDigitsDisplay) }
     var isValidNumber: Bool { n.isValidNumber }
     var inPlaceAllowed: Bool { n.isValidNumber }
     var pendingOperator: String?
@@ -41,7 +46,7 @@ class Brain: ObservableObject {
         return false
     }
 
-    func digit(_ digit: Int) {
+    func digit(_ digit: Int, digits: Int) {
         if pendingOperator != nil {
             n.append(Gmp())
             pendingOperator = nil
@@ -52,7 +57,7 @@ class Brain: ObservableObject {
     
     var notCalculating: Bool { calculating == false }
     var digitsAllowed: Bool { notCalculating }
-    func zero() {
+    func zero(digits: Int) {
         if pendingOperator != nil {
             n.append(Gmp())
             pendingOperator = nil
@@ -74,7 +79,9 @@ class Brain: ObservableObject {
             let op = operatorStack.pop()
             if let twoOperand = op as? TwoOperand {
                 if n.count >= 2 {
-                    let gmp2 = n.popLast()!.convertIntoGmp
+                    let temp = n.popLast()!
+                    temp.convertToGmp()
+                    let gmp2 = temp.gmp
                     n.lastExecute(twoOperand.operation, with: gmp2)
                 }
             }
@@ -93,7 +100,8 @@ class Brain: ObservableObject {
         } else if operatorStack.count >= 1 && n.count >= 2 {
             if let secondLast = n.secondLast {
                 n.lastExecute(Gmp.mul, with: Gmp("0.01"))
-                n.lastExecute(Gmp.mul, with: secondLast.convertIntoGmp)
+                secondLast.convertToGmp()
+                n.lastExecute(Gmp.mul, with: secondLast.gmp)
             }
         }
     }

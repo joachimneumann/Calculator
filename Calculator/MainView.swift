@@ -88,7 +88,7 @@ struct MainView: View {
             }
         }
     }
-    
+
     var body: some View {
         ZStack {
             if t.isLandscape && !t.isPad {
@@ -125,57 +125,58 @@ struct MainView: View {
                         }
                         Spacer(minLength: 0.0)
                         if !brain.highPrecision || !brain.hasMoreDigits(t.digitsInSmallDisplay) {
-                            let text = brain.sString(t.digitsInSmallDisplay)
-                            let fg: Color = TE.DigitKeyProperties.textColor
-                            let font: Font = Font.system(size: t.displayFontSize, weight: .thin).monospacedDigit()
-                            let maxHeight: CGFloat = t.remainingAboveKeys
-                            let trailing: CGFloat = (t.isLandscape && !t.isPad ? t.widerKeySize.width : t.widerKeySize.width*0.2) - TE.reducedTrailing
-                            let leading: CGFloat = t.keySize.width * 0.5 - t.displayFontSize * 0.28
-                            let bottom: CGFloat = (brain.highPrecision ? t.allkeysHeight : 0.0)
-                            HStack(spacing: 0) {
-                                Spacer(minLength: 0.0)
-#if targetEnvironment(macCatalyst)
-                                Text(text)
-                                    .foregroundColor(fg)
-                                    .font(font)
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.1)
-                                    .frame(maxHeight: maxHeight, alignment: .bottom)
-                                    .padding(.trailing, trailing)
-                                    .padding(.leading, leading)
-                                    .padding(.bottom, bottom)
-#else
-                                Text(text)
-                                    .foregroundColor(fg)
-                                    .font(font)
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.1)
-                                    .padding(.trailing, trailing)
-                                    .padding(.leading, leading)
-                                    .contextMenu {
-                                        Button(action: {
-                                            UIPasteboard.general.string = brain.sString(t.digitsInSmallDisplay)
-                                        }) {
-                                            Text("Copy to clipboard")
-                                            Image(systemName: "doc.on.doc")
-                                        }
-                                        if UIPasteboard.general.hasStrings {
-                                            Button(action: {
-                                                brain.fromPasteboard()
-                                            }) {
-                                                Text("Paste from clipboard")
-                                                Image(systemName: "doc.on.clipboard")
-                                            }
-                                        }
-                                    }
-                                    .frame(maxHeight: maxHeight, alignment: .bottom)
-                                    .padding(.bottom, bottom)
-#endif
-                            }
-                            .animation(nil, value: brain.hasMoreDigits(t.digitsInSmallDisplay))
+                            Display(brain: brain, t: t)
+//                            let text = brain.sString(t.digitsInSmallDisplay)
+//                            let fg: Color = TE.DigitKeyProperties.textColor
+//                            let font: Font = Font.system(size: t.displayFontSize, weight: .thin).monospacedDigit()
+//                            let maxHeight: CGFloat = t.remainingAboveKeys
+//                            let trailing: CGFloat = (t.isLandscape && !t.isPad ? t.widerKeySize.width : t.widerKeySize.width*0.2) - TE.reducedTrailing
+//                            let leading: CGFloat = t.keySize.width * 0.5 - t.displayFontSize * 0.28
+//                            let bottom: CGFloat = (brain.highPrecision ? t.allkeysHeight : 0.0)
+//                            HStack(spacing: 0) {
+//                                Spacer(minLength: 0.0)
+//#if targetEnvironment(macCatalyst)
+//                                Text(text)
+//                                    .foregroundColor(fg)
+//                                    .font(font)
+//                                    .lineLimit(1)
+//                                    .minimumScaleFactor(0.1)
+//                                    .frame(maxHeight: maxHeight, alignment: .bottom)
+//                                    .padding(.trailing, trailing)
+//                                    .padding(.leading, leading)
+//                                    .padding(.bottom, bottom)
+//#else
+//                                Text(text)
+//                                    .foregroundColor(fg)
+//                                    .font(font)
+//                                    .lineLimit(1)
+//                                    .minimumScaleFactor(0.1)
+//                                    .padding(.trailing, trailing)
+//                                    .padding(.leading, leading)
+//                                    .contextMenu {
+//                                        Button(action: {
+//                                            UIPasteboard.general.string = brain.sString(t.digitsInSmallDisplay)
+//                                        }) {
+//                                            Text("Copy to clipboard")
+//                                            Image(systemName: "doc.on.doc")
+//                                        }
+//                                        if UIPasteboard.general.hasStrings {
+//                                            Button(action: {
+//                                                brain.fromPasteboard()
+//                                            }) {
+//                                                Text("Paste from clipboard")
+//                                                Image(systemName: "doc.on.clipboard")
+//                                            }
+//                                        }
+//                                    }
+//                                    .frame(maxHeight: maxHeight, alignment: .bottom)
+//                                    .padding(.bottom, bottom)
+//#endif
+//                            }
+//                            .animation(nil, value: brain.hasMoreDigits(t.digitsInSmallDisplay))
                         } else {
-                            AllDigitsView(brain: brain)
-                                .padding(.trailing, (t.isLandscape && !t.isPad) ? t.widerKeySize.width : 0.0 )
+                            AllDigitsView(brain: brain, t: t)
+                                //.padding(.trailing, (t.isLandscape && !t.isPad) ? t.widerKeySize.width : 0.0 )
                         }
                     }
                 }
