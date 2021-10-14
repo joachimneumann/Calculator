@@ -47,7 +47,7 @@ struct Display: View {
                     .multilineTextAlignment(.leading)
                     //.background(Color.green.opacity(0.3))
             }
-            .disabled(!hasMore && brain.highPrecision)
+            .disabled(!brain.highPrecision)
             //.background(Color.green.opacity(0.3))
 //            } else {
 //                DisplayText(text: brain.sMantissa(t.digitsInSmallDisplay), brain: brain, t: t)
