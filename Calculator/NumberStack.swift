@@ -79,98 +79,72 @@ class Number: CustomDebugStringConvertible {
 
 
 struct NumberStack: CustomDebugStringConvertible{
-    private var ds: DisplayData = DisplayData()
-    private var dl: DisplayData = DisplayData()
-    private var dsLen = -1
-    private var dlLen = -1
+    private var dd: DisplayData = DisplayData()
+    private var ddLen = -1
 
     private var array: [Number] = []
 
-//    mutating func sString(_ digits: Int) -> String {
-//        // ok as string?
-//        if let str = array.last!.str {
-//            if str.count <= digits {
-//                dsLen = -1; dlLen = -1
-//                return str
-//            }
-//        }
-//        // --> GMP
-//        if dsLen != digits {
-//            ds = DisplayData(number: array.last!, digits: digits, favourScientific: false)
-//            dsLen = digits
-//        }
-//        return ds.string
-//    }
-
-
     mutating func sMantissa(_ digits: Int) -> String {
-        if dsLen != digits {
-            ds = DisplayData(number: array.last!, digits: digits, favourScientific: false)
-            dsLen = digits
+        if ddLen != digits {
+            dd = DisplayData(number: array.last!, digits: digits)
+            ddLen = digits
         }
-        print("ds.mantissa \(ds.mantissa)")
-        return ds.mantissa
+        print("dd.sMantissa \(dd.sMantissa)")
+        return dd.sMantissa
     }
-    mutating func sExponent(_ digits: Int) -> String? {
-        if dsLen != digits {
-            ds = DisplayData(number: array.last!, digits: digits, favourScientific: false)
-            dsLen = digits
+    mutating func exponent(_ digits: Int) -> String? {
+        if ddLen != digits {
+            dd = DisplayData(number: array.last!, digits: digits)
+            ddLen = digits
         }
-        return ds.exponent
-    }
-
-    mutating func lMantissa(_ digits: Int) -> String {
-        if dlLen != digits {
-            dl = DisplayData(number: array.last!, digits: digits, favourScientific: true)
-            dlLen = digits
-        }
-        return dl.mantissa
+        return dd.exponent
     }
 
-    mutating func lExponent(_ digits: Int) -> String? {
-        if dsLen != digits {
-            ds = DisplayData(number: array.last!, digits: digits, favourScientific: true)
-            dsLen = digits
+    mutating func lMantissa(_ digits: Int) -> String? {
+        if ddLen != digits {
+            dd = DisplayData(number: array.last!, digits: digits)
+            ddLen = digits
         }
-        return ds.exponent
+        print("dd.lMantissa \(dd.lMantissa ?? "nil")")
+        return dd.lMantissa
     }
 
     var debugLastDouble: Double { array.last!.convertToGmp(); return array.last!.gmp.toDouble() }
     var debugLastGmp: Gmp { array.last!.convertToGmp(); return array.last!.gmp }
-    var isValidNumber: Bool { ds.isValidNumber }
+    var isValidNumber: Bool { dd.isValidNumber }
 
     mutating func hasMoreDigits(_ digits: Int) -> Bool {
-        if dsLen != digits {
-            ds = DisplayData(number: array.last!, digits: digits, favourScientific: false)
-            dsLen = digits
+        if ddLen != digits {
+            dd = DisplayData(number: array.last!, digits: digits)
+            ddLen = digits
         }
-        return ds.hasMoreDigits
+        return dd.hasMoreDigits
     }
 
     mutating func lastDigit(_ digit: Int) {
         array.last!.addDigit(digit)
-        dsLen = -1; dlLen = -1
+        ddLen = -1
     }
     mutating func lastZero() {
         array.last!.addZero()
-        dsLen = -1; dlLen = -1
+        ddLen = -1
     }
     mutating func lastComma() {
         array.last!.addComma()
-        dsLen = -1; dlLen = -1
+        ddLen = -1
     }
     mutating func lastExecute(_ op: twoOperantsType, with other: Gmp) {
         array.last!.execute(op, with: other)
-        dsLen = -1; dlLen = -1
+        ddLen = -1
     }
     mutating func modifyLast(withOp op: inplaceType) {
         array.last!.inPlace(op: op)
-        dsLen = -1; dlLen = -1
+        ddLen = -1
     }
     mutating func replaceLast(with number: Number) {
         array.removeLast()
         array.append(number)
-        dsLen = -1; dlLen = -1
+        ddLen = -1
     }
 
     var lastConvertIntoGmp: Gmp {
@@ -182,11 +156,11 @@ struct NumberStack: CustomDebugStringConvertible{
 
     var count: Int { array.count }
     
-    mutating func append(_ str: String)    { array.append(Number(str)); dsLen = -1; dlLen = -1 }
-    mutating func append(_ gmp: Gmp)       { array.append(Number(gmp)); dsLen = -1; dlLen = -1 }
-    mutating func popLast() -> Number?     { assert(array.count > 0); dsLen = -1; dlLen = -1; return array.popLast() }
-    mutating func removeLast()             { assert(array.count > 0); array.removeLast(); dsLen = -1; dlLen = -1 }
-    mutating func removeAll()              { array.removeAll(); dsLen = -1; dlLen = -1 }
+    mutating func append(_ str: String)    { array.append(Number(str)); ddLen = -1 }
+    mutating func append(_ gmp: Gmp)       { array.append(Number(gmp)); ddLen = -1 }
+    mutating func popLast() -> Number?     { assert(array.count > 0); ddLen = -1; return array.popLast() }
+    mutating func removeLast()             { assert(array.count > 0); array.removeLast(); ddLen = -1 }
+    mutating func removeAll()              { array.removeAll(); ddLen = -1 }
     
     
     var secondLast: Number? {

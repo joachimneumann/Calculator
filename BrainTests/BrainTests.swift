@@ -54,13 +54,13 @@ class BrainTests: XCTestCase {
         brain.digit(4, digits: digits)
         brain.digit(5, digits: digits)
         XCTAssertEqual(brain.sMantissa(digits), "123456789012345")
-        XCTAssertEqual(brain.sExponent(digits), nil)
+        XCTAssertEqual(brain.exponent(digits), nil)
         brain.digit(6, digits: digits)
         XCTAssertEqual(brain.sMantissa(digits), "1234567890123456")
-        XCTAssertEqual(brain.sExponent(digits), nil)
+        XCTAssertEqual(brain.exponent(digits), nil)
         brain.digit(7, digits: digits)
         XCTAssertEqual(brain.sMantissa(digits), "1,234567890123")
-        XCTAssertEqual(brain.sExponent(digits), "e16")
+        XCTAssertEqual(brain.exponent(digits), "e16")
 
         /// -12345678901234
         brain.reset()
@@ -94,12 +94,12 @@ class BrainTests: XCTestCase {
         brain.digit(7, digits: digits)
         brain.digit(7, digits: digits)
         XCTAssertEqual(brain.sMantissa(digits), "777777777")
-        XCTAssertEqual(brain.sExponent(digits), nil)
+        XCTAssertEqual(brain.exponent(digits), nil)
         XCTAssertEqual(brain.lMantissa(digits), "777777777")
         XCTAssertEqual(brain.lExponent(digits), nil)
         brain.digit(7, digits: digits)
         XCTAssertEqual(brain.sMantissa(digits), "7777777777")
-        XCTAssertEqual(brain.sExponent(digits), nil)
+        XCTAssertEqual(brain.exponent(digits), nil)
         XCTAssertEqual(brain.lMantissa(digits), "7777777777")
         XCTAssertEqual(brain.lExponent(digits), nil)
         brain.digit(7, digits: digits)
@@ -110,12 +110,12 @@ class BrainTests: XCTestCase {
         brain.digit(7, digits: digits)
         brain.digit(7, digits: digits)
         XCTAssertEqual(brain.sMantissa(digits), "7,777777777777")
-        XCTAssertEqual(brain.sExponent(digits), "e16")
+        XCTAssertEqual(brain.exponent(digits), "e16")
         XCTAssertEqual(brain.lMantissa(digits), "7,777777777777")
         XCTAssertEqual(brain.lExponent(digits), "e16")
         brain.digit(7, digits: digits)
         XCTAssertEqual(brain.sMantissa(digits), "7,777777777777")
-        XCTAssertEqual(brain.sExponent(digits), "e17")
+        XCTAssertEqual(brain.exponent(digits), "e17")
         XCTAssertEqual(brain.lMantissa(digits), "7,777777777777")
         XCTAssertEqual(brain.lExponent(digits), "e17")
 
@@ -161,7 +161,7 @@ class BrainTests: XCTestCase {
         brain.digit(6, digits: digits)
         brain.operationWorker("+/-")
         XCTAssertEqual(brain.sMantissa(digits), "-1,23456789012")
-        XCTAssertEqual(brain.sExponent(digits), "e15")
+        XCTAssertEqual(brain.exponent(digits), "e15")
 
         /// +/-
         brain.reset()
@@ -187,7 +187,7 @@ class BrainTests: XCTestCase {
         brain.operationWorker("+/-")
         brain.operationWorker("=")
         XCTAssertEqual(brain.sMantissa(digits), "3,0")
-        XCTAssertEqual(brain.sExponent(digits), "e-77")
+        XCTAssertEqual(brain.exponent(digits), "e-77")
 
         /// 888888
         brain.reset()
@@ -254,7 +254,7 @@ class BrainTests: XCTestCase {
         }
         brain.digit(1, digits: digits)
         XCTAssertEqual(brain.sMantissa(digits), "1,0")
-        XCTAssertEqual(brain.sExponent(digits), "e-\(digitsInSmallDisplay-1)")
+        XCTAssertEqual(brain.exponent(digits), "e-\(digitsInSmallDisplay-1)")
 
         /// 32456.2244
         brain.reset()

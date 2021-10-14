@@ -38,21 +38,24 @@ struct Display: View {
         HStack(spacing: 0.0) {
             Spacer(minLength: 0.0)
 //            if brain.highPrecision {
-                ScrollView(.vertical, showsIndicators: true) {
-                    Text(brain.lMantissa(TE.digitsInAllDigitsDisplay))
-                        .foregroundColor(TE.DigitKeyProperties.textColor)
-                        .font(t.displayFont)
-                        .multilineTextAlignment(.leading)
-                        .background(Color.green.opacity(0.3))
-                }
-                .background(Color.green.opacity(0.3))
+            let hasMore = brain.lMantissa(t.digitsInSmallDisplay) != nil
+            let mantissa = hasMore ? brain.lMantissa(t.digitsInSmallDisplay)! : brain.sMantissa(t.digitsInSmallDisplay)
+            ScrollView(.vertical, showsIndicators: true) {
+                Text(mantissa)
+                    .foregroundColor(TE.DigitKeyProperties.textColor)
+                    .font(t.displayFont)
+                    .multilineTextAlignment(.leading)
+                    //.background(Color.green.opacity(0.3))
+            }
+            .disabled(!hasMore && brain.highPrecision)
+            //.background(Color.green.opacity(0.3))
 //            } else {
 //                DisplayText(text: brain.sMantissa(t.digitsInSmallDisplay), brain: brain, t: t)
 //                    .background(Color.green.opacity(0.3))
 //            }
-            if let exponent = brain.sExponent(t.digitsInSmallDisplay) {
+            if let exponent = brain.exponent(t.digitsInSmallDisplay) {
                 DisplayText(text: " "+exponent, brain: brain, t: t)
-                    .frame(maxWidth: 130)
+                    //.frame(maxWidth: 130)
             }
         }
         .padding(.leading, leading)

@@ -20,9 +20,8 @@ class Brain: ObservableObject {
     var debugLastGmp: Gmp { n.debugLastGmp }
     
     func sMantissa(_ digits: Int) -> String  { n.sMantissa(digits) }
-    func sExponent(_ digits: Int) -> String? { n.sExponent(digits) }
-    func lMantissa(_ digits: Int) -> String  { n.lMantissa(digits) }
-    func lExponent(_ digits: Int) -> String? { n.lExponent(digits) }
+    func exponent(_  digits: Int) -> String? { n.exponent(digits)  }
+    func lMantissa(_ digits: Int) -> String? { n.lMantissa(digits) }
 
     //    func sString(_ digits: Int) -> String { n.sString(digits) }
     //func sString(_ digits: Int) -> String { "6.734" }

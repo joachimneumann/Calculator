@@ -11,17 +11,20 @@ class DisplayData: Equatable {
     
     var isValidNumber: Bool
     var hasMoreDigits: Bool
+    var sMantissa: String
+    var lMantissa: String?
     var exponent: String?
-    var mantissa: String
 
     private init(isValidNumber: Bool,
                  hasMoreDigits: Bool,
-                 exponent: String?,
-                 content: String) {
+                 sMantissa: String,
+                 lMantissa: String?,
+                 exponent: String?) {
         self.isValidNumber = isValidNumber
         self.hasMoreDigits = hasMoreDigits
+        self.sMantissa = sMantissa
+        self.lMantissa = lMantissa
         self.exponent = exponent
-        self.mantissa = content
     }
     
     convenience init() {
@@ -29,27 +32,23 @@ class DisplayData: Equatable {
     }
     
     convenience init(number: Number,
-                     digits: Int,
-                     favourScientific: Bool) {
+                     digits: Int) {
         if let str = number.str {
             if str.count <= digits {
                 self.init(valid: str)
             } else {
                 let gmp = Gmp(str)
                 self.init(gmp: gmp,
-                          digits: digits,
-                          favourScientific: favourScientific)
+                          digits: digits)
             }
         } else {
             self.init(gmp: number.gmp,
-                      digits: digits,
-                      favourScientific: favourScientific)
+                      digits: digits)
         }
     }
     
     private convenience init(gmp: Gmp,
-                     digits: Int,
-                     favourScientific: Bool) {
+                     digits: Int) {
         print("dd \(digits)")
         if gmp.NaN {
             self.init(invalid: "not a real number")
@@ -65,7 +64,7 @@ class DisplayData: Equatable {
             return
         }
         
-        let data = gmp.data(length: digits)
+        let data = gmp.data(length: TE.digitsInAllDigitsDisplay)
         
         var availableDigits = digits
         if data.negative { availableDigits -= 1 }
@@ -88,85 +87,109 @@ class DisplayData: Equatable {
         
         /// can be displayed as  float number? I.e., not scientific notation
         availableDigits = digits
-        if data.negative { availableDigits -= 1 }     /// for "-" The "-" is added later, outside this function
+        if data.negative { availableDigits -= 1 }     /// for "-". The "-" is added to the string later
         
-        if (abs(data.exponent) <= availableDigits - 2) &&
-            (!favourScientific || abs(data.exponent) <= 4) { /// display sifficiently large?
-            var floatString = ""
+        if abs(data.exponent) <= availableDigits - 2 { /// display sifficiently large?
+            var lMantissa = ""
             if data.exponent < 0 {
                 /// abs(number) < 1
-                floatString = "0," + floatString
+                lMantissa = "0," + lMantissa
                 let zeroes = -data.exponent
                 for _ in 1..<zeroes {
-                    floatString += "0"
+                    lMantissa += "0"
                 }
-                floatString += data.mantissa
-                floatString = String(floatString.prefix(availableDigits+1)) /// +1 for the comma
-                if data.negative { floatString = "-" + floatString }
-
-                self.init(
-                    isValidNumber: true,
-                    hasMoreDigits: data.hasMoreDigits,
-                    exponent: nil,
-                    content: floatString)
-                    return
+                lMantissa += data.mantissa
+                if data.negative { lMantissa = "-" + lMantissa }
+                if lMantissa.count > availableDigits {
+                    let sMantissa = String(lMantissa.prefix(availableDigits+1)) /// +1 for the comma
+                    self.init(
+                        isValidNumber: true,
+                        hasMoreDigits: data.hasMoreDigits,
+                        sMantissa: sMantissa,
+                        lMantissa: lMantissa,
+                        exponent: nil)
+                        return
+                } else {
+                    self.init(
+                        isValidNumber: true,
+                        hasMoreDigits: data.hasMoreDigits,
+                        sMantissa: lMantissa,
+                        lMantissa: nil,
+                        exponent: nil)
+                        return
+                }
             } else {
                 /// abs(number) > 1
-                floatString = data.mantissa
-                let index = floatString.index(floatString.startIndex, offsetBy: data.exponent+1)
-                floatString.insert(",", at: index)
-                var ret = String(floatString.prefix(digits+1))
-                if data.negative { ret = "-" + ret }
+                lMantissa = data.mantissa
+                let index = lMantissa.index(lMantissa.startIndex, offsetBy: data.exponent+1)
+                lMantissa.insert(",", at: index)
+                if data.negative { lMantissa = "-" + lMantissa }
 
-                self.init(
-                    isValidNumber: true,
-                    hasMoreDigits: data.hasMoreDigits,
-                    exponent: nil,
-                    content: ret)
-                return
+                if lMantissa.count > availableDigits {
+                    let sMantissa = String(lMantissa.prefix(availableDigits+1)) /// +1 for the comma
+                    self.init(
+                        isValidNumber: true,
+                        hasMoreDigits: data.hasMoreDigits,
+                        sMantissa: sMantissa,
+                        lMantissa: lMantissa,
+                        exponent: nil)
+                        return
+                } else {
+                    self.init(
+                        isValidNumber: true,
+                        hasMoreDigits: data.hasMoreDigits,
+                        sMantissa: lMantissa,
+                        lMantissa: nil,
+                        exponent: nil)
+                        return
+                }
             }
         }
         
-        /// lets go for scientific notation
+        /// --> scientific notation
         let exponentString = "e\(data.exponent)"
         availableDigits = digits
         if data.negative { availableDigits -= 1 }     /// for "-" The "-" is added later, outside this function
         availableDigits -= exponentString.count
 
-        var scientificString = data.mantissa
-        let index = scientificString.index(scientificString.startIndex, offsetBy: 1)
-        scientificString.insert(",", at: index)
-        if scientificString.count <= 2 { scientificString += "0" } /// e.g. 1e16 -> 1,e16 -> 1,0e16
+        var lMantissa = data.mantissa
+        let index = lMantissa.index(lMantissa.startIndex, offsetBy: 1)
+        lMantissa.insert(",", at: index)
+        if lMantissa.count <= 2 { lMantissa += "0" } /// e.g. 1e16 -> 1,e16 -> 1,0e16
         
-        scientificString = String(scientificString.prefix(availableDigits+1)) // +1 for the comma, which I do not count
-        if data.negative { scientificString = "-" + scientificString }
+        if data.negative { lMantissa = "-" + lMantissa }
+        let sMantissa = String(lMantissa.prefix(availableDigits+1)) // +1 for the comma, which I do not count
 
         self.init(isValidNumber: true,
                   hasMoreDigits: true,
-                  exponent: "e\(data.exponent)",
-                  content: scientificString)
+                  sMantissa: sMantissa,
+                  lMantissa: lMantissa,
+                  exponent: "e\(data.exponent)")
     }
     
     private convenience init(valid: String) {
         self.init(isValidNumber: true,
                   hasMoreDigits: false,
-                  exponent: nil,
-                  content: valid)
+                  sMantissa: valid,
+                  lMantissa: nil,
+                  exponent: nil)
     }
     
     private convenience init(invalid: String) {
         self.init(isValidNumber: false,
                   hasMoreDigits: false,
-                  exponent: nil,
-                  content: invalid)
+                  sMantissa: invalid,
+                  lMantissa: nil,
+                  exponent: nil)
     }
 
     
     static func == (lhs: DisplayData, rhs: DisplayData) -> Bool {
         if lhs.isValidNumber != rhs.isValidNumber { return false }
         if lhs.hasMoreDigits != rhs.hasMoreDigits { return false }
-        if lhs.exponent != rhs.exponent           { return false }
-        if lhs.mantissa != rhs.mantissa           { return false }
+        if lhs.exponent      != rhs.exponent      { return false }
+        if lhs.sMantissa     != rhs.sMantissa     { return false }
+        if lhs.lMantissa     != rhs.lMantissa     { return false }
         return true
     }
     
