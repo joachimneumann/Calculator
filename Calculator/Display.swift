@@ -19,7 +19,7 @@ struct Display: View {
             let fg: Color = TE.DigitKeyProperties.textColor
             let font: Font = t.displayFont
             let maxHeight: CGFloat = t.remainingAboveKeys
-            let bottom: CGFloat = (brain.highPrecision ? t.allkeysHeight : 0.0)
+            let bottom: CGFloat = (brain.zoomed ? t.allkeysHeight : 0.0)
             Text(text)
                 .foregroundColor(fg)
                 .font(font)
@@ -37,9 +37,7 @@ struct Display: View {
         let leading: CGFloat = t.keySize.width * 0.5
         HStack(spacing: 0.0) {
             Spacer(minLength: 0.0)
-//            if brain.highPrecision {
-            let hasMore = brain.lMantissa(t.digitsInSmallDisplay) != nil
-            let mantissa = hasMore ? brain.lMantissa(t.digitsInSmallDisplay)! : brain.sMantissa(t.digitsInSmallDisplay)
+            let mantissa = brain.hasMoreDigits(t.digitsInSmallDisplay) ? brain.lMantissa(t.digitsInSmallDisplay)! : brain.sMantissa(t.digitsInSmallDisplay)
             ScrollView(.vertical, showsIndicators: true) {
                 Text(mantissa)
                     .foregroundColor(TE.DigitKeyProperties.textColor)
@@ -47,12 +45,7 @@ struct Display: View {
                     .multilineTextAlignment(.leading)
                     //.background(Color.green.opacity(0.3))
             }
-            .disabled(!brain.highPrecision)
-            //.background(Color.green.opacity(0.3))
-//            } else {
-//                DisplayText(text: brain.sMantissa(t.digitsInSmallDisplay), brain: brain, t: t)
-//                    .background(Color.green.opacity(0.3))
-//            }
+            .disabled(!brain.zoomed)
             if let exponent = brain.exponent(t.digitsInSmallDisplay) {
                 DisplayText(text: " "+exponent, brain: brain, t: t)
                     //.frame(maxWidth: 130)

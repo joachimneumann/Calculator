@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 class Brain: ObservableObject {
-    @Published var highPrecision: Bool = false
+    @Published var zoomed: Bool = false
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
     @Published var calculating: Bool = false

@@ -94,7 +94,7 @@ struct MainView: View {
             if t.isLandscape && !t.isPad {
                 HStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    LandscapeZoomAndCo(zoomed: $brain.highPrecision,
+                    LandscapeZoomAndCo(zoomed: $brain.zoomed,
                                        brain: brain,
                                        t: t,
                                        active: brain.hasMoreDigits(t.digitsInSmallDisplay),
@@ -109,13 +109,13 @@ struct MainView: View {
                 // everything is in here
                 HStack(spacing: 0.0) {
                     // everyting above the keys
-                    if brain.rad && !brain.highPrecision && t.isLandscape {
+                    if brain.rad && !brain.zoomed && t.isLandscape {
                         Rad(keySize: t.keySize)
                     }
                     Spacer(minLength: 0.0)
                     VStack(spacing: 0.0) {
                         if !t.isLandscape || t.isPad {
-                            PortraitZoomAndCo(zoomed: $brain.highPrecision,
+                            PortraitZoomAndCo(zoomed: $brain.zoomed,
                                               brain: brain,
                                               active: brain.hasMoreDigits(t.digitsInSmallDisplay),
                                               iconSize: t.keySize.height * 0.7,
@@ -124,7 +124,7 @@ struct MainView: View {
                                               zoomHeight: t.keySize.height)
                         }
                         Spacer(minLength: 0.0)
-                        if !brain.highPrecision || !brain.hasMoreDigits(t.digitsInSmallDisplay) {
+                        if !brain.zoomed || !brain.hasMoreDigits(t.digitsInSmallDisplay) {
                             Display(brain: brain, t: t)
 //                            let text = brain.sString(t.digitsInSmallDisplay)
 //                            let fg: Color = TE.DigitKeyProperties.textColor
@@ -180,7 +180,7 @@ struct MainView: View {
                         }
                     }
                 }
-                if !brain.highPrecision {
+                if !brain.zoomed {
                     Keys(brain: brain, t: t)
                 }
             }
