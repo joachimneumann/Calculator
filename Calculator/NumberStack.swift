@@ -112,9 +112,6 @@ struct NumberStack: CustomDebugStringConvertible{
         return ds.mantissa
     }
     mutating func sExponent(_ digits: Int) -> String? {
-//        if array.last!.str != nil {
-//            return nil
-//        }
         if dsLen != digits {
             ds = DisplayData(number: array.last!, digits: digits, favourScientific: false)
             dsLen = digits
@@ -123,9 +120,6 @@ struct NumberStack: CustomDebugStringConvertible{
     }
 
     mutating func lMantissa(_ digits: Int) -> String {
-//        if let str = array.last!.str {
-//            return str
-//        }
         if dlLen != digits {
             dl = DisplayData(number: array.last!, digits: digits, favourScientific: true)
             dlLen = digits
@@ -134,9 +128,6 @@ struct NumberStack: CustomDebugStringConvertible{
     }
 
     mutating func lExponent(_ digits: Int) -> String? {
-        if array.last!.str != nil {
-            return nil
-        }
         if dsLen != digits {
             ds = DisplayData(number: array.last!, digits: digits, favourScientific: true)
             dsLen = digits

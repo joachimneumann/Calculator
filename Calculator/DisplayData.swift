@@ -28,20 +28,6 @@ class DisplayData: Equatable {
         self.init(invalid: "invalid")
     }
     
-    private convenience init(valid: String) {
-        self.init(isValidNumber: true,
-                  hasMoreDigits: false,
-                  exponent: nil,
-                  content: valid)
-    }
-    
-    private convenience init(invalid: String) {
-        self.init(isValidNumber: false,
-                  hasMoreDigits: false,
-                  exponent: nil,
-                  content: invalid)
-    }
-    
     convenience init(number: Number,
                      digits: Int,
                      favourScientific: Bool) {
@@ -61,7 +47,7 @@ class DisplayData: Equatable {
         }
     }
     
-    convenience init(gmp: Gmp,
+    private convenience init(gmp: Gmp,
                      digits: Int,
                      favourScientific: Bool) {
         print("dd \(digits)")
@@ -160,6 +146,21 @@ class DisplayData: Equatable {
                   exponent: "e\(data.exponent)",
                   content: scientificString)
     }
+    
+    private convenience init(valid: String) {
+        self.init(isValidNumber: true,
+                  hasMoreDigits: false,
+                  exponent: nil,
+                  content: valid)
+    }
+    
+    private convenience init(invalid: String) {
+        self.init(isValidNumber: false,
+                  hasMoreDigits: false,
+                  exponent: nil,
+                  content: invalid)
+    }
+
     
     static func == (lhs: DisplayData, rhs: DisplayData) -> Bool {
         if lhs.isValidNumber != rhs.isValidNumber { return false }

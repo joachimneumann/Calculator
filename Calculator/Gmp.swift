@@ -25,9 +25,10 @@ var globalUnsignedLongInt: CUnsignedLong = 0
 
 class Gmp: Equatable {
     static func == (lhs: Gmp, rhs: Gmp) -> Bool {
-        let l = DisplayData(gmp: lhs, digits: 10000, favourScientific: true)
-        let r = DisplayData(gmp: rhs, digits: 10000, favourScientific: true)
+        let l = lhs.data(length: 10000)
+        let r = rhs.data(length: 10000)
         if l.mantissa != r.mantissa { return false }
+        if l.negative != r.negative { return false }
         if l.exponent != r.exponent { return false }
         return true
     }
