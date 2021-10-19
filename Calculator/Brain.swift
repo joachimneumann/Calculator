@@ -19,9 +19,8 @@ class Brain: ObservableObject {
     var debugLastDouble: Double { n.debugLastDouble }
     var debugLastGmp: Gmp { n.debugLastGmp }
     
-    func sMantissa(_ digits: Int) -> String  { n.sMantissa(digits) }
     func exponent(_  digits: Int) -> String? { n.exponent(digits)  }
-    func lMantissa(_ digits: Int) -> String? { n.lMantissa(digits) }
+    func mantissa(_ digits: Int) -> String? { n.mantissa(digits) }
 
     //    func sString(_ digits: Int) -> String { n.sString(digits) }
     //func sString(_ digits: Int) -> String { "6.734" }

@@ -151,6 +151,7 @@ class TE {
     static let additionalBottomSpacing: CGFloat = 0.0
 
     var displayFontSize: CGFloat = 0.0
+    var displayFont: Font = Font.system(size: 10, weight: .thin).monospacedDigit()
     var isLandscape: Bool = false
     var spaceBetweenkeys: CGFloat = 0.0
     var keySize: CGSize = CGSize(width: 0.0, height: 0.0)
@@ -184,6 +185,7 @@ class TE {
             digitsInSmallDisplay = 9
         }
         displayFontSize = keySize.height
+        displayFont = Font.system(size: displayFontSize, weight: .thin).monospacedDigit()
         widerKeySize = keySize
         remainingAboveKeys = appFrame.height - allkeysHeight
     }

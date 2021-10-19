@@ -11,19 +11,16 @@ class DisplayData: Equatable {
     
     var isValidNumber: Bool
     var hasMoreDigits: Bool
-    var sMantissa: String
-    var lMantissa: String?
+    var mantissa: String
     var exponent: String?
 
     private init(isValidNumber: Bool,
                  hasMoreDigits: Bool,
-                 sMantissa: String,
-                 lMantissa: String?,
+                 mantissa: String,
                  exponent: String?) {
         self.isValidNumber = isValidNumber
         self.hasMoreDigits = hasMoreDigits
-        self.sMantissa = sMantissa
-        self.lMantissa = lMantissa
+        self.mantissa = mantissa
         self.exponent = exponent
     }
     
@@ -64,7 +61,7 @@ class DisplayData: Equatable {
             return
         }
         
-        let data = gmp.data(length: TE.digitsInAllDigitsDisplay)
+        let data = gmp.data(length: digits)
         
         var availableDigits = digits
         if data.negative { availableDigits -= 1 }
@@ -90,56 +87,36 @@ class DisplayData: Equatable {
         if data.negative { availableDigits -= 1 }     /// for "-". The "-" is added to the string later
         
         if abs(data.exponent) <= availableDigits - 2 { /// display sifficiently large?
-            var lMantissa = ""
+            var mantissa = ""
             if data.exponent < 0 {
                 /// abs(number) < 1
-                lMantissa = "0," + lMantissa
+                mantissa = "0," + mantissa
                 let zeroes = -data.exponent
                 for _ in 1..<zeroes {
-                    lMantissa += "0"
+                    mantissa += "0"
                 }
-                lMantissa += data.mantissa
-                if data.negative { lMantissa = "-" + lMantissa }
-                if lMantissa.count > availableDigits {
-                    let sMantissa = String(lMantissa.prefix(availableDigits+1)) /// +1 for the comma
+                mantissa += data.mantissa
+                if data.negative { mantissa = "-" + mantissa }
+                if zeroes < availableDigits+2 {
                     self.init(
                         isValidNumber: true,
                         hasMoreDigits: data.hasMoreDigits,
-                        sMantissa: sMantissa,
-                        lMantissa: lMantissa,
-                        exponent: nil)
-                        return
-                } else {
-                    self.init(
-                        isValidNumber: true,
-                        hasMoreDigits: data.hasMoreDigits,
-                        sMantissa: lMantissa,
-                        lMantissa: nil,
+                        mantissa: mantissa,
                         exponent: nil)
                         return
                 }
             } else {
                 /// abs(number) > 1
-                lMantissa = data.mantissa
-                let index = lMantissa.index(lMantissa.startIndex, offsetBy: data.exponent+1)
-                lMantissa.insert(",", at: index)
-                if data.negative { lMantissa = "-" + lMantissa }
+                mantissa = data.mantissa
+                let index = mantissa.index(mantissa.startIndex, offsetBy: data.exponent+1)
+                mantissa.insert(",", at: index)
+                if data.negative { mantissa = "-" + mantissa }
 
-                if lMantissa.count > availableDigits {
-                    let sMantissa = String(lMantissa.prefix(availableDigits+1)) /// +1 for the comma
+                if mantissa.count < availableDigits {
                     self.init(
                         isValidNumber: true,
                         hasMoreDigits: data.hasMoreDigits,
-                        sMantissa: sMantissa,
-                        lMantissa: lMantissa,
-                        exponent: nil)
-                        return
-                } else {
-                    self.init(
-                        isValidNumber: true,
-                        hasMoreDigits: data.hasMoreDigits,
-                        sMantissa: lMantissa,
-                        lMantissa: nil,
+                        mantissa: mantissa,
                         exponent: nil)
                         return
                 }
@@ -152,34 +129,31 @@ class DisplayData: Equatable {
         if data.negative { availableDigits -= 1 }     /// for "-" The "-" is added later, outside this function
         availableDigits -= exponentString.count
 
-        var lMantissa = data.mantissa
-        let index = lMantissa.index(lMantissa.startIndex, offsetBy: 1)
-        lMantissa.insert(",", at: index)
-        if lMantissa.count <= 2 { lMantissa += "0" } /// e.g. 1e16 -> 1,e16 -> 1,0e16
+        var mantissa = data.mantissa
+        let index = mantissa.index(mantissa.startIndex, offsetBy: 1)
+        mantissa.insert(",", at: index)
+        if mantissa.count <= 2 { mantissa += "0" } /// e.g. 1e16 -> 1,e16 -> 1,0e16
         
-        if data.negative { lMantissa = "-" + lMantissa }
-        let sMantissa = String(lMantissa.prefix(availableDigits+1)) // +1 for the comma, which I do not count
+        if data.negative { mantissa = "-" + mantissa }
+        //let mantissa = String(lMantissa.prefix(availableDigits+1)) // +1 for the comma, which I do not count
 
         self.init(isValidNumber: true,
                   hasMoreDigits: true,
-                  sMantissa: sMantissa,
-                  lMantissa: lMantissa,
+                  mantissa: mantissa,
                   exponent: "e\(data.exponent)")
     }
     
     private convenience init(valid: String) {
         self.init(isValidNumber: true,
                   hasMoreDigits: false,
-                  sMantissa: valid,
-                  lMantissa: nil,
+                  mantissa: valid,
                   exponent: nil)
     }
     
     private convenience init(invalid: String) {
         self.init(isValidNumber: false,
                   hasMoreDigits: false,
-                  sMantissa: invalid,
-                  lMantissa: nil,
+                  mantissa: invalid,
                   exponent: nil)
     }
 
@@ -188,8 +162,7 @@ class DisplayData: Equatable {
         if lhs.isValidNumber != rhs.isValidNumber { return false }
         if lhs.hasMoreDigits != rhs.hasMoreDigits { return false }
         if lhs.exponent      != rhs.exponent      { return false }
-        if lhs.sMantissa     != rhs.sMantissa     { return false }
-        if lhs.lMantissa     != rhs.lMantissa     { return false }
+        if lhs.mantissa      != rhs.mantissa      { return false }
         return true
     }
     

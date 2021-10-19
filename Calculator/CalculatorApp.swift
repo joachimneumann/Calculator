@@ -23,7 +23,8 @@ struct CalculatorApp: App {
                     .ignoresSafeArea()
                 /// Sizes are hardcoded for Mac.
                 /// Therefore, I can call the ContentView directly with uninitialized TE.
-                MainView(brain: brain, t: t)
+                //MainView(brain: brain, t: t)
+                ContentView()
             }
         }
         .commands() {
@@ -33,16 +34,24 @@ struct CalculatorApp: App {
 #else
     let brain = Brain()
     var body: some Scene {
+        let exponent = "e13"
+        var mantissa = "xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx "//"4.1415826"
+//        let _ = mantissa += "1111111111111"
+//        let _ = mantissa += "2222222222222"
+//        let _ = mantissa += "3333333333333"
         WindowGroup {
-            // a little hack to prevent that which background creeps up during device orientation chang rotation
-            let expandedDeviceSize: CGFloat = 1.5 * max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
-            iOSSize(brain: brain)
-                .statusBar(hidden: true)
-                //.background(Color.yellow.opacity(0.5))
-                .background(Rectangle()
-                                .frame(width: expandedDeviceSize, height: expandedDeviceSize, alignment: .center)
-                                .foregroundColor(TE.appBackgroundColor)
-                                .ignoresSafeArea())
+            ContentView(keyboardHeight: 200, mantissa: mantissa, exponent: exponent)
+
+            
+//            // a little hack to prevent that which background creeps up during device orientation chang rotation
+//            let expandedDeviceSize: CGFloat = 1.5 * max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
+//            iOSSize(brain: brain)
+//                .statusBar(hidden: true)
+//                //.background(Color.yellow.opacity(0.5))
+//                .background(Rectangle()
+//                                .frame(width: expandedDeviceSize, height: expandedDeviceSize, alignment: .center)
+//                                .foregroundColor(TE.appBackgroundColor)
+//                                .ignoresSafeArea())
         }
     }
 #endif

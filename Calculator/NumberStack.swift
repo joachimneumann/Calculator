@@ -84,14 +84,6 @@ struct NumberStack: CustomDebugStringConvertible{
 
     private var array: [Number] = []
 
-    mutating func sMantissa(_ digits: Int) -> String {
-        if ddLen != digits {
-            dd = DisplayData(number: array.last!, digits: digits)
-            ddLen = digits
-        }
-        print("dd.sMantissa \(dd.sMantissa)")
-        return dd.sMantissa
-    }
     mutating func exponent(_ digits: Int) -> String? {
         if ddLen != digits {
             dd = DisplayData(number: array.last!, digits: digits)
@@ -100,13 +92,13 @@ struct NumberStack: CustomDebugStringConvertible{
         return dd.exponent
     }
 
-    mutating func lMantissa(_ digits: Int) -> String? {
+    mutating func mantissa(_ digits: Int) -> String? {
         if ddLen != digits {
             dd = DisplayData(number: array.last!, digits: digits)
             ddLen = digits
         }
-        print("dd.lMantissa \(dd.lMantissa ?? "nil")")
-        return dd.lMantissa
+        print("dd.mantissa \(dd.mantissa)")
+        return dd.mantissa
     }
 
     var debugLastDouble: Double { array.last!.convertToGmp(); return array.last!.gmp.toDouble() }
