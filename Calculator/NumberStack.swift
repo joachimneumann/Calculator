@@ -79,64 +79,52 @@ class Number: CustomDebugStringConvertible {
 
 
 struct NumberStack: CustomDebugStringConvertible{
-    private var dd: DisplayData = DisplayData()
-    private var ddLen = -1
-
+    private var dd: DisplayData? = nil
     private var array: [Number] = []
 
-    mutating func exponent(_ digits: Int) -> String? {
-        if ddLen != digits {
-            dd = DisplayData(number: array.last!, digits: digits)
-            ddLen = digits
+    var nonScientific: String? {
+        mutating get {
+            if dd == nil { dd = DisplayData(number: array.last!) }
+            return dd!.nonScientific
         }
-        return dd.exponent
     }
 
-    mutating func mantissa(_ digits: Int) -> String? {
-        if ddLen != digits {
-            dd = DisplayData(number: array.last!, digits: digits)
-            ddLen = digits
+    var scientific: Scientific? {
+        mutating get {
+            if dd == nil { dd = DisplayData(number: array.last!) }
+            return dd!.scientific
         }
-        print("dd.mantissa \(dd.mantissa)")
-        return dd.mantissa
     }
+    
 
     var debugLastDouble: Double { array.last!.convertToGmp(); return array.last!.gmp.toDouble() }
     var debugLastGmp: Gmp { array.last!.convertToGmp(); return array.last!.gmp }
-    var isValidNumber: Bool { dd.isValidNumber }
-
-    mutating func hasMoreDigits(_ digits: Int) -> Bool {
-        if ddLen != digits {
-            dd = DisplayData(number: array.last!, digits: digits)
-            ddLen = digits
-        }
-        return dd.hasMoreDigits
-    }
+    var isValidNumber: Bool { guard dd != nil else { return false}; return dd!.isValidNumber }
 
     mutating func lastDigit(_ digit: Int) {
         array.last!.addDigit(digit)
-        ddLen = -1
+        dd = nil
     }
     mutating func lastZero() {
         array.last!.addZero()
-        ddLen = -1
+        dd = nil
     }
     mutating func lastComma() {
         array.last!.addComma()
-        ddLen = -1
+        dd = nil
     }
     mutating func lastExecute(_ op: twoOperantsType, with other: Gmp) {
         array.last!.execute(op, with: other)
-        ddLen = -1
+        dd = nil
     }
     mutating func modifyLast(withOp op: inplaceType) {
         array.last!.inPlace(op: op)
-        ddLen = -1
+        dd = nil
     }
     mutating func replaceLast(with number: Number) {
         array.removeLast()
         array.append(number)
-        ddLen = -1
+        dd = nil
     }
 
     var lastConvertIntoGmp: Gmp {
@@ -148,11 +136,11 @@ struct NumberStack: CustomDebugStringConvertible{
 
     var count: Int { array.count }
     
-    mutating func append(_ str: String)    { array.append(Number(str)); ddLen = -1 }
-    mutating func append(_ gmp: Gmp)       { array.append(Number(gmp)); ddLen = -1 }
-    mutating func popLast() -> Number?     { assert(array.count > 0); ddLen = -1; return array.popLast() }
-    mutating func removeLast()             { assert(array.count > 0); array.removeLast(); ddLen = -1 }
-    mutating func removeAll()              { array.removeAll(); ddLen = -1 }
+    mutating func append(_ str: String)    { array.append(Number(str)); dd = nil }
+    mutating func append(_ gmp: Gmp)       { array.append(Number(gmp)); dd = nil }
+    mutating func popLast() -> Number?     { assert(array.count > 0); dd = nil; return array.popLast() }
+    mutating func removeLast()             { assert(array.count > 0); array.removeLast(); dd = nil }
+    mutating func removeAll()              { array.removeAll(); dd = nil }
     
     
     var secondLast: Number? {

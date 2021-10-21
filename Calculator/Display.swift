@@ -11,8 +11,7 @@ struct Display: View {
     @ObservedObject var brain: Brain
     let t: TE
     @State var hasMoreLines: Bool = false
-    @Binding var mantissaTextSize: CGSize
-
+    
     struct ExponentText: View {
         let text: String
         let brain: Brain
@@ -26,48 +25,48 @@ struct Display: View {
                 .foregroundColor(fg)
                 .font(font)
                 .lineLimit(1)
-                //.minimumScaleFactor(0.1)
+            //.minimumScaleFactor(0.1)
                 .frame(maxHeight: maxHeight, alignment: .bottom)
                 .padding(.bottom, bottom)
         }
     }
-
+    
     struct LongText: View {
-
+        
         /* Indicates whether the user want to see all the text or not. */
         @State private var expanded: Bool = false
-
+        
         /* Indicates whether the text has been truncated in its display. */
         @State private var truncated: Bool = false
-
+        
         private var text: String
-
+        
         var lineLimit = 1
-
+        
         init(_ text: String) {
             self.text = text
         }
-
+        
         var body: some View {
             VStack(alignment: .leading) {
                 // Render the real text (which might or might not be limited)
                 Text(text)
                     .lineLimit(expanded ? nil : lineLimit)
-
+                
                     .background(
-
+                        
                         // Render the limited text and measure its size
                         Text(text).lineLimit(lineLimit)
                             .background(GeometryReader { displayedGeometry in
-
+                                
                                 // Create a ZStack with unbounded height to allow the inner Text as much
                                 // height as it likes, but no extra width.
                                 ZStack {
-
+                                    
                                     // Render the text without restrictions and measure its size
                                     Text(self.text)
                                         .background(GeometryReader { fullGeometry in
-
+                                            
                                             // And compare the two
                                             Color.clear.onAppear {
                                                 self.truncated = fullGeometry.size.height > displayedGeometry.size.height
@@ -76,8 +75,8 @@ struct Display: View {
                                 }
                                 .frame(height: .greatestFiniteMagnitude)
                             })
-                            //.hidden() // Hide the background
-                )
+                        //.hidden() // Hide the background
+                    )
                 if truncated { toggleButton }
             }
         }
@@ -90,7 +89,7 @@ struct Display: View {
     }
     
     @State private var offset : CGPoint = .zero
-
+    
     func rectReader() -> some View {
         return GeometryReader { (geometry) -> AnyView in
             let offset : CGPoint = CGPoint.init(
@@ -107,66 +106,96 @@ struct Display: View {
         }
     }
     
+    @State var scrollviewContentHeight: CGFloat = 0
+    
     var body: some View {
         let trailing: CGFloat = (t.isLandscape && !t.isPad ? t.widerKeySize.width : t.widerKeySize.width*0.2) - TE.reducedTrailing
         let leading: CGFloat = t.keySize.width * 0.5
+        
         HStack(spacing: 0.0) {
             Spacer(minLength: 0.0)
-            let mantissa = brain.mantissa(t.digitsInSmallDisplay)!
-            ScrollView(.vertical, showsIndicators: true) {
-                VStack {
-                                Text(mantissa)
-                                    .padding(8)
-                                    .frame(width: 1024, height: 1024)
-                                    .background(Color.orange)
-                                    .border(Color.red)
+            let mantissa = "111" //brain.scientific!.mantissa
+            ScrollView { //}(.vertical, showsIndicators: true) {
+                Text(mantissa)
+                    .font(t.displayFont)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .foregroundColor(TE.DigitKeyProperties.textColor)
+                    .font(t.displayFont)
+                    //.background(Color.orange)
+                    .lineLimit(100)
+                    .multilineTextAlignment(.trailing)
+                    .overlay(
+                        GeometryReader { proxy in
+                            Color.clear.onAppear {
+                                scrollviewContentHeight = proxy.size.height
+                                print(scrollviewContentHeight)
                             }
-                            .background(rectReader())
-                            .offset(x: self.offset.x, y: self.offset.y)
-//
-////                LongText(mantissa)
-//                Text("s"+mantissa)
-//                    .foregroundColor(TE.DigitKeyProperties.textColor)
-//                    .font(t.displayFont)
-//                    .multilineTextAlignment(.leading)
-//                    .background(GeometryReader { displayedGeometry in
-//                        Color.red.onAppear {
-//                            mantissaTextSize = displayedGeometry.size
-//                            let _ = print("displayedGeometry inside = \(displayedGeometry.size)")
-//                        }
-//                    })
-                    //.background(Color.green.opacity(0.3))
-
-//                        // Create a ZStack with unbounded height to allow the inner Text as much
-//                        // height as it likes, but no extra width.
-//                        ZStack {
-//
-//                            // Render the text without restrictions and measure its size
-//                            let _ = print("hasMoreLines0 \(hasMoreLines)")
-//                            Text(mantissa)//+mantissa+mantissa+mantissa+mantissa+mantissa)
-//                                .background(GeometryReader { fullGeometry in
-//                                    // And compare the two
-//                                    Color.clear.onAppear {
-//                                        let _ = print("hasMoreLines1 \(hasMoreLines) \(fullGeometry.size.height) \(displayedGeometry.size.height)")
-//                                        hasMoreLines = fullGeometry.size.height < displayedGeometry.size.height
-//                                        print("hasMoreLines2 \(hasMoreLines)")
-//                                    }
-//                                })
-//                        }
-//                        .frame(height: .greatestFiniteMagnitude)
-//                        //.hidden() // Hide the background
-//                    })
-                                
-                    .background(Color.green.opacity(0.3))
+                        }
+                    )
             }
+            .offset(x: 0, y: -0.2*TE.displayFontSize)
+            .disabled(!brain.zoomed)
+            
+            if let exponent = "eee" {//brain.scientific!.exponent {
+                VStack(spacing: 0.0) {
+                    //ExponentText(text: " "+exponent, brain: brain, t: t)
+                    Text(" "+exponent)
+                        .font(t.displayFont)
+                        .frame(alignment: .trailing)
+                        .foregroundColor(TE.DigitKeyProperties.textColor)
+                        .font(t.displayFont)
+                        //.background(Color.orange)
+                        .lineLimit(1)
+                        .offset(x: 0, y: -0.2*TE.displayFontSize)
+                    Spacer(minLength: 0.0)
+                }
+            }
+            //            .background(rectReader())
+//                        .offset(x: self.offset.x, y: self.offset.y)
+            //
+            ////                LongText(mantissa)
+            //                Text("s"+mantissa)
+            //                    .foregroundColor(TE.DigitKeyProperties.textColor)
+            //                    .font(t.displayFont)
+            //                    .multilineTextAlignment(.leading)
+            //                    .background(GeometryReader { displayedGeometry in
+            //                        Color.red.onAppear {
+            //                            mantissaTextSize = displayedGeometry.size
+            //                            let _ = print("displayedGeometry inside = \(displayedGeometry.size)")
+            //                        }
+            //                    })
+            //.background(Color.green.opacity(0.3))
+            
+            //                        // Create a ZStack with unbounded height to allow the inner Text as much
+            //                        // height as it likes, but no extra width.
+            //                        ZStack {
+            //
+            //                            // Render the text without restrictions and measure its size
+            //                            let _ = print("hasMoreLines0 \(hasMoreLines)")
+            //                            Text(mantissa)//+mantissa+mantissa+mantissa+mantissa+mantissa)
+            //                                .background(GeometryReader { fullGeometry in
+            //                                    // And compare the two
+            //                                    Color.clear.onAppear {
+            //                                        let _ = print("hasMoreLines1 \(hasMoreLines) \(fullGeometry.size.height) \(displayedGeometry.size.height)")
+            //                                        hasMoreLines = fullGeometry.size.height < displayedGeometry.size.height
+            //                                        print("hasMoreLines2 \(hasMoreLines)")
+            //                                    }
+            //                                })
+            //                        }
+            //                        .frame(height: .greatestFiniteMagnitude)
+            //                        //.hidden() // Hide the background
+            //                    })
+            
+            //            .background(Color.green.opacity(0.3))
+            //        }
             //.disabled(!brain.zoomed || !brain.hasMoreDigits(t.digitsInSmallDisplay))
-            if let exponent = brain.exponent(t.digitsInSmallDisplay) {
-                ExponentText(text: " "+exponent, brain: brain, t: t)
-            }
+//            if let exponent = brain.exponent(t.digitsInSmallDisplay) {
+//                ExponentText(text: " "+exponent, brain: brain, t: t)
+//            }
         }
         .padding(.leading, leading)
         .padding(.trailing, trailing)
-//        .background(Color.yellow.opacity(0.3))
+        //        .background(Color.yellow.opacity(0.3))
     }
     
 }

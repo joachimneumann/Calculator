@@ -198,7 +198,6 @@ class Gmp: Equatable {
         let mantissa: String
         let exponent: Int
         let negative: Bool
-        let hasMoreDigits: Bool
     }
     
     func data(length: Int) -> Data {
@@ -227,13 +226,12 @@ class Gmp: Equatable {
             mantissa.removeLast()
         }
         
-        exponent = exponent - 1
-        var hasMoreDigits = false
-        if mantissa.count > length {
-            // this is possible, because we added 5 byte to the mantissa at the top of this function
-            hasMoreDigits = true
+        if mantissa == "" {
+            mantissa = "0"
+        } else {
+            exponent = exponent - 1
         }
-        return Data(mantissa: mantissa, exponent: exponent, negative: negative, hasMoreDigits: hasMoreDigits)
+        return Data(mantissa: mantissa, exponent: exponent, negative: negative)
     }
     
 }

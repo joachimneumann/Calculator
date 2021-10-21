@@ -31,7 +31,7 @@ struct CopyCommand: View {
         } label: {
             Label("Copy)", systemImage: "copy")
         }
-        .keyboardShortcut("C", modifiers: [.command])
+//        .keyboardShortcut("C", modifiers: [.command])
     }
 }
 
@@ -43,7 +43,7 @@ struct PasteCommand: View {
         } label: {
             Label("Paste", systemImage: "drop")
         }
-        .keyboardShortcut("V", modifiers: [.command])
+//        .keyboardShortcut("V", modifiers: [.command])
         .disabled(!UIPasteboard.general.hasStrings)
     }
 }

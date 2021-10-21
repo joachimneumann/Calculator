@@ -19,14 +19,12 @@ class Brain: ObservableObject {
     var debugLastDouble: Double { n.debugLastDouble }
     var debugLastGmp: Gmp { n.debugLastGmp }
     
-    func exponent(_  digits: Int) -> String? { n.exponent(digits)  }
-    func mantissa(_ digits: Int) -> String? { n.mantissa(digits) }
+    var nonScientific: String? { n.nonScientific }
+    var scientific: Scientific? { n.scientific }
 
     //    func sString(_ digits: Int) -> String { n.sString(digits) }
     //func sString(_ digits: Int) -> String { "6.734" }
-    func hasMoreDigits(_ digits: Int) -> Bool { n.hasMoreDigits(digits) }
     var isValidNumber: Bool { n.isValidNumber }
-    var inPlaceAllowed: Bool { n.isValidNumber }
     var pendingOperator: String?
     var memory: Gmp? = nil
 
@@ -44,7 +42,7 @@ class Brain: ObservableObject {
         return false
     }
 
-    func digit(_ digit: Int, digits: Int) {
+    func digit(_ digit: Int) {
         if pendingOperator != nil {
             n.append(Gmp())
             pendingOperator = nil
@@ -55,7 +53,7 @@ class Brain: ObservableObject {
     
     var notCalculating: Bool { calculating == false }
     var digitsAllowed: Bool { notCalculating }
-    func zero(digits: Int) {
+    func zero() {
         if pendingOperator != nil {
             n.append(Gmp())
             pendingOperator = nil

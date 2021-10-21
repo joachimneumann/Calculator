@@ -23,8 +23,8 @@ struct CalculatorApp: App {
                     .ignoresSafeArea()
                 /// Sizes are hardcoded for Mac.
                 /// Therefore, I can call the ContentView directly with uninitialized TE.
-                //MainView(brain: brain, t: t)
-                ContentView()
+                MainView(brain: brain, t: t)
+//                ContentView()
             }
         }
         .commands() {
@@ -34,24 +34,24 @@ struct CalculatorApp: App {
 #else
     let brain = Brain()
     var body: some Scene {
-        let exponent = "e13"
-        var mantissa = "xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx "//"4.1415826"
+//        let exponent = "e13"
+//        var mantissa = "xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx "//"4.1415826"
 //        let _ = mantissa += "1111111111111"
 //        let _ = mantissa += "2222222222222"
 //        let _ = mantissa += "3333333333333"
         WindowGroup {
-            ContentView(keyboardHeight: 200, mantissa: mantissa, exponent: exponent)
+//            ContentView(keyboardHeight: 200, mantissa: mantissa, exponent: exponent)
 
             
-//            // a little hack to prevent that which background creeps up during device orientation chang rotation
-//            let expandedDeviceSize: CGFloat = 1.5 * max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
-//            iOSSize(brain: brain)
-//                .statusBar(hidden: true)
-//                //.background(Color.yellow.opacity(0.5))
-//                .background(Rectangle()
-//                                .frame(width: expandedDeviceSize, height: expandedDeviceSize, alignment: .center)
-//                                .foregroundColor(TE.appBackgroundColor)
-//                                .ignoresSafeArea())
+            // a little hack to prevent that which background creeps up during device orientation chang rotation
+            let expandedDeviceSize: CGFloat = 1.5 * max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
+            iOSSize(brain: brain)
+                .statusBar(hidden: true)
+                //.background(Color.yellow.opacity(0.5))
+                .background(Rectangle()
+                                .frame(width: expandedDeviceSize, height: expandedDeviceSize, alignment: .center)
+                                .foregroundColor(TE.appBackgroundColor)
+                                .ignoresSafeArea())
         }
     }
 #endif
@@ -91,25 +91,25 @@ class MyAppDelegate: UIResponder, UIApplicationDelegate {
 
     var brain: Brain?
 
-    override func buildMenu(with builder: UIMenuBuilder) {
-
-        super.buildMenu(with: builder)
-        builder.remove(menu: .file)
-        builder.remove(menu: .services)
-        builder.remove(menu: .help)
-        builder.remove(menu: .window)
-        builder.remove(menu: .view)
-        builder.remove(menu: .edit)
-        builder.remove(menu: .undoRedo)
-        builder.remove(menu: .standardEdit)
-        builder.remove(menu: .spelling)
-        builder.remove(menu: .substitutions)
-        builder.remove(menu: .transformations)
-        builder.remove(menu: .speech)
-        builder.remove(menu: .hide)
-        builder.remove(menu: .format)
-        builder.remove(menu: .toolbar)
-    }
+//    override func buildMenu(with builder: UIMenuBuilder) {
+//
+//        super.buildMenu(with: builder)
+//        builder.remove(menu: .file)
+//        builder.remove(menu: .services)
+//        builder.remove(menu: .help)
+//        builder.remove(menu: .window)
+//        builder.remove(menu: .view)
+//        builder.remove(menu: .edit)
+//        builder.remove(menu: .undoRedo)
+//        builder.remove(menu: .standardEdit)
+//        builder.remove(menu: .spelling)
+//        builder.remove(menu: .substitutions)
+//        builder.remove(menu: .transformations)
+//        builder.remove(menu: .speech)
+//        builder.remove(menu: .hide)
+//        builder.remove(menu: .format)
+//        builder.remove(menu: .toolbar)
+//    }
 
     func application(
         _ application: UIApplication,

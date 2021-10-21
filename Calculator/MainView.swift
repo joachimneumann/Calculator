@@ -89,7 +89,6 @@ struct MainView: View {
         }
     }
 
-    @State var mantissaTextSize: CGSize = CGSize(width: 0.0, height: 0.0)
     var body: some View {
         ZStack {
             if t.isLandscape && !t.isPad {
@@ -98,7 +97,7 @@ struct MainView: View {
                     LandscapeZoomAndCo(zoomed: $brain.zoomed,
                                        brain: brain,
                                        t: t,
-                                       active: brain.hasMoreDigits(t.digitsInSmallDisplay),
+                                       active: true,// brain.hasMoreDigits(t.digitsInSmallDisplay),
                                        iconSize: t.keySize.height * 0.7,
                                        fontSize: t.keySize.height*0.27,
                                        zoomWidth: t.widerKeySize.width,
@@ -118,7 +117,7 @@ struct MainView: View {
                         if !t.isLandscape || t.isPad {
                             PortraitZoomAndCo(zoomed: $brain.zoomed,
                                               brain: brain,
-                                              active: brain.hasMoreDigits(t.digitsInSmallDisplay),
+                                              active: true,// brain.hasMoreDigits(t.digitsInSmallDisplay),
                                               iconSize: t.keySize.height * 0.7,
                                               fontSize: t.keySize.height*0.27,
                                               zoomWidth: t.widerKeySize.width,
@@ -133,10 +132,7 @@ struct MainView: View {
             }
         }
         .background(
-            Display(brain: brain, t: t, mantissaTextSize: $mantissaTextSize)
-                .onAppear() {
-                    print("mantissaTextSize \(mantissaTextSize)")
-                }
+            Display(brain: brain, t: t)
         )
     }
 }
