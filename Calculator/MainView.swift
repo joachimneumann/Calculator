@@ -17,10 +17,8 @@ struct MainView: View {
         var body: some View {
             // the keys
             HStack(spacing: 0.0) {
-                if t.isLandscape {
-                    ScientificKeys(brain: brain, t: t)
-                        .padding(.trailing, t.spaceBetweenkeys)
-                }
+                ScientificKeys(brain: brain, t: t)
+                    .padding(.trailing, t.spaceBetweenkeys)
                 NumberKeys(brain: brain, t: t)
                 Spacer(minLength: 0.0)
             }
@@ -91,7 +89,7 @@ struct MainView: View {
 
     var body: some View {
         ZStack {
-            if t.isLandscape && !t.isPad {
+            if !t.isPad {
                 HStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
                     LandscapeZoomAndCo(zoomed: $brain.zoomed,
@@ -109,12 +107,12 @@ struct MainView: View {
                 // everything is in here
                 HStack(spacing: 0.0) {
                     // everyting above the keys
-                    if brain.rad && !brain.zoomed && t.isLandscape {
+                    if brain.rad && !brain.zoomed {
                         Rad(keySize: t.keySize)
                     }
                     Spacer(minLength: 0.0)
                     VStack(spacing: 0.0) {
-                        if !t.isLandscape || t.isPad {
+                        if t.isPad {
                             PortraitZoomAndCo(zoomed: $brain.zoomed,
                                               brain: brain,
                                               active: true,// brain.hasMoreDigits(t.digitsInSmallDisplay),

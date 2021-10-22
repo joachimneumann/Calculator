@@ -147,14 +147,12 @@ class TE {
         upAnimationTime: 0.5)
 
     static let zoomIconSize: CGFloat = 30.0
-    static let portraitSpacingFration: CGFloat = 0.03
     static let landscapeSpacingFration: CGFloat = 0.01
     static let reducedTrailing: CGFloat = 0.0
     static let additionalBottomSpacing: CGFloat = 0.0
 
     var displayFontSize: CGFloat = 0.0
     var displayFont: Font = Font.system(size: 10, weight: .thin).monospacedDigit()
-    var isLandscape: Bool = false
     var spaceBetweenkeys: CGFloat = 0.0
     var keySize: CGSize = CGSize(width: 0.0, height: 0.0)
     var widerKeySize: CGSize = CGSize(width: 0.0, height: 0.0)
@@ -162,30 +160,15 @@ class TE {
     var remainingAboveKeys: CGFloat = 0.0
     var digitsInSmallDisplay: Int = 3
     var isPad: Bool = false
-    init(appFrame: CGSize, isPad: Bool) {
-        self.isPad = isPad
-        if isPad {
-            isLandscape = true
-        } else {
-            isLandscape = appFrame.width > appFrame.height
-        }
-        
-        if isLandscape {
-            spaceBetweenkeys = appFrame.width * Self.landscapeSpacingFration
-            let w = (appFrame.width - 9.0 * spaceBetweenkeys) * 0.1
+    init(appFrame: CGSize, isPad: Bool) {        
+        spaceBetweenkeys = appFrame.width * Self.landscapeSpacingFration
+        let w = (appFrame.width - 9.0 * spaceBetweenkeys) * 0.1
 
-            // I need space for the display
-            let squareKeysHeight = 5.0 * w + 4.0 * spaceBetweenkeys
-            let factor:CGFloat = min(1.0, appFrame.height * 0.8 / squareKeysHeight)
-            keySize = CGSize(width: w, height: w * factor)
-            digitsInSmallDisplay = 16
-        } else {
-            /// portrait
-            spaceBetweenkeys = appFrame.width * Self.portraitSpacingFration
-            let w = (appFrame.width - 3.0 * spaceBetweenkeys) * 0.25
-            keySize = CGSize(width: w, height: w)
-            digitsInSmallDisplay = 9
-        }
+        // I need space for the display
+        let squareKeysHeight = 5.0 * w + 4.0 * spaceBetweenkeys
+        let factor:CGFloat = min(1.0, appFrame.height * 0.8 / squareKeysHeight)
+        keySize = CGSize(width: w, height: w * factor)
+        digitsInSmallDisplay = 16
         displayFontSize = keySize.height
         displayFont = Font.system(size: displayFontSize, weight: .thin).monospacedDigit()
         widerKeySize = keySize

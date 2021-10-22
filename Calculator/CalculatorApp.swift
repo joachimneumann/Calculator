@@ -33,6 +33,7 @@ struct CalculatorApp: App {
     }
 #else
     let brain = Brain()
+    @UIApplicationDelegateAdaptor var mydelegate: MyAppDelegate
     var body: some Scene {
 //        let exponent = "e13"
 //        var mantissa = "xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx "//"4.1415826"
@@ -42,18 +43,19 @@ struct CalculatorApp: App {
         WindowGroup {
 //            ContentView(keyboardHeight: 200, mantissa: mantissa, exponent: exponent)
 
-            
             // a little hack to prevent that which background creeps up during device orientation chang rotation
             let expandedDeviceSize: CGFloat = 1.5 * max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
             iOSSize(brain: brain)
                 .statusBar(hidden: true)
-                //.background(Color.yellow.opacity(0.5))
+            //.background(Color.yellow.opacity(0.5))
                 .background(Rectangle()
                                 .frame(width: expandedDeviceSize, height: expandedDeviceSize, alignment: .center)
                                 .foregroundColor(TE.appBackgroundColor)
                                 .ignoresSafeArea())
         }
     }
+    
+    
 #endif
 }
 
@@ -126,4 +128,21 @@ class MyAppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
+#else
+class MyAppDelegate: NSObject, UIApplicationDelegate {
+        
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        // something to do
+        return true
+    }
+    
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window:UIWindow?) -> UIInterfaceOrientationMask {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return .landscape
+        } else {
+            return .all
+        }
+    }
+    
+}
 #endif

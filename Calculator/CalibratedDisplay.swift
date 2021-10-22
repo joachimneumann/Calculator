@@ -68,6 +68,6 @@ struct CalibratedDisplay: View {
                 ScientificDisplay(brain: brain, t: t)
             }
         }
-        .offset(x: 0, y: -0.03*TE.displayFontSize)
+        .offset(x: 0, y: -0.03*t.displayFontSize)
     }
 }
