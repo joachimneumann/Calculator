@@ -12,10 +12,10 @@ class Brain: ObservableObject {
     @Published var zoomed: Bool = false
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
-    @Published var calculating: Bool = false
-    @Published var showCalculating: Bool = false
-    @Published var secondKeys: Bool = false
-    @Published var rad: Bool = false
+    var calculating: Bool = false
+    var showCalculating: Bool = false
+    var secondKeys: Bool = false
+    var rad: Bool = false
     var debugLastDouble: Double { n.debugLastDouble }
     var debugLastGmp: Gmp { n.debugLastGmp }
     
