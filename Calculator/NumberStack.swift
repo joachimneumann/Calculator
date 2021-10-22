@@ -99,8 +99,13 @@ struct NumberStack: CustomDebugStringConvertible{
 
     var debugLastDouble: Double { array.last!.convertToGmp(); return array.last!.gmp.toDouble() }
     var debugLastGmp: Gmp { array.last!.convertToGmp(); return array.last!.gmp }
-    var isValidNumber: Bool { guard dd != nil else { return false}; return dd!.isValidNumber }
-
+    var isValidNumber: Bool {
+        mutating get {
+            if dd == nil { dd = DisplayData(number: array.last!) }
+            return dd!.isValidNumber
+        }
+    }
+    
     mutating func lastDigit(_ digit: Int) {
         array.last!.addDigit(digit)
         dd = nil
