@@ -73,17 +73,17 @@ class TE {
         downAnimationTime: 0.1,
         upAnimationTime: 0.5)
 
+    // I have selected "scale Interface to match iPad" in target settings, general
+    static let zoomIconSize: CGFloat = 30.0 * 0.77
+    static let macWindowWidth: CGFloat = 9.0*TE.kw+TE.wkw+9.0*TE.sp * 0.77
+    static let macWindowHeight: CGFloat = 419.5 * 0.77
+    static let reducedTrailing: CGFloat = 12.0 * 0.77
+    static let additionalBottomSpacing: CGFloat = 7.0 * 0.77
 
-    static let zoomIconSize: CGFloat = 30.0
-    static let macWindowWidth: CGFloat = 9.0*TE.kw+TE.wkw+9.0*TE.sp
-    static let macWindowHeight: CGFloat = 419.5
-    static let reducedTrailing: CGFloat = 12.0
-    static let additionalBottomSpacing: CGFloat = 7.0
-
-    static private let kh  = 63.0  // key height
-    static private let kw  = 72.75 // key width
-    static private let wkw = 77.0  // wider with for +-*/= keys
-    static private let sp  = 1.5   // space between keys
+    static private let kh  = 63.0 * 0.77  // key height
+    static private let kw  = 72.75 * 0.77 // key width
+    static private let wkw = 77.0 * 0.77  // wider with for +-*/= keys
+    static private let sp  = 1.5 * 0.77   // space between keys
     static private let numberPadWidth = 5.0 * TE.kw + 4.0 * TE.sp
     
     static let displayFontSize: CGFloat = TE.numberPadWidth * 0.148

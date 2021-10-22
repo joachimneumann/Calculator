@@ -9,17 +9,19 @@ import Foundation
 import SwiftUI
 
 class Brain: ObservableObject {
-    @Published var zoomed: Bool = false
-    @Published var calibrated: Bool = false
-    @Published var digitsInDisplayInteger: Int = 1000000
-    @Published var digitsInDisplayFloat: Int = 1000000
-    @Published var digitsInDisplayScientific: Int = 1000000
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
+
+    @Published var zoomed: Bool = false
+    @Published var calibrated: Bool = false
+    @Published var secondKeys: Bool = false
+    @Published var rad: Bool = false
+
+    var digitsInDisplayInteger: Int = 1000000
+    var digitsInDisplayFloat: Int = 1000000
+    var digitsInDisplayScientific: Int = 1000000
     var calculating: Bool = false
     var showCalculating: Bool = false
-    var secondKeys: Bool = false
-    var rad: Bool = false
     var debugLastDouble: Double { n.debugLastDouble }
     var debugLastGmp: Gmp { n.debugLastGmp }
     
