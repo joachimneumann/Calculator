@@ -60,9 +60,7 @@ struct CalibratedDisplay: View {
     let t: TE
     var body: some View {
         Group {
-            if brain.displayAsInteger {
-                IntegerOrFloatDisplay(brain: brain, t: t)
-            } else if brain.displayAsFloat {
+            if brain.displayAsString || brain.displayAsInteger || brain.displayAsFloat {
                 IntegerOrFloatDisplay(brain: brain, t: t)
             } else {
                 ScientificDisplay(brain: brain, t: t)

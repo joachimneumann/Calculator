@@ -28,6 +28,14 @@ class Brain: ObservableObject {
     var nonScientificIsFloat:   Bool        { n.nonScientificIsFloat }
     var scientific:             Scientific? { n.scientific }
 
+    var displayAsString: Bool {
+        if n.nonScientific != nil && n.nonScientificIsInteger == false && n.nonScientificIsFloat == false {
+            return true
+        } else {
+            return false
+        }
+    }
+
     var displayAsInteger: Bool {
         if let nonScientific = nonScientific {
             if nonScientific.contains(" ") { return false }

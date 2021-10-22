@@ -126,6 +126,7 @@ struct MainView: View {
                 }
                 if !brain.zoomed {
                     Keys(brain: brain, t: t)
+                        .background(TE.appBackgroundColor)
                 }
             }
         }
