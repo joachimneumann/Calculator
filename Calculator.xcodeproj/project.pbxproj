@@ -21,6 +21,7 @@
 		AA7508AC271ED9A20025AB14 /* scrollview.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7508AB271ED9A20025AB14 /* scrollview.swift */; };
 		AA7CD3AB26FC322C00C714A6 /* ScientificKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CD3AA26FC322C00C714A6 /* ScientificKeys.swift */; };
 		AA89A9CF27113C72008A329A /* CalculatorCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA89A9CE27113C72008A329A /* CalculatorCommands.swift */; };
+		AA8F84FF2722A8470010179F /* CalibratedDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8F84FE2722A8470010179F /* CalibratedDisplay.swift */; };
 		AA95563C26FA0E360029D94C /* AddBackGround.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95563B26FA0E360029D94C /* AddBackGround.swift */; };
 		AA95564026FA1C180029D94C /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95563F26FA1C180029D94C /* Key.swift */; };
 		AAA9CFFA2702CB47001C403B /* BrainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9CFF92702CB46001C403B /* BrainTests.swift */; };
@@ -81,6 +82,7 @@
 		AA7508AB271ED9A20025AB14 /* scrollview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = scrollview.swift; sourceTree = "<group>"; };
 		AA7CD3AA26FC322C00C714A6 /* ScientificKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScientificKeys.swift; sourceTree = "<group>"; };
 		AA89A9CE27113C72008A329A /* CalculatorCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorCommands.swift; sourceTree = "<group>"; };
+		AA8F84FE2722A8470010179F /* CalibratedDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibratedDisplay.swift; sourceTree = "<group>"; };
 		AA95563B26FA0E360029D94C /* AddBackGround.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBackGround.swift; sourceTree = "<group>"; };
 		AA95563F26FA1C180029D94C /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		AAA9CFF72702CB46001C403B /* BrainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BrainTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -142,6 +144,7 @@
 				AA2576B226F8F16600CDD8C9 /* NumberKeys.swift */,
 				AA7CD3AA26FC322C00C714A6 /* ScientificKeys.swift */,
 				AAE87B9226FC5F42009E6D80 /* Display.swift */,
+				AA8F84FE2722A8470010179F /* CalibratedDisplay.swift */,
 				AA59D79826FDDEA800321F26 /* AllDigitsView.swift */,
 				AA64980A26FD430900CFF9AA /* Zoom.swift */,
 				AA95563F26FA1C180029D94C /* Key.swift */,
@@ -297,6 +300,7 @@
 				AA95563C26FA0E360029D94C /* AddBackGround.swift in Sources */,
 				AA89A9CF27113C72008A329A /* CalculatorCommands.swift in Sources */,
 				AA7508AC271ED9A20025AB14 /* scrollview.swift in Sources */,
+				AA8F84FF2722A8470010179F /* CalibratedDisplay.swift in Sources */,
 				AA7CD3AB26FC322C00C714A6 /* ScientificKeys.swift in Sources */,
 				AA2576B326F8F16600CDD8C9 /* NumberKeys.swift in Sources */,
 				AAF1F59126FBA9C7000A733F /* TargetEnvironment.swift in Sources */,

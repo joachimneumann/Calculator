@@ -28,36 +28,48 @@ class DisplayData: Equatable {
 
     var isValidNumber: Bool
     var nonScientific: String?
+    var nonScientificIsInteger: Bool
+    var nonScientificIsFloat: Bool
     var scientific: Scientific?
 
     private init(isValidNumber: Bool,
                  nonScientific: String?,
+                 nonScientificIsInteger: Bool,
+                 nonScientificIsFloat: Bool,
                  scientific: Scientific?) {
-        self.isValidNumber = isValidNumber
-        self.nonScientific = nonScientific
-        self.scientific = scientific
+        self.isValidNumber          = isValidNumber
+        self.nonScientific          = nonScientific
+        self.nonScientificIsInteger = nonScientificIsInteger
+        self.nonScientificIsFloat   = nonScientificIsFloat
+        self.scientific             = scientific
     }
     
     convenience init() {
         self.init(invalid: "invalid")
     }
     
-    convenience init(number: Number) {
-        if let str = number.str {
-            let temp = Gmp(str)
-            let scientific = DisplayData.scientificFromGmp(data: temp.data(length: 1000))
-            self.init(isValidNumber: true,
-                      nonScientific: str,
-                      scientific: scientific)
-        } else {
-            self.init(gmp: number.gmp)
-        }
-    }
     
     private convenience init(invalid: String) {
         self.init(isValidNumber: true,
                   nonScientific: invalid,
+                  nonScientificIsInteger: false,
+                  nonScientificIsFloat: false,
                   scientific: nil)
+    }
+
+    convenience init(number: Number) {
+        if let str = number.str {
+            let hasComma = str.contains(",")
+            let temp = Gmp(str)
+            let scientific = DisplayData.scientificFromGmp(data: temp.data(length: 1000))
+            self.init(isValidNumber: true,
+                      nonScientific: str,
+                      nonScientificIsInteger: !hasComma,
+                      nonScientificIsFloat: hasComma,
+                      scientific: scientific)
+        } else {
+            self.init(gmp: number.gmp)
+        }
     }
 
     private static func scientificFromGmp(data: Gmp.Data) -> Scientific {
@@ -84,6 +96,8 @@ class DisplayData: Equatable {
         if gmp.isZero {
             self.init(isValidNumber: true,
                       nonScientific: "0",
+                      nonScientificIsInteger: true,
+                      nonScientificIsFloat: false,
                       scientific: Scientific("0,0", "e0"))
             return
         }
@@ -101,6 +115,8 @@ class DisplayData: Equatable {
             if data.negative { integerString = "-" + integerString }
             self.init(isValidNumber: true,
                       nonScientific: integerString,
+                      nonScientificIsInteger: true,
+                      nonScientificIsFloat: false,
                       scientific: DisplayData.scientificFromGmp(data: data))
             return
         }
@@ -124,6 +140,8 @@ class DisplayData: Equatable {
         if data.negative { floatString = "-" + floatString }
         self.init(isValidNumber: true,
                   nonScientific: floatString,
+                  nonScientificIsInteger: false,
+                  nonScientificIsFloat: true,
                   scientific: DisplayData.scientificFromGmp(data: data))
     }
     

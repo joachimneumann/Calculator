@@ -133,6 +133,9 @@ struct MainView: View {
         }
         .background(
             Display(brain: brain, t: t)
+                //.background(Color.yellow.opacity(0.3))
+                //.padding(.leading, (t.isLandscape && !t.isPad ? t.widerKeySize.width : t.widerKeySize.width*0.2) - TE.reducedTrailing)
+                .padding(.trailing, t.keySize.width * 1.0)
         )
     }
 }

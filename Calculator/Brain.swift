@@ -10,6 +10,10 @@ import SwiftUI
 
 class Brain: ObservableObject {
     @Published var zoomed: Bool = false
+    @Published var calibrated: Bool = false
+    @Published var digitsInDisplayInteger: Int = 1000000
+    @Published var digitsInDisplayFloat: Int = 1000000
+    @Published var digitsInDisplayScientific: Int = 1000000
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
     var calculating: Bool = false
@@ -19,8 +23,56 @@ class Brain: ObservableObject {
     var debugLastDouble: Double { n.debugLastDouble }
     var debugLastGmp: Gmp { n.debugLastGmp }
     
-    var nonScientific: String? { n.nonScientific }
-    var scientific: Scientific? { n.scientific }
+    var nonScientific:          String?     { n.nonScientific }
+    var nonScientificIsInteger: Bool        { n.nonScientificIsInteger }
+    var nonScientificIsFloat:   Bool        { n.nonScientificIsFloat }
+    var scientific:             Scientific? { n.scientific }
+
+    var displayAsInteger: Bool {
+        if let nonScientific = nonScientific {
+            if nonScientific.contains(" ") { return false }
+            if nonScientific.contains("e") { return false }
+            if nonScientific.contains(",")  { return false }
+            if n.nonScientificIsInteger == false { return false }
+            if n.nonScientific!.count > digitsInDisplayInteger { return false }
+        } else {
+            return false
+        }
+        return true
+    }
+
+    var displayAsFloat: Bool {
+        if let nonScientific = nonScientific {
+            if nonScientific.contains(" ") { return false }
+            if nonScientific.contains("e") { return false }
+            if n.nonScientificIsFloat == false { return false }
+
+            if let firstIndex = nonScientific.firstIndex(of: ",") {
+                let index: Int = nonScientific.distance(from: nonScientific.startIndex, to: firstIndex)
+
+                // comma at the very end of the display or not even in the first line?
+                if index > digitsInDisplayInteger - 2 { return false }
+
+                // 0,0000... ?
+                let range = NSRange(location: 0, length: nonScientific.utf16.count)
+                let regex = try! NSRegularExpression(pattern: "[1-9]")
+                let firstNonZeroDigitIndex = regex.firstMatch(in: nonScientific, options: [], range: range)
+                if let firstNonZeroDigitIndex = firstNonZeroDigitIndex {
+                    // [1-9] found
+                    let position = firstNonZeroDigitIndex.range.lowerBound
+                    if position > digitsInDisplayInteger - 2 { return false }
+                } else {
+                    return false
+                }
+            } else {
+                // no comma found
+                return false
+            }
+        } else {
+            return false
+        }
+        return true
+    }
 
     //    func sString(_ digits: Int) -> String { n.sString(digits) }
     //func sString(_ digits: Int) -> String { "6.734" }

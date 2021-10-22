@@ -88,6 +88,20 @@ struct NumberStack: CustomDebugStringConvertible{
             return dd!.nonScientific
         }
     }
+    
+    var nonScientificIsInteger: Bool {
+        mutating get {
+            if dd == nil { dd = DisplayData(number: array.last!) }
+            return dd!.nonScientificIsInteger
+        }
+    }
+
+    var nonScientificIsFloat: Bool {
+        mutating get {
+            if dd == nil { dd = DisplayData(number: array.last!) }
+            return dd!.nonScientificIsFloat
+        }
+    }
 
     var scientific: Scientific? {
         mutating get {
