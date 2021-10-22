@@ -17,6 +17,7 @@ struct DisplayText: View {
     }
 }
 struct Display: View {
+    @Binding var scrollTarget: Int?
     @ObservedObject var brain: Brain
     let t: TE
     @State var initialHeight: CGFloat? = nil
@@ -102,7 +103,7 @@ struct Display: View {
             }
         } else {
 //            let _ = print("len \(brain.digitsInDisplayInteger)")
-            CalibratedDisplay(brain: brain, t: t)
+            CalibratedDisplay(scrollTarget: $scrollTarget, brain: brain, t: t)
         }
     }
     

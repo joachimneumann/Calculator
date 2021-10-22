@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MainView: View {
+    @State var scrollTarget: Int? = nil
     @ObservedObject var brain: Brain
     var t: TE
     
@@ -27,6 +28,7 @@ struct MainView: View {
     }
     
     struct LandscapeZoomAndCo : View {
+        @Binding var scrollTarget: Int?
         @Binding var zoomed: Bool
         let brain: Brain
         var t: TE
@@ -39,7 +41,8 @@ struct MainView: View {
             ZStack {
                 VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    Zoom(active: active,
+                    Zoom(scrollTarget: $scrollTarget,
+                         active: active,
                          iconSize: iconSize,
                          textColor: TE.DigitKeyProperties.textColor,
                          zoomed: $zoomed,
@@ -52,6 +55,7 @@ struct MainView: View {
     }
     
     struct PortraitZoomAndCo : View {
+        @Binding var scrollTarget: Int?
         @Binding var zoomed: Bool
         let brain: Brain
         let active: Bool
@@ -62,7 +66,8 @@ struct MainView: View {
         var body: some View {
             HStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
-                Zoom(active: active,
+                Zoom(scrollTarget: $scrollTarget,
+                     active: active,
                      iconSize: iconSize,
                      textColor: TE.DigitKeyProperties.textColor,
                      zoomed: $zoomed,
@@ -92,7 +97,8 @@ struct MainView: View {
             if !t.isPad {
                 HStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    LandscapeZoomAndCo(zoomed: $brain.zoomed,
+                    LandscapeZoomAndCo(scrollTarget: $scrollTarget,
+                                       zoomed: $brain.zoomed,
                                        brain: brain,
                                        t: t,
                                        active: true,// brain.hasMoreDigits(t.digitsInSmallDisplay),
@@ -113,7 +119,8 @@ struct MainView: View {
                     Spacer(minLength: 0.0)
                     VStack(spacing: 0.0) {
                         if t.isPad {
-                            PortraitZoomAndCo(zoomed: $brain.zoomed,
+                            PortraitZoomAndCo(scrollTarget: $scrollTarget,
+                                              zoomed: $brain.zoomed,
                                               brain: brain,
                                               active: true,// brain.hasMoreDigits(t.digitsInSmallDisplay),
                                               iconSize: t.keySize.height * 0.7,
@@ -131,7 +138,7 @@ struct MainView: View {
             }
         }
         .background(
-            Display(brain: brain, t: t)
+            Display(scrollTarget: $scrollTarget, brain: brain, t: t)
                 //.background(Color.yellow.opacity(0.3))
                 //.padding(.leading, (t.isLandscape && !t.isPad ? t.widerKeySize.width : t.widerKeySize.width*0.2) - TE.reducedTrailing)
                 .padding(.trailing, t.keySize.width * 1.0)

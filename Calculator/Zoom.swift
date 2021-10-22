@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct Zoom: View {
+    @Binding var scrollTarget: Int?
     var active: Bool
     let iconSize: CGFloat
     let textColor: Color
@@ -33,6 +34,9 @@ struct Zoom: View {
                 .onTapGesture {
                     withAnimation(.easeIn) {
                         zoomed.toggle()
+                        if !zoomed {
+                            scrollTarget = 1
+                        }
                     }
                 }
             }
