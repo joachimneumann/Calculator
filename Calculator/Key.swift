@@ -187,7 +187,7 @@ extension Key {
     
     func scientific(size: CGSize, isAllowed: Bool, isPending: Bool, isActive: Bool = true, callback: (() -> Void)? = nil ) -> some View {
 #if targetEnvironment(macCatalyst)
-        let fontSize = size.height*0.4
+        let fontSize = size.height*0.36
 #else
         let fontSize = size.height*0.4*TE.iPhoneScientificFontSizeReduction
 #endif
