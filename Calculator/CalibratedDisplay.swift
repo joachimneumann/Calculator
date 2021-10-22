@@ -37,18 +37,30 @@ struct NonScientificDisplay: View {
 }
 
 struct ScientificDisplay: View {
+    @Binding var scrollTarget: Int?
     @ObservedObject var brain: Brain
     let t: TE
     var body: some View {
         HStack(spacing: 0.0) {
-            ScrollView {
-                Text(brain.scientific!.mantissa)
-                    .font(t.displayFont)
-                    .frame(maxWidth: .infinity)
-                    .foregroundColor(TE.DigitKeyProperties.textColor)
-                    .multilineTextAlignment(.trailing)
+            ScrollViewReader { scrollViewProxy in
+                ScrollView {
+                    Text(brain.scientific!.mantissa)
+                        .font(t.displayFont)
+                        .frame(maxWidth: .infinity)
+                        .foregroundColor(TE.DigitKeyProperties.textColor)
+                        .multilineTextAlignment(.trailing)
+                        .id(1)
+                }
+                .disabled(!brain.zoomed)
+                .onChange(of: scrollTarget) { target in
+                    if let target = target {
+                        scrollTarget = nil
+                        withAnimation {
+                            scrollViewProxy.scrollTo(target, anchor: .top)
+                        }
+                    }
+                }
             }
-            .disabled(!brain.zoomed)
             VStack(spacing: 0.0) {
                 Text(" "+brain.scientific!.exponent)
                     .font(t.displayFont)
@@ -69,9 +81,9 @@ struct CalibratedDisplay: View {
             if brain.displayAsString || brain.displayAsInteger || brain.displayAsFloat {
                 NonScientificDisplay(scrollTarget: $scrollTarget, brain: brain, t: t)
             } else {
-                ScientificDisplay(brain: brain, t: t)
+                ScientificDisplay(scrollTarget: $scrollTarget, brain: brain, t: t)
             }
         }
-        .offset(x: 0, y: -0.03*TE.displayFontSize)
+        .offset(x: 0, y: -0.03*t.displayFontSize)
     }
 }

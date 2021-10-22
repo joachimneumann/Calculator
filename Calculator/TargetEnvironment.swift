@@ -86,12 +86,12 @@ class TE {
     static private let sp  = 1.0   // space between keys
     static private let numberPadWidth = 5.0 * TE.kw + 4.0 * TE.sp
     
-    static let displayFontSize: CGFloat = TE.numberPadWidth * 0.148
-
+    private static let staticDisplayFontSize: CGFloat = TE.numberPadWidth * 0.148
+    let displayFontSize: CGFloat = TE.staticDisplayFontSize
     let digitsInSmallDisplay: Int = 16
     let isLandscape: Bool = true
     let spaceBetweenkeys: CGFloat = TE.sp
-    let displayFont: Font = Font.system(size: TE.displayFontSize, weight: .thin).monospacedDigit()
+    let displayFont: Font = Font.system(size: TE.staticDisplayFontSize, weight: .thin).monospacedDigit()
     let keySize: CGSize       = CGSize(width: TE.kw,  height: TE.kh)
     let widerKeySize: CGSize  = CGSize(width: TE.wkw, height: TE.kh)
     let scientificKeySize: CGSize   = CGSize(width: TE.kw,  height: TE.kh)
