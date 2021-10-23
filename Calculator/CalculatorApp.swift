@@ -35,16 +35,9 @@ struct CalculatorApp: App {
     let brain = Brain()
     @UIApplicationDelegateAdaptor var mydelegate: MyAppDelegate
     var body: some Scene {
-//        let exponent = "e13"
-//        var mantissa = "xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx "//"4.1415826"
-//        let _ = mantissa += "1111111111111"
-//        let _ = mantissa += "2222222222222"
-//        let _ = mantissa += "3333333333333"
         WindowGroup {
-//            ContentView(keyboardHeight: 200, mantissa: mantissa, exponent: exponent)
-
             // a little hack to prevent that which background creeps up during device orientation chang rotation
-            let expandedDeviceSize: CGFloat = 1.5 * max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
+            let expandedDeviceSize: CGFloat = CGFloat(1.5) * max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
             iOSSize(brain: brain)
                 .statusBar(hidden: true)
                 .background(Rectangle()
@@ -53,7 +46,6 @@ struct CalculatorApp: App {
                                 .ignoresSafeArea())
         }
     }
-    
     
 #endif
 }

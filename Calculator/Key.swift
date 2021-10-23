@@ -80,7 +80,7 @@ private struct Digit_0_to_9: ViewModifier {
     let callback: (() -> Void)?
     func body(content: Content) -> some View {
         content
-            .foregroundColor(callback == nil || !isActive ?  Color.gray : keyProperties.textColor)
+            .foregroundColor((callback == nil || !isActive) ?  Color.gray : keyProperties.textColor)
             .addBackground(with: keyProperties, isAllowed: isAllowed, isPending: false, callback: callback)
             .font(Font.system(size: size.height * CGFloat(0.48)))
     }
@@ -123,7 +123,7 @@ private struct PlusMinus_percentage: ViewModifier {
     func body(content: Content) -> some View {
         let fontsize = size.height * 0.36
         content
-            .foregroundColor(callback == nil || !isActive ?  Color.gray : keyProperties.textColor)
+            .foregroundColor((callback == nil || !isActive) ?  Color.gray : keyProperties.textColor)
             .addBackground(with: keyProperties, isAllowed: isAllowed, isPending: false, callback: callback)
             .font(Font.system(size: fontsize, weight: .bold))
     }

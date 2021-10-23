@@ -32,7 +32,7 @@ struct LowPrecision: View {
             brain.precision = TE.lowPrecision
             brain.isHighPrecision = false
         } label: {
-            Text((brain.precision == TE.lowPrecision ? "✓ " : "    ") + String(TE.lowPrecisionString))
+            Text(((brain.precision == TE.lowPrecision) ? "✓ " : "    ") + String(TE.lowPrecisionString))
         }
         .keyboardShortcut("1", modifiers: [.command])
     }
@@ -46,7 +46,7 @@ struct HighPrecision: View {
             brain.precision = TE.highPrecision
             brain.isHighPrecision = true
         } label: {
-            Text((brain.precision == TE.lowPrecision ? "    " : "✓ ") + String(TE.highPrecisionString))
+            Text(((brain.precision == TE.lowPrecision) ? "    " : "✓ ") + String(TE.highPrecisionString))
         }
         .keyboardShortcut("2", modifiers: [.command])
     }

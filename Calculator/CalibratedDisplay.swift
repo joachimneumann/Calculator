@@ -15,7 +15,7 @@ struct NonScientificDisplay: View {
         if brain.nonScientific == nil {
             EmptyView()
         } else {
-            let len = brain.nonScientific!.count
+            let len: Int = brain.nonScientific!.count
             let text = (len > 1000) ?
             String(brain.nonScientific!.prefix(1000)) + "...\n\nCopy to get \(TE.highPrecisionString)" :
             brain.nonScientific!
@@ -100,5 +100,24 @@ struct CalibratedDisplay: View {
             }
         }
         .offset(x: 0, y: -0.03*t.displayFontSize)
-    }
+        .contextMenu {
+            Button(action: {
+                if brain.nonScientific != nil && (brain.displayAsString || brain.displayAsInteger || brain.displayAsFloat ) {
+                    UIPasteboard.general.string = brain.nonScientific!
+                } else {
+                    UIPasteboard.general.string = brain.scientific?.combined
+                }
+            }) {
+                Text("Copy to clipboard")
+                Image(systemName: "doc.on.doc")
+            }
+            if UIPasteboard.general.hasStrings {
+                Button(action: {
+                    brain.fromPasteboard()
+                }) {
+                    Text("Paste from clipboard")
+                    Image(systemName: "doc.on.clipboard")
+                }
+            }
+        }    }
 }
