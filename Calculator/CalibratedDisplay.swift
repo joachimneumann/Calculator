@@ -41,32 +41,36 @@ struct ScientificDisplay: View {
     @ObservedObject var brain: Brain
     let t: TE
     var body: some View {
-        HStack(spacing: 0.0) {
-            ScrollViewReader { scrollViewProxy in
-                ScrollView {
-                    Text(brain.scientific!.mantissa)
-                        .font(t.displayFont)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .foregroundColor(TE.DigitKeyProperties.textColor)
-                        .multilineTextAlignment(.trailing)
-                        .id(1)
-                }
-                .disabled(!brain.zoomed)
-                .onChange(of: scrollTarget) { target in
-                    if let target = target {
-                        scrollTarget = nil
-                        withAnimation {
-                            scrollViewProxy.scrollTo(target, anchor: .top)
+        if brain.scientific == nil {
+            EmptyView()
+        } else {
+            HStack(spacing: 0.0) {
+                ScrollViewReader { scrollViewProxy in
+                    ScrollView {
+                        Text(brain.scientific!.mantissa)
+                            .font(t.displayFont)
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .foregroundColor(TE.DigitKeyProperties.textColor)
+                            .multilineTextAlignment(.trailing)
+                            .id(1)
+                    }
+                    .disabled(!brain.zoomed)
+                    .onChange(of: scrollTarget) { target in
+                        if let target = target {
+                            scrollTarget = nil
+                            withAnimation {
+                                scrollViewProxy.scrollTo(target, anchor: .top)
+                            }
                         }
                     }
                 }
-            }
-            VStack(spacing: 0.0) {
-                Text(" "+brain.scientific!.exponent)
-                    .font(t.displayFont)
-                    .foregroundColor(TE.DigitKeyProperties.textColor)
-                    .lineLimit(1)
-                Spacer(minLength: 0.0)
+                VStack(spacing: 0.0) {
+                    Text(" "+brain.scientific!.exponent)
+                        .font(t.displayFont)
+                        .foregroundColor(TE.DigitKeyProperties.textColor)
+                        .lineLimit(1)
+                    Spacer(minLength: 0.0)
+                }
             }
         }
     }

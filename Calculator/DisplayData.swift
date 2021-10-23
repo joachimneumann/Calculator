@@ -53,7 +53,7 @@ class DisplayData: Equatable {
     
     
     private convenience init(invalid: String) {
-        self.init(isValidNumber: true,
+        self.init(isValidNumber: false,
                   nonScientific: invalid,
                   nonScientificIsString: true,
                   nonScientificIsInteger: false,
