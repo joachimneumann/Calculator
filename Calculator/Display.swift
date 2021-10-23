@@ -30,7 +30,7 @@ struct Display: View {
                         GeometryReader { proxy in
                             Color.clear.onAppear {
                                 initialHeight = proxy.size.height
-                                print("initialHeight \(initialHeight ?? -1)")
+//                                print("initialHeight \(initialHeight ?? -1)")
                             }
                         }
                     )
@@ -46,7 +46,7 @@ struct Display: View {
                                                 if i-1 < brain.digitsInDisplayInteger {
                                                     brain.digitsInDisplayInteger = i-1
                                                 }
-                                                print("i \(i) \(s.count) digitsInDisplayInteger \(brain.digitsInDisplayInteger) proxy.size.height \(proxy.size.height) \(initialHeight) \(s)")
+//                                                print("i \(i) \(s.count) digitsInDisplayInteger \(brain.digitsInDisplayInteger) proxy.size.height \(proxy.size.height) \(initialHeight) \(s)")
                                             }
                                         }
                                     }
@@ -66,7 +66,7 @@ struct Display: View {
                                                     brain.digitsInDisplayFloat = i-1
                                                 }
                                             }
-                                            print("i \(i) digitsInDisplayFloat \(brain.digitsInDisplayFloat) \(s.count) proxy.size.height \(proxy.size.height) \(initialHeight) \(s)")
+//                                            print("i \(i) digitsInDisplayFloat \(brain.digitsInDisplayFloat) \(s.count) proxy.size.height \(proxy.size.height) \(initialHeight) \(s)")
                                         }
                                     }
                                 )
@@ -85,7 +85,7 @@ struct Display: View {
                                                     brain.digitsInDisplayScientific = i-1
                                                 }
                                             }
-                                            print("i \(i) digitsInDisplayScientific \(brain.digitsInDisplayScientific) \(s.count) proxy.size.height \(proxy.size.height) \(initialHeight) \(s)")
+//                                            print("i \(i) digitsInDisplayScientific \(brain.digitsInDisplayScientific) \(s.count) proxy.size.height \(proxy.size.height) \(initialHeight) \(s)")
                                             brain.calibrated = true
                                         }
                                     }
