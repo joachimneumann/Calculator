@@ -12,13 +12,10 @@ struct NonScientificDisplay: View {
     @ObservedObject var brain: Brain
     let t: TE
     var body: some View {
-        if brain.nonScientific == nil {
-            EmptyView()
-        } else {
-            let len: Int = brain.nonScientific!.count
+        if let nonScientific = brain.nonScientific {
+            let len: Int = nonScientific.count
             let text = (len > 1000) ?
-            String(brain.nonScientific!.prefix(1000)) + "...\n\nCopy to get \(TE.highPrecisionString)" :
-            brain.nonScientific!
+            String(nonScientific.prefix(1000)) + "...\n\nCopy to get \(TE.highPrecisionString)" : nonScientific
             ScrollViewReader { scrollViewProxy in
                 ScrollView {
                     Text(text)
@@ -39,6 +36,8 @@ struct NonScientificDisplay: View {
                     }
                 }
             }
+        } else {
+            EmptyView()
         }
     }
 }
@@ -48,14 +47,12 @@ struct ScientificDisplay: View {
     @ObservedObject var brain: Brain
     let t: TE
     var body: some View {
-        if brain.scientific == nil {
-            EmptyView()
-        } else {
+        if let scientific = brain.scientific {
             HStack(spacing: 0.0) {
-                let len = brain.scientific!.mantissa.count
+                let len = scientific.mantissa.count
                 let text = (len > 1000) ?
-                String(brain.scientific!.mantissa.prefix(1000)) + "...\n\nCopy to get \(TE.highPrecisionString)" :
-                brain.scientific!.mantissa
+                String(scientific.mantissa.prefix(1000)) + "...\n\nCopy to get \(TE.highPrecisionString)" :
+                scientific.mantissa
                 ScrollViewReader { scrollViewProxy in
                     ScrollView {
                         Text(text)
@@ -76,13 +73,15 @@ struct ScientificDisplay: View {
                     }
                 }
                 VStack(spacing: 0.0) {
-                    Text(" "+brain.scientific!.exponent)
+                    Text(" "+scientific.exponent)
                         .font(t.displayFont)
                         .foregroundColor(TE.DigitKeyProperties.textColor)
                         .lineLimit(1)
                     Spacer(minLength: 0.0)
                 }
             }
+        } else {
+            EmptyView()
         }
     }
 }

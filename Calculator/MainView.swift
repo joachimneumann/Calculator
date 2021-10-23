@@ -38,19 +38,13 @@ struct MainView: View {
         let zoomWidth: CGFloat
         let zoomHeight: CGFloat
         var body: some View {
-            ZStack {
-                VStack(spacing: 0.0) {
-                    Spacer(minLength: 0.0)
-                    Zoom(scrollTarget: $scrollTarget,
-                         active: active,
-                         iconSize: iconSize,
-                         textColor: TE.DigitKeyProperties.textColor,
-                         zoomed: $zoomed,
-                         showCalculating: brain.showCalculating)
-                        .frame(width: zoomWidth, height: zoomHeight, alignment: .center)
-                        .padding(.bottom, t.allkeysHeight + t.spaceBetweenkeys)
-                }
-            }
+            Zoom(scrollTarget: $scrollTarget,
+                 iconSize: iconSize,
+                 textColor: TE.DigitKeyProperties.textColor,
+                 zoomed: $zoomed,
+                 showCalculating: brain.showCalculating)
+                .frame(width: zoomWidth, height: zoomHeight, alignment: .center)
+                .padding(.bottom, t.allkeysHeight + t.spaceBetweenkeys)
         }
     }
     
@@ -67,7 +61,6 @@ struct MainView: View {
             HStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
                 Zoom(scrollTarget: $scrollTarget,
-                     active: active,
                      iconSize: iconSize,
                      textColor: TE.DigitKeyProperties.textColor,
                      zoomed: $zoomed,
@@ -91,21 +84,28 @@ struct MainView: View {
             }
         }
     }
-
+    
     var body: some View {
         ZStack {
             if !t.isPad {
                 HStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    LandscapeZoomAndCo(scrollTarget: $scrollTarget,
-                                       zoomed: $brain.zoomed,
-                                       brain: brain,
-                                       t: t,
-                                       active: true,// brain.hasMoreDigits(t.digitsInSmallDisplay),
-                                       iconSize: t.keySize.height * 0.7,
-                                       fontSize: t.keySize.height*0.27,
-                                       zoomWidth: t.widerKeySize.width,
-                                       zoomHeight: t.keySize.height)
+                    Zoom(scrollTarget: $scrollTarget,
+                         iconSize: t.keySize.height * 0.7,
+                         textColor: TE.DigitKeyProperties.textColor,
+                         zoomed: $brain.zoomed,
+                         showCalculating: brain.showCalculating)
+                        .frame(width: t.widerKeySize.width, height: t.keySize.height, alignment: .center)
+                        .padding(.bottom, t.allkeysHeight + t.spaceBetweenkeys)
+                }
+            }
+            if true { // showPrecisionButton {
+                HStack(spacing: 0.0) {
+                    Spacer(minLength: 0.0)
+                    Precision(brain: brain,
+                              iconSize: t.keySize.height * 0.7)
+                        .frame(width: t.widerKeySize.width, height: t.keySize.height, alignment: .center)
+                        .padding(.bottom, t.allkeysHeight + t.spaceBetweenkeys - t.keySize.height * 2.5)
                 }
             }
             

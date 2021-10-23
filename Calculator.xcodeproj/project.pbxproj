@@ -14,7 +14,6 @@
 		AA40C45526F8094700119D4F /* Gmp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA40C45426F8094700119D4F /* Gmp.swift */; };
 		AA46B32626FAC48500F83939 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA46B32526FAC48500F83939 /* Brain.swift */; };
 		AA52BEC7270BF456007FB24F /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = AA52BEC6270BF456007FB24F /* Credits.rtf */; };
-		AA59D79926FDDEA800321F26 /* AllDigitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA59D79826FDDEA800321F26 /* AllDigitsView.swift */; };
 		AA59D79D26FDED8B00321F26 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA59D79C26FDED8B00321F26 /* MainView.swift */; };
 		AA64980B26FD430900CFF9AA /* Zoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA64980A26FD430900CFF9AA /* Zoom.swift */; };
 		AA64980D26FD48F900CFF9AA /* DisplayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA64980C26FD48F900CFF9AA /* DisplayData.swift */; };
@@ -25,6 +24,7 @@
 		AA95564026FA1C180029D94C /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95563F26FA1C180029D94C /* Key.swift */; };
 		AAA9CFFA2702CB47001C403B /* BrainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9CFF92702CB46001C403B /* BrainTests.swift */; };
 		AABAFBF827084A1E003DC4A5 /* iOSSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABAFBF727084A1E003DC4A5 /* iOSSize.swift */; };
+		AAD017D427242454000AA810 /* Precision.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD017D327242454000AA810 /* Precision.swift */; };
 		AAD9014526FF720900A7BCD5 /* gmp.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA3D6F7E26F8940800423E76 /* gmp.xcframework */; };
 		AAD9014626FF720900A7BCD5 /* gmp.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA3D6F7E26F8940800423E76 /* gmp.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AAD9014726FF720900A7BCD5 /* mpfr.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA2576A526F8E6CE00CDD8C9 /* mpfr.xcframework */; };
@@ -74,7 +74,6 @@
 		AA40C45626F8096700119D4F /* Calculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Calculator.entitlements; sourceTree = "<group>"; };
 		AA46B32526FAC48500F83939 /* Brain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brain.swift; sourceTree = "<group>"; };
 		AA52BEC6270BF456007FB24F /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
-		AA59D79826FDDEA800321F26 /* AllDigitsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDigitsView.swift; sourceTree = "<group>"; };
 		AA59D79C26FDED8B00321F26 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		AA64980A26FD430900CFF9AA /* Zoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zoom.swift; sourceTree = "<group>"; };
 		AA64980C26FD48F900CFF9AA /* DisplayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayData.swift; sourceTree = "<group>"; };
@@ -86,6 +85,7 @@
 		AAA9CFF72702CB46001C403B /* BrainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BrainTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAA9CFF92702CB46001C403B /* BrainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrainTests.swift; sourceTree = "<group>"; };
 		AABAFBF727084A1E003DC4A5 /* iOSSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSSize.swift; sourceTree = "<group>"; };
+		AAD017D327242454000AA810 /* Precision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Precision.swift; sourceTree = "<group>"; };
 		AAE87B9226FC5F42009E6D80 /* Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Display.swift; sourceTree = "<group>"; };
 		AAE87B9426FC7302009E6D80 /* Symbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbols.swift; sourceTree = "<group>"; };
 		AAE87B9826FCB24C009E6D80 /* OperatorStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorStack.swift; sourceTree = "<group>"; };
@@ -143,8 +143,8 @@
 				AA7CD3AA26FC322C00C714A6 /* ScientificKeys.swift */,
 				AAE87B9226FC5F42009E6D80 /* Display.swift */,
 				AA8F84FE2722A8470010179F /* CalibratedDisplay.swift */,
-				AA59D79826FDDEA800321F26 /* AllDigitsView.swift */,
 				AA64980A26FD430900CFF9AA /* Zoom.swift */,
+				AAD017D327242454000AA810 /* Precision.swift */,
 				AA95563F26FA1C180029D94C /* Key.swift */,
 				AAE87B9426FC7302009E6D80 /* Symbols.swift */,
 				AA95563B26FA0E360029D94C /* AddBackGround.swift */,
@@ -305,10 +305,10 @@
 				AA40C44526F808D800119D4F /* CalculatorApp.swift in Sources */,
 				AA64980D26FD48F900CFF9AA /* DisplayData.swift in Sources */,
 				AA59D79D26FDED8B00321F26 /* MainView.swift in Sources */,
+				AAD017D427242454000AA810 /* Precision.swift in Sources */,
 				AAE87B9526FC7302009E6D80 /* Symbols.swift in Sources */,
 				AA95564026FA1C180029D94C /* Key.swift in Sources */,
 				AA46B32626FAC48500F83939 /* Brain.swift in Sources */,
-				AA59D79926FDDEA800321F26 /* AllDigitsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 class Brain: ObservableObject {
+    var messageToUser: String? = nil
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
     @AppStorage("isHighPrecision") var isHighPrecision: Bool = false
@@ -21,7 +22,7 @@ class Brain: ObservableObject {
                 significantBits = 100 * precision
                 if significantBits < 1000 { significantBits = 1000 }
             } else {
-                significantBits = Int(round(Double(precision) * 3.4 + 10.0))
+                significantBits = mpfr_prec_t(round(Double(precision) * 3.4 + 10.0))
                 // 3.4 is log2(10) rounded up. Throw in 10 more bits
             }
             globalGmpSignificantBits = significantBits
@@ -29,6 +30,7 @@ class Brain: ObservableObject {
             reset()
         }
     }
+    
     @Published var zoomed: Bool = false
     @Published var calibrated: Bool = false
     @Published var secondKeys: Bool = false
@@ -42,8 +44,22 @@ class Brain: ObservableObject {
     var debugLastDouble: Double { n.debugLastDouble }
     var debugLastGmp: Gmp { n.debugLastGmp }
     
-    var nonScientific:          String?     { n.nonScientific }
-    var scientific:             Scientific? { n.scientific }
+    var nonScientific: String? {
+        if messageToUser != nil {
+            let temp = messageToUser!
+            messageToUser = nil
+            return temp
+        }
+        return n.nonScientific
+    }
+    var scientific: Scientific? {
+        if messageToUser != nil {
+            let temp = messageToUser!
+            messageToUser = nil
+            return Scientific(temp, "")
+        }
+        return n.scientific
+    }
 
     var displayAsString: Bool {
         if !n.nonScientificIsString { return false }

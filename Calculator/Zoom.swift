@@ -9,7 +9,6 @@ import SwiftUI
 
 struct Zoom: View {
     @Binding var scrollTarget: Int?
-    var active: Bool
     let iconSize: CGFloat
     let textColor: Color
     @Binding var zoomed: Bool
@@ -30,7 +29,7 @@ struct Zoom: View {
                             .resizable()
                     }
                 }
-                .foregroundColor(active ? textColor : Color(white: 0.5))
+                .foregroundColor(textColor)
                 .onTapGesture {
                     withAnimation(.easeIn) {
                         zoomed.toggle()
