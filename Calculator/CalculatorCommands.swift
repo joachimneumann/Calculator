@@ -23,8 +23,8 @@ struct CopyCommand: View {
     let t: TE
     var body: some View {
         Button {
-            if let nonScientific = brain.nonScientific {
-                UIPasteboard.general.string = nonScientific
+            if brain.nonScientific != nil && (brain.displayAsString || brain.displayAsInteger || brain.displayAsFloat ) {
+                UIPasteboard.general.string = brain.nonScientific!
             } else {
                 UIPasteboard.general.string = brain.scientific?.combined
             }

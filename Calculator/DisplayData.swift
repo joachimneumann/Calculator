@@ -69,7 +69,7 @@ class DisplayData: Equatable {
             let scientific = DisplayData.scientificFromGmp(data: temp.data(length: 1000))
             self.init(isValidNumber: true,
                       nonScientific: str,
-                      nonScientificIsString: false,
+                      nonScientificIsString: true,
                       nonScientificIsInteger: !hasComma,
                       nonScientificIsFloat: hasComma,
                       scientific: scientific)
@@ -109,7 +109,7 @@ class DisplayData: Equatable {
             return
         }
         
-        let data = gmp.data(length: 1000) // TODO: make this depend on the precision selected by the user
+        let data = gmp.data(length: 100) // TODO: make this depend on the precision selected by the user
         
         /// can be perfectly represented as Integer?
         if data.mantissa.count <= data.exponent+1 {

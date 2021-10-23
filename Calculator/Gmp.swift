@@ -231,7 +231,8 @@ class Gmp: Equatable {
         } else {
             exponent = exponent - 1
         }
-        return Data(mantissa: mantissa, exponent: exponent, negative: negative)
+        /// prefix(length-1) because of the comma. I want to return length digits
+        return Data(mantissa: String(mantissa.prefix(length-1)), exponent: exponent, negative: negative)
     }
     
 }
