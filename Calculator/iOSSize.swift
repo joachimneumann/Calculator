@@ -20,12 +20,12 @@ struct iOSSize: View {
                 let trailingPaddingNeeded: Bool = (geo.safeAreaInsets.trailing == 0)
                 let bottomPaddingNeeded: Bool   = (geo.safeAreaInsets.bottom   == 0)
                 
-                let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
+                let isPad: Bool = (UIDevice.current.userInterfaceIdiom == .pad)
                 let horizontalFactor: CGFloat = 1.0 -
-                (leadingPaddingNeeded ? TE.landscapeSpacingFration : 0) -
-                (trailingPaddingNeeded ? TE.landscapeSpacingFration : 0 )
+                    (leadingPaddingNeeded ? TE.landscapeSpacingFration : 0) -
+                    (trailingPaddingNeeded ? TE.landscapeSpacingFration : 0 )
                 let verticalFactor: CGFloat = 1.0 -
-                (bottomPaddingNeeded ? TE.landscapeSpacingFration : 0.0)
+                    (bottomPaddingNeeded ? TE.landscapeSpacingFration : 0.0)
                 
                 let appFrame = CGSize(
                     width: geo.size.width * horizontalFactor,

@@ -90,7 +90,10 @@ struct NumberStack: CustomDebugStringConvertible{
     }
     
     var nonScientificIsString: Bool {
-        return array.last!.str != nil
+        mutating get {
+            if dd == nil { dd = DisplayData(number: array.last!) }
+            return dd!.nonScientificIsString
+        }
     }
 
     var nonScientificIsInteger: Bool {
