@@ -50,7 +50,7 @@ struct CalculatorApp: App {
             //.background(Color.yellow.opacity(0.5))
                 .background(Rectangle()
                                 .frame(width: expandedDeviceSize, height: expandedDeviceSize, alignment: .center)
-                                .foregroundColor(TE.appBackgroundColor)
+                                .foregroundColor(Color.yellow)//TE.appBackgroundColor)
                                 .ignoresSafeArea())
         }
     }
