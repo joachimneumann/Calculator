@@ -13,8 +13,11 @@ class TE {
     static let numberPadFration: CGFloat = 0.4
     
     static let lowPrecision        = 100
+    static let lowPrecisionString  = "one hundred digits"
     static let maxScrollViewLength = 1000
     static let highPrecision       = 1000000
+    static let highPrecisionString = "one million digits"
+
 
 #if targetEnvironment(macCatalyst)
     /// The MacOS Calculator is a bit transparent.

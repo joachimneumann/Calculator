@@ -16,7 +16,7 @@ struct NonScientificDisplay: View {
             EmptyView()
         } else {
             let len = brain.nonScientific!.count
-            let text = (len > 1000) ? String(brain.nonScientific!.prefix(1000)) + "... use copy to get all digits" : brain.nonScientific!
+            let text = (len > 1000) ? String(brain.nonScientific!.prefix(1000)) + "...\n\nuse copy to get all \(TE.highPrecisionString)" : brain.nonScientific!
             ScrollViewReader { scrollViewProxy in
                 ScrollView {
                     Text(text)
@@ -51,7 +51,7 @@ struct ScientificDisplay: View {
         } else {
             HStack(spacing: 0.0) {
                 let len = brain.scientific!.mantissa.count
-                let text = len > 1000 ? "\(brain.scientific!.mantissa)... use copy to get all digits" : brain.scientific!.mantissa
+                let text = (len > 1000) ? String(brain.scientific!.mantissa.prefix(1000)) + "...\n\nuse copy to get all \(TE.highPrecisionString)" : brain.scientific!.mantissa
                 ScrollViewReader { scrollViewProxy in
                     ScrollView {
                         Text(text)
