@@ -12,23 +12,27 @@ struct NonScientificDisplay: View {
     @ObservedObject var brain: Brain
     let t: TE
     var body: some View {
-        ScrollViewReader { scrollViewProxy in
-            ScrollView {
-                Text(brain.nonScientific!)
-                    .font(t.displayFont)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                    .foregroundColor(TE.DigitKeyProperties.textColor)
-                    .font(t.displayFont)
-                    .lineLimit(100)
-                    .multilineTextAlignment(.trailing)
-                    .id(1)
-            }
-            .disabled(!brain.zoomed)
-            .onChange(of: scrollTarget) { target in
-                if let target = target {
-                    scrollTarget = nil
-                    withAnimation {
-                        scrollViewProxy.scrollTo(target, anchor: .top)
+        if brain.nonScientific == nil {
+            EmptyView()
+        } else {
+            ScrollViewReader { scrollViewProxy in
+                ScrollView {
+                    Text(brain.nonScientific!)
+                        .font(t.displayFont)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .foregroundColor(TE.DigitKeyProperties.textColor)
+                        .font(t.displayFont)
+                        .lineLimit(100)
+                        .multilineTextAlignment(.trailing)
+                        .id(1)
+                }
+                .disabled(!brain.zoomed)
+                .onChange(of: scrollTarget) { target in
+                    if let target = target {
+                        scrollTarget = nil
+                        withAnimation {
+                            scrollViewProxy.scrollTo(target, anchor: .top)
+                        }
                     }
                 }
             }
