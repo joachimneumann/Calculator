@@ -112,7 +112,8 @@ class DisplayData: Equatable {
         let data = gmp.data(length: 100) // TODO: make this depend on the precision selected by the user
         
         /// can be perfectly represented as Integer?
-        if data.mantissa.count <= data.exponent+1 {
+        let x = data.mantissa.count
+        if data.mantissa.count == data.exponent+1 {
             var integerString = data.mantissa
             if integerString.count < data.exponent+1 {
                 for _ in 0..<(data.exponent+1-integerString.count) {
@@ -129,28 +130,34 @@ class DisplayData: Equatable {
             return
         }
         
-        /// non scientific notation
-        var floatString = ""
+        /// represent as float and in scientific notation
+        var floatString: String? = nil
         if data.exponent < 0 {
             /// abs(number) < 1
-            floatString = "0,"
-            let zeroes = -data.exponent
-            for _ in 1..<zeroes {
-                floatString += "0"
+            if data.mantissa.count > -data.exponent {
+                floatString = "0,"
+                let zeroes = -data.exponent
+                for _ in 1..<zeroes {
+                    floatString! += "0"
+                }
+                floatString! += data.mantissa
+                floatString = String(floatString!.prefix(101))
             }
-            floatString += data.mantissa
+            if data.negative { floatString = "-" + floatString! }
         } else {
             /// abs(number) > 1
-            floatString = data.mantissa
-            let index = floatString.index(floatString.startIndex, offsetBy: data.exponent+1)
-            floatString.insert(",", at: index)
+            if data.mantissa.count > data.exponent+1 {
+                floatString = data.mantissa
+                let index = floatString!.index(floatString!.startIndex, offsetBy: data.exponent+1)
+                floatString!.insert(",", at: index)
+            }
+            if data.negative { floatString! = "-" + floatString! }
         }
-        if data.negative { floatString = "-" + floatString }
         self.init(isValidNumber: true,
                   nonScientific: floatString,
                   nonScientificIsString: false,
                   nonScientificIsInteger: false,
-                  nonScientificIsFloat: true,
+                  nonScientificIsFloat: floatString != nil,
                   scientific: DisplayData.scientificFromGmp(data: data))
     }
     
