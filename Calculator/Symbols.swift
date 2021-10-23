@@ -14,8 +14,8 @@ struct RootShape: Shape {
         var h: CGFloat = rect.size.height
         let steepness: CGFloat = 2.8
         let f: CGFloat = 0.6
-        let startX: CGFloat = (0.5 - 0.2*TE.iPhoneScientificFontSizeReduction) * w
-        let startY: CGFloat = (0.5 + 0.05*TE.iPhoneScientificFontSizeReduction) * h
+        let startX: CGFloat = (0.5 - 0.2 * TE.iPhoneScientificFontSizeReduction) * w
+        let startY: CGFloat = (0.5 + 0.05 * TE.iPhoneScientificFontSizeReduction) * h
         w *= TE.iPhoneScientificFontSizeReduction
         h *= TE.iPhoneScientificFontSizeReduction
         let downX: CGFloat = startX + f * 0.08 * w
@@ -38,7 +38,7 @@ struct SlashShape: Shape {
         var path = Path()
         let w: CGFloat = rect.size.width
         let h: CGFloat = rect.size.height
-        var sw = 0.2*w
+        var sw = 0.2 * w
         let steepness: CGFloat = 1.3
         let startX: CGFloat = 0.5 * w - 0.5 * sw * TE.iPhoneScientificFontSizeReduction
         let startY: CGFloat = 0.5 * h + 0.5 * sw * steepness * TE.iPhoneScientificFontSizeReduction
@@ -58,23 +58,23 @@ struct Root: View {
     var body: some View {
         ZStack {
             GeometryReader { geo in
-                let w = geo.size.width*TE.iPhoneScientificFontSizeReduction
-                let h = geo.size.height*TE.iPhoneScientificFontSizeReduction
+                let w = geo.size.width * TE.iPhoneScientificFontSizeReduction
+                let h = geo.size.height * TE.iPhoneScientificFontSizeReduction
                 VStack(spacing:0.0) {
                     Spacer(minLength: 0.0)
                     HStack(spacing:0.0) {
                         ZStack {
                             Spacer(minLength: 0.0)
-                            let fontSize1:CGFloat = CGFloat(0.21276) * h
-                            let fontSize2:CGFloat = CGFloat(0.27659) * h
+                            let fontSize1:CGFloat = 0.21276 * h
+                            let fontSize2:CGFloat = 0.27659 * h
                             Text(root)
                                 .font(.system(size: fontSize1, weight: .semibold))
-                                .offset(x: -0.18*w, y: -0.10*h)
+                                .offset(x: -0.18 * w, y: -0.10 * h)
                             RootShape()
-                                .stroke(strokeColor, style: StrokeStyle(lineWidth: 1.6*h/47, lineCap: CGLineCap.square, lineJoin: CGLineJoin.bevel))
+                                .stroke(strokeColor, style: StrokeStyle(lineWidth: 1.6 * h / 47.0, lineCap: CGLineCap.square, lineJoin: CGLineJoin.bevel))
                             Text("X")
                                 .font(.system(size: fontSize2, weight: .semibold))
-                                .offset(x: 0.08*w, y: 0.05*h)
+                                .offset(x: 0.08 * w, y: 0.05 * h)
                         }
                         Spacer(minLength: 0.0)
                     }
@@ -96,19 +96,19 @@ struct One_x: View {
             GeometryReader { geo in
                 let w: CGFloat = geo.size.width*TE.iPhoneScientificFontSizeReduction
                 let h: CGFloat = geo.size.height*TE.iPhoneScientificFontSizeReduction
-                VStack(spacing:0.0) {
+                VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
                     HStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
                         ZStack {
                             Text("1")
-                                .font(.system(size: h*0.25))
-                                .offset(x: -0.10*w, y: -0.10*h)
+                                .font(.system(size: h * 0.25))
+                                .offset(x: -0.10 * w, y: -0.10 * h)
                             SlashShape()
-                                .stroke(strokeColor, style: StrokeStyle(lineWidth: 1.6*w/47, lineCap: CGLineCap.square, lineJoin: CGLineJoin.bevel))
+                                .stroke(strokeColor, style: StrokeStyle(lineWidth: 1.6 * w / 47.0, lineCap: CGLineCap.square, lineJoin: CGLineJoin.bevel))
                             Text("x")
-                                .font(.system(size: h*0.25))
-                                .offset(x: 0.10*w, y: 0.07*h)
+                                .font(.system(size: h * 0.25))
+                                .offset(x: 0.10 * w, y: 0.07 * h)
                         }
                         Spacer(minLength: 0.0)
                     }
@@ -151,16 +151,16 @@ struct Pow: View {
     var body: some View {
         ZStack {
             GeometryReader { geo in
-                let s = min(geo.size.width, geo.size.height)*TE.iPhoneScientificFontSizeReduction
+                let s = min(geo.size.width, geo.size.height) * TE.iPhoneScientificFontSizeReduction
                 VStack(spacing:0.0) {
                     Spacer(minLength: 0.0)
-                    HStack(spacing:0.0) {
+                    HStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
                         Text(base)
-                            .font(.system(size: s*0.4))
+                            .font(.system(size: s * 0.4))
                         Text(exponent)
-                            .font(.system(size: s*0.22))
-                            .offset(x: 0.0, y: -0.13*s)
+                            .font(.system(size: s * 0.22))
+                            .offset(x: 0.0, y: -0.13 * s)
                         Spacer(minLength: 0.0)
                     }
                     Spacer(minLength: 0.0)

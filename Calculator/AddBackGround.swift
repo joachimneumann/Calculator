@@ -18,9 +18,9 @@ private struct AddBackGround: ViewModifier {
                 return keyProperties.downColor
             } else {
                 return Color(
-                    red:   229.0/255.0,
-                    green:  99.0/255.0,
-                    blue:   97.0/255.0)
+                    red:   (229.0 / 255.0),
+                    green: ( 99.0 / 255.0),
+                    blue:  ( 97.0 / 255.0))
             }
         } else {
             if isPending {

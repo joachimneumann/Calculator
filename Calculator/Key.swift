@@ -81,7 +81,7 @@ private struct Digit_0_to_9: ViewModifier {
         content
             .foregroundColor((callback == nil || !isAllowed) ?  Color.gray : keyProperties.textColor)
             .addBackground(with: keyProperties, isAllowed: isAllowed, isPending: false, callback: callback)
-            .font(Font.system(size: size.height * CGFloat(0.48)))
+            .font(Font.system(size: size.height * 0.48))
     }
 }
 
@@ -103,7 +103,7 @@ private struct Colorful_plus_minus_etc: ViewModifier {
         }
     }
     func body(content: Content) -> some View {
-        let fontsize = size.height * CGFloat(0.36)
+        let fontsize = size.height * 0.36
         content
             .foregroundColor(fg)
             .addBackground(with: keyProperties, isAllowed: isAllowed, isPending: isPending, callback: callback)

@@ -155,16 +155,17 @@ class TE {
     static let zoomIconSize: CGFloat = 30.0
     static let landscapeSpacingFration: CGFloat = 0.01
 
-    var displayFontSize: CGFloat = 0.0
-    var displayFont: Font = Font.system(size: 16, weight: .thin).monospacedDigit()
-    var spaceBetweenkeys: CGFloat = 0.0
-    var keySize: CGSize = CGSize(width: 0.0, height: 0.0)
-    var widerKeySize: CGSize = CGSize(width: 0.0, height: 0.0)
-    var allkeysHeight: CGFloat { 5.0 * keySize.height + 4.0 * spaceBetweenkeys }
-    var remainingAboveKeys: CGFloat = 0.0
-    var digitsInSmallDisplay: Int = 3
-    var isPad: Bool = false
-    init(appFrame: CGSize, isPad: Bool) {        
+    var displayFontSize: CGFloat
+    var displayFont: Font
+    var spaceBetweenkeys: CGFloat
+    var keySize: CGSize
+    var widerKeySize: CGSize
+    var allkeysHeight: CGFloat
+    var remainingAboveKeys: CGFloat
+    var digitsInSmallDisplay: Int
+    var isPad: Bool
+    init(appFrame: CGSize, isPad: Bool) {
+        self.isPad = isPad
         spaceBetweenkeys = appFrame.width * Self.landscapeSpacingFration
         let w = (appFrame.width - 9.0 * spaceBetweenkeys) * 0.1
 
@@ -176,6 +177,7 @@ class TE {
         displayFontSize = keySize.height
         displayFont = Font.system(size: displayFontSize, weight: .thin).monospacedDigit()
         widerKeySize = keySize
+        allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenkeys
         remainingAboveKeys = appFrame.height - allkeysHeight
     }
 

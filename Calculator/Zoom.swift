@@ -18,7 +18,7 @@ struct Zoom: View {
             if showCalculating {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
-                    .scaleEffect(1.4*0.77, anchor: .center)
+                    .scaleEffect(0.77, anchor: .center)
             } else {
                 Group {
                     if zoomed {

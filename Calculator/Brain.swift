@@ -14,15 +14,15 @@ class Brain: ObservableObject {
     private var operatorStack = OperatorStack()
     @AppStorage("isHighPrecision") var isHighPrecision: Bool = false
 
-    @Published var precision: mpfr_prec_t = TE.lowPrecision {
+    @Published var precision: Int = TE.lowPrecision {
         didSet {
-            var significantBits: mpfr_prec_t
-            if precision < 1000 {
+            var significantBits: Int
+            if (precision < 1000) {
                 /// let's be generous
                 significantBits = 100 * precision
-                if significantBits < 1000 { significantBits = 1000 }
+                if (significantBits < 1000) { significantBits = 1000 }
             } else {
-                significantBits = mpfr_prec_t(round(Double(precision) * 3.4 + 10.0))
+                significantBits = Int( Double(precision) * 3.4 + 10.0)
                 // 3.4 is log2(10) rounded up. Throw in 10 more bits
             }
             globalGmpSignificantBits = significantBits
@@ -158,7 +158,7 @@ class Brain: ObservableObject {
         objectWillChange.send()
     }
     
-    func execute(priority newPriority: Int) async {
+    func execute(priority newPriority: Int) {
         while !operatorStack.isEmpty && operatorStack.last!.priority >= newPriority {
             let op = operatorStack.pop()
             if let twoOperand = op as? TwoOperand {
@@ -166,7 +166,7 @@ class Brain: ObservableObject {
                     let temp = n.popLast()!
                     temp.convertToGmp()
                     let gmp2 = temp.gmp
-                    await n.lastExecute(twoOperand.operation, with: gmp2)
+                    n.lastExecute(twoOperand.operation, with: gmp2)
                 }
             }
         }
@@ -177,49 +177,53 @@ class Brain: ObservableObject {
         }
     }
 
-    func percentage() async {
+    func percentage() {
         if operatorStack.count == 0 {
-            await n.lastExecute(Gmp.mul, with: Gmp("0.01"))
+            n.lastExecute(Gmp.mul, with: Gmp("0.01"))
         } else if operatorStack.count >= 1 && n.count >= 2 {
             if let secondLast = n.secondLast {
-                await n.lastExecute(Gmp.mul, with: Gmp("0.01"))
+                n.lastExecute(Gmp.mul, with: Gmp("0.01"))
                 secondLast.convertToGmp()
-                await n.lastExecute(Gmp.mul, with: secondLast.gmp)
+                n.lastExecute(Gmp.mul, with: secondLast.gmp)
             }
         }
     }
     
-    func operationWorker(_ symbol: String, withPending: Bool = true) async {
+    func operationWorker(_ symbol: String, withPending: Bool = true) {
         if symbol == "=" {
-            await self.execute(priority: Operator.equalPriority)
+            self.execute(priority: Operator.equalPriority)
         } else if symbol == "(" {
             self.operatorStack.push(self.openParenthesis)
         } else if symbol == ")" {
-            await self.execute(priority: Operator.closedParenthesesPriority)
+            self.execute(priority: Operator.closedParenthesesPriority)
         } else if symbol == "%" {
-            await self.percentage()
+            self.percentage()
         } else if let op = self.constantOperators[symbol] {
             if self.pendingOperator != nil {
                 self.n.append(Gmp())
                 self.pendingOperator = nil
             }
-            await self.n.modifyLast(withOp: op.operation)
+            self.n.modifyLast(withOp: op.operation)
         } else if let op = self.inplaceOperators[symbol] {
-            await self.n.modifyLast(withOp: op.operation)
+            self.n.modifyLast(withOp: op.operation)
         } else if let op = self.twoOperandOperators[symbol] {
             if withPending { self.pendingOperator = symbol }
-            await self.execute(priority: op.priority)
+            self.execute(priority: op.priority)
             self.self.operatorStack.push(op)
         } else {
             print("### non-existing operation \(symbol)")
             assert(false)
         }
     }
+
+    func asyncOperationWorker(_ symbol: String, withPending: Bool = true) async {
+        self.operationWorker(symbol, withPending: withPending)
+    }
     
     func operation(_ symbol: String, withPending: Bool = true) {
         calculating = true
         Task {
-            await self.operationWorker(symbol, withPending: withPending)
+            await self.asyncOperationWorker(symbol, withPending: withPending)
             DispatchQueue.main.async {
                 self.calculating = false
                 self.objectWillChange.send()

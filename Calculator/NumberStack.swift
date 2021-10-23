@@ -41,9 +41,9 @@ class Number: CustomDebugStringConvertible {
     }
     
     func addZero()  {
-        if str == nil || str == "0" {
+        if str == nil {
             str = "0"
-        } else {
+        } else if str != "0" {
             str!.append("0")
         }
     }
@@ -139,11 +139,11 @@ struct NumberStack: CustomDebugStringConvertible{
         array.last!.addComma()
         dd = nil
     }
-    mutating func lastExecute(_ op: twoOperantsType, with other: Gmp) async {
+    mutating func lastExecute(_ op: twoOperantsType, with other: Gmp) {
         array.last!.execute(op, with: other)
         dd = nil
     }
-    mutating func modifyLast(withOp op: inplaceType) async {
+    mutating func modifyLast(withOp op: inplaceType) {
         array.last!.inPlace(op: op)
         dd = nil
     }
