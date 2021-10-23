@@ -173,6 +173,15 @@ class BrainTests: XCTestCase {
         XCTAssertEqual(brain.nonScientific, "-7")
         XCTAssertEqual(brain.scientific, Scientific("-7,0", "e0"))
 
+        /// 0,
+        brain.reset()
+        brain.comma()
+        XCTAssertEqual(brain.nonScientific, "0,")
+        XCTAssertEqual(brain.scientific, Scientific("0,0", "e0"))
+        brain.comma()
+        XCTAssertEqual(brain.nonScientific, "0,")
+        XCTAssertEqual(brain.scientific, Scientific("0,0", "e0"))
+
         /// -0,7
         brain.reset()
         brain.comma()

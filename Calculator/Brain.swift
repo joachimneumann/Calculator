@@ -26,16 +26,12 @@ class Brain: ObservableObject {
     var debugLastGmp: Gmp { n.debugLastGmp }
     
     var nonScientific:          String?     { n.nonScientific }
-    var nonScientificIsInteger: Bool        { n.nonScientificIsInteger }
-    var nonScientificIsFloat:   Bool        { n.nonScientificIsFloat }
     var scientific:             Scientific? { n.scientific }
 
     var displayAsString: Bool {
-        if n.nonScientific != nil && n.nonScientificIsInteger == false && n.nonScientificIsFloat == false {
-            return true
-        } else {
-            return false
-        }
+        if !n.nonScientificIsString { return false }
+        if n.nonScientific!.count > digitsInDisplayInteger { return false }
+        return true
     }
 
     var displayAsInteger: Bool {

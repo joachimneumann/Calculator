@@ -52,7 +52,7 @@ class Number: CustomDebugStringConvertible {
         if str == nil {
             str = "0,"
         } else {
-            str!.append(",")
+            if !str!.contains(",") { str!.append(",") }
         }
     }
     
@@ -89,6 +89,10 @@ struct NumberStack: CustomDebugStringConvertible{
         }
     }
     
+    var nonScientificIsString: Bool {
+        return array.last!.str != nil
+    }
+
     var nonScientificIsInteger: Bool {
         mutating get {
             if dd == nil { dd = DisplayData(number: array.last!) }
