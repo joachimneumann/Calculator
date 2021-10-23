@@ -526,10 +526,10 @@ class BrainTests: XCTestCase {
         brain.operationWorker("=")
 
 
-        correct = "6,28318530717958647692528676655900576839433879875021164194988918461563281257241799725606965068423413596429617302656461329418768921910116446345"
+        correct = String("6,28318530717958647692528676655900576839433879875021164194988918461563281257241799725606965068423413596429617302656461329418768921910116446345".prefix(100))
         XCTAssertEqual(brain.debugLastDouble, 2.0*Double.pi)
         res = brain.nonScientific!
-        resTruncated = String(res.prefix(correct.count))
+        resTruncated = String(res.prefix(100))
         XCTAssertEqual (resTruncated, correct)
 
         brain.reset()

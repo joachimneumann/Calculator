@@ -30,6 +30,7 @@ struct LowPrecision: View {
     var body: some View {
         Button {
             brain.precision = TE.lowPrecision
+            brain.isHighPrecision = false
         } label: {
             Text((brain.precision == TE.lowPrecision ? "✓ " : "    ") + String(TE.lowPrecisionString))
         }
@@ -43,6 +44,7 @@ struct HighPrecision: View {
     var body: some View {
         Button {
             brain.precision = TE.highPrecision
+            brain.isHighPrecision = true
         } label: {
             Text((brain.precision == TE.lowPrecision ? "    " : "✓ ") + String(TE.highPrecisionString))
         }

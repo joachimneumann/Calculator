@@ -11,10 +11,19 @@ import SwiftUI
 class Brain: ObservableObject {
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
+    @AppStorage("isHighPrecision") var isHighPrecision: Bool = false
 
     @Published var precision: mpfr_prec_t = TE.lowPrecision {
         didSet {
-            let significantBits: mpfr_prec_t = Int(round(Double(precision) * 3.4 + 10.0)) //  log2(10) rounded up
+            var significantBits: mpfr_prec_t
+            if precision < 1000 {
+                /// let's be generous
+                significantBits = 100 * precision
+                if significantBits < 1000 { significantBits = 1000 }
+            } else {
+                significantBits = Int(round(Double(precision) * 3.4 + 10.0))
+                // 3.4 is log2(10) rounded up. Throw in 10 more bits
+            }
             globalGmpSignificantBits = significantBits
             globalGmpPrecision = precision
             reset()
@@ -248,6 +257,13 @@ class Brain: ObservableObject {
 //    var last: Number { n.last() }
 
     init() {
+
+        if isHighPrecision {
+            precision = TE.highPrecision
+        } else {
+            precision = TE.lowPrecision
+        }
+
         constantOperators = [
             "π":    Inplace(Gmp.π, 0),
             "e":    Inplace(Gmp.e, 0),

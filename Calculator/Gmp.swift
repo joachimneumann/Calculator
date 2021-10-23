@@ -22,7 +22,7 @@ extension String {
 }
 
 var globalUnsignedLongInt: CUnsignedLong = 0
-var globalGmpSignificantBits: mpfr_prec_t = 100*TE.lowPrecision
+var globalGmpSignificantBits: mpfr_prec_t = 100 * TE.lowPrecision /// initial value. Will be changed when the user uses the menu
 var globalGmpPrecision: Int = TE.lowPrecision
 
 class Gmp: Equatable {

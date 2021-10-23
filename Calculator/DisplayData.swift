@@ -112,7 +112,7 @@ class DisplayData: Equatable {
         let data = gmp.data(length: globalGmpPrecision)
         
         /// can be perfectly represented as Integer?
-        if data.mantissa.count == data.exponent+1 {
+        if data.mantissa.count <= data.exponent + 1 {
             var integerString = data.mantissa
             if integerString.count < data.exponent+1 {
                 for _ in 0..<(data.exponent+1-integerString.count) {
@@ -133,15 +133,13 @@ class DisplayData: Equatable {
         var floatString: String? = nil
         if data.exponent < 0 {
             /// abs(number) < 1
-            if data.mantissa.count > -data.exponent {
-                floatString = "0,"
-                let zeroes = -data.exponent
-                for _ in 1..<zeroes {
-                    floatString! += "0"
-                }
-                floatString! += data.mantissa
-                floatString = String(floatString!.prefix(101))
+            floatString = "0,"
+            let zeroes = -data.exponent
+            for _ in 1..<zeroes {
+                floatString! += "0"
             }
+            floatString! += data.mantissa
+            floatString = String(floatString!.prefix(101))
             if data.negative { floatString = "-" + floatString! }
         } else {
             /// abs(number) > 1
