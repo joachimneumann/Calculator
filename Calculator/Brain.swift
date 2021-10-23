@@ -80,8 +80,6 @@ class Brain: ObservableObject {
         return true
     }
 
-    //    func sString(_ digits: Int) -> String { n.sString(digits) }
-    //func sString(_ digits: Int) -> String { "6.734" }
     var isValidNumber: Bool { n.isValidNumber }
     var pendingOperator: String?
     var memory: Gmp? = nil

@@ -41,7 +41,7 @@ class Gmp: Equatable {
     // Implementing an initializer that accepts a double which is created from a string leads to a loss of precision.
     init(_ s: String) {
         let s1 = s.replacingOccurrences(of: ",", with: ".")
-        mpfr_init2 (&mpfr, 331146) // TODO precision
+        mpfr_init2 (&mpfr, 10000) // TODO precision
         mpfr_set_str (&mpfr, s1, 10, MPFR_RNDN)
     }
     convenience init(_ s: String?) {
@@ -175,7 +175,7 @@ class Gmp: Equatable {
     
     func isValidGmpString(s: String) -> Bool {
         var temp_mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
-        mpfr_init2 (&temp_mpfr, 331146) // TODO precision
+        mpfr_init2 (&temp_mpfr, 10000) // TODO precision
         return mpfr_set_str (&temp_mpfr, s, 10, MPFR_RNDN) == 0
     }
     func toDouble() -> Double {

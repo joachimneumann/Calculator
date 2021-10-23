@@ -46,7 +46,7 @@ struct ScientificDisplay: View {
                 ScrollView {
                     Text(brain.scientific!.mantissa)
                         .font(t.displayFont)
-                        .frame(maxWidth: .infinity)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
                         .foregroundColor(TE.DigitKeyProperties.textColor)
                         .multilineTextAlignment(.trailing)
                         .id(1)
