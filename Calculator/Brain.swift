@@ -12,14 +12,22 @@ class Brain: ObservableObject {
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
 
+    @Published var precision: mpfr_prec_t = TE.lowPrecision {
+        didSet {
+            let significantBits: mpfr_prec_t = Int(round(Double(precision) * 3.4 + 10.0)) //  log2(10) rounded up
+            globalGmpSignificantBits = significantBits
+            globalGmpPrecision = precision
+            reset()
+        }
+    }
     @Published var zoomed: Bool = false
     @Published var calibrated: Bool = false
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
 
-    var digitsInDisplayInteger: Int = 1000000
-    var digitsInDisplayFloat: Int = 1000000
-    var digitsInDisplayScientific: Int = 1000000
+    var digitsInDisplayInteger: Int    = 2*TE.highPrecision
+    var digitsInDisplayFloat: Int      = 2*TE.highPrecision
+    var digitsInDisplayScientific: Int = 2*TE.highPrecision
     var calculating: Bool = false
     var showCalculating: Bool = false
     var debugLastDouble: Double { n.debugLastDouble }

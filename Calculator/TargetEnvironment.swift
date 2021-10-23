@@ -11,6 +11,10 @@ class TE {
     static let iPhoneScientificFontSizeReduction: CGFloat = 0.85//1.0
     static let digitsInAllDigitsDisplay: Int = 200
     static let numberPadFration: CGFloat = 0.4
+    
+    static let lowPrecision        = 100
+    static let maxScrollViewLength = 1000
+    static let highPrecision       = 1000000
 
 #if targetEnvironment(macCatalyst)
     /// The MacOS Calculator is a bit transparent.
@@ -149,7 +153,7 @@ class TE {
     static let landscapeSpacingFration: CGFloat = 0.01
 
     var displayFontSize: CGFloat = 0.0
-    var displayFont: Font = Font.system(size: 10, weight: .thin).monospacedDigit()
+    var displayFont: Font = Font.system(size: 16, weight: .thin).monospacedDigit()
     var spaceBetweenkeys: CGFloat = 0.0
     var keySize: CGSize = CGSize(width: 0.0, height: 0.0)
     var widerKeySize: CGSize = CGSize(width: 0.0, height: 0.0)

@@ -109,7 +109,7 @@ class DisplayData: Equatable {
             return
         }
         
-        let data = gmp.data(length: 100) // TODO: make this depend on the precision selected by the user
+        let data = gmp.data(length: globalGmpPrecision)
         
         /// can be perfectly represented as Integer?
         if data.mantissa.count == data.exponent+1 {

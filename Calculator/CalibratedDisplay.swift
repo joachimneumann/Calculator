@@ -15,14 +15,15 @@ struct NonScientificDisplay: View {
         if brain.nonScientific == nil {
             EmptyView()
         } else {
+            let len = brain.nonScientific!.count
+            let text = (len > 1000) ? String(brain.nonScientific!.prefix(1000)) + "... use copy to get all digits" : brain.nonScientific!
             ScrollViewReader { scrollViewProxy in
                 ScrollView {
-                    Text(brain.nonScientific!)
+                    Text(text)
                         .font(t.displayFont)
                         .frame(maxWidth: .infinity, alignment: .trailing)
                         .foregroundColor(TE.DigitKeyProperties.textColor)
                         .font(t.displayFont)
-                        .lineLimit(100)
                         .multilineTextAlignment(.trailing)
                         .id(1)
                 }
@@ -49,9 +50,11 @@ struct ScientificDisplay: View {
             EmptyView()
         } else {
             HStack(spacing: 0.0) {
+                let len = brain.scientific!.mantissa.count
+                let text = len > 1000 ? "\(brain.scientific!.mantissa)... use copy to get all digits" : brain.scientific!.mantissa
                 ScrollViewReader { scrollViewProxy in
                     ScrollView {
-                        Text(brain.scientific!.mantissa)
+                        Text(text)
                             .font(t.displayFont)
                             .frame(maxWidth: .infinity, alignment: .trailing)
                             .foregroundColor(TE.DigitKeyProperties.textColor)

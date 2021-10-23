@@ -8,13 +8,45 @@
 import SwiftUI
 
 struct CalculatorCommands: Commands {
-    var brain: Brain
+    @ObservedObject var brain: Brain
     let t: TE
     var body: some Commands {
-        CommandMenu("Edit ") { // the extra space prevents MacOS to add 'Start Dictation' and 'Special Characters' to the Edit menu
+        CommandMenu("Edit ") {
+            /// the extra space after "Edit" prevents MacOS to add 'Start Dictation'
+            /// and 'Special Characters' to the Edit menu
             CopyCommand(brain: brain, t: t)
             PasteCommand(brain: brain)
         }
+        CommandMenu("Precision") {
+            LowPrecision(brain: brain, t: t)
+            HighPrecision(brain: brain, t: t)
+        }
+    }
+}
+
+struct LowPrecision: View {
+    @ObservedObject var brain: Brain
+    let t: TE
+    var body: some View {
+        Button {
+            brain.precision = TE.lowPrecision
+        } label: {
+            Text((brain.precision == TE.lowPrecision ? "✓ " : "    ") + String(TE.lowPrecision))
+        }
+        .keyboardShortcut("1", modifiers: [.command])
+    }
+}
+
+struct HighPrecision: View {
+    @ObservedObject var brain: Brain
+    let t: TE
+    var body: some View {
+        Button {
+            brain.precision = TE.highPrecision
+        } label: {
+            Text((brain.precision == TE.lowPrecision ? "    " : "✓ ") + String(TE.highPrecision))
+        }
+        .keyboardShortcut("2", modifiers: [.command])
     }
 }
 
@@ -29,7 +61,7 @@ struct CopyCommand: View {
                 UIPasteboard.general.string = brain.scientific?.combined
             }
         } label: {
-            Label("Copy", systemImage: "copy")
+            Text("Copy")
         }
         .keyboardShortcut("C", modifiers: [.command])
     }
@@ -41,7 +73,7 @@ struct PasteCommand: View {
         Button {
             brain.fromPasteboard()
         } label: {
-            Label("Paste", systemImage: "drop")
+            Text("Paste")
         }
         .keyboardShortcut("V", modifiers: [.command])
         .disabled(!UIPasteboard.general.hasStrings)
