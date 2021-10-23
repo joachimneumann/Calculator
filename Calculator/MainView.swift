@@ -42,7 +42,7 @@ struct MainView: View {
                  iconSize: iconSize,
                  textColor: TE.DigitKeyProperties.textColor,
                  zoomed: $zoomed,
-                 showCalculating: brain.showCalculating)
+                 showCalculating: brain.calculating)
                 .frame(width: zoomWidth, height: zoomHeight, alignment: .center)
                 .padding(.bottom, t.allkeysHeight + t.spaceBetweenkeys)
         }
@@ -64,7 +64,7 @@ struct MainView: View {
                      iconSize: iconSize,
                      textColor: TE.DigitKeyProperties.textColor,
                      zoomed: $zoomed,
-                     showCalculating: brain.showCalculating)
+                     showCalculating: brain.calculating)
                     .frame(width: zoomWidth, height: zoomHeight, alignment: .center)
             }
         }
@@ -94,7 +94,7 @@ struct MainView: View {
                          iconSize: t.keySize.height * 0.7,
                          textColor: TE.DigitKeyProperties.textColor,
                          zoomed: $brain.zoomed,
-                         showCalculating: brain.showCalculating)
+                         showCalculating: brain.calculating)
                         .frame(width: t.widerKeySize.width, height: t.keySize.height, alignment: .center)
                         .padding(.bottom, t.allkeysHeight + t.spaceBetweenkeys)
                 }

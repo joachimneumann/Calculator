@@ -22,46 +22,46 @@ struct NumberKeys: View {
                 Key("C", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
-                        isAllowed: brain.notCalculating,
+                        isAllowed: !brain.calculating && !brain.calculating,
                         isPending: false)
                 { brain.reset() }
                 Key("+/-", keyProperties: TE.LightGrayKeyProperties)
                     .op_plusMinus_percentage(
                         size: keySize,
-                        isAllowed: brain.isValidNumber )
+                        isAllowed: brain.isValidNumber && !brain.calculating)
                 { brain.operation("+/-") }
                 Key("%", keyProperties: TE.LightGrayKeyProperties)
                     .op_plusMinus_percentage(
                         size: keySize,
-                        isAllowed: brain.isValidNumber)
+                        isAllowed: brain.isValidNumber && !brain.calculating)
                 { brain.operation("%")  }
                 Key("/", keyProperties: TE.OpKeyProperties)
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
-                        isAllowed: brain.isValidNumber,
+                        isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: brain.isPending("/"))
                 { brain.operation("/") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("7", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
-                        size: keySize, isAllowed:
-                            brain.digitsAllowed)
+                        size: keySize,
+                        isAllowed: !brain.calculating)
                 { brain.digit(7) }
                 Key("8", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
-                        isAllowed: brain.digitsAllowed)
+                        isAllowed: !brain.calculating)
                 { brain.digit(8) }
                 Key("9", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
-                        isAllowed: brain.digitsAllowed)
+                        isAllowed: !brain.calculating)
                 { brain.digit(9) }
                 Key("x", keyProperties: TE.OpKeyProperties)
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
-                        isAllowed: brain.isValidNumber,
+                        isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: brain.isPending("x"))
                 { brain.operation("x") }
             }
@@ -69,22 +69,22 @@ struct NumberKeys: View {
                 Key("4", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
-                        isAllowed: brain.digitsAllowed)
+                        isAllowed: !brain.calculating)
                 { brain.digit(4) }
                 Key("5", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
-                        isAllowed: brain.digitsAllowed)
+                        isAllowed: !brain.calculating)
                 { brain.digit(5) }
                 Key("6", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
-                        isAllowed: brain.digitsAllowed)
+                        isAllowed: !brain.calculating)
                 { brain.digit(6) }
                 Key("-", keyProperties: TE.OpKeyProperties)
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
-                        isAllowed: brain.isValidNumber,
+                        isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: brain.isPending("-"))
                 { brain.operation("-") }
             }
@@ -92,22 +92,22 @@ struct NumberKeys: View {
                 Key("1", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
-                        isAllowed: brain.digitsAllowed)
+                        isAllowed: !brain.calculating)
                 { brain.digit(1) }
                 Key("2", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
-                        isAllowed: brain.digitsAllowed)
+                        isAllowed: !brain.calculating)
                 { brain.digit(2) }
                 Key("3", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
-                        isAllowed: brain.digitsAllowed)
+                        isAllowed: !brain.calculating)
                 { brain.digit(3) }
                 Key("+", keyProperties: TE.OpKeyProperties)
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
-                        isAllowed: brain.isValidNumber,
+                        isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: brain.isPending("+"))
                 { brain.operation("+") }
             }
@@ -116,17 +116,17 @@ struct NumberKeys: View {
                     .digit_0(
                         size: keySize,
                         space: horizontalSpace,
-                        isAllowed: brain.digitsAllowed)
+                        isAllowed: !brain.calculating)
                 { brain.zero() }
                 Key(",", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
-                        isAllowed: brain.digitsAllowed)
+                        isAllowed: !brain.calculating)
                 { brain.comma() }
                 Key("=", keyProperties: TE.OpKeyProperties)
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
-                        isAllowed: brain.isValidNumber,
+                        isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 { brain.operation("=") }
             }

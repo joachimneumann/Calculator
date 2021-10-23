@@ -65,9 +65,9 @@ struct Key: View {
         button
     }
     
-    init(_ text: String, keyProperties: KeyProperties, isPending: Bool = false, isActive: Bool = true) {
+    init(_ text: String, keyProperties: KeyProperties, isPending: Bool = false, isAllowed: Bool = true) {
         self.keyProperties = keyProperties
-        let strokeColor = !isActive ? Color.gray : (isPending ? keyProperties.bgColor : keyProperties.textColor)
+        let strokeColor = !isAllowed ? Color.gray : (isPending ? keyProperties.bgColor : keyProperties.textColor)
         button = AnyView(makeButton(label: text, strokeColor: strokeColor))
     }
 }
@@ -76,11 +76,10 @@ private struct Digit_0_to_9: ViewModifier {
     let keyProperties: KeyProperties
     let size: CGSize
     let isAllowed: Bool
-    let isActive: Bool
     let callback: (() -> Void)?
     func body(content: Content) -> some View {
         content
-            .foregroundColor((callback == nil || !isActive) ?  Color.gray : keyProperties.textColor)
+            .foregroundColor((callback == nil || !isAllowed) ?  Color.gray : keyProperties.textColor)
             .addBackground(with: keyProperties, isAllowed: isAllowed, isPending: false, callback: callback)
             .font(Font.system(size: size.height * CGFloat(0.48)))
     }
@@ -91,10 +90,9 @@ private struct Colorful_plus_minus_etc: ViewModifier {
     let size: CGSize
     let isAllowed: Bool
     let isPending: Bool
-    let isActive: Bool
     let callback: (() -> Void)?
     var fg: Color {
-        if callback == nil || !isActive {
+        if callback == nil || !isAllowed {
             return Color.gray
         } else {
             if isPending {
@@ -118,12 +116,11 @@ private struct PlusMinus_percentage: ViewModifier {
     let keyProperties: KeyProperties
     let size: CGSize
     let isAllowed: Bool
-    let isActive: Bool
     let callback: (() -> Void)?
     func body(content: Content) -> some View {
         let fontsize = size.height * 0.36
         content
-            .foregroundColor((callback == nil || !isActive) ?  Color.gray : keyProperties.textColor)
+            .foregroundColor((callback == nil || !isAllowed) ?  Color.gray : keyProperties.textColor)
             .addBackground(with: keyProperties, isAllowed: isAllowed, isPending: false, callback: callback)
             .font(Font.system(size: fontsize, weight: .bold))
     }
@@ -134,16 +131,15 @@ private struct ScientificButton: ViewModifier {
     let fontSize: CGFloat
     let isAllowed: Bool
     let isPending: Bool
-    let isActive: Bool
     let callback: (() -> Void)?
     var fg: Color {
-        if callback == nil || !isActive {
+        if callback == nil || !isAllowed {
             return Color.gray
         } else {
             if isPending {
                 return keyProperties.bgColor
             } else {
-                return isActive ? keyProperties.textColor : Color(white: 0.5)
+                return isAllowed ? keyProperties.textColor : Color(white: 0.5)
             }
         }
     }
@@ -157,42 +153,42 @@ private struct ScientificButton: ViewModifier {
 
 
 extension Key {
-    func digit_1_to_9(size: CGSize, isAllowed: Bool, isActive: Bool = true, callback: (() -> Void)? = nil) -> some View {
+    func digit_1_to_9(size: CGSize, isAllowed: Bool, callback: (() -> Void)? = nil) -> some View {
         self
-            .modifier(Digit_0_to_9(keyProperties: keyProperties, size: size, isAllowed: isAllowed, isActive: isActive && isAllowed, callback: callback))
+            .modifier(Digit_0_to_9(keyProperties: keyProperties, size: size, isAllowed: isAllowed, callback: callback))
             .frame(width: size.width, height: size.height)
     }
     
-    func digit_0(size: CGSize, space: CGFloat, isAllowed: Bool, isActive: Bool = true, callback: (() -> Void)? = nil ) -> some View {
+    func digit_0(size: CGSize, space: CGFloat, isAllowed: Bool, callback: (() -> Void)? = nil ) -> some View {
         HStack {
             self
                 .padding(.leading, size.height * 0.4)
             Spacer()
         }
-        .modifier(Digit_0_to_9(keyProperties: keyProperties, size: size, isAllowed: isAllowed, isActive: isActive && isAllowed, callback: callback))
+        .modifier(Digit_0_to_9(keyProperties: keyProperties, size: size, isAllowed: isAllowed, callback: callback))
         .frame(width: size.width*2.0+space, height: size.height)
     }
     
-    func op_div_mul_add_sub_eq(size: CGSize, isAllowed: Bool, isPending: Bool, isActive: Bool = true, callback: (() -> Void)? = nil ) -> some View {
+    func op_div_mul_add_sub_eq(size: CGSize, isAllowed: Bool, isPending: Bool, callback: (() -> Void)? = nil ) -> some View {
         self
-            .modifier(Colorful_plus_minus_etc(keyProperties: keyProperties, size: size, isAllowed: isAllowed, isPending: isPending, isActive: isActive && isAllowed, callback: callback))
+            .modifier(Colorful_plus_minus_etc(keyProperties: keyProperties, size: size, isAllowed: isAllowed, isPending: isPending, callback: callback))
             .frame(width: size.width, height: size.height)
     }
     
-    func op_plusMinus_percentage(size: CGSize, isAllowed: Bool, isActive: Bool = true, callback: (() -> Void)? = nil ) -> some View {
+    func op_plusMinus_percentage(size: CGSize, isAllowed: Bool, callback: (() -> Void)? = nil ) -> some View {
         self
-            .modifier(PlusMinus_percentage(keyProperties: keyProperties, size: size, isAllowed: isAllowed, isActive: isActive && isAllowed, callback: callback))
+            .modifier(PlusMinus_percentage(keyProperties: keyProperties, size: size, isAllowed: isAllowed, callback: callback))
             .frame(width: size.width, height: size.height)
     }
     
-    func scientific(size: CGSize, isAllowed: Bool, isPending: Bool, isActive: Bool = true, callback: (() -> Void)? = nil ) -> some View {
+    func scientific(size: CGSize, isAllowed: Bool, isPending: Bool, callback: (() -> Void)? = nil ) -> some View {
 #if targetEnvironment(macCatalyst)
         let fontSize = size.height*0.36
 #else
         let fontSize = size.height*0.4*TE.iPhoneScientificFontSizeReduction
 #endif
         return self
-            .modifier(ScientificButton(keyProperties: keyProperties, fontSize: fontSize, isAllowed: isAllowed, isPending: isPending, isActive: isActive && isAllowed, callback: callback))
+            .modifier(ScientificButton(keyProperties: keyProperties, fontSize: fontSize, isAllowed: isAllowed, isPending: isPending, callback: callback))
             .frame(width: size.width, height: size.height)
     }
 }

@@ -35,12 +35,13 @@ class Brain: ObservableObject {
     @Published var calibrated: Bool = false
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
+    @Published var calculating: Bool = false
 
     var digitsInDisplayInteger: Int    = 2*TE.highPrecision
     var digitsInDisplayFloat: Int      = 2*TE.highPrecision
     var digitsInDisplayScientific: Int = 2*TE.highPrecision
-    var calculating: Bool = false
-    var showCalculating: Bool = false
+
+
     var debugLastDouble: Double { n.debugLastDouble }
     var debugLastGmp: Gmp { n.debugLastGmp }
     
@@ -140,8 +141,6 @@ class Brain: ObservableObject {
         objectWillChange.send()
     }
     
-    var notCalculating: Bool { calculating == false }
-    var digitsAllowed: Bool { notCalculating }
     func zero() {
         if pendingOperator != nil {
             n.append(Gmp())
@@ -159,7 +158,7 @@ class Brain: ObservableObject {
         objectWillChange.send()
     }
     
-    func execute(priority newPriority: Int) {
+    func execute(priority newPriority: Int) async {
         while !operatorStack.isEmpty && operatorStack.last!.priority >= newPriority {
             let op = operatorStack.pop()
             if let twoOperand = op as? TwoOperand {
@@ -167,68 +166,65 @@ class Brain: ObservableObject {
                     let temp = n.popLast()!
                     temp.convertToGmp()
                     let gmp2 = temp.gmp
-                    n.lastExecute(twoOperand.operation, with: gmp2)
+                    await n.lastExecute(twoOperand.operation, with: gmp2)
                 }
             }
         }
-        if
-            newPriority == Operator.closedParenthesesPriority &&
+        if newPriority == Operator.closedParenthesesPriority &&
                 !operatorStack.isEmpty &&
                 operatorStack.last!.priority == Operator.openParenthesesPriority {
             operatorStack.removeLast()
         }
     }
 
-    func percentage() {
+    func percentage() async {
         if operatorStack.count == 0 {
-            n.lastExecute(Gmp.mul, with: Gmp("0.01"))
+            await n.lastExecute(Gmp.mul, with: Gmp("0.01"))
         } else if operatorStack.count >= 1 && n.count >= 2 {
             if let secondLast = n.secondLast {
-                n.lastExecute(Gmp.mul, with: Gmp("0.01"))
+                await n.lastExecute(Gmp.mul, with: Gmp("0.01"))
                 secondLast.convertToGmp()
-                n.lastExecute(Gmp.mul, with: secondLast.gmp)
+                await n.lastExecute(Gmp.mul, with: secondLast.gmp)
             }
         }
     }
     
-    func operationWorker(_ symbol: String, withPending: Bool = true) {
+    func operationWorker(_ symbol: String, withPending: Bool = true) async {
         if symbol == "=" {
-            self.execute(priority: Operator.equalPriority)
+            await self.execute(priority: Operator.equalPriority)
         } else if symbol == "(" {
             self.operatorStack.push(self.openParenthesis)
         } else if symbol == ")" {
-            self.execute(priority: Operator.closedParenthesesPriority)
+            await self.execute(priority: Operator.closedParenthesesPriority)
         } else if symbol == "%" {
-            self.percentage()
+            await self.percentage()
         } else if let op = self.constantOperators[symbol] {
             if self.pendingOperator != nil {
                 self.n.append(Gmp())
                 self.pendingOperator = nil
             }
-            self.n.modifyLast(withOp: op.operation)
+            await self.n.modifyLast(withOp: op.operation)
         } else if let op = self.inplaceOperators[symbol] {
-            self.n.modifyLast(withOp: op.operation)
+            await self.n.modifyLast(withOp: op.operation)
         } else if let op = self.twoOperandOperators[symbol] {
             if withPending { self.pendingOperator = symbol }
-            self.execute(priority: op.priority)
+            await self.execute(priority: op.priority)
             self.self.operatorStack.push(op)
         } else {
             print("### non-existing operation \(symbol)")
             assert(false)
         }
-//        print("X after op   (\"\(symbol)\": " +
-//              "numbers: \(n.count), " +
-//              "ops: \(operatorStack.count), " +
-//              "display: \(display)")
     }
     
-    // TODO: make this work in the app: 9 % % % % x^2 x^2 x^2
-    // it works in test, using the worker
     func operation(_ symbol: String, withPending: Bool = true) {
-        self.operationWorker(symbol, withPending: withPending)
-        self.objectWillChange.send()
-        // TODO assert that this works for make this work in the app: 9 % % % % x^2 x^2 x^2 x^2
-        // TODO use iOS 15 async
+        calculating = true
+        Task {
+            await self.operationWorker(symbol, withPending: withPending)
+            DispatchQueue.main.async {
+                self.calculating = false
+                self.objectWillChange.send()
+            }
+        }
     }
     
     func reset() {

@@ -139,11 +139,11 @@ struct NumberStack: CustomDebugStringConvertible{
         array.last!.addComma()
         dd = nil
     }
-    mutating func lastExecute(_ op: twoOperantsType, with other: Gmp) {
+    mutating func lastExecute(_ op: twoOperantsType, with other: Gmp) async {
         array.last!.execute(op, with: other)
         dd = nil
     }
-    mutating func modifyLast(withOp op: inplaceType) {
+    mutating func modifyLast(withOp op: inplaceType) async {
         array.last!.inPlace(op: op)
         dd = nil
     }

@@ -40,18 +40,18 @@ private struct AddBackGround: ViewModifier {
         .gesture(
             DragGesture(minimumDistance: 0.0)
                 .onChanged() { value in
-                    if callback != nil {
+                    if isAllowed && callback != nil {
                         withAnimation(.easeIn(duration: keyProperties.downAnimationTime)) {
                             down = true
                         }
                     }
                 }
                 .onEnded() { value in
-                    if callback != nil {
+                    if isAllowed && callback != nil {
                         withAnimation(.easeIn(duration: keyProperties.upAnimationTime)) {
                             down = false
                         }
-                        if isAllowed { callback!() }
+                        callback!()
                     }
                 }
         )
