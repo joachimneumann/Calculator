@@ -11,7 +11,7 @@ struct CalculatorCommands: Commands {
     var brain: Brain
     let t: TE
     var body: some Commands {
-        CommandMenu("Copy&Paste") {
+        CommandMenu("Edit ") { // the extra space prevents MacOS to add 'Start Dictation' and 'Special Characters' to the Edit menu
             CopyCommand(brain: brain, t: t)
             PasteCommand(brain: brain)
         }
@@ -23,15 +23,15 @@ struct CopyCommand: View {
     let t: TE
     var body: some View {
         Button {
-            if brain.zoomed {
-//                UIPasteboard.general.string = brain.lString.combined
+            if let nonScientific = brain.nonScientific {
+                UIPasteboard.general.string = nonScientific
             } else {
-                //UIPasteboard.general.string = brain.sString(t.digitsInSmallDisplay)
+                UIPasteboard.general.string = brain.scientific?.combined
             }
         } label: {
-            Label("Copy)", systemImage: "copy")
+            Label("Copy", systemImage: "copy")
         }
-//        .keyboardShortcut("C", modifiers: [.command])
+        .keyboardShortcut("C", modifiers: [.command])
     }
 }
 
@@ -43,7 +43,7 @@ struct PasteCommand: View {
         } label: {
             Label("Paste", systemImage: "drop")
         }
-//        .keyboardShortcut("V", modifiers: [.command])
+        .keyboardShortcut("V", modifiers: [.command])
         .disabled(!UIPasteboard.general.hasStrings)
     }
 }

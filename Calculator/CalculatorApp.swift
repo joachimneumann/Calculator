@@ -92,25 +92,25 @@ class MyAppDelegate: UIResponder, UIApplicationDelegate {
 
     var brain: Brain?
 
-//    override func buildMenu(with builder: UIMenuBuilder) {
-//
-//        super.buildMenu(with: builder)
-//        builder.remove(menu: .file)
-//        builder.remove(menu: .services)
-//        builder.remove(menu: .help)
-//        builder.remove(menu: .window)
-//        builder.remove(menu: .view)
-//        builder.remove(menu: .edit)
-//        builder.remove(menu: .undoRedo)
-//        builder.remove(menu: .standardEdit)
-//        builder.remove(menu: .spelling)
-//        builder.remove(menu: .substitutions)
-//        builder.remove(menu: .transformations)
-//        builder.remove(menu: .speech)
-//        builder.remove(menu: .hide)
-//        builder.remove(menu: .format)
-//        builder.remove(menu: .toolbar)
-//    }
+    override func buildMenu(with builder: UIMenuBuilder) {
+
+        super.buildMenu(with: builder)
+        builder.remove(menu: .file)
+        builder.remove(menu: .services)
+        builder.remove(menu: .help)
+        builder.remove(menu: .window)
+        builder.remove(menu: .view)
+        builder.remove(menu: .edit)
+        builder.remove(menu: .undoRedo)
+        builder.remove(menu: .standardEdit)
+        builder.remove(menu: .spelling)
+        builder.remove(menu: .substitutions)
+        builder.remove(menu: .transformations)
+        builder.remove(menu: .speech)
+        builder.remove(menu: .hide)
+        builder.remove(menu: .format)
+        builder.remove(menu: .toolbar)
+    }
 
     func application(
         _ application: UIApplication,

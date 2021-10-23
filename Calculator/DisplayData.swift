@@ -11,6 +11,7 @@ struct Scientific: Equatable {
     let mantissa: String
     let exponent: String
     
+    var combined: String { mantissa + " " + exponent }
     init(_ mantissa: String, _ exponent: String) {
         self.mantissa = mantissa
         self.exponent = exponent
