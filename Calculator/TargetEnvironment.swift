@@ -74,13 +74,13 @@ class TE {
         upAnimationTime: 0.5)
 
     // I have selected "Optimize Interface for Mac" in target settings, general, which is 0.77 times smaller
-    static private let kh  = 63.0 * 0.77  // key height
-    static private let kw  = 72.75 * 0.77 // key width
-    static private let wkw = 77.0 * 0.77  // wider with for +-*/= keys
-    static private let sp  = 1.0   // space between keys
+    static private let kh: CGFloat  = 63.00 * 0.77 // key height
+    static private let kw: CGFloat  = 72.75 * 0.77 // key width
+    static private let wkw: CGFloat = 77.00 * 0.77 // wider with for +-*/= keys
+    static private let sp: CGFloat  = 1.0          // space between keys
 
     static private let zoomIconSize: CGFloat = 30.0 * 0.77
-    static let macWindowWidth: CGFloat = 9.0*TE.kw+TE.wkw+9.0*TE.sp
+    static let macWindowWidth: CGFloat = 9.0 * TE.kw + TE.wkw + 9.0 * TE.sp
     static let macWindowHeight: CGFloat = 419.5 * 0.77
 
     static private let numberPadWidth = 5.0 * TE.kw + 4.0 * TE.sp
