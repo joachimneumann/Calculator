@@ -290,9 +290,15 @@ class Brain: ObservableObject {
         if memory != nil {
             let temp = memory!.copy()
             let num = Number(temp)
-            n.replaceLast(with: num)
+            
+            if pendingOperator != nil {
+                n.append(num)
+                pendingOperator = nil
+            } else {
+                n.replaceLast(with: num)
+            }
+            objectWillChange.send()
         }
-        objectWillChange.send()
     }
 
     var nn: Int { n.count }

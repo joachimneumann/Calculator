@@ -152,7 +152,12 @@ struct NumberStack: CustomDebugStringConvertible{
         array.append(number)
         dd = nil
     }
+    mutating func append(_ number: Number) {
+        array.append(number)
+        dd = nil
+    }
 
+    
     var lastConvertIntoGmp: Gmp {
         array.last!.convertToGmp()
         return array.last!.gmp
