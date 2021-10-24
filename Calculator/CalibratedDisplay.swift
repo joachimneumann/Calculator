@@ -87,7 +87,7 @@ struct CalibratedDisplay: View {
     let t: TE
     var body: some View {
         Group {
-            if brain.displayAsString || brain.displayAsInteger || brain.displayAsFloat {
+            if brain.nonScientific != nil {
                 NonScientificDisplay(brain: brain, t: t)
             } else {
                 ScientificDisplay(brain: brain, t: t)
@@ -96,7 +96,7 @@ struct CalibratedDisplay: View {
         .offset(x: 0, y: -0.03*t.displayFontSize)
         .contextMenu {
             Button(action: {
-                if brain.nonScientific != nil && (brain.displayAsString || brain.displayAsInteger || brain.displayAsFloat ) {
+                if brain.nonScientific != nil {
                     UIPasteboard.general.string = brain.nonScientific!
                 } else {
                     UIPasteboard.general.string = brain.scientific?.combined

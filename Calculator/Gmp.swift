@@ -125,7 +125,7 @@ class Gmp: Equatable {
     func atanD() { Gmp.assertConstants(); mpfr_atan( &mpfr, &mpfr, MPFR_RNDN); mpfr_mul(&mpfr, &mpfr, &Gmp.rad2deg!.mpfr, MPFR_RNDN) }
     
     func π() { mpfr_const_pi(&mpfr, MPFR_RNDN) }
-    func e() { mpfr_exp( &mpfr, &Gmp("1.0").mpfr, MPFR_RNDN)}
+    func e() { mpfr_const_pi(&mpfr, MPFR_RNDN) } //mpfr_exp( &mpfr, &Gmp("1.0").mpfr, MPFR_RNDN)}
 
     func rand() {
         if Gmp.randstate == nil {

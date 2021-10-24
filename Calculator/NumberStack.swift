@@ -56,14 +56,11 @@ class Number: CustomDebugStringConvertible {
         }
     }
     
-    func addDigit(_ digit: Int) {
-        assert( digit > 0)
-        assert( digit < 10)
-        let digitString = String(digit)
+    func addDigit(_ digit: String) {
         if str == nil || str == "0" {
-            str = digitString
+            str = digit
         } else {
-            str!.append(digitString)
+            str!.append(digit)
         }
     }
     
@@ -84,6 +81,7 @@ struct NumberStack: CustomDebugStringConvertible{
 
     var nonScientific: String? {
         mutating get {
+            print("NumberStack nonScientific dd \(dd == nil ? "nil" : "not nil")")
             if dd == nil { dd = DisplayData(number: array.last!) }
             return dd!.nonScientific
         }
@@ -91,6 +89,7 @@ struct NumberStack: CustomDebugStringConvertible{
     
     var nonScientificIsString: Bool {
         mutating get {
+            print("NumberStack nonScientificIsString dd \(dd == nil ? "nil" : "not nil")")
             if dd == nil { dd = DisplayData(number: array.last!) }
             return dd!.nonScientificIsString
         }
@@ -98,6 +97,7 @@ struct NumberStack: CustomDebugStringConvertible{
 
     var nonScientificIsInteger: Bool {
         mutating get {
+            print("NumberStack nonScientificIsInteger dd \(dd == nil ? "nil" : "not nil")")
             if dd == nil { dd = DisplayData(number: array.last!) }
             return dd!.nonScientificIsInteger
         }
@@ -105,6 +105,7 @@ struct NumberStack: CustomDebugStringConvertible{
 
     var nonScientificIsFloat: Bool {
         mutating get {
+            print("NumberStack nonScientificIsFloat dd \(dd == nil ? "nil" : "not nil")")
             if dd == nil { dd = DisplayData(number: array.last!) }
             return dd!.nonScientificIsFloat
         }
@@ -112,6 +113,7 @@ struct NumberStack: CustomDebugStringConvertible{
 
     var scientific: Scientific? {
         mutating get {
+            print("NumberStack scientific dd \(dd == nil ? "nil" : "not nil")")
             if dd == nil { dd = DisplayData(number: array.last!) }
             return dd!.scientific
         }
@@ -127,33 +129,40 @@ struct NumberStack: CustomDebugStringConvertible{
         }
     }
     
-    mutating func lastDigit(_ digit: Int) {
+    mutating func lastDigit(_ digit: String) {
         array.last!.addDigit(digit)
+        print("lastDigit dd = nil")
         dd = nil
     }
     mutating func lastZero() {
         array.last!.addZero()
+        print("lastZero dd = nil")
         dd = nil
     }
     mutating func lastComma() {
         array.last!.addComma()
+        print("lastComma dd = nil")
         dd = nil
     }
     mutating func lastExecute(_ op: twoOperantsType, with other: Gmp) {
         array.last!.execute(op, with: other)
+        print("lastExecute dd = nil")
         dd = nil
     }
     mutating func modifyLast(withOp op: inplaceType) {
         array.last!.inPlace(op: op)
+        print("modifyLast dd = nil")
         dd = nil
     }
     mutating func replaceLast(with number: Number) {
         array.removeLast()
         array.append(number)
+        print("replaceLast dd = nil")
         dd = nil
     }
     mutating func append(_ number: Number) {
         array.append(number)
+        print("append dd = nil")
         dd = nil
     }
 
@@ -167,11 +176,11 @@ struct NumberStack: CustomDebugStringConvertible{
 
     var count: Int { array.count }
     
-    mutating func append(_ str: String)    { array.append(Number(str)); dd = nil }
-    mutating func append(_ gmp: Gmp)       { array.append(Number(gmp)); dd = nil }
-    mutating func popLast() -> Number?     { assert(array.count > 0); dd = nil; return array.popLast() }
-    mutating func removeLast()             { assert(array.count > 0); array.removeLast(); dd = nil }
-    mutating func removeAll()              { array.removeAll(); dd = nil }
+    mutating func append(_ str: String)    { array.append(Number(str)); print("append str dd = nil"); dd = nil }
+    mutating func append(_ gmp: Gmp)       { array.append(Number(gmp)); print("append gmp dd = nil"); dd = nil }
+    mutating func popLast() -> Number?     { assert(array.count > 0); print("popLast dd = nil"); dd = nil; return array.popLast() }
+    mutating func removeLast()             { assert(array.count > 0); array.removeLast(); print("removeLast dd = nil"); dd = nil }
+    mutating func removeAll()              { array.removeAll(); print("removeAll dd = nil"); dd = nil }
     
     
     var secondLast: Number? {

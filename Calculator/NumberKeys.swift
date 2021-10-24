@@ -48,17 +48,17 @@ struct NumberKeys: View {
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: !brain.calculating)
-                { brain.digit(7) }
+                { brain.operation("7") }
                 Key("8", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: !brain.calculating)
-                { brain.digit(8) }
+                { brain.operation("8") }
                 Key("9", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: !brain.calculating)
-                { brain.digit(9) }
+                { brain.operation("9") }
                 Key("x", keyProperties: TE.OpKeyProperties)
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
@@ -71,17 +71,17 @@ struct NumberKeys: View {
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: !brain.calculating)
-                { brain.digit(4) }
+                { brain.operation("4") }
                 Key("5", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: !brain.calculating)
-                { brain.digit(5) }
+                { brain.operation("5") }
                 Key("6", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: !brain.calculating)
-                { brain.digit(6) }
+                { brain.operation("6") }
                 Key("-", keyProperties: TE.OpKeyProperties)
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
@@ -94,17 +94,17 @@ struct NumberKeys: View {
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: !brain.calculating)
-                { brain.digit(1) }
+                { brain.operation("1") }
                 Key("2", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: !brain.calculating)
-                { brain.digit(2) }
+                { brain.operation("2") }
                 Key("3", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: !brain.calculating)
-                { brain.digit(3) }
+                { brain.operation("3") }
                 Key("+", keyProperties: TE.OpKeyProperties)
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
@@ -118,12 +118,12 @@ struct NumberKeys: View {
                         size: keySize,
                         space: horizontalSpace,
                         isAllowed: !brain.calculating)
-                { brain.zero() }
+                { brain.operation("0") }
                 Key(",", keyProperties: TE.DigitKeyProperties)
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: !brain.calculating)
-                { brain.comma() }
+                { brain.operation(",") }
                 Key("=", keyProperties: TE.OpKeyProperties)
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,

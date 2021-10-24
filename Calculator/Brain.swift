@@ -15,18 +15,16 @@ class Brain: ObservableObject {
     private var operatorStack = OperatorStack()
     
     @AppStorage("precision") var persistantPrecision: Int = TE.lowPrecision
-
+    
     @Published var precision: Int = TE.lowPrecision {
         didSet {
             persistantPrecision = precision
             var significantBits: Int
             if (precision < 1000) {
                 /// let's be generous
-                significantBits = 100 * precision
-                if (significantBits < 1000) { significantBits = 1000 }
+                significantBits = 10 * precision
             } else {
-                significantBits = Int( Double(precision) * 3.4 + 10.0)
-                // 3.4 is log2(10) rounded up. Throw in 10 more bits
+                significantBits = Int( Double(precision) * 3.3219 + 1000) /// 1.0 / log2(10) plus 1000 digits
             }
             globalGmpSignificantBits = significantBits
             globalGmpPrecision = precision
@@ -64,126 +62,37 @@ class Brain: ObservableObject {
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
     @Published var calculating: Bool = false
-
+    
     var digitsInDisplayInteger: Int    = 2*TE.highPrecision
     var digitsInDisplayFloat: Int      = 2*TE.highPrecision
     var digitsInDisplayScientific: Int = 2*TE.highPrecision
-
-
+    
+    
     var debugLastDouble: Double { n.debugLastDouble }
     var debugLastGmp: Gmp { n.debugLastGmp }
     
-    var nonScientific: String? {
-        if messageToUser != nil {
-            let temp = messageToUser!
-            messageToUser = nil
-            return temp
-        }
-        return n.nonScientific
-    }
-    var scientific: Scientific? {
-        if messageToUser != nil {
-            let temp = messageToUser!
-            messageToUser = nil
-            return Scientific(temp, "")
-        }
-        return n.scientific
-    }
-
-    var displayAsString: Bool {
-        if !n.nonScientificIsString { return false }
-        if n.nonScientific!.count > digitsInDisplayInteger { return false }
-        return true
-    }
-
-    var displayAsInteger: Bool {
-        if let nonScientific = nonScientific {
-            if nonScientific.contains(" ") { return false }
-            if nonScientific.contains("e") { return false }
-            if nonScientific.contains(",")  { return false }
-            if n.nonScientificIsInteger == false { return false }
-            if n.nonScientific!.count > digitsInDisplayInteger { return false }
-        } else {
-            return false
-        }
-        return true
-    }
-
-    var displayAsFloat: Bool {
-        if let nonScientific = nonScientific {
-            if nonScientific.contains(" ") { return false }
-            if nonScientific.contains("e") { return false }
-            if n.nonScientificIsFloat == false { return false }
-
-            if let firstIndex = nonScientific.firstIndex(of: ",") {
-                let index: Int = nonScientific.distance(from: nonScientific.startIndex, to: firstIndex)
-
-                // comma at the very end of the display or not even in the first line?
-                if index > digitsInDisplayInteger - 2 { return false }
-
-                // 0,0000... ?
-                let range = NSRange(location: 0, length: nonScientific.utf16.count)
-                let regex = try! NSRegularExpression(pattern: "[1-9]")
-                let firstNonZeroDigitIndex = regex.firstMatch(in: nonScientific, options: [], range: range)
-                if let firstNonZeroDigitIndex = firstNonZeroDigitIndex {
-                    // [1-9] found
-                    let position = firstNonZeroDigitIndex.range.lowerBound
-                    if position > digitsInDisplayInteger - 2 { return false }
-                } else {
-                    return false
-                }
-            } else {
-                // no comma found
-                return false
-            }
-        } else {
-            return false
-        }
-        return true
-    }
-
+    var nonScientific: String? = nil
+    var scientific: Scientific? = nil
+    
     var isValidNumber: Bool { n.isValidNumber }
     var pendingOperator: String?
     var memory: Gmp? = nil
-
+    
+    var digitOperators: [String] = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    var zeroOperators:       Dictionary <String, Inplace> = [:]
+    var commaOperators:      Dictionary <String, Inplace> = [:]
     var constantOperators:   Dictionary <String, Inplace> = [:]
     var inplaceOperators:    Dictionary <String, Inplace> = [:]
     var twoOperandOperators: Dictionary <String, TwoOperand> = [:]
     var openParenthesis:   Operator = Operator(0)
     var closedParenthesis: Operator = Operator(0)
     var equalOperator:     Operator = Operator(0)
-
+    
     func isPending(_ symbol: String) -> Bool {
         if pendingOperator != nil {
             return pendingOperator == symbol
         }
         return false
-    }
-
-    func digit(_ digit: Int) {
-        if pendingOperator != nil {
-            n.append(Gmp())
-            pendingOperator = nil
-        }
-        n.lastDigit(digit)
-        objectWillChange.send()
-    }
-    
-    func zero() {
-        if pendingOperator != nil {
-            n.append(Gmp())
-            pendingOperator = nil
-        }
-        n.lastZero()
-        objectWillChange.send()
-    }
-    func comma() {
-        if pendingOperator != nil {
-            n.append(Gmp())
-            pendingOperator = nil
-        }
-        n.lastComma()
-        objectWillChange.send()
     }
     
     func execute(priority newPriority: Int) {
@@ -199,12 +108,12 @@ class Brain: ObservableObject {
             }
         }
         if newPriority == Operator.closedParenthesesPriority &&
-                !operatorStack.isEmpty &&
-                operatorStack.last!.priority == Operator.openParenthesesPriority {
+            !operatorStack.isEmpty &&
+            operatorStack.last!.priority == Operator.openParenthesesPriority {
             operatorStack.removeLast()
         }
     }
-
+    
     func percentage() {
         if operatorStack.count == 0 {
             n.lastExecute(Gmp.mul, with: Gmp("0.01"))
@@ -226,6 +135,24 @@ class Brain: ObservableObject {
             self.execute(priority: Operator.closedParenthesesPriority)
         } else if symbol == "%" {
             self.percentage()
+        } else if symbol == "," {
+            if pendingOperator != nil {
+                n.append(Gmp())
+                pendingOperator = nil
+            }
+            n.lastComma()
+        } else if symbol == "0" {
+            if pendingOperator != nil {
+                n.append(Gmp())
+                pendingOperator = nil
+            }
+            n.lastZero()
+        } else if self.digitOperators.contains(symbol) {
+            if pendingOperator != nil {
+                n.append(Gmp())
+                pendingOperator = nil
+            }
+            n.lastDigit(symbol)
         } else if let op = self.constantOperators[symbol] {
             if self.pendingOperator != nil {
                 self.n.append(Gmp())
@@ -243,72 +170,181 @@ class Brain: ObservableObject {
             assert(false)
         }
     }
-
+    
     func asyncOperationWorker(_ symbol: String, withPending: Bool = true) async {
         self.operationWorker(symbol, withPending: withPending)
+    }
+    
+    func determineDisplay() async {
+        print("XXXXX display2... \(calculating)")
+        
+        var showNonScientific: Bool = false
+        var doneChecking = false
+        if messageToUser != nil {
+            let temp = messageToUser!
+            messageToUser = nil
+            nonScientific = temp
+            showNonScientific = true
+            doneChecking = true
+        } else {
+            if let ns = n.nonScientific {
+                /// before we go, we need to check if nonScientific
+                /// can be displayed in one line
+                
+                /// Is it a str?
+                if !doneChecking && n.nonScientificIsString && ns.count < digitsInDisplayInteger {
+                    showNonScientific = true
+                    doneChecking = true
+                }
+                
+                /// is it an Integer?
+                if !doneChecking && n.nonScientificIsInteger && ns.count < digitsInDisplayInteger {
+                    showNonScientific = true
+                    doneChecking = true
+                }
+                
+                /// is it a float?
+                if !doneChecking && n.nonScientificIsFloat {
+                    if let firstIndex = ns.firstIndex(of: ",") {
+                        let index: Int = ns.distance(from: ns.startIndex, to: firstIndex)
+                        
+                        /// comma at the very end of the display or not even in the first line?
+                        if index > digitsInDisplayInteger - 2 {
+                            showNonScientific = false
+                            doneChecking = true
+                        } else {
+                            /// 0,0000... ?
+                            let range = NSRange(location: 0, length: ns.utf16.count)
+                            let regex = try! NSRegularExpression(pattern: "[1-9]")
+                            let firstNonZeroDigitIndex = regex.firstMatch(in: ns, options: [], range: range)
+                            if let firstNonZeroDigitIndex = firstNonZeroDigitIndex {
+                                // [1-9] found
+                                let position = firstNonZeroDigitIndex.range.lowerBound
+                                if position > digitsInDisplayInteger - 2 {
+                                    showNonScientific = false
+                                    doneChecking = true
+                                }
+                            }
+                        }
+                    } else {
+                        showNonScientific = false
+                        doneChecking = true
+                    }
+                    
+                    if !doneChecking {
+                        /// seems to be a float :)
+                        showNonScientific = true
+                        doneChecking = true
+                    }
+                }
+                
+                if !doneChecking {
+                    /// Not a str, integer or float
+                    showNonScientific = false
+                    doneChecking = true
+                }
+            } else {
+                /// n.nonScientific is nil
+                showNonScientific = false
+                doneChecking = true
+            }
+        }
+        
+        if showNonScientific {
+            nonScientific = n.nonScientific
+            scientific = nil
+        } else {
+            scientific = n.scientific
+            nonScientific = nil
+        }
+        DispatchQueue.main.async {
+            print("done1... \(self.calculating)")
+            self.calculating = false
+            print("done2... \(self.calculating)")
+        }
     }
     
     func operation(_ symbol: String, withPending: Bool = true) {
         calculating = true
         Task {
-            await self.asyncOperationWorker(symbol, withPending: withPending)
-            DispatchQueue.main.async {
-                self.calculating = false
-                self.objectWillChange.send()
-            }
+            await Task.sleep(UInt64(0.01 * Double(NSEC_PER_SEC)))
+            print("calc... \(calculating)")
+            await asyncOperationWorker(symbol, withPending: withPending)
+            print("display1... \(calculating)")
+            await determineDisplay()
         }
     }
     
     func reset() {
-        operatorStack.removeAll()
-        n.removeAll()
-        pendingOperator = nil
-        n.append(Gmp())
-        self.objectWillChange.send()
+        calculating = true
+        print("reset... \(calculating)")
+        Task {
+            operatorStack.removeAll()
+            n.removeAll()
+            pendingOperator = nil
+            n.append(Gmp())
+            await determineDisplay()
+        }
     }
     func clearMemory() {
-        memory = nil
-        objectWillChange.send()
+        calculating = true
+        print("clearMemory... \(calculating)")
+        Task {
+            memory = nil
+            await determineDisplay()
+        }
     }
     func addToMemory() {
-        if memory == nil {
-            memory = n.lastConvertIntoGmp.copy()
-        } else {
-            memory!.add(other: n.lastConvertIntoGmp)
+        calculating = true
+        print("addToMemory... \(calculating)")
+        Task {
+            if memory == nil {
+                memory = n.lastConvertIntoGmp.copy()
+            } else {
+                memory!.add(other: n.lastConvertIntoGmp)
+            }
+            await determineDisplay()
         }
-        objectWillChange.send()
     }
     func subtractFromMemory() {
-        if memory == nil {
-            memory = n.lastConvertIntoGmp.copy()
-            memory!.changeSign()
-        } else {
-            memory!.sub(other: n.lastConvertIntoGmp)
+        calculating = true
+        print("subtractFromMemory... \(calculating)")
+        Task {
+            if memory == nil {
+                memory = n.lastConvertIntoGmp.copy()
+                memory!.changeSign()
+            } else {
+                memory!.sub(other: n.lastConvertIntoGmp)
+            }
+            await determineDisplay()
         }
-        objectWillChange.send()
     }
     func getMemory() {
         if memory != nil {
-            let temp = memory!.copy()
-            let num = Number(temp)
-            
-            if pendingOperator != nil {
-                n.append(num)
-                pendingOperator = nil
-            } else {
-                n.replaceLast(with: num)
+            calculating = true
+            print("getMemory... \(calculating)")
+            Task {
+                let temp = memory!.copy()
+                let num = Number(temp)
+                
+                if pendingOperator != nil {
+                    n.append(num)
+                    pendingOperator = nil
+                } else {
+                    n.replaceLast(with: num)
+                }
+                await determineDisplay()
             }
-            objectWillChange.send()
         }
     }
-
+    
     var nn: Int { n.count }
     var no: Int { operatorStack.count }
-//    var last: Number { n.last() }
-
+    //    var last: Number { n.last() }
+    
     init() {
-        precision = persistantPrecision
-
+        precision = persistantPrecision // this triggers brain.reset()
+        
         constantOperators = [
             "π":    Inplace(Gmp.π, 0),
             "e":    Inplace(Gmp.e, 0),
@@ -363,18 +399,20 @@ class Brain: ObservableObject {
         openParenthesis   = Operator(Operator.openParenthesesPriority)
         closedParenthesis = Operator(Operator.openParenthesesPriority)
         equalOperator     = Operator(Operator.equalPriority)
-        reset()
     }
     
     func fromPasteboard() {
         if let s = UIPasteboard.general.string {
-            let gmp = Gmp(s)
-            if pendingOperator != nil {
-                n.append(gmp)
-                pendingOperator = nil
+            calculating = true
+            Task {
+                let gmp = Gmp(s)
+                if pendingOperator != nil {
+                    n.append(gmp)
+                    pendingOperator = nil
+                }
+                n.replaceLast(with: Number(gmp))
+                await determineDisplay()
             }
-            n.replaceLast(with: Number(gmp))
-            objectWillChange.send()
         }
     }
     

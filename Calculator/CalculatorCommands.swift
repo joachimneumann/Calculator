@@ -92,7 +92,7 @@ struct CopyCommand: View {
     @ObservedObject var brain: Brain
     var body: some View {
         Button {
-            if brain.nonScientific != nil && (brain.displayAsString || brain.displayAsInteger || brain.displayAsFloat ) {
+            if brain.nonScientific != nil {
                 UIPasteboard.general.string = brain.nonScientific!
             } else {
                 UIPasteboard.general.string = brain.scientific?.combined

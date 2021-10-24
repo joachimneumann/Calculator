@@ -79,6 +79,7 @@ class DisplayData: Equatable {
     }
 
     private static func scientificFromGmp(data: Gmp.Data) -> Scientific {
+        print("DisplayData scientificFromGmp")
         let exponent = "e\(data.exponent)"
         var mantissa = data.mantissa
         let index = mantissa.index(mantissa.startIndex, offsetBy: 1)
@@ -90,6 +91,7 @@ class DisplayData: Equatable {
     }
     
     private convenience init(gmp: Gmp) {
+        print("DisplayData init(gmp)")
         if gmp.NaN {
             self.init(invalid: "not real")
             return
