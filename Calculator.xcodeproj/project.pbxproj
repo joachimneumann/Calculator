@@ -35,6 +35,8 @@
 		AAEDA0E127047BB400005E04 /* NumberStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEDA0E027047BB400005E04 /* NumberStack.swift */; };
 		AAF1F59126FBA9C7000A733F /* TargetEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF1F59026FBA9C7000A733F /* TargetEnvironment.swift */; };
 		AAF3D37327253B79005FE08B /* KeyInputSubjectWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF3D37227253B79005FE08B /* KeyInputSubjectWrapper.swift */; };
+		AAF3D37727254625005FE08B /* CalculatorAppCatalyst.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF3D37627254625005FE08B /* CalculatorAppCatalyst.swift */; };
+		AAF3D3792725463A005FE08B /* CalculatorAppiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF3D3782725463A005FE08B /* CalculatorAppiOS.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +95,8 @@
 		AAEDA0E027047BB400005E04 /* NumberStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberStack.swift; sourceTree = "<group>"; };
 		AAF1F59026FBA9C7000A733F /* TargetEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetEnvironment.swift; sourceTree = "<group>"; };
 		AAF3D37227253B79005FE08B /* KeyInputSubjectWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyInputSubjectWrapper.swift; sourceTree = "<group>"; };
+		AAF3D37627254625005FE08B /* CalculatorAppCatalyst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorAppCatalyst.swift; sourceTree = "<group>"; };
+		AAF3D3782725463A005FE08B /* CalculatorAppiOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorAppiOS.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +142,8 @@
 			isa = PBXGroup;
 			children = (
 				AA40C44426F808D800119D4F /* CalculatorApp.swift */,
+				AAF3D37627254625005FE08B /* CalculatorAppCatalyst.swift */,
+				AAF3D3782725463A005FE08B /* CalculatorAppiOS.swift */,
 				AAF3D37227253B79005FE08B /* KeyInputSubjectWrapper.swift */,
 				AAF1F59026FBA9C7000A733F /* TargetEnvironment.swift */,
 				AABAFBF727084A1E003DC4A5 /* iOSSize.swift */,
@@ -298,6 +304,7 @@
 				AA64980B26FD430900CFF9AA /* Zoom.swift in Sources */,
 				AAEDA0E127047BB400005E04 /* NumberStack.swift in Sources */,
 				AA95563C26FA0E360029D94C /* AddBackGround.swift in Sources */,
+				AAF3D3792725463A005FE08B /* CalculatorAppiOS.swift in Sources */,
 				AA89A9CF27113C72008A329A /* CalculatorCommands.swift in Sources */,
 				AA8F84FF2722A8470010179F /* CalibratedDisplay.swift in Sources */,
 				AA7CD3AB26FC322C00C714A6 /* ScientificKeys.swift in Sources */,
@@ -313,6 +320,7 @@
 				AAE87B9526FC7302009E6D80 /* Symbols.swift in Sources */,
 				AA95564026FA1C180029D94C /* Key.swift in Sources */,
 				AA46B32626FAC48500F83939 /* Brain.swift in Sources */,
+				AAF3D37727254625005FE08B /* CalculatorAppCatalyst.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

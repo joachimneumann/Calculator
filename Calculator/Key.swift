@@ -181,12 +181,7 @@ extension Key {
             .frame(width: size.width, height: size.height)
     }
     
-    func scientific(size: CGSize, isAllowed: Bool, isPending: Bool, callback: (() -> Void)? = nil ) -> some View {
-#if targetEnvironment(macCatalyst)
-        let fontSize = size.height*0.36
-#else
-        let fontSize = size.height*0.4*TE.iPhoneScientificFontSizeReduction
-#endif
+    func scientific(size: CGSize, fontSize: CGFloat, isAllowed: Bool, isPending: Bool, callback: (() -> Void)? = nil ) -> some View {
         return self
             .modifier(ScientificButton(keyProperties: keyProperties, fontSize: fontSize, isAllowed: isAllowed, isPending: isPending, callback: callback))
             .frame(width: size.width, height: size.height)

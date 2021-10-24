@@ -10,6 +10,7 @@ import SwiftUI
 struct ScientificKeys: View {
     @ObservedObject var brain: Brain
     let keySize: CGSize
+    let fontSize: CGFloat
     let vSpacing: CGFloat
     let hSpacing: CGFloat
     
@@ -19,36 +20,42 @@ struct ScientificKeys: View {
                 Key("(", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 { brain.operation("(") }
                 Key(")", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 { brain.operation(")") }
                 Key("mc", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: !brain.calculating,
                         isPending: false)
                 { brain.clearMemory() }
                 Key("m+", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 { brain.addToMemory() }
                 Key("m-", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 { brain.subtractFromMemory() }
                 Key("mr", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.memory != nil && !brain.calculating,
                         isPending: false)
                 { brain.getMemory() }
@@ -57,37 +64,43 @@ struct ScientificKeys: View {
                 Key("2nd", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: !brain.calculating,
                         isPending: brain.secondKeys)
                 { brain.secondKeys.toggle() }
                 Key("x^2", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 { brain.operation("x^2") }
                 Key("x^3", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 { brain.operation("x^3") }
                 Key("x^y", keyProperties: TE.LightGrayKeyProperties, isAllowed: brain.isValidNumber && !brain.calculating)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: brain.isPending("x^y"))
                 { brain.operation("x^y") }
                 Key(brain.secondKeys ? "y^x" : "e^x", keyProperties: TE.LightGrayKeyProperties, isAllowed: brain.isValidNumber && !brain.calculating)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: brain.secondKeys ? brain.isPending("y^x") : false)
                 { brain.operation(brain.secondKeys ? "y^x" : "e^x") }
                 Key(brain.secondKeys ? "2^x" : "10^x", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        fontSize: fontSize,
+                       isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 { brain.operation(brain.secondKeys ? "2^x" : "10^x") }
             }
@@ -95,36 +108,42 @@ struct ScientificKeys: View {
                 Key("One_x", keyProperties: TE.LightGrayKeyProperties, isAllowed: brain.isValidNumber && !brain.calculating)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 { brain.operation("One_x") }
                 Key("√", keyProperties: TE.LightGrayKeyProperties, isAllowed: brain.isValidNumber && !brain.calculating)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 { brain.operation("√") }
                 Key("3√", keyProperties: TE.LightGrayKeyProperties, isAllowed: brain.isValidNumber && !brain.calculating)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 { brain.operation("3√") }
                 Key("y√", keyProperties: TE.LightGrayKeyProperties, isPending: brain.isPending("y√"), isAllowed: brain.isValidNumber && !brain.calculating)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: brain.isPending("y√"))
                 { brain.operation("y√") }
                 Key(brain.secondKeys ? "logy" : "ln", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: brain.secondKeys ? brain.isPending("logy") : false)
                 { brain.operation(brain.secondKeys ? "logy" : "ln") }
                 Key(brain.secondKeys ? "log2" : "log10", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 { brain.operation(brain.secondKeys ? "log2" : "log10") }
@@ -133,12 +152,14 @@ struct ScientificKeys: View {
                 Key("x!", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 { brain.operation("x!") }
                 Key(brain.secondKeys ? "asin" : "sin", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 {   if brain.rad {
@@ -150,6 +171,7 @@ struct ScientificKeys: View {
                 Key(brain.secondKeys ? "acos" : "cos", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 {   if brain.rad {
@@ -161,6 +183,7 @@ struct ScientificKeys: View {
                 Key(brain.secondKeys ? "atan" : "tan", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 {   if brain.rad {
@@ -172,12 +195,14 @@ struct ScientificKeys: View {
                 Key("e", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: !brain.calculating,
                         isPending: false)
                 { brain.operation("e") }
                 Key("EE", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: !brain.calculating,
                         isPending: false)
                 { brain.operation("EE") }
@@ -186,12 +211,14 @@ struct ScientificKeys: View {
                 Key(brain.rad ? "Deg" : "Rad", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: !brain.calculating,
                         isPending: false)
                 { brain.rad.toggle() }
                 Key(brain.secondKeys ? "asinh" : "sinh", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 {   if brain.rad {
@@ -203,6 +230,7 @@ struct ScientificKeys: View {
                 Key(brain.secondKeys ? "acosh" : "cosh", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 {   if brain.rad {
@@ -214,6 +242,7 @@ struct ScientificKeys: View {
                 Key(brain.secondKeys ? "atanh" : "tanh", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 {   if brain.rad {
@@ -225,12 +254,14 @@ struct ScientificKeys: View {
                 Key("π", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: !brain.calculating,
                         isPending: false)
                 { brain.operation("π") }
                 Key("Rand", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: fontSize,
                         isAllowed: !brain.calculating,
                         isPending: false)
                 { brain.operation("rand") }
@@ -243,5 +274,6 @@ struct ScientificKeys: View {
         hSpacing = t.spaceBetweenkeys
         vSpacing = t.spaceBetweenkeys
         keySize  = t.keySize
+        fontSize = t.scientificKeyFontSize
     }
 }

@@ -22,6 +22,7 @@ struct NumberKeys: View {
                 Key("C", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
+                        fontSize: t.scientificKeyFontSize,
                         isAllowed: !brain.calculating && !brain.calculating,
                         isPending: false)
                 { brain.reset() }

@@ -94,6 +94,7 @@ class TE {
     
     private static let staticDisplayFontSize: CGFloat = TE.numberPadWidth * 0.148
     let displayFontSize: CGFloat = TE.staticDisplayFontSize
+    let scientificKeyFontSize = TE.kh * 0.36
     let digitsInSmallDisplay: Int = 16
     let isLandscape: Bool = true
     let spaceBetweenkeys: CGFloat = TE.sp
@@ -105,6 +106,13 @@ class TE {
     let remainingAboveKeys: CGFloat = TE.macWindowHeight - (5.0 * TE.kh + 4.0 * TE.sp)
     let isPad: Bool = false
     // no init needed
+    
+    struct ButtonShape: View {
+        var body: some View {
+            Rectangle()
+        }
+    }
+
 #else
     ///
     /// iOS
@@ -156,6 +164,7 @@ class TE {
     static let landscapeSpacingFration: CGFloat = 0.01
 
     var displayFontSize: CGFloat
+    var scientificKeyFontSize: CGFloat
     var displayFont: Font
     var spaceBetweenkeys: CGFloat
     var keySize: CGSize
@@ -173,6 +182,7 @@ class TE {
         let squareKeysHeight = 5.0 * w + 4.0 * spaceBetweenkeys
         let factor:CGFloat = min(1.0, appFrame.height * 0.8 / squareKeysHeight)
         keySize = CGSize(width: w, height: w * factor)
+        scientificKeyFontSize = keySize.height * 0.4 * TE.iPhoneScientificFontSizeReduction
         digitsInSmallDisplay = 16
         displayFontSize = keySize.height
         displayFont = Font.system(size: displayFontSize, weight: .thin).monospacedDigit()
@@ -181,17 +191,12 @@ class TE {
         remainingAboveKeys = appFrame.height - allkeysHeight
     }
 
-#endif
-
-
     struct ButtonShape: View {
         var body: some View {
-            #if targetEnvironment(macCatalyst)
-                Rectangle()
-            #else
-                Capsule()
-            #endif
+            Capsule()
         }
     }
+
+#endif
         
 }
