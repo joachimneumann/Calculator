@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct NonScientificDisplay: View {
-    @Binding var scrollTarget: Int?
     @ObservedObject var brain: Brain
     let t: TE
     var body: some View {
@@ -27,9 +26,9 @@ struct NonScientificDisplay: View {
                         .id(1)
                 }
                 .disabled(!brain.zoomed)
-                .onChange(of: scrollTarget) { target in
+                .onChange(of: brain.globalScrollViewTarget) { target in
                     if let target = target {
-                        scrollTarget = nil
+                        brain.globalScrollViewTarget = nil
                         withAnimation {
                             scrollViewProxy.scrollTo(target, anchor: .top)
                         }
@@ -43,7 +42,6 @@ struct NonScientificDisplay: View {
 }
 
 struct ScientificDisplay: View {
-    @Binding var scrollTarget: Int?
     @ObservedObject var brain: Brain
     let t: TE
     var body: some View {
@@ -61,9 +59,9 @@ struct ScientificDisplay: View {
                             .id(1)
                     }
                     .disabled(!brain.zoomed)
-                    .onChange(of: scrollTarget) { target in
+                    .onChange(of: brain.globalScrollViewTarget) { target in
                         if let target = target {
-                            scrollTarget = nil
+                            brain.globalScrollViewTarget = nil
                             withAnimation {
                                 scrollViewProxy.scrollTo(target, anchor: .top)
                             }
@@ -85,15 +83,14 @@ struct ScientificDisplay: View {
 }
 
 struct CalibratedDisplay: View {
-    @Binding var scrollTarget: Int?
     @ObservedObject var brain: Brain
     let t: TE
     var body: some View {
         Group {
             if brain.displayAsString || brain.displayAsInteger || brain.displayAsFloat {
-                NonScientificDisplay(scrollTarget: $scrollTarget, brain: brain, t: t)
+                NonScientificDisplay(brain: brain, t: t)
             } else {
-                ScientificDisplay(scrollTarget: $scrollTarget, brain: brain, t: t)
+                ScientificDisplay(brain: brain, t: t)
             }
         }
         .offset(x: 0, y: -0.03*t.displayFontSize)

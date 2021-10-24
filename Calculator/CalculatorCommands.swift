@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CalculatorCommands: Commands {
-    @Binding var scrollTarget: Int?
     @ObservedObject var brain: Brain
 
     private let keyInputSubject = KeyInputSubjectWrapper()
@@ -19,7 +18,7 @@ struct CalculatorCommands: Commands {
             /// and 'Special Characters' to the Edit menu
             CopyCommand(brain: brain)
             PasteCommand(brain: brain)
-            SpaceCommand(scrollTarget: $scrollTarget, brain: brain)
+            SpaceCommand(brain: brain)
         }
         CommandMenu("Precision") {
             LowPrecision(brain: brain)
@@ -29,14 +28,13 @@ struct CalculatorCommands: Commands {
 }
 
 struct SpaceCommand: View {
-    @Binding var scrollTarget: Int?
     @ObservedObject var brain: Brain
     var body: some View {
         Button {
             withAnimation(.easeIn) {
                 brain.zoomed.toggle()
                 if !brain.zoomed {
-                    scrollTarget = 1
+                    brain.globalScrollViewTarget = 1
                 }
             }
         } label: {

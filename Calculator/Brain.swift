@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 class Brain: ObservableObject {
+    @Published var globalScrollViewTarget: Int? = nil
     var messageToUser: String? = nil
     private var n = NumberStack()
     private var operatorStack = OperatorStack()

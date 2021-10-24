@@ -9,7 +9,6 @@ import SwiftUI
 
 @main
 struct CalculatorApp: App {
-    @State var scrollTarget: Int? = nil
     let brain = Brain()
     @UIApplicationDelegateAdaptor var mydelegate: MyAppDelegate
 
@@ -22,11 +21,11 @@ struct CalculatorApp: App {
                     .ignoresSafeArea()
                 /// Sizes are hardcoded for Mac.
                 /// Therefore, I call default initializer of TE, not giving it the screenSizze
-                MainView(scrollTarget: $scrollTarget, brain: brain, t: TE())
+                MainView(brain: brain, t: TE())
             }
         }
         .commands() {
-            CalculatorCommands(scrollTarget: $scrollTarget, brain: brain)
+            CalculatorCommands(brain: brain)
         }
     }
 #else
@@ -34,7 +33,7 @@ struct CalculatorApp: App {
         WindowGroup {
             // a little hack to prevent that which background creeps up during device orientation chang rotation
             let expandedDeviceSize: CGFloat = 1.5 * max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
-            iOSSize(scrollTarget: $scrollTarget, brain: brain)
+            iOSSize(brain: brain)
                 .statusBar(hidden: true)
                 .background(Rectangle()
                                 .frame(width: expandedDeviceSize,

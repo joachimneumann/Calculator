@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct MainView: View {
-    @Binding var scrollTarget: Int?
     @ObservedObject var brain: Brain
     var t: TE
     
@@ -27,48 +26,48 @@ struct MainView: View {
         }
     }
     
-    struct LandscapeZoomAndCo : View {
-        @Binding var scrollTarget: Int?
-        @Binding var zoomed: Bool
-        let brain: Brain
-        var t: TE
-        let active: Bool
-        let iconSize: CGFloat
-        let fontSize: CGFloat
-        let zoomWidth: CGFloat
-        let zoomHeight: CGFloat
-        var body: some View {
-            Zoom(scrollTarget: $scrollTarget,
-                 iconSize: iconSize,
-                 textColor: TE.DigitKeyProperties.textColor,
-                 zoomed: $zoomed,
-                 showCalculating: brain.calculating)
-                .frame(width: zoomWidth, height: zoomHeight, alignment: .center)
-                .padding(.bottom, t.allkeysHeight + t.spaceBetweenkeys)
-        }
-    }
+//    struct LandscapeZoomAndCo : View {
+//        @Binding var scrollTarget: Int?
+//        @Binding var zoomed: Bool
+//        let brain: Brain
+//        var t: TE
+//        let active: Bool
+//        let iconSize: CGFloat
+//        let fontSize: CGFloat
+//        let zoomWidth: CGFloat
+//        let zoomHeight: CGFloat
+//        var body: some View {
+//            Zoom(scrollTarget: $scrollTarget,
+//                 iconSize: iconSize,
+//                 textColor: TE.DigitKeyProperties.textColor,
+//                 zoomed: $zoomed,
+//                 showCalculating: brain.calculating)
+//                .frame(width: zoomWidth, height: zoomHeight, alignment: .center)
+//                .padding(.bottom, t.allkeysHeight + t.spaceBetweenkeys)
+//        }
+//    }
     
-    struct PortraitZoomAndCo : View {
-        @Binding var scrollTarget: Int?
-        @Binding var zoomed: Bool
-        let brain: Brain
-        let active: Bool
-        let iconSize: CGFloat
-        let fontSize: CGFloat
-        let zoomWidth: CGFloat
-        let zoomHeight: CGFloat
-        var body: some View {
-            HStack(spacing: 0.0) {
-                Spacer(minLength: 0.0)
-                Zoom(scrollTarget: $scrollTarget,
-                     iconSize: iconSize,
-                     textColor: TE.DigitKeyProperties.textColor,
-                     zoomed: $zoomed,
-                     showCalculating: brain.calculating)
-                    .frame(width: zoomWidth, height: zoomHeight, alignment: .center)
-            }
-        }
-    }
+//    struct PortraitZoomAndCo : View {
+//        @Binding var scrollTarget: Int?
+//        @Binding var zoomed: Bool
+//        let brain: Brain
+//        let active: Bool
+//        let iconSize: CGFloat
+//        let fontSize: CGFloat
+//        let zoomWidth: CGFloat
+//        let zoomHeight: CGFloat
+//        var body: some View {
+//            HStack(spacing: 0.0) {
+//                Spacer(minLength: 0.0)
+//                Zoom(scrollTarget: $scrollTarget,
+//                     iconSize: iconSize,
+//                     textColor: TE.DigitKeyProperties.textColor,
+//                     zoomed: $zoomed,
+//                     showCalculating: brain.calculating)
+//                    .frame(width: zoomWidth, height: zoomHeight, alignment: .center)
+//            }
+//        }
+//    }
     
     
     struct Rad: View {
@@ -90,7 +89,7 @@ struct MainView: View {
             if !t.isPad {
                 HStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    Zoom(scrollTarget: $scrollTarget,
+                    Zoom(scrollTarget: $brain.globalScrollViewTarget,
                          iconSize: t.keySize.height * 0.7,
                          textColor: TE.DigitKeyProperties.textColor,
                          zoomed: $brain.zoomed,
@@ -119,14 +118,14 @@ struct MainView: View {
                     Spacer(minLength: 0.0)
                     VStack(spacing: 0.0) {
                         if t.isPad {
-                            PortraitZoomAndCo(scrollTarget: $scrollTarget,
-                                              zoomed: $brain.zoomed,
-                                              brain: brain,
-                                              active: true,// brain.hasMoreDigits(t.digitsInSmallDisplay),
-                                              iconSize: t.keySize.height * 0.7,
-                                              fontSize: t.keySize.height*0.27,
-                                              zoomWidth: t.widerKeySize.width,
-                                              zoomHeight: t.keySize.height)
+//                            PortraitZoomAndCo(scrollTarget: $scrollTarget,
+//                                              zoomed: $brain.zoomed,
+//                                              brain: brain,
+//                                              active: true,// brain.hasMoreDigits(t.digitsInSmallDisplay),
+//                                              iconSize: t.keySize.height * 0.7,
+//                                              fontSize: t.keySize.height*0.27,
+//                                              zoomWidth: t.widerKeySize.width,
+//                                              zoomHeight: t.keySize.height)
                         }
                         Spacer(minLength: 0.0)
                     }
@@ -138,7 +137,7 @@ struct MainView: View {
             }
         }
         .background(
-            Display(scrollTarget: $scrollTarget, brain: brain, t: t)
+            Display(brain: brain, t: t)
                 .padding(.trailing, t.keySize.width * 1.0)
         )
     }
