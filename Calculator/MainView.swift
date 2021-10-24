@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainView: View {
-    @State var scrollTarget: Int? = nil
+    @Binding var scrollTarget: Int?
     @ObservedObject var brain: Brain
     var t: TE
     

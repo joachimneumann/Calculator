@@ -34,6 +34,7 @@
 		AAE87B9926FCB24C009E6D80 /* OperatorStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE87B9826FCB24C009E6D80 /* OperatorStack.swift */; };
 		AAEDA0E127047BB400005E04 /* NumberStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEDA0E027047BB400005E04 /* NumberStack.swift */; };
 		AAF1F59126FBA9C7000A733F /* TargetEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF1F59026FBA9C7000A733F /* TargetEnvironment.swift */; };
+		AAF3D37327253B79005FE08B /* KeyInputSubjectWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF3D37227253B79005FE08B /* KeyInputSubjectWrapper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +92,7 @@
 		AAE87B9826FCB24C009E6D80 /* OperatorStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorStack.swift; sourceTree = "<group>"; };
 		AAEDA0E027047BB400005E04 /* NumberStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberStack.swift; sourceTree = "<group>"; };
 		AAF1F59026FBA9C7000A733F /* TargetEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetEnvironment.swift; sourceTree = "<group>"; };
+		AAF3D37227253B79005FE08B /* KeyInputSubjectWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyInputSubjectWrapper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				AA40C44426F808D800119D4F /* CalculatorApp.swift */,
+				AAF3D37227253B79005FE08B /* KeyInputSubjectWrapper.swift */,
 				AAF1F59026FBA9C7000A733F /* TargetEnvironment.swift */,
 				AABAFBF727084A1E003DC4A5 /* iOSSize.swift */,
 				AA59D79C26FDED8B00321F26 /* MainView.swift */,
@@ -303,6 +306,7 @@
 				AAE87B9326FC5F42009E6D80 /* Display.swift in Sources */,
 				AA40C45526F8094700119D4F /* Gmp.swift in Sources */,
 				AA40C44526F808D800119D4F /* CalculatorApp.swift in Sources */,
+				AAF3D37327253B79005FE08B /* KeyInputSubjectWrapper.swift in Sources */,
 				AA64980D26FD48F900CFF9AA /* DisplayData.swift in Sources */,
 				AA59D79D26FDED8B00321F26 /* MainView.swift in Sources */,
 				AAD017D427242454000AA810 /* Precision.swift in Sources */,

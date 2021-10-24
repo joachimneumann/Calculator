@@ -8,25 +8,53 @@
 import SwiftUI
 
 struct CalculatorCommands: Commands {
+    @Binding var scrollTarget: Int?
     @ObservedObject var brain: Brain
-    let t: TE
+
+    private let keyInputSubject = KeyInputSubjectWrapper()
+
     var body: some Commands {
         CommandMenu("Edit ") {
             /// the extra space after "Edit" prevents MacOS to add 'Start Dictation'
             /// and 'Special Characters' to the Edit menu
-            CopyCommand(brain: brain, t: t)
+            CopyCommand(brain: brain)
             PasteCommand(brain: brain)
+            SpaceCommand(scrollTarget: $scrollTarget, brain: brain)
         }
         CommandMenu("Precision") {
-            LowPrecision(brain: brain, t: t)
-            HighPrecision(brain: brain, t: t)
+            LowPrecision(brain: brain)
+            HighPrecision(brain: brain)
         }
     }
 }
 
+struct SpaceCommand: View {
+    @Binding var scrollTarget: Int?
+    @ObservedObject var brain: Brain
+    var body: some View {
+        Button {
+            withAnimation(.easeIn) {
+                brain.zoomed.toggle()
+                if !brain.zoomed {
+                    scrollTarget = 1
+                }
+            }
+        } label: {
+            Text("Toggle Zoom")
+        }
+        .keyboardShortcut(.space, modifiers: .none)
+    }
+}
+
+extension CalculatorCommands {
+    func keyInput(_ key: KeyEquivalent, modifiers: EventModifiers = .none) -> some View {
+        keyboardShortcut(key, sender: keyInputSubject, modifiers: modifiers)
+    }
+}
+
+
 struct LowPrecision: View {
     @ObservedObject var brain: Brain
-    let t: TE
     var body: some View {
         Button {
             brain.precision = TE.lowPrecision
@@ -40,7 +68,6 @@ struct LowPrecision: View {
 
 struct HighPrecision: View {
     @ObservedObject var brain: Brain
-    let t: TE
     var body: some View {
         Button {
             brain.precision = TE.highPrecision
@@ -54,7 +81,6 @@ struct HighPrecision: View {
 
 struct CopyCommand: View {
     @ObservedObject var brain: Brain
-    let t: TE
     var body: some View {
         Button {
             if brain.nonScientific != nil && (brain.displayAsString || brain.displayAsInteger || brain.displayAsFloat ) {

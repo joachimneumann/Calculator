@@ -9,31 +9,27 @@ import SwiftUI
 
 @main
 struct CalculatorApp: App {
+    @State var scrollTarget: Int? = nil
+    let brain = Brain()
+    @UIApplicationDelegateAdaptor var mydelegate: MyAppDelegate
 
 #if targetEnvironment(macCatalyst)
-    let t: TE = TE()
-    let brain = Brain()
     // force window size on Mac
-    @UIApplicationDelegateAdaptor var mydelegate: MyAppDelegate
     var body: some Scene {
         WindowGroup {
-            let _ = mydelegate.brain = brain
             ZStack {
                 TE.appBackgroundColor
                     .ignoresSafeArea()
                 /// Sizes are hardcoded for Mac.
-                /// Therefore, I can call the ContentView directly with uninitialized TE.
-                MainView(brain: brain, t: t)
-//                ContentView()
+                /// Therefore, I call default initializer of TE, not giving it the screenSizze
+                MainView(scrollTarget: $scrollTarget, brain: brain, t: TE())
             }
         }
         .commands() {
-            CalculatorCommands(brain: brain, t: t)
+            CalculatorCommands(scrollTarget: $scrollTarget, brain: brain)
         }
     }
 #else
-    let brain = Brain()
-    @UIApplicationDelegateAdaptor var mydelegate: MyAppDelegate
     var body: some Scene {
         WindowGroup {
             // a little hack to prevent that which background creeps up during device orientation chang rotation
@@ -54,6 +50,7 @@ struct CalculatorApp: App {
 
 
 #if targetEnvironment(macCatalyst)
+
 class SceneDelegate: NSObject, UIWindowSceneDelegate, ObservableObject {
     
     func scene(
@@ -80,14 +77,7 @@ class SceneDelegate: NSObject, UIWindowSceneDelegate, ObservableObject {
 
 
 class MyAppDelegate: UIResponder, UIApplicationDelegate {
-    //        func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-    //            return true
-    //        }
-
-    var brain: Brain?
-
     override func buildMenu(with builder: UIMenuBuilder) {
-
         super.buildMenu(with: builder)
         builder.remove(menu: .file)
         builder.remove(menu: .services)
