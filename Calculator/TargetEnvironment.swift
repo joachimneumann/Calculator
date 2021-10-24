@@ -23,9 +23,9 @@ class TE {
     /// The MacOS Calculator is a bit transparent.
     /// The colors specified here are the button colors
     /// when the MacOS Calcuator is on a black background.
-    /// To make this appeasily  distinguashable from the
+    /// To make this app easily  distinguashable from the
     /// Apple MacOS Calculator, the 5 rightmost buttons
-    /// are in a blue tint instead of Apple's orange.
+    /// have a blue tint instead of Apple's orange.
     static let appBackgroundColor = Color(
         red:    46.0/255.0,
         green:  39.0/255.0,
@@ -80,7 +80,7 @@ class TE {
         downAnimationTime: 0.1,
         upAnimationTime: 0.5)
 
-    // I have selected "Optimize Interface for Mac" in target settings, general, which is 0.77 times smaller
+    /// I have selected "Optimize Interface for Mac" in target settings, general, which is 0.77 times smaller
     static private let kh: CGFloat  = 63.00 * 0.77 // key height
     static private let kw: CGFloat  = 72.75 * 0.77 // key width
     static private let wkw: CGFloat = 77.00 * 0.77 // wider with for +-*/= keys
@@ -105,7 +105,7 @@ class TE {
     let allkeysHeight: CGFloat = 5.0 * TE.kh + 4.0 * TE.sp
     let remainingAboveKeys: CGFloat = TE.macWindowHeight - (5.0 * TE.kh + 4.0 * TE.sp)
     let isPad: Bool = false
-    // no init needed
+    /// no init needed
     
     struct ButtonShape: View {
         var body: some View {
@@ -178,7 +178,6 @@ class TE {
         spaceBetweenkeys = appFrame.width * Self.landscapeSpacingFration
         let w = (appFrame.width - 9.0 * spaceBetweenkeys) * 0.1
 
-        // I need space for the display
         let squareKeysHeight = 5.0 * w + 4.0 * spaceBetweenkeys
         let factor:CGFloat = min(1.0, appFrame.height * 0.8 / squareKeysHeight)
         keySize = CGSize(width: w, height: w * factor)
