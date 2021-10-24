@@ -12,6 +12,7 @@
 import SwiftUI
 
 struct iOSSize: View {
+    @Binding var scrollTarget: Int?
     var brain: Brain
     var body: some View {
         GeometryReader { geo in
@@ -31,7 +32,7 @@ struct iOSSize: View {
                 height: geo.size.height * verticalFactor)
             let t = TE(appFrame: appFrame, isPad: isPad)
             
-            MainView(brain: brain, t: t)
+            MainView(scrollTarget: $scrollTarget, brain: brain, t: t)
                 .padding(.leading,   leadingPaddingNeeded ? t.spaceBetweenkeys : 0)
                 .padding(.trailing, trailingPaddingNeeded ? t.spaceBetweenkeys : 0)
                 .padding(.bottom,   bottomPaddingNeeded   ? t.spaceBetweenkeys : 0)

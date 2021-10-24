@@ -34,7 +34,7 @@ struct CalculatorApp: App {
         WindowGroup {
             // a little hack to prevent that which background creeps up during device orientation chang rotation
             let expandedDeviceSize: CGFloat = 1.5 * max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
-            iOSSize(brain: brain)
+            iOSSize(scrollTarget: $scrollTarget, brain: brain)
                 .statusBar(hidden: true)
                 .background(Rectangle()
                                 .frame(width: expandedDeviceSize,
@@ -106,19 +106,11 @@ class MyAppDelegate: UIResponder, UIApplicationDelegate {
         return sceneConfig
     }
     
-    convenience init(brain: Brain) {
-        self.init()
-    }
 }
 
 #else
 class MyAppDelegate: NSObject, UIApplicationDelegate {
         
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        // something to do
-        return true
-    }
-    
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window:UIWindow?) -> UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return .landscape
