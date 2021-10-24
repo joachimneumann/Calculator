@@ -20,7 +20,7 @@ class Brain: ObservableObject {
         didSet {
             persistantPrecision = precision
             var significantBits: Int
-            if (precision < 1000) {
+            if (precision < TE.maxScrollViewLength) {
                 /// let's be generous
                 significantBits = 10 * precision
             } else {

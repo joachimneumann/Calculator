@@ -67,7 +67,7 @@ class DisplayData: Equatable {
         if let str = number.str {
             let hasComma = str.contains(",")
             let temp = Gmp(str)
-            let scientific = DisplayData.scientificFromGmp(data: temp.data(length: 1000))
+            let scientific = DisplayData.scientificFromGmp(data: temp.data(length: globalGmpPrecision))
             self.init(isValidNumber: true,
                       nonScientific: str,
                       nonScientificIsString: true,

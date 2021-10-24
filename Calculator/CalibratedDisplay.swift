@@ -13,8 +13,8 @@ struct NonScientificDisplay: View {
     var body: some View {
         if let nonScientific = brain.nonScientific {
             let len: Int = nonScientific.count
-            let abrivated: String = "\(nonScientific.prefix(1000))...\n\nCopy to get \(brain.precisionMessage)"
-            let text = (len > 1000) ? abrivated : nonScientific
+            let abrivated: String = "\(nonScientific.prefix(TE.maxScrollViewLength))...\n\nCopy to get \(brain.precisionMessage)"
+            let text = (len > TE.maxScrollViewLength) ? abrivated : nonScientific
             ScrollViewReader { scrollViewProxy in
                 ScrollView {
                     Text(text)
@@ -48,7 +48,7 @@ struct ScientificDisplay: View {
         if let scientific = brain.scientific {
             HStack(spacing: 0.0) {
                 let len = scientific.mantissa.count
-                let text = (len > 1000) ? "\(scientific.mantissa.prefix(1000))...\n\nCopy to get \(brain.precisionMessage)" : scientific.mantissa
+                let text = (len > TE.maxScrollViewLength) ? "\(scientific.mantissa.prefix(TE.maxScrollViewLength))...\n\nCopy to get \(brain.precisionMessage)" : scientific.mantissa
                 ScrollViewReader { scrollViewProxy in
                     ScrollView {
                         Text(text)
