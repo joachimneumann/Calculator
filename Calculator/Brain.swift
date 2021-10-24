@@ -33,6 +33,18 @@ class Brain: ObservableObject {
             reset()
         }
     }
+    var precisionIconName: String {
+        switch precision {
+        case TE.lowPrecision:
+            return "h.circle.fill"
+        case TE.mediumPrecision:
+            return "t.circle.fill"
+        case TE.highPrecision:
+            return "m.circle.fill"
+        default:
+            return "questionmark.circle.fill"
+        }
+    }
     var precisionMessage: String {
         switch precision {
         case TE.lowPrecision:

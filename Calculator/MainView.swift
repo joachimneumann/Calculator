@@ -46,6 +46,7 @@ struct MainView: View {
                 HStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
                     Zoom(scrollTarget: $brain.globalScrollViewTarget,
+                         iconName: brain.zoomed ? brain.precisionIconName : "plus.circle.fill",
                          iconSize: t.keySize.height * 0.7,
                          textColor: TE.DigitKeyProperties.textColor,
                          zoomed: $brain.zoomed,
@@ -54,7 +55,7 @@ struct MainView: View {
                         .padding(.bottom, t.allkeysHeight + t.spaceBetweenkeys)
                 }
             }
-            if true { // showPrecisionButton {
+            if true {
                 HStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
                     Precision(brain: brain,
@@ -87,6 +88,7 @@ struct MainView: View {
         .background(
             Display(brain: brain, t: t)
                 .padding(.trailing, t.keySize.width * 1.0)
+                .animation(nil, value: UUID())
         )
     }
 }
