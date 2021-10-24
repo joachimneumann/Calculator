@@ -29,7 +29,6 @@ struct Display: View {
                         GeometryReader { proxy in
                             Color.clear.onAppear {
                                 initialHeight = proxy.size.height
-                                // print("initialHeight \(initialHeight ?? -1)")
                             }
                         }
                     )

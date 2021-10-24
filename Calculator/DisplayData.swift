@@ -46,6 +46,7 @@ class DisplayData: Equatable {
         self.nonScientificIsInteger = nonScientificIsInteger
         self.nonScientificIsFloat   = nonScientificIsFloat
         self.scientific             = scientific
+        print("DisplayData DONE")
     }
     
     convenience init() {
@@ -91,7 +92,7 @@ class DisplayData: Equatable {
     }
     
     private convenience init(gmp: Gmp) {
-        print("DisplayData init(gmp)")
+        print("DisplayData init(gmp) START")
         if gmp.NaN {
             self.init(invalid: "not real")
             return
@@ -114,7 +115,7 @@ class DisplayData: Equatable {
         let data = gmp.data(length: globalGmpPrecision)
         
         /// can be perfectly represented as Integer?
-        if data.mantissa.count <= data.exponent + 1 {
+        if data.mantissa.count <= data.exponent + 1 && data.exponent < globalGmpPrecision {
             var integerString = data.mantissa
             if integerString.count < data.exponent+1 {
                 for _ in 0..<(data.exponent+1-integerString.count) {
@@ -134,15 +135,17 @@ class DisplayData: Equatable {
         /// represent as float and in scientific notation
         var floatString: String? = nil
         if data.exponent < 0 {
-            /// abs(number) < 1
-            floatString = "0,"
-            let zeroes = -data.exponent
-            for _ in 1..<zeroes {
-                floatString! += "0"
+            if -data.exponent < globalGmpPrecision {
+                /// abs(number) < 1
+                floatString = "0,"
+                let zeroes = -data.exponent
+                for _ in 1..<zeroes {
+                    floatString! += "0"
+                }
+                floatString! += data.mantissa
+                if data.negative { floatString = "-" + floatString! }
             }
-            floatString! += data.mantissa
-            if data.negative { floatString = "-" + floatString! }
-        } else {
+        } else if data.exponent < globalGmpPrecision {
             /// abs(number) > 1
             if data.mantissa.count > data.exponent+1 {
                 floatString = data.mantissa

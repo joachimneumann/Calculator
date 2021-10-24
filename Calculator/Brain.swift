@@ -166,7 +166,7 @@ class Brain: ObservableObject {
             self.execute(priority: op.priority)
             self.self.operatorStack.push(op)
         } else {
-            print("### non-existing operation \(symbol)")
+//            print("### non-existing operation \(symbol)")
             assert(false)
         }
     }
@@ -176,7 +176,7 @@ class Brain: ObservableObject {
     }
     
     func determineDisplay() async {
-        print("XXXXX display2... \(calculating)")
+//        print("XXXXX display2... \(calculating)")
         
         var showNonScientific: Bool = false
         var doneChecking = false
@@ -258,9 +258,9 @@ class Brain: ObservableObject {
             nonScientific = nil
         }
         DispatchQueue.main.async {
-            print("done1... \(self.calculating)")
+//            print("done1... \(self.calculating)")
             self.calculating = false
-            print("done2... \(self.calculating)")
+//            print("done2... \(self.calculating)")
         }
     }
     
@@ -268,16 +268,16 @@ class Brain: ObservableObject {
         calculating = true
         Task {
             await Task.sleep(UInt64(0.01 * Double(NSEC_PER_SEC)))
-            print("calc... \(calculating)")
+//            print("calc... \(calculating)")
             await asyncOperationWorker(symbol, withPending: withPending)
-            print("display1... \(calculating)")
+//            print("display1... \(calculating)")
             await determineDisplay()
         }
     }
     
     func reset() {
         calculating = true
-        print("reset... \(calculating)")
+//        print("reset... \(calculating)")
         Task {
             operatorStack.removeAll()
             n.removeAll()
@@ -288,7 +288,7 @@ class Brain: ObservableObject {
     }
     func clearMemory() {
         calculating = true
-        print("clearMemory... \(calculating)")
+//        print("clearMemory... \(calculating)")
         Task {
             memory = nil
             await determineDisplay()
@@ -296,7 +296,7 @@ class Brain: ObservableObject {
     }
     func addToMemory() {
         calculating = true
-        print("addToMemory... \(calculating)")
+//        print("addToMemory... \(calculating)")
         Task {
             if memory == nil {
                 memory = n.lastConvertIntoGmp.copy()
@@ -308,7 +308,7 @@ class Brain: ObservableObject {
     }
     func subtractFromMemory() {
         calculating = true
-        print("subtractFromMemory... \(calculating)")
+//        print("subtractFromMemory... \(calculating)")
         Task {
             if memory == nil {
                 memory = n.lastConvertIntoGmp.copy()
@@ -322,7 +322,7 @@ class Brain: ObservableObject {
     func getMemory() {
         if memory != nil {
             calculating = true
-            print("getMemory... \(calculating)")
+//            print("getMemory... \(calculating)")
             Task {
                 let temp = memory!.copy()
                 let num = Number(temp)
