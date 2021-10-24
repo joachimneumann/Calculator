@@ -80,6 +80,22 @@ class TE {
         downAnimationTime: 0.1,
         upAnimationTime: 0.5)
 
+    static let SecondKeyProperties = KeyProperties(
+        textColor: Color(
+            red:   236.0/255.0,
+            green: 235.0/255.0,
+            blue:  235.0/255.0),
+        bgColor: Color(
+            red:    66.0/255.0,
+            green:  62.0/255.0,
+            blue:   59.0/255.0),
+        downColor: Color(
+            red:   124.0/255.0,
+            green: 125.0/255.0,
+            blue:  127.0/255.0),
+        downAnimationTime: 0.0,
+        upAnimationTime: 0.0)
+
     /// I have selected "Optimize Interface for Mac" in target settings, general, which is 0.77 times smaller
     static private let kh: CGFloat  = 63.00 * 0.77 // key height
     static private let kw: CGFloat  = 72.75 * 0.77 // key width

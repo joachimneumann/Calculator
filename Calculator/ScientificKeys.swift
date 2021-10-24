@@ -61,7 +61,7 @@ struct ScientificKeys: View {
                 { brain.getMemory() }
             }
             HStack(spacing: hSpacing) {
-                Key("2nd", keyProperties: TE.LightGrayKeyProperties)
+                Key("2nd", keyProperties: TE.SecondKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
