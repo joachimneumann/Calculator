@@ -30,6 +30,7 @@ class Brain: ObservableObject {
             }
             globalGmpSignificantBits = significantBits
             globalGmpPrecision = precision
+            Gmp.deleteConstants()
             reset()
         }
     }
@@ -354,12 +355,6 @@ class Brain: ObservableObject {
             "asinD":  Inplace(Gmp.asinD, 1),
             "acosD":  Inplace(Gmp.acosD, 1),
             "atanD":  Inplace(Gmp.atanD, 1),
-            "sinhD":  Inplace(Gmp.sinhD, 1),
-            "coshD":  Inplace(Gmp.coshD, 1),
-            "tanhD":  Inplace(Gmp.tanhD, 1),
-            "asinhD": Inplace(Gmp.asinhD, 1),
-            "acoshD": Inplace(Gmp.acoshD, 1),
-            "atanhD": Inplace(Gmp.atanhD, 1),
             "2^x":    Inplace(Gmp.pow_2_x, 1),
             "x^3":    Inplace(Gmp.pow_x_3, 1),
             "e^x":    Inplace(Gmp.pow_e_x, 1),

@@ -221,36 +221,21 @@ struct ScientificKeys: View {
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                {   if brain.rad {
-                        brain.operation(brain.secondKeys ? "asinh" : "sinh")
-                    } else {
-                        brain.operation(brain.secondKeys ? "asinhD" : "sinhD")
-                    }
-                }
+                { brain.operation(brain.secondKeys ? "asinh" : "sinh") }
                 Key(brain.secondKeys ? "acosh" : "cosh", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                {   if brain.rad {
-                        brain.operation(brain.secondKeys ? "acosh" : "cosh")
-                    } else {
-                        brain.operation(brain.secondKeys ? "acoshD" : "coshD")
-                    }
-                }
+                { brain.operation(brain.secondKeys ? "acosh" : "cosh") }
                 Key(brain.secondKeys ? "atanh" : "tanh", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                {   if brain.rad {
-                        brain.operation(brain.secondKeys ? "atanh" : "tanh")
-                    } else {
-                        brain.operation(brain.secondKeys ? "atanhD" : "tanhD")
-                    }
-                }
+                { brain.operation(brain.secondKeys ? "atanh" : "tanh") }
                 Key("π", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
