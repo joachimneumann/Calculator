@@ -9,14 +9,14 @@ import SwiftUI
 
 @main
 struct CalculatorApp: App {
-    let brain = Brain()
+    
     @UIApplicationDelegateAdaptor var mydelegate: MyAppDelegate
     
     var body: some Scene {
 #if targetEnvironment(macCatalyst)
-        CalculatorAppCatalyst(brain: brain)
+        CalculatorAppCatalyst()
 #else
-        CalculatorAppiOS(brain: brain)
+        CalculatorAppiOS()
 #endif
     }
 }

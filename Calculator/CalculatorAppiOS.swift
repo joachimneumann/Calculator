@@ -12,7 +12,9 @@ import SwiftUI
 #else
 
 struct CalculatorAppiOS: Scene {
-    var brain: Brain
+    
+    let brain = Brain()
+
     var body: some Scene {
         WindowGroup {
             /// The factor 1.5 is a little hack to prevent that the white background

@@ -12,11 +12,14 @@ class TE {
     static let digitsInAllDigitsDisplay: Int = 200
     static let numberPadFration: CGFloat = 0.4
     
-    static let lowPrecision        = 100
-    static let lowPrecisionString  = "one hundred digits"
     static let maxScrollViewLength = 1000
-    static let highPrecision       = 1000000
-    static let highPrecisionString = "one million digits"
+
+    static let lowPrecision          = 100
+    static let lowPrecisionString    = "one hundred digits"
+    static let mediumPrecision       = 10000
+    static let mediumPrecisionString = "ten thousand digits"
+    static let highPrecision         = 1000000
+    static let highPrecisionString   = "one million digits"
 
 
 #if targetEnvironment(macCatalyst)
@@ -175,6 +178,19 @@ class TE {
             blue:  216.0/255.0),
         downAnimationTime: 0.1,
         upAnimationTime: 0.5)
+    
+    static let SecondKeyProperties = KeyProperties(
+        textColor: Color.black,
+        bgColor: Color(
+            red:   165.0/255.0,
+            green: 165.0/255.0,
+            blue:  165.0/255.0),
+        downColor: Color(
+            red:   216.0/255.0,
+            green: 216.0/255.0,
+            blue:  216.0/255.0),
+        downAnimationTime: 0.0,
+        upAnimationTime: 0.0)
 
     static let zoomIconSize: CGFloat = 30.0
     static let landscapeSpacingFration: CGFloat = 0.01

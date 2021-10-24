@@ -22,6 +22,7 @@ struct CalculatorCommands: Commands {
         }
         CommandMenu("Precision") {
             LowPrecision(brain: brain)
+            MediumPrecision(brain: brain)
             HighPrecision(brain: brain)
         }
     }
@@ -56,11 +57,22 @@ struct LowPrecision: View {
     var body: some View {
         Button {
             brain.precision = TE.lowPrecision
-            brain.isHighPrecision = false
         } label: {
             Text(((brain.precision == TE.lowPrecision) ? "✓ " : "    ") + String(TE.lowPrecisionString))
         }
         .keyboardShortcut("1", modifiers: [.command])
+    }
+}
+
+struct MediumPrecision: View {
+    @ObservedObject var brain: Brain
+    var body: some View {
+        Button {
+            brain.precision = TE.mediumPrecision
+        } label: {
+            Text(((brain.precision == TE.mediumPrecision) ? "✓ " : "    ") + String(TE.mediumPrecisionString))
+        }
+        .keyboardShortcut("2", modifiers: [.command])
     }
 }
 
@@ -69,11 +81,10 @@ struct HighPrecision: View {
     var body: some View {
         Button {
             brain.precision = TE.highPrecision
-            brain.isHighPrecision = true
         } label: {
-            Text(((brain.precision == TE.lowPrecision) ? "    " : "✓ ") + String(TE.highPrecisionString))
+            Text(((brain.precision == TE.highPrecision) ? "✓ " : "    ") + String(TE.highPrecisionString))
         }
-        .keyboardShortcut("2", modifiers: [.command])
+        .keyboardShortcut("3", modifiers: [.command])
     }
 }
 

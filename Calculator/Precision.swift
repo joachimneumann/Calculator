@@ -12,22 +12,29 @@ struct Precision: View {
     let iconSize: CGFloat
     var body: some View {
         Group {
-            if brain.isHighPrecision {
-                Image(systemName: "h.circle.fill")
+            if brain.precision == TE.lowPrecision {
+                Image(systemName: "t.circle.fill")
+                    .resizable()
+            } else if brain.precision == TE.mediumPrecision {
+                Image(systemName: "m.circle.fill")
                     .resizable()
             } else {
-                Image(systemName: "m.circle.fill")
+                // high precision
+                Image(systemName: "h.circle.fill")
                     .resizable()
             }
         }
         .foregroundColor(TE.DigitKeyProperties.textColor)
         .onTapGesture {
             withAnimation(.easeIn) {
-                brain.isHighPrecision.toggle()
-                if brain.isHighPrecision {
+                if brain.precision == TE.lowPrecision {
+                    brain.precision = TE.mediumPrecision
+                    brain.messageToUser = TE.mediumPrecisionString
+                } else if brain.precision == TE.mediumPrecision {
                     brain.precision = TE.highPrecision
                     brain.messageToUser = TE.highPrecisionString
                 } else {
+                    // high precision
                     brain.precision = TE.lowPrecision
                     brain.messageToUser = TE.lowPrecisionString
                 }

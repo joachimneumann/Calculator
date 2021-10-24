@@ -13,10 +13,12 @@ class Brain: ObservableObject {
     var messageToUser: String? = nil
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
-    @AppStorage("isHighPrecision") var isHighPrecision: Bool = false
+    
+    @AppStorage("precision") var persistantPrecision: Int = TE.lowPrecision
 
     @Published var precision: Int = TE.lowPrecision {
         didSet {
+            persistantPrecision = precision
             var significantBits: Int
             if (precision < 1000) {
                 /// let's be generous
@@ -29,6 +31,18 @@ class Brain: ObservableObject {
             globalGmpSignificantBits = significantBits
             globalGmpPrecision = precision
             reset()
+        }
+    }
+    var precisionMessage: String {
+        switch precision {
+        case TE.lowPrecision:
+            return TE.lowPrecisionString
+        case TE.mediumPrecision:
+            return TE.mediumPrecisionString
+        case TE.highPrecision:
+            return TE.highPrecisionString
+        default:
+            return "unknown precision"
         }
     }
     
@@ -274,12 +288,7 @@ class Brain: ObservableObject {
 //    var last: Number { n.last() }
 
     init() {
-
-        if isHighPrecision {
-            precision = TE.highPrecision
-        } else {
-            precision = TE.lowPrecision
-        }
+        precision = persistantPrecision
 
         constantOperators = [
             "π":    Inplace(Gmp.π, 0),

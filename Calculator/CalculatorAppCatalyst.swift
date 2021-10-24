@@ -8,8 +8,11 @@
 import SwiftUI
 
 #if targetEnvironment(macCatalyst)
+
+
 struct CalculatorAppCatalyst: Scene {
-    var brain: Brain
+
+    let brain = Brain()
     var body: some Scene {
         WindowGroup {
             ZStack {
