@@ -97,6 +97,7 @@ class Gmp: Equatable {
     func changeSign() { mpfr_neg(  &mpfr, &mpfr, MPFR_RNDN) }
 
     static var deg2rad: Gmp?
+    static var rad2deg: Gmp?
 
     func x() {
         if Gmp.deg2rad == nil {
@@ -104,13 +105,20 @@ class Gmp: Equatable {
             Gmp.deg2rad!.π()
             Gmp.deg2rad!.div(other: Gmp("180"))
         }
+        if Gmp.rad2deg == nil {
+            Gmp.rad2deg = Gmp("180");
+            let temp = Gmp("0");
+            temp.π()
+            temp.rez()
+            Gmp.rad2deg!.mul(other: temp)
+        }
     }
     func sinD()        { x(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_sin(  &mpfr, &mpfr, MPFR_RNDN) }
     func cosD()        { x(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_cos(  &mpfr, &mpfr, MPFR_RNDN) }
     func tanD()        { x(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_tan(  &mpfr, &mpfr, MPFR_RNDN) }
-    func asinD()       { x(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_asin( &mpfr, &mpfr, MPFR_RNDN) }
-    func acosD()       { x(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_acos( &mpfr, &mpfr, MPFR_RNDN) }
-    func atanD()       { x(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_atan( &mpfr, &mpfr, MPFR_RNDN) }
+    func asinD()       { x(); mpfr_asin( &mpfr, &mpfr, MPFR_RNDN); mpfr_mul(&mpfr, &mpfr, &Gmp.rad2deg!.mpfr, MPFR_RNDN) }
+    func acosD()       { x(); mpfr_acos( &mpfr, &mpfr, MPFR_RNDN); mpfr_mul(&mpfr, &mpfr, &Gmp.rad2deg!.mpfr, MPFR_RNDN) }
+    func atanD()       { x(); mpfr_atan( &mpfr, &mpfr, MPFR_RNDN); mpfr_mul(&mpfr, &mpfr, &Gmp.rad2deg!.mpfr, MPFR_RNDN) }
     func sinhD()       { mpfr_sinh( &mpfr, &mpfr, MPFR_RNDN) }
     func coshD()       { mpfr_cosh( &mpfr, &mpfr, MPFR_RNDN) }
     func tanhD()       { mpfr_tanh( &mpfr, &mpfr, MPFR_RNDN) }
