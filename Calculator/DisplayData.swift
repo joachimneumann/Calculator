@@ -139,7 +139,6 @@ class DisplayData: Equatable {
                 floatString! += "0"
             }
             floatString! += data.mantissa
-            floatString = String(floatString!.prefix(101))
             if data.negative { floatString = "-" + floatString! }
         } else {
             /// abs(number) > 1
