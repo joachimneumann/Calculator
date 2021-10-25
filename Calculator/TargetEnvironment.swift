@@ -12,8 +12,6 @@ class TE {
     static let digitsInAllDigitsDisplay: Int = 200
     static let numberPadFration: CGFloat = 0.4
     
-    static let maxScrollViewLength = 1000
-
     static let lowPrecision          = 100
     static let lowPrecisionString    = "one hundred digits"
     static let mediumPrecision       = 10000

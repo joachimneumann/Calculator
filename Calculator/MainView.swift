@@ -45,7 +45,7 @@ struct MainView: View {
             if !t.isPad {
                 HStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    Zoom(scrollTarget: $brain.globalScrollViewTarget,
+                    Zoom(scrollTarget: $brain.scrollViewTarget,
                          iconName: brain.zoomed ? brain.precisionIconName : "plus.circle.fill",
                          iconSize: t.keySize.height * 0.7,
                          textColor: TE.DigitKeyProperties.textColor,

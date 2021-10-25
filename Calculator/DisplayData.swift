@@ -67,7 +67,7 @@ class DisplayData: Equatable {
         if let str = number.str {
             let hasComma = str.contains(",")
             let temp = Gmp(str)
-            let scientific = DisplayData.scientificFromGmp(data: temp.data(length: globalGmpPrecision))
+            let scientific = DisplayData.scientificFromGmp(data: temp.data(length: TE.lowPrecision))
             self.init(isValidNumber: true,
                       nonScientific: str,
                       nonScientificIsString: true,
@@ -112,10 +112,10 @@ class DisplayData: Equatable {
             return
         }
         
-        let data = gmp.data(length: globalGmpPrecision)
+        let data = gmp.data(length: TE.lowPrecision)
         
         /// can be perfectly represented as Integer?
-        if data.mantissa.count <= data.exponent + 1 && data.exponent < globalGmpPrecision {
+        if data.mantissa.count <= data.exponent + 1 && data.exponent < TE.lowPrecision {
             var integerString = data.mantissa
             if integerString.count < data.exponent+1 {
                 for _ in 0..<(data.exponent+1-integerString.count) {
@@ -135,7 +135,7 @@ class DisplayData: Equatable {
         /// represent as float and in scientific notation
         var floatString: String? = nil
         if data.exponent < 0 {
-            if -data.exponent < globalGmpPrecision {
+            if -data.exponent < TE.lowPrecision {
                 /// abs(number) < 1
                 floatString = "0,"
                 let zeroes = -data.exponent
@@ -145,7 +145,7 @@ class DisplayData: Equatable {
                 floatString! += data.mantissa
                 if data.negative { floatString = "-" + floatString! }
             }
-        } else if data.exponent < globalGmpPrecision {
+        } else if data.exponent < TE.lowPrecision {
             /// abs(number) > 1
             if data.mantissa.count > data.exponent+1 {
                 floatString = data.mantissa

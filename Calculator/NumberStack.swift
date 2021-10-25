@@ -150,8 +150,9 @@ struct NumberStack: CustomDebugStringConvertible{
         dd = nil
     }
     mutating func modifyLast(withOp op: inplaceType) {
+        print("modifyLast1 dd = nil")
         array.last!.inPlace(op: op)
-//        print("modifyLast dd = nil")
+        print("modifyLast2 dd = nil")
         dd = nil
     }
     mutating func replaceLast(with number: Number) {

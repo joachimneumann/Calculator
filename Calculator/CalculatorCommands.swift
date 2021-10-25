@@ -9,9 +9,9 @@ import SwiftUI
 
 struct CalculatorCommands: Commands {
     @ObservedObject var brain: Brain
-
+    
     private let keyInputSubject = KeyInputSubjectWrapper()
-
+    
     var body: some Commands {
         CommandMenu("Edit ") {
             /// the extra space after "Edit" prevents MacOS to add 'Start Dictation'
@@ -35,7 +35,7 @@ struct SpaceCommand: View {
             withAnimation(.easeIn) {
                 brain.zoomed.toggle()
                 if !brain.zoomed {
-                    brain.globalScrollViewTarget = 1
+                    brain.scrollViewTarget = 1
                 }
             }
         } label: {

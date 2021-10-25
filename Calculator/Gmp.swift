@@ -22,8 +22,8 @@ extension String {
 }
 
 var globalUnsignedLongInt: CUnsignedLong = 0
-var globalGmpSignificantBits: Int = 100 * TE.lowPrecision /// initial value. Will be changed when the user uses the menu
-var globalGmpPrecision: Int = TE.lowPrecision
+var globalGmpSignificantBits: Int = 0 /// Will be be set be brain.init() and in the menu
+var globalGmpPrecision: Int = 0
 
 class Gmp: Equatable {
     static func == (lhs: Gmp, rhs: Gmp) -> Bool {
@@ -124,8 +124,10 @@ class Gmp: Equatable {
     func acosD() { Gmp.assertConstants(); mpfr_acos( &mpfr, &mpfr, MPFR_RNDN); mpfr_mul(&mpfr, &mpfr, &Gmp.rad2deg!.mpfr, MPFR_RNDN) }
     func atanD() { Gmp.assertConstants(); mpfr_atan( &mpfr, &mpfr, MPFR_RNDN); mpfr_mul(&mpfr, &mpfr, &Gmp.rad2deg!.mpfr, MPFR_RNDN) }
     
-    func π() { mpfr_const_pi(&mpfr, MPFR_RNDN) }
-    func e() { mpfr_const_pi(&mpfr, MPFR_RNDN) } //mpfr_exp( &mpfr, &Gmp("1.0").mpfr, MPFR_RNDN)}
+    func π() {
+        mpfr_const_pi(&mpfr, MPFR_RNDN)
+    }
+    func e() { mpfr_exp( &mpfr, &Gmp("1.0").mpfr, MPFR_RNDN)}
 
     func rand() {
         if Gmp.randstate == nil {

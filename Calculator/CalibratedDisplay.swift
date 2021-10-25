@@ -11,32 +11,25 @@ struct NonScientificDisplay: View {
     @ObservedObject var brain: Brain
     let t: TE
     var body: some View {
-        if let nonScientific = brain.nonScientific {
-            let len: Int = nonScientific.count
-            let abrivated: String = "\(nonScientific.prefix(TE.maxScrollViewLength))...\n\nCopy to get \(brain.precisionMessage)"
-            let text = (len > TE.maxScrollViewLength) ? abrivated : nonScientific
-            ScrollViewReader { scrollViewProxy in
-                ScrollView {
-                    Text(text)
-                        .font(t.displayFont)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .foregroundColor(TE.DigitKeyProperties.textColor)
-                        .font(t.displayFont)
-                        .multilineTextAlignment(.trailing)
-                        .id(1)
-                }
-                .disabled(!brain.zoomed)
-                .onChange(of: brain.globalScrollViewTarget) { target in
-                    if let target = target {
-                        brain.globalScrollViewTarget = nil
-                        withAnimation {
-                            scrollViewProxy.scrollTo(target, anchor: .top)
-                        }
+        ScrollViewReader { scrollViewProxy in
+            ScrollView {
+                Text(brain.nonScientific!)
+                    .font(t.displayFont)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .foregroundColor(TE.DigitKeyProperties.textColor)
+                    .font(t.displayFont)
+                    .multilineTextAlignment(.trailing)
+                    .id(1)
+            }
+            .disabled(!brain.zoomed)
+            .onChange(of: brain.scrollViewTarget) { target in
+                if let target = target {
+                    brain.scrollViewTarget = nil
+                    withAnimation {
+                        scrollViewProxy.scrollTo(target, anchor: .top)
                     }
                 }
             }
-        } else {
-            EmptyView()
         }
     }
 }
@@ -45,39 +38,33 @@ struct ScientificDisplay: View {
     @ObservedObject var brain: Brain
     let t: TE
     var body: some View {
-        if let scientific = brain.scientific {
-            HStack(spacing: 0.0) {
-                let len = scientific.mantissa.count
-                let text = (len > TE.maxScrollViewLength) ? "\(scientific.mantissa.prefix(TE.maxScrollViewLength))...\n\nCopy to get \(brain.precisionMessage)" : scientific.mantissa
-                ScrollViewReader { scrollViewProxy in
-                    ScrollView {
-                        Text(text)
-                            .font(t.displayFont)
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                            .foregroundColor(TE.DigitKeyProperties.textColor)
-                            .multilineTextAlignment(.trailing)
-                            .id(1)
-                    }
-                    .disabled(!brain.zoomed)
-                    .onChange(of: brain.globalScrollViewTarget) { target in
-                        if let target = target {
-                            brain.globalScrollViewTarget = nil
-                            withAnimation {
-                                scrollViewProxy.scrollTo(target, anchor: .top)
-                            }
+        HStack(spacing: 0.0) {
+            ScrollViewReader { scrollViewProxy in
+                ScrollView {
+                    Text(brain.scientific!.mantissa)
+                        .font(t.displayFont)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .foregroundColor(TE.DigitKeyProperties.textColor)
+                        .multilineTextAlignment(.trailing)
+                        .id(1)
+                }
+                .disabled(!brain.zoomed)
+                .onChange(of: brain.scrollViewTarget) { target in
+                    if let target = target {
+                        brain.scrollViewTarget = nil
+                        withAnimation {
+                            scrollViewProxy.scrollTo(target, anchor: .top)
                         }
                     }
                 }
-                VStack(spacing: 0.0) {
-                    Text(" "+scientific.exponent)
-                        .font(t.displayFont)
-                        .foregroundColor(TE.DigitKeyProperties.textColor)
-                        .lineLimit(1)
-                    Spacer(minLength: 0.0)
-                }
             }
-        } else {
-            EmptyView()
+            VStack(spacing: 0.0) {
+                Text(" "+brain.scientific!.exponent)
+                    .font(t.displayFont)
+                    .foregroundColor(TE.DigitKeyProperties.textColor)
+                    .lineLimit(1)
+                Spacer(minLength: 0.0)
+            }
         }
     }
 }
@@ -89,8 +76,10 @@ struct CalibratedDisplay: View {
         Group {
             if brain.nonScientific != nil {
                 NonScientificDisplay(brain: brain, t: t)
-            } else {
+            } else if brain.scientific != nil {
                 ScientificDisplay(brain: brain, t: t)
+            } else {
+                EmptyView()
             }
         }
         .offset(x: 0, y: -0.03*t.displayFontSize)

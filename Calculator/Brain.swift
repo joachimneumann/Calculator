@@ -9,25 +9,14 @@ import Foundation
 import SwiftUI
 
 class Brain: ObservableObject {
-    @Published var globalScrollViewTarget: Int? = nil
+    @Published var scrollViewTarget: Int? = nil
     var messageToUser: String? = nil
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
     
-    @AppStorage("precision") var persistantPrecision: Int = TE.lowPrecision
-    
-    @Published var precision: Int = TE.lowPrecision {
+    @AppStorage("precision") var precision: Int = TE.lowPrecision {
         didSet {
-            persistantPrecision = precision
-            var significantBits: Int
-            if (precision < TE.maxScrollViewLength) {
-                /// let's be generous
-                significantBits = 10 * precision
-            } else {
-                significantBits = Int( Double(precision) * 3.3219 + 1000) /// 1.0 / log2(10) plus 1000 digits
-            }
-            globalGmpSignificantBits = significantBits
-            globalGmpPrecision = precision
+            calculateSignificantBits()
             Gmp.deleteConstants()
             reset()
         }
@@ -71,8 +60,11 @@ class Brain: ObservableObject {
     var debugLastDouble: Double { n.debugLastDouble }
     var debugLastGmp: Gmp { n.debugLastGmp }
     
-    var nonScientific: String? = nil
-    var scientific: Scientific? = nil
+    @Published var nonScientific: String? = nil
+    var nonScientificAllDigits: String {
+        "not implemented"
+    }
+    @Published var scientific: Scientific? = nil
     
     var isValidNumber: Bool { n.isValidNumber }
     var pendingOperator: String?
@@ -251,34 +243,38 @@ class Brain: ObservableObject {
         }
         
         if showNonScientific {
-            nonScientific = n.nonScientific
-            scientific = nil
+            DispatchQueue.main.async {
+                self.nonScientific = self.n.nonScientific
+                self.scientific = nil
+            }
         } else {
-            scientific = n.scientific
-            nonScientific = nil
-        }
-        DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                self.scientific = self.n.scientific
+                self.nonScientific = nil
+            }
 //            print("done1... \(self.calculating)")
-            self.calculating = false
+//            self.calculating = false
 //            print("done2... \(self.calculating)")
         }
     }
     
     func operation(_ symbol: String, withPending: Bool = true) {
-        calculating = true
+//        calculating = true
         Task {
             await Task.sleep(UInt64(0.01 * Double(NSEC_PER_SEC)))
-//            print("calc... \(calculating)")
+            print("calc... \(calculating)")
             await asyncOperationWorker(symbol, withPending: withPending)
-//            print("display1... \(calculating)")
+            print("display1... \(calculating)")
             await determineDisplay()
         }
     }
     
     func reset() {
-        calculating = true
+
+//        calculating = true
 //        print("reset... \(calculating)")
         Task {
+            calculateSignificantBits()
             operatorStack.removeAll()
             n.removeAll()
             pendingOperator = nil
@@ -287,7 +283,7 @@ class Brain: ObservableObject {
         }
     }
     func clearMemory() {
-        calculating = true
+//        calculating = true
 //        print("clearMemory... \(calculating)")
         Task {
             memory = nil
@@ -295,7 +291,7 @@ class Brain: ObservableObject {
         }
     }
     func addToMemory() {
-        calculating = true
+//        calculating = true
 //        print("addToMemory... \(calculating)")
         Task {
             if memory == nil {
@@ -307,7 +303,7 @@ class Brain: ObservableObject {
         }
     }
     func subtractFromMemory() {
-        calculating = true
+//        calculating = true
 //        print("subtractFromMemory... \(calculating)")
         Task {
             if memory == nil {
@@ -321,7 +317,7 @@ class Brain: ObservableObject {
     }
     func getMemory() {
         if memory != nil {
-            calculating = true
+//            calculating = true
 //            print("getMemory... \(calculating)")
             Task {
                 let temp = memory!.copy()
@@ -342,8 +338,21 @@ class Brain: ObservableObject {
     var no: Int { operatorStack.count }
     //    var last: Number { n.last() }
     
+    private func calculateSignificantBits() {
+        var significantBits: Int
+        if (precision < TE.mediumPrecision) {
+            /// let's be generous
+            significantBits = 10 * precision
+        } else {
+            significantBits = Int( Double(precision) * 3.3219 + 1000) /// 1.0 / log2(10) plus 1000 digits
+        }
+        globalGmpSignificantBits = significantBits
+        globalGmpPrecision = precision
+    }
+    
     init() {
-        precision = persistantPrecision // this triggers brain.reset()
+                
+        reset()
         
         constantOperators = [
             "π":    Inplace(Gmp.π, 0),
@@ -403,7 +412,7 @@ class Brain: ObservableObject {
     
     func fromPasteboard() {
         if let s = UIPasteboard.general.string {
-            calculating = true
+//            calculating = true
             Task {
                 let gmp = Gmp(s)
                 if pendingOperator != nil {
