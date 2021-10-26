@@ -26,149 +26,118 @@ struct Scientific: Equatable {
 }
 
 class DisplayData: Equatable {
+    /// This value will be determined in Display()
+    static var digitsInOneLine: Int = .max
+    static let digitsInExpandedDisplay: Int = 200
+    
+    private var _nonScientific: String?
+    private var _scientific: Scientific?
 
-    let digitsInExpandedDisplay: Int = 1300
-    
-    var isValidNumber: Bool
-    var nonScientific: String?
-    var nonScientificIsString: Bool
-    var nonScientificIsInteger: Bool
-    var nonScientificIsFloat: Bool
-    var scientific: Scientific?
+    var isNonScientific: Bool   { _nonScientific != nil }
+    var nonScientific: String?  { _nonScientific }
+    var scientific: Scientific? { _scientific }
 
-    private init(isValidNumber: Bool,
-                 nonScientific: String?,
-                 nonScientificIsString: Bool,
-                 nonScientificIsInteger: Bool,
-                 nonScientificIsFloat: Bool,
-                 scientific: Scientific?) {
-        self.isValidNumber          = isValidNumber
-        self.nonScientific          = nonScientific
-        self.nonScientificIsString  = nonScientificIsString
-        self.nonScientificIsInteger = nonScientificIsInteger
-        self.nonScientificIsFloat   = nonScientificIsFloat
-        self.scientific             = scientific
-        print("DisplayData DONE")
+    private init(_ str: String) {
+        _nonScientific = str
+        _scientific    = nil
     }
-    
-    convenience init() {
-        self.init(invalid: "invalid")
-    }
-    
-    
-    private convenience init(invalid: String) {
-        self.init(isValidNumber: false,
-                  nonScientific: invalid,
-                  nonScientificIsString: true,
-                  nonScientificIsInteger: false,
-                  nonScientificIsFloat: false,
-                  scientific: nil)
+    private init(_ scientific: Scientific) {
+        _nonScientific = nil
+        _scientific    = scientific
     }
 
     convenience init(number: Number) {
+        let gmp: Gmp
         if let str = number.str {
-            let hasComma = str.contains(",")
-            self.init(isValidNumber: true,
-                      nonScientific: str,
-                      nonScientificIsString: true,
-                      nonScientificIsInteger: !hasComma,
-                      nonScientificIsFloat: hasComma,
-                      scientific: nil)
+            if str.count <= DisplayData.digitsInOneLine {
+                self.init(str)
+                return
+            } else {
+                /// str, but too long for one line
+                gmp = Gmp(str)
+            }
         } else {
-            self.init(gmp: number.gmp)
+            gmp = number.gmp!
         }
-    }
 
-    private static func scientificFromGmp(data: Gmp.Data) -> Scientific {
-        print("DisplayData scientificFromGmp")
-        let exponent = "e\(data.exponent)"
-        var mantissa = data.mantissa
-        let index = mantissa.index(mantissa.startIndex, offsetBy: 1)
-        mantissa.insert(",", at: index)
-        if mantissa.count <= 2 { mantissa += "0" } /// e.g. 1e16 -> 1,e16 -> 1,0e16
-
-        if data.negative { mantissa = "-" + mantissa }
-        return Scientific(mantissa, exponent)
-    }
-    
-    private convenience init(gmp: Gmp) {
         print("DisplayData init(gmp) START")
         if gmp.NaN {
-            self.init(invalid: "not real")
+            self.init("not real")
             return
         }
         if gmp.inf {
-            self.init(invalid: "too large for me")
+            self.init("too large for me")
             return
         }
         
         if gmp.isZero {
-            self.init(isValidNumber: true,
-                      nonScientific: "0",
-                      nonScientificIsString: true,
-                      nonScientificIsInteger: false,
-                      nonScientificIsFloat: false,
-                      scientific: Scientific("0,0", "e0"))
+            self.init("0")
             return
         }
         
         print("data 1")
-        let data = gmp.data()
+        let data = gmp.data(DisplayData.digitsInExpandedDisplay)
         print("data 2")
 
-        /// can be perfectly represented as Integer?
-        if data.mantissa.count <= data.exponent + 1 && data.exponent < TE.lowPrecision {
+        /// can be perfectly represented as Integer in one line?
+        
+        /// mantissa not too long for the exponent?
+        if data.mantissa.count <= data.exponent + 1 {
+            /// the integer fits into one line?
             var integerString = data.mantissa
-            if integerString.count < data.exponent+1 {
-                for _ in 0..<(data.exponent+1-integerString.count) {
-                    integerString += "0"
-                }
-            }
             if data.negative { integerString = "-" + integerString }
-            self.init(isValidNumber: true,
-                      nonScientific: integerString,
-                      nonScientificIsString: false,
-                      nonScientificIsInteger: true,
-                      nonScientificIsFloat: false,
-                      scientific: DisplayData.scientificFromGmp(data: data))
-            return
+            /// zero padding
+            for _ in 0..<(data.exponent+1-integerString.count) {
+                integerString += "0"
+            }
+            if integerString.count <= DisplayData.digitsInOneLine {
+                self.init(integerString)
+                return
+            }
         }
         
-        /// represent as float and in scientific notation
-        var floatString: String? = nil
-        if data.exponent < 0 {
-            if -data.exponent < TE.lowPrecision {
-                /// abs(number) < 1
-                floatString = "0,"
+        /// Can be represent as float?
+        if data.exponent >= 0 {
+            /// X,xxxx
+            if data.exponent < DisplayData.digitsInOneLine - 3 {
+                /// can be displayed
+                var floatString = data.mantissa
+                let index = floatString.index(floatString.startIndex, offsetBy: data.exponent+1)
+                floatString.insert(",", at: index)
+                if data.negative { floatString = "-" + floatString }
+                self.init(floatString)
+                return
+            }
+        } else {
+            /// 0,xxxx
+            if -data.exponent < DisplayData.digitsInOneLine - 3 {
+                /// can be displayed
+                var floatString = "0,"
                 let zeroes = -data.exponent
                 for _ in 1..<zeroes {
-                    floatString! += "0"
+                    floatString += "0"
                 }
-                floatString! += data.mantissa
-                if data.negative { floatString = "-" + floatString! }
+                floatString += data.mantissa
+                self.init(floatString)
+                return
             }
-        } else if data.exponent < TE.lowPrecision {
-            /// abs(number) > 1
-            if data.mantissa.count > data.exponent+1 {
-                floatString = data.mantissa
-                let index = floatString!.index(floatString!.startIndex, offsetBy: data.exponent+1)
-                floatString!.insert(",", at: index)
-            }
-            if data.negative { floatString! = "-" + floatString! }
         }
-        self.init(isValidNumber: true,
-                  nonScientific: floatString,
-                  nonScientificIsString: false,
-                  nonScientificIsInteger: false,
-                  nonScientificIsFloat: floatString != nil,
-                  scientific: DisplayData.scientificFromGmp(data: data))
+        
+        /// needs to be displayed in scientific notation
+        let exponent = "e\(data.exponent)"
+        var mantissa = data.mantissa
+        let indexOne = mantissa.index(mantissa.startIndex, offsetBy: 1)
+        mantissa.insert(",", at: indexOne)
+        if mantissa.count <= 2 { mantissa += "0" } /// e.g. 1e16 -> 1,e16 -> 1,0e16
+        if data.negative { mantissa = "-" + mantissa }
+        self.init(Scientific(mantissa, exponent))
+        return
     }
     
     
     static func == (lhs: DisplayData, rhs: DisplayData) -> Bool {
-        if lhs.isValidNumber != rhs.isValidNumber { return false }
-        if lhs.scientific    != rhs.scientific    { return false }
-        if lhs.nonScientific != rhs.nonScientific  { return false }
+        if lhs._scientific    != rhs._scientific    { return false }
+        if lhs._nonScientific != rhs._nonScientific  { return false }
         return true
     }
     

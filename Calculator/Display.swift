@@ -29,6 +29,7 @@ struct Display: View {
                         GeometryReader { proxy in
                             Color.clear.onAppear {
                                 initialHeight = proxy.size.height
+                                DisplayData.digitsInOneLine = .max
                             }
                         }
                     )
@@ -60,10 +61,10 @@ struct FindIntegerDigitLimit: View {
                             Color.clear
                                 .onAppear {
                                     if proxy.size.height > initialHeight {
-                                        if (i - 1) < brain.digitsInDisplayInteger {
-                                            brain.digitsInDisplayInteger = (i - 1)
+                                        if (i - 1) < DisplayData.digitsInOneLine {
+                                            DisplayData.digitsInOneLine = (i - 1)
                                         }
-                                        // print("i \(i) \(s.count) digitsInDisplayInteger \(brain.digitsInDisplayInteger) proxy.size.height \(proxy.size.height) \(initialHeight) \(s)")
+//                                         print("i \(i) \(s.count) digitsInDisplayInteger \(DisplayData.digitsInOneLine) proxy.size.height \(proxy.size.height) \(initialHeight) \(s)")
                                     }
                                 }
                         }
@@ -86,11 +87,11 @@ struct FindFloatDigitLimit: View {
                         GeometryReader { proxy in
                             Color.clear.onAppear {
                                 if proxy.size.height > initialHeight {
-                                    if (i - 1) < brain.digitsInDisplayFloat {
-                                        brain.digitsInDisplayFloat = (i - 1)
+                                    if (i - 1) < DisplayData.digitsInOneLine {
+                                        DisplayData.digitsInOneLine = (i - 1)
                                     }
                                 }
-                                // print("i \(i) digitsInDisplayFloat \(brain.digitsInDisplayFloat) \(s.count) proxy.size.height \(proxy.size.height) \(initialHeight) \(s)")
+//                                 print("i \(i) digitsInDisplayFloat \(DisplayData.digitsInOneLine) \(s.count) proxy.size.height \(proxy.size.height) \(initialHeight) \(s)")
                             }
                         }
                     )
@@ -112,11 +113,11 @@ struct FindScientificDigitLimit: View {
                         GeometryReader { proxy in
                             Color.clear.onAppear {
                                 if proxy.size.height > initialHeight {
-                                    if (i - 1) < brain.digitsInDisplayScientific {
-                                        brain.digitsInDisplayScientific = (i - 1)
+                                    if (i - 1) < DisplayData.digitsInOneLine {
+                                        DisplayData.digitsInOneLine = (i - 1)
                                     }
                                 }
-                                // print("i \(i) digitsInDisplayScientific \(brain.digitsInDisplayScientific) \(s.count) proxy.size.height \(proxy.size.height) \(initialHeight) \(s)")
+//                                 print("i \(i) digitsInDisplayScientific \(DisplayData.digitsInOneLine) \(s.count) proxy.size.height \(proxy.size.height) \(initialHeight) \(s)")
                                 brain.calibrated = true
                             }
                         }
