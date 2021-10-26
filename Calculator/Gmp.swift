@@ -27,8 +27,8 @@ var globalGmpPrecision: Int = 0
 
 class Gmp: Equatable {
     static func == (lhs: Gmp, rhs: Gmp) -> Bool {
-        let l = lhs.data(length: globalGmpPrecision)
-        let r = rhs.data(length: globalGmpPrecision)
+        let l = lhs.data()
+        let r = rhs.data()
         if l.mantissa != r.mantissa { return false }
         if l.negative != r.negative { return false }
         if l.exponent != r.exponent { return false }
@@ -210,10 +210,14 @@ class Gmp: Equatable {
         let negative: Bool
     }
     
-    func data(length: Int) -> Data {
+    func data(length: Int = 200) -> Data {
+        /// I show only 1300 digits and then instruct
+        /// the user to copy in order to get all diits
         var exponent: mpfr_exp_t = 0
         var charArray: Array<CChar> = Array(repeating: 0, count: length+5)
+        print("data 11")
         mpfr_get_str(&charArray, &exponent, 10, length+5, &mpfr, MPFR_RNDN)
+        print("data 12")
         // todo 0.0000000....00000333 -> abort
         var negative: Bool
         if charArray[0] == 45 {

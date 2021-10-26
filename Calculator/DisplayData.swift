@@ -27,6 +27,8 @@ struct Scientific: Equatable {
 
 class DisplayData: Equatable {
 
+    let digitsInExpandedDisplay: Int = 1300
+    
     var isValidNumber: Bool
     var nonScientific: String?
     var nonScientificIsString: Bool
@@ -66,14 +68,12 @@ class DisplayData: Equatable {
     convenience init(number: Number) {
         if let str = number.str {
             let hasComma = str.contains(",")
-            let temp = Gmp(str)
-            let scientific = DisplayData.scientificFromGmp(data: temp.data(length: TE.lowPrecision))
             self.init(isValidNumber: true,
                       nonScientific: str,
                       nonScientificIsString: true,
                       nonScientificIsInteger: !hasComma,
                       nonScientificIsFloat: hasComma,
-                      scientific: scientific)
+                      scientific: nil)
         } else {
             self.init(gmp: number.gmp)
         }
@@ -112,8 +112,10 @@ class DisplayData: Equatable {
             return
         }
         
-        let data = gmp.data(length: TE.lowPrecision)
-        
+        print("data 1")
+        let data = gmp.data()
+        print("data 2")
+
         /// can be perfectly represented as Integer?
         if data.mantissa.count <= data.exponent + 1 && data.exponent < TE.lowPrecision {
             var integerString = data.mantissa
