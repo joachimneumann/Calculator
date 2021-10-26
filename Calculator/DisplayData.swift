@@ -84,15 +84,17 @@ class DisplayData: Equatable {
         /// mantissa not too long for the exponent?
         if data.mantissa.count <= data.exponent + 1 {
             /// the integer fits into one line?
-            var integerString = data.mantissa
-            if data.negative { integerString = "-" + integerString }
-            /// zero padding
-            for _ in 0..<(data.exponent+1-integerString.count) {
-                integerString += "0"
-            }
-            if integerString.count <= DisplayData.digitsInOneLine {
-                self.init(integerString)
-                return
+            if data.exponent < DisplayData.digitsInOneLine {
+                var integerString = data.mantissa
+                /// zero padding
+                for _ in 0..<(data.exponent+1-integerString.count) {
+                    integerString += "0"
+                }
+                if data.negative { integerString = "-" + integerString }
+                if integerString.count <= DisplayData.digitsInOneLine {
+                    self.init(integerString)
+                    return
+                }
             }
         }
         

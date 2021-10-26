@@ -68,6 +68,7 @@ struct ScientificDisplay: View {
                         .lineLimit(1)
                     Spacer(minLength: 0.0)
                 }
+                .layoutPriority(1)
             }
         }
     }
@@ -106,5 +107,6 @@ struct CalibratedDisplay: View {
                     Image(systemName: "doc.on.clipboard")
                 }
             }
-        }    }
+        }
+    }
 }
