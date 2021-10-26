@@ -52,9 +52,10 @@ class Brain: ObservableObject {
     @Published var rad: Bool = false
     @Published var calculating: Bool = false
     
-    var digitsInDisplayInteger: Int    = 2*TE.highPrecision
-    var digitsInDisplayFloat: Int      = 2*TE.highPrecision
-    var digitsInDisplayScientific: Int = 2*TE.highPrecision
+    /// correct values will be determined in Display()
+    var digitsInDisplayInteger: Int    = .max
+    var digitsInDisplayFloat: Int      = .max
+    var digitsInDisplayScientific: Int = .max
     
     
     var debugLastDouble: Double { n.debugLastDouble }
