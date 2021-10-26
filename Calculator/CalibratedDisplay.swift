@@ -39,11 +39,11 @@ struct ScientificDisplay: View {
     let t: TE
     var body: some View {
         HStack(spacing: 0.0) {
+            Spacer(minLength: 0.0)
             ScrollViewReader { scrollViewProxy in
                 ScrollView {
                     Text(brain.scientific!.mantissa)
                         .font(t.displayFont)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
                         .foregroundColor(TE.DigitKeyProperties.textColor)
                         .multilineTextAlignment(.trailing)
                         .id(1)
