@@ -92,10 +92,10 @@ struct CopyCommand: View {
     @ObservedObject var brain: Brain
     var body: some View {
         Button {
-            if brain.nonScientific != nil {
-                UIPasteboard.general.string = brain.nonScientific!
+            if brain.displayData.nonScientific != nil {
+                UIPasteboard.general.string = brain.displayData.nonScientific!
             } else {
-                UIPasteboard.general.string = brain.scientific?.combined
+                UIPasteboard.general.string = brain.displayData.scientific?.combined
             }
         } label: {
             Text("Copy")
@@ -108,7 +108,7 @@ struct PasteCommand: View {
     var brain: Brain
     var body: some View {
         Button {
-            brain.fromPasteboard()
+            brain.asyncOperation("fromPasteboard")
         } label: {
             Text("Paste")
         }

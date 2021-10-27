@@ -16,6 +16,7 @@ struct DisplayText: View {
         
     }
 }
+
 struct Display: View {
     @ObservedObject var brain: Brain
     let t: TE

@@ -7,51 +7,54 @@
 
 import SwiftUI
 
-struct Scientific: Equatable {
-    let mantissa: String
-    let exponent: String
-    
-    var combined: String { mantissa + " " + exponent }
-    init(_ mantissa: String, _ exponent: String) {
-        self.mantissa = mantissa
-        self.exponent = exponent
-    }
-    
-    static func == (lhs: Scientific, rhs: Scientific) -> Bool {
-        if lhs.mantissa != rhs.mantissa { return false }
-        if lhs.exponent != rhs.exponent { return false }
-        return true
-    }
 
-}
+struct DisplayData {
+    var nonScientific: String?
+    var scientific: Scientific?
 
-class DisplayData: Equatable {
-    /// This value will be determined in Display()
-    static var digitsInOneLine: Int = .max
     static let digitsInExpandedDisplay: Int = 200
+    static var digitsInOneLine: Int = 0
+
+    struct Scientific: Equatable {
+        let mantissa: String
+        let exponent: String
+        
+        var combined: String { mantissa + " " + exponent }
+        init(_ mantissa: String, _ exponent: String) {
+            self.mantissa = mantissa
+            self.exponent = exponent
+        }
+        
+        static func == (lhs: Scientific, rhs: Scientific) -> Bool {
+            if lhs.mantissa != rhs.mantissa { return false }
+            if lhs.exponent != rhs.exponent { return false }
+            return true
+        }
+    }
+
+    init() {
+        nonScientific = "invalid"
+        scientific = nil
+    }
+    mutating func set(_ ns: String) {
+        nonScientific = ns
+        scientific = nil
+    }
+    mutating func set (_ s: Scientific) {
+        nonScientific = nil
+        scientific = s
+    }
     
-    private var _nonScientific: String?
-    private var _scientific: Scientific?
-
-    var isNonScientific: Bool   { _nonScientific != nil }
-    var nonScientific: String?  { _nonScientific }
-    var scientific: Scientific? { _scientific }
-
-    private init(_ str: String) {
-        _nonScientific = str
-        _scientific    = nil
-    }
-    private init(_ scientific: Scientific) {
-        _nonScientific = nil
-        _scientific    = scientific
-    }
-
-    convenience init(number: Number) {
+    mutating func calc(_ number: Number) async -> DisplayData {
+        /// This value will be determined in Display()
+        //    static var digitsInOneLine: Int = .max
+        //    static let digitsInExpandedDisplay: Int = 200
+        
         let gmp: Gmp
         if let str = number.str {
             if str.count <= DisplayData.digitsInOneLine {
-                self.init(str)
-                return
+                set(str)
+                return self
             } else {
                 /// str, but too long for one line
                 gmp = Gmp(str)
@@ -59,26 +62,26 @@ class DisplayData: Equatable {
         } else {
             gmp = number.gmp!
         }
-
+        
         print("DisplayData init(gmp) START")
         if gmp.NaN {
-            self.init("not real")
-            return
+            set("not real")
+            return self
         }
         if gmp.inf {
-            self.init("too large for me")
-            return
+            set("too large for me")
+            return self
         }
         
         if gmp.isZero {
-            self.init("0")
-            return
+            set("0")
+            return self
         }
         
         print("data 1")
         let data = gmp.data(DisplayData.digitsInExpandedDisplay)
         print("data 2")
-
+        
         /// can be perfectly represented as Integer in one line?
         
         /// mantissa not too long for the exponent?
@@ -92,8 +95,8 @@ class DisplayData: Equatable {
                 }
                 if data.negative { integerString = "-" + integerString }
                 if integerString.count <= DisplayData.digitsInOneLine {
-                    self.init(integerString)
-                    return
+                    set(integerString)
+                    return self
                 }
             }
         }
@@ -107,8 +110,8 @@ class DisplayData: Equatable {
                 let index = floatString.index(floatString.startIndex, offsetBy: data.exponent+1)
                 floatString.insert(",", at: index)
                 if data.negative { floatString = "-" + floatString }
-                self.init(floatString)
-                return
+                set(floatString)
+                return self
             }
         } else {
             /// 0,xxxx
@@ -120,8 +123,8 @@ class DisplayData: Equatable {
                     floatString += "0"
                 }
                 floatString += data.mantissa
-                self.init(floatString)
-                return
+                set(floatString)
+                return self
             }
         }
         
@@ -132,15 +135,7 @@ class DisplayData: Equatable {
         mantissa.insert(",", at: indexOne)
         if mantissa.count <= 2 { mantissa += "0" } /// e.g. 1e16 -> 1,e16 -> 1,0e16
         if data.negative { mantissa = "-" + mantissa }
-        self.init(Scientific(mantissa, exponent))
-        return
+        set(Scientific(mantissa, exponent))
+        return self
     }
-    
-    
-    static func == (lhs: DisplayData, rhs: DisplayData) -> Bool {
-        if lhs._scientific    != rhs._scientific    { return false }
-        if lhs._nonScientific != rhs._nonScientific  { return false }
-        return true
-    }
-    
 }

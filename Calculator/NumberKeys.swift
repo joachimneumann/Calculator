@@ -25,7 +25,7 @@ struct NumberKeys: View {
                         fontSize: t.scientificKeyFontSize,
                         isAllowed: !brain.calculating && !brain.calculating,
                         isPending: false)
-                { Task { await brain.reset() } }
+                { brain.operation("C") }
                 Key("+/-", keyProperties: TE.LightGrayKeyProperties)
                     .op_plusMinus_percentage(
                         size: keySize,
@@ -35,13 +35,13 @@ struct NumberKeys: View {
                     .op_plusMinus_percentage(
                         size: keySize,
                         isAllowed: brain.isValidNumber && !brain.calculating)
-                { brain.operation("%")  }
+                { brain.asyncOperation("%")  }
                 Key("/", keyProperties: TE.OpKeyProperties)
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: brain.isPending("/"))
-                { brain.operation("/") }
+                { brain.asyncOperation("/") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("7", keyProperties: TE.DigitKeyProperties)
@@ -64,7 +64,7 @@ struct NumberKeys: View {
                         size: slightlyLargerSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: brain.isPending("x"))
-                { brain.operation("x") }
+                { brain.asyncOperation("x") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("4", keyProperties: TE.DigitKeyProperties)
@@ -87,7 +87,7 @@ struct NumberKeys: View {
                         size: slightlyLargerSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: brain.isPending("-"))
-                { brain.operation("-") }
+                { brain.asyncOperation("-") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("1", keyProperties: TE.DigitKeyProperties)
@@ -110,7 +110,7 @@ struct NumberKeys: View {
                         size: slightlyLargerSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: brain.isPending("+"))
-                { brain.operation("+") }
+                { brain.asyncOperation("+") }
             }
             HStack(spacing: horizontalSpace) {
                 Key("0", keyProperties: TE.DigitKeyProperties)
@@ -129,7 +129,7 @@ struct NumberKeys: View {
                         size: slightlyLargerSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                { brain.operation("=") }
+                { brain.asyncOperation("=") }
             }
         }
     }

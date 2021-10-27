@@ -23,42 +23,42 @@ struct ScientificKeys: View {
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                { brain.operation("(") }
+                { brain.asyncOperation("(") }
                 Key(")", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                { brain.operation(")") }
+                { brain.asyncOperation(")") }
                 Key("mc", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: !brain.calculating,
                         isPending: false)
-                { brain.clearMemory() }
+                { brain.operation("mc") }
                 Key("m+", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                { brain.addToMemory() }
+                { brain.operation("m+") }
                 Key("m-", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                { brain.subtractFromMemory() }
+                { brain.operation("m-") }
                 Key("mr", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: brain.memory != nil && !brain.calculating,
                         isPending: false)
-                { brain.getMemory() }
+                { brain.operation("mr") }
             }
             HStack(spacing: hSpacing) {
                 Key("2nd", keyProperties: TE.SecondKeyProperties)
@@ -74,35 +74,35 @@ struct ScientificKeys: View {
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                { brain.operation("x^2") }
+                { brain.asyncOperation("x^2") }
                 Key("x^3", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                { brain.operation("x^3") }
+                { brain.asyncOperation("x^3") }
                 Key("x^y", keyProperties: TE.LightGrayKeyProperties, isAllowed: brain.isValidNumber && !brain.calculating)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: brain.isPending("x^y"))
-                { brain.operation("x^y") }
+                { brain.asyncOperation("x^y") }
                 Key(brain.secondKeys ? "y^x" : "e^x", keyProperties: TE.LightGrayKeyProperties, isAllowed: brain.isValidNumber && !brain.calculating)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: brain.secondKeys ? brain.isPending("y^x") : false)
-                { brain.operation(brain.secondKeys ? "y^x" : "e^x") }
+                { brain.asyncOperation(brain.secondKeys ? "y^x" : "e^x") }
                 Key(brain.secondKeys ? "2^x" : "10^x", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                        isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                { brain.operation(brain.secondKeys ? "2^x" : "10^x") }
+                { brain.asyncOperation(brain.secondKeys ? "2^x" : "10^x") }
             }
             HStack(spacing: hSpacing) {
                 Key("One_x", keyProperties: TE.LightGrayKeyProperties, isAllowed: brain.isValidNumber && !brain.calculating)
@@ -111,42 +111,42 @@ struct ScientificKeys: View {
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                { brain.operation("One_x") }
+                { brain.asyncOperation("One_x") }
                 Key("√", keyProperties: TE.LightGrayKeyProperties, isAllowed: brain.isValidNumber && !brain.calculating)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                { brain.operation("√") }
+                { brain.asyncOperation("√") }
                 Key("3√", keyProperties: TE.LightGrayKeyProperties, isAllowed: brain.isValidNumber && !brain.calculating)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                { brain.operation("3√") }
+                { brain.asyncOperation("3√") }
                 Key("y√", keyProperties: TE.LightGrayKeyProperties, isPending: brain.isPending("y√"), isAllowed: brain.isValidNumber && !brain.calculating)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: brain.isPending("y√"))
-                { brain.operation("y√") }
+                { brain.asyncOperation("y√") }
                 Key(brain.secondKeys ? "logy" : "ln", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: brain.secondKeys ? brain.isPending("logy") : false)
-                { brain.operation(brain.secondKeys ? "logy" : "ln") }
+                { brain.asyncOperation(brain.secondKeys ? "logy" : "ln") }
                 Key(brain.secondKeys ? "log2" : "log10", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                { brain.operation(brain.secondKeys ? "log2" : "log10") }
+                { brain.asyncOperation(brain.secondKeys ? "log2" : "log10") }
             }
             HStack(spacing: hSpacing) {
                 Key("x!", keyProperties: TE.LightGrayKeyProperties)
@@ -155,7 +155,7 @@ struct ScientificKeys: View {
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                { brain.operation("x!") }
+                { brain.asyncOperation("x!") }
                 Key(brain.secondKeys ? "asin" : "sin", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
@@ -163,9 +163,9 @@ struct ScientificKeys: View {
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 {   if brain.rad {
-                        brain.operation(brain.secondKeys ? "asin" : "sin")
+                        brain.asyncOperation(brain.secondKeys ? "asin" : "sin")
                     } else {
-                        brain.operation(brain.secondKeys ? "asinD" : "sinD")
+                        brain.asyncOperation(brain.secondKeys ? "asinD" : "sinD")
                     }
                 }
                 Key(brain.secondKeys ? "acos" : "cos", keyProperties: TE.LightGrayKeyProperties)
@@ -175,9 +175,9 @@ struct ScientificKeys: View {
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 {   if brain.rad {
-                        brain.operation(brain.secondKeys ? "acos" : "cos")
+                        brain.asyncOperation(brain.secondKeys ? "acos" : "cos")
                     } else {
-                        brain.operation(brain.secondKeys ? "acosD" : "cosD")
+                        brain.asyncOperation(brain.secondKeys ? "acosD" : "cosD")
                     }
                 }
                 Key(brain.secondKeys ? "atan" : "tan", keyProperties: TE.LightGrayKeyProperties)
@@ -187,9 +187,9 @@ struct ScientificKeys: View {
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
                 {   if brain.rad {
-                        brain.operation(brain.secondKeys ? "atan" : "tan")
+                        brain.asyncOperation(brain.secondKeys ? "atan" : "tan")
                     } else {
-                        brain.operation(brain.secondKeys ? "atanD" : "tanD")
+                        brain.asyncOperation(brain.secondKeys ? "atanD" : "tanD")
                     }
                 }
                 Key("e", keyProperties: TE.LightGrayKeyProperties)
@@ -198,14 +198,14 @@ struct ScientificKeys: View {
                         fontSize: fontSize,
                         isAllowed: !brain.calculating,
                         isPending: false)
-                { brain.operation("e") }
+                { brain.asyncOperation("e") }
                 Key("EE", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: !brain.calculating,
                         isPending: false)
-                { brain.operation("EE") }
+                { brain.asyncOperation("EE") }
             }
             HStack(spacing: hSpacing) {
                 Key(brain.rad ? "Deg" : "Rad", keyProperties: TE.LightGrayKeyProperties)
@@ -221,35 +221,35 @@ struct ScientificKeys: View {
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                { brain.operation(brain.secondKeys ? "asinh" : "sinh") }
+                { brain.asyncOperation(brain.secondKeys ? "asinh" : "sinh") }
                 Key(brain.secondKeys ? "acosh" : "cosh", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                { brain.operation(brain.secondKeys ? "acosh" : "cosh") }
+                { brain.asyncOperation(brain.secondKeys ? "acosh" : "cosh") }
                 Key(brain.secondKeys ? "atanh" : "tanh", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                { brain.operation(brain.secondKeys ? "atanh" : "tanh") }
+                { brain.asyncOperation(brain.secondKeys ? "atanh" : "tanh") }
                 Key("π", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: !brain.calculating,
                         isPending: false)
-                { brain.operation("π") }
+                { brain.asyncOperation("π") }
                 Key("Rand", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: !brain.calculating,
                         isPending: false)
-                { brain.operation("rand") }
+                { brain.asyncOperation("rand") }
             }
         }
     }

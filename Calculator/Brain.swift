@@ -18,7 +18,7 @@ class Brain: ObservableObject {
         didSet {
             calculateSignificantBits()
             Gmp.deleteConstants()
-            Task { await reset() }
+            operation("C")
         }
     }
     var precisionIconName: String {
@@ -55,11 +55,10 @@ class Brain: ObservableObject {
 //    var debugLastDouble: Double { n.debugLastDouble }
 //    var debugLastGmp: Gmp { n.debugLastGmp }
     
-    @Published var nonScientific: String? = nil
+    @Published var displayData: DisplayData = DisplayData()
     var nonScientificAllDigits: String {
         "not implemented"
     }
-    @Published var scientific: Scientific? = nil
     
     var isValidNumber: Bool { true } //n.isValidNumber }
     var pendingOperator: String?
@@ -122,15 +121,55 @@ class Brain: ObservableObject {
         }
     }
     
-    func operationWorker(_ symbol: String, withPending: Bool = true) {
+    func operation(_ symbol: String, withPending: Bool = true) {
         if symbol == "=" {
             self.execute(priority: Operator.equalPriority)
+        } else if symbol == "C" {
+            calculateSignificantBits()
+            operatorStack.removeAll()
+            n.removeAll()
+            pendingOperator = nil
+            n.append(Number("0"))
+        } else if symbol == "mc" {
+            memory = nil
+        } else if symbol == "m+" {
+            if memory == nil {
+                memory = n.last.copy()
+            } else {
+                memory!.execute(Gmp.add, with: n.last)
+            }
+        } else if symbol == "m-" {
+            if memory == nil {
+                memory = n.last.copy()
+                memory!.execute(Gmp.changeSign)
+            } else {
+                memory!.execute(Gmp.sub, with: n.last)
+            }
+        } else if symbol == "mr" {
+            if memory != nil {
+                if pendingOperator != nil {
+                    n.append(memory!)
+                    pendingOperator = nil
+                } else {
+                    n.replaceLast(with: memory!)
+                }
+                memory = nil
+            }
         } else if symbol == "(" {
             self.operatorStack.push(self.openParenthesis)
         } else if symbol == ")" {
             self.execute(priority: Operator.closedParenthesesPriority)
         } else if symbol == "%" {
             self.percentage()
+        } else if symbol == "fromPasteboard" {
+            if let s = UIPasteboard.general.string {
+                let gmp = Gmp(s)
+                if pendingOperator != nil {
+                    n.append(Number(Gmp()))
+                    pendingOperator = nil
+                }
+                n.replaceLast(with: Number(gmp))
+            }
         } else if symbol == "," {
             if pendingOperator != nil {
                 n.append(Number("0"))
@@ -169,89 +208,23 @@ class Brain: ObservableObject {
         }
     }
     
-    func asyncOperationWorker(_ symbol: String, withPending: Bool = true) async {
-        self.operationWorker(symbol, withPending: withPending)
+    func waitingOperation(_ symbol: String, withPending: Bool = true) async {
+        operation(symbol, withPending: withPending)
     }
     
-    func determineDisplay() async {
-        let dd = DisplayData(number: n.last)
-        DispatchQueue.main.async {
-            self.nonScientific = dd.nonScientific
-            self.scientific = dd.scientific
-        }
-    }
-    
-    func operation(_ symbol: String, withPending: Bool = true) {
-//        calculating = true
+    func asyncOperation(_ symbol: String, withPending: Bool = true) {
         Task {
-            //await Task.sleep(UInt64(0.01 * Double(NSEC_PER_SEC)))
             print("calc... \(calculating)")
-            await asyncOperationWorker(symbol, withPending: withPending)
+            await waitingOperation(symbol, withPending: withPending)
             print("display1... \(calculating)")
-            await determineDisplay()
+            var dd = DisplayData()
+            let x = await dd.calc(n.last)
+            DispatchQueue.main.async {
+                self.displayData = x
+            }
         }
     }
-    
-    func reset() async {
 
-//        calculating = true
-//        print("reset... \(calculating)")
-        calculateSignificantBits()
-        operatorStack.removeAll()
-        n.removeAll()
-        pendingOperator = nil
-        n.append(Number("0"))
-        await determineDisplay()
-    }
-    func clearMemory() {
-//        calculating = true
-//        print("clearMemory... \(calculating)")
-        Task {
-            memory = nil
-            await determineDisplay()
-        }
-    }
-    func addToMemory() {
-//        calculating = true
-//        print("addToMemory... \(calculating)")
-        Task {
-            if memory == nil {
-                memory = n.last.copy()
-            } else {
-                memory!.execute(Gmp.add, with: n.last)
-            }
-            await determineDisplay()
-        }
-    }
-    func subtractFromMemory() {
-//        calculating = true
-//        print("subtractFromMemory... \(calculating)")
-        Task {
-            if memory == nil {
-                memory = n.last.copy()
-                memory!.execute(Gmp.changeSign)
-            } else {
-                memory!.execute(Gmp.sub, with: n.last)
-            }
-            await determineDisplay()
-        }
-    }
-    func getMemory() {
-        if memory != nil {
-//            calculating = true
-//            print("getMemory... \(calculating)")
-            Task {
-                if pendingOperator != nil {
-                    n.append(memory!)
-                    pendingOperator = nil
-                } else {
-                    n.replaceLast(with: memory!)
-                }
-                await determineDisplay()
-            }
-        }
-    }
-    
     var nn: Int { n.count }
     var no: Int { operatorStack.count }
     //    var last: Number { n.last() }
@@ -270,7 +243,7 @@ class Brain: ObservableObject {
     
     init() {
                 
-        Task { await reset() }
+        operation("C")
         
         constantOperators = [
             "π":    Inplace(Gmp.π, 0),
@@ -325,21 +298,6 @@ class Brain: ObservableObject {
         openParenthesis   = Operator(Operator.openParenthesesPriority)
         closedParenthesis = Operator(Operator.openParenthesesPriority)
         equalOperator     = Operator(Operator.equalPriority)
-    }
-    
-    func fromPasteboard() {
-        if let s = UIPasteboard.general.string {
-//            calculating = true
-            Task {
-                let gmp = Gmp(s)
-                if pendingOperator != nil {
-                    n.append(Number(Gmp()))
-                    pendingOperator = nil
-                }
-                n.replaceLast(with: Number(gmp))
-                await determineDisplay()
-            }
-        }
     }
     
 }
