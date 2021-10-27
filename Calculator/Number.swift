@@ -19,7 +19,7 @@ class Number: CustomDebugStringConvertible {
         if isStr {
             return Number(str!)
         } else {
-            return Number(gmp!)
+            return Number(gmp!.copy())
         }
     }
 

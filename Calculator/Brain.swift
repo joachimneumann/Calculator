@@ -55,8 +55,8 @@ class Brain: ObservableObject {
     @Published var rad: Bool = false
     @Published var calculating: Bool = false    
     
-//    var debugLastDouble: Double { n.debugLastDouble }
-//    var debugLastGmp: Gmp { n.debugLastGmp }
+    var debugLastDouble: Double { n.last.gmp!.toDouble() }
+    var debugLastGmp: Gmp { n.last.gmp! }
     
     var nonScientificAllDigits: String {
         "not implemented"
@@ -85,13 +85,13 @@ class Brain: ObservableObject {
     
     func press(_ digits: String) {
         for digit in digits {
-            asyncOperation(String(digit))
+            nonWaitingOperation(String(digit))
         }
     }
 
     func press(_ digit: Int) {
         if digit >= 0 && digit <= 9 {
-            asyncOperation(String(digit))
+            nonWaitingOperation(String(digit))
         }
     }
     
@@ -142,20 +142,20 @@ class Brain: ObservableObject {
             }
         } else if symbol == "m-" {
             if memory == nil {
-                memory = n.last.copy()
-                memory!.execute(Gmp.changeSign)
+                let temp = n.last.copy()
+                temp.execute(Gmp.changeSign)
+                memory = temp
             } else {
-                memory!.execute(Gmp.sub, with: n.last)
+                memory!.execute(Gmp.sub, with: n.last.copy())
             }
         } else if symbol == "mr" {
             if memory != nil {
                 if pendingOperator != nil {
-                    n.append(memory!)
+                    n.append(memory!.copy())
                     pendingOperator = nil
                 } else {
-                    n.replaceLast(with: memory!)
+                    n.replaceLast(with: memory!.copy())
                 }
-                memory = nil
             }
         } else if symbol == "(" {
             self.operatorStack.push(self.openParenthesis)
@@ -218,7 +218,14 @@ class Brain: ObservableObject {
             self.scientific = self.displayData.scientific
         }
     }
-    
+
+    func nonWaitingOperation(_ symbol: String, withPending: Bool = true) {
+        operation(symbol, withPending: withPending)
+        self.displayData.update(with: n.last)
+        self.nonScientific = self.displayData.nonScientific
+        self.scientific = self.displayData.scientific
+    }
+
     func asyncOperation(_ symbol: String, withPending: Bool = true) {
         Task {
             print("calc... \(calculating)")
@@ -244,7 +251,7 @@ class Brain: ObservableObject {
     }
     
     init() {
-        self.asyncOperation("C")
+        self.nonWaitingOperation("C")
         
         constantOperators = [
             "π":    Inplace(Gmp.π, 0),
