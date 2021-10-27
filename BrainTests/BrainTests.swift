@@ -14,8 +14,23 @@ import XCTest
 123456789012345678901234 -> mantissa = 1.234... exponent = 24 oneliner = 123456789012345678901234
 */
 class BrainTests: XCTestCase {
-    let brain = Brain()
+
         
+    
+    func testWithAwait() {
+        Task {
+            let brain = Brain()
+            await brain.reset()
+//            await brain.determineDisplay()
+            XCTAssertEqual(brain.nonScientific, "0")
+            XCTAssertEqual(brain.scientific, nil)
+            brain.press(1)
+            await brain.determineDisplay()
+            XCTAssertEqual(brain.nonScientific, "1")
+            XCTAssertEqual(brain.scientific, nil)
+        }
+    }
+    
     func test() throws {
         let digits = 16
 
@@ -27,11 +42,11 @@ class BrainTests: XCTestCase {
 
         
         /// 1
-        brain.reset()
-        XCTAssertEqual(brain.nonScientific, "0")
+        
+//        brain.reset()
+//        XCTAssertEqual(brain.nonScientific, "0")
 //        brain.press(1)
-//        XCTAssertEqual(brain.nonScientific, "1")
-//        XCTAssertEqual(brain.scientific, Scientific("1,0", "e0"))
+//        brain.determineDisplay()
 //
 //        /// 0
 //        brain.reset()

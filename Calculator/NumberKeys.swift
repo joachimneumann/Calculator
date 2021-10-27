@@ -25,7 +25,7 @@ struct NumberKeys: View {
                         fontSize: t.scientificKeyFontSize,
                         isAllowed: !brain.calculating && !brain.calculating,
                         isPending: false)
-                { brain.reset() }
+                { Task { await brain.reset() } }
                 Key("+/-", keyProperties: TE.LightGrayKeyProperties)
                     .op_plusMinus_percentage(
                         size: keySize,
