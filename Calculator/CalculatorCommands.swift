@@ -92,10 +92,10 @@ struct CopyCommand: View {
     @ObservedObject var brain: Brain
     var body: some View {
         Button {
-            if brain.displayData.nonScientific != nil {
-                UIPasteboard.general.string = brain.displayData.nonScientific!
+            if brain.nonScientific != nil {
+                UIPasteboard.general.string = brain.nonScientific!
             } else {
-                UIPasteboard.general.string = brain.displayData.scientific?.combined
+                UIPasteboard.general.string = brain.scientific?.combined
             }
         } label: {
             Text("Copy")

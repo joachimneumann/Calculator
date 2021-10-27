@@ -37,28 +37,28 @@ struct ScientificKeys: View {
                         fontSize: fontSize,
                         isAllowed: !brain.calculating,
                         isPending: false)
-                { brain.operation("mc") }
+                { brain.asyncOperation("mc") }
                 Key("m+", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                { brain.operation("m+") }
+                { brain.asyncOperation("m+") }
                 Key("m-", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: brain.isValidNumber && !brain.calculating,
                         isPending: false)
-                { brain.operation("m-") }
+                { brain.asyncOperation("m-") }
                 Key("mr", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
                         isAllowed: brain.memory != nil && !brain.calculating,
                         isPending: false)
-                { brain.operation("mr") }
+                { brain.asyncOperation("mr") }
             }
             HStack(spacing: hSpacing) {
                 Key("2nd", keyProperties: TE.SecondKeyProperties)

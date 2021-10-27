@@ -13,12 +13,15 @@ class Brain: ObservableObject {
     var messageToUser: String? = nil
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
-    
+    private var displayData: DisplayData = DisplayData()
+    @Published var nonScientific: String?
+    @Published var scientific: DisplayData.Scientific?
+
     @AppStorage("precision") var precision: Int = TE.lowPrecision {
         didSet {
             calculateSignificantBits()
             Gmp.deleteConstants()
-            operation("C")
+            asyncOperation("C")
         }
     }
     var precisionIconName: String {
@@ -55,7 +58,6 @@ class Brain: ObservableObject {
 //    var debugLastDouble: Double { n.debugLastDouble }
 //    var debugLastGmp: Gmp { n.debugLastGmp }
     
-    @Published var displayData: DisplayData = DisplayData()
     var nonScientificAllDigits: String {
         "not implemented"
     }
@@ -83,13 +85,13 @@ class Brain: ObservableObject {
     
     func press(_ digits: String) {
         for digit in digits {
-            operation(String(digit))
+            asyncOperation(String(digit))
         }
     }
 
     func press(_ digit: Int) {
         if digit >= 0 && digit <= 9 {
-            operation(String(digit))
+            asyncOperation(String(digit))
         }
     }
     
@@ -121,7 +123,7 @@ class Brain: ObservableObject {
         }
     }
     
-    func operation(_ symbol: String, withPending: Bool = true) {
+    private func operation(_ symbol: String, withPending: Bool = true) {
         if symbol == "=" {
             self.execute(priority: Operator.equalPriority)
         } else if symbol == "C" {
@@ -208,8 +210,13 @@ class Brain: ObservableObject {
         }
     }
     
-    func waitingOperation(_ symbol: String, withPending: Bool = true) async {
+    private func waitingOperation(_ symbol: String, withPending: Bool = true) async {
         operation(symbol, withPending: withPending)
+        self.displayData.update(with: n.last)
+        DispatchQueue.main.async {
+            self.nonScientific = self.displayData.nonScientific
+            self.scientific = self.displayData.scientific
+        }
     }
     
     func asyncOperation(_ symbol: String, withPending: Bool = true) {
@@ -217,11 +224,6 @@ class Brain: ObservableObject {
             print("calc... \(calculating)")
             await waitingOperation(symbol, withPending: withPending)
             print("display1... \(calculating)")
-            var dd = DisplayData()
-            let x = await dd.calc(n.last)
-            DispatchQueue.main.async {
-                self.displayData = x
-            }
         }
     }
 
@@ -242,8 +244,7 @@ class Brain: ObservableObject {
     }
     
     init() {
-                
-        operation("C")
+        self.asyncOperation("C")
         
         constantOperators = [
             "π":    Inplace(Gmp.π, 0),

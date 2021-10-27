@@ -11,7 +11,7 @@ struct NonScientificDisplay: View {
     @ObservedObject var brain: Brain
     let t: TE
     var body: some View {
-        if let text = brain.displayData.nonScientific {
+        if let text = brain.nonScientific {
             ScrollViewReader { scrollViewProxy in
                 ScrollView {
                     Text(text)
@@ -40,7 +40,7 @@ struct ScientificDisplay: View {
     @ObservedObject var brain: Brain
     let t: TE
     var body: some View {
-        if let scientific = brain.displayData.scientific {
+        if let scientific = brain.scientific {
             HStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
                 ScrollViewReader { scrollViewProxy in
@@ -79,9 +79,9 @@ struct CalibratedDisplay: View {
     let t: TE
     var body: some View {
         Group {
-            if brain.displayData.nonScientific != nil {
+            if brain.nonScientific != nil {
                 NonScientificDisplay(brain: brain, t: t)
-            } else if brain.displayData.scientific != nil {
+            } else if brain.scientific != nil {
                 ScientificDisplay(brain: brain, t: t)
             } else {
                 EmptyView()
@@ -90,10 +90,10 @@ struct CalibratedDisplay: View {
         .offset(x: 0, y: -0.03*t.displayFontSize)
         .contextMenu {
             Button(action: {
-                if brain.displayData.nonScientific != nil {
-                    UIPasteboard.general.string = brain.displayData.nonScientific!
+                if brain.nonScientific != nil {
+                    UIPasteboard.general.string = brain.nonScientific!
                 } else {
-                    UIPasteboard.general.string = brain.displayData.scientific?.combined
+                    UIPasteboard.general.string = brain.scientific?.combined
                 }
             }) {
                 Text("Copy to clipboard")

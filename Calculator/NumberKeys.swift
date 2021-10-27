@@ -25,12 +25,12 @@ struct NumberKeys: View {
                         fontSize: t.scientificKeyFontSize,
                         isAllowed: !brain.calculating && !brain.calculating,
                         isPending: false)
-                { brain.operation("C") }
+                { brain.asyncOperation("C") }
                 Key("+/-", keyProperties: TE.LightGrayKeyProperties)
                     .op_plusMinus_percentage(
                         size: keySize,
                         isAllowed: brain.isValidNumber && !brain.calculating)
-                { brain.operation("+/-") }
+                { brain.asyncOperation("+/-") }
                 Key("%", keyProperties: TE.LightGrayKeyProperties)
                     .op_plusMinus_percentage(
                         size: keySize,
@@ -123,7 +123,7 @@ struct NumberKeys: View {
                     .digit_1_to_9(
                         size: keySize,
                         isAllowed: !brain.calculating)
-                { brain.operation(",") }
+                { brain.asyncOperation(",") }
                 Key("=", keyProperties: TE.OpKeyProperties)
                     .op_div_mul_add_sub_eq(
                         size: slightlyLargerSize,

@@ -8,9 +8,9 @@
 import SwiftUI
 
 
-struct DisplayData {
-    var nonScientific: String?
-    var scientific: Scientific?
+class DisplayData: ObservableObject {
+    @Published var nonScientific: String?
+    @Published var scientific: Scientific?
 
     static let digitsInExpandedDisplay: Int = 200
     static var digitsInOneLine: Int = 0
@@ -33,19 +33,19 @@ struct DisplayData {
     }
 
     init() {
-        nonScientific = "invalid"
-        scientific = nil
+        self.nonScientific = "invalid"
+        self.scientific = nil
     }
-    mutating func set(_ ns: String) {
-        nonScientific = ns
-        scientific = nil
+    private func set(_ ns: String) {
+            self.nonScientific = ns
+            self.scientific = nil
     }
-    mutating func set (_ s: Scientific) {
-        nonScientific = nil
-        scientific = s
+    private func set (_ s: Scientific) {
+            self.nonScientific = nil
+            self.scientific = s
     }
     
-    mutating func calc(_ number: Number) async -> DisplayData {
+    func update(with number: Number) {
         /// This value will be determined in Display()
         //    static var digitsInOneLine: Int = .max
         //    static let digitsInExpandedDisplay: Int = 200
@@ -53,8 +53,8 @@ struct DisplayData {
         let gmp: Gmp
         if let str = number.str {
             if str.count <= DisplayData.digitsInOneLine {
-                set(str)
-                return self
+                    set(str)
+                return
             } else {
                 /// str, but too long for one line
                 gmp = Gmp(str)
@@ -66,16 +66,16 @@ struct DisplayData {
         print("DisplayData init(gmp) START")
         if gmp.NaN {
             set("not real")
-            return self
+            return
         }
         if gmp.inf {
             set("too large for me")
-            return self
+            return
         }
         
         if gmp.isZero {
             set("0")
-            return self
+            return
         }
         
         print("data 1")
@@ -96,7 +96,7 @@ struct DisplayData {
                 if data.negative { integerString = "-" + integerString }
                 if integerString.count <= DisplayData.digitsInOneLine {
                     set(integerString)
-                    return self
+                    return
                 }
             }
         }
@@ -111,7 +111,7 @@ struct DisplayData {
                 floatString.insert(",", at: index)
                 if data.negative { floatString = "-" + floatString }
                 set(floatString)
-                return self
+                return
             }
         } else {
             /// 0,xxxx
@@ -124,7 +124,7 @@ struct DisplayData {
                 }
                 floatString += data.mantissa
                 set(floatString)
-                return self
+                return
             }
         }
         
@@ -136,6 +136,6 @@ struct DisplayData {
         if mantissa.count <= 2 { mantissa += "0" } /// e.g. 1e16 -> 1,e16 -> 1,0e16
         if data.negative { mantissa = "-" + mantissa }
         set(Scientific(mantissa, exponent))
-        return self
+        return
     }
 }
