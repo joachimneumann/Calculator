@@ -50,7 +50,7 @@ struct MainView: View {
                          iconSize: t.keySize.height * 0.7,
                          textColor: TE.DigitKeyProperties.textColor,
                          zoomed: $brain.zoomed,
-                         showCalculating: brain.calculating)
+                         showCalculating: brain.showCalculating)
                         .frame(width: t.widerKeySize.width, height: t.keySize.height, alignment: .center)
                         .padding(.bottom, t.allkeysHeight + t.spaceBetweenkeys)
                 }

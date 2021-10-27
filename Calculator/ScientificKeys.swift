@@ -21,42 +21,48 @@ struct ScientificKeys: View {
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation("(") }
                 Key(")", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation(")") }
                 Key("mc", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation("mc") }
                 Key("m+", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation("m+") }
                 Key("m-", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation("m-") }
                 Key("mr", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.memory != nil && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation("mr") }
             }
@@ -65,86 +71,98 @@ struct ScientificKeys: View {
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: brain.secondKeys)
                 { brain.secondKeys.toggle() }
                 Key("x^2", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation("x^2") }
                 Key("x^3", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation("x^3") }
-                Key("x^y", keyProperties: TE.LightGrayKeyProperties, isAllowed: brain.isValidNumber && !brain.calculating)
+                Key("x^y", keyProperties: TE.LightGrayKeyProperties, isAllowed: brain.isValidNumber && !brain.showCalculating)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: brain.isPending("x^y"))
                 { brain.asyncOperation("x^y") }
-                Key(brain.secondKeys ? "y^x" : "e^x", keyProperties: TE.LightGrayKeyProperties, isAllowed: brain.isValidNumber && !brain.calculating)
+                Key(brain.secondKeys ? "y^x" : "e^x", keyProperties: TE.LightGrayKeyProperties, isAllowed: brain.isValidNumber && !brain.showCalculating)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: brain.secondKeys ? brain.isPending("y^x") : false)
                 { brain.asyncOperation(brain.secondKeys ? "y^x" : "e^x") }
                 Key(brain.secondKeys ? "2^x" : "10^x", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                       isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation(brain.secondKeys ? "2^x" : "10^x") }
             }
             HStack(spacing: hSpacing) {
-                Key("One_x", keyProperties: TE.LightGrayKeyProperties, isAllowed: brain.isValidNumber && !brain.calculating)
+                Key("One_x", keyProperties: TE.LightGrayKeyProperties, isAllowed: brain.isValidNumber && !brain.showCalculating)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation("One_x") }
-                Key("√", keyProperties: TE.LightGrayKeyProperties, isAllowed: brain.isValidNumber && !brain.calculating)
+                Key("√", keyProperties: TE.LightGrayKeyProperties, isAllowed: brain.isValidNumber && !brain.showCalculating)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation("√") }
-                Key("3√", keyProperties: TE.LightGrayKeyProperties, isAllowed: brain.isValidNumber && !brain.calculating)
+                Key("3√", keyProperties: TE.LightGrayKeyProperties, isAllowed: brain.isValidNumber && !brain.showCalculating)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation("3√") }
-                Key("y√", keyProperties: TE.LightGrayKeyProperties, isPending: brain.isPending("y√"), isAllowed: brain.isValidNumber && !brain.calculating)
+                Key("y√", keyProperties: TE.LightGrayKeyProperties, isPending: brain.isPending("y√"), isAllowed: brain.isValidNumber && !brain.showCalculating)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: brain.isPending("y√"))
                 { brain.asyncOperation("y√") }
                 Key(brain.secondKeys ? "logy" : "ln", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: brain.secondKeys ? brain.isPending("logy") : false)
                 { brain.asyncOperation(brain.secondKeys ? "logy" : "ln") }
                 Key(brain.secondKeys ? "log2" : "log10", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation(brain.secondKeys ? "log2" : "log10") }
             }
@@ -153,14 +171,16 @@ struct ScientificKeys: View {
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation("x!") }
                 Key(brain.secondKeys ? "asin" : "sin", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 {   if brain.rad {
                         brain.asyncOperation(brain.secondKeys ? "asin" : "sin")
@@ -172,7 +192,8 @@ struct ScientificKeys: View {
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 {   if brain.rad {
                         brain.asyncOperation(brain.secondKeys ? "acos" : "cos")
@@ -184,7 +205,8 @@ struct ScientificKeys: View {
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 {   if brain.rad {
                         brain.asyncOperation(brain.secondKeys ? "atan" : "tan")
@@ -196,14 +218,16 @@ struct ScientificKeys: View {
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation("e") }
                 Key("EE", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation("EE") }
             }
@@ -212,42 +236,48 @@ struct ScientificKeys: View {
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.rad.toggle() }
                 Key(brain.secondKeys ? "asinh" : "sinh", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation(brain.secondKeys ? "asinh" : "sinh") }
                 Key(brain.secondKeys ? "acosh" : "cosh", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation(brain.secondKeys ? "acosh" : "cosh") }
                 Key(brain.secondKeys ? "atanh" : "tanh", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: brain.isValidNumber && !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation(brain.secondKeys ? "atanh" : "tanh") }
                 Key("π", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation("π") }
                 Key("Rand", keyProperties: TE.LightGrayKeyProperties)
                     .scientific(
                         size: keySize,
                         fontSize: fontSize,
-                        isAllowed: !brain.calculating,
+                        enabled: !brain.isCalculating && !brain.isValidNumber,
+                        showEnabled: !brain.showCalculating && !brain.isValidNumber,
                         isPending: false)
                 { brain.asyncOperation("rand") }
             }

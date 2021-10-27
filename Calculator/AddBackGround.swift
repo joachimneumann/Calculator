@@ -9,12 +9,13 @@ import SwiftUI
 
 private struct AddBackGround: ViewModifier {
     let keyProperties: KeyProperties
-    let isAllowed: Bool
+    let enabled: Bool
+    let showEnabled: Bool
     let isPending: Bool
     let callback: (() -> Void)?
     var bg: Color {
         if down {
-            if isAllowed {
+            if showEnabled {
                 return keyProperties.downColor
             } else {
                 return Color(
@@ -40,14 +41,14 @@ private struct AddBackGround: ViewModifier {
         .gesture(
             DragGesture(minimumDistance: 0.0)
                 .onChanged() { value in
-                    if isAllowed && callback != nil {
+                    if enabled && callback != nil {
                         withAnimation(.easeIn(duration: keyProperties.downAnimationTime)) {
                             down = true
                         }
                     }
                 }
                 .onEnded() { value in
-                    if isAllowed && callback != nil {
+                    if enabled && callback != nil {
                         withAnimation(.easeIn(duration: keyProperties.upAnimationTime)) {
                             down = false
                         }
@@ -59,7 +60,7 @@ private struct AddBackGround: ViewModifier {
 }
 
 extension View {
-    func addBackground(with keyProperties: KeyProperties, isAllowed: Bool, isPending: Bool, callback: (() -> Void)?) -> some View {
-        return self.modifier(AddBackGround(keyProperties: keyProperties, isAllowed: isAllowed, isPending: isPending, callback: callback))
+    func addBackground(with keyProperties: KeyProperties, enabled: Bool, showEnabled: Bool, isPending: Bool, callback: (() -> Void)?) -> some View {
+        return self.modifier(AddBackGround(keyProperties: keyProperties, enabled: enabled, showEnabled: showEnabled, isPending: isPending, callback: callback))
     }
 }

@@ -75,12 +75,13 @@ struct Key: View {
 private struct Digit_0_to_9: ViewModifier {
     let keyProperties: KeyProperties
     let size: CGSize
-    let isAllowed: Bool
+    let enabled: Bool
+    let showEnabled: Bool
     let callback: (() -> Void)?
     func body(content: Content) -> some View {
         content
-            .foregroundColor((callback == nil || !isAllowed) ?  Color.gray : keyProperties.textColor)
-            .addBackground(with: keyProperties, isAllowed: isAllowed, isPending: false, callback: callback)
+            .foregroundColor(!showEnabled ?  Color.gray : keyProperties.textColor)
+            .addBackground(with: keyProperties, enabled: enabled, showEnabled: showEnabled, isPending: false, callback: callback)
             .font(Font.system(size: size.height * 0.48))
     }
 }
@@ -88,11 +89,12 @@ private struct Digit_0_to_9: ViewModifier {
 private struct Colorful_plus_minus_etc: ViewModifier {
     let keyProperties: KeyProperties
     let size: CGSize
-    let isAllowed: Bool
+    let enabled: Bool
+    let showEnabled: Bool
     let isPending: Bool
     let callback: (() -> Void)?
     var fg: Color {
-        if callback == nil || !isAllowed {
+        if !showEnabled {
             return Color.gray
         } else {
             if isPending {
@@ -106,7 +108,7 @@ private struct Colorful_plus_minus_etc: ViewModifier {
         let fontsize = size.height * 0.36
         content
             .foregroundColor(fg)
-            .addBackground(with: keyProperties, isAllowed: isAllowed, isPending: isPending, callback: callback)
+            .addBackground(with: keyProperties, enabled: enabled, showEnabled: showEnabled, isPending: isPending, callback: callback)
             .font(Font.system(size: fontsize, weight: .bold))
         
     }
@@ -115,13 +117,14 @@ private struct Colorful_plus_minus_etc: ViewModifier {
 private struct PlusMinus_percentage: ViewModifier {
     let keyProperties: KeyProperties
     let size: CGSize
-    let isAllowed: Bool
+    let enabled: Bool
+    let showEnabled: Bool
     let callback: (() -> Void)?
     func body(content: Content) -> some View {
         let fontsize = size.height * 0.36
         content
-            .foregroundColor((callback == nil || !isAllowed) ?  Color.gray : keyProperties.textColor)
-            .addBackground(with: keyProperties, isAllowed: isAllowed, isPending: false, callback: callback)
+            .foregroundColor(!showEnabled ?  Color.gray : keyProperties.textColor)
+            .addBackground(with: keyProperties, enabled: enabled, showEnabled: showEnabled, isPending: false, callback: callback)
             .font(Font.system(size: fontsize, weight: .bold))
     }
 }
@@ -129,61 +132,62 @@ private struct PlusMinus_percentage: ViewModifier {
 private struct ScientificButton: ViewModifier {
     let keyProperties: KeyProperties
     let fontSize: CGFloat
-    let isAllowed: Bool
+    let enabled: Bool
+    let showEnabled: Bool
     let isPending: Bool
     let callback: (() -> Void)?
     var fg: Color {
-        if callback == nil || !isAllowed {
+        if !showEnabled {
             return Color.gray
         } else {
             if isPending {
                 return keyProperties.bgColor
             } else {
-                return isAllowed ? keyProperties.textColor : Color(white: 0.5)
+                return showEnabled ? keyProperties.textColor : Color(white: 0.5)
             }
         }
     }
     func body(content: Content) -> some View {
         content
             .foregroundColor(fg)
-            .addBackground(with: keyProperties, isAllowed: isAllowed, isPending: isPending, callback: callback)
+            .addBackground(with: keyProperties, enabled: enabled, showEnabled: showEnabled, isPending: isPending, callback: callback)
             .font(Font.system(size: fontSize, weight: .regular))
     }
 }
 
 
 extension Key {
-    func digit_1_to_9(size: CGSize, isAllowed: Bool, callback: (() -> Void)? = nil) -> some View {
+    func digit_1_to_9(size: CGSize, enabled: Bool, showEnabled: Bool, callback: (() -> Void)? = nil) -> some View {
         self
-            .modifier(Digit_0_to_9(keyProperties: keyProperties, size: size, isAllowed: isAllowed, callback: callback))
+            .modifier(Digit_0_to_9(keyProperties: keyProperties, size: size, enabled: enabled, showEnabled: showEnabled, callback: callback))
             .frame(width: size.width, height: size.height)
     }
     
-    func digit_0(size: CGSize, space: CGFloat, isAllowed: Bool, callback: (() -> Void)? = nil ) -> some View {
+    func digit_0(size: CGSize, space: CGFloat, enabled: Bool, showEnabled: Bool, callback: (() -> Void)? = nil ) -> some View {
         HStack {
             self
                 .padding(.leading, size.height * 0.4)
             Spacer()
         }
-        .modifier(Digit_0_to_9(keyProperties: keyProperties, size: size, isAllowed: isAllowed, callback: callback))
+        .modifier(Digit_0_to_9(keyProperties: keyProperties, size: size, enabled: enabled, showEnabled: showEnabled, callback: callback))
         .frame(width: size.width*2.0+space, height: size.height)
     }
     
-    func op_div_mul_add_sub_eq(size: CGSize, isAllowed: Bool, isPending: Bool, callback: (() -> Void)? = nil ) -> some View {
+    func op_div_mul_add_sub_eq(size: CGSize, enabled: Bool, showEnabled: Bool, isPending: Bool, callback: (() -> Void)? = nil ) -> some View {
         self
-            .modifier(Colorful_plus_minus_etc(keyProperties: keyProperties, size: size, isAllowed: isAllowed, isPending: isPending, callback: callback))
+            .modifier(Colorful_plus_minus_etc(keyProperties: keyProperties, size: size, enabled: enabled, showEnabled: showEnabled, isPending: isPending, callback: callback))
             .frame(width: size.width, height: size.height)
     }
     
-    func op_plusMinus_percentage(size: CGSize, isAllowed: Bool, callback: (() -> Void)? = nil ) -> some View {
+    func op_plusMinus_percentage(size: CGSize, enabled: Bool, showEnabled: Bool, callback: (() -> Void)? = nil ) -> some View {
         self
-            .modifier(PlusMinus_percentage(keyProperties: keyProperties, size: size, isAllowed: isAllowed, callback: callback))
+            .modifier(PlusMinus_percentage(keyProperties: keyProperties, size: size, enabled: enabled, showEnabled: showEnabled, callback: callback))
             .frame(width: size.width, height: size.height)
     }
     
-    func scientific(size: CGSize, fontSize: CGFloat, isAllowed: Bool, isPending: Bool, callback: (() -> Void)? = nil ) -> some View {
+    func scientific(size: CGSize, fontSize: CGFloat, enabled: Bool, showEnabled: Bool, isPending: Bool, callback: (() -> Void)? = nil ) -> some View {
         return self
-            .modifier(ScientificButton(keyProperties: keyProperties, fontSize: fontSize, isAllowed: isAllowed, isPending: isPending, callback: callback))
+            .modifier(ScientificButton(keyProperties: keyProperties, fontSize: fontSize, enabled: enabled, showEnabled: showEnabled, isPending: isPending, callback: callback))
             .frame(width: size.width, height: size.height)
     }
 }

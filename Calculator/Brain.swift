@@ -53,8 +53,9 @@ class Brain: ObservableObject {
     @Published var calibrated: Bool = false
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
-    @Published var calculating: Bool = false    
-    
+    @Published var showCalculating: Bool = false
+    var isCalculating: Bool = false
+
     var debugLastDouble: Double { n.last.gmp!.toDouble() }
     var debugLastGmp: Gmp { n.last.gmp! }
     
@@ -211,12 +212,22 @@ class Brain: ObservableObject {
     }
     
     private func waitingOperation(_ symbol: String, withPending: Bool = true) async {
+        DispatchQueue.main.async {
+            self.isCalculating = true
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+            if self.isCalculating {
+                self.showCalculating = true
+            }
+        }
         operation(symbol, withPending: withPending)
         self.displayData.update(with: n.last)
         DispatchQueue.main.async {
             self.nonScientific = self.displayData.nonScientific
             self.scientific = self.displayData.scientific
-        }
+            self.showCalculating = false
+            self.isCalculating = false
+    }
     }
 
     func nonWaitingOperation(_ symbol: String, withPending: Bool = true) {
@@ -227,10 +238,12 @@ class Brain: ObservableObject {
     }
 
     func asyncOperation(_ symbol: String, withPending: Bool = true) {
-        Task {
-            print("calc... \(calculating)")
-            await waitingOperation(symbol, withPending: withPending)
-            print("display1... \(calculating)")
+        if !isCalculating {
+            Task {
+                print("calc... \(showCalculating)")
+                await waitingOperation(symbol, withPending: withPending)
+                print("display1... \(showCalculating)")
+            }
         }
     }
 
