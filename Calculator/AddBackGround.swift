@@ -9,20 +9,21 @@ import SwiftUI
 
 private struct AddBackGround: ViewModifier {
     let keyProperties: KeyProperties
-    let enabled: Bool
-    let showEnabled: Bool
+    let brain: Brain
     let isPending: Bool
     let callback: (() -> Void)?
+    @State var down: Bool = false
+
     var bg: Color {
         if down {
-            if showEnabled {
+//            if enabled {
                 return keyProperties.downColor
-            } else {
-                return Color(
-                    red:   (229.0 / 255.0),
-                    green: ( 99.0 / 255.0),
-                    blue:  ( 97.0 / 255.0))
-            }
+//            } else {
+//                return Color(
+//                    red:   (229.0 / 255.0),
+//                    green: ( 99.0 / 255.0),
+//                    blue:  ( 97.0 / 255.0))
+//            }
         } else {
             if isPending {
                 return keyProperties.textColor
@@ -31,7 +32,7 @@ private struct AddBackGround: ViewModifier {
             }
         }
     }
-    @State var down: Bool = false
+    
     func body(content: Content) -> some View {
         ZStack {
             TE.ButtonShape()
@@ -41,14 +42,15 @@ private struct AddBackGround: ViewModifier {
         .gesture(
             DragGesture(minimumDistance: 0.0)
                 .onChanged() { value in
-                    if enabled && callback != nil {
+                    //print("onChanged brain.isCalculating=\(brain.isCalculating)")
+                    if !brain.isCalculating {
                         withAnimation(.easeIn(duration: keyProperties.downAnimationTime)) {
                             down = true
                         }
                     }
                 }
                 .onEnded() { value in
-                    if enabled && callback != nil {
+                    if !brain.isCalculating {
                         withAnimation(.easeIn(duration: keyProperties.upAnimationTime)) {
                             down = false
                         }
@@ -60,7 +62,8 @@ private struct AddBackGround: ViewModifier {
 }
 
 extension View {
-    func addBackground(with keyProperties: KeyProperties, enabled: Bool, showEnabled: Bool, isPending: Bool, callback: (() -> Void)?) -> some View {
-        return self.modifier(AddBackGround(keyProperties: keyProperties, enabled: enabled, showEnabled: showEnabled, isPending: isPending, callback: callback))
+    func addBackground(with keyProperties: KeyProperties, brain: Brain, isPending: Bool, callback: (() -> Void)?) -> some View {
+//        print("addBackground brain.isCalculating=\(brain.isCalculating)")
+        return self.modifier(AddBackGround(keyProperties: keyProperties, brain: brain, isPending: isPending, callback: callback))
     }
 }

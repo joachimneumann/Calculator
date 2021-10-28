@@ -7,6 +7,14 @@
 
 import SwiftUI
 
+struct KeyProperties {
+    let textColor: Color
+    let bgColor: Color
+    let downColor: Color
+    let downAnimationTime: Double
+    let upAnimationTime: Double
+}
+
 class TE {
     static let iPhoneScientificFontSizeReduction: CGFloat = 0.85//1.0
     static let digitsInAllDigitsDisplay: Int = 200
@@ -81,7 +89,7 @@ class TE {
         downAnimationTime: 0.1,
         upAnimationTime: 0.5)
 
-    static let SecondKeyProperties = KeyProperties(
+    static let ScientificKeyProperties = KeyProperties(
         textColor: Color(
             red:   236.0/255.0,
             green: 235.0/255.0,
@@ -177,7 +185,7 @@ class TE {
         downAnimationTime: 0.1,
         upAnimationTime: 0.5)
     
-    static let SecondKeyProperties = KeyProperties(
+    static let ScientificKeyProperties = KeyProperties(
         textColor: Color.black,
         bgColor: Color(
             red:   165.0/255.0,

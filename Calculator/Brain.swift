@@ -63,7 +63,7 @@ class Brain: ObservableObject {
         "not implemented"
     }
     
-    var isValidNumber: Bool { true } //n.isValidNumber }
+    var isValidNumber: Bool { n.last.isValid }
     var pendingOperator: String?
     var memory: Number? = nil
     
@@ -212,22 +212,8 @@ class Brain: ObservableObject {
     }
     
     private func waitingOperation(_ symbol: String, withPending: Bool = true) async {
-        DispatchQueue.main.async {
-            self.isCalculating = true
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
-            if self.isCalculating {
-                self.showCalculating = true
-            }
-        }
         operation(symbol, withPending: withPending)
         self.displayData.update(with: n.last)
-        DispatchQueue.main.async {
-            self.nonScientific = self.displayData.nonScientific
-            self.scientific = self.displayData.scientific
-            self.showCalculating = false
-            self.isCalculating = false
-    }
     }
 
     func nonWaitingOperation(_ symbol: String, withPending: Bool = true) {
@@ -238,15 +224,31 @@ class Brain: ObservableObject {
     }
 
     func asyncOperation(_ symbol: String, withPending: Bool = true) {
-        if !isCalculating {
-            Task {
-                print("calc... \(showCalculating)")
+        print("asyncOperation \(symbol) isCalculating \(isCalculating)")
+        //            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+        //                if self.isCalculating {
+        //                    self.showCalculating = true
+        //                }
+        //            }
+        Task {
+            //print("calc... \(showCalculating)")
+            if !isCalculating {
+                DispatchQueue.main.async {
+                    self.showCalculating = true
+                    self.isCalculating = true
+                }
                 await waitingOperation(symbol, withPending: withPending)
-                print("display1... \(showCalculating)")
+            }
+            //print("display1... \(showCalculating)")
+            DispatchQueue.main.async {
+                self.nonScientific = self.displayData.nonScientific
+                self.scientific = self.displayData.scientific
+                self.showCalculating = false
+                self.isCalculating = false
             }
         }
     }
-
+    
     var nn: Int { n.count }
     var no: Int { operatorStack.count }
     //    var last: Number { n.last() }

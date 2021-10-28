@@ -63,7 +63,7 @@ class DisplayData: ObservableObject {
             gmp = number.gmp!
         }
         
-        print("DisplayData init(gmp) START")
+        //print("DisplayData init(gmp) START")
         if gmp.NaN {
             set("not real")
             return
@@ -78,9 +78,9 @@ class DisplayData: ObservableObject {
             return
         }
         
-        print("data 1")
+        //print("data 1")
         let data = gmp.data(DisplayData.digitsInExpandedDisplay)
-        print("data 2")
+        //print("data 2")
         
         /// can be perfectly represented as Integer in one line?
         

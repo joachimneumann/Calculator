@@ -215,9 +215,9 @@ class Gmp: Equatable {
     func data(_ length: Int) -> Data {
         var exponent: mpfr_exp_t = 0
         var charArray: Array<CChar> = Array(repeating: 0, count: length+5)
-        print("data 11")
+        //print("data 11")
         mpfr_get_str(&charArray, &exponent, 10, length+5, &mpfr, MPFR_RNDN)
-        print("data 12")
+        //print("data 12")
         var negative: Bool
         if charArray[0] == 45 {
             charArray.removeFirst()

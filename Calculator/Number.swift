@@ -15,6 +15,10 @@ class Number: CustomDebugStringConvertible {
     var str: String? { return _str }
     var gmp: Gmp? { return _gmp }
     
+    var isValid: Bool {
+        if isStr { return true }
+        return _gmp!.isValid
+    }
     func copy() -> Number {
         if isStr {
             return Number(str!)

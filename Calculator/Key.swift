@@ -7,17 +7,15 @@
 
 import SwiftUI
 
-struct KeyProperties {
-    let textColor: Color
-    let bgColor: Color
-    let downColor: Color
-    let downAnimationTime: Double
-    let upAnimationTime: Double
-}
-
 struct Key: View {
-    private let keyProperties: KeyProperties
+    let symbol: String
+    let requiresValidNuber: Bool
+    let brain: Brain
+    let keyProperties: KeyProperties
+    var fg: Color = Color.clear
+    var bg: Color = Color.clear
     private var button: AnyView?
+    @State var down: Bool = false
     
     private let sfImageNames: [String: String] = [
         "+":   "plus",
@@ -28,9 +26,9 @@ struct Key: View {
         "=":   "equal",
         "%":   "percent",
     ]
-
-    @ViewBuilder func makeButton(label: String, strokeColor: Color) -> some View {
-        switch label {
+    
+    @ViewBuilder func makeButton(strokeColor: Color) -> some View {
+        switch symbol {
         case "√":     Root("2", strokeColor: strokeColor)
         case "3√":    Root("3", strokeColor: strokeColor)
         case "y√":    Root("y", strokeColor: strokeColor)
@@ -53,141 +51,192 @@ struct Key: View {
         case "acosh": Pow(base: "cosh", exponent: "-1")
         case "atanh": Pow(base: "tanh", exponent: "-1")
         default:
-            if let sfImage = sfImageNames[label] {
+            if let sfImage = sfImageNames[symbol] {
                 Image(systemName: sfImage)
             } else {
-                Text(label)
+                Text(symbol)
             }
         }
     }
-
+    
     var body: some View {
-        button
+        ZStack {
+            TE.ButtonShape()
+                .foregroundColor(bg)
+            button
+                .foregroundColor(fg)
+        }
+        .gesture(
+            DragGesture(minimumDistance: 0.0)
+                .onChanged() { value in
+                    withAnimation(.easeIn(duration: keyProperties.downAnimationTime)) {
+                        if !brain.isCalculating {
+                            down = true
+                        }
+                    }
+                }
+                .onEnded() { value in
+                    withAnimation(.easeIn(duration: keyProperties.upAnimationTime)) {
+                        down = false
+                    }
+                    if !brain.isCalculating {
+                        brain.asyncOperation(symbol, withPending: brain.isPending(symbol))
+                    }
+                }
+        )
     }
     
-    init(_ text: String, keyProperties: KeyProperties, isPending: Bool = false, isAllowed: Bool = true) {
-        self.keyProperties = keyProperties
-        let strokeColor = !isAllowed ? Color.gray : (isPending ? keyProperties.bgColor : keyProperties.textColor)
-        button = AnyView(makeButton(label: text, strokeColor: strokeColor))
-    }
-}
-
-private struct Digit_0_to_9: ViewModifier {
-    let keyProperties: KeyProperties
-    let size: CGSize
-    let enabled: Bool
-    let showEnabled: Bool
-    let callback: (() -> Void)?
-    func body(content: Content) -> some View {
-        content
-            .foregroundColor(!showEnabled ?  Color.gray : keyProperties.textColor)
-            .addBackground(with: keyProperties, enabled: enabled, showEnabled: showEnabled, isPending: false, callback: callback)
-            .font(Font.system(size: size.height * 0.48))
-    }
-}
-
-private struct Colorful_plus_minus_etc: ViewModifier {
-    let keyProperties: KeyProperties
-    let size: CGSize
-    let enabled: Bool
-    let showEnabled: Bool
-    let isPending: Bool
-    let callback: (() -> Void)?
-    var fg: Color {
-        if !showEnabled {
-            return Color.gray
+    func bgColor(enabled: Bool, pending: Bool) -> Color {
+        if enabled {
+            if pending {
+                return keyProperties.textColor
+            } else if down {
+                return keyProperties.downColor
+            } else {
+                return keyProperties.bgColor
+            }
         } else {
-            if isPending {
+            // not enabled
+            return Color.gray
+        }
+    }
+    func fgColor(enabled: Bool, pending: Bool) -> Color {
+        if enabled {
+            if pending {
                 return keyProperties.bgColor
             } else {
                 return keyProperties.textColor
             }
-        }
-    }
-    func body(content: Content) -> some View {
-        let fontsize = size.height * 0.36
-        content
-            .foregroundColor(fg)
-            .addBackground(with: keyProperties, enabled: enabled, showEnabled: showEnabled, isPending: isPending, callback: callback)
-            .font(Font.system(size: fontsize, weight: .bold))
-        
-    }
-}
-
-private struct PlusMinus_percentage: ViewModifier {
-    let keyProperties: KeyProperties
-    let size: CGSize
-    let enabled: Bool
-    let showEnabled: Bool
-    let callback: (() -> Void)?
-    func body(content: Content) -> some View {
-        let fontsize = size.height * 0.36
-        content
-            .foregroundColor(!showEnabled ?  Color.gray : keyProperties.textColor)
-            .addBackground(with: keyProperties, enabled: enabled, showEnabled: showEnabled, isPending: false, callback: callback)
-            .font(Font.system(size: fontsize, weight: .bold))
-    }
-}
-
-private struct ScientificButton: ViewModifier {
-    let keyProperties: KeyProperties
-    let fontSize: CGFloat
-    let enabled: Bool
-    let showEnabled: Bool
-    let isPending: Bool
-    let callback: (() -> Void)?
-    var fg: Color {
-        if !showEnabled {
-            return Color.gray
         } else {
-            if isPending {
-                return keyProperties.bgColor
-            } else {
-                return showEnabled ? keyProperties.textColor : Color(white: 0.5)
-            }
+            return keyProperties.textColor
         }
     }
-    func body(content: Content) -> some View {
-        content
-            .foregroundColor(fg)
-            .addBackground(with: keyProperties, enabled: enabled, showEnabled: showEnabled, isPending: isPending, callback: callback)
-            .font(Font.system(size: fontSize, weight: .regular))
+    
+    init(_ symbol: String, requiresValidNuber: Bool, brain: Brain, keyProperties: KeyProperties) {
+        self.symbol = symbol
+        self.requiresValidNuber = requiresValidNuber
+        self.brain = brain
+        self.keyProperties = keyProperties
+        let enabled = (!requiresValidNuber || brain.isValidNumber) && !brain.isCalculating
+        fg = fgColor(enabled: enabled, pending: brain.isPending(symbol))
+        bg = bgColor(enabled: enabled, pending: brain.isPending(symbol))
+        button = AnyView(makeButton(strokeColor: fg))
     }
 }
 
-
-extension Key {
-    func digit_1_to_9(size: CGSize, enabled: Bool, showEnabled: Bool, callback: (() -> Void)? = nil) -> some View {
-        self
-            .modifier(Digit_0_to_9(keyProperties: keyProperties, size: size, enabled: enabled, showEnabled: showEnabled, callback: callback))
-            .frame(width: size.width, height: size.height)
-    }
-    
-    func digit_0(size: CGSize, space: CGFloat, enabled: Bool, showEnabled: Bool, callback: (() -> Void)? = nil ) -> some View {
-        HStack {
-            self
-                .padding(.leading, size.height * 0.4)
-            Spacer()
-        }
-        .modifier(Digit_0_to_9(keyProperties: keyProperties, size: size, enabled: enabled, showEnabled: showEnabled, callback: callback))
-        .frame(width: size.width*2.0+space, height: size.height)
-    }
-    
-    func op_div_mul_add_sub_eq(size: CGSize, enabled: Bool, showEnabled: Bool, isPending: Bool, callback: (() -> Void)? = nil ) -> some View {
-        self
-            .modifier(Colorful_plus_minus_etc(keyProperties: keyProperties, size: size, enabled: enabled, showEnabled: showEnabled, isPending: isPending, callback: callback))
-            .frame(width: size.width, height: size.height)
-    }
-    
-    func op_plusMinus_percentage(size: CGSize, enabled: Bool, showEnabled: Bool, callback: (() -> Void)? = nil ) -> some View {
-        self
-            .modifier(PlusMinus_percentage(keyProperties: keyProperties, size: size, enabled: enabled, showEnabled: showEnabled, callback: callback))
-            .frame(width: size.width, height: size.height)
-    }
-    
-    func scientific(size: CGSize, fontSize: CGFloat, enabled: Bool, showEnabled: Bool, isPending: Bool, callback: (() -> Void)? = nil ) -> some View {
-        return self
-            .modifier(ScientificButton(keyProperties: keyProperties, fontSize: fontSize, enabled: enabled, showEnabled: showEnabled, isPending: isPending, callback: callback))
-            .frame(width: size.width, height: size.height)
-    }
-}
+//private struct Digit_0_to_9: ViewModifier {
+//    let keyProperties: KeyProperties
+//    let size: CGSize
+//    let brain: Brain
+//    let callback: (() -> Void)?
+//    func body(content: Content) -> some View {
+//        content
+//            .foregroundColor(brain.isCalculating ?  Color.gray : keyProperties.textColor)
+//            .addBackground(with: keyProperties, brain: brain, isPending: false, callback: callback)
+//            .font(Font.system(size: size.height * 0.48))
+//    }
+//}
+//
+//private struct Colorful_plus_minus_etc: ViewModifier {
+//    let keyProperties: KeyProperties
+//    let size: CGSize
+//    let brain: Brain
+//    let isPending: Bool
+//    let callback: (() -> Void)?
+//    var fg: Color {
+//        if brain.isCalculating {
+//            return Color.gray
+//        } else {
+//            if isPending {
+//                return keyProperties.bgColor
+//            } else {
+//                return keyProperties.textColor
+//            }
+//        }
+//    }
+//    func body(content: Content) -> some View {
+//        let fontsize = size.height * 0.36
+//        content
+//            .foregroundColor(fg)
+//            .addBackground(with: keyProperties, brain: brain, isPending: isPending, callback: callback)
+//            .font(Font.system(size: fontsize, weight: .bold))
+//
+//    }
+//}
+//
+//private struct PlusMinus_percentage: ViewModifier {
+//    let keyProperties: KeyProperties
+//    let size: CGSize
+//    let brain: Brain
+//    let callback: (() -> Void)?
+//    func body(content: Content) -> some View {
+//        let fontsize = size.height * 0.36
+//        content
+//            .foregroundColor(brain.isCalculating ?  Color.gray : keyProperties.textColor)
+//            .addBackground(with: keyProperties, brain: brain, isPending: false, callback: callback)
+//            .font(Font.system(size: fontsize, weight: .bold))
+//    }
+//}
+//
+//private struct ScientificButton: ViewModifier {
+//    let keyProperties: KeyProperties
+//    let fontSize: CGFloat
+//    let brain: Brain
+//    let isPending: Bool
+//    let callback: (() -> Void)?
+//    var fg: Color {
+//        //print("ScientificButton fg brain.isCalculating = \(brain.isCalculating)")
+//        if brain.isCalculating || !brain.isValidNumber{
+//            return Color.gray
+//        } else {
+//            if isPending {
+//                return keyProperties.bgColor
+//            } else {
+//                return keyProperties.textColor // brain.isCalculating ? keyProperties.textColor : Color(white: 0.5)
+//            }
+//        }
+//    }
+//    func body(content: Content) -> some View {
+//        content
+//            .foregroundColor(fg)
+//            .addBackground(with: keyProperties, brain: brain, isPending: isPending, callback: callback)
+//            .font(Font.system(size: fontSize, weight: .regular))
+//    }
+//}
+//
+//
+//extension Key {
+//    func digit_1_to_9(size: CGSize, brain: Brain, callback: (() -> Void)? = nil) -> some View {
+//        self
+//            .modifier(Digit_0_to_9(keyProperties: keyProperties, size: size, brain: brain, callback: callback))
+//            .frame(width: size.width, height: size.height)
+//    }
+//
+//    func digit_0(size: CGSize, space: CGFloat, brain: Brain, callback: (() -> Void)? = nil ) -> some View {
+//        HStack {
+//            self
+//                .padding(.leading, size.height * 0.4)
+//            Spacer()
+//        }
+//        .modifier(Digit_0_to_9(keyProperties: keyProperties, size: size, brain: brain, callback: callback))
+//        .frame(width: size.width*2.0+space, height: size.height)
+//    }
+//
+//    func op_div_mul_add_sub_eq(size: CGSize, brain: Brain, isPending: Bool, callback: (() -> Void)? = nil ) -> some View {
+//        self
+//            .modifier(Colorful_plus_minus_etc(keyProperties: keyProperties, size: size, brain: brain, isPending: isPending, callback: callback))
+//            .frame(width: size.width, height: size.height)
+//    }
+//
+//    func op_plusMinus_percentage(size: CGSize, brain: Brain, callback: (() -> Void)? = nil ) -> some View {
+//        self
+//            .modifier(PlusMinus_percentage(keyProperties: keyProperties, size: size, brain: brain, callback: callback))
+//            .frame(width: size.width, height: size.height)
+//    }
+//
+//    func scientific(size: CGSize, fontSize: CGFloat, brain: Brain, isPending: Bool, callback: (() -> Void)? = nil ) -> some View {
+//        return self
+//            .modifier(ScientificButton(keyProperties: keyProperties, fontSize: fontSize, brain: brain, isPending: isPending, callback: callback))
+//            .frame(width: size.width, height: size.height)
+//    }
+//}
