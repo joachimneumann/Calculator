@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct KeyProperties {
+    let size: CGSize
     let textColor: Color
+    let downTextColor: Color
     let bgColor: Color
-    let downColor: Color
+    let downBgColor: Color
     let downAnimationTime: Double
     let upAnimationTime: Double
 }
@@ -40,8 +42,13 @@ class TE {
         green:  39.0/255.0,
         blue:   38.0/255.0)
 
-    static let DigitKeyProperties = KeyProperties(
+    let digits_1_9 = KeyProperties(
+        size: CGSize(width: TE.kw,  height: TE.kh),
         textColor: Color(
+            red:   231.0/255.0,
+            green: 231.0/255.0,
+            blue:  231.0/255.0),
+        downTextColor: Color(
             red:   231.0/255.0,
             green: 231.0/255.0,
             blue:  231.0/255.0),
@@ -49,7 +56,28 @@ class TE {
             red:   98.0/255.0,
             green: 94.0/255.0,
             blue:  92.0/255.0),
-        downColor: Color(
+        downBgColor: Color(
+            red:   160.0/255.0,
+            green: 159.0/255.0,
+            blue:  158.0/255.0),
+        downAnimationTime: 0.1,
+        upAnimationTime: 0.5)
+    
+    let digits_0 = KeyProperties(
+        size: CGSize(width: 2.0 * TE.kw + TE.sp,  height: TE.kh),
+        textColor: Color(
+            red:   231.0/255.0,
+            green: 231.0/255.0,
+            blue:  231.0/255.0),
+        downTextColor: Color(
+            red:   231.0/255.0,
+            green: 231.0/255.0,
+            blue:  231.0/255.0),
+        bgColor: Color(
+            red:   98.0/255.0,
+            green: 94.0/255.0,
+            blue:  92.0/255.0),
+        downBgColor: Color(
             red:   160.0/255.0,
             green: 159.0/255.0,
             blue:  158.0/255.0),
@@ -57,8 +85,13 @@ class TE {
         upAnimationTime: 0.5)
 
 
-    static let OpKeyProperties = KeyProperties(
+    let colorOpProperties = KeyProperties(
+        size: CGSize(width: TE.wkw,  height: TE.kh),
         textColor: Color(
+            red:   236.0/255.0,
+            green: 235.0/255.0,
+            blue:  235.0/255.0),
+        downTextColor: Color(
             red:   236.0/255.0,
             green: 235.0/255.0,
             blue:  235.0/255.0),
@@ -66,15 +99,20 @@ class TE {
             red:   105.0/255.0,
             green: 183.0/255.0,
             blue:  191.0/255.0),
-        downColor: Color(
+        downBgColor: Color(
             red:   203.0/255.0,
             green: 230.0/255.0,
             blue:  232.0/255.0),
         downAnimationTime: 0.1,
         upAnimationTime: 0.3)
 
-    static let LightGrayKeyProperties = KeyProperties(
+    let ac_plus_minus_percentProperties = KeyProperties(
+        size: CGSize(width: TE.kw,  height: TE.kh),
         textColor: Color(
+            red:   236.0/255.0,
+            green: 235.0/255.0,
+            blue:  235.0/255.0),
+        downTextColor: Color(
             red:   236.0/255.0,
             green: 235.0/255.0,
             blue:  235.0/255.0),
@@ -82,15 +120,20 @@ class TE {
             red:    66.0/255.0,
             green:  62.0/255.0,
             blue:   59.0/255.0),
-        downColor: Color(
+        downBgColor: Color(
             red:   124.0/255.0,
             green: 125.0/255.0,
             blue:  127.0/255.0),
         downAnimationTime: 0.1,
         upAnimationTime: 0.5)
 
-    static let ScientificKeyProperties = KeyProperties(
+    let scientificProperties = KeyProperties(
+        size: CGSize(width: TE.kw,  height: TE.kh),
         textColor: Color(
+            red:   236.0/255.0,
+            green: 235.0/255.0,
+            blue:  235.0/255.0),
+        downTextColor: Color(
             red:   236.0/255.0,
             green: 235.0/255.0,
             blue:  235.0/255.0),
@@ -98,7 +141,7 @@ class TE {
             red:    66.0/255.0,
             green:  62.0/255.0,
             blue:   59.0/255.0),
-        downColor: Color(
+        downBgColor: Color(
             red:   124.0/255.0,
             green: 125.0/255.0,
             blue:  127.0/255.0),
@@ -124,13 +167,11 @@ class TE {
     let isLandscape: Bool = true
     let spaceBetweenkeys: CGFloat = TE.sp
     let displayFont: Font = Font.system(size: TE.staticDisplayFontSize, weight: .thin).monospacedDigit()
-    let keySize: CGSize       = CGSize(width: TE.kw,  height: TE.kh)
     let widerKeySize: CGSize  = CGSize(width: TE.wkw, height: TE.kh)
     let scientificKeySize: CGSize   = CGSize(width: TE.kw,  height: TE.kh)
     let allkeysHeight: CGFloat = 5.0 * TE.kh + 4.0 * TE.sp
     let remainingAboveKeys: CGFloat = TE.macWindowHeight - (5.0 * TE.kh + 4.0 * TE.sp)
     let isPad: Bool = false
-    /// no init needed
     
     struct ButtonShape: View {
         var body: some View {

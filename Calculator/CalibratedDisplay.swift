@@ -17,7 +17,7 @@ struct NonScientificDisplay: View {
                     Text(text)
                         .font(t.displayFont)
                         .frame(maxWidth: .infinity, alignment: .trailing)
-                        .foregroundColor(TE.DigitKeyProperties.textColor)
+                        .foregroundColor(t.digits_1_9.textColor)
                         .font(t.displayFont)
                         .multilineTextAlignment(.trailing)
                         .id(1)
@@ -47,7 +47,7 @@ struct ScientificDisplay: View {
                     ScrollView {
                         Text(scientific.mantissa)
                             .font(t.displayFont)
-                            .foregroundColor(TE.DigitKeyProperties.textColor)
+                            .foregroundColor(t.digits_1_9.textColor)
                             .multilineTextAlignment(.trailing)
                             .id(1)
                     }
@@ -64,7 +64,7 @@ struct ScientificDisplay: View {
                 VStack(spacing: 0.0) {
                     Text(" "+scientific.exponent)
                         .font(t.displayFont)
-                        .foregroundColor(TE.DigitKeyProperties.textColor)
+                        .foregroundColor(t.digits_1_9.textColor)
                         .lineLimit(1)
                     Spacer(minLength: 0.0)
                 }

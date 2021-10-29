@@ -17,7 +17,7 @@ private struct AddBackGround: ViewModifier {
     var bg: Color {
         if down {
 //            if enabled {
-                return keyProperties.downColor
+                return keyProperties.downBgColor
 //            } else {
 //                return Color(
 //                    red:   (229.0 / 255.0),

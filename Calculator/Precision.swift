@@ -9,11 +9,12 @@ import SwiftUI
 
 struct Precision: View {
     @ObservedObject var brain: Brain
+    let textColor: Color
     let iconSize: CGFloat
     var body: some View {
         Image(systemName: "00.circle")
             .resizable()
-            .foregroundColor(TE.DigitKeyProperties.textColor)
+            .foregroundColor(textColor)
             .onTapGesture {
                 withAnimation(.easeIn) {
                     if brain.precision == TE.lowPrecision {

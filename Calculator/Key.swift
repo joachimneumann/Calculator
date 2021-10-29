@@ -11,6 +11,7 @@ struct Key: View {
     let symbol: String
     let requiresValidNuber: Bool
     let brain: Brain
+    let t: TE
     let keyProperties: KeyProperties
     var fg: Color = Color.clear
     var bg: Color = Color.clear
@@ -63,6 +64,7 @@ struct Key: View {
         ZStack {
             TE.ButtonShape()
                 .foregroundColor(bg)
+                .frame(width: keyProperties.size.width, height: keyProperties.size.height)
             button
                 .foregroundColor(fg)
         }
@@ -91,7 +93,7 @@ struct Key: View {
             if pending {
                 return keyProperties.textColor
             } else if down {
-                return keyProperties.downColor
+                return keyProperties.downBgColor
             } else {
                 return keyProperties.bgColor
             }
@@ -112,10 +114,11 @@ struct Key: View {
         }
     }
     
-    init(_ symbol: String, requiresValidNuber: Bool, brain: Brain, keyProperties: KeyProperties) {
+    init(_ symbol: String, requiresValidNuber: Bool, brain: Brain, t: TE, keyProperties: KeyProperties) {
         self.symbol = symbol
         self.requiresValidNuber = requiresValidNuber
         self.brain = brain
+        self.t = t
         self.keyProperties = keyProperties
         let enabled = (!requiresValidNuber || brain.isValidNumber) && !brain.isCalculating
         fg = fgColor(enabled: enabled, pending: brain.isPending(symbol))

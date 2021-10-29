@@ -28,12 +28,13 @@ struct MainView: View {
     
     struct Rad: View {
         let keySize: CGSize
+        let textColor: Color
         var body: some View {
             VStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
                 Text("Rad")
                     .font(Font.system(size: keySize.height*0.27).monospacedDigit())
-                    .foregroundColor(TE.DigitKeyProperties.textColor)
+                    .foregroundColor(textColor)
                     .padding(.leading, keySize.height*0.27)
                     .padding(.bottom, keySize.height*0.1)
             }
@@ -47,21 +48,21 @@ struct MainView: View {
                     Spacer(minLength: 0.0)
                     Zoom(scrollTarget: $brain.scrollViewTarget,
                          iconName: brain.zoomed ? brain.precisionIconName : "plus.circle.fill",
-                         iconSize: t.keySize.height * 0.7,
-                         textColor: TE.DigitKeyProperties.textColor,
+                         iconSize: t.colorOpProperties.size.height * 0.7,
+                         textColor: t.digits_1_9.textColor,
                          zoomed: $brain.zoomed,
                          showCalculating: brain.showCalculating)
-                        .frame(width: t.widerKeySize.width, height: t.keySize.height, alignment: .center)
+                        .frame(width: t.colorOpProperties.size.width, height: t.colorOpProperties.size.height, alignment: .center)
                         .padding(.bottom, t.allkeysHeight + t.spaceBetweenkeys)
                 }
             }
             if true {
                 HStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    Precision(brain: brain,
-                              iconSize: t.keySize.height * 0.7)
-                        .frame(width: t.widerKeySize.width, height: t.keySize.height, alignment: .center)
-                        .padding(.bottom, t.allkeysHeight + t.spaceBetweenkeys - t.keySize.height * 2.5)
+                    Precision(brain: brain, textColor: t.digits_1_9.textColor,
+                              iconSize: t.colorOpProperties.size.height * 0.7)
+                        .frame(width: t.colorOpProperties.size.width, height: t.colorOpProperties.size.height, alignment: .center)
+                        .padding(.bottom, t.allkeysHeight + t.spaceBetweenkeys - t.colorOpProperties.size.height * 2.5)
                 }
             }
             
@@ -70,7 +71,7 @@ struct MainView: View {
                 HStack(spacing: 0.0) {
                     // everyting above the keys
                     if brain.rad && !brain.zoomed {
-                        Rad(keySize: t.keySize)
+                        Rad(keySize: t.digits_1_9.size, textColor: t.digits_1_9.textColor)
                     }
                     Spacer(minLength: 0.0)
                     VStack(spacing: 0.0) {
@@ -87,7 +88,7 @@ struct MainView: View {
         }
         .background(
             Display(brain: brain, t: t)
-                .padding(.trailing, t.keySize.width * 1.0)
+                .padding(.trailing, t.digits_1_9.size.width * 1.0)
                 .animation(nil, value: UUID())
         )
     }
