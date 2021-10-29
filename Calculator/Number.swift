@@ -26,23 +26,19 @@ class Number: CustomDebugStringConvertible {
             return Number(gmp!.copy())
         }
     }
-
-    func execute(_ op: twoOperantsType, with other: Number) {
+    func toGmp() {
         if isStr {
             _gmp = Gmp(str!)
             _str = nil
         }
-        if other.isStr {
-            other._gmp = Gmp(other.str!)
-            other._str = nil
-        }
+    }
+    func execute(_ op: twoOperantsType, with other: Number) {
+        toGmp()
+        other.toGmp()
         _gmp!.execute(op, with: other._gmp!)
     }
     func execute(_ op: inplaceType) {
-        if isStr {
-            _gmp = Gmp(str!)
-            _str = nil
-        }
+        toGmp()
         _gmp!.inPlace(op: op)
     }
     

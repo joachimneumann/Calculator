@@ -65,7 +65,7 @@ class Brain: ObservableObject {
     
     var isValidNumber: Bool { n.last.isValid }
     var pendingOperator: String?
-    var memory: Number? = nil
+    var memory: Gmp? = nil
     
     var digitOperators: [String] = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     var zeroOperators:       Dictionary <String, Inplace> = [:]
@@ -124,7 +124,7 @@ class Brain: ObservableObject {
         }
     }
     
-    private func operation(_ symbol: String, withPending: Bool = true) {
+    private func operation(_ symbol: String) {
         if symbol == "=" {
             self.execute(priority: Operator.equalPriority)
         } else if symbol == "C" {
@@ -133,29 +133,39 @@ class Brain: ObservableObject {
             n.removeAll()
             pendingOperator = nil
             n.append(Number("0"))
+        } else if symbol == "2nd" {
+            DispatchQueue.main.async {
+                self.secondKeys.toggle()
+            }
+        } else if symbol == "Rad" || symbol == "Deg" {
+            DispatchQueue.main.async {
+                self.rad.toggle()
+            }
         } else if symbol == "mc" {
             memory = nil
         } else if symbol == "m+" {
+            n.last.toGmp()
             if memory == nil {
-                memory = n.last.copy()
+                memory = n.last.copy().gmp
             } else {
-                memory!.execute(Gmp.add, with: n.last)
+                memory!.execute(Gmp.add, with: n.last.gmp!)
             }
         } else if symbol == "m-" {
             if memory == nil {
+                n.last.toGmp()
                 let temp = n.last.copy()
                 temp.execute(Gmp.changeSign)
-                memory = temp
+                memory = temp.gmp!
             } else {
-                memory!.execute(Gmp.sub, with: n.last.copy())
+                memory!.execute(Gmp.sub, with: n.last.copy().gmp!)
             }
         } else if symbol == "mr" {
             if memory != nil {
                 if pendingOperator != nil {
-                    n.append(memory!.copy())
+                    n.append(Number(memory!.copy()))
                     pendingOperator = nil
                 } else {
-                    n.replaceLast(with: memory!.copy())
+                    n.replaceLast(with: Number(memory!.copy()))
                 }
             }
         } else if symbol == "(" {
@@ -202,7 +212,7 @@ class Brain: ObservableObject {
         } else if let op = self.inplaceOperators[symbol] {
             self.n.last.execute(op.operation)
         } else if let op = self.twoOperandOperators[symbol] {
-            if withPending { self.pendingOperator = symbol }
+            if twoOperandOperators.keys.contains(symbol) { self.pendingOperator = symbol }
             self.execute(priority: op.priority)
             self.self.operatorStack.push(op)
         } else {
@@ -211,25 +221,25 @@ class Brain: ObservableObject {
         }
     }
     
-    private func waitingOperation(_ symbol: String, withPending: Bool = true) async {
-        operation(symbol, withPending: withPending)
+    private func waitingOperation(_ symbol: String) async {
+        operation(symbol)
         self.displayData.update(with: n.last)
     }
 
-    func nonWaitingOperation(_ symbol: String, withPending: Bool = true) {
-        operation(symbol, withPending: withPending)
+    func nonWaitingOperation(_ symbol: String) {
+        operation(symbol)
         self.displayData.update(with: n.last)
         self.nonScientific = self.displayData.nonScientific
         self.scientific = self.displayData.scientific
     }
 
-    func asyncOperation(_ symbol: String, withPending: Bool = true) {
-        print("asyncOperation \(symbol) isCalculating \(isCalculating)")
-        //            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
-        //                if self.isCalculating {
-        //                    self.showCalculating = true
-        //                }
-        //            }
+    func asyncOperation(_ symbol: String) {
+        //print("asyncOperation \(symbol) isCalculating \(isCalculating)")
+//                    DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+//                        if self.isCalculating {
+                            self.showCalculating = true
+//                        }
+//                    }
         Task {
             //print("calc... \(showCalculating)")
             if !isCalculating {
@@ -237,7 +247,7 @@ class Brain: ObservableObject {
                     self.showCalculating = true
                     self.isCalculating = true
                 }
-                await waitingOperation(symbol, withPending: withPending)
+                await waitingOperation(symbol)
             }
             //print("display1... \(showCalculating)")
             DispatchQueue.main.async {

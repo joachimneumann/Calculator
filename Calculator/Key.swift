@@ -13,11 +13,10 @@ struct Key: View {
     let brain: Brain
     let t: TE
     let keyProperties: KeyProperties
-    var fg: Color = Color.clear
-    var bg: Color = Color.clear
     private var button: AnyView?
     @State var down: Bool = false
-    
+    //@State var enabled: Bool = true
+
     private let sfImageNames: [String: String] = [
         "+":   "plus",
         "-":   "minus",
@@ -48,6 +47,9 @@ struct Key: View {
         case "asin":  Pow(base: "sin",  exponent: "-1")
         case "acos":  Pow(base: "cos",  exponent: "-1")
         case "atan":  Pow(base: "tan",  exponent: "-1")
+        case "asinD":  Pow(base: "sin",  exponent: "-1")
+        case "acosD":  Pow(base: "cos",  exponent: "-1")
+        case "atanD":  Pow(base: "tan",  exponent: "-1")
         case "asinh": Pow(base: "sinh", exponent: "-1")
         case "acosh": Pow(base: "cosh", exponent: "-1")
         case "atanh": Pow(base: "tanh", exponent: "-1")
@@ -55,51 +57,56 @@ struct Key: View {
             if let sfImage = sfImageNames[symbol] {
                 Image(systemName: sfImage)
             } else {
-                Text(symbol)
+                if symbol.hasSuffix("D") {
+                    Text(symbol.prefix(symbol.count-1))
+                } else {
+                    Text(symbol)
+                }
             }
         }
     }
     
     var body: some View {
+        let enabled = (!requiresValidNuber || brain.isValidNumber) && !brain.isCalculating && (symbol != "mr" || brain.memory != nil)
         ZStack {
             TE.ButtonShape()
-                .foregroundColor(bg)
+                .foregroundColor(bgColor(enabled: enabled, pending: brain.isPending(symbol)))
                 .frame(width: keyProperties.size.width, height: keyProperties.size.height)
             button
-                .foregroundColor(fg)
+                .font(keyProperties.font)
+                .foregroundColor(fgColor(enabled: enabled, pending: brain.isPending(symbol)))
         }
         .gesture(
             DragGesture(minimumDistance: 0.0)
                 .onChanged() { value in
-                    withAnimation(.easeIn(duration: keyProperties.downAnimationTime)) {
-                        if !brain.isCalculating {
-                            down = true
+                    if !down {
+                        withAnimation(.easeIn(duration: keyProperties.downAnimationTime)) {
+                            if !brain.isCalculating && enabled {
+                                //print("down true")
+                                down = true
+                            }
                         }
                     }
                 }
                 .onEnded() { value in
                     withAnimation(.easeIn(duration: keyProperties.upAnimationTime)) {
+                        //print("down false")
                         down = false
                     }
-                    if !brain.isCalculating {
-                        brain.asyncOperation(symbol, withPending: brain.isPending(symbol))
+                    if !brain.isCalculating && enabled {
+                        brain.asyncOperation(symbol)
                     }
                 }
         )
     }
     
     func bgColor(enabled: Bool, pending: Bool) -> Color {
-        if enabled {
-            if pending {
-                return keyProperties.textColor
-            } else if down {
-                return keyProperties.downBgColor
-            } else {
-                return keyProperties.bgColor
-            }
+        if pending {
+            return keyProperties.textColor
+        } else if down {
+            return keyProperties.downBgColor
         } else {
-            // not enabled
-            return Color.gray
+            return keyProperties.bgColor
         }
     }
     func fgColor(enabled: Bool, pending: Bool) -> Color {
@@ -110,7 +117,7 @@ struct Key: View {
                 return keyProperties.textColor
             }
         } else {
-            return keyProperties.textColor
+            return Color.gray
         }
     }
     
@@ -121,9 +128,7 @@ struct Key: View {
         self.t = t
         self.keyProperties = keyProperties
         let enabled = (!requiresValidNuber || brain.isValidNumber) && !brain.isCalculating
-        fg = fgColor(enabled: enabled, pending: brain.isPending(symbol))
-        bg = bgColor(enabled: enabled, pending: brain.isPending(symbol))
-        button = AnyView(makeButton(strokeColor: fg))
+        button = AnyView(makeButton(strokeColor: fgColor(enabled: enabled, pending: false)))
     }
 }
 

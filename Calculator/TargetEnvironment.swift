@@ -9,6 +9,7 @@ import SwiftUI
 
 struct KeyProperties {
     let size: CGSize
+    let font: Font
     let textColor: Color
     let downTextColor: Color
     let bgColor: Color
@@ -44,6 +45,7 @@ class TE {
 
     let digits_1_9 = KeyProperties(
         size: CGSize(width: TE.kw,  height: TE.kh),
+        font: Font.system(size: TE.kh * 0.45).monospacedDigit(),
         textColor: Color(
             red:   231.0/255.0,
             green: 231.0/255.0,
@@ -65,6 +67,7 @@ class TE {
     
     let digits_0 = KeyProperties(
         size: CGSize(width: 2.0 * TE.kw + TE.sp,  height: TE.kh),
+        font: Font.system(size: TE.kh * 0.45).monospacedDigit(),
         textColor: Color(
             red:   231.0/255.0,
             green: 231.0/255.0,
@@ -87,6 +90,7 @@ class TE {
 
     let colorOpProperties = KeyProperties(
         size: CGSize(width: TE.wkw,  height: TE.kh),
+        font: Font.system(size: TE.kh * 0.36, weight: .bold).monospacedDigit(),
         textColor: Color(
             red:   236.0/255.0,
             green: 235.0/255.0,
@@ -108,6 +112,7 @@ class TE {
 
     let ac_plus_minus_percentProperties = KeyProperties(
         size: CGSize(width: TE.kw,  height: TE.kh),
+        font: Font.system(size: TE.kh * 0.36).monospacedDigit(),
         textColor: Color(
             red:   236.0/255.0,
             green: 235.0/255.0,
@@ -129,6 +134,7 @@ class TE {
 
     let scientificProperties = KeyProperties(
         size: CGSize(width: TE.kw,  height: TE.kh),
+        font: Font.system(size: TE.kh * 0.38).monospacedDigit(),
         textColor: Color(
             red:   236.0/255.0,
             green: 235.0/255.0,
