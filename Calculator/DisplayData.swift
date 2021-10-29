@@ -45,11 +45,7 @@ class DisplayData: ObservableObject {
             self.scientific = s
     }
     
-    func update(with number: Number) {
-        /// This value will be determined in Display()
-        //    static var digitsInOneLine: Int = .max
-        //    static let digitsInExpandedDisplay: Int = 200
-        
+    func update(with number: Number, digitsInExpandedDisplay: Int = DisplayData.digitsInExpandedDisplay) {
         let gmp: Gmp
         if let str = number.str {
             if str.count <= DisplayData.digitsInOneLine {
@@ -79,7 +75,7 @@ class DisplayData: ObservableObject {
         }
         
         //print("data 1")
-        let data = gmp.data(DisplayData.digitsInExpandedDisplay)
+        let data = gmp.data(digitsInExpandedDisplay)
         //print("data 2")
         
         /// can be perfectly represented as Integer in one line?

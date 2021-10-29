@@ -58,7 +58,7 @@ struct LowPrecision: View {
         Button {
             brain.precision = TE.lowPrecision
         } label: {
-            Text(((brain.precision == TE.lowPrecision) ? "✓ " : "    ") + String(TE.lowPrecisionString))
+            Text(((brain.precision == TE.lowPrecision) ? "✓ " : "    ") + TE.lowPrecisionString)
         }
         .keyboardShortcut("1", modifiers: [.command])
     }
@@ -70,7 +70,7 @@ struct MediumPrecision: View {
         Button {
             brain.precision = TE.mediumPrecision
         } label: {
-            Text(((brain.precision == TE.mediumPrecision) ? "✓ " : "    ") + String(TE.mediumPrecisionString))
+            Text(((brain.precision == TE.mediumPrecision) ? "✓ " : "    ") + TE.mediumPrecisionString)
         }
         .keyboardShortcut("2", modifiers: [.command])
     }
@@ -82,7 +82,7 @@ struct HighPrecision: View {
         Button {
             brain.precision = TE.highPrecision
         } label: {
-            Text(((brain.precision == TE.highPrecision) ? "✓ " : "    ") + String(TE.highPrecisionString))
+            Text(((brain.precision == TE.highPrecision) ? "✓ " : "    ") + TE.highPrecisionString)
         }
         .keyboardShortcut("3", modifiers: [.command])
     }
@@ -92,11 +92,7 @@ struct CopyCommand: View {
     @ObservedObject var brain: Brain
     var body: some View {
         Button {
-            if brain.nonScientific != nil {
-                UIPasteboard.general.string = brain.nonScientific!
-            } else {
-                UIPasteboard.general.string = brain.scientific?.combined
-            }
+            UIPasteboard.general.string = brain.longDisplayString
         } label: {
             Text("Copy")
         }

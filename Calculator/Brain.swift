@@ -16,7 +16,16 @@ class Brain: ObservableObject {
     private var displayData: DisplayData = DisplayData()
     @Published var nonScientific: String?
     @Published var scientific: DisplayData.Scientific?
-
+    var longDisplayString: String {
+        let longDisplayData = DisplayData()
+        longDisplayData.update(with: n.last, digitsInExpandedDisplay: precision)
+        if nonScientific != nil && longDisplayData.nonScientific != nil {
+            return longDisplayData.nonScientific!
+        } else {
+            assert(longDisplayData.scientific != nil)
+            return longDisplayData.scientific!.combined
+        }
+    }
     @AppStorage("precision") var precision: Int = TE.lowPrecision {
         didSet {
             calculateSignificantBits()
