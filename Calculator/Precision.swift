@@ -18,15 +18,15 @@ struct Precision: View {
             .onTapGesture {
                 withAnimation(.easeIn) {
                     if brain.precision == TE.lowPrecision {
-                        brain.precision = TE.mediumPrecision
                         brain.messageToUser = TE.mediumPrecisionString
+                        brain.precision = TE.mediumPrecision
                     } else if brain.precision == TE.mediumPrecision {
-                        brain.precision = TE.highPrecision
                         brain.messageToUser = TE.highPrecisionString
+                        brain.precision = TE.highPrecision
                     } else {
                         // high precision
-                        brain.precision = TE.lowPrecision
                         brain.messageToUser = TE.lowPrecisionString
+                        brain.precision = TE.lowPrecision
                     }
                 }
             }

@@ -30,7 +30,8 @@ class Brain: ObservableObject {
         didSet {
             calculateSignificantBits()
             Gmp.deleteConstants()
-            asyncOperation("C")
+            nonWaitingOperation("C")
+            nonWaitingOperation("messageToUser")
         }
     }
     var precisionIconName: String {
@@ -236,10 +237,17 @@ class Brain: ObservableObject {
     }
 
     func nonWaitingOperation(_ symbol: String) {
-        operation(symbol)
-        self.displayData.update(with: n.last)
-        self.nonScientific = self.displayData.nonScientific
-        self.scientific = self.displayData.scientific
+        if symbol == "messageToUser" {
+            operation("C")
+            self.nonScientific = messageToUser
+            self.scientific = nil
+            messageToUser = nil
+        } else {
+            operation(symbol)
+            self.displayData.update(with: n.last)
+            self.nonScientific = self.displayData.nonScientific
+            self.scientific = self.displayData.scientific
+        }
     }
 
     func asyncOperation(_ symbol: String) {
@@ -290,7 +298,7 @@ class Brain: ObservableObject {
         constantOperators = [
             "π":    Inplace(Gmp.π, 0),
             "e":    Inplace(Gmp.e, 0),
-            "rand": Inplace(Gmp.rand, 0)
+            "Rand": Inplace(Gmp.rand, 0)
         ]
         twoOperandOperators = [
             "+":    TwoOperand(Gmp.add, 1),
