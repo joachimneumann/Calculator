@@ -21,7 +21,6 @@
 		AA7CD3AB26FC322C00C714A6 /* ScientificKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CD3AA26FC322C00C714A6 /* ScientificKeys.swift */; };
 		AA89A9CF27113C72008A329A /* CalculatorCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA89A9CE27113C72008A329A /* CalculatorCommands.swift */; };
 		AA8F84FF2722A8470010179F /* CalibratedDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8F84FE2722A8470010179F /* CalibratedDisplay.swift */; };
-		AA95563C26FA0E360029D94C /* AddBackGround.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95563B26FA0E360029D94C /* AddBackGround.swift */; };
 		AA95564026FA1C180029D94C /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA95563F26FA1C180029D94C /* Key.swift */; };
 		AAA9CFFA2702CB47001C403B /* BrainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA9CFF92702CB46001C403B /* BrainTests.swift */; };
 		AABAFBF827084A1E003DC4A5 /* iOSSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABAFBF727084A1E003DC4A5 /* iOSSize.swift */; };
@@ -85,7 +84,6 @@
 		AA7CD3AA26FC322C00C714A6 /* ScientificKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScientificKeys.swift; sourceTree = "<group>"; };
 		AA89A9CE27113C72008A329A /* CalculatorCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorCommands.swift; sourceTree = "<group>"; };
 		AA8F84FE2722A8470010179F /* CalibratedDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibratedDisplay.swift; sourceTree = "<group>"; };
-		AA95563B26FA0E360029D94C /* AddBackGround.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBackGround.swift; sourceTree = "<group>"; };
 		AA95563F26FA1C180029D94C /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		AAA9CFF72702CB46001C403B /* BrainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BrainTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAA9CFF92702CB46001C403B /* BrainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrainTests.swift; sourceTree = "<group>"; };
@@ -146,31 +144,30 @@
 				AA40C44426F808D800119D4F /* CalculatorApp.swift */,
 				AAF3D37627254625005FE08B /* CalculatorAppCatalyst.swift */,
 				AAF3D3782725463A005FE08B /* CalculatorAppiOS.swift */,
-				AAF3D37227253B79005FE08B /* KeyInputSubjectWrapper.swift */,
 				AAF1F59026FBA9C7000A733F /* TargetEnvironment.swift */,
 				AABAFBF727084A1E003DC4A5 /* iOSSize.swift */,
+				AA89A9CE27113C72008A329A /* CalculatorCommands.swift */,
+				AAF3D37227253B79005FE08B /* KeyInputSubjectWrapper.swift */,
 				AA59D79C26FDED8B00321F26 /* MainView.swift */,
 				AA2576B226F8F16600CDD8C9 /* NumberKeys.swift */,
 				AA7CD3AA26FC322C00C714A6 /* ScientificKeys.swift */,
 				AAE87B9226FC5F42009E6D80 /* Display.swift */,
 				AA8F84FE2722A8470010179F /* CalibratedDisplay.swift */,
+				AA64980C26FD48F900CFF9AA /* DisplayData.swift */,
 				AA64980A26FD430900CFF9AA /* Zoom.swift */,
 				AAD017D327242454000AA810 /* Precision.swift */,
 				AA95563F26FA1C180029D94C /* Key.swift */,
 				AAE87B9426FC7302009E6D80 /* Symbols.swift */,
-				AA95563B26FA0E360029D94C /* AddBackGround.swift */,
 				AAE87B9826FCB24C009E6D80 /* OperatorStack.swift */,
 				AA6A33BA2727EFEB001ABFEB /* Number.swift */,
 				AAEDA0E027047BB400005E04 /* NumberStack.swift */,
 				AA46B32526FAC48500F83939 /* Brain.swift */,
 				AA40C45426F8094700119D4F /* Gmp.swift */,
-				AA64980C26FD48F900CFF9AA /* DisplayData.swift */,
 				AA024565270618B900478429 /* Info.plist */,
 				AA40C45626F8096700119D4F /* Calculator.entitlements */,
 				AA40C44826F808DA00119D4F /* Assets.xcassets */,
 				AA40C44A26F808DA00119D4F /* Preview Content */,
 				AA52BEC6270BF456007FB24F /* Credits.rtf */,
-				AA89A9CE27113C72008A329A /* CalculatorCommands.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -307,7 +304,6 @@
 				AAE87B9926FCB24C009E6D80 /* OperatorStack.swift in Sources */,
 				AA64980B26FD430900CFF9AA /* Zoom.swift in Sources */,
 				AAEDA0E127047BB400005E04 /* NumberStack.swift in Sources */,
-				AA95563C26FA0E360029D94C /* AddBackGround.swift in Sources */,
 				AAF3D3792725463A005FE08B /* CalculatorAppiOS.swift in Sources */,
 				AA89A9CF27113C72008A329A /* CalculatorCommands.swift in Sources */,
 				AA8F84FF2722A8470010179F /* CalibratedDisplay.swift in Sources */,

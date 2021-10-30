@@ -251,12 +251,7 @@ class Brain: ObservableObject {
     }
 
     func asyncOperation(_ symbol: String) {
-        //print("asyncOperation \(symbol) isCalculating \(isCalculating)")
-//                    DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
-//                        if self.isCalculating {
-                            self.showCalculating = true
-//                        }
-//                    }
+        self.showCalculating = true
         Task {
             //print("calc... \(showCalculating)")
             if !isCalculating {
