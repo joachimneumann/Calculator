@@ -178,7 +178,8 @@ class TE {
     let allkeysHeight: CGFloat = 5.0 * TE.kh + 4.0 * TE.sp
     let remainingAboveKeys: CGFloat = TE.macWindowHeight - (5.0 * TE.kh + 4.0 * TE.sp)
     let isPad: Bool = false
-    
+    let zeroLeadingPadding: CGFloat = TE.kw / 2 - TE.kh * 0.1
+
     struct ButtonShape: View {
         var body: some View {
             Rectangle()
