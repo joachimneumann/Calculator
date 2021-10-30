@@ -72,9 +72,19 @@ struct Key: View {
             TE.ButtonShape()
                 .foregroundColor(bgColor(enabled: enabled, pending: brain.isPending(symbol)))
                 .frame(width: keyProperties.size.width, height: keyProperties.size.height)
-            button
-                .font(keyProperties.font)
-                .foregroundColor(fgColor(enabled: enabled, pending: brain.isPending(symbol)))
+            if symbol == "0" {
+                HStack {
+                    button
+                        .font(keyProperties.font)
+                        .foregroundColor(fgColor(enabled: enabled, pending: brain.isPending(symbol)))
+                        .padding(.leading, t.zeroLeadingPadding)
+                    Spacer()
+                }
+            } else {
+                button
+                    .font(keyProperties.font)
+                    .foregroundColor(fgColor(enabled: enabled, pending: brain.isPending(symbol)))
+            }
         }
         .gesture(
             DragGesture(minimumDistance: 0.0)

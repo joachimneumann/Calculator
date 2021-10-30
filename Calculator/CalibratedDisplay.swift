@@ -13,7 +13,7 @@ struct NonScientificDisplay: View {
     var body: some View {
         if let text = brain.nonScientific {
             let isLong = text.count >= TE.digitsInAllDigitsDisplay
-            let textWithComment = (isLong && brain.precision == TE.mediumPrecision) ? text + "\n\ncopy to get \(TE.mediumPrecisionString)" : (isLong && brain.precision == TE.highPrecision) ? text + "\n\ncopy to get \(TE.highPrecisionString)" : text
+            let textWithComment = brain.messageToUser != nil ? brain.messageToUser! : ((isLong && brain.precision == TE.mediumPrecision) ? text + "\n\ncopy to get \(TE.mediumPrecisionString)" : (isLong && brain.precision == TE.highPrecision) ? text + "\n\ncopy to get \(TE.highPrecisionString)" : text)
             ScrollViewReader { scrollViewProxy in
                 ScrollView {
                     Text(textWithComment)
@@ -83,7 +83,7 @@ struct CalibratedDisplay: View {
     let t: TE
     var body: some View {
         Group {
-            if brain.nonScientific != nil {
+            if brain.nonScientific != nil || brain.messageToUser != nil {
                 NonScientificDisplay(brain: brain, t: t)
             } else if brain.scientific != nil {
                 ScientificDisplay(brain: brain, t: t)

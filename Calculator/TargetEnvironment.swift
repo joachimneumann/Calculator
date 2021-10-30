@@ -208,6 +208,7 @@ class TE {
     var remainingAboveKeys: CGFloat
     var digitsInSmallDisplay: Int
     var isPad: Bool
+    var zeroLeadingPadding: CGFloat
     init(appFrame: CGSize, isPad: Bool) {
         self.isPad = isPad
         spaceBetweenkeys = appFrame.width * Self.landscapeSpacingFration
@@ -223,7 +224,7 @@ class TE {
         displayFont = Font.system(size: displayFontSize, weight: .thin).monospacedDigit()
         allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenkeys
         remainingAboveKeys = appFrame.height - allkeysHeight
-        
+        zeroLeadingPadding = keySize.width / 2 - digitsKeyFontSize*0.25
         digits_1_9 = KeyProperties(
             size: keySize,
             font: Font.system(size: digitsKeyFontSize).monospacedDigit(),
@@ -325,9 +326,9 @@ class TE {
                 green: 235.0/255.0,
                 blue:  235.0/255.0),
             bgColor: Color(
-                red:    66.0/255.0,
-                green:  62.0/255.0,
-                blue:   59.0/255.0),
+                red:    33.0/255.0,
+                green:  33.0/255.0,
+                blue:   33.0/255.0),
             downBgColor: Color(
                 red:   124.0/255.0,
                 green: 125.0/255.0,
