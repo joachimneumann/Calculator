@@ -15,9 +15,9 @@ struct NumberKeys: View {
     var body: some View {
         VStack(spacing: t.spaceBetweenkeys) {
             HStack(spacing: t.spaceBetweenkeys) {
-                Key("C", requiresValidNuber: false, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key("+/-", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key("%", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                Key("C", requiresValidNuber: false, brain: brain, t: t, keyProperties: t.ac_plus_minus_percentProperties)
+                Key("+/-", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.ac_plus_minus_percentProperties)
+                Key("%", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.ac_plus_minus_percentProperties)
                 Key("/", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.colorOpProperties)
             }
             HStack(spacing: t.spaceBetweenkeys) {
