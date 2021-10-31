@@ -2,6 +2,8 @@
 Calculator.xcodeproj/project.xcworkspace/xcuserdata/
 dist/gmp/*
 dist/mpfr/*
+dist/xcframework/*
+dist/build.log
 dist/iPhone
 dist/simulator
 dist/catalyst

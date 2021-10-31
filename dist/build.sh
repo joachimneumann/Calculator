@@ -53,13 +53,12 @@ build()
 	make &> "${CURRENT}/build.log"
 }
 
-# code signing: get the correct expanded identity with the command $security find-identity 
+# code signing: get the correct expanded identity with the command $security find-identity
 
 rm -rf iPhone simulator catalyst
 mkdir iPhone simulator catalyst
 
 cd gmp
-
 build "arm64" "${IPHONEOS_SDK}" "${IPHONEOS_PLATFORM}"
 cp .libs/libgmp.a ../iPhone/libgmp.a
 
@@ -68,27 +67,35 @@ cp .libs/libgmp.a ../simulator/libgmp.a
 
 build "x86_64" "${OSX_SDK}" "${OSX_PLATFORM}" "-target x86_64-apple-ios-macabi"
 cp .libs/libgmp.a ../catalyst/libgmp.a
-
-cd ../mpfr
-build "arm64" "${IPHONEOS_SDK}" "${IPHONEOS_PLATFORM}" "" "--with-gmp-lib=/Users/joachim/projects/Calculator/dist/iPhone --with-gmp-include=/Users/joachim/projects/Calculator/dist/include"
-cp src/.libs/libmpfr.a ../iPhone/libmpfr.a
-
-build "x86_64" "${IPHONESIMULATOR_SDK}" "${IPHONESIMULATOR_PLATFORM}" "" "--with-gmp-lib=/Users/joachim/projects/Calculator/dist/simulator --with-gmp-include=/Users/joachim/projects/Calculator/dist/include"
-cp src/.libs/libmpfr.a ../simulator/libmpfr.a
-
-build "x86_64" "${OSX_SDK}" "${OSX_PLATFORM}" "-target x86_64-apple-ios-macabi" "--with-gmp-lib=/Users/joachim/projects/Calculator/dist/catalyst --with-gmp-include=/Users/joachim/projects/Calculator/dist/include"
-cp src/.libs/libmpfr.a ../catalyst/libmpfr.a
-
 cd ..
 
-codesign -s 5D0F9B026D6B6975270955D7CA9A986F6D6B0DE1 iPhone/libgmp.a
-codesign -s 5D0F9B026D6B6975270955D7CA9A986F6D6B0DE1 iPhone/libmpfr.a
-codesign -s 5D0F9B026D6B6975270955D7CA9A986F6D6B0DE1 simulator/libgmp.a
-codesign -s 5D0F9B026D6B6975270955D7CA9A986F6D6B0DE1 simulator/libmpfr.a
-codesign -s 5D0F9B026D6B6975270955D7CA9A986F6D6B0DE1 catalyst/libgmp.a
-codesign -s 5D0F9B026D6B6975270955D7CA9A986F6D6B0DE1 catalyst/libmpfr.a
+cd mpfr
+build "arm64" "${IPHONEOS_SDK}" "${IPHONEOS_PLATFORM}" "" "--with-gmp-lib=/Users/joachim/projects/Calculator/dist/iPhone --with-gmp-include=/Users/joachim/projects/Calculator/dist/include"
+cp src/.libs/libmpfr.a ../iPhone/libmpfr.unsigned.a
 
-rm -rf mpfr.xcframework gmp.xcframework
-xcodebuild -create-xcframework -library iPhone/libgmp.a  -library simulator/libgmp.a  -library catalyst/libgmp.a  -output gmp.xcframework
-xcodebuild -create-xcframework -library iPhone/libmpfr.a -library simulator/libmpfr.a -library catalyst/libmpfr.a -output mpfr.xcframework
+build "x86_64" "${IPHONESIMULATOR_SDK}" "${IPHONESIMULATOR_PLATFORM}" "" "--with-gmp-lib=/Users/joachim/projects/Calculator/dist/simulator --with-gmp-include=/Users/joachim/projects/Calculator/dist/include"
+cp src/.libs/libmpfr.a ../simulator/libmpfr.unsigned.a
 
+build "x86_64" "${OSX_SDK}" "${OSX_PLATFORM}" "-target x86_64-apple-ios-macabi" "--with-gmp-lib=/Users/joachim/projects/Calculator/dist/catalyst --with-gmp-include=/Users/joachim/projects/Calculator/dist/include"
+cp src/.libs/libmpfr.a ../catalyst/libmpfr.unsigned.a
+cd ..
+
+cp iPhone/libgmp.a iPhone/libgmp.signed.a
+cp simulator/libgmp.a simulator/libgmp.signed.a
+cp catalyst/libgmp.a catalyst/libgmp.signed.a
+
+cp iPhone/libmpfr.unsigned.a iPhone/libmpfr.signed.a
+cp simulator/libmpfr.unsigned.a simulator/libmpfr.signed.a
+cp catalyst/libmpfr.unsigned.a catalyst/libmpfr.signed.a
+
+identity='5B16BCD4268044927B8BDFEA070E745FA7435D48'
+codesign -s ${identity} iPhone/libgmp.signed.a
+codesign -s ${identity} iPhone/libmpfr.signed.a
+codesign -s ${identity} simulator/libgmp.signed.a
+codesign -s ${identity} simulator/libmpfr.signed.a
+codesign -s ${identity} catalyst/libgmp.signed.a
+codesign -s ${identity} catalyst/libmpfr.signed.a
+
+# rm -rf mpfr.xcframework gmp.xcframework
+# xcodebuild -create-xcframework -library iPhone/libgmp.a  -library simulator/libgmp.a  -library catalyst/libgmp.a  -output gmp.xcframework
+# xcodebuild -create-xcframework -library iPhone/libmpfr.a -library simulator/libmpfr.a -library catalyst/libmpfr.a -output mpfr.xcframework
