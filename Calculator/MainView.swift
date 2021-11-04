@@ -49,6 +49,7 @@ struct MainView: View {
                     Zoom(scrollTarget: $brain.scrollViewTarget,
                          iconName: brain.zoomed ? brain.precisionIconName : "plus.circle.fill",
                          iconSize: t.iconSize,
+                         scaleFactor: t.circularProgressViewScaleFactor,
                          textColor: t.digits_1_9.textColor,
                          zoomed: $brain.zoomed,
                          showCalculating: brain.showCalculating)
@@ -84,8 +85,6 @@ struct MainView: View {
                 Spacer(minLength: brain.zoomed ? t.displayTopPaddingZoomed : t.displayTopPaddingNotZoomed)
                 Display(brain: brain, t: t)
                     .padding(.trailing, t.digits_1_9.size.width * 1.0)
-                    //.animation(nil, value: UUID())
-                    //.background(Color.yellow.opacity(0.3))
                     .padding(.bottom, t.displayBottomPadding)
             }
         )

@@ -11,7 +11,7 @@ struct KeyProperties {
     let size: CGSize
     let font: Font
     let textColor: Color
-    let downTextColor: Color
+    let disabledColor: Color
     let bgColor: Color
     let downBgColor: Color
     let downAnimationTime: Double
@@ -50,7 +50,7 @@ class TE {
             red:   231.0/255.0,
             green: 231.0/255.0,
             blue:  231.0/255.0),
-        downTextColor: Color(
+        disabledColor: Color(
             red:   231.0/255.0,
             green: 231.0/255.0,
             blue:  231.0/255.0),
@@ -72,7 +72,7 @@ class TE {
             red:   231.0/255.0,
             green: 231.0/255.0,
             blue:  231.0/255.0),
-        downTextColor: Color(
+        disabledColor: Color(
             red:   231.0/255.0,
             green: 231.0/255.0,
             blue:  231.0/255.0),
@@ -95,7 +95,7 @@ class TE {
             red:   236.0/255.0,
             green: 235.0/255.0,
             blue:  235.0/255.0),
-        downTextColor: Color(
+        disabledColor: Color(
             red:   236.0/255.0,
             green: 235.0/255.0,
             blue:  235.0/255.0),
@@ -117,7 +117,7 @@ class TE {
             red:   236.0/255.0,
             green: 235.0/255.0,
             blue:  235.0/255.0),
-        downTextColor: Color(
+        disabledColor: Color(
             red:   236.0/255.0,
             green: 235.0/255.0,
             blue:  235.0/255.0),
@@ -139,7 +139,7 @@ class TE {
             red:   236.0/255.0,
             green: 235.0/255.0,
             blue:  235.0/255.0),
-        downTextColor: Color(
+        disabledColor: Color(
             red:   236.0/255.0,
             green: 235.0/255.0,
             blue:  235.0/255.0),
@@ -183,6 +183,7 @@ class TE {
     let displayTopPaddingNotZoomed: CGFloat = 0.0
     let displayBottomPadding: CGFloat = 0.0
     let iconSize: CGFloat = TE.kh * 0.7
+    let circularProgressViewScaleFactor: CGFloat = 0.77
     let isPortraitIPad = false
 
     struct ButtonShape: View {
@@ -219,6 +220,7 @@ class TE {
     var displayBottomPadding: CGFloat
     var zoomTopPadding: CGFloat
     var iconSize: CGFloat
+    let circularProgressViewScaleFactor: CGFloat = 2.0
     var isPortraitIPad: Bool
     init(appFrame: CGSize, isPad: Bool) {
         self.isPad = isPad
@@ -242,11 +244,11 @@ class TE {
                 /// iPad landscape
                 displayTopPaddingNotZoomed = appFrame.height - allkeysHeight - keySize.height - spaceBetweenkeys
                 displayTopPaddingZoomed = displayTopPaddingNotZoomed
-                zoomTopPadding = displayTopPaddingNotZoomed
+                zoomTopPadding = displayTopPaddingNotZoomed + spaceBetweenkeys * 0.5
                 displayBottomPadding = 0.0
             } else {
                 /// iPad portrait
-                zoomTopPadding = 0.0
+                zoomTopPadding = spaceBetweenkeys * 0.5
                 displayTopPaddingNotZoomed = appFrame.height - allkeysHeight - keySize.height - spaceBetweenkeys
                 displayTopPaddingZoomed = 0.0
                 displayBottomPadding = allkeysHeight
@@ -254,7 +256,7 @@ class TE {
             }
         } else {
             /// iPhone
-            zoomTopPadding = 0.5 * (keySize.height + spaceBetweenkeys - iconSize)
+            zoomTopPadding = 0.5 * (keySize.height + spaceBetweenkeys - iconSize) + spaceBetweenkeys * 0.5
             displayTopPaddingNotZoomed = appFrame.height - allkeysHeight - keySize.height - spaceBetweenkeys
             displayTopPaddingZoomed = displayTopPaddingNotZoomed
             displayBottomPadding = 0.0
@@ -267,10 +269,7 @@ class TE {
                 red:   231.0/255.0,
                 green: 231.0/255.0,
                 blue:  231.0/255.0),
-            downTextColor: Color(
-                red:   231.0/255.0,
-                green: 231.0/255.0,
-                blue:  231.0/255.0),
+            disabledColor: Color.gray,
             bgColor: Color(
                 red:   51.0/255.0,
                 green: 51.0/255.0,
@@ -289,10 +288,7 @@ class TE {
                 red:   231.0/255.0,
                 green: 231.0/255.0,
                 blue:  231.0/255.0),
-            downTextColor: Color(
-                red:   231.0/255.0,
-                green: 231.0/255.0,
-                blue:  231.0/255.0),
+            disabledColor: Color.gray,
             bgColor: Color(
                 red:   51.0/255.0,
                 green: 51.0/255.0,
@@ -312,10 +308,7 @@ class TE {
                 red:   255.0/255.0,
                 green: 255.0/255.0,
                 blue:  255.0/255.0),
-            downTextColor: Color(
-                red:   236.0/255.0,
-                green: 235.0/255.0,
-                blue:  235.0/255.0),
+            disabledColor: Color.gray,
             bgColor: Color(
                 red:   105.0/255.0,
                 green: 183.0/255.0,
@@ -334,10 +327,10 @@ class TE {
                 red:     0.0/255.0,
                 green:   0.0/255.0,
                 blue:    0.0/255.0),
-            downTextColor: Color(
-                red:   236.0/255.0,
-                green: 235.0/255.0,
-                blue:  235.0/255.0),
+            disabledColor: Color(
+                red:    80.0/255.0,
+                green:  80.0/255.0,
+                blue:   80.0/255.0),
             bgColor: Color(
                 red:   165.0/255.0,
                 green: 165.0/255.0,
@@ -356,10 +349,7 @@ class TE {
                 red:   236.0/255.0,
                 green: 235.0/255.0,
                 blue:  235.0/255.0),
-            downTextColor: Color(
-                red:   236.0/255.0,
-                green: 235.0/255.0,
-                blue:  235.0/255.0),
+            disabledColor: Color.gray,
             bgColor: Color(
                 red:    33.0/255.0,
                 green:  33.0/255.0,

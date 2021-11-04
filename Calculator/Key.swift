@@ -127,7 +127,7 @@ struct Key: View {
                 return keyProperties.textColor
             }
         } else {
-            return Color.gray
+            return keyProperties.disabledColor
         }
     }
     
