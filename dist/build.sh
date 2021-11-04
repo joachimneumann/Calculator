@@ -39,12 +39,7 @@ build()
 
 	export PATH="${PLATFORM}/Developer/usr/bin:${DEVELOPER}/usr/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
-	EXTRAS=""
-	if [ "${ARCH}" != "x86_64" ]; then
-		EXTRAS="-miphoneos-version-min=${MIN_IOS} -no-integrated-as -arch ${ARCH} -target ${ARCH}-apple-darwin"
-	fi
-
-	CFLAGS="${BITCODE} -isysroot ${SDK} -Wno-error -Wno-implicit-function-declaration ${EXTRAS} ${COMPILEARGS}"
+	CFLAGS="${BITCODE} -isysroot ${SDK} -Wno-error -Wno-implicit-function-declaration -arch ${ARCH} ${COMPILEARGS}"
 
 	./configure CC="${CLANG} ${CFLAGS}"  CPP="${CLANG} -E"  CPPFLAGS="${CFLAGS}" \
 	--host=aarch64-apple-darwin --disable-assembly --enable-static --disable-shared ${CONFIGUREARGS}
@@ -53,10 +48,9 @@ build()
 	make &> "${CURRENT}/build.log"
 }
 
-# code signing: get the correct expanded identity with the command $security find-identity
 
-rm -rf iPhone simulator catalyst
-mkdir iPhone simulator catalyst
+rm -rf iPhone simulator x86_64-catalyst arm64-catalyst
+mkdir iPhone simulator x86_64-catalyst arm64-catalyst
 
 cd gmp
 build "arm64" "${IPHONEOS_SDK}" "${IPHONEOS_PLATFORM}"
@@ -66,52 +60,54 @@ build "x86_64" "${IPHONESIMULATOR_SDK}" "${IPHONESIMULATOR_PLATFORM}"
 cp .libs/libgmp.a ../simulator/libgmp.a
 
 build "x86_64" "${OSX_SDK}" "${OSX_PLATFORM}" "-target x86_64-apple-ios-macabi"
-cp .libs/libgmp.a ../catalyst/libgmp.a
-# For Apple Silicon, I might need CFLAGS="-arch x86_64 -arch arm64"
+cp .libs/libgmp.a ../x86_64-catalyst/libgmp.a
+
+build "arm64" "${OSX_SDK}" "${OSX_PLATFORM}" "-target x86_64-apple-ios-macabi"
+cp .libs/libgmp.a ../arm64-catalyst/libgmp.a
 cd ..
+
+pwd=`pwd`
 
 cd mpfr
-build "arm64" "${IPHONEOS_SDK}" "${IPHONEOS_PLATFORM}" "" "--with-gmp-lib=/Users/joachim/projects/Calculator/dist/iPhone --with-gmp-include=/Users/joachim/projects/Calculator/dist/include"
+build "arm64" "${IPHONEOS_SDK}" "${IPHONEOS_PLATFORM}" "" "--with-gmp-lib=${pwd}/iPhone --with-gmp-include=${pwd}/include"
 cp src/.libs/libmpfr.a ../iPhone/libmpfr.a
 
-build "x86_64" "${IPHONESIMULATOR_SDK}" "${IPHONESIMULATOR_PLATFORM}" "" "--with-gmp-lib=/Users/joachim/projects/Calculator/dist/simulator --with-gmp-include=/Users/joachim/projects/Calculator/dist/include"
+build "x86_64" "${IPHONESIMULATOR_SDK}" "${IPHONESIMULATOR_PLATFORM}" "" "--with-gmp-lib=${pwd}/simulator --with-gmp-include=${pwd}/include"
 cp src/.libs/libmpfr.a ../simulator/libmpfr.a
 
-build "x86_64" "${OSX_SDK}" "${OSX_PLATFORM}" "-target x86_64-apple-ios-macabi" "--with-gmp-lib=/Users/joachim/projects/Calculator/dist/catalyst --with-gmp-include=/Users/joachim/projects/Calculator/dist/include"
-cp src/.libs/libmpfr.a ../catalyst/libmpfr.a
+build "x86_64" "${OSX_SDK}" "${OSX_PLATFORM}" "-target x86_64-apple-ios-macabi" "--with-gmp-lib=${pwd}/x86_64-catalyst --with-gmp-include=${pwd}/include"
+cp src/.libs/libmpfr.a ../x86_64-catalyst/libmpfr.a
+
+build "arm64" "${OSX_SDK}" "${OSX_PLATFORM}" "-target x86_64-apple-ios-macabi" "--with-gmp-lib=${pwd}/arm64-catalyst --with-gmp-include=${pwd}/include"
+cp src/.libs/libmpfr.a ../arm64-catalyst/libmpfr.a
 cd ..
 
-cp iPhone/libgmp.a iPhone/libgmp.signed.a
-cp simulator/libgmp.a simulator/libgmp.signed.a
-cp catalyst/libgmp.a catalyst/libgmp.signed.a
+rm -rf signed
+mkdir signed
+cp -r iPhone simulator x86_64-catalyst arm64-catalyst signed
 
-cp iPhone/libmpfr.a iPhone/libmpfr.signed.a
-cp simulator/libmpfr.a simulator/libmpfr.signed.a
-cp catalyst/libmpfr.a catalyst/libmpfr.signed.a
+# code signing: get the correct expanded identity with the command $security find-identity
+identity='A4E25604F83A7BDD478B07BC86807B554C447B97'
+codesign -s ${identity} signed/iPhone/libgmp.a
+codesign -s ${identity} signed/simulator/libgmp.a
+codesign -s ${identity} signed/x86_64-catalyst/libgmp.a
+codesign -s ${identity} signed/arm64-catalyst/libgmp.a
+codesign -s ${identity} signed/iPhone/libmpfr.a
+codesign -s ${identity} signed/simulator/libmpfr.a
+codesign -s ${identity} signed/x86_64-catalyst/libmpfr.a
+codesign -s ${identity} signed/arm64-catalyst/libmpfr.a
 
-identity='FACE74BA2EE33369639EFA6A656F43ED078BE112'
-codesign -s ${identity} iPhone/libgmp.signed.a
-codesign -s ${identity} simulator/libgmp.signed.a
-codesign -s ${identity} catalyst/libgmp.signed.a
-
-codesign -s ${identity} iPhone/libmpfr.signed.a
-codesign -s ${identity} simulator/libmpfr.signed.a
-codesign -s ${identity} catalyst/libmpfr.signed.a
-
-rm -rf xcframework
-mkdir xcframework
-mkdir xcframework/iPhone
-mkdir xcframework/simulator
-mkdir xcframework/catalyst
-
-cp iPhone/libgmp.signed.a xcframework/iPhone/libgmp.a
-cp simulator/libgmp.signed.a xcframework/simulator/libgmp.a
-cp catalyst/libgmp.signed.a xcframework/catalyst/libgmp.a
-
-cp iPhone/libmpfr.signed.a xcframework/iPhone/libmpfr.a
-cp simulator/libmpfr.signed.a xcframework/simulator/libmpfr.a
-cp catalyst/libmpfr.signed.a xcframework/catalyst/libmpfr.a
+mkdir signed/catalyst;
+lipo -create signed/x86_64-catalyst/libgmp.a  signed/arm64-catalyst/libgmp.a -output signed/catalyst/libgmp.a
+lipo -create signed/x86_64-catalyst/libmpfr.a  signed/arm64-catalyst/libmpfr.a -output signed/catalyst/libmpfr.a
 
 rm -rf mpfr.xcframework gmp.xcframework
-xcodebuild -create-xcframework -library xcframework/iPhone/libgmp.a  -library xcframework/simulator/libgmp.a  -library xcframework/catalyst/libgmp.a  -output gmp.xcframework
-xcodebuild -create-xcframework -library xcframework/iPhone/libmpfr.a -library xcframework/simulator/libmpfr.a -library xcframework/catalyst/libmpfr.a -output mpfr.xcframework
+xcodebuild -create-xcframework -library signed/iPhone/libgmp.a  -library signed/simulator/libgmp.a  -library signed/catalyst/libgmp.a  -output gmp.xcframework
+xcodebuild -create-xcframework -library signed/iPhone/libmpfr.a -library signed/simulator/libmpfr.a -library signed/catalyst/libmpfr.a -output mpfr.xcframework
+
+cp -r gmp.xcframework/ios-x86_64-maccatalyst gmp.xcframework/ios-arm64_x86_64-maccatalyst
+cp -r mpfr.xcframework/ios-x86_64-maccatalyst mpfr.xcframework/ios-arm64_x86_64-maccatalyst
+
+# Troubleshooting:
+# remove frameworks from copy in build phases
+# Exclusive Access to memory: compile time only
