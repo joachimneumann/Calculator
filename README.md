@@ -1,11 +1,11 @@
 # high precision calculator app
 
-Inspired by the Numberphile YouTube channel
+Inspired by the Numberphile YouTube channel and Matt Parkers Calculator reviews
+
 ### license ###
+The app is open source and uses libGmp (https://gmplib.org/). The statically linked libraries can be found in the folder dist
 
-The app uses libGmp (https://gmplib.org/). The statically linked libraries can be found in the folder libGmp
-
-### privacy policy of gmpcalculator
+### privacy policy
 
 What information does the Application obtain and how is it used?
 The only input of the app are the keys of the calculator. The app does not collect any data. The app does not store data. The app does not connect to the Internet.
