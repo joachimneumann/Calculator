@@ -52,7 +52,7 @@ struct MainView: View {
                          scaleFactor: t.circularProgressViewScaleFactor,
                          textColor: t.digits_1_9.textColor,
                          zoomed: $brain.zoomed,
-                         showCalculating: brain.showCalculating)
+                         showCalculating: brain.showCalculating && brain.isCalculating)
                         .frame(width: t.colorOpProperties.size.width, height: t.colorOpProperties.size.height, alignment: .center)
                         .padding(.top, t.zoomTopPadding)
                     Precision(brain: brain, textColor: t.digits_1_9.textColor,

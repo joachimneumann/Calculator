@@ -183,7 +183,7 @@ class TE {
     let displayTopPaddingNotZoomed: CGFloat = 0.0
     let displayBottomPadding: CGFloat = 0.0
     let iconSize: CGFloat = TE.kh * 0.7
-    let circularProgressViewScaleFactor: CGFloat = 0.77
+    var circularProgressViewScaleFactor: CGFloat = 0.77
     let isPortraitIPad = false
 
     struct ButtonShape: View {
@@ -220,10 +220,16 @@ class TE {
     var displayBottomPadding: CGFloat
     var zoomTopPadding: CGFloat
     var iconSize: CGFloat
-    let circularProgressViewScaleFactor: CGFloat = 2.0
+    var circularProgressViewScaleFactor: CGFloat
     var isPortraitIPad: Bool
     init(appFrame: CGSize, isPad: Bool) {
         self.isPad = isPad
+        if isPad {
+            circularProgressViewScaleFactor = 2.0
+        } else {
+            /// iPhone
+            circularProgressViewScaleFactor = 0.77
+        }
         spaceBetweenkeys = appFrame.width * Self.landscapeSpacingFration
         let w = (appFrame.width - 9.0 * spaceBetweenkeys) * 0.1
 
