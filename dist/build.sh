@@ -87,7 +87,7 @@ mkdir signed
 cp -r iPhone simulator x86_64-catalyst arm64-catalyst signed
 
 # code signing: get the correct expanded identity with the command $security find-identity
-identity='A4E25604F83A7BDD478B07BC86807B554C447B97'
+identity='67D83B8E9ABC2ED218825F081D5796429A1A663F'
 codesign -s ${identity} signed/iPhone/libgmp.a
 codesign -s ${identity} signed/simulator/libgmp.a
 codesign -s ${identity} signed/x86_64-catalyst/libgmp.a
@@ -105,8 +105,8 @@ rm -rf mpfr.xcframework gmp.xcframework
 xcodebuild -create-xcframework -library signed/iPhone/libgmp.a  -library signed/simulator/libgmp.a  -library signed/catalyst/libgmp.a  -output gmp.xcframework
 xcodebuild -create-xcframework -library signed/iPhone/libmpfr.a -library signed/simulator/libmpfr.a -library signed/catalyst/libmpfr.a -output mpfr.xcframework
 
-cp -r gmp.xcframework/ios-x86_64-maccatalyst gmp.xcframework/ios-arm64_x86_64-maccatalyst
-cp -r mpfr.xcframework/ios-x86_64-maccatalyst mpfr.xcframework/ios-arm64_x86_64-maccatalyst
+# cp -r gmp.xcframework/ios-x86_64-maccatalyst gmp.xcframework/ios-arm64_x86_64-maccatalyst
+# cp -r mpfr.xcframework/ios-x86_64-maccatalyst mpfr.xcframework/ios-arm64_x86_64-maccatalyst
 
 # Troubleshooting:
 # remove frameworks from copy in build phases
