@@ -568,7 +568,7 @@
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = off;
-				SWIFT_OBJC_BRIDGING_HEADER = /Users/joachim/Desktop/Calculator/dist/include/bridge.h;
+				SWIFT_OBJC_BRIDGING_HEADER = /Users/joachim/projects/Calculator/dist/include/bridge.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,6";
 			};
@@ -607,7 +607,7 @@
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = off;
-				SWIFT_OBJC_BRIDGING_HEADER = /Users/joachim/Desktop/Calculator/dist/include/bridge.h;
+				SWIFT_OBJC_BRIDGING_HEADER = /Users/joachim/projects/Calculator/dist/include/bridge.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,6";
 			};
