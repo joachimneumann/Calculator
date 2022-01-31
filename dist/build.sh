@@ -50,13 +50,13 @@ build()
 
 
 rm -rf iPhone simulator x86_64-catalyst arm64-catalyst
-mkdir iPhone simulator x86_64-catalyst arm64-catalyst
+mkdir iPhone  simulator x86_64-catalyst arm64-catalyst
 
 cd gmp
 build "arm64" "${IPHONEOS_SDK}" "${IPHONEOS_PLATFORM}"
 cp .libs/libgmp.a ../iPhone/libgmp.a
 
-build "x86_64" "${IPHONESIMULATOR_SDK}" "${IPHONESIMULATOR_PLATFORM}"
+build "arm64" "${IPHONESIMULATOR_SDK}" "${IPHONESIMULATOR_PLATFORM}"
 cp .libs/libgmp.a ../simulator/libgmp.a
 
 build "x86_64" "${OSX_SDK}" "${OSX_PLATFORM}" "-target x86_64-apple-ios-macabi"
@@ -72,7 +72,7 @@ cd mpfr
 build "arm64" "${IPHONEOS_SDK}" "${IPHONEOS_PLATFORM}" "" "--with-gmp-lib=${pwd}/iPhone --with-gmp-include=${pwd}/include"
 cp src/.libs/libmpfr.a ../iPhone/libmpfr.a
 
-build "x86_64" "${IPHONESIMULATOR_SDK}" "${IPHONESIMULATOR_PLATFORM}" "" "--with-gmp-lib=${pwd}/simulator --with-gmp-include=${pwd}/include"
+build "arm64" "${IPHONESIMULATOR_SDK}" "${IPHONESIMULATOR_PLATFORM}" "" "--with-gmp-lib=${pwd}/simulator --with-gmp-include=${pwd}/include"
 cp src/.libs/libmpfr.a ../simulator/libmpfr.a
 
 build "x86_64" "${OSX_SDK}" "${OSX_PLATFORM}" "-target x86_64-apple-ios-macabi" "--with-gmp-lib=${pwd}/x86_64-catalyst --with-gmp-include=${pwd}/include"
@@ -102,8 +102,8 @@ lipo -create signed/x86_64-catalyst/libgmp.a  signed/arm64-catalyst/libgmp.a -ou
 lipo -create signed/x86_64-catalyst/libmpfr.a  signed/arm64-catalyst/libmpfr.a -output signed/catalyst/libmpfr.a
 
 rm -rf mpfr.xcframework gmp.xcframework
-xcodebuild -create-xcframework -library signed/iPhone/libgmp.a  -library signed/simulator/libgmp.a  -library signed/catalyst/libgmp.a  -output gmp.xcframework
-xcodebuild -create-xcframework -library signed/iPhone/libmpfr.a -library signed/simulator/libmpfr.a -library signed/catalyst/libmpfr.a -output mpfr.xcframework
+xcodebuild -create-xcframework -library signed/iPhone/libgmp.a  -library signed/simulator/libgmp.a   -library signed/catalyst/libgmp.a  -output gmp.xcframework
+xcodebuild -create-xcframework -library signed/iPhone/libmpfr.a -library signed/simulator/libmpfr.a  -library signed/catalyst/libmpfr.a -output mpfr.xcframework
 
 # cp -r gmp.xcframework/ios-x86_64-maccatalyst gmp.xcframework/ios-arm64_x86_64-maccatalyst
 # cp -r mpfr.xcframework/ios-x86_64-maccatalyst mpfr.xcframework/ios-arm64_x86_64-maccatalyst
