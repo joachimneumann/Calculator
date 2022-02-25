@@ -36,14 +36,8 @@ struct CalculatorAppiOS: Scene {
 }
 
 class MyAppDelegate: NSObject, UIApplicationDelegate {
-    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window:UIWindow?) -> UIInterfaceOrientationMask {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            return .landscape
-        } else {
-            return .all
-        }
-    }
 }
+
 #endif
 
 

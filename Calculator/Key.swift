@@ -73,13 +73,10 @@ struct Key: View {
                 .foregroundColor(bgColor(enabled: enabled, pending: brain.isPending(symbol)))
                 .frame(width: keyProperties.size.width, height: keyProperties.size.height)
             if symbol == "0" {
-                HStack {
-                    button
-                        .font(keyProperties.font)
-                        .foregroundColor(fgColor(enabled: enabled, pending: brain.isPending(symbol)))
-                        .padding(.leading, t.zeroLeadingPadding)
-                    Spacer()
-                }
+                button
+                    .font(keyProperties.font)
+                    .foregroundColor(fgColor(enabled: enabled, pending: brain.isPending(symbol)))
+                    .padding(.trailing, t.zeroTrailingPadding)
             } else {
                 button
                     .font(keyProperties.font)

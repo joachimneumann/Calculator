@@ -16,8 +16,10 @@ struct MainView: View {
         var t: TE
         var body: some View {
             HStack(spacing: 0.0) {
-                ScientificKeys(brain: brain, t: t)
-                    .padding(.trailing, t.spaceBetweenkeys)
+                if !t.isPortraitIPhone {
+                    ScientificKeys(brain: brain, t: t)
+                        .padding(.trailing, t.spaceBetweenkeys)
+                }
                 NumberKeys(brain: brain, t: t)
                 Spacer(minLength: 0.0)
             }
