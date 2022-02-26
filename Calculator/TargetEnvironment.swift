@@ -184,9 +184,8 @@ class TE {
     let displayBottomPadding: CGFloat = 0.0
     let iconSize: CGFloat = TE.kh * 0.7
     var circularProgressViewScaleFactor: CGFloat = 0.77
-    let isPortraitIPad = false
-    let isPortraitIPhone = false
-
+    let isIPad = false
+    let isPortrait = false
     struct ButtonShape: View {
         var body: some View {
             Rectangle()
@@ -198,8 +197,7 @@ class TE {
     /// iOS
     ///
     
-    static let appBackgroundColor = Color(.black)
-
+    static let appBackgroundColor = Color(.green).opacity(0.3)//Color(.black)
 
     let digits_1_9: KeyProperties
     let digits_0: KeyProperties
@@ -208,6 +206,7 @@ class TE {
     let scientificProperties: KeyProperties
     static let zoomIconSize: CGFloat = 30.0
     static let landscapeSpacingFration: CGFloat = 0.01
+    static let portraitSpacingFration: CGFloat = 0.03
 
     var displayFontSize: CGFloat
     var displayFont: Font
@@ -222,18 +221,24 @@ class TE {
     var zoomTopPadding: CGFloat
     var iconSize: CGFloat
     var circularProgressViewScaleFactor: CGFloat
-    var isPortraitIPad: Bool
-    var isPortraitIPhone: Bool
+    var isPortrait: Bool
     init(appFrame: CGSize, isPad: Bool) {
         self.isPad = isPad
-        if isPad {
-            circularProgressViewScaleFactor = 2.0
+        if appFrame.width > appFrame.height {
+            isPortrait = false
         } else {
-            /// iPhone
-            circularProgressViewScaleFactor = 0.77
+            isPortrait = true
         }
-        spaceBetweenkeys = appFrame.width * Self.landscapeSpacingFration
-        let w = (appFrame.width - 9.0 * spaceBetweenkeys) * 0.1
+        let w: CGFloat
+        if !isPad && isPortrait {
+            /// portrait iPhone
+            spaceBetweenkeys = appFrame.width * Self.portraitSpacingFration
+            w = (appFrame.width - 4.0 * spaceBetweenkeys) * 0.25
+        } else {
+            /// all other cases
+            spaceBetweenkeys = appFrame.width * Self.landscapeSpacingFration
+            w = (appFrame.width - 9.0 * spaceBetweenkeys) * 0.1
+        }
 
         let squareKeysHeight = 5.0 * w + 4.0 * spaceBetweenkeys
         let factor:CGFloat = min(1.0, appFrame.height * 0.8 / squareKeysHeight)
@@ -246,35 +251,33 @@ class TE {
         allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenkeys
         zeroTrailingPadding = keySize.width * 1 + digitsKeyFontSize*0.25
         iconSize = keySize.height * 0.7
-        isPortraitIPad = false
         if isPad {
-            isPortraitIPhone = false
-            if appFrame.width > appFrame.height {
-                /// iPad landscape
+            circularProgressViewScaleFactor = 2.0
+            if isPortrait {
+                /// iPad portrait
                 displayTopPaddingNotZoomed = appFrame.height - allkeysHeight - keySize.height - spaceBetweenkeys
                 displayTopPaddingZoomed = displayTopPaddingNotZoomed
                 zoomTopPadding = displayTopPaddingNotZoomed + spaceBetweenkeys * 0.5
                 displayBottomPadding = 0.0
             } else {
-                /// iPad portrait
+                /// iPad landscape
                 zoomTopPadding = spaceBetweenkeys * 0.5
                 displayTopPaddingNotZoomed = appFrame.height - allkeysHeight - keySize.height - spaceBetweenkeys
                 displayTopPaddingZoomed = 0.0
                 displayBottomPadding = allkeysHeight
-                isPortraitIPad = true
             }
         } else {
             /// iPhone
-            zoomTopPadding = 0.5 * (keySize.height + spaceBetweenkeys - iconSize) + spaceBetweenkeys * 0.5
+            circularProgressViewScaleFactor = 0.77
             displayTopPaddingNotZoomed = appFrame.height - allkeysHeight - keySize.height - spaceBetweenkeys
             displayTopPaddingZoomed = displayTopPaddingNotZoomed
             displayBottomPadding = 0.0
-            if appFrame.width > appFrame.height {
-                /// iPhone landscape
-                isPortraitIPhone = false
-            } else {
+            if isPortrait {
                 /// iPhone portrait
-                isPortraitIPhone = true
+                zoomTopPadding = displayTopPaddingNotZoomed + spaceBetweenkeys * 0.5
+            } else {
+                /// iPhone landscape
+                zoomTopPadding = 0.5 * (keySize.height + spaceBetweenkeys - iconSize) + spaceBetweenkeys * 0.5
             }
         }
 

@@ -16,12 +16,11 @@ struct MainView: View {
         var t: TE
         var body: some View {
             HStack(spacing: 0.0) {
-                if !t.isPortraitIPhone {
+                if t.isPad || !t.isPortrait {
                     ScientificKeys(brain: brain, t: t)
                         .padding(.trailing, t.spaceBetweenkeys)
                 }
                 NumberKeys(brain: brain, t: t)
-                Spacer(minLength: 0.0)
             }
             .frame(height: t.allkeysHeight)
             .transition(.move(edge: .bottom))
@@ -76,7 +75,7 @@ struct MainView: View {
                         Spacer(minLength: 0.0)
                     }
                 }
-                if !brain.zoomed || t.isPortraitIPad {
+                if !brain.zoomed || t.isPad {
                     Keys(brain: brain, t: t)
                         .background(TE.appBackgroundColor)
                 }
@@ -86,7 +85,7 @@ struct MainView: View {
             VStack {
                 Spacer(minLength: brain.zoomed ? t.displayTopPaddingZoomed : t.displayTopPaddingNotZoomed)
                 Display(brain: brain, t: t)
-                    .padding(.trailing, t.digits_1_9.size.width * 1.0)
+                    .padding(.trailing, t.digits_1_9.size.width * 1.0) // TODO: iPhone portrait no trailing
                     .padding(.bottom, t.displayBottomPadding)
             }
         )
