@@ -43,7 +43,6 @@ struct NumberKeys: View {
                 Key(",", requiresValidNuber: false, brain: brain, t: t, keyProperties: t.digits_1_9)
                 Key("=", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.colorOpProperties)
             }
-            .background(Color.yellow)
         }
     }
 }

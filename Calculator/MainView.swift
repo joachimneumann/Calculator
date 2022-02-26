@@ -77,7 +77,6 @@ struct MainView: View {
                 }
                 if !brain.zoomed || t.isPad {
                     Keys(brain: brain, t: t)
-                        .background(TE.appBackgroundColor)
                 }
             }
         }
