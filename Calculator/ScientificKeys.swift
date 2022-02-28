@@ -12,8 +12,8 @@ struct ScientificKeys: View {
     let t: TE
     
     var body: some View {
-        VStack(spacing: t.spaceBetweenkeys) {
-            HStack(spacing: t.spaceBetweenkeys) {
+        VStack(spacing: t.spaceBetweenKeys) {
+            HStack(spacing: t.spaceBetweenKeys) {
                 Key("(", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
                 Key(")", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
                 Key("mc", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
@@ -21,7 +21,7 @@ struct ScientificKeys: View {
                 Key("m-", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
                 Key("mr", requiresValidNuber: false, brain: brain, t: t, keyProperties: t.scientificProperties)
             }
-            HStack(spacing: t.spaceBetweenkeys) {
+            HStack(spacing: t.spaceBetweenKeys) {
                 Key("2nd", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
                 Key("x^2", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
                 Key("x^3", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
@@ -29,7 +29,7 @@ struct ScientificKeys: View {
                 Key(brain.secondKeys ? "y^x" : "e^x", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
                 Key(brain.secondKeys ? "2^x" : "10^x", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
             }
-            HStack(spacing: t.spaceBetweenkeys) {
+            HStack(spacing: t.spaceBetweenKeys) {
                 Key("One_x", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
                 Key("√", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
                 Key("3√", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
@@ -37,7 +37,7 @@ struct ScientificKeys: View {
                 Key(brain.secondKeys ? "logy" : "ln", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
                 Key(brain.secondKeys ? "log2" : "log10", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
             }
-            HStack(spacing: t.spaceBetweenkeys) {
+            HStack(spacing: t.spaceBetweenKeys) {
                 Key("x!", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
                 Key(brain.rad ? (brain.secondKeys ? "asin" : "sin") : (brain.secondKeys ? "asinD" : "sinD"), requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
                 Key(brain.rad ? (brain.secondKeys ? "acos" : "cos") : (brain.secondKeys ? "acosD" : "cosD"), requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
@@ -45,7 +45,7 @@ struct ScientificKeys: View {
                 Key("e", requiresValidNuber: false, brain: brain, t: t, keyProperties: t.scientificProperties)
                 Key("EE", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
             }
-            HStack(spacing: t.spaceBetweenkeys) {
+            HStack(spacing: t.spaceBetweenKeys) {
                 Key(brain.rad ? "Deg" : "Rad", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
                 Key(brain.secondKeys ? "asinh" : "sinh", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
                 Key(brain.secondKeys ? "acosh" : "cosh", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)

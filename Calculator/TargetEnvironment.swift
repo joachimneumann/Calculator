@@ -21,7 +21,6 @@ struct KeyProperties {
 class TE {
     static let iPhoneScientificFontSizeReduction: CGFloat = 0.85//1.0
     static let digitsInAllDigitsDisplay: Int = 200
-    static let numberPadFration: CGFloat = 0.4
     
     static let lowPrecision          = 100
     static let lowPrecisionString    = "one hundred digits"
@@ -171,7 +170,7 @@ class TE {
     let scientificKeyFontSize = TE.kh * 0.36
     let digitsInSmallDisplay: Int = 16
     let isLandscape: Bool = true
-    let spaceBetweenkeys: CGFloat = TE.sp
+    let spaceBetweenKeys: CGFloat = TE.sp
     let displayFont: Font = Font.system(size: TE.staticDisplayFontSize, weight: .thin).monospacedDigit()
     let widerKeySize: CGSize  = CGSize(width: TE.wkw, height: TE.kh)
     let scientificKeySize: CGSize   = CGSize(width: TE.kw,  height: TE.kh)
@@ -197,7 +196,8 @@ class TE {
     /// iOS
     ///
     
-    static let appBackgroundColor = Color(.green).opacity(0.3)//Color(.black)
+    static let appBackgroundColor = Color(.brown).opacity(0.7)
+//    static let appBackgroundColor = Color(.black)
 
     let digits_1_9: KeyProperties
     let digits_0: KeyProperties
@@ -205,12 +205,12 @@ class TE {
     let ac_plus_minus_percentProperties: KeyProperties
     let scientificProperties: KeyProperties
     static let zoomIconSize: CGFloat = 30.0
-    static let landscapeSpacingFration: CGFloat = 0.01
-    static let portraitSpacingFration: CGFloat = 0.03
+    static let landscapeSpacingFraction: CGFloat = 0.01
+    static let portraitSpacingFraction: CGFloat = 0.03
 
     var displayFontSize: CGFloat
     var displayFont: Font
-    var spaceBetweenkeys: CGFloat
+    var spaceBetweenKeys: CGFloat
     var allkeysHeight: CGFloat
     var digitsInSmallDisplay: Int
     var isPad: Bool
@@ -222,62 +222,63 @@ class TE {
     var iconSize: CGFloat
     var circularProgressViewScaleFactor: CGFloat
     var isPortrait: Bool
-    init(appFrame: CGSize, isPad: Bool) {
+    init(appFrame: CGSize, isPad: Bool, isPortrait: Bool) {
         self.isPad = isPad
-        if appFrame.width > appFrame.height {
-            isPortrait = false
-        } else {
-            isPortrait = true
-        }
-        let w: CGFloat
+        self.isPortrait = isPortrait
+        let keySize: CGSize
+        let keyWidth: CGFloat
         if !isPad && isPortrait {
             /// portrait iPhone
-            spaceBetweenkeys = appFrame.width * Self.portraitSpacingFration
-            w = (appFrame.width - 4.0 * spaceBetweenkeys) * 0.25
+            spaceBetweenKeys = appFrame.width * Self.portraitSpacingFraction
+            keyWidth = (appFrame.width - 3.0 * spaceBetweenKeys) * 0.25
         } else {
             /// all other cases
-            spaceBetweenkeys = appFrame.width * Self.landscapeSpacingFration
-            w = (appFrame.width - 9.0 * spaceBetweenkeys) * 0.1
+            spaceBetweenKeys = appFrame.width * Self.landscapeSpacingFraction
+            keyWidth = (appFrame.width - 9.0 * spaceBetweenKeys) * 0.1
         }
 
-        let squareKeysHeight = 5.0 * w + 4.0 * spaceBetweenkeys
-        let factor:CGFloat = min(1.0, appFrame.height * 0.8 / squareKeysHeight)
-        let keySize = CGSize(width: w, height: w * factor)
+        if isPortrait {
+            keySize = CGSize(width: keyWidth, height: keyWidth)
+        } else {
+            let squareKeysHeight = 5.0 * keyWidth + 4.0 * spaceBetweenKeys
+            let factor:CGFloat = min(1.0, appFrame.height * 0.8 / squareKeysHeight)
+            keySize = CGSize(width: keyWidth, height: keyWidth * factor)
+        }
         let scientificKeyFontSize = keySize.height * 0.35
         let digitsKeyFontSize     = keySize.height * 0.5
         digitsInSmallDisplay = 16
         displayFontSize = keySize.height
         displayFont = Font.system(size: displayFontSize, weight: .thin).monospacedDigit()
-        allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenkeys
+        allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenKeys
         zeroTrailingPadding = keySize.width * 1 + digitsKeyFontSize*0.25
         iconSize = keySize.height * 0.7
         if isPad {
             circularProgressViewScaleFactor = 2.0
             if isPortrait {
                 /// iPad portrait
-                displayTopPaddingNotZoomed = appFrame.height - allkeysHeight - keySize.height - spaceBetweenkeys
+                displayTopPaddingNotZoomed = appFrame.height - allkeysHeight - keySize.height - spaceBetweenKeys
                 displayTopPaddingZoomed = displayTopPaddingNotZoomed
-                zoomTopPadding = displayTopPaddingNotZoomed + spaceBetweenkeys * 0.5
+                zoomTopPadding = displayTopPaddingNotZoomed + spaceBetweenKeys * 0.5
                 displayBottomPadding = 0.0
             } else {
                 /// iPad landscape
-                zoomTopPadding = spaceBetweenkeys * 0.5
-                displayTopPaddingNotZoomed = appFrame.height - allkeysHeight - keySize.height - spaceBetweenkeys
+                zoomTopPadding = spaceBetweenKeys * 0.5
+                displayTopPaddingNotZoomed = appFrame.height - allkeysHeight - keySize.height - spaceBetweenKeys
                 displayTopPaddingZoomed = 0.0
                 displayBottomPadding = allkeysHeight
             }
         } else {
             /// iPhone
             circularProgressViewScaleFactor = 0.77
-            displayTopPaddingNotZoomed = appFrame.height - allkeysHeight - keySize.height - spaceBetweenkeys
+            displayTopPaddingNotZoomed = appFrame.height - allkeysHeight - keySize.height - spaceBetweenKeys
             displayTopPaddingZoomed = displayTopPaddingNotZoomed
-            displayBottomPadding = 0.0
+            displayBottomPadding = allkeysHeight
             if isPortrait {
                 /// iPhone portrait
-                zoomTopPadding = displayTopPaddingNotZoomed + spaceBetweenkeys * 0.5
+                zoomTopPadding = displayTopPaddingNotZoomed + spaceBetweenKeys * 0.5
             } else {
                 /// iPhone landscape
-                zoomTopPadding = 0.5 * (keySize.height + spaceBetweenkeys - iconSize) + spaceBetweenkeys * 0.5
+                zoomTopPadding = 0.5 * (keySize.height + spaceBetweenKeys - iconSize) + spaceBetweenKeys * 0.5
             }
         }
 
@@ -301,7 +302,7 @@ class TE {
             upAnimationTime: 0.5)
         
         digits_0 = KeyProperties(
-            size: CGSize(width: 2.0 * keySize.width + spaceBetweenkeys, height: keySize.height),
+            size: CGSize(width: 2.0 * keySize.width + spaceBetweenKeys, height: keySize.height),
             font: Font.system(size: digitsKeyFontSize).monospacedDigit(),
             textColor: Color(
                 red:   231.0/255.0,

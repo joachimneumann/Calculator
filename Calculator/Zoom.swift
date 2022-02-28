@@ -26,7 +26,7 @@ struct Zoom: View {
                 .resizable()
                 .foregroundColor(textColor)
                 .onTapGesture {
-                    withAnimation(.easeIn) {
+                    withAnimation() {
                         zoomed.toggle()
                         if !zoomed {
                             scrollTarget = 1

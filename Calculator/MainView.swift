@@ -15,12 +15,15 @@ struct MainView: View {
         let brain: Brain
         var t: TE
         var body: some View {
-            HStack(spacing: 0.0) {
-                if t.isPad || !t.isPortrait {
-                    ScientificKeys(brain: brain, t: t)
-                        .padding(.trailing, t.spaceBetweenkeys)
+            VStack(spacing: 0.0) {
+                Spacer(minLength: 0.0)
+                HStack(spacing: 0.0) {
+                    if t.isPad || !t.isPortrait {
+                        ScientificKeys(brain: brain, t: t)
+                            .padding(.trailing, t.spaceBetweenKeys)
+                    }
+                    NumberKeys(brain: brain, t: t)
                 }
-                NumberKeys(brain: brain, t: t)
             }
             .frame(height: t.allkeysHeight)
             .transition(.move(edge: .bottom))
@@ -42,8 +45,9 @@ struct MainView: View {
         }
     }
     
+    @State private var showDetails = false
     var body: some View {
-        ZStack {
+        ZStack { // buttons: + and OO
             HStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
                 VStack {
@@ -55,39 +59,60 @@ struct MainView: View {
                          zoomed: $brain.zoomed,
                          showCalculating: brain.showCalculating && brain.isCalculating)
                         .frame(width: t.colorOpProperties.size.width, height: t.colorOpProperties.size.height, alignment: .center)
-                        .padding(.top, t.zoomTopPadding)
+//                        .padding(.top, t.zoomTopPadding)
                     Precision(brain: brain, textColor: t.digits_1_9.textColor,
                               iconSize: t.iconSize)
                         .frame(width: t.colorOpProperties.size.width, height: t.colorOpProperties.size.height, alignment: .center)
                     Spacer(minLength: 0.0)
                 }
             }
-            
-            VStack(spacing: 0.0) {
-                HStack(spacing: 0.0) {
-                    if brain.rad && !brain.zoomed {
-                        Rad(keySize: t.digits_1_9.size, textColor: t.digits_1_9.textColor)
-                    }
-                    Spacer(minLength: 0.0)
-                    VStack(spacing: 0.0) {
-                        if t.isPad {
-                        }
-                        Spacer(minLength: 0.0)
-                    }
-                }
-                if !brain.zoomed || t.isPad {
-                    Keys(brain: brain, t: t)
-                }
+        }
+//        .background(
+            VStack {
+                Spacer(minLength: 0.0)
+                Text("xx")
+                    .padding(.bottom, t.displayBottomPadding)
+                    .background(Color.yellow)
+            }
+//        )
+        VStack {
+            if !brain.zoomed {
+                Spacer(minLength: 0.0)
+                Keys(brain: brain, t: t)
+                    .transition(.move(edge: .bottom))
             }
         }
-        .background(
-            VStack {
-                Spacer(minLength: brain.zoomed ? t.displayTopPaddingZoomed : t.displayTopPaddingNotZoomed)
-                Display(brain: brain, t: t)
-                    .padding(.trailing, t.digits_1_9.size.width * 1.0) // TODO: iPhone portrait no trailing
-                    .padding(.bottom, t.displayBottomPadding)
-            }
-        )
+        
+//        .background(
+//            VStack {
+//                Spacer(minLength: brain.zoomed ? t.displayTopPaddingZoomed : t.displayTopPaddingNotZoomed)
+//                Display(brain: brain, t: t)
+//                    .padding(.trailing, 100)//t.digits_1_9.size.width * 1.0)
+//                    .padding(.bottom, t.displayBottomPadding)
+//            }
+//        )
+
+
+        
+//            VStack(spacing: 0.0) {
+//                HStack(spacing: 0.0) {
+//                    if brain.rad && !brain.zoomed {
+//                        Rad(keySize: t.digits_1_9.size, textColor: t.digits_1_9.textColor)
+//                    }
+//                    Spacer(minLength: 0.0)
+//                    VStack(spacing: 0.0) {
+//                        if t.isPad {
+//                        }
+//                        Spacer(minLength: 0.0)
+//                    }
+//                }
+//                if !brain.zoomed || t.isPad {
+//                    HStack(spacing: 0.0) {
+//                        Keys(brain: brain, t: t)
+//                    }
+//                }
+//            }
+//        }
     }
 }
 
