@@ -19,7 +19,169 @@ class CalculatorTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
     
-    func test() {
+    func testMultilineDisplay() {
+
+        let multilineDisplay = MultilineDisplay(charactersInOneLine: 6, precision: 20)
+        
+        multilineDisplay.update(Number("123"))
+        XCTAssertEqual(multilineDisplay.oneLine, "123")
+        XCTAssertEqual(multilineDisplay.left, "123")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number(Gmp("123")))
+        XCTAssertEqual(multilineDisplay.oneLine, "123")
+        XCTAssertEqual(multilineDisplay.left, "123")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number("-123"))
+        XCTAssertEqual(multilineDisplay.oneLine, "-123")
+        XCTAssertEqual(multilineDisplay.left, "-123")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number(Gmp("-123")))
+        XCTAssertEqual(multilineDisplay.oneLine, "-123")
+        XCTAssertEqual(multilineDisplay.left, "-123")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number(Gmp("1234")))
+        XCTAssertEqual(multilineDisplay.oneLine, "1234")
+        XCTAssertEqual(multilineDisplay.left, "1234")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number("12345"))
+        XCTAssertEqual(multilineDisplay.oneLine, "12345")
+        XCTAssertEqual(multilineDisplay.left, "12345")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number(Gmp("12345")))
+        XCTAssertEqual(multilineDisplay.oneLine, "12345")
+        XCTAssertEqual(multilineDisplay.left, "12345")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number(Gmp("12300")))
+        XCTAssertEqual(multilineDisplay.oneLine,  "12300")
+        XCTAssertEqual(multilineDisplay.left, "12300")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number("12300"))
+        XCTAssertEqual(multilineDisplay.oneLine,  "12300")
+        XCTAssertEqual(multilineDisplay.left, "12300")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number("123456"))
+        XCTAssertEqual(multilineDisplay.oneLine, "123456")
+        XCTAssertEqual(multilineDisplay.left, "123456")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number(Gmp("123456")))
+        XCTAssertEqual(multilineDisplay.oneLine, "123456")
+        XCTAssertEqual(multilineDisplay.left, "123456")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number(Gmp("-12345")))
+        XCTAssertEqual(multilineDisplay.oneLine, "-12345")
+        XCTAssertEqual(multilineDisplay.left, "-12345")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number("1234567"))
+        XCTAssertEqual(multilineDisplay.oneLine, "1,23e6")
+        XCTAssertEqual(multilineDisplay.left, "1234567")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertTrue(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number(Gmp("1234567")))
+        XCTAssertEqual(multilineDisplay.oneLine, "1,23e6")
+        XCTAssertEqual(multilineDisplay.left, "1234567")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertTrue(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number(Gmp("-1234567")))
+        XCTAssertEqual(multilineDisplay.oneLine, "-1,2e6")
+        XCTAssertEqual(multilineDisplay.left, "-1234567")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertTrue(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number("12345678349875349873"))
+        XCTAssertEqual(multilineDisplay.oneLine, "1,2e19")
+        XCTAssertEqual(multilineDisplay.left, "12345678349875349873")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertTrue(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number("1,234"))
+        XCTAssertEqual(multilineDisplay.oneLine, "1,234")
+        XCTAssertEqual(multilineDisplay.left, "1,234")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number("1,23456789"))
+        XCTAssertEqual(multilineDisplay.oneLine, "1,2345")
+        XCTAssertEqual(multilineDisplay.left, "1,23456789")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number("-1,23456789"))
+        XCTAssertEqual(multilineDisplay.oneLine, "-1,234")
+        XCTAssertEqual(multilineDisplay.left, "-1,23456789")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number("-144,23456789"))
+        XCTAssertEqual(multilineDisplay.oneLine, "-144,2")
+        XCTAssertEqual(multilineDisplay.left, "-144,23456789")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number("-1444,23456789"))
+        XCTAssertEqual(multilineDisplay.oneLine, "-1444,0")
+        XCTAssertEqual(multilineDisplay.left, "-1444,23456789")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number("921387491237419283092340238420398423098423049874129837649128364519234875"))
+        XCTAssertEqual(multilineDisplay.oneLine, "9,2e71")
+        XCTAssertEqual(multilineDisplay.left, "9,21387491237419283092")
+        XCTAssertEqual(multilineDisplay.right, "e71")
+        XCTAssertTrue(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number("1,23"))
+        XCTAssertEqual(multilineDisplay.oneLine, "1,23")
+        XCTAssertEqual(multilineDisplay.left, "1,23")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number(Gmp("1,23")))
+        XCTAssertEqual(multilineDisplay.oneLine, "1,23")
+        XCTAssertEqual(multilineDisplay.left, "1,23")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number("0,0023"))
+        XCTAssertEqual(multilineDisplay.left, "0,0023")
+        XCTAssertNil(multilineDisplay.right)
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+        multilineDisplay.update(Number("0,000000000023"))
+        XCTAssertEqual(multilineDisplay.left, "2,3")
+        XCTAssertNotNil(multilineDisplay.right)
+        XCTAssertEqual(multilineDisplay.right, "E-11")
+        XCTAssertFalse(multilineDisplay.moreThanOneLine)
+
+
+    }
+    
+    func XXXtest() {
         let digits = 16
         
         var res = ""
@@ -627,7 +789,7 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(brain.debugLastDouble, 44.0)
     }
     
-    func testPerformanceExample() throws {
+    func XXtestPerformanceExample() throws {
         // This is an example of a performance test case.
         self.measure {
             // Put the code you want to measure the time of here.

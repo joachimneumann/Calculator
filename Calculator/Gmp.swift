@@ -27,12 +27,7 @@ var globalGmpPrecision: Int = 0
 
 class Gmp: Equatable {
     static func == (lhs: Gmp, rhs: Gmp) -> Bool {
-        let l = lhs.data(DisplayData.digitsInExpandedDisplay)
-        let r = rhs.data(DisplayData.digitsInExpandedDisplay)
-        if l.mantissa != r.mantissa { return false }
-        if l.negative != r.negative { return false }
-        if l.exponent != r.exponent { return false }
-        return true
+        return mpfr_cmp(&lhs.mpfr, &rhs.mpfr) == 0
     }
     
     /// Swift requires me to initialize the mpfr_t struc
@@ -206,46 +201,46 @@ class Gmp: Equatable {
         mpfr_zero_p(&mpfr) != 0
     }
     
-    struct Data {
-        let mantissa: String
-        let exponent: Int
-        let negative: Bool
-    }
-    
-    func data(_ length: Int) -> Data {
-        var exponent: mpfr_exp_t = 0
-        var charArray: Array<CChar> = Array(repeating: 0, count: length+5)
-        //print("data 11")
-        mpfr_get_str(&charArray, &exponent, 10, length+5, &mpfr, MPFR_RNDN)
-        //print("data 12")
-        var negative: Bool
-        if charArray[0] == 45 {
-            charArray.removeFirst()
-            negative = true
-        } else {
-            negative = false
-        }
-        
-        var mantissa = ""
-        for c in charArray {
-            if c != 0 {
-                let x1 = UInt8(c)
-                let x2 = UnicodeScalar(x1)
-                let x3 = String(x2)
-                mantissa += x3.withCString { String(format: "%s", $0) }
-            }
-        }
-        while mantissa.last == "0" {
-            mantissa.removeLast()
-        }
-        
-        if mantissa == "" {
-            mantissa = "0"
-        } else {
-            exponent = exponent - 1
-        }
-        /// prefix(length-1) because of the comma. I want to return length digits
-        return Data(mantissa: String(mantissa.prefix(length-1)), exponent: exponent, negative: negative)
-    }
-    
+//    struct Data {
+//        let mantissa: String
+//        let exponent: Int
+//        let negative: Bool
+//    }
+//    
+//    func data(_ length: Int) -> Data {
+//        var exponent: mpfr_exp_t = 0
+//        var charArray: Array<CChar> = Array(repeating: 0, count: length+5)
+//        //print("data 11")
+//        mpfr_get_str(&charArray, &exponent, 10, length+5, &mpfr, MPFR_RNDN)
+//        //print("data 12")
+//        var negative: Bool
+//        if charArray[0] == 45 {
+//            charArray.removeFirst()
+//            negative = true
+//        } else {
+//            negative = false
+//        }
+//        
+//        var mantissa = ""
+//        for c in charArray {
+//            if c != 0 {
+//                let x1 = UInt8(c)
+//                let x2 = UnicodeScalar(x1)
+//                let x3 = String(x2)
+//                mantissa += x3.withCString { String(format: "%s", $0) }
+//            }
+//        }
+//        while mantissa.last == "0" {
+//            mantissa.removeLast()
+//        }
+//        
+//        if mantissa == "" {
+//            mantissa = "0"
+//        } else {
+//            exponent = exponent - 1
+//        }
+//        /// prefix(length-1) because of the comma. I want to return length digits
+//        return Data(mantissa: String(mantissa.prefix(length-1)), exponent: exponent, negative: negative)
+//    }
+//    
 }

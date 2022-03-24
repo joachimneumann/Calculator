@@ -66,15 +66,15 @@ struct MainView: View {
                     Spacer(minLength: 0.0)
                 }
             }
-        }
+//        }
 //        .background(
-            VStack {
-                Spacer(minLength: 0.0)
-                Text("xx")
-                    .padding(.bottom, t.displayBottomPadding)
-                    .background(Color.yellow)
-            }
-//        )
+//            VStack {
+//                Spacer(minLength: 0.0)
+//                Text("xx")
+//                    .padding(.bottom, 0.0)
+//                    .background(Color.yellow)
+//            }
+////        )
         VStack {
             if !brain.zoomed {
                 Spacer(minLength: 0.0)
@@ -83,36 +83,35 @@ struct MainView: View {
             }
         }
         
-//        .background(
-//            VStack {
-//                Spacer(minLength: brain.zoomed ? t.displayTopPaddingZoomed : t.displayTopPaddingNotZoomed)
+        VStack {
+            Spacer(minLength: brain.zoomed ? t.displayTopPaddingZoomed : t.displayTopPaddingNotZoomed)
 //                Display(brain: brain, t: t)
 //                    .padding(.trailing, 100)//t.digits_1_9.size.width * 1.0)
-//                    .padding(.bottom, t.displayBottomPadding)
-//            }
-//        )
+//                    .padding(.bottom, 0.0)
+            SmartDisplay(brain.last, t: t)
+        }
 
 
         
-//            VStack(spacing: 0.0) {
-//                HStack(spacing: 0.0) {
-//                    if brain.rad && !brain.zoomed {
-//                        Rad(keySize: t.digits_1_9.size, textColor: t.digits_1_9.textColor)
-//                    }
-//                    Spacer(minLength: 0.0)
-//                    VStack(spacing: 0.0) {
-//                        if t.isPad {
-//                        }
-//                        Spacer(minLength: 0.0)
-//                    }
-//                }
+            VStack(spacing: 0.0) {
+                HStack(spacing: 0.0) {
+                    if brain.rad && !brain.zoomed {
+                        Rad(keySize: t.digits_1_9.size, textColor: t.digits_1_9.textColor)
+                    }
+                    Spacer(minLength: 0.0)
+                    VStack(spacing: 0.0) {
+                        if t.isPad {
+                        }
+                        Spacer(minLength: 0.0)
+                    }
+                }
 //                if !brain.zoomed || t.isPad {
 //                    HStack(spacing: 0.0) {
 //                        Keys(brain: brain, t: t)
 //                    }
 //                }
-//            }
-//        }
+            }
+        }
     }
 }
 

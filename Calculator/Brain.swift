@@ -262,7 +262,7 @@ class Brain: ObservableObject {
                 DispatchQueue.main.asyncAfter(deadline: whenWhen) {
                     if self.isCalculating { // still calculating?
                         self.showCalculating = true
-                        print("asyncOperation showCalculating \(self.showCalculating)")
+                        //print("asyncOperation showCalculating \(self.showCalculating)")
                     }
                 }
 
@@ -274,12 +274,13 @@ class Brain: ObservableObject {
                 self.nonScientific = self.displayData.nonScientific
                 self.scientific = self.displayData.scientific
                 self.showCalculating = false
-                print("asyncOperation showCalculating \(self.showCalculating)")
+                //print("asyncOperation showCalculating \(self.showCalculating)")
                 self.isCalculating = false
             }
         }
     }
     
+    var last: Number { n.last }
     var nn: Int { n.count }
     var no: Int { operatorStack.count }
     //    var last: Number { n.last() }
