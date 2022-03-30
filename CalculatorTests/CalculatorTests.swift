@@ -26,94 +26,117 @@ class CalculatorTests: XCTestCase {
         representation.update(Number("123"))
         XCTAssertEqual(representation.left, "123")
         XCTAssertNil(representation.right)
+        XCTAssertFalse(representation.abreviated)
 
         representation.update(Number(Gmp("123")))
         XCTAssertEqual(representation.left, "123")
         XCTAssertNil(representation.right)
+        XCTAssertFalse(representation.abreviated)
 
         representation.update(Number("-123"))
         XCTAssertEqual(representation.left, "-123")
         XCTAssertNil(representation.right)
+        XCTAssertFalse(representation.abreviated)
 
         representation.update(Number(Gmp("-123")))
         XCTAssertEqual(representation.left, "-123")
         XCTAssertNil(representation.right)
+        XCTAssertFalse(representation.abreviated)
 
         representation.update(Number(Gmp("1234")))
         XCTAssertEqual(representation.left, "1234")
         XCTAssertNil(representation.right)
+        XCTAssertFalse(representation.abreviated)
 
         representation.update(Number("12345"))
         XCTAssertEqual(representation.left, "12345")
         XCTAssertNil(representation.right)
+        XCTAssertFalse(representation.abreviated)
 
         representation.update(Number(Gmp("12345")))
         XCTAssertEqual(representation.left, "12345")
         XCTAssertNil(representation.right)
+        XCTAssertFalse(representation.abreviated)
 
         representation.update(Number(Gmp("12300")))
         XCTAssertEqual(representation.left, "12300")
         XCTAssertNil(representation.right)
+        XCTAssertFalse(representation.abreviated)
 
         representation.update(Number("12300"))
         XCTAssertEqual(representation.left, "12300")
         XCTAssertNil(representation.right)
+        XCTAssertFalse(representation.abreviated)
 
         representation.update(Number("123456"))
         XCTAssertEqual(representation.left, "123456")
         XCTAssertNil(representation.right)
+        XCTAssertFalse(representation.abreviated)
 
         representation.update(Number(Gmp("123456")))
         XCTAssertEqual(representation.left, "123456")
         XCTAssertNil(representation.right)
-        
+        XCTAssertFalse(representation.abreviated)
+
         representation.update(Number(Gmp("1234567")))
         XCTAssertEqual(representation.left, "1234567")
         XCTAssertNil(representation.right)
+        XCTAssertFalse(representation.abreviated)
 
         representation.update(Number(Gmp("12345678")))
         XCTAssertEqual(representation.left, "12345678")
         XCTAssertNil(representation.right)
+        XCTAssertFalse(representation.abreviated)
 
         representation.update(Number(Gmp("123456789")))
         XCTAssertEqual(representation.left, "1,2345")
         XCTAssertEqual(representation.right, "e8")
+        XCTAssertTrue(representation.abreviated)
 
         representation.update(Number(Gmp("-12345")))
         XCTAssertEqual(representation.left, "-12345")
         XCTAssertNil(representation.right)
+        XCTAssertFalse(representation.abreviated)
 
         representation.update(Number("1,234"))
         XCTAssertEqual(representation.left, "1,234")
         XCTAssertNil(representation.right)
+        XCTAssertFalse(representation.abreviated)
 
         representation.update(Number("1,23456789"))
         XCTAssertEqual(representation.left, "1,234567")
         XCTAssertNil(representation.right)
+        XCTAssertTrue(representation.abreviated)
 
         representation.update(Number("-1,23456789"))
         XCTAssertEqual(representation.left, "-1,23456")
         XCTAssertNil(representation.right)
+        XCTAssertTrue(representation.abreviated)
 
         representation.update(Number("-144,23456789"))
         XCTAssertEqual(representation.left, "-144,234")
         XCTAssertNil(representation.right)
+        XCTAssertTrue(representation.abreviated)
 
         representation.update(Number("1445,23456789"))
         XCTAssertEqual(representation.left, "1445,234")
         XCTAssertNil(representation.right)
+        XCTAssertTrue(representation.abreviated)
 
         representation.update(Number("14456,23456789"))
         XCTAssertEqual(representation.left, "14456,23")
         XCTAssertNil(representation.right)
+        XCTAssertTrue(representation.abreviated)
 
         representation.update(Number("144567,23456789"))
         XCTAssertEqual(representation.left, "144567,2")
         XCTAssertNil(representation.right)
+        XCTAssertTrue(representation.abreviated)
 
         representation.update(Number("1445678,23456789"))
         XCTAssertEqual(representation.left, "1,4456")
         XCTAssertEqual(representation.right, "e6")
+        XCTAssertTrue(representation.abreviated)
 
 
         representation.update(Number(Gmp("0,123")))
@@ -123,6 +146,7 @@ class CalculatorTests: XCTestCase {
         representation.update(Number(Gmp("0,123456789")))
         XCTAssertEqual(representation.left, "0,123456")
         XCTAssertNil(representation.right)
+        XCTAssertTrue(representation.abreviated)
 
         representation.update(Number(Gmp("0,0123")))
         XCTAssertEqual(representation.left, "0,0123")
@@ -131,6 +155,7 @@ class CalculatorTests: XCTestCase {
         representation.update(Number(Gmp("0,01234567")))
         XCTAssertEqual(representation.left, "0,012345")
         XCTAssertNil(representation.right)
+        XCTAssertTrue(representation.abreviated)
 
         representation.update(Number(Gmp("0,0012")))
         XCTAssertEqual(representation.left, "0,0012")
@@ -143,107 +168,108 @@ class CalculatorTests: XCTestCase {
         representation.update(Number(Gmp("0,001234567")))
         XCTAssertEqual(representation.left, "0,001234")
         XCTAssertNil(representation.right)
+        XCTAssertTrue(representation.abreviated)
 
         representation.update(Number(Gmp("-0,001234567")))
         XCTAssertEqual(representation.left, "-0,00123")
         XCTAssertNil(representation.right)
+        XCTAssertTrue(representation.abreviated)
 
         representation.update(Number(Gmp("0,0001234567")))
         XCTAssertEqual(representation.left, "1,234")
         XCTAssertEqual(representation.right, "e-4")
+        XCTAssertTrue(representation.abreviated)
 
         representation.update(Number(Gmp("-0,0001234567")))
         XCTAssertEqual(representation.left, "-1,23")
         XCTAssertEqual(representation.right, "e-4")
+        XCTAssertTrue(representation.abreviated)
 
         representation.update(Number(Gmp("0,00001234567")))
         XCTAssertEqual(representation.left, "1,234")
         XCTAssertEqual(representation.right, "e-5")
+        XCTAssertTrue(representation.abreviated)
 
         representation.update(Number(Gmp("-0,00001234567")))
         XCTAssertEqual(representation.left, "-1,23")
         XCTAssertEqual(representation.right, "e-5")
+        XCTAssertTrue(representation.abreviated)
 
         representation.update(Number("0,12345678"))
         XCTAssertEqual(representation.left, "0,123456")
         XCTAssertNil(representation.right)
+        XCTAssertTrue(representation.abreviated)
 
-        
         representation.update(Number("1234567"))
         XCTAssertEqual(representation.left, "1234567")
         XCTAssertNil(representation.right)
+        XCTAssertFalse(representation.abreviated)
 
         representation.update(Number(Gmp("1234567")))
         XCTAssertEqual(representation.left, "1234567")
         XCTAssertNil(representation.right)
+        XCTAssertFalse(representation.abreviated)
 
         representation.update(Number(Gmp("-1234567")))
         XCTAssertEqual(representation.left, "-1234567")
         XCTAssertNil(representation.right)
+        XCTAssertFalse(representation.abreviated)
 
         representation.update(Number("12345678349875349873"))
         XCTAssertEqual(representation.left, "1,234")
         XCTAssertEqual(representation.right, "e19")
+        XCTAssertTrue(representation.abreviated)
 
-//        representation.update(Number("0,012345678"))
-//        XCTAssertEqual(representation.oneLine, "0,0123")
-//        XCTAssertEqual(representation.left, "0,012345678")
-//        XCTAssertNil(representation.right)
-//        XCTAssertFalse(representation.moreThanOneLine)
-//
-//        representation.update(Number("0,0012345678"))
-//        XCTAssertEqual(representation.oneLine, "0,0012")
-//        XCTAssertEqual(representation.left, "0,0012345678")
-//        XCTAssertNil(representation.right)
-//        XCTAssertFalse(representation.moreThanOneLine)
-//
-//        representation.update(Number("0,000012345678"))
-//        XCTAssertEqual(representation.oneLine, "0,00001")
-//        XCTAssertEqual(representation.left, "0,000012345678")
-//        XCTAssertNil(representation.right)
-//        XCTAssertFalse(representation.moreThanOneLine)
-//
-//        representation.update(Number("0,0000012345678"))
-//        XCTAssertEqual(representation.oneLine, "1,2e-6")
-//        XCTAssertEqual(representation.left, "0,0000012345678")
-//        XCTAssertNil(representation.right)
-//        XCTAssertFalse(representation.moreThanOneLine)
-//
-//        representation.update(Number("-1445,23456789"))
-//        XCTAssertEqual(representation.oneLine, "-1,4e4")
-//        XCTAssertEqual(representation.left, "-1444,23456789")
-//        XCTAssertNil(representation.right)
-//        XCTAssertFalse(representation.moreThanOneLine)
-//
-//        representation.update(Number("921387491237419283092340238420398423098423049874129837649128364519234875"))
-//        XCTAssertEqual(representation.oneLine, "9,2e71")
-//        XCTAssertEqual(representation.left, "9,21387491237419283092")
-//        XCTAssertEqual(representation.right, "e71")
-//        XCTAssertTrue(representation.moreThanOneLine)
-//
-//        representation.update(Number("1,23"))
-//        XCTAssertEqual(representation.oneLine, "1,23")
-//        XCTAssertEqual(representation.left, "1,23")
-//        XCTAssertNil(representation.right)
-//        XCTAssertFalse(representation.moreThanOneLine)
-//
-//        representation.update(Number(Gmp("1,23")))
-//        XCTAssertEqual(representation.oneLine, "1,23")
-//        XCTAssertEqual(representation.left, "1,23")
-//        XCTAssertNil(representation.right)
-//        XCTAssertFalse(representation.moreThanOneLine)
-//
-//        representation.update(Number("0,0023"))
-//        XCTAssertEqual(representation.left, "0,0023")
-//        XCTAssertNil(representation.right)
-//        XCTAssertFalse(representation.moreThanOneLine)
-//
-//        representation.update(Number("0,000000000023"))
-//        XCTAssertEqual(representation.left, "2,3")
-//        XCTAssertNotNil(representation.right)
-//        XCTAssertEqual(representation.right, "E-11")
-//        XCTAssertFalse(representation.moreThanOneLine)
-//
+        representation.update(Number("0,012345678"))
+        XCTAssertEqual(representation.left, "0,012345")
+        XCTAssertNil(representation.right)
+        XCTAssertTrue(representation.abreviated)
+
+        representation.update(Number("0,0012345678"))
+        XCTAssertEqual(representation.left, "0,001234")
+        XCTAssertNil(representation.right)
+        XCTAssertTrue(representation.abreviated)
+
+        representation.update(Number("0,000012345678"))
+        XCTAssertEqual(representation.left, "1,234")
+        XCTAssertEqual(representation.right, "e-5")
+        XCTAssertTrue(representation.abreviated)
+
+        representation.update(Number("0,0000012345678"))
+        XCTAssertEqual(representation.left, "1,234")
+        XCTAssertEqual(representation.right, "e-6")
+        XCTAssertTrue(representation.abreviated)
+
+        representation.update(Number("-1445,23456789"))
+        XCTAssertEqual(representation.left, "-1445,23")
+        XCTAssertNil(representation.right)
+        XCTAssertTrue(representation.abreviated)
+
+        representation.update(Number("921387491237419283092340238420398423098423049874129837649128364519234875"))
+        XCTAssertEqual(representation.left, "9,213")
+        XCTAssertEqual(representation.right, "e71")
+        XCTAssertTrue(representation.abreviated)
+
+        representation.update(Number("1,23"))
+        XCTAssertEqual(representation.left, "1,23")
+        XCTAssertNil(representation.right)
+        XCTAssertFalse(representation.abreviated)
+
+        representation.update(Number(Gmp("1,23")))
+        XCTAssertEqual(representation.left, "1,23")
+        XCTAssertNil(representation.right)
+        XCTAssertFalse(representation.abreviated)
+
+        representation.update(Number("0,0023"))
+        XCTAssertEqual(representation.left, "0,0023")
+        XCTAssertNil(representation.right)
+        XCTAssertFalse(representation.abreviated)
+
+        representation.update(Number("0,000000000023"))
+        XCTAssertEqual(representation.left, "2,3")
+        XCTAssertEqual(representation.right, "e-11")
+        XCTAssertFalse(representation.abreviated)
+
 
     }
     

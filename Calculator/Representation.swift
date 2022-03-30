@@ -12,15 +12,18 @@ class Representation {
     let characters: Int
     var left: String
     var right: String?
+    var abreviated: Bool
     
     init(characters: Int) {
         self.characters = characters
         left = "0"
         right = nil
+        abreviated = false
     }
     
     func update(_ number: Number) {
         right = nil
+        abreviated = false
 
         let gmp: Gmp
 
@@ -42,7 +45,12 @@ class Representation {
             return
         }
         if gmp.inf {
-            left = String("too large for me".prefix(characters))
+            if "too large for me".count <= characters {
+                left = "too large for me"
+            } else {
+                left = String("too large for me".prefix(characters))
+                abreviated = true
+            }
             return
         }
         
@@ -109,7 +117,12 @@ class Representation {
                 let index = floatString.index(floatString.startIndex, offsetBy: exponent+1)
                 floatString.insert(",", at: index)
                 left = floatString
-                left = String(floatString.prefix(charactersX))
+                if floatString.count <= charactersX {
+                    left = floatString
+                } else {
+                    left = String(floatString.prefix(charactersX))
+                    abreviated = true
+                }
                 if negative { left = "-" + left }
                 return
             }
@@ -123,7 +136,12 @@ class Representation {
                     floatString = "0" + floatString
                 }
                 floatString = "0," + floatString
-                left = String(floatString.prefix(charactersX))
+                if floatString.count <= charactersX {
+                    left = floatString
+                } else {
+                    left = String(floatString.prefix(charactersX))
+                    abreviated = true
+                }
                 if negative { left = "-" + left }
                 return
             }
@@ -135,7 +153,12 @@ class Representation {
         let indexOne = mantissa.index(mantissa.startIndex, offsetBy: 1)
         mantissa.insert(",", at: indexOne)
         if mantissa.count <= 2 { mantissa += "0" } /// e.g. 1e16 -> 1,e16 -> 1,0e16
-        left = String(mantissa.prefix(charactersX - right!.count))
+        if mantissa.count <= charactersX - right!.count {
+            left = mantissa
+        } else {
+            left = String(mantissa.prefix(charactersX - right!.count))
+            abreviated = true
+        }
         if negative { left = "-" + left }
     }
 }
