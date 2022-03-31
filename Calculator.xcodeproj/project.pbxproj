@@ -38,6 +38,7 @@
 		AA2FAC21272F2349006DE4C8 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0B272F2348006DE4C8 /* Key.swift */; };
 		AA2FAC22272F2349006DE4C8 /* NumberKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0C272F2349006DE4C8 /* NumberKeys.swift */; };
 		AA2FAC23272F2349006DE4C8 /* OperatorStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0D272F2349006DE4C8 /* OperatorStack.swift */; };
+		AA77D45127F60F60000BD7F4 /* Repersenations.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA77D45027F60F60000BD7F4 /* Repersenations.swift */; };
 		AAD0411327CD3DA9004BAD7D /* SmartDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD0411227CD3DA9004BAD7D /* SmartDisplay.swift */; };
 /* End PBXBuildFile section */
 
@@ -113,6 +114,7 @@
 		AA2FAC0B272F2348006DE4C8 /* Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		AA2FAC0C272F2349006DE4C8 /* NumberKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberKeys.swift; sourceTree = "<group>"; };
 		AA2FAC0D272F2349006DE4C8 /* OperatorStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperatorStack.swift; sourceTree = "<group>"; };
+		AA77D45027F60F60000BD7F4 /* Repersenations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repersenations.swift; sourceTree = "<group>"; };
 		AAD0411227CD3DA9004BAD7D /* SmartDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartDisplay.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -201,6 +203,7 @@
 				AA08C7EC272F1572001B8575 /* Info.plist */,
 				AA08C7C5272EDA4A001B8575 /* Assets.xcassets */,
 				AA08C7C7272EDA4A001B8575 /* Preview Content */,
+				AA77D45027F60F60000BD7F4 /* Repersenations.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -381,6 +384,7 @@
 				AA2FAC17272F2349006DE4C8 /* Brain.swift in Sources */,
 				AA2FAC14272F2349006DE4C8 /* KeyInputSubjectWrapper.swift in Sources */,
 				AA2FAC12272F2349006DE4C8 /* NumberStack.swift in Sources */,
+				AA77D45127F60F60000BD7F4 /* Repersenations.swift in Sources */,
 				AA2FAC10272F2349006DE4C8 /* Symbols.swift in Sources */,
 				AA2FAC1F272F2349006DE4C8 /* Display.swift in Sources */,
 				AA2FAC1D272F2349006DE4C8 /* DisplayData.swift in Sources */,
