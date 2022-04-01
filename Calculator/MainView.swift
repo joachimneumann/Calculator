@@ -85,11 +85,9 @@ struct MainView: View {
         
         VStack {
             Spacer(minLength: brain.zoomed ? t.displayTopPaddingZoomed : t.displayTopPaddingNotZoomed)
-//                SmartDisplay(Number("0"), t: t)
-//                    .padding(.trailing, 100)//t.digits_1_9.size.width * 1.0)
-//                    .padding(.bottom, 0.0)
-            SmartDisplay(r: brain.representations, t: t)
+            SmartDisplay(r: brain.zoomed ? brain.representations.r2 : brain.representations.r1, t: t)
                 .background(Color.yellow).opacity(0.2)
+                .animation(nil, value: UUID())
         }
 
 

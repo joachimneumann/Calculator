@@ -96,18 +96,18 @@ class Representation {
         }
         
         /// Can be displayed as Integer?
-        if mantissa.count <= exponent+1 && mantissa.count <= characters { /// smaller than because of possible trailing zeroes in the integer
+        if mantissa.count <= exponent+1 && exponent+1 <= characters { /// smaller than because of possible trailing zeroes in the integer
             
             /// restore trailing zeros that have been removed
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
 
             if mantissa.count <= charactersX {
                 left = mantissa
+                if negative {
+                    left = "-" + left
+                }
+                return
             }
-            if negative {
-                left = "-" + left
-            }
-            return
         }
         
         /// Is floating point XXX,xxx?

@@ -10,10 +10,10 @@ import SwiftUI
 struct SmartDisplay: View {
     let height: CGFloat
     let font: Font
-    var r: Representations
+    var r: Representation
 
     @ObservedObject var smartDisplayData = SmartDisplayData(Number("0"))
-    init(r: Representations, t: TE) {
+    init(r: Representation, t: TE) {
         self.height = t.allkeysHeight + t.displayheight
         self.font = t.displayFont
         self.r = r
@@ -24,9 +24,22 @@ struct SmartDisplay: View {
             // Render the real text (which might or might not be limited)
             Spacer(minLength: 0.0)
             ScrollView {
-                Text(r.r1.left)
+                if let right = r.right {
+                    let _ = print(r.left + right)
+                    HStack {
+                        Text(r.left)
+                        VStack {
+                            Text(right)
+                            Spacer(minLength: 0)
+                        }
+                    }
                     .font(font)
                     .multilineTextAlignment(.trailing)
+                } else {
+                    Text(r.left)
+                        .font(font)
+                        .multilineTextAlignment(.trailing)
+                }
             }
             .frame(height: height)
                 .frame(maxWidth: .infinity, alignment: .trailing)
@@ -36,7 +49,7 @@ struct SmartDisplay: View {
 
 struct SmartDisplay_Previews: PreviewProvider {
     static var previews: some View {
-        let r = Representations(characters1: 6, characters2: 20)
+        let r = Representation(characters: 6)
         SmartDisplay(r: r, t: TE(appFrame: CGSize(width: 414,height: 814), isPad: false, isPortrait: true))
 //        SmartDisplay("123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890")
 //        ContentView(text: "1,23E6")
