@@ -13,19 +13,20 @@ class Brain: ObservableObject {
     var messageToUser: String? = nil
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
-    private var displayData: DisplayData = DisplayData()
-    @Published var nonScientific: String?
-    @Published var scientific: DisplayData.Scientific?
-    var longDisplayString: String {
-        let longDisplayData = DisplayData()
-        longDisplayData.update(with: n.last, digitsInExpandedDisplay: precision)
-        if nonScientific != nil && longDisplayData.nonScientific != nil {
-            return longDisplayData.nonScientific!
-        } else {
-            assert(longDisplayData.scientific != nil)
-            return longDisplayData.scientific!.combined
-        }
-    }
+    let representations = Representations(characters1: 6, characters2: 20)
+//    private var displayData: DisplayData = DisplayData()
+//    @Published var nonScientific: String?
+//    @Published var scientific: DisplayData.Scientific?
+//    var longDisplayString: String {
+//        let longDisplayData = DisplayData()
+//        longDisplayData.update(with: n.last, digitsInExpandedDisplay: precision)
+//        if nonScientific != nil && longDisplayData.nonScientific != nil {
+//            return longDisplayData.nonScientific!
+//        } else {
+//            assert(longDisplayData.scientific != nil)
+//            return longDisplayData.scientific!.combined
+//        }
+//    }
     @AppStorage("precision") var precision: Int = TE.lowPrecision {
         didSet {
             calculateSignificantBits()
@@ -233,20 +234,20 @@ class Brain: ObservableObject {
     
     private func waitingOperation(_ symbol: String) async {
         operation(symbol)
-        self.displayData.update(with: n.last)
+        self.representations.update(n.last)
     }
 
     func nonWaitingOperation(_ symbol: String) {
         if symbol == "messageToUser" {
             operation("C")
-            self.nonScientific = messageToUser
-            self.scientific = nil
+//            self.nonScientific = messageToUser
+//            self.scientific = nil
             messageToUser = nil
         } else {
             operation(symbol)
-            self.displayData.update(with: n.last)
-            self.nonScientific = self.displayData.nonScientific
-            self.scientific = self.displayData.scientific
+            self.representations.update(n.last)
+//            self.nonScientific = self.displayData.nonScientific
+//            self.scientific = self.displayData.scientific
         }
     }
 
@@ -271,8 +272,8 @@ class Brain: ObservableObject {
             }
             //print("display1... \(showCalculating)")
             DispatchQueue.main.async {
-                self.nonScientific = self.displayData.nonScientific
-                self.scientific = self.displayData.scientific
+//                self.nonScientific = self.displayData.nonScientific
+//                self.scientific = self.displayData.scientific
                 self.showCalculating = false
                 //print("asyncOperation showCalculating \(self.showCalculating)")
                 self.isCalculating = false

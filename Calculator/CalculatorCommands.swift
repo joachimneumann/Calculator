@@ -92,7 +92,7 @@ struct CopyCommand: View {
     @ObservedObject var brain: Brain
     var body: some View {
         Button {
-            UIPasteboard.general.string = brain.longDisplayString
+// TODO:           UIPasteboard.general.string = brain.longDisplayString
         } label: {
             Text("Copy")
         }
