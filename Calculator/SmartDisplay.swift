@@ -9,13 +9,17 @@ import SwiftUI
 
 struct SmartDisplay: View {
     let height: CGFloat
-    let font: Font
+    let smallFont: Font
+    let largeFont: Font
+    let fontFactor: Double
     var r: Representation
 
     @ObservedObject var smartDisplayData = SmartDisplayData(Number("0"))
     init(r: Representation, t: TE) {
         self.height = t.allkeysHeight + t.displayheight
-        self.font = t.displayFont
+        self.smallFont = t.smallDisplayFont
+        self.largeFont = t.largeDisplayFont
+        self.fontFactor = 0.7
         self.r = r
     }
     
@@ -32,14 +36,21 @@ struct SmartDisplay: View {
                             Spacer(minLength: 0)
                         }
                     }
-                    .font(font)
+                    .font(smallFont)
                     .multilineTextAlignment(.trailing)
                 } else {
-                    Text("x"+r.left)
-                        .font(font)
-                        .multilineTextAlignment(.trailing)
-                        .minimumScaleFactor(0.5)
-                        .lineLimit(1)
+                    if r.abreviated {
+                        Text(r.left)
+                            .font(smallFont)
+                            .multilineTextAlignment(.trailing)
+                            .lineLimit(1)
+                    } else {
+                        Text(r.left)
+                            .font(largeFont)
+                            .multilineTextAlignment(.trailing)
+                            .minimumScaleFactor(fontFactor)
+                            .lineLimit(1)
+                    }
                 }
             }
             .frame(height: height)

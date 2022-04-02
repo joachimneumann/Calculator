@@ -209,7 +209,8 @@ class TE {
     static let portraitSpacingFraction: CGFloat = 0.03
 
     var displayFontSize: CGFloat
-    var displayFont: Font
+    var smallDisplayFont: Font
+    var largeDisplayFont: Font
     var spaceBetweenKeys: CGFloat
     var allkeysHeight: CGFloat
     var digitsInSmallDisplay: Int
@@ -248,7 +249,8 @@ class TE {
         let digitsKeyFontSize     = keySize.height * 0.5
         digitsInSmallDisplay = 16
         displayFontSize = keySize.height * 1.1
-        displayFont = Font.system(size: displayFontSize, weight: .thin).monospacedDigit()
+        largeDisplayFont = Font.system(size: displayFontSize, weight: .thin).monospacedDigit()
+        smallDisplayFont = Font.system(size: displayFontSize*0.7, weight: .thin).monospacedDigit()
         allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenKeys
         zeroTrailingPadding = keySize.width * 1 + digitsKeyFontSize*0.25
         iconSize = keySize.height * 0.7
