@@ -247,7 +247,7 @@ class TE {
         let scientificKeyFontSize = keySize.height * 0.35
         let digitsKeyFontSize     = keySize.height * 0.5
         digitsInSmallDisplay = 16
-        displayFontSize = keySize.height
+        displayFontSize = keySize.height * 1.1
         displayFont = Font.system(size: displayFontSize, weight: .thin).monospacedDigit()
         allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenKeys
         zeroTrailingPadding = keySize.width * 1 + digitsKeyFontSize*0.25

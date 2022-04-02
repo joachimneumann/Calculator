@@ -21,7 +21,6 @@ struct SmartDisplay: View {
     
     var body: some View {
         VStack {
-            // Render the real text (which might or might not be limited)
             Spacer(minLength: 0.0)
             ScrollView {
                 if let right = r.right {
@@ -36,9 +35,11 @@ struct SmartDisplay: View {
                     .font(font)
                     .multilineTextAlignment(.trailing)
                 } else {
-                    Text(r.left)
+                    Text("x"+r.left)
                         .font(font)
                         .multilineTextAlignment(.trailing)
+                        .minimumScaleFactor(0.5)
+                        .lineLimit(1)
                 }
             }
             .frame(height: height)
