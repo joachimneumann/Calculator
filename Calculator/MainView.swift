@@ -84,10 +84,12 @@ struct MainView: View {
         }
         
         VStack {
-            Spacer(minLength: brain.zoomed ? t.displayTopPaddingZoomed : t.displayTopPaddingNotZoomed)
-            SmartDisplay(r: brain.zoomed ? brain.representations.r2 : brain.representations.r1, t: t)
-                .background(Color.yellow).opacity(0.2)
+            Spacer(minLength:0)
+            SingleLineDisplay(r: brain.representations.r1, t: t)
+                .background(Color.white).opacity(0.1)
                 .animation(nil, value: UUID())
+                .frame(minHeight: t.displayheight, maxHeight: t.displayheight)
+            Spacer(minLength: t.allkeysHeight)
         }
 
 

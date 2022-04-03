@@ -13,12 +13,14 @@ class Representation {
     var left: String
     var right: String?
     var abreviated: Bool
+    let lineLimit: Int?
     
-    init(characters: Int) {
+    init(characters: Int, lineLimit: Int?) {
         self.characters = characters
         left = "0"
         right = nil
         abreviated = false
+        self.lineLimit = lineLimit
     }
     
     func update(_ number: Number) {

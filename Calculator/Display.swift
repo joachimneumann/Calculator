@@ -73,55 +73,55 @@
 //    }
 //}
 //
-////struct FindFloatDigitLimit: View {
-////    var brain: Brain
-////    let t: TE
-////    let initialHeight: CGFloat
-////    var body: some View {
-////        ForEach((3..<40), id: \.self) { i in
-////            let s = "1,"+String(repeating: "1", count: (i - 1))
-////            ScrollView {
-////                DisplayText(text: s, font: t.displayFont)
-////                    .overlay(
-////                        GeometryReader { proxy in
-////                            Color.clear.onAppear {
-////                                if proxy.size.height > initialHeight {
-////                                    if (i - 1) < DisplayData.digitsInOneLine {
-////                                        DisplayData.digitsInOneLine = (i - 1)
-////                                    }
-////                                }
-//////                                 print("i \(i) digitsInDisplayFloat \(DisplayData.digitsInOneLine) \(s.count) proxy.size.height \(proxy.size.height) \(initialHeight) \(s)")
-////                            }
-////                        }
-////                    )
-////            }
-////        }
-////    }
-////}
-////
-////struct FindScientificDigitLimit: View {
-////    var brain: Brain
-////    let t: TE
-////    let initialHeight: CGFloat
-////    var body: some View {
-////        ForEach((5..<40), id: \.self) { i in
-////            let s = "1,"+String(repeating: "1", count: (i - 1)-3)+" e77"
-////            ScrollView {
-////                DisplayText(text: s, font: t.displayFont)
-////                    .overlay(
-////                        GeometryReader { proxy in
-////                            Color.clear.onAppear {
-////                                if proxy.size.height > initialHeight {
-////                                    if (i - 1) < DisplayData.digitsInOneLine {
-////                                        DisplayData.digitsInOneLine = (i - 1)
-////                                    }
-////                                }
-//////                                 print("i \(i) digitsInDisplayScientific \(DisplayData.digitsInOneLine) \(s.count) proxy.size.height \(proxy.size.height) \(initialHeight) \(s)")
-////                                brain.calibrated = true
-////                            }
-////                        }
-////                    )
-////            }
-////        }
-////    }
-////}
+//struct FindFloatDigitLimit: View {
+//    var brain: Brain
+//    let t: TE
+//    let initialHeight: CGFloat
+//    var body: some View {
+//        ForEach((3..<40), id: \.self) { i in
+//            let s = "1,"+String(repeating: "1", count: (i - 1))
+//            ScrollView {
+//                DisplayText(text: s, font: t.displayFont)
+//                    .overlay(
+//                        GeometryReader { proxy in
+//                            Color.clear.onAppear {
+//                                if proxy.size.height > initialHeight {
+//                                    if (i - 1) < DisplayData.digitsInOneLine {
+//                                        DisplayData.digitsInOneLine = (i - 1)
+//                                    }
+//                                }
+////                                 print("i \(i) digitsInDisplayFloat \(DisplayData.digitsInOneLine) \(s.count) proxy.size.height \(proxy.size.height) \(initialHeight) \(s)")
+//                            }
+//                        }
+//                    )
+//            }
+//        }
+//    }
+//}
+//
+//struct FindScientificDigitLimit: View {
+//    var brain: Brain
+//    let t: TE
+//    let initialHeight: CGFloat
+//    var body: some View {
+//        ForEach((5..<40), id: \.self) { i in
+//            let s = "1,"+String(repeating: "1", count: (i - 1)-3)+" e77"
+//            ScrollView {
+//                DisplayText(text: s, font: t.displayFont)
+//                    .overlay(
+//                        GeometryReader { proxy in
+//                            Color.clear.onAppear {
+//                                if proxy.size.height > initialHeight {
+//                                    if (i - 1) < DisplayData.digitsInOneLine {
+//                                        DisplayData.digitsInOneLine = (i - 1)
+//                                    }
+//                                }
+////                                 print("i \(i) digitsInDisplayScientific \(DisplayData.digitsInOneLine) \(s.count) proxy.size.height \(proxy.size.height) \(initialHeight) \(s)")
+//                                brain.calibrated = true
+//                            }
+//                        }
+//                    )
+//            }
+//        }
+//    }
+//}

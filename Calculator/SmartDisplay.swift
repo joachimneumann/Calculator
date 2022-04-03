@@ -17,8 +17,8 @@ struct SmartDisplay: View {
     @ObservedObject var smartDisplayData = SmartDisplayData(Number("0"))
     init(r: Representation, t: TE) {
         self.height = t.allkeysHeight + t.displayheight
-        self.smallFont = t.smallDisplayFont
-        self.largeFont = t.largeDisplayFont
+        self.smallFont = Font.system(size: 20, weight: .bold)
+        self.largeFont = Font.system(size: 20, weight: .bold)
         self.fontFactor = 0.7
         self.r = r
     }
@@ -31,8 +31,12 @@ struct SmartDisplay: View {
                     let _ = print(r.left + right)
                     HStack {
                         Text(r.left)
+                            .lineLimit(r.lineLimit)
+                            .font(smallFont)
                         VStack {
                             Text(right)
+                                .lineLimit(1)
+                                .font(smallFont)
                             Spacer(minLength: 0)
                         }
                     }
@@ -43,13 +47,13 @@ struct SmartDisplay: View {
                         Text(r.left)
                             .font(smallFont)
                             .multilineTextAlignment(.trailing)
-                            .lineLimit(1)
+                            .lineLimit(r.lineLimit)
                     } else {
                         Text(r.left)
                             .font(largeFont)
                             .multilineTextAlignment(.trailing)
                             .minimumScaleFactor(fontFactor)
-                            .lineLimit(1)
+                            .lineLimit(r.lineLimit)
                     }
                 }
             }
@@ -61,7 +65,7 @@ struct SmartDisplay: View {
 
 struct SmartDisplay_Previews: PreviewProvider {
     static var previews: some View {
-        let r = Representation(characters: 6)
+        let r = Representation(characters: 6, lineLimit: 1)
         SmartDisplay(r: r, t: TE(appFrame: CGSize(width: 414,height: 814), isPad: false, isPortrait: true))
 //        SmartDisplay("123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890")
 //        ContentView(text: "1,23E6")

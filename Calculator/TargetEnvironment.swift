@@ -19,7 +19,7 @@ struct KeyProperties {
 }
 
 class TE {
-    static let iPhoneScientificFontSizeReduction: CGFloat = 0.85//1.0
+    static let iPhoneSymbolFontSizeReduction: CGFloat = 0.85//1.0
     static let digitsInAllDigitsDisplay: Int = 200
     
     static let lowPrecision          = 100
@@ -165,13 +165,11 @@ class TE {
 
     static private let numberPadWidth = 5.0 * TE.kw + 4.0 * TE.sp
     
-    private static let staticDisplayFontSize: CGFloat = TE.numberPadWidth * 0.148
-    let displayFontSize: CGFloat = TE.staticDisplayFontSize
+    let displayFontSize: CGFloat = TE.numberPadWidth * 0.148
     let scientificKeyFontSize = TE.kh * 0.36
     let digitsInSmallDisplay: Int = 16
     let isLandscape: Bool = true
     let spaceBetweenKeys: CGFloat = TE.sp
-    let displayFont: Font = Font.system(size: TE.staticDisplayFontSize, weight: .thin).monospacedDigit()
     let widerKeySize: CGSize  = CGSize(width: TE.wkw, height: TE.kh)
     let scientificKeySize: CGSize   = CGSize(width: TE.kw,  height: TE.kh)
     let allkeysHeight: CGFloat = 5.0 * TE.kh + 4.0 * TE.sp
@@ -196,21 +194,31 @@ class TE {
     /// iOS
     ///
     
-    static let appBackgroundColor = Color(.brown).opacity(0.7)
-//    static let appBackgroundColor = Color(.black)
+//    static let appBackgroundColor = Color(.brown).opacity(0.7)
+    static let appBackgroundColor = Color(.black)
+    static var calibrated = false
 
     let digits_1_9: KeyProperties
     let digits_0: KeyProperties
     let colorOpProperties: KeyProperties
     let ac_plus_minus_percentProperties: KeyProperties
     let scientificProperties: KeyProperties
+    static var digitsInOneLine: Int = 0
+    static var digitsInOneLineN: Int = 40
+    static var digitsInOneLineIndex: Int = 1
     static let zoomIconSize: CGFloat = 30.0
     static let landscapeSpacingFraction: CGFloat = 0.01
     static let portraitSpacingFraction: CGFloat = 0.03
 
-    var displayFontSize: CGFloat
-    var smallDisplayFont: Font
-    var largeDisplayFont: Font
+    static func next() {
+        digitsInOneLineIndex += 1
+        print("next: digitsInOneLineIndex = \(digitsInOneLineIndex) calibrated=\(calibrated)")
+        if digitsInOneLineIndex == digitsInOneLineN {
+            calibrated = true
+        }
+        print("next: digitsInOneLineIndex = \(digitsInOneLineIndex) calibrated=\(calibrated)")
+    }
+    var displayFontSizeCandidate: CGFloat
     var spaceBetweenKeys: CGFloat
     var allkeysHeight: CGFloat
     var digitsInSmallDisplay: Int
@@ -248,9 +256,7 @@ class TE {
         let scientificKeyFontSize = keySize.height * 0.35
         let digitsKeyFontSize     = keySize.height * 0.5
         digitsInSmallDisplay = 16
-        displayFontSize = keySize.height * 1.1
-        largeDisplayFont = Font.system(size: displayFontSize, weight: .thin).monospacedDigit()
-        smallDisplayFont = Font.system(size: displayFontSize*0.7, weight: .thin).monospacedDigit()
+        displayFontSizeCandidate = keySize.height * 0.7
         allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenKeys
         zeroTrailingPadding = keySize.width * 1 + digitsKeyFontSize*0.25
         iconSize = keySize.height * 0.7
