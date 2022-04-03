@@ -203,21 +203,12 @@ class TE {
     let colorOpProperties: KeyProperties
     let ac_plus_minus_percentProperties: KeyProperties
     let scientificProperties: KeyProperties
+    var nnn = 0
     static var digitsInOneLine: Int = 0
-    static var digitsInOneLineN: Int = 40
-    static var digitsInOneLineIndex: Int = 1
     static let zoomIconSize: CGFloat = 30.0
     static let landscapeSpacingFraction: CGFloat = 0.01
     static let portraitSpacingFraction: CGFloat = 0.03
 
-    static func next() {
-        digitsInOneLineIndex += 1
-        print("next: digitsInOneLineIndex = \(digitsInOneLineIndex) calibrated=\(calibrated)")
-        if digitsInOneLineIndex == digitsInOneLineN {
-            calibrated = true
-        }
-        print("next: digitsInOneLineIndex = \(digitsInOneLineIndex) calibrated=\(calibrated)")
-    }
     var displayFontSizeCandidate: CGFloat
     var spaceBetweenKeys: CGFloat
     var allkeysHeight: CGFloat

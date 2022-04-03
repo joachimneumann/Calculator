@@ -24,6 +24,7 @@ struct SingleLineDisplay: View {
     let color: Color
     let text: String
     let l: Int
+    let t: TE
     let fontSize: CGFloat
     let fontGrowthFactor = 1.5
     let displayFontSizeCandidate: CGFloat
@@ -37,13 +38,14 @@ struct SingleLineDisplay: View {
         } else {
             text = r.left
         }
+        self.t = t
         l = r.characters
         self.displayFontSizeCandidate = t.displayFontSizeCandidate
     }
     
     var body: some View {
         if !TE.calibrated {
-            FindSingleLineCharacterLimit(displayFontSizeCandidate: 40)
+            FindSingleLineCharacterLimit(t: t, displayFontSizeCandidate: 40)
         } else {
             Text(text)
                 .font(Font.system(size: fontSize*fontGrowthFactor, weight: .thin).monospacedDigit())
@@ -55,6 +57,7 @@ struct SingleLineDisplay: View {
     }
 
     struct FindSingleLineCharacterLimit: View {
+        let t: TE
         let displayFontSizeCandidate: CGFloat
         @State var singleLineheight: CGFloat? = nil
         var body: some View {
@@ -79,10 +82,18 @@ struct SingleLineDisplay: View {
                                 Color.clear
                                     .onAppear {
                                         if proxy.size.height > singleLineheight! {
+                                            if t.nnn == 0 {
+                                                t.nnn = s.count
+                                                print("t.nnn \(t.nnn)")
+                                            }
                                             if TE.digitsInOneLine == 0 {
                                                 TE.digitsInOneLine = s.count
                                                 print("digitsInOneLine \(TE.digitsInOneLine)")
                                             } else {
+                                                if s.count < t.nnn {
+                                                    t.nnn = s.count
+                                                    print("t.nnn \(t.nnn)")
+                                                }
                                                 if s.count < TE.digitsInOneLine {
                                                     TE.digitsInOneLine = s.count
                                                     print("digitsInOneLine \(TE.digitsInOneLine)")

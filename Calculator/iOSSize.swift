@@ -14,7 +14,6 @@ import SwiftUI
 struct iOSSize: View {
     var brain: Brain
     var body: some View {
-//        SmartDisplay(n: Number("23423"), height: 200)
         GeometryReader { geo in
             let leadingPaddingNeeded: Bool  = (geo.safeAreaInsets.leading  == 0)
             let trailingPaddingNeeded: Bool = (geo.safeAreaInsets.trailing == 0)
@@ -34,11 +33,13 @@ struct iOSSize: View {
                 width: geo.size.width * horizontalFactor,
                 height: geo.size.height * verticalFactor)
             let t = TE(appFrame: appFrame, isPad: isPad, isPortrait: isPortrait)
-
             MainView(brain: brain, t: t)
                 .padding(.leading,   leadingPaddingNeeded ? geo.size.width * fraction : 0)
                 .padding(.trailing, trailingPaddingNeeded ? geo.size.width * fraction : 0)
                 .padding(.bottom,   bottomPaddingNeeded   ? t.spaceBetweenKeys : 0)
+                .overlay(
+                    SingleLineDisplay(r: brain.representations.r1, t: t)
+                )
         }
     }
 }

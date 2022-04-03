@@ -85,8 +85,10 @@ struct MainView: View {
         
         VStack {
             Spacer(minLength:0)
-            SingleLineDisplay(r: brain.representations.r1, t: t)
-                .background(Color.white).opacity(0.1)
+            Text("characters = \(t.nnn)")
+            //SingleLineDisplay(r: brain.representations.r1, t: t)
+                .background(Color.black)
+                .foregroundColor(Color.white)
                 .animation(nil, value: UUID())
                 .frame(minHeight: t.displayheight, maxHeight: t.displayheight)
             Spacer(minLength: t.allkeysHeight)
