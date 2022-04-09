@@ -247,11 +247,11 @@ class TE {
         let scientificKeyFontSize = keySize.height * 0.35
         let digitsKeyFontSize     = keySize.height * 0.5
         digitsInSmallDisplay = 3
-        displayFontSizeCandidate = keySize.height * 0.5//7
+        displayFontSizeCandidate = keySize.height * 0.79
         allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenKeys
         zeroTrailingPadding = keySize.width * 1 + digitsKeyFontSize*0.25
         iconSize = keySize.height * 0.7
-        displayheight = 100.0
+        displayheight = keySize.height * 1.2
         if isPad {
             circularProgressViewScaleFactor = 2.0
             if isPortrait {

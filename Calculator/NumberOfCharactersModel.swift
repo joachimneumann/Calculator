@@ -34,20 +34,20 @@ class NumberOfCharactersModel: ObservableObject {
                 }
             }
         }
-        print("NumberOfCharactersModel new info \(info.len) \(info.height) -> \(maxLen) \(minHeight)")
+        // print("NumberOfCharactersModel new info \(info.len) \(info.height) -> \(maxLen) \(minHeight)")
         if infos.count == N {
             calibrated = true
-            if numberOfCharacters==nil  {
-                print("NumberOfCharactersModel: numberOfCharacters = nil")
-            } else {
-                print("NumberOfCharactersModel: numberOfCharacters = \(numberOfCharacters!)")
-            }
-            print("NumberOfCharactersModel calibrated \(calibrated ? "Y" : "N")")
+//            if numberOfCharacters==nil  {
+//                print("NumberOfCharactersModel: numberOfCharacters = nil")
+//            } else {
+//                print("NumberOfCharactersModel: numberOfCharacters = \(numberOfCharacters!)")
+//            }
+//            print("NumberOfCharactersModel calibrated \(calibrated ? "Y" : "N")")
         }
     }
     func reset(newHeight: Float) {
         if newHeight != lastHeight {
-            print("NumberOfCharactersModel RESET() newHeight = \(newHeight) lastheight = \(lastHeight)")
+            // print("NumberOfCharactersModel RESET() newHeight = \(newHeight) lastheight = \(lastHeight)")
             lastHeight = newHeight
             numberOfCharacters = nil
             calibrated = false
@@ -57,7 +57,5 @@ class NumberOfCharactersModel: ObservableObject {
     }
     init() {
         reset(newHeight: Float(-1.0))
-//        calibrated = false
-//        infos = []
     }
 }

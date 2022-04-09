@@ -25,7 +25,7 @@ struct SingleLineDisplay: View {
     let text: String
     let l: Int
     let fontSize: CGFloat
-    let fontGrowthFactor = 1.6
+    let fontGrowthFactor = 1.0
     @State var initialHeight: CGFloat? = nil
     
     init(r: Representation, fontSize: CGFloat) {
