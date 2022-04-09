@@ -13,20 +13,6 @@ class Brain: ObservableObject {
     var messageToUser: String? = nil
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
-//    let representations = Representations(characters1: 10, characters2: 20)
-//    private var displayData: DisplayData = DisplayData()
-//    @Published var nonScientific: String?
-//    @Published var scientific: DisplayData.Scientific?
-//    var longDisplayString: String {
-//        let longDisplayData = DisplayData()
-//        longDisplayData.update(with: n.last, digitsInExpandedDisplay: precision)
-//        if nonScientific != nil && longDisplayData.nonScientific != nil {
-//            return longDisplayData.nonScientific!
-//        } else {
-//            assert(longDisplayData.scientific != nil)
-//            return longDisplayData.scientific!.combined
-//        }
-//    }
     @AppStorage("precision") var precision: Int = TE.lowPrecision {
         didSet {
             calculateSignificantBits()
@@ -234,20 +220,14 @@ class Brain: ObservableObject {
     
     private func waitingOperation(_ symbol: String) async {
         operation(symbol)
-//        self.representations.update(n.last)
     }
 
     func nonWaitingOperation(_ symbol: String) {
         if symbol == "messageToUser" {
             operation("C")
-//            self.nonScientific = messageToUser
-//            self.scientific = nil
             messageToUser = nil
         } else {
             operation(symbol)
-//            self.representations.update(n.last)
-//            self.nonScientific = self.displayData.nonScientific
-//            self.scientific = self.displayData.scientific
         }
     }
 

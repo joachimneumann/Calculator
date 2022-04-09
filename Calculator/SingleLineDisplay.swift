@@ -44,74 +44,14 @@ struct SingleLineDisplay: View {
     }
     
     var body: some View {
-//        if !TE.calibrated {
-//            FindSingleLineCharacterLimit(t: t, displayFontSizeCandidate: 40)
-//        } else {
-//            EmptyView()
-            Text(text)
-                .font(Font.system(size: fontSize*fontGrowthFactor, weight: .thin).monospacedDigit())
-                .minimumScaleFactor(1.0/fontGrowthFactor)
-                .foregroundColor(color)
-                .background(Color.yellow)
-                .frame(maxWidth: .infinity, alignment: .trailing)
-//        }
+        Text(text)
+            .font(Font.system(size: fontSize*fontGrowthFactor, weight: .thin).monospacedDigit())
+            .minimumScaleFactor(1.0/fontGrowthFactor)
+            .foregroundColor(color)
+            .background(Color.yellow)
+            .frame(maxWidth: .infinity, alignment: .trailing)
     }
 
-//    struct FindSingleLineCharacterLimit: View {
-//        let t: TE
-//        let displayFontSizeCandidate: CGFloat
-//        @State var singleLineheight: CGFloat? = nil
-//        var body: some View {
-//            if singleLineheight == nil {
-//                Text("x")
-//                    .font(Font.system(size: displayFontSizeCandidate, weight: .thin).monospacedDigit())
-//                    .overlay(
-//                        GeometryReader { proxy in
-//                            Color.clear
-//                                .onAppear {
-//                                    singleLineheight = proxy.size.height
-//                                }
-//                        }
-//                    )
-//            } else {
-//                ForEach((1..<40), id: \.self) { i in
-//                    let s = ","+String(repeating: "x", count: i)
-//                    Text(s)
-//                        .font(Font.system(size: displayFontSizeCandidate, weight: .thin).monospacedDigit())
-//                        .overlay(
-//                            GeometryReader { proxy in
-//                                Color.clear
-//                                    .onAppear {
-//                                        if proxy.size.height > singleLineheight! {
-//                                            if t.nnn == 0 {
-//                                                t.nnn = s.count
-//                                                print("t.nnn \(t.nnn)")
-//                                            }
-//                                            if TE.digitsInOneLine == 0 {
-//                                                TE.digitsInOneLine = s.count
-//                                                print("digitsInOneLine \(TE.digitsInOneLine)")
-//                                            } else {
-//                                                if s.count < t.nnn {
-//                                                    t.nnn = s.count
-//                                                    print("t.nnn \(t.nnn)")
-//                                                }
-//                                                if s.count < TE.digitsInOneLine {
-//                                                    TE.digitsInOneLine = s.count
-//                                                    print("digitsInOneLine \(TE.digitsInOneLine)")
-//                                                }
-//                                            }
-//                                        }
-//                                        print("i \(i) \(s.count) digitsInOneLine \(TE.digitsInOneLine) proxy.size.height \(proxy.size.height) \(singleLineheight!) \(s)")
-//                                    }
-//                            }
-//                        )
-//                        .onAppear {
-//                            print("Done \(TE.digitsInOneLine)")
-//                        }
-//                }
-//            }
-//        }
-//    }
 }
 
 
