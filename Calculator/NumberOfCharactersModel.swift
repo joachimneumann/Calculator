@@ -15,6 +15,7 @@ struct NumberOfCharactersInfo {
 class NumberOfCharactersModel: ObservableObject {
     @Published var numberOfCharacters: Int? = nil
     @Published var calibrated = false
+    var lastHeight = Float(0.0)
     let N = 40
     private var candidate: Int = 0
     private var infos: [NumberOfCharactersInfo] = []
@@ -33,14 +34,30 @@ class NumberOfCharactersModel: ObservableObject {
                 }
             }
         }
-        //print("NumberOfCharactersModel new info \(info.len) \(info.height) -> \(Self.maxLen) \(Self.minHeight)")
+        //print("NumberOfCharactersModel new info \(info.len) \(info.height) -> \(maxLen) \(minHeight)")
         if infos.count == N {
             calibrated = true
-            print("NumberOfCharactersModel calibrated \(numberOfCharacters!) \(calibrated ? "Y" : "N")")
+            if numberOfCharacters==nil  {
+                print("NumberOfCharactersModel: numberOfCharacters = nil")
+            } else {
+                print("NumberOfCharactersModel: numberOfCharacters = \(numberOfCharacters!)")
+            }
+            print("NumberOfCharactersModel calibrated \(calibrated ? "Y" : "N")")
+        }
+    }
+    func reset(newHeight: Float) {
+        if newHeight != lastHeight {
+            print("NumberOfCharactersModel RESET() newHeight = \(newHeight) lastheight = \(lastHeight)")
+            lastHeight = newHeight
+            numberOfCharacters = nil
+            calibrated = false
+            minHeight = Float.greatestFiniteMagnitude
+            infos = []
         }
     }
     init() {
-        print("NumberOfCharactersModel INIT()")
-        calibrated = false
+        reset(newHeight: Float(-1.0))
+//        calibrated = false
+//        infos = []
     }
 }
