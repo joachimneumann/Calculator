@@ -30,7 +30,8 @@ class Representation {
         let gmp: Gmp
 
         if let str = number.str {
-            if str.count <= characters {
+            let withoutComma = str.replacingOccurrences(of: ",", with: "")
+            if withoutComma.count <= characters {
                 left = str
                 return
             } else {
@@ -47,12 +48,7 @@ class Representation {
             return
         }
         if gmp.inf {
-            if "too large for me".count <= characters {
-                left = "too large for me"
-            } else {
-                left = String("too large for me".prefix(characters))
-                abreviated = true
-            }
+            left = "too large"
             return
         }
         
@@ -85,8 +81,9 @@ class Representation {
             exponent = exponent - 1
         }
         
-        let charactersX: Int
+        var charactersX: Int
         let negative: Bool
+        
         /// negative? Special treatment
         if mantissa[0] == "-" {
             mantissa.removeFirst()
@@ -122,7 +119,7 @@ class Representation {
                 if floatString.count <= charactersX {
                     left = floatString
                 } else {
-                    left = String(floatString.prefix(charactersX))
+                    left = String(floatString.prefix(charactersX+1))
                     abreviated = true
                 }
                 if negative { left = "-" + left }
@@ -141,7 +138,7 @@ class Representation {
                 if floatString.count <= charactersX {
                     left = floatString
                 } else {
-                    left = String(floatString.prefix(charactersX))
+                    left = String(floatString.prefix(charactersX+1))
                     abreviated = true
                 }
                 if negative { left = "-" + left }
@@ -158,7 +155,7 @@ class Representation {
         if mantissa.count <= charactersX - right!.count {
             left = mantissa
         } else {
-            left = String(mantissa.prefix(charactersX - right!.count))
+            left = String(mantissa.prefix(charactersX - right!.count + 1))
             abreviated = true
         }
         if negative { left = "-" + left }

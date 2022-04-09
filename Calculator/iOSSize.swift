@@ -50,15 +50,17 @@ struct iOSSize: View {
                             .padding(.bottom,   bottomPaddingNeeded   ? t.spaceBetweenKeys : 0)
                     } else {
                         ForEach((0..<numberOfCharactersModel.N), id: \.self) { i in
-                            let s = ","+String(repeating: "x", count: i)
+                            let s = ","+String(repeating: "5", count: i)
                             Text(s)
+                                .padding(.leading,   leadingPaddingNeeded ? geo.size.width * fraction : 0)
+                                .padding(.trailing, trailingPaddingNeeded ? geo.size.width * fraction : 0)
                                 .foregroundColor(Color.white)
                                 .font(Font.system(size: t.displayFontSizeCandidate, weight: .thin).monospacedDigit())
                                 .overlay(
                                     GeometryReader { proxy in
                                         Color.clear
                                             .onAppear {
-                                                numberOfCharactersModel.info(NumberOfCharactersInfo(len: s.count, height: Float(proxy.size.height)))
+                                                numberOfCharactersModel.info(NumberOfCharactersInfo(len: s.count-1, height: Float(proxy.size.height)))
                                             }
                                     }
                                 )

@@ -155,6 +155,9 @@
 				AA2FAC0B272F2348006DE4C8 /* Key.swift */,
 				AA2FABFE272F2348006DE4C8 /* KeyInputSubjectWrapper.swift */,
 				AA2FAC06272F2348006DE4C8 /* MainView.swift */,
+				AA77D45027F60F60000BD7F4 /* Repersenations.swift */,
+				AA393CD927F8921A003C48AA /* SingleLineDisplay.swift */,
+				AAC6675227FC55FF009A5D49 /* NumberOfCharactersModel.swift */,
 				AA2FABF8272F2348006DE4C8 /* Number.swift */,
 				AA2FAC0C272F2349006DE4C8 /* NumberKeys.swift */,
 				AA2FABFB272F2348006DE4C8 /* NumberStack.swift */,
@@ -171,9 +174,6 @@
 				AA08C7EC272F1572001B8575 /* Info.plist */,
 				AA08C7C5272EDA4A001B8575 /* Assets.xcassets */,
 				AA08C7C7272EDA4A001B8575 /* Preview Content */,
-				AA77D45027F60F60000BD7F4 /* Repersenations.swift */,
-				AA393CD927F8921A003C48AA /* SingleLineDisplay.swift */,
-				AAC6675227FC55FF009A5D49 /* NumberOfCharactersModel.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";

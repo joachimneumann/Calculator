@@ -24,23 +24,19 @@ struct SingleLineDisplay: View {
     let color: Color
     let text: String
     let l: Int
-    let t: TE
     let fontSize: CGFloat
-    let fontGrowthFactor = 1.5
-    let displayFontSizeCandidate: CGFloat
+    let fontGrowthFactor = 1.6
     @State var initialHeight: CGFloat? = nil
     
-    init(r: Representation, t: TE) {
+    init(r: Representation, fontSize: CGFloat) {
         self.color = Color.white
-        self.fontSize = t.displayFontSizeCandidate
+        self.fontSize = fontSize
         if let right = r.right {
             text = r.left+right
         } else {
             text = r.left
         }
-        self.t = t
         l = r.characters
-        self.displayFontSizeCandidate = t.displayFontSizeCandidate
     }
     
     var body: some View {
@@ -57,8 +53,10 @@ struct SingleLineDisplay: View {
 
 struct SingleLineDisplay_Previews: PreviewProvider {
     static var previews: some View {
-        let r = Representation(characters: 6, lineLimit: 1)
-        SingleLineDisplay(r: r, t: TE(appFrame: CGSize(width: 414,height: 814), isPad: false, isPortrait: true))
+        let r = Representation(characters: 20, lineLimit: 1)
+        let _ = r.update(Number("1,2345678901234"))
+        SingleLineDisplay(r: r, fontSize: 47.0925)
+            .background(Color.green)
     }
 }
 

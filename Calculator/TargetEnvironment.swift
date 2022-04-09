@@ -195,7 +195,7 @@ class TE {
     ///
     
 //    static let appBackgroundColor = Color(.brown).opacity(0.7)
-    static let appBackgroundColor = Color(.black)
+    static let appBackgroundColor = Color(.brown)
     static var calibrated = false
 
     let digits_1_9: KeyProperties
@@ -246,8 +246,8 @@ class TE {
         }
         let scientificKeyFontSize = keySize.height * 0.35
         let digitsKeyFontSize     = keySize.height * 0.5
-        digitsInSmallDisplay = 16
-        displayFontSizeCandidate = keySize.height * 0.7
+        digitsInSmallDisplay = 3
+        displayFontSizeCandidate = keySize.height * 0.5//7
         allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenKeys
         zeroTrailingPadding = keySize.width * 1 + digitsKeyFontSize*0.25
         iconSize = keySize.height * 0.7

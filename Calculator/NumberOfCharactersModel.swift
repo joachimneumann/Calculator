@@ -34,7 +34,7 @@ class NumberOfCharactersModel: ObservableObject {
                 }
             }
         }
-        //print("NumberOfCharactersModel new info \(info.len) \(info.height) -> \(maxLen) \(minHeight)")
+        print("NumberOfCharactersModel new info \(info.len) \(info.height) -> \(maxLen) \(minHeight)")
         if infos.count == N {
             calibrated = true
             if numberOfCharacters==nil  {
