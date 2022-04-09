@@ -223,6 +223,7 @@ class TE {
     var circularProgressViewScaleFactor: CGFloat
     var isPortrait: Bool
     init(appFrame: CGSize, isPad: Bool, isPortrait: Bool) {
+        TE.calibrated = false
         self.isPad = isPad
         self.isPortrait = isPortrait
         let keySize: CGSize

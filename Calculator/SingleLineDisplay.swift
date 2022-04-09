@@ -47,6 +47,7 @@ struct SingleLineDisplay: View {
         if !TE.calibrated {
             FindSingleLineCharacterLimit(t: t, displayFontSizeCandidate: 40)
         } else {
+            EmptyView()
             Text(text)
                 .font(Font.system(size: fontSize*fontGrowthFactor, weight: .thin).monospacedDigit())
                 .minimumScaleFactor(1.0/fontGrowthFactor)
@@ -104,6 +105,9 @@ struct SingleLineDisplay: View {
                                     }
                             }
                         )
+                        .onAppear {
+                            print("Done \(TE.digitsInOneLine)")
+                        }
                 }
             }
         }

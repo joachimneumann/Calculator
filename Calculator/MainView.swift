@@ -85,7 +85,7 @@ struct MainView: View {
         
         VStack {
             Spacer(minLength:0)
-            Text("characters = \(t.nnn)")
+            Text("\(t.nnn) "+brain.representations.r1.left+(brain.representations.r1.right ?? ""))
             //SingleLineDisplay(r: brain.representations.r1, t: t)
                 .background(Color.black)
                 .foregroundColor(Color.white)
