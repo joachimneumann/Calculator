@@ -84,8 +84,10 @@ struct MainView: View {
         }
         
         VStack {
+            let representations = Representations(characters1: t.digitsInSmallDisplay, characters2: t.digitsInSmallDisplay*4)
+            let _ = representations.update(brain.last)
             Spacer(minLength:0)
-            Text("\(t.nnn) "+brain.representations.r1.left+(brain.representations.r1.right ?? ""))
+            Text("\(t.digitsInSmallDisplay) "+representations.r1.left+(representations.r1.right ?? ""))
             //SingleLineDisplay(r: brain.representations.r1, t: t)
                 .background(Color.black)
                 .foregroundColor(Color.white)

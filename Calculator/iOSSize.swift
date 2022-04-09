@@ -36,6 +36,9 @@ struct iOSSize: View {
             let _ = (numberOfCharactersModel.reset(newHeight: Float(geo.size.height)))
             let _ = print("iOSSize \(geo.size) cal \(numberOfCharactersModel.calibrated ? "Y" : "N") \(numberOfCharactersModel.numberOfCharacters ?? -1)")
             let t = TE(appFrame: appFrame, isPad: isPad, isPortrait: isPortrait)
+            if numberOfCharactersModel.numberOfCharacters != nil {
+                let _ = t.digitsInSmallDisplay = numberOfCharactersModel.numberOfCharacters!
+            }
             VStack {
                 Text("cal \(numberOfCharactersModel.calibrated ? "Y" : "N") -> \(numberOfCharactersModel.numberOfCharacters ?? -1)")
                     .foregroundColor(Color.white)

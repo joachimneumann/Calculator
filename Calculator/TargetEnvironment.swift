@@ -203,7 +203,6 @@ class TE {
     let colorOpProperties: KeyProperties
     let ac_plus_minus_percentProperties: KeyProperties
     let scientificProperties: KeyProperties
-    var nnn = 0
     static var digitsInOneLine: Int = 0
     static let zoomIconSize: CGFloat = 30.0
     static let landscapeSpacingFraction: CGFloat = 0.01
