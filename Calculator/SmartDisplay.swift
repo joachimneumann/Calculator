@@ -12,10 +12,10 @@ struct SmartDisplay: View {
     let smallFont: Font
     let largeFont: Font
     let fontFactor: Double
-    var r: Representation
+    var r: SingleLengthRepresentation
 
     @ObservedObject var smartDisplayData = SmartDisplayData(Number("0"))
-    init(r: Representation, t: TE) {
+    init(r: SingleLengthRepresentation, t: TE) {
         self.height = t.allkeysHeight + t.displayheight
         self.smallFont = t.smallDisplayFont
         self.largeFont = t.largeDisplayFont
@@ -39,7 +39,7 @@ struct SmartDisplay: View {
                     .font(smallFont)
                     .multilineTextAlignment(.trailing)
                 } else {
-                    if r.abreviated {
+                    if r.isAbreviated {
                         Text(r.left)
                             .font(smallFont)
                             .multilineTextAlignment(.trailing)
@@ -61,7 +61,8 @@ struct SmartDisplay: View {
 
 struct SmartDisplay_Previews: PreviewProvider {
     static var previews: some View {
-        let r = Representation(characters: 6)
+        let r = SingleLengthRepresentation(length: 9)
+        let _ = r.update(Number("1231383222222222"))
         SmartDisplay(r: r, t: TE(appFrame: CGSize(width: 414,height: 814), isPad: false, isPortrait: true))
 //        SmartDisplay("123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890")
 //        ContentView(text: "1,23E6")

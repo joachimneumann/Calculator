@@ -54,7 +54,7 @@ class Number: CustomDebugStringConvertible {
         self.init("0")
     }
     
-    func addZero()  {
+    func appendZero()  {
         if isStr {
             if _str != "0" {
                 _str!.append("0")
@@ -65,7 +65,7 @@ class Number: CustomDebugStringConvertible {
         }
     }
     
-    func addComma() {
+    func appendComma() {
         if str == nil {
             _str = "0,"
         } else {
@@ -73,7 +73,7 @@ class Number: CustomDebugStringConvertible {
         }
     }
     
-    func addDigit(_ digit: String) {
+    func appendDigit(_ digit: String) {
         if !isStr || _str == "0" {
             _str = digit
         } else {

@@ -7,18 +7,21 @@
 
 import Foundation
 
-class Representations {
-    let r1: Representation
-    let r2: Representation
+class Representation {
+    let portrait: SingleLengthRepresentation
+    let landscape: SingleLengthRepresentation
+    let zoom: SingleLengthRepresentation
 
-    init(characters1: Int, characters2: Int) {
-        r1 = Representation(characters: characters1)
-        r2 = Representation(characters: characters2)
+    init(portraitLength: Int, landscapeLength: Int, zoomLength: Int) {
+        portrait = SingleLengthRepresentation(length: portraitLength)
+        landscape = SingleLengthRepresentation(length: landscapeLength)
+        zoom = SingleLengthRepresentation(length: zoomLength)
     }
     
     func update(_ number: Number) {
-        r1.update(number)
-        r2.update(number)
+        portrait.update(number)
+        landscape.update(number)
+        zoom.update(number)
     }
 
 }

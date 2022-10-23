@@ -85,12 +85,10 @@ struct MainView: View {
         
         VStack {
             Spacer(minLength: brain.zoomed ? t.displayTopPaddingZoomed : t.displayTopPaddingNotZoomed)
-            SmartDisplay(r: brain.zoomed ? brain.representations.r2 : brain.representations.r1, t: t)
+            SmartDisplay(r: brain.zoomed ? brain.representation.portrait : brain.representation.portrait, t: t)
                 .background(Color.yellow).opacity(0.2)
                 .animation(nil, value: UUID())
         }
-
-
         
             VStack(spacing: 0.0) {
                 HStack(spacing: 0.0) {

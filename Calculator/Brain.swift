@@ -13,7 +13,7 @@ class Brain: ObservableObject {
     var messageToUser: String? = nil
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
-    let representations = Representations(characters1: 8, characters2: 20)
+    let representation = Representation(portraitLength: 6, landscapeLength: 20, zoomLength: 100)
 //    private var displayData: DisplayData = DisplayData()
 //    @Published var nonScientific: String?
 //    @Published var scientific: DisplayData.Scientific?
@@ -199,13 +199,13 @@ class Brain: ObservableObject {
                 n.append(Number("0"))
                 pendingOperator = nil
             }
-            n.last.addComma()
+            n.last.appendComma()
         } else if symbol == "0" {
             if pendingOperator != nil {
                 n.append(Number("0"))
                 pendingOperator = nil
             }
-            n.last.addZero()
+            n.last.appendZero()
         } else if symbol == "+/-" {
             n.last.changeSign()
         } else if self.digitOperators.contains(symbol) {
@@ -213,7 +213,7 @@ class Brain: ObservableObject {
                 n.append(Number("0"))
                 pendingOperator = nil
             }
-            n.last.addDigit(symbol)
+            n.last.appendDigit(symbol)
         } else if let op = self.constantOperators[symbol] {
             if self.pendingOperator != nil {
                 self.n.append(Number(Gmp()))
@@ -234,7 +234,7 @@ class Brain: ObservableObject {
     
     private func waitingOperation(_ symbol: String) async {
         operation(symbol)
-        self.representations.update(n.last)
+        self.representation.update(n.last)
     }
 
     func nonWaitingOperation(_ symbol: String) {
@@ -245,7 +245,7 @@ class Brain: ObservableObject {
             messageToUser = nil
         } else {
             operation(symbol)
-            self.representations.update(n.last)
+            self.representation.update(n.last)
 //            self.nonScientific = self.displayData.nonScientific
 //            self.scientific = self.displayData.scientific
         }

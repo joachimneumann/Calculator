@@ -165,13 +165,12 @@ class TE {
 
     static private let numberPadWidth = 5.0 * TE.kw + 4.0 * TE.sp
     
-    private static let staticDisplayFontSize: CGFloat = TE.numberPadWidth * 0.148
-    let displayFontSize: CGFloat = TE.staticDisplayFontSize
+    private static let macFontSize: CGFloat = TE.numberPadWidth * 0.148
     let scientificKeyFontSize = TE.kh * 0.36
     let digitsInSmallDisplay: Int = 16
     let isLandscape: Bool = true
     let spaceBetweenKeys: CGFloat = TE.sp
-    let displayFont: Font = Font.system(size: TE.staticDisplayFontSize, weight: .thin).monospacedDigit()
+    let displayFont: Font = Font.system(size: TE.macFontSize, weight: .thin).monospacedDigit()
     let widerKeySize: CGSize  = CGSize(width: TE.wkw, height: TE.kh)
     let scientificKeySize: CGSize   = CGSize(width: TE.kw,  height: TE.kh)
     let allkeysHeight: CGFloat = 5.0 * TE.kh + 4.0 * TE.sp
@@ -208,7 +207,6 @@ class TE {
     static let landscapeSpacingFraction: CGFloat = 0.01
     static let portraitSpacingFraction: CGFloat = 0.03
 
-    var displayFontSize: CGFloat
     var smallDisplayFont: Font
     var largeDisplayFont: Font
     var spaceBetweenKeys: CGFloat
@@ -247,14 +245,15 @@ class TE {
         }
         let scientificKeyFontSize = keySize.height * 0.35
         let digitsKeyFontSize     = keySize.height * 0.5
-        digitsInSmallDisplay = 16
-        displayFontSize = keySize.height * 1.1
-        largeDisplayFont = Font.system(size: displayFontSize, weight: .thin).monospacedDigit()
-        smallDisplayFont = Font.system(size: displayFontSize*0.7, weight: .thin).monospacedDigit()
+        let largeDisplayFontSize = keySize.height * 1.1
+        let smallDisplayFontSize = keySize.height * 1.1 * 0.7
+        largeDisplayFont = Font.system(size: largeDisplayFontSize, weight: .thin).monospacedDigit()
+        smallDisplayFont = Font.system(size: smallDisplayFontSize, weight: .thin).monospacedDigit()
         allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenKeys
         zeroTrailingPadding = keySize.width * 1 + digitsKeyFontSize*0.25
         iconSize = keySize.height * 0.7
-        displayheight = 100.0
+        displayheight = largeDisplayFontSize * 1.13 // a bit taller than the large font size
+        digitsInSmallDisplay = Int(ceil(appFrame.width / smallDisplayFontSize * 1.7))
         if isPad {
             circularProgressViewScaleFactor = 2.0
             if isPortrait {

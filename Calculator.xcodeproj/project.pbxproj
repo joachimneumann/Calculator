@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA004A5D27DFF9170040CA45 /* Representation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA004A5C27DFF9170040CA45 /* Representation.swift */; };
+		AA004A5D27DFF9170040CA45 /* SingleLengthRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA004A5C27DFF9170040CA45 /* SingleLengthRepresentation.swift */; };
 		AA06415B27CE77D8000C6480 /* SmartDisplayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA06415A27CE77D8000C6480 /* SmartDisplayData.swift */; };
 		AA08C7C6272EDA4A001B8575 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA08C7C5272EDA4A001B8575 /* Assets.xcassets */; };
 		AA08C7C9272EDA4A001B8575 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA08C7C8272EDA4A001B8575 /* Preview Assets.xcassets */; };
@@ -73,7 +73,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		AA004A5C27DFF9170040CA45 /* Representation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Representation.swift; sourceTree = "<group>"; };
+		AA004A5C27DFF9170040CA45 /* SingleLengthRepresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLengthRepresentation.swift; sourceTree = "<group>"; };
 		AA06415A27CE77D8000C6480 /* SmartDisplayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartDisplayData.swift; sourceTree = "<group>"; };
 		AA08C7BE272EDA48001B8575 /* Better Calc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Better Calc.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA08C7C5272EDA4A001B8575 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -182,7 +182,7 @@
 				AA2FAC07272F2348006DE4C8 /* DisplayData.swift */,
 				AAD0411227CD3DA9004BAD7D /* SmartDisplay.swift */,
 				AA06415A27CE77D8000C6480 /* SmartDisplayData.swift */,
-				AA004A5C27DFF9170040CA45 /* Representation.swift */,
+				AA004A5C27DFF9170040CA45 /* SingleLengthRepresentation.swift */,
 				AA2FAC0A272F2348006DE4C8 /* iOSSize.swift */,
 				AA2FAC0B272F2348006DE4C8 /* Key.swift */,
 				AA2FABFE272F2348006DE4C8 /* KeyInputSubjectWrapper.swift */,
@@ -398,7 +398,7 @@
 				AA2FAC15272F2349006DE4C8 /* CalculatorApp.swift in Sources */,
 				AA2FAC13272F2349006DE4C8 /* TargetEnvironment.swift in Sources */,
 				AA2FAC1A272F2349006DE4C8 /* CalculatorCommands.swift in Sources */,
-				AA004A5D27DFF9170040CA45 /* Representation.swift in Sources */,
+				AA004A5D27DFF9170040CA45 /* SingleLengthRepresentation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

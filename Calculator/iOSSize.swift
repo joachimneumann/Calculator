@@ -44,3 +44,9 @@ struct iOSSize: View {
 }
 
 #endif
+
+struct Previews_iOSSize_Previews: PreviewProvider {
+    static var previews: some View {
+        iOSSize(brain: Brain())
+    }
+}
