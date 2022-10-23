@@ -8,27 +8,27 @@
 import Foundation
 
 
-class Representation {
-    let characters: Int
+class SingleLengthRepresentation {
+    let length: Int
     var left: String
     var right: String?
-    var abreviated: Bool
+    var isAbreviated: Bool
     
-    init(characters: Int) {
-        self.characters = characters
+    init(length l: Int) {
+        self.length = l
         left = "0"
         right = nil
-        abreviated = false
+        isAbreviated = false
     }
     
     func update(_ number: Number) {
         right = nil
-        abreviated = false
+        isAbreviated = false
 
         let gmp: Gmp
 
         if let str = number.str {
-            if str.count <= characters {
+            if str.count <= length {
                 left = str
                 return
             } else {
@@ -45,11 +45,11 @@ class Representation {
             return
         }
         if gmp.inf {
-            if "too large for me".count <= characters {
+            if "too large for me".count <= length {
                 left = "too large for me"
             } else {
-                left = String("too large for me".prefix(characters))
-                abreviated = true
+                left = String("too large for me".prefix(length))
+                isAbreviated = true
             }
             return
         }
@@ -60,8 +60,8 @@ class Representation {
         }
         
         var exponent: mpfr_exp_t = 0
-        var charArray: Array<CChar> = Array(repeating: 0, count: characters+5)
-        mpfr_get_str(&charArray, &exponent, 10, characters+5, &gmp.mpfr, MPFR_RNDN)
+        var charArray: Array<CChar> = Array(repeating: 0, count: length+5)
+        mpfr_get_str(&charArray, &exponent, 10, length+5, &gmp.mpfr, MPFR_RNDN)
 
         var mantissa: String = ""
         for c in charArray {
@@ -89,14 +89,14 @@ class Representation {
         if mantissa[0] == "-" {
             mantissa.removeFirst()
             negative = true
-            charactersX = characters - 1
+            charactersX = length - 1
         } else {
             negative = false
-            charactersX = characters
+            charactersX = length
         }
         
         /// Can be displayed as Integer?
-        if mantissa.count <= exponent+1 && exponent+1 <= characters { /// smaller than because of possible trailing zeroes in the integer
+        if mantissa.count <= exponent+1 && exponent+1 <= length { /// smaller than because of possible trailing zeroes in the integer
             
             /// restore trailing zeros that have been removed
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
@@ -121,7 +121,7 @@ class Representation {
                     left = floatString
                 } else {
                     left = String(floatString.prefix(charactersX))
-                    abreviated = true
+                    isAbreviated = true
                 }
                 if negative { left = "-" + left }
                 return
@@ -130,7 +130,7 @@ class Representation {
         
         /// is floating point 0,xxxx
         if exponent < 0 {
-            if Double(-1 * exponent - 1) < 0.3 * Double(characters) {
+            if Double(-1 * exponent - 1) < 0.3 * Double(length) {
                 var floatString = mantissa
                 for _ in 0..<(-1*exponent - 1) {
                     floatString = "0" + floatString
@@ -140,7 +140,7 @@ class Representation {
                     left = floatString
                 } else {
                     left = String(floatString.prefix(charactersX))
-                    abreviated = true
+                    isAbreviated = true
                 }
                 if negative { left = "-" + left }
                 return
@@ -157,7 +157,7 @@ class Representation {
             left = mantissa
         } else {
             left = String(mantissa.prefix(charactersX - right!.count))
-            abreviated = true
+            isAbreviated = true
         }
         if negative { left = "-" + left }
     }
