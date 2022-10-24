@@ -84,7 +84,7 @@ struct MainView: View {
         }
         
         VStack {
-            let representations = Representations(characters1: t.digitsInSmallDisplay, characters2: t.digitsInSmallDisplay*4)
+            let representations = Representations(characters1: t.digitsInDisplay, characters2: t.digitsInDisplay*4)
             let _ = representations.update(brain.last)
             Spacer(minLength:0)
             SingleLineDisplay(r: representations.r1, fontSize: t.displayFontSizeCandidate)

@@ -7,7 +7,7 @@ __pr="--print-path"
 __name="xcode-select"
 DEVELOPER=`${__name} ${__pr}`
 
-SDKVERSION=`xcrun -sdk iphoneos --show-sdk-version`
+SDKVERSION="15.7" #`xcrun -sdk iphoneos --show-sdk-version`
 
 MIN_IOS="14.0"
 

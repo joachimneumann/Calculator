@@ -167,7 +167,7 @@ class TE {
     
     let displayFontSize: CGFloat = TE.numberPadWidth * 0.148
     let scientificKeyFontSize = TE.kh * 0.36
-    let digitsInSmallDisplay: Int = 16
+    let digitsInDisplay: Int = 16
     let isLandscape: Bool = true
     let spaceBetweenKeys: CGFloat = TE.sp
     let widerKeySize: CGSize  = CGSize(width: TE.wkw, height: TE.kh)
@@ -211,7 +211,7 @@ class TE {
     var displayFontSizeCandidate: CGFloat
     var spaceBetweenKeys: CGFloat
     var allkeysHeight: CGFloat
-    var digitsInSmallDisplay: Int
+    var digitsInDisplay: Int
     var isPad: Bool
     var zeroTrailingPadding: CGFloat
     var displayTopPaddingZoomed: CGFloat
@@ -244,10 +244,21 @@ class TE {
             let factor:CGFloat = min(1.0, appFrame.height * 0.8 / squareKeysHeight)
             keySize = CGSize(width: keyWidth, height: keyWidth * factor)
         }
+        
         let scientificKeyFontSize = keySize.height * 0.35
         let digitsKeyFontSize     = keySize.height * 0.5
-        digitsInSmallDisplay = 3
         displayFontSizeCandidate = keySize.height * 0.79
+        
+        var w = 0.0
+        var s = ""
+        let f = UIFont.monospacedSystemFont(ofSize: displayFontSizeCandidate, weight: .thin)
+        while w < appFrame.width {
+            s.append("0")
+            w = s.sizeOf_String(font: f).width
+        }
+        digitsInDisplay = s.count - 1
+        print("sizeOf_String method: "+String(s.count-1))
+
         allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenKeys
         zeroTrailingPadding = keySize.width * 1 + digitsKeyFontSize*0.25
         iconSize = keySize.height * 0.7
@@ -387,4 +398,12 @@ class TE {
 
 #endif
         
+}
+
+extension String {
+    func sizeOf_String( font: UIFont) -> CGSize {
+        let fontAttribute = [NSAttributedString.Key.font: font]
+        let size = self.size(withAttributes: fontAttribute)  // for Single Line
+       return size;
+    }
 }

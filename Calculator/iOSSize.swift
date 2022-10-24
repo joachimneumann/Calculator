@@ -12,7 +12,6 @@
 import SwiftUI
 
 struct iOSSize: View {
-    @ObservedObject var numberOfCharactersModel = NumberOfCharactersModel()
     var brain: Brain
     let leadingPaddingNeeded : Bool
     let trailingPaddingNeeded : Bool
@@ -33,41 +32,13 @@ struct iOSSize: View {
             let appFrame = CGSize(
                 width: geo.size.width * horizontalFactor,
                 height: geo.size.height * verticalFactor)
-            let _ = (numberOfCharactersModel.reset(newHeight: Float(geo.size.height)))
-            if numberOfCharactersModel.calibrated {
-                let _ = print("iOSSize \(geo.size) \(numberOfCharactersModel.numberOfCharacters ?? -1)")
-            }
             let t = TE(appFrame: appFrame, isPad: isPad, isPortrait: isPortrait)
-            if numberOfCharactersModel.numberOfCharacters != nil {
-                let _ = t.digitsInSmallDisplay = numberOfCharactersModel.numberOfCharacters!
-            }
             VStack {
-                Text("cal \(numberOfCharactersModel.calibrated ? "Y" : "N") -> \(numberOfCharactersModel.numberOfCharacters ?? -1)")
-                    .foregroundColor(Color.white)
                 ZStack {
-                    if (numberOfCharactersModel.calibrated) {
-                        MainView(brain: brain, t: t)
-                            .padding(.leading,   leadingPaddingNeeded ? geo.size.width * fraction : 0)
-                            .padding(.trailing, trailingPaddingNeeded ? geo.size.width * fraction : 0)
-                            .padding(.bottom,   bottomPaddingNeeded   ? t.spaceBetweenKeys : 0)
-                    } else {
-                        ForEach((0..<numberOfCharactersModel.N), id: \.self) { i in
-                            let s = ","+String(repeating: "5", count: i)
-                            Text(s)
-                                .padding(.leading,   leadingPaddingNeeded ? geo.size.width * fraction : 0)
-                                .padding(.trailing, trailingPaddingNeeded ? geo.size.width * fraction : 0)
-                                .foregroundColor(Color.white)
-                                .font(Font.system(size: t.displayFontSizeCandidate, weight: .thin).monospacedDigit())
-                                .overlay(
-                                    GeometryReader { proxy in
-                                        Color.clear
-                                            .onAppear {
-                                                numberOfCharactersModel.info(NumberOfCharactersInfo(len: s.count-1, height: Float(proxy.size.height)))
-                                            }
-                                    }
-                                )
-                        }
-                    }
+                    MainView(brain: brain, t: t)
+                        .padding(.leading,   leadingPaddingNeeded ? geo.size.width * fraction : 0)
+                        .padding(.trailing, trailingPaddingNeeded ? geo.size.width * fraction : 0)
+                        .padding(.bottom,   bottomPaddingNeeded   ? t.spaceBetweenKeys : 0)
                 }
             }
         }

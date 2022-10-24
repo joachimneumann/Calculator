@@ -128,7 +128,7 @@ class CalculatorTests: XCTestCase {
         XCTAssertFalse(r.r2.abreviated)
 
         r.update(Number(Gmp("123456789")))
-        XCTAssertEqual(r.r1.left, "1,2345")
+        XCTAssertEqual(r.r1.left, "1,23456")
         XCTAssertEqual(r.r1.right, "e8")
         XCTAssertTrue( r.r1.abreviated)
         XCTAssertEqual(r.r2.left, "123456789")
