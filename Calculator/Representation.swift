@@ -9,18 +9,18 @@ import Foundation
 
 
 class Representation {
-    let characters: Int
+    let totalCharacters: Int
     var left: String
     var right: String?
-    var abreviated: Bool
-    let lineLimit: Int?
+    var abreviated: Bool // shall the + be enabled or not?
+    let singleLine: Bool
     
-    init(characters: Int, lineLimit: Int?) {
-        self.characters = characters
+    init(characters: Int, singleLine: Bool) {
+        self.totalCharacters = characters
         left = "0"
         right = nil
         abreviated = false
-        self.lineLimit = lineLimit
+        self.singleLine = singleLine
     }
     
     func update(_ number: Number) {
@@ -29,19 +29,25 @@ class Representation {
 
         let gmp: Gmp
 
+//        if let str = number.str {
+//            if str.count <= characters {
+//                left = str
+//                return
+//            } else {
+//                /// str, but too long for one line
+//                gmp = Gmp(str)
+//            }
+//        } else {
+//            /// no str? gmp must exist
+//            gmp = number.gmp!
+//        }
+        
         if let str = number.str {
-            let withoutComma = str.replacingOccurrences(of: ",", with: "")
-            if withoutComma.count <= characters {
-                left = str
-                return
-            } else {
-                /// str, but too long for one line
                 gmp = Gmp(str)
-            }
         } else {
-            /// no str? gmp must exist
             gmp = number.gmp!
         }
+        
         
         if gmp.NaN {
             left = "not real"
@@ -58,8 +64,8 @@ class Representation {
         }
         
         var exponent: mpfr_exp_t = 0
-        var charArray: Array<CChar> = Array(repeating: 0, count: characters+5)
-        mpfr_get_str(&charArray, &exponent, 10, characters+5, &gmp.mpfr, MPFR_RNDN)
+        var charArray: Array<CChar> = Array(repeating: 0, count: totalCharacters+5)
+        mpfr_get_str(&charArray, &exponent, 10, totalCharacters+5, &gmp.mpfr, MPFR_RNDN)
 
         var mantissa: String = ""
         for c in charArray {
@@ -81,67 +87,64 @@ class Representation {
             exponent = exponent - 1
         }
         
-        var charactersX: Int
-        let negative: Bool
-        
+        let characters: Int
         /// negative? Special treatment
+        let isNegative: Bool
         if mantissa[0] == "-" {
             mantissa.removeFirst()
-            negative = true
-            charactersX = characters - 1
+            isNegative = true
+            characters = totalCharacters - 1
         } else {
-            negative = false
-            charactersX = characters
+            isNegative = false
+            characters = totalCharacters
         }
-        
+
         /// Can be displayed as Integer?
         if mantissa.count <= exponent+1 && exponent+1 <= characters { /// smaller than because of possible trailing zeroes in the integer
             
             /// restore trailing zeros that have been removed
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
-
-            if mantissa.count <= charactersX {
-                left = mantissa
-                if negative {
-                    left = "-" + left
-                }
+            print(mantissa)
+            if mantissa.count <= characters {
+                left = (isNegative ? "-" : "") + mantissa
                 return
             }
         }
         
+
         /// Is floating point XXX,xxx?
         if exponent >= 0 {
-            if exponent < charactersX - 2 { /// is the comma visible in the first line and is there at least one digit after the comma?
+            if exponent < characters { /// is the comma visible in the first line and is there at least one digit after the comma?
                 var floatString = mantissa
                 let index = floatString.index(floatString.startIndex, offsetBy: exponent+1)
                 floatString.insert(",", at: index)
                 left = floatString
-                if floatString.count <= charactersX {
+                if floatString.count <= characters {
                     left = floatString
                 } else {
-                    left = String(floatString.prefix(charactersX+1))
+                    left = String(floatString.prefix(characters))
                     abreviated = true
                 }
-                if negative { left = "-" + left }
+                if isNegative { left = "-" + left }
                 return
             }
         }
         
         /// is floating point 0,xxxx
         if exponent < 0 {
-            if Double(-1 * exponent - 1) < 0.3 * Double(characters) {
+            if -1 * exponent < characters - 1 {
                 var floatString = mantissa
                 for _ in 0..<(-1*exponent - 1) {
                     floatString = "0" + floatString
                 }
                 floatString = "0," + floatString
-                if floatString.count <= charactersX {
+                if floatString.count <= characters {
                     left = floatString
                 } else {
-                    left = String(floatString.prefix(charactersX+1))
+                    left = String(floatString.prefix(characters))
                     abreviated = true
                 }
-                if negative { left = "-" + left }
+                if isNegative { left = "-" + left }
                 return
             }
         }
@@ -152,12 +155,12 @@ class Representation {
         let indexOne = mantissa.index(mantissa.startIndex, offsetBy: 1)
         mantissa.insert(",", at: indexOne)
         if mantissa.count <= 2 { mantissa += "0" } /// e.g. 1e16 -> 1,e16 -> 1,0e16
-        if mantissa.count <= charactersX - right!.count {
+        if mantissa.count <= characters - right!.count {
             left = mantissa
         } else {
-            left = String(mantissa.prefix(charactersX - right!.count + 1))
+            left = String(mantissa.prefix(characters - right!.count))
             abreviated = true
         }
-        if negative { left = "-" + left }
+        if isNegative { left = "-" + left }
     }
 }

@@ -36,10 +36,11 @@ struct SingleLineDisplay: View {
         } else {
             text = r.left
         }
-        l = r.characters
+        l = r.totalCharacters
     }
     
     var body: some View {
+        // TODO: use growthfactor and minimumScaleFactor only if the length of the single ine is less than the max length
         Text(text)
             .font(Font.system(size: fontSize*fontGrowthFactor, weight: .thin).monospacedDigit())
             .minimumScaleFactor(1.0/fontGrowthFactor)
@@ -53,8 +54,8 @@ struct SingleLineDisplay: View {
 
 struct SingleLineDisplay_Previews: PreviewProvider {
     static var previews: some View {
-        let r = Representation(characters: 20, lineLimit: 1)
-        let _ = r.update(Number("1,2345678901234"))
+        let r = Representation(characters: 6, singleLine: true)
+        let _ = r.update(Number("123,456789"))
         SingleLineDisplay(r: r, fontSize: 47.0925)
             .background(Color.green)
     }

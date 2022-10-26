@@ -256,7 +256,7 @@ class TE {
             s.append("0")
             w = s.sizeOf_String(font: f).width
         }
-        digitsInDisplay = s.count - 1
+        digitsInDisplay = 6//s.count - 1
         print("sizeOf_String method: "+String(s.count-1))
 
         allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenKeys
