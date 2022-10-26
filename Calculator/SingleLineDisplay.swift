@@ -28,15 +28,16 @@ struct SingleLineDisplay: View {
     let fontGrowthFactor = 2.0
     @State var initialHeight: CGFloat? = nil
     
-    init(r: Representation, fontSize: CGFloat) {
+    init(number: Number, fontSize: CGFloat, length: Int) {
         self.color = Color.white
         self.fontSize = fontSize
-        if let right = r.right {
-            text = r.left+right
+        let oneLiner = number.oneLiner(length: length)
+        if let right = oneLiner.right {
+            text = oneLiner.left+right
         } else {
-            text = r.left
+            text = oneLiner.left
         }
-        l = r.totalCharacters
+        l = length
     }
     
     var body: some View {
@@ -54,9 +55,8 @@ struct SingleLineDisplay: View {
 
 struct SingleLineDisplay_Previews: PreviewProvider {
     static var previews: some View {
-        let r = Representation(characters: 6, singleLine: true)
-        let _ = r.update(Number("123,456789"))
-        SingleLineDisplay(r: r, fontSize: 47.0925)
+        
+        SingleLineDisplay(number: Number("123,456789"), fontSize: 47.0925, length: 8)
             .background(Color.green)
     }
 }

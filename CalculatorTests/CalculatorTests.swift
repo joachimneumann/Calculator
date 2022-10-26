@@ -19,453 +19,452 @@ class CalculatorTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
     
-    let r = Representation(characters: 8, singleLine: true)
-
+    var r = Oneliner(left: "0", abreviated: false)
     func testrepresentation() {
         
         /// integers
-        r.update(Number("123"))
+        r = Number("123").oneLiner(length: 8)
         XCTAssertEqual(r.left, "123")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number(Gmp("1234")))
+        r = Number("1234").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1234")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number("12345"))
+        r = Number("12345").oneLiner(length: 8)
         XCTAssertEqual(r.left, "12345")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number(Gmp("12345")))
+        r = Number("12345").oneLiner(length: 8)
         XCTAssertEqual(r.left, "12345")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number(Gmp("12300")))
+        r = Number("12300").oneLiner(length: 8)
         XCTAssertEqual(r.left, "12300")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number("12300"))
+        r = Number("12300").oneLiner(length: 8)
         XCTAssertEqual(r.left, "12300")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number("123456"))
+        r = Number("123456").oneLiner(length: 8)
         XCTAssertEqual(r.left, "123456")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number(Gmp("123456")))
+        r = Number("123456").oneLiner(length: 8)
         XCTAssertEqual(r.left, "123456")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number(Gmp("1234567")))
+        r = Number("1234567").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1234567")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number(Gmp("12345678")))
+        r = Number("12345678").oneLiner(length: 8)
         XCTAssertEqual(r.left, "12345678")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number(Gmp("123456789")))
+        r = Number("123456789").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1,2345")
         XCTAssertEqual(r.right, "e8")
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number(Gmp("-123")))
+        r = Number("-123").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-123")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number(Gmp("-12345")))
+        r = Number("-12345").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-12345")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number(Gmp("-123456")))
+        r = Number("-123456").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-123456")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number(Gmp("-1234567")))
+        r = Number("-1234567").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-1234567")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number(Gmp("-12345678")))
+        r = Number("-12345678").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-1,234")
         XCTAssertEqual(r.right, "e7")
         XCTAssertTrue( r.abreviated)
         
         
-        r.update(Number("1234567"))
+        r = Number("1234567").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1234567")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number(Gmp("-1234567")))
+        r = Number("-1234567").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-1234567")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
 
         /// floating point numbers
-        r.update(Number("1,234"))
+        r = Number("1,234").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1,234")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number("1,2345"))
+        r = Number("1,2345").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1,2345")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number("1,23456"))
+        r = Number("1,23456").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1,23456")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number("1,234567"))
+        r = Number("1,234567").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1,234567")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number("1,2345678"))
+        r = Number("1,2345678").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1,234567")
         XCTAssertNil(  r.right)
         XCTAssertTrue(r.abreviated)
 
-        r.update(Number("-1,234"))
+        r = Number("-1,234").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-1,234")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number("-1,2345"))
+        r = Number("-1,2345").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-1,2345")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number("-1,23456"))
+        r = Number("-1,23456").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-1,23456")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number("-1,234567"))
-        XCTAssertEqual(r.left, "-1,23456")
-        XCTAssertNil(  r.right)
-        XCTAssertTrue(r.abreviated)
-
-        r.update(Number("-1,2345678"))
+        r = Number("-1,234567").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-1,23456")
         XCTAssertNil(  r.right)
         XCTAssertTrue(r.abreviated)
 
+        r = Number("-1,2345678").oneLiner(length: 8)
+        XCTAssertEqual(r.left, "-1,23456")
+        XCTAssertNil(  r.right)
+        XCTAssertTrue(r.abreviated)
 
-        r.update(Number("1,234"))
+
+        r = Number("1,234").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1,234")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number("1,234"))
+        r = Number("1,234").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1,234")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number("1,234"))
+        r = Number("1,234").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1,234")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number("1,234"))
+        r = Number("1,234").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1,234")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number("1,234"))
+        r = Number("1,234").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1,234")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number("1,234567"))
+        r = Number("1,234567").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1,234567")
         XCTAssertNil(  r.right)
         XCTAssertFalse( r.abreviated)
 
-        r.update(Number("1,2345678"))
+        r = Number("1,2345678").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1,234567")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number("-1,234"))
+        r = Number("-1,234").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-1,234")
         XCTAssertNil(  r.right)
         XCTAssertFalse( r.abreviated)
 
-        r.update(Number("-1,2345"))
+        r = Number("-1,2345").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-1,2345")
         XCTAssertNil(  r.right)
         XCTAssertFalse( r.abreviated)
 
-        r.update(Number("-1,23456"))
+        r = Number("-1,23456").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-1,23456")
         XCTAssertNil(  r.right)
         XCTAssertFalse( r.abreviated)
 
-        r.update(Number("-1,23456789"))
+        r = Number("-1,23456789").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-1,23456")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number("-144,23456789"))
+        r = Number("-144,23456789").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-144,234")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number("1445,23456789"))
+        r = Number("1445,23456789").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1445,234")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number("14456,23456789"))
+        r = Number("14456,23456789").oneLiner(length: 8)
         XCTAssertEqual(r.left, "14456,23")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number("144567,23456789"))
+        r = Number("144567,23456789").oneLiner(length: 8)
         XCTAssertEqual(r.left, "144567,2")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number("1445678,23456789"))
+        r = Number("1445678,23456789").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1445678,")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
         
-        r.update(Number(Gmp("0,123")))
+        r = Number("0,123").oneLiner(length: 8)
         XCTAssertEqual(r.left, "0,123")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number(Gmp("0,1234")))
+        r = Number("0,1234").oneLiner(length: 8)
         XCTAssertEqual(r.left, "0,1234")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number(Gmp("0,12345")))
+        r = Number("0,12345").oneLiner(length: 8)
         XCTAssertEqual(r.left, "0,12345")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number(Gmp("0,123456")))
+        r = Number("0,123456").oneLiner(length: 8)
         XCTAssertEqual(r.left, "0,123456")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number(Gmp("0,1234567")))
+        r = Number("0,1234567").oneLiner(length: 8)
         XCTAssertEqual(r.left, "0,123456")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number(Gmp("0,000012")))
+        r = Number("0,000012").oneLiner(length: 8)
         XCTAssertEqual(r.left, "0,000012")
         XCTAssertNil(  r.right)
         XCTAssertFalse( r.abreviated)
 
-        r.update(Number(Gmp("0,000004")))
+        r = Number("0,000004").oneLiner(length: 8)
         XCTAssertEqual(r.left, "0,000004")
         XCTAssertNil(  r.right)
         XCTAssertFalse( r.abreviated)
 
-        r.update(Number(Gmp("0,0000123456")))
+        r = Number("0,0000123456").oneLiner(length: 8)
         XCTAssertEqual(r.left, "0,000012")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number(Gmp("-0,000012")))
+        r = Number("-0,000012").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-0,00001")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number(Gmp("-0,0000123456")))
+        r = Number("-0,0000123456").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-0,00001")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number(Gmp("-0,123")))
+        r = Number("-0,123").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-0,123")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number(Gmp("-0,1234")))
+        r = Number("-0,1234").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-0,1234")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number(Gmp("-0,12345")))
+        r = Number("-0,12345").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-0,12345")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number(Gmp("-0,123456")))
+        r = Number("-0,123456").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-0,12345")
         XCTAssertNil(  r.right)
         XCTAssertTrue(r.abreviated)
 
-        r.update(Number(Gmp("-0,1234567")))
+        r = Number("-0,1234567").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-0,12345")
         XCTAssertNil(  r.right)
         XCTAssertTrue(r.abreviated)
 
-        r.update(Number("14456789,23456789"))
+        r = Number("14456789,23456789").oneLiner(length: 8)
         XCTAssertEqual(r.left, "14456789")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number("-144567,23456789"))
+        r = Number("-144567,23456789").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-144567,")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number("-1445678,23456789"))
+        r = Number("-1445678,23456789").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-1445678")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number("1445678,23456789"))
+        r = Number("1445678,23456789").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1445678,")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number(Gmp("0,0123")))
+        r = Number("0,0123").oneLiner(length: 8)
         XCTAssertEqual(r.left, "0,0123")
         XCTAssertNil(  r.right)
         XCTAssertFalse( r.abreviated)
 
-        r.update(Number(Gmp("0,01234567")))
+        r = Number("0,01234567").oneLiner(length: 8)
         XCTAssertEqual(r.left, "0,012345")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number(Gmp("0,0012")))
+        r = Number("0,0012").oneLiner(length: 8)
         XCTAssertEqual(r.left, "0,0012")
         XCTAssertNil(  r.right)
         XCTAssertFalse( r.abreviated)
 
-        r.update(Number(Gmp("-0,0012")))
+        r = Number("-0,0012").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-0,0012")
         XCTAssertNil(  r.right)
         XCTAssertFalse( r.abreviated)
 
-        r.update(Number(Gmp("0,001234567")))
+        r = Number("0,001234567").oneLiner(length: 8)
         XCTAssertEqual(r.left, "0,001234")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number(Gmp("-0,001234567")))
+        r = Number("-0,001234567").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-0,00123")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number(Gmp("0,0001234567")))
+        r = Number("0,0001234567").oneLiner(length: 8)
         XCTAssertEqual(r.left, "0,000123")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number(Gmp("-0,0001234567")))
+        r = Number("-0,0001234567").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-0,00012")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number(Gmp("0,00001234567")))
+        r = Number("0,00001234567").oneLiner(length: 8)
         XCTAssertEqual(r.left, "0,000012")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number(Gmp("-0,00001234567")))
+        r = Number("-0,00001234567").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-0,00001")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number("0,12345678"))
+        r = Number("0,12345678").oneLiner(length: 8)
         XCTAssertEqual(r.left, "0,123456")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
         
         /// scientific notation
 
-        r.update(Number(Gmp("1,5e12")))
+        r = Number(Gmp("1,5e12")).oneLiner(length: 8)
         XCTAssertEqual(r.left, "1,5")
         XCTAssertEqual(r.right, "e12")
         XCTAssertFalse( r.abreviated)
 
-        r.update(Number(Gmp("0,0000004")))
+        r = Number("0,0000004").oneLiner(length: 8)
         XCTAssertEqual(r.left, "4,0")
         XCTAssertEqual(r.right, "e-7")
         XCTAssertFalse( r.abreviated)
 
-        r.update(Number("12345678349875349873"))
+        r = Number("12345678349875349873").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1,234")
         XCTAssertEqual(r.right, "e19")
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number("123456783498753498731"))
+        r = Number("123456783498753498731").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1,234")
         XCTAssertEqual(r.right, "e20")
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number("0,012345678"))
+        r = Number("0,012345678").oneLiner(length: 8)
         XCTAssertEqual(r.left, "0,012345")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number("0,0012345678"))
+        r = Number("0,0012345678").oneLiner(length: 8)
         XCTAssertEqual(r.left, "0,001234")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number("-1445,23456789"))
+        r = Number("-1445,23456789").oneLiner(length: 8)
         XCTAssertEqual(r.left, "-1445,23")
         XCTAssertNil(  r.right)
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number("921387491237419283092340238420398423098423049874129837649128364519234875"))
+        r = Number("921387491237419283092340238420398423098423049874129837649128364519234875").oneLiner(length: 8)
         XCTAssertEqual(r.left, "9,213")
         XCTAssertEqual(r.right, "e71")
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number("1,23"))
+        r = Number("1,23").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1,23")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number(Gmp("1,23")))
+        r = Number("1,23").oneLiner(length: 8)
         XCTAssertEqual(r.left, "1,23")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number("0,0023"))
+        r = Number("0,0023").oneLiner(length: 8)
         XCTAssertEqual(r.left, "0,0023")
         XCTAssertNil(  r.right)
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number("0,000000000023"))
+        r = Number("0,000000000023").oneLiner(length: 8)
         XCTAssertEqual(r.left, "2,3")
         XCTAssertEqual(r.right, "e-11")
         XCTAssertFalse(r.abreviated)
 
-        r.update(Number("0,0000000000232837642876"))
+        r = Number("0,0000000000232837642876").oneLiner(length: 8)
         XCTAssertEqual(r.left, "2,32")
         XCTAssertEqual(r.right, "e-11")
         XCTAssertTrue( r.abreviated)
 
-        r.update(Number("0,0000000000232837642876239827342"))
+        r = Number("0,0000000000232837642876239827342").oneLiner(length: 8)
         XCTAssertEqual(r.left, "2,32")
         XCTAssertEqual(r.right, "e-11")
         XCTAssertTrue( r.abreviated)
@@ -531,7 +530,7 @@ class CalculatorTests: XCTestCase {
 //        XCTAssertEqual(brain.scientific, nil)
 //        brain.press(0)
 //        XCTAssertEqual(brain.nonScientific, nil)
-//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("1,234567890123456789", "e19"))
+//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("1,234567890123456789", "e19").oneLiner(length: 8)
 //        
 //        
 //        /// -12345678901234
@@ -570,7 +569,7 @@ class CalculatorTests: XCTestCase {
 //        brain.press(7)
 //        brain.press(7)
 //        XCTAssertEqual(brain.nonScientific, nil)
-//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("7,7777777777777777777777", "e22"))
+//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("7,7777777777777777777777", "e22").oneLiner(length: 8)
 //        
 //        
 //        
@@ -659,7 +658,7 @@ class CalculatorTests: XCTestCase {
 //        brain.press(7)
 //        brain.nonWaitingOperation("=")
 //        XCTAssertEqual(brain.nonScientific, nil)
-//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("3,0", "e77"))
+//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("3,0", "e77").oneLiner(length: 8)
 //        
 //        /// 3 e-77
 //        brain.nonWaitingOperation("C")
@@ -670,7 +669,7 @@ class CalculatorTests: XCTestCase {
 //        brain.nonWaitingOperation("+/-")
 //        brain.nonWaitingOperation("=")
 //        XCTAssertEqual(brain.nonScientific, nil)
-//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("3,0", "e-77"))
+//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("3,0", "e-77").oneLiner(length: 8)
 //        
 //        /// -3 e-77
 //        brain.nonWaitingOperation("C")
@@ -682,7 +681,7 @@ class CalculatorTests: XCTestCase {
 //        brain.nonWaitingOperation("=")
 //        brain.nonWaitingOperation("+/-")
 //        XCTAssertEqual(brain.nonScientific, nil)
-//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("-3,0", "e-77"))
+//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("-3,0", "e-77").oneLiner(length: 8)
 //        
 //        /// -3 e-77
 //        brain.nonWaitingOperation("C")
@@ -694,7 +693,7 @@ class CalculatorTests: XCTestCase {
 //        brain.nonWaitingOperation("+/-")
 //        brain.nonWaitingOperation("=")
 //        XCTAssertEqual(brain.nonScientific, nil)
-//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("-3,0", "e-77"))
+//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("-3,0", "e-77").oneLiner(length: 8)
 //        
 //        
 //        /// 8888888
@@ -982,7 +981,7 @@ class CalculatorTests: XCTestCase {
 //        brain.press(1)
 //        brain.press(0)
 //        brain.nonWaitingOperation("=")
-//        XCTAssertEqual(brain.debugLastGmp, Gmp("1024"))
+//        XCTAssertEqual(brain.debugLastGmp, Gmp("1024").oneLiner(length: 8)
 //        XCTAssertEqual(brain.nonScientific, "1024")
 //        XCTAssertEqual(brain.scientific, nil)
 //        
@@ -992,7 +991,7 @@ class CalculatorTests: XCTestCase {
 //        brain.nonWaitingOperation("y^x")
 //        brain.press(2)
 //        brain.nonWaitingOperation("=")
-//        XCTAssertEqual(brain.debugLastGmp, Gmp("1024"))
+//        XCTAssertEqual(brain.debugLastGmp, Gmp("1024").oneLiner(length: 8)
 //        
 //        /// 2x(6+4)
 //        brain.nonWaitingOperation("C")
@@ -1013,9 +1012,9 @@ class CalculatorTests: XCTestCase {
 //        brain.nonWaitingOperation(")")
 //        XCTAssertEqual(brain.no, 1)
 //        XCTAssertEqual(brain.nn, 2)
-//        XCTAssertEqual(brain.debugLastGmp, Gmp("10"))
+//        XCTAssertEqual(brain.debugLastGmp, Gmp("10").oneLiner(length: 8)
 //        brain.nonWaitingOperation("=")
-//        XCTAssertEqual(brain.debugLastGmp, Gmp("20"))
+//        XCTAssertEqual(brain.debugLastGmp, Gmp("20").oneLiner(length: 8)
 //        XCTAssertEqual(brain.nonScientific, "20")
 //        XCTAssertEqual(brain.scientific, nil)
 //        
@@ -1035,7 +1034,7 @@ class CalculatorTests: XCTestCase {
 //        brain.nonWaitingOperation(")")
 //        brain.nonWaitingOperation(")")
 //        brain.nonWaitingOperation("=")
-//        XCTAssertEqual(brain.debugLastGmp, Gmp("124"))
+//        XCTAssertEqual(brain.debugLastGmp, Gmp("124").oneLiner(length: 8)
 //        
 //        /// 1+2=3
 //        brain.nonWaitingOperation("C")

@@ -84,10 +84,8 @@ struct MainView: View {
         }
         
         VStack {
-            let representation = Representation(characters: t.digitsInDisplay, singleLine: true)
-            let _ = representation.update(brain.last)
             Spacer(minLength:0)
-            SingleLineDisplay(r: representation, fontSize: t.displayFontSizeCandidate)
+            SingleLineDisplay(number: brain.last, fontSize: t.displayFontSizeCandidate, length: t.digitsInDisplay)
                 .background(Color.green)
                 .foregroundColor(Color.white)
                 .animation(nil, value: UUID())
