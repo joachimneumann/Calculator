@@ -13,6 +13,20 @@ class Brain: ObservableObject {
     var messageToUser: String? = nil
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
+    let representation = Representation(portraitLength: 6, landscapeLength: 20, zoomLength: 100)
+//    private var displayData: DisplayData = DisplayData()
+//    @Published var nonScientific: String?
+//    @Published var scientific: DisplayData.Scientific?
+//    var longDisplayString: String {
+//        let longDisplayData = DisplayData()
+//        longDisplayData.update(with: n.last, digitsInExpandedDisplay: precision)
+//        if nonScientific != nil && longDisplayData.nonScientific != nil {
+//            return longDisplayData.nonScientific!
+//        } else {
+//            assert(longDisplayData.scientific != nil)
+//            return longDisplayData.scientific!.combined
+//        }
+//    }
     @AppStorage("precision") var precision: Int = TE.lowPrecision {
         didSet {
             calculateSignificantBits()
@@ -185,13 +199,13 @@ class Brain: ObservableObject {
                 n.append(Number("0"))
                 pendingOperator = nil
             }
-            n.last.addComma()
+            n.last.appendComma()
         } else if symbol == "0" {
             if pendingOperator != nil {
                 n.append(Number("0"))
                 pendingOperator = nil
             }
-            n.last.addZero()
+            n.last.appendZero()
         } else if symbol == "+/-" {
             n.last.changeSign()
         } else if self.digitOperators.contains(symbol) {
@@ -199,7 +213,7 @@ class Brain: ObservableObject {
                 n.append(Number("0"))
                 pendingOperator = nil
             }
-            n.last.addDigit(symbol)
+            n.last.appendDigit(symbol)
         } else if let op = self.constantOperators[symbol] {
             if self.pendingOperator != nil {
                 self.n.append(Number(Gmp()))
@@ -220,14 +234,20 @@ class Brain: ObservableObject {
     
     private func waitingOperation(_ symbol: String) async {
         operation(symbol)
+        self.representation.update(n.last)
     }
 
     func nonWaitingOperation(_ symbol: String) {
         if symbol == "messageToUser" {
             operation("C")
+//            self.nonScientific = messageToUser
+//            self.scientific = nil
             messageToUser = nil
         } else {
             operation(symbol)
+            self.representation.update(n.last)
+//            self.nonScientific = self.displayData.nonScientific
+//            self.scientific = self.displayData.scientific
         }
     }
 
