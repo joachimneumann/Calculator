@@ -49,6 +49,6 @@ struct iOSSize: View {
 
 struct Previews_iOSSize_Previews: PreviewProvider {
     static var previews: some View {
-        iOSSize(brain: Brain())
+        iOSSize(brain: Brain(), leadingPaddingNeeded: false, trailingPaddingNeeded: false, bottomPaddingNeeded: false)
     }
 }
