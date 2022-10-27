@@ -58,43 +58,40 @@ struct MainView: View {
                          textColor: t.digits_1_9.textColor,
                          zoomed: $brain.zoomed,
                          showCalculating: brain.showCalculating && brain.isCalculating)
-                        .frame(width: t.colorOpProperties.size.width, height: t.colorOpProperties.size.height, alignment: .center)
-//                        .padding(.top, t.zoomTopPadding)
+                    .frame(width: t.colorOpProperties.size.width, height: t.colorOpProperties.size.height, alignment: .center)
+                    //                        .padding(.top, t.zoomTopPadding)
                     Precision(brain: brain, textColor: t.digits_1_9.textColor,
                               iconSize: t.iconSize)
-                        .frame(width: t.colorOpProperties.size.width, height: t.colorOpProperties.size.height, alignment: .center)
+                    .frame(width: t.colorOpProperties.size.width, height: t.colorOpProperties.size.height, alignment: .center)
                     Spacer(minLength: 0.0)
                 }
             }
-//        }
-//        .background(
-//            VStack {
-//                Spacer(minLength: 0.0)
-//                Text("xx")
-//                    .padding(.bottom, 0.0)
-//                    .background(Color.yellow)
-//            }
-////        )
-        VStack {
-            if !brain.zoomed {
-                Spacer(minLength: 0.0)
-                Keys(brain: brain, t: t)
-                    .transition(.move(edge: .bottom))
+            VStack {
+                if !brain.zoomed {
+                    Spacer(minLength: 0.0)
+                    Keys(brain: brain, t: t)
+                        .transition(.move(edge: .bottom))
+                }
             }
-        }
-        
-        VStack {
-            Spacer(minLength:0)
-            SingleLineDisplay(number: brain.last, fontSize: t.displayFontSizeCandidate, length: t.digitsInDisplay)
-                .background(Color.green)
-                .foregroundColor(Color.white)
-                .animation(nil, value: UUID())
-                .frame(minHeight: t.displayheight, maxHeight: t.displayheight)
-            Spacer(minLength: t.allkeysHeight)
-        }
-
-
-        
+            
+            VStack {
+                Spacer(minLength:0)
+                if !brain.zoomed {
+                    SingleLineDisplay(number: brain.last, fontSize: t.displayFontSizeCandidate, length: t.digitsInDisplay)
+                        .background(Color.green)
+                        .foregroundColor(Color.white)
+                        .animation(nil, value: UUID())
+                        .frame(minHeight: t.displayheight, maxHeight: t.displayheight)
+                    Spacer(minLength: t.allkeysHeight)
+                } else {
+                    MultiLineDisplay(number: brain.last, fontSize: t.displayFontSizeCandidate, length: t.digitsInDisplay)
+                        .background(Color.orange)
+                        .foregroundColor(Color.white)
+                        .animation(nil, value: UUID())
+                        //.frame(minHeight: t.displayheight, maxHeight: t.displayheight)
+                    Spacer(minLength: t.allkeysHeight)
+                }
+            }
             VStack(spacing: 0.0) {
                 HStack(spacing: 0.0) {
                     if brain.rad && !brain.zoomed {
@@ -107,11 +104,11 @@ struct MainView: View {
                         Spacer(minLength: 0.0)
                     }
                 }
-//                if !brain.zoomed || t.isPad {
-//                    HStack(spacing: 0.0) {
-//                        Keys(brain: brain, t: t)
-//                    }
-//                }
+                //                if !brain.zoomed || t.isPad {
+                //                    HStack(spacing: 0.0) {
+                //                        Keys(brain: brain, t: t)
+                //                    }
+                //                }
             }
         }
     }

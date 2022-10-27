@@ -7,11 +7,19 @@
 
 import Foundation
 
-struct Oneliner {
+struct OneLiner {
     var left: String
-    var right: String?
+    var right: String? = nil
     var abreviated: Bool // shall the + be enabled or not?
 }
+
+struct MultipleLiner {
+    var left: String
+    var right: String? = nil
+    var abreviated: Bool // show a message that there is more?
+}
+
+
 
 class Number: CustomDebugStringConvertible {
     private var _str: String?
@@ -107,9 +115,17 @@ class Number: CustomDebugStringConvertible {
         }
     }
     
-    func oneLiner(length: Int) -> Oneliner {
-        var ret = Oneliner(left: "0", abreviated: false)
-        ret.right = nil
+    func multipleLiner(length: Int) -> MultipleLiner {
+        var ret = MultipleLiner(left: "0", abreviated: false)
+        guard let multipleLinerStr = str, multipleLinerStr.count <= length else {
+            return ret
+        }
+        ret.left = multipleLinerStr
+        return ret
+    }
+    
+    func oneLiner(length: Int) -> OneLiner {
+        var ret = OneLiner(left: "0", abreviated: false)
         ret.abreviated = false
         
         guard let oneLinerStr = str, oneLinerStr.count <= length else {
@@ -182,7 +198,6 @@ class Number: CustomDebugStringConvertible {
                 }
             }
             
-
             /// Is floating point XXX,xxx?
             if exponent >= 0 {
                 if exponent < characters { /// is the comma visible in the first line and is there at least one digit after the comma?
@@ -219,7 +234,6 @@ class Number: CustomDebugStringConvertible {
                     return ret
                 }
             }
-
 
             /// needs to be displayed in scientific notation
             ret.right = "e\(exponent)"

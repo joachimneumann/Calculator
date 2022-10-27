@@ -17,8 +17,8 @@ import SwiftUI
 /// Notes:
 /// - A digital number can at most have one comma,
 /// - The optional e is counted as a digit
-/// - The comma is not counted, i.e. the number of digits is determined with a number 1,23456789123, etc
-/// - Thus, an Integer number without comma would be a bit shorter (space to the left)
+/// - The comma is counted, i.e. the length of 1,23 is 4
+/// - Because the comma take up less space, a number with comma will be a bit shorter (space to the left)
 
 struct SingleLineDisplay: View {
     let color: Color
@@ -52,6 +52,37 @@ struct SingleLineDisplay: View {
 
 }
 
+struct MultiLineDisplay: View {
+    let color: Color
+    let text: String
+    let l: Int
+    let fontSize: CGFloat
+    let fontGrowthFactor = 2.0
+    @State var initialHeight: CGFloat? = nil
+    
+    init(number: Number, fontSize: CGFloat, length: Int) {
+        self.color = Color.white
+        self.fontSize = fontSize
+        let oneLiner = number.oneLiner(length: length)
+        if let right = oneLiner.right {
+            text = oneLiner.left+right
+        } else {
+            text = oneLiner.left
+        }
+        l = length
+    }
+    
+    var body: some View {
+        // TODO: use growthfactor and minimumScaleFactor only if the length of the single ine is less than the max length
+        Text(text)
+            .font(Font.system(size: fontSize*fontGrowthFactor, weight: .thin).monospacedDigit())
+            .minimumScaleFactor(1.0/fontGrowthFactor)
+            .foregroundColor(color)
+            .background(Color.yellow)
+            .frame(maxWidth: .infinity, alignment: .trailing)
+    }
+
+}
 
 struct SingleLineDisplay_Previews: PreviewProvider {
     static var previews: some View {
