@@ -50,7 +50,7 @@ struct MainView: View {
         ZStack { // buttons: + and OO
             HStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
-                VStack {
+                VStack(spacing: 0.0) {
                     Zoom(scrollTarget: $brain.scrollViewTarget,
                          iconName: brain.zoomed ? brain.precisionIconName : "plus.circle.fill",
                          iconSize: t.iconSize,
@@ -66,30 +66,31 @@ struct MainView: View {
                     Spacer(minLength: 0.0)
                 }
             }
-            VStack {
+            VStack(spacing: 0.0) {
                 if !brain.zoomed {
                     Spacer(minLength: 0.0)
                     Keys(brain: brain, t: t)
                         .transition(.move(edge: .bottom))
                 }
             }
-            
-            VStack {
-                Spacer(minLength:0)
+            VStack(spacing: 0.0) {
                 if !brain.zoomed {
+                    Spacer(minLength:0)
                     SingleLineDisplay(number: brain.last, fontSize: t.displayFontSizeCandidate, length: t.digitsInDisplay)
                         .background(Color.green)
                         .foregroundColor(Color.white)
                         .animation(nil, value: UUID())
-                        .frame(minHeight: t.displayheight, maxHeight: t.displayheight)
-                    Spacer(minLength: t.allkeysHeight)
+                        .frame(height: t.displayheight)
+                    Rectangle()
+                        .foregroundColor(Color.clear)
+                        .frame(height: t.allkeysHeight+t.spaceBetweenKeys)
                 } else {
-                    MultiLineDisplay(number: brain.last, fontSize: t.displayFontSizeCandidate, length: t.digitsInDisplay)
+                    Spacer(minLength: 0)
+                    MultiLineDisplay(number: brain.last, fontSize: t.displayFontSizeCandidate, length: 1000)
                         .background(Color.orange)
                         .foregroundColor(Color.white)
                         .animation(nil, value: UUID())
-                        //.frame(minHeight: t.displayheight, maxHeight: t.displayheight)
-                    Spacer(minLength: t.allkeysHeight)
+                        .frame(height: t.allkeysHeight + t.spaceBetweenKeys + t.displayheight)
                 }
             }
             VStack(spacing: 0.0) {
@@ -104,11 +105,6 @@ struct MainView: View {
                         Spacer(minLength: 0.0)
                     }
                 }
-                //                if !brain.zoomed || t.isPad {
-                //                    HStack(spacing: 0.0) {
-                //                        Keys(brain: brain, t: t)
-                //                    }
-                //                }
             }
         }
     }

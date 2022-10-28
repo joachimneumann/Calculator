@@ -221,6 +221,7 @@ class TE {
     var iconSize: CGFloat
     var circularProgressViewScaleFactor: CGFloat
     var isPortrait: Bool
+    
     init(appFrame: CGSize, isPad: Bool, isPortrait: Bool) {
         TE.calibrated = false
         self.isPad = isPad
@@ -262,7 +263,8 @@ class TE {
         allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenKeys
         zeroTrailingPadding = keySize.width * 1 + digitsKeyFontSize*0.25
         iconSize = keySize.height * 0.7
-        displayheight = keySize.height * 1.2
+        displayheight = keySize.height * 1.0
+        
         if isPad {
             circularProgressViewScaleFactor = 2.0
             if isPortrait {

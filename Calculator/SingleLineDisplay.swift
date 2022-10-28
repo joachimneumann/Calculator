@@ -25,8 +25,7 @@ struct SingleLineDisplay: View {
     let text: String
     let l: Int
     let fontSize: CGFloat
-    let fontGrowthFactor = 2.0
-    @State var initialHeight: CGFloat? = nil
+    let fontGrowthFactor = 1.0
     
     init(number: Number, fontSize: CGFloat, length: Int) {
         self.color = Color.white
@@ -42,12 +41,15 @@ struct SingleLineDisplay: View {
     
     var body: some View {
         // TODO: use growthfactor and minimumScaleFactor only if the length of the single ine is less than the max length
-        Text(text)
-            .font(Font.system(size: fontSize*fontGrowthFactor, weight: .thin).monospacedDigit())
-            .minimumScaleFactor(1.0/fontGrowthFactor)
-            .foregroundColor(color)
-            .background(Color.yellow)
-            .frame(maxWidth: .infinity, alignment: .trailing)
+        VStack(spacing: 0.0) {
+            Text(text)
+                .font(Font.system(size: fontSize*fontGrowthFactor, weight: .thin).monospacedDigit())
+                .minimumScaleFactor(1.0/fontGrowthFactor)
+                .foregroundColor(color)
+                .background(Color.yellow)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+            Spacer(minLength: 0.0)
+        }
     }
 
 }
@@ -57,8 +59,7 @@ struct MultiLineDisplay: View {
     let text: String
     let l: Int
     let fontSize: CGFloat
-    let fontGrowthFactor = 2.0
-    @State var initialHeight: CGFloat? = nil
+    let fontGrowthFactor = 1.0
     
     init(number: Number, fontSize: CGFloat, length: Int) {
         self.color = Color.white
@@ -73,13 +74,15 @@ struct MultiLineDisplay: View {
     }
     
     var body: some View {
-        // TODO: use growthfactor and minimumScaleFactor only if the length of the single ine is less than the max length
-        Text(text)
-            .font(Font.system(size: fontSize*fontGrowthFactor, weight: .thin).monospacedDigit())
-            .minimumScaleFactor(1.0/fontGrowthFactor)
-            .foregroundColor(color)
-            .background(Color.yellow)
-            .frame(maxWidth: .infinity, alignment: .trailing)
+        ScrollView {
+            Text(text)
+                .font(Font.system(size: fontSize, weight: .thin).monospacedDigit())
+                .minimumScaleFactor(1.0)
+                .foregroundColor(color)
+                .background(Color.yellow)
+                .lineLimit(100)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+        }
     }
 
 }
