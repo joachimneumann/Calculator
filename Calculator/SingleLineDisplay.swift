@@ -46,7 +46,7 @@ struct SingleLineDisplay: View {
                 .font(Font.system(size: fontSize*fontGrowthFactor, weight: .thin).monospacedDigit())
                 .minimumScaleFactor(1.0/fontGrowthFactor)
                 .foregroundColor(color)
-                .background(Color.yellow)
+                //.background(Color.yellow)
                 .frame(maxWidth: .infinity, alignment: .trailing)
             Spacer(minLength: 0.0)
         }
@@ -79,7 +79,7 @@ struct MultiLineDisplay: View {
                 .font(Font.system(size: fontSize, weight: .thin).monospacedDigit())
                 .minimumScaleFactor(1.0)
                 .foregroundColor(color)
-                .background(Color.yellow)
+                //.background(Color.yellow)
                 .lineLimit(100)
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }

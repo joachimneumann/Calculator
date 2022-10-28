@@ -38,7 +38,7 @@ struct MainView: View {
                 Spacer(minLength: 0.0)
                 Text("Rad")
                     .font(Font.system(size: keySize.height*0.27).monospacedDigit())
-                    .foregroundColor(Color.yellow)
+                    //.foregroundColor(Color.yellow)
                     .padding(.leading, keySize.height*0.27)
                     .padding(.bottom, keySize.height*0.1)
             }
@@ -77,7 +77,7 @@ struct MainView: View {
                 if !brain.zoomed {
                     Spacer(minLength:0)
                     SingleLineDisplay(number: brain.last, fontSize: t.displayFontSizeCandidate, length: t.digitsInDisplay)
-                        .background(Color.green)
+                        //.background(Color.green)
                         .foregroundColor(Color.white)
                         .animation(nil, value: UUID())
                         .frame(height: t.displayheight)
@@ -87,7 +87,7 @@ struct MainView: View {
                 } else {
                     Spacer(minLength: 0)
                     MultiLineDisplay(number: brain.last, fontSize: t.displayFontSizeCandidate, length: 1000)
-                        .background(Color.orange)
+                        //.background(Color.orange)
                         .foregroundColor(Color.white)
                         .animation(nil, value: UUID())
                         .frame(height: t.allkeysHeight + t.spaceBetweenKeys + t.displayheight)
