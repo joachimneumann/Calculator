@@ -9,7 +9,6 @@ import SwiftUI
 
 struct Zoom: View {
     @Binding var scrollTarget: Int?
-    let iconName: String
     let iconSize: CGFloat
     let scaleFactor: CGFloat
     let textColor: Color
@@ -22,9 +21,10 @@ struct Zoom: View {
                     .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
                     .scaleEffect(scaleFactor, anchor: .center)
             } else {
-                Image(systemName: iconName)
-                .resizable()
+                Image(systemName: "plus.circle.fill")
+                .font(.system(size: iconSize, weight: .thin))
                 .foregroundColor(textColor)
+                .rotationEffect(zoomed ? .degrees(-45) : .degrees(0))
                 .onTapGesture {
                     withAnimation() {
                         zoomed.toggle()
@@ -35,7 +35,6 @@ struct Zoom: View {
                 }
             }
         }
-        .frame(width: iconSize, height: iconSize)
     }
 }
 

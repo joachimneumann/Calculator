@@ -51,18 +51,23 @@ struct MainView: View {
             HStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
                 VStack(spacing: 0.0) {
-                    Zoom(scrollTarget: $brain.scrollViewTarget,
-                         iconName: brain.zoomed ? brain.precisionIconName : "plus.circle.fill",
-                         iconSize: t.iconSize,
-                         scaleFactor: t.circularProgressViewScaleFactor,
-                         textColor: t.digits_1_9.textColor,
-                         zoomed: $brain.zoomed,
-                         showCalculating: brain.showCalculating && brain.isCalculating)
-                    .frame(width: t.colorOpProperties.size.width, height: t.colorOpProperties.size.height, alignment: .center)
-                    //                        .padding(.top, t.zoomTopPadding)
-                    Precision(brain: brain, textColor: t.digits_1_9.textColor,
-                              iconSize: t.iconSize)
-                    .frame(width: t.colorOpProperties.size.width, height: t.colorOpProperties.size.height, alignment: .center)
+                    HStack(spacing: 0.0) {
+                        Spacer(minLength: 0.0)
+                        if brain.zoomed {
+                            Precision(brain: brain,
+                                      textColor: t.digits_1_9.textColor,
+                                      iconSize: t.iconSize)
+                            .frame(width: t.colorOpProperties.size.width, height: t.colorOpProperties.size.height, alignment: .center)
+                        }
+                        Zoom(scrollTarget: $brain.scrollViewTarget,
+                             iconSize: t.iconSize,
+                             scaleFactor: t.circularProgressViewScaleFactor,
+                             textColor: t.digits_1_9.textColor,
+                             zoomed: $brain.zoomed,
+                             showCalculating: brain.showCalculating && brain.isCalculating)
+                        .frame(width: t.colorOpProperties.size.width, height: t.colorOpProperties.size.height, alignment: .center)
+                        //                        .padding(.top, t.zoomTopPadding)
+                    }
                     Spacer(minLength: 0.0)
                 }
             }
