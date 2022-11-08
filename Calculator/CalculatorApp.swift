@@ -13,10 +13,6 @@ struct CalculatorApp: App {
     @UIApplicationDelegateAdaptor var mydelegate: MyAppDelegate
 
     var body: some Scene {
-#if targetEnvironment(macCatalyst)
-        CalculatorAppCatalyst()
-#else
         CalculatorAppiOS()
-#endif
     }
 }

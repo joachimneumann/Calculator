@@ -16,7 +16,6 @@
 		AA2FAC0E272F2349006DE4C8 /* ScientificKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FABF7272F2348006DE4C8 /* ScientificKeys.swift */; };
 		AA2FAC0F272F2349006DE4C8 /* Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FABF8272F2348006DE4C8 /* Number.swift */; };
 		AA2FAC10272F2349006DE4C8 /* Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FABF9272F2348006DE4C8 /* Symbols.swift */; };
-		AA2FAC11272F2349006DE4C8 /* Zoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FABFA272F2348006DE4C8 /* Zoom.swift */; };
 		AA2FAC12272F2349006DE4C8 /* NumberStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FABFB272F2348006DE4C8 /* NumberStack.swift */; };
 		AA2FAC13272F2349006DE4C8 /* TargetEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FABFD272F2348006DE4C8 /* TargetEnvironment.swift */; };
 		AA2FAC14272F2349006DE4C8 /* KeyInputSubjectWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FABFE272F2348006DE4C8 /* KeyInputSubjectWrapper.swift */; };
@@ -32,7 +31,6 @@
 		AA2FAC22272F2349006DE4C8 /* NumberKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0C272F2349006DE4C8 /* NumberKeys.swift */; };
 		AA2FAC23272F2349006DE4C8 /* OperatorStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0D272F2349006DE4C8 /* OperatorStack.swift */; };
 		AA393CDA27F8921A003C48AA /* SingleLineDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA393CD927F8921A003C48AA /* SingleLineDisplay.swift */; };
-		AAC6675327FC55FF009A5D49 /* NumberOfCharactersModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC6675227FC55FF009A5D49 /* NumberOfCharactersModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,7 +74,6 @@
 		AA2FABF7272F2348006DE4C8 /* ScientificKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScientificKeys.swift; sourceTree = "<group>"; };
 		AA2FABF8272F2348006DE4C8 /* Number.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Number.swift; sourceTree = "<group>"; };
 		AA2FABF9272F2348006DE4C8 /* Symbols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Symbols.swift; sourceTree = "<group>"; };
-		AA2FABFA272F2348006DE4C8 /* Zoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Zoom.swift; sourceTree = "<group>"; };
 		AA2FABFB272F2348006DE4C8 /* NumberStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberStack.swift; sourceTree = "<group>"; };
 		AA2FABFC272F2348006DE4C8 /* Calculator.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Calculator.entitlements; sourceTree = "<group>"; };
 		AA2FABFD272F2348006DE4C8 /* TargetEnvironment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TargetEnvironment.swift; sourceTree = "<group>"; };
@@ -93,7 +90,6 @@
 		AA2FAC0C272F2349006DE4C8 /* NumberKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberKeys.swift; sourceTree = "<group>"; };
 		AA2FAC0D272F2349006DE4C8 /* OperatorStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperatorStack.swift; sourceTree = "<group>"; };
 		AA393CD927F8921A003C48AA /* SingleLineDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLineDisplay.swift; sourceTree = "<group>"; };
-		AAC6675227FC55FF009A5D49 /* NumberOfCharactersModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberOfCharactersModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,15 +139,12 @@
 				AA2FABF1272F217F006DE4C8 /* Gmp.swift */,
 				AA2FABFC272F2348006DE4C8 /* Calculator.entitlements */,
 				AA2FABFF272F2348006DE4C8 /* CalculatorApp.swift */,
-				AA2FAC00272F2348006DE4C8 /* CalculatorAppCatalyst.swift */,
 				AA2FAC08272F2348006DE4C8 /* CalculatorAppiOS.swift */,
-				AA2FAC04272F2348006DE4C8 /* CalculatorCommands.swift */,
 				AA2FAC0A272F2348006DE4C8 /* iOSSize.swift */,
 				AA2FAC0B272F2348006DE4C8 /* Key.swift */,
 				AA2FABFE272F2348006DE4C8 /* KeyInputSubjectWrapper.swift */,
 				AA2FAC06272F2348006DE4C8 /* MainView.swift */,
 				AA393CD927F8921A003C48AA /* SingleLineDisplay.swift */,
-				AAC6675227FC55FF009A5D49 /* NumberOfCharactersModel.swift */,
 				AA2FABF8272F2348006DE4C8 /* Number.swift */,
 				AA2FAC0C272F2349006DE4C8 /* NumberKeys.swift */,
 				AA2FABFB272F2348006DE4C8 /* NumberStack.swift */,
@@ -160,11 +153,12 @@
 				AA2FABF7272F2348006DE4C8 /* ScientificKeys.swift */,
 				AA2FABF9272F2348006DE4C8 /* Symbols.swift */,
 				AA2FABFD272F2348006DE4C8 /* TargetEnvironment.swift */,
-				AA2FABFA272F2348006DE4C8 /* Zoom.swift */,
 				AA2FABF4272F22AC006DE4C8 /* bridge.h */,
 				AA2FABF6272F22AC006DE4C8 /* gmp.h */,
 				AA2FABF3272F22AC006DE4C8 /* mpf2mpfr.h */,
 				AA2FABF5272F22AC006DE4C8 /* mpfr.h */,
+				AA2FAC00272F2348006DE4C8 /* CalculatorAppCatalyst.swift */,
+				AA2FAC04272F2348006DE4C8 /* CalculatorCommands.swift */,
 				AA08C7EC272F1572001B8575 /* Info.plist */,
 				AA08C7C5272EDA4A001B8575 /* Assets.xcassets */,
 				AA08C7C7272EDA4A001B8575 /* Preview Content */,
@@ -303,7 +297,6 @@
 				AA2FAC20272F2349006DE4C8 /* iOSSize.swift in Sources */,
 				AA2FAC0F272F2349006DE4C8 /* Number.swift in Sources */,
 				AA2FAC0E272F2349006DE4C8 /* ScientificKeys.swift in Sources */,
-				AAC6675327FC55FF009A5D49 /* NumberOfCharactersModel.swift in Sources */,
 				AA2FAC16272F2349006DE4C8 /* CalculatorAppCatalyst.swift in Sources */,
 				AA2FAC17272F2349006DE4C8 /* Brain.swift in Sources */,
 				AA2FAC14272F2349006DE4C8 /* KeyInputSubjectWrapper.swift in Sources */,
@@ -315,7 +308,6 @@
 				AA2FAC23272F2349006DE4C8 /* OperatorStack.swift in Sources */,
 				AA2FAC22272F2349006DE4C8 /* NumberKeys.swift in Sources */,
 				AA2FAC1E272F2349006DE4C8 /* CalculatorAppiOS.swift in Sources */,
-				AA2FAC11272F2349006DE4C8 /* Zoom.swift in Sources */,
 				AA2FAC15272F2349006DE4C8 /* CalculatorApp.swift in Sources */,
 				AA2FAC13272F2349006DE4C8 /* TargetEnvironment.swift in Sources */,
 				AA2FAC1A272F2349006DE4C8 /* CalculatorCommands.swift in Sources */,

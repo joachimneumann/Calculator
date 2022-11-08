@@ -60,8 +60,6 @@ class Brain: ObservableObject {
         }
     }
     
-    @Published var zoomed: Bool = false
-    @Published var calibrated: Bool = false
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
     @Published var showCalculating: Bool = false

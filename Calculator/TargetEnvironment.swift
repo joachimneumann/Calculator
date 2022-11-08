@@ -196,7 +196,6 @@ class TE {
     
 //    static let appBackgroundColor = Color(.brown).opacity(0.7)
     static let appBackgroundColor = Color(.brown)
-    static var calibrated = false
 
     let digits_1_9: KeyProperties
     let digits_0: KeyProperties
@@ -223,7 +222,6 @@ class TE {
     var isPortrait: Bool
     
     init(appFrame: CGSize, isPad: Bool, isPortrait: Bool) {
-        TE.calibrated = false
         self.isPad = isPad
         self.isPortrait = isPortrait
         let keySize: CGSize
