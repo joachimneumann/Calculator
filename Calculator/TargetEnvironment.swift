@@ -20,7 +20,7 @@ struct KeyProperties {
 
 class TE {
     static let iPhoneSymbolFontSizeReduction: CGFloat = 0.85//1.0
-    static let digitsInAllDigitsDisplay: Int = 200
+    static let digitsInAllDigitsDisplay: Int = 100
     
     static let lowPrecision          = 100
     static let lowPrecisionString    = "one hundred digits"
@@ -263,7 +263,7 @@ class TE {
         allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenKeys
         zeroTrailingPadding = keySize.width * 1 + digitsKeyFontSize*0.25
         iconSize = keySize.height * 0.7
-        displayheight = keySize.height * 1.0
+        displayheight = keySize.height
         
         if isPad {
             circularProgressViewScaleFactor = 2.0

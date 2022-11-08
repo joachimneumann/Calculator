@@ -41,15 +41,10 @@ struct SingleLineDisplay: View {
     
     var body: some View {
         // TODO: use growthfactor and minimumScaleFactor only if the length of the single ine is less than the max length
-        VStack(spacing: 0.0) {
             Text(text)
                 .font(Font.system(size: fontSize*fontGrowthFactor, weight: .thin).monospacedDigit())
                 .minimumScaleFactor(1.0/fontGrowthFactor)
                 .foregroundColor(color)
-                //.background(Color.yellow)
-                .frame(maxWidth: .infinity, alignment: .trailing)
-            Spacer(minLength: 0.0)
-        }
     }
 
 }

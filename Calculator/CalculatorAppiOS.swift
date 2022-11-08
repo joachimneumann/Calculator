@@ -14,7 +14,7 @@ import SwiftUI
 struct CalculatorAppiOS: Scene {
     
     let brain = Brain()
-
+    
     var body: some Scene {
         var leadingPaddingNeeded: Bool = false
         var trailingPaddingNeeded: Bool = false
@@ -34,17 +34,17 @@ struct CalculatorAppiOS: Scene {
                 iOSSize(brain: brain, leadingPaddingNeeded: leadingPaddingNeeded, trailingPaddingNeeded: trailingPaddingNeeded, bottomPaddingNeeded: bottomPaddingNeeded)
                     .statusBar(hidden: true)
                     .background(Rectangle()
-                                    .frame(width: expandedDeviceSize,
-                                           height: expandedDeviceSize,
-                                           alignment: .center)
-                                    .foregroundColor(TE.appBackgroundColor)
-                                    .ignoresSafeArea())
-
-                }
+                        .frame(width: expandedDeviceSize,
+                               height: expandedDeviceSize,
+                               alignment: .center)
+                            .foregroundColor(TE.appBackgroundColor)
+                            .ignoresSafeArea())
+                
+            }
         }
-        .commands() {
-            CalculatorCommands(brain: brain)
-        }
+//        .commands() {
+//            CalculatorCommands(brain: brain)
+//        }
     }
 }
 
