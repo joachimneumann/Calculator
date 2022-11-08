@@ -51,7 +51,7 @@ struct MainView: View {
         VStack(spacing: 0.0) {
             Spacer(minLength: 0.0)
             HStack(spacing: 0.0) {
-                if !isZoomed {
+                if !isZoomed || !t.isZoomAllowed {
                     SingleLineDisplay(number: brain.last, fontSize: t.displayFontSizeCandidate, length: t.digitsInDisplay)
                         .frame(height: t.displayheight, alignment: .topTrailing)
                         .frame(maxWidth: .infinity, alignment: .topTrailing)
@@ -66,14 +66,14 @@ struct MainView: View {
                         Image(systemName: "plus.circle.fill")
                             .font(.system(size: t.iconSize, weight: .thin))
                             .foregroundColor(t.digits_1_9.textColor)
-                            .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
+                            .rotationEffect(isZoomed && t.isZoomAllowed  ? .degrees(-45.0) : .degrees(0.0))
                             .onTapGesture {
                                 withAnimation() {
                                     isZoomed.toggle()
                                 }
                             }
                             .padding(.top, t.iconSize*0.1)
-                        if isZoomed {
+                        if isZoomed && t.isZoomAllowed  {
                             Image(systemName: "switch.2")
                                 .font(.system(size: t.iconSize*0.75, weight: .thin))
                                 .padding(.top, t.iconSize*0.25)
@@ -85,10 +85,10 @@ struct MainView: View {
                         }
                         Spacer(minLength: 0.0)
                     }
-                    .frame(height: t.displayheight + (isZoomed ? t.allkeysHeight : 0.0), alignment: .topTrailing)
+                    .frame(height: t.displayheight + (isZoomed && t.isZoomAllowed ? t.allkeysHeight : 0.0), alignment: .topTrailing)
                 }
             }
-            if !isZoomed {
+            if !isZoomed || !t.isZoomAllowed {
                 Keys(brain: brain, t: t)
             }
         }

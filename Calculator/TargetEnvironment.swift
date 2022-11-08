@@ -220,7 +220,9 @@ class TE {
     var iconSize: CGFloat
     var circularProgressViewScaleFactor: CGFloat
     var isPortrait: Bool
-    
+    var isZoomAllowed: Bool {
+        return isPad || !isPortrait
+    }
     init(appFrame: CGSize, isPad: Bool, isPortrait: Bool) {
         self.isPad = isPad
         self.isPortrait = isPortrait
@@ -253,7 +255,7 @@ class TE {
         var s = ""
         let f = UIFont.monospacedSystemFont(ofSize: displayFontSizeCandidate, weight: .thin)
         var displayLength = appFrame.width
-        if !isPortrait || isPad {
+        if isPad || !isPortrait {
             displayLength -= iconSize
         }
         while w < displayLength {
