@@ -249,20 +249,24 @@ class TE {
         let scientificKeyFontSize = keySize.height * 0.35
         let digitsKeyFontSize     = keySize.height * 0.5
         displayFontSizeCandidate = keySize.height * 0.79
-        
+        iconSize = keySize.height * 0.7
+
         var w = 0.0
         var s = ""
         let f = UIFont.monospacedSystemFont(ofSize: displayFontSizeCandidate, weight: .thin)
-        while w < appFrame.width {
+        var displayLength = appFrame.width
+        if !isPortrait || isPad {
+            displayLength -= iconSize
+        }
+        while w < displayLength {
             s.append("0")
             w = s.sizeOf_String(font: f).width
         }
-        digitsInDisplay = 8//s.count - 1
+        digitsInDisplay = s.count - 1
         print("sizeOf_String method: "+String(s.count-1))
 
         allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenKeys
         zeroTrailingPadding = keySize.width * 1 + digitsKeyFontSize*0.25
-        iconSize = keySize.height * 0.7
         displayheight = keySize.height
         
         if isPad {

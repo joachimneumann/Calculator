@@ -14,12 +14,25 @@ class Brain: ObservableObject {
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
 
-    @AppStorage("precision") var precision: Int = TE.lowPrecision {
-        didSet {
-            calculateSignificantBits()
-            Gmp.deleteConstants()
-            nonWaitingOperation("C")
-            nonWaitingOperation("messageToUser")
+    var precision: Int = TE.lowPrecision
+//    @AppStorage("precision") var precision: Int = TE.lowPrecision {
+//        didSet {
+//            calculateSignificantBits()
+//            Gmp.deleteConstants()
+//            nonWaitingOperation("C")
+//            nonWaitingOperation("messageToUser")
+//        }
+//    }
+    var precisionInternal: Int {
+        switch precision {
+        case TE.lowPrecision:
+            return 2*TE.lowPrecision
+        case TE.mediumPrecision:
+            return 2*TE.mediumPrecision
+        case TE.highPrecision:
+            return Int(round(1.5*Double(TE.highPrecision)))
+        default:
+            return 2*TE.lowPrecision
         }
     }
     var precisionIconName: String {
@@ -270,15 +283,8 @@ class Brain: ObservableObject {
     //    var last: Number { n.last() }
     
     private func calculateSignificantBits() {
-        var significantBits: Int
-        if (precision < TE.mediumPrecision) {
-            /// let's be generous
-            significantBits = 10 * precision
-        } else {
-            significantBits = Int( Double(precision) * 3.3219 + 1000) /// 1.0 / log2(10) plus 1000 digits
-        }
-        globalGmpSignificantBits = significantBits
-        globalGmpPrecision = precision
+        globalGmpPrecision = precisionInternal
+        globalGmpSignificantBits = Int( Double(precisionInternal) * 3.32192809489) /// log2(10)
     }
     
     init() {
