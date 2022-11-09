@@ -210,7 +210,8 @@ class TE {
     var displayFontSizeCandidate: CGFloat
     var spaceBetweenKeys: CGFloat
     var allkeysHeight: CGFloat
-    var digitsInDisplay: Int
+    var digitsInDisplayWithoutComma: Int
+    var digitsInDisplayWithComma: Int
     var isPad: Bool
     var zeroTrailingPadding: CGFloat
     var displayTopPaddingZoomed: CGFloat
@@ -262,8 +263,17 @@ class TE {
             s.append("0")
             w = s.sizeOf_String(font: f).width
         }
-        digitsInDisplay = s.count - 1
-        print("sizeOf_String method: "+String(s.count-1))
+        digitsInDisplayWithoutComma = s.count - 1
+        print("digitsInDisplayWithoutComma: \(digitsInDisplayWithoutComma)")
+
+        w = 0.0
+        s = ","
+        while w < displayLength {
+            s.append("0")
+            w = s.sizeOf_String(font: f).width
+        }
+        digitsInDisplayWithComma = s.count
+        print("digitsInDisplayWithComma: \(digitsInDisplayWithComma)")
 
         allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenKeys
         zeroTrailingPadding = keySize.width * 1 + digitsKeyFontSize*0.25

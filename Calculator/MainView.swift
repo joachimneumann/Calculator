@@ -52,7 +52,9 @@ struct MainView: View {
             Spacer(minLength: 0.0)
             HStack(spacing: 0.0) {
                 if !isZoomed || !t.isZoomAllowed {
-                    SingleLineDisplay(number: brain.last, fontSize: t.displayFontSizeCandidate, length: t.digitsInDisplay)
+                    SingleLineDisplay(number: brain.last, fontSize: t.displayFontSizeCandidate,
+                                      withoutComma: t.digitsInDisplayWithoutComma,
+                                      withComma: t.digitsInDisplayWithComma)
                         .frame(height: t.displayheight, alignment: .topTrailing)
                         .frame(maxWidth: .infinity, alignment: .topTrailing)
                         //.background(Color.yellow)

@@ -23,20 +23,18 @@ import SwiftUI
 struct SingleLineDisplay: View {
     let color: Color
     let text: String
-    let l: Int
     let fontSize: CGFloat
     let fontGrowthFactor = 1.0
     
-    init(number: Number, fontSize: CGFloat, length: Int) {
+    init(number: Number, fontSize: CGFloat, withoutComma: Int, withComma: Int) {
         self.color = Color.white
         self.fontSize = fontSize
-        let oneLiner = number.oneLiner(length: length)
+        let oneLiner = number.oneLiner(withoutComma: withoutComma, withComma: withComma)
         if let right = oneLiner.right {
             text = oneLiner.left+right
         } else {
             text = oneLiner.left
         }
-        l = length
     }
     
     var body: some View {
@@ -59,7 +57,7 @@ struct MultiLineDisplay: View {
     init(number: Number, fontSize: CGFloat, length: Int) {
         self.color = Color.white
         self.fontSize = fontSize
-        let oneLiner = number.oneLiner(length: length)
+        let oneLiner = number.oneLiner(withoutComma: length, withComma: length)
         if let right = oneLiner.right {
             text = oneLiner.left+right
         } else {
@@ -85,7 +83,7 @@ struct MultiLineDisplay: View {
 struct SingleLineDisplay_Previews: PreviewProvider {
     static var previews: some View {
         
-        SingleLineDisplay(number: Number("123,456789"), fontSize: 47.0925, length: 8)
+        SingleLineDisplay(number: Number("123,456789"), fontSize: 47.0925, withoutComma: 8, withComma: 9)
             .background(Color.green)
     }
 }
