@@ -7,8 +7,30 @@
 
 import SwiftUI
 
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        print("Your code here")
+        return true
+    }
+    var deviceOrientation = UIInterfaceOrientationMask.portrait
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        /// detect mac:
+        /// 1. size of screen 834.0x1194.0
+        /// 2. EdgeInsets all 0
+        let isMac = false
+        if isMac {
+            return UIInterfaceOrientationMask.landscape
+        } else {
+            return UIInterfaceOrientationMask.all
+        }
+    }
+}
+
 @main
 struct CalculatorApp: App {
+    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate // used to disallow Landscape in Mac
     
     var body: some Scene {
         let brain = Brain()

@@ -20,8 +20,6 @@ struct iOSSize: View {
         GeometryReader { geo in
             let isPortrait = geo.size.height > geo.size.width
             // let _ = print("isPortrait \(isPortrait ? "Y" : "N")")
-            let isPad: Bool = (UIDevice.current.userInterfaceIdiom == .pad)
-
             let fraction = isPortrait ? TE.portraitSpacingFraction : TE.landscapeSpacingFraction
             let horizontalFactor: CGFloat = CGFloat(1.0) -
             (leadingPaddingNeeded ? fraction : 0) -
@@ -33,15 +31,12 @@ struct iOSSize: View {
             let appFrame = CGSize(
                 width: geo.size.width * horizontalFactor,
                 height: geo.size.height * verticalFactor)
-            let t = TE(appFrame: appFrame, isPad: isPad, isPortrait: isPortrait)
-            VStack {
-                ZStack {
-                    MainView(brain: brain, t: t)
-                        .padding(.leading,   leadingPaddingNeeded ? geo.size.width * fraction : 0)
-                        .padding(.trailing, trailingPaddingNeeded ? geo.size.width * fraction : 0)
-                        .padding(.bottom,   bottomPaddingNeeded   ? t.spaceBetweenKeys : 0)
-                }
-            }
+            let _ = print("appFrame \(appFrame.width)x\(appFrame.height)")
+            let t = TE(appFrame: appFrame, isPortrait: isPortrait)
+            MainView(brain: brain, t: t)
+                .padding(.leading,   leadingPaddingNeeded ? geo.size.width * fraction : 0)
+                .padding(.trailing, trailingPaddingNeeded ? geo.size.width * fraction : 0)
+                .padding(.bottom,   bottomPaddingNeeded   ? t.spaceBetweenKeys : 0)
         }
         .background(Color.green).opacity(0.8)
     }

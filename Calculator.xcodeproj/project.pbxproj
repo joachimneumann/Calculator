@@ -135,8 +135,8 @@
 			children = (
 				AA2FAC01272F2348006DE4C8 /* Brain.swift */,
 				AA2FABF1272F217F006DE4C8 /* Gmp.swift */,
-				AA2FABFC272F2348006DE4C8 /* Calculator.entitlements */,
 				AA2FABFF272F2348006DE4C8 /* CalculatorApp.swift */,
+				AA2FABFD272F2348006DE4C8 /* TargetEnvironment.swift */,
 				AA2FAC0A272F2348006DE4C8 /* iOSSize.swift */,
 				AA2FAC0B272F2348006DE4C8 /* Key.swift */,
 				AA2FABFE272F2348006DE4C8 /* KeyInputSubjectWrapper.swift */,
@@ -149,7 +149,7 @@
 				AA2FAC03272F2348006DE4C8 /* Precision.swift */,
 				AA2FABF7272F2348006DE4C8 /* ScientificKeys.swift */,
 				AA2FABF9272F2348006DE4C8 /* Symbols.swift */,
-				AA2FABFD272F2348006DE4C8 /* TargetEnvironment.swift */,
+				AA2FABFC272F2348006DE4C8 /* Calculator.entitlements */,
 				AA2FABF4272F22AC006DE4C8 /* bridge.h */,
 				AA2FABF6272F22AC006DE4C8 /* gmp.h */,
 				AA2FABF3272F22AC006DE4C8 /* mpf2mpfr.h */,

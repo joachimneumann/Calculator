@@ -61,8 +61,8 @@ class TE {
     var isZoomAllowed: Bool {
         return isPad || !isPortrait
     }
-    init(appFrame: CGSize, isPad: Bool, isPortrait: Bool) {
-        self.isPad = isPad
+    init(appFrame: CGSize, isPortrait: Bool) {
+        self.isPad = (UIDevice.current.userInterfaceIdiom == .pad)
         self.isPortrait = isPortrait
         let keySize: CGSize
         let keyWidth: CGFloat
