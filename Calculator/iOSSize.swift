@@ -19,7 +19,7 @@ struct iOSSize: View {
     var body: some View {
         GeometryReader { geo in
             let isPortrait = geo.size.height > geo.size.width
-            let _ = print("isPortrait \(isPortrait ? "Y" : "N")")
+            // let _ = print("isPortrait \(isPortrait ? "Y" : "N")")
             let isPad: Bool = (UIDevice.current.userInterfaceIdiom == .pad)
 
             let fraction = isPortrait ? TE.portraitSpacingFraction : TE.landscapeSpacingFraction

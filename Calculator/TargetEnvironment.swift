@@ -96,14 +96,14 @@ class TE {
         if isPad || !isPortrait {
             displayLength -= iconSize * (1.0 + TE.iconLeadingPadding)
         }
-        print("iconSize = \(iconSize)")
-        print("displayLength = \(displayLength)")
+//        print("iconSize = \(iconSize)")
+//        print("displayLength = \(displayLength)")
         while w < displayLength {
             s.append("0")
             w = s.sizeOf_String(uiFont: displayUIFont).width
         }
         digitsInDisplayWithoutComma = s.count - 1
-        print("digitsInDisplayWithoutComma: \(digitsInDisplayWithoutComma)")
+        //print("digitsInDisplayWithoutComma: \(digitsInDisplayWithoutComma)")
 
         w = 0.0
         s = ","
@@ -112,7 +112,7 @@ class TE {
             w = s.sizeOf_String(uiFont: displayUIFont).width
         }
         digitsInDisplayWithComma = s.count - 1
-        print("digitsInDisplayWithComma: \(digitsInDisplayWithComma)")
+        // print("digitsInDisplayWithComma: \(digitsInDisplayWithComma)")
 
         allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenKeys
         zeroTrailingPadding = keySize.width * 1 + digitsKeyFontSize*0.25

@@ -25,7 +25,6 @@
 		AA2FAC19272F2349006DE4C8 /* Precision.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC03272F2348006DE4C8 /* Precision.swift */; };
 		AA2FAC1A272F2349006DE4C8 /* CalculatorCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC04272F2348006DE4C8 /* CalculatorCommands.swift */; };
 		AA2FAC1C272F2349006DE4C8 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC06272F2348006DE4C8 /* MainView.swift */; };
-		AA2FAC1E272F2349006DE4C8 /* CalculatorAppiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC08272F2348006DE4C8 /* CalculatorAppiOS.swift */; };
 		AA2FAC20272F2349006DE4C8 /* iOSSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0A272F2348006DE4C8 /* iOSSize.swift */; };
 		AA2FAC21272F2349006DE4C8 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0B272F2348006DE4C8 /* Key.swift */; };
 		AA2FAC22272F2349006DE4C8 /* NumberKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0C272F2349006DE4C8 /* NumberKeys.swift */; };
@@ -84,7 +83,6 @@
 		AA2FAC03272F2348006DE4C8 /* Precision.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Precision.swift; sourceTree = "<group>"; };
 		AA2FAC04272F2348006DE4C8 /* CalculatorCommands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorCommands.swift; sourceTree = "<group>"; };
 		AA2FAC06272F2348006DE4C8 /* MainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		AA2FAC08272F2348006DE4C8 /* CalculatorAppiOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorAppiOS.swift; sourceTree = "<group>"; };
 		AA2FAC0A272F2348006DE4C8 /* iOSSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOSSize.swift; sourceTree = "<group>"; };
 		AA2FAC0B272F2348006DE4C8 /* Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		AA2FAC0C272F2349006DE4C8 /* NumberKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberKeys.swift; sourceTree = "<group>"; };
@@ -139,7 +137,6 @@
 				AA2FABF1272F217F006DE4C8 /* Gmp.swift */,
 				AA2FABFC272F2348006DE4C8 /* Calculator.entitlements */,
 				AA2FABFF272F2348006DE4C8 /* CalculatorApp.swift */,
-				AA2FAC08272F2348006DE4C8 /* CalculatorAppiOS.swift */,
 				AA2FAC0A272F2348006DE4C8 /* iOSSize.swift */,
 				AA2FAC0B272F2348006DE4C8 /* Key.swift */,
 				AA2FABFE272F2348006DE4C8 /* KeyInputSubjectWrapper.swift */,
@@ -307,7 +304,6 @@
 				AA2FAC1C272F2349006DE4C8 /* MainView.swift in Sources */,
 				AA2FAC23272F2349006DE4C8 /* OperatorStack.swift in Sources */,
 				AA2FAC22272F2349006DE4C8 /* NumberKeys.swift in Sources */,
-				AA2FAC1E272F2349006DE4C8 /* CalculatorAppiOS.swift in Sources */,
 				AA2FAC15272F2349006DE4C8 /* CalculatorApp.swift in Sources */,
 				AA2FAC13272F2349006DE4C8 /* TargetEnvironment.swift in Sources */,
 				AA2FAC1A272F2349006DE4C8 /* CalculatorCommands.swift in Sources */,
