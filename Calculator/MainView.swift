@@ -77,7 +77,7 @@ struct MainView: View {
                                     isZoomed.toggle()
                                 }
                             }
-                            .padding(.top, t.iconSize*0.1)
+                            .padding(.top, t.iconSize*0.2)
                         if isZoomed && t.isZoomAllowed  {
                             Image(systemName: "switch.2")
                                 .resizable()
@@ -90,10 +90,13 @@ struct MainView: View {
                                     withAnimation() {
                                     }
                                 }
+                                .padding(.top, t.iconSize*0.2)
                         }
                         Spacer(minLength: 0.0)
                     }
-                    .frame(height: t.displayheight + (isZoomed && t.isZoomAllowed ? t.allkeysHeight : 0.0), alignment: .topTrailing)
+                    .padding(.top, t.iconSize*0.2)
+                    .padding(.leading, t.iconSize * TE.iconLeadingPadding)
+//                    .frame(height: t.displayheight + (isZoomed && t.isZoomAllowed ? t.allkeysHeight : 0.0), alignment: .topTrailing)
                 }
             }
             if !isZoomed || !t.isZoomAllowed {

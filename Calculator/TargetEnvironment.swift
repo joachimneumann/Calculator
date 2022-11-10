@@ -42,7 +42,8 @@ class TE {
     static let zoomIconSize: CGFloat = 30.0
     static let landscapeSpacingFraction: CGFloat = 0.01
     static let portraitSpacingFraction: CGFloat = 0.03
-
+    static let iconLeadingPadding: CGFloat = 0.2
+    
     var displayUIFont: UIFont
     var spaceBetweenKeys: CGFloat
     var allkeysHeight: CGFloat
@@ -93,7 +94,7 @@ class TE {
         var s = ""
         var displayLength = appFrame.width
         if isPad || !isPortrait {
-            displayLength -= iconSize
+            displayLength -= iconSize * (1.0 + TE.iconLeadingPadding)
         }
         print("iconSize = \(iconSize)")
         print("displayLength = \(displayLength)")
