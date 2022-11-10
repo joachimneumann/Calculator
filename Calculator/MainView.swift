@@ -52,20 +52,23 @@ struct MainView: View {
             Spacer(minLength: 0.0)
             HStack(spacing: 0.0) {
                 if !isZoomed || !t.isZoomAllowed {
-                    SingleLineDisplay(number: brain.last, fontSize: t.displayFontSizeCandidate,
+                    SingleLineDisplay(number: brain.last, fontSize: t.displayFontSize,
                                       withoutComma: t.digitsInDisplayWithoutComma,
                                       withComma: t.digitsInDisplayWithComma)
                         .frame(height: t.displayheight, alignment: .topTrailing)
                         .frame(maxWidth: .infinity, alignment: .topTrailing)
-                        //.background(Color.yellow)
+                        .background(Color.yellow).opacity(0.4)
                 } else {
-                    MultiLineDisplay(number: brain.last, fontSize: t.displayFontSizeCandidate, length: brain.precision)
+                    MultiLineDisplay(number: brain.last, fontSize: t.displayFontSize, length: brain.precision)
                         .frame(height: t.displayheight + t.allkeysHeight)
-                        //.background(Color.yellow)
+                        .background(Color.yellow).opacity(0.4)
                 }
                 if t.isPad || !t.isPortrait {
                     VStack(spacing: 0.0) {
                         Image(systemName: "plus.circle.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: t.iconSize, height: t.iconSize)
                             .font(.system(size: t.iconSize, weight: .thin))
                             .foregroundColor(t.digits_1_9.textColor)
                             .rotationEffect(isZoomed && t.isZoomAllowed  ? .degrees(-45.0) : .degrees(0.0))
@@ -77,6 +80,9 @@ struct MainView: View {
                             .padding(.top, t.iconSize*0.1)
                         if isZoomed && t.isZoomAllowed  {
                             Image(systemName: "switch.2")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: t.iconSize, height: t.iconSize)
                                 .font(.system(size: t.iconSize*0.75, weight: .thin))
                                 .padding(.top, t.iconSize*0.25)
                                 .foregroundColor(t.digits_1_9.textColor)

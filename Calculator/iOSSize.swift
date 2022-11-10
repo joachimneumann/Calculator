@@ -29,6 +29,7 @@ struct iOSSize: View {
             let verticalFactor: CGFloat = CGFloat(1.0) -
             (bottomPaddingNeeded ? TE.landscapeSpacingFraction : 0.0)
             
+            let _ = print("geometry.safeAreaInsets \(geo.safeAreaInsets)")
             let appFrame = CGSize(
                 width: geo.size.width * horizontalFactor,
                 height: geo.size.height * verticalFactor)
@@ -42,6 +43,7 @@ struct iOSSize: View {
                 }
             }
         }
+        .background(Color.green).opacity(0.8)
     }
 }
 

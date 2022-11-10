@@ -207,7 +207,7 @@ class TE {
     static let landscapeSpacingFraction: CGFloat = 0.01
     static let portraitSpacingFraction: CGFloat = 0.03
 
-    var displayFontSizeCandidate: CGFloat
+    var displayFontSize: CGFloat
     var spaceBetweenKeys: CGFloat
     var allkeysHeight: CGFloat
     var digitsInDisplayWithoutComma: Int
@@ -249,16 +249,18 @@ class TE {
         
         let scientificKeyFontSize = keySize.height * 0.35
         let digitsKeyFontSize     = keySize.height * 0.5
-        displayFontSizeCandidate = keySize.height * 0.79
+        displayFontSize           = keySize.height * 0.79
         iconSize = keySize.height * 0.7
 
         var w = 0.0
         var s = ""
-        let f = UIFont.monospacedSystemFont(ofSize: displayFontSizeCandidate, weight: .thin)
+        let f = UIFont.monospacedSystemFont(ofSize: displayFontSize, weight: .thin)
         var displayLength = appFrame.width
         if isPad || !isPortrait {
             displayLength -= iconSize
         }
+        print("iconSize = \(iconSize)")
+        print("displayLength = \(displayLength)")
         while w < displayLength {
             s.append("0")
             w = s.sizeOf_String(font: f).width

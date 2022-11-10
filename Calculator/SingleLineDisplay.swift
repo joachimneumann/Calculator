@@ -38,11 +38,14 @@ struct SingleLineDisplay: View {
     }
     
     var body: some View {
-        // TODO: use growthfactor and minimumScaleFactor only if the length of the single ine is less than the max length
-            Text(text)
-                .font(Font.system(size: fontSize*fontGrowthFactor, weight: .thin).monospacedDigit())
-                .minimumScaleFactor(1.0/fontGrowthFactor)
-                .foregroundColor(color)
+        GeometryReader { geo in
+            let _ = print("singleLine width = \(geo.size.width)")
+            // TODO: use growthfactor and minimumScaleFactor only if the length of the single ine is less than the max length
+                Text(text)
+                    .font(Font.system(size: fontSize*fontGrowthFactor, weight: .thin).monospacedDigit())
+                    .minimumScaleFactor(1.0/fontGrowthFactor)
+                    .foregroundColor(color)
+        }
     }
 
 }
@@ -67,14 +70,17 @@ struct MultiLineDisplay: View {
     }
     
     var body: some View {
-        ScrollView {
-            Text(text)
-                .font(Font.system(size: fontSize, weight: .thin).monospacedDigit())
-                .minimumScaleFactor(1.0)
-                .foregroundColor(color)
+        GeometryReader { geo in
+            let _ = print("multiLine width = \(geo.size.width)")
+            ScrollView {
+                Text(text)
+                    .font(Font.system(size: fontSize, weight: .thin).monospacedDigit())
+                    .minimumScaleFactor(1.0)
+                    .foregroundColor(color)
                 //.background(Color.yellow)
-                .lineLimit(100)
-                .frame(maxWidth: .infinity, alignment: .trailing)
+                    .lineLimit(100)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+            }
         }
     }
 

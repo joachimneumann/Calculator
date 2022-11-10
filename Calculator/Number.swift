@@ -164,8 +164,8 @@ class Number: CustomDebugStringConvertible {
         }
         
         var exponent: mpfr_exp_t = 0
-        var charArray: Array<CChar> = Array(repeating: 0, count: withComma+5)
-        mpfr_get_str(&charArray, &exponent, 10, withComma+5, &oneLinerGmp.mpfr, MPFR_RNDN)
+        var charArray: Array<CChar> = Array(repeating: 0, count: withComma)
+        mpfr_get_str(&charArray, &exponent, 10, withComma, &oneLinerGmp.mpfr, MPFR_RNDN)
 
         var mantissa: String = ""
         for c in charArray {
