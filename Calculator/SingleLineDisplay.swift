@@ -38,16 +38,13 @@ struct SingleLineDisplay: View {
     }
     
     var body: some View {
-        GeometryReader { geo in
-            let _ = print("singleLine width = \(geo.size.width)")
-            // TODO: use growthfactor and minimumScaleFactor only if the length of the single ine is less than the max length
-                Text(text)
-                    .font(Font(uiFont))
-                    .minimumScaleFactor(1.0/fontGrowthFactor)
-                    .foregroundColor(color)
-        }
+        // TODO: use growthfactor and minimumScaleFactor only if the length of the single ine is less than the max length
+        Text(text)
+            .font(Font(uiFont))
+            .minimumScaleFactor(1.0/fontGrowthFactor)
+            .foregroundColor(color)
     }
-
+    
 }
 
 struct MultiLineDisplay: View {
@@ -68,20 +65,16 @@ struct MultiLineDisplay: View {
     }
     
     var body: some View {
-        GeometryReader { geo in
-            let _ = print("multiLine width = \(geo.size.width)")
-            ScrollView {
-                Text(text)
-                    .font(Font(uiFont))
-                    .minimumScaleFactor(1.0)
-                    .foregroundColor(color)
-                //.background(Color.yellow)
-                    .lineLimit(100)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-            }
+        ScrollView {
+            Text(text)
+                .font(Font(uiFont))
+                .minimumScaleFactor(1.0)
+                .foregroundColor(color)
+            //.background(Color.yellow)
+                .lineLimit(100)
+                .frame(maxWidth: .infinity, alignment: .trailing)
         }
     }
-
 }
 
 struct SingleLineDisplay_Previews: PreviewProvider {
