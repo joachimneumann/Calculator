@@ -23,18 +23,18 @@ import SwiftUI
 struct SingleLineDisplay: View {
     let color: Color
     let text: String
-    let fontSize: CGFloat
+    let uiFont: UIFont
     let fontGrowthFactor = 1.0
     
-    init(number: Number, fontSize: CGFloat, withoutComma: Int, withComma: Int) {
+    init(number: Number, uiFont: UIFont, withoutComma: Int, withComma: Int) {
         self.color = Color.white
-        self.fontSize = fontSize
         let oneLiner = number.oneLiner(withoutComma: withoutComma, withComma: withComma)
         if let right = oneLiner.right {
             text = oneLiner.left+right
         } else {
             text = oneLiner.left
         }
+        self.uiFont = uiFont
     }
     
     var body: some View {
@@ -42,7 +42,7 @@ struct SingleLineDisplay: View {
             let _ = print("singleLine width = \(geo.size.width)")
             // TODO: use growthfactor and minimumScaleFactor only if the length of the single ine is less than the max length
                 Text(text)
-                    .font(Font.system(size: fontSize*fontGrowthFactor, weight: .thin).monospacedDigit())
+                    .font(Font(uiFont))
                     .minimumScaleFactor(1.0/fontGrowthFactor)
                     .foregroundColor(color)
         }
@@ -53,20 +53,18 @@ struct SingleLineDisplay: View {
 struct MultiLineDisplay: View {
     let color: Color
     let text: String
-    let l: Int
-    let fontSize: CGFloat
+    let uiFont: UIFont
     let fontGrowthFactor = 1.0
     
-    init(number: Number, fontSize: CGFloat, length: Int) {
+    init(number: Number, uiFont: UIFont, length: Int) {
         self.color = Color.white
-        self.fontSize = fontSize
         let oneLiner = number.oneLiner(withoutComma: length, withComma: length)
         if let right = oneLiner.right {
             text = oneLiner.left+right
         } else {
             text = oneLiner.left
         }
-        l = length
+        self.uiFont = uiFont
     }
     
     var body: some View {
@@ -74,7 +72,7 @@ struct MultiLineDisplay: View {
             let _ = print("multiLine width = \(geo.size.width)")
             ScrollView {
                 Text(text)
-                    .font(Font.system(size: fontSize, weight: .thin).monospacedDigit())
+                    .font(Font(uiFont))
                     .minimumScaleFactor(1.0)
                     .foregroundColor(color)
                 //.background(Color.yellow)
@@ -89,7 +87,7 @@ struct MultiLineDisplay: View {
 struct SingleLineDisplay_Previews: PreviewProvider {
     static var previews: some View {
         
-        SingleLineDisplay(number: Number("123,456789"), fontSize: 47.0925, withoutComma: 8, withComma: 9)
+        SingleLineDisplay(number: Number("123,456789"), uiFont: UIFont.monospacedDigitSystemFont(ofSize: 46, weight: .light), withoutComma: 8, withComma: 9)
             .background(Color.green)
     }
 }

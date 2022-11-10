@@ -30,170 +30,6 @@ class TE {
     static let highPrecisionString   = "one million digits"
 
 
-#if targetEnvironment(macCatalyst)
-    /// The MacOS Calculator is a bit transparent.
-    /// The colors specified here are the button colors
-    /// when the MacOS Calcuator is on a black background.
-    /// To make this app easily  distinguashable from the
-    /// Apple MacOS Calculator, the 5 rightmost buttons
-    /// have a blue tint instead of Apple's orange.
-    static let appBackgroundColor = Color(
-        red:    46.0/255.0,
-        green:  39.0/255.0,
-        blue:   38.0/255.0)
-
-    let digits_1_9 = KeyProperties(
-        size: CGSize(width: TE.kw,  height: TE.kh),
-        font: Font.system(size: TE.kh * 0.45).monospacedDigit(),
-        textColor: Color(
-            red:   231.0/255.0,
-            green: 231.0/255.0,
-            blue:  231.0/255.0),
-        disabledColor: Color(
-            red:   231.0/255.0,
-            green: 231.0/255.0,
-            blue:  231.0/255.0),
-        bgColor: Color(
-            red:   98.0/255.0,
-            green: 94.0/255.0,
-            blue:  92.0/255.0),
-        downBgColor: Color(
-            red:   160.0/255.0,
-            green: 159.0/255.0,
-            blue:  158.0/255.0),
-        downAnimationTime: 0.1,
-        upAnimationTime: 0.5)
-    
-    let digits_0 = KeyProperties(
-        size: CGSize(width: 2.0 * TE.kw + TE.sp,  height: TE.kh),
-        font: Font.system(size: TE.kh * 0.45).monospacedDigit(),
-        textColor: Color(
-            red:   231.0/255.0,
-            green: 231.0/255.0,
-            blue:  231.0/255.0),
-        disabledColor: Color(
-            red:   231.0/255.0,
-            green: 231.0/255.0,
-            blue:  231.0/255.0),
-        bgColor: Color(
-            red:   98.0/255.0,
-            green: 94.0/255.0,
-            blue:  92.0/255.0),
-        downBgColor: Color(
-            red:   160.0/255.0,
-            green: 159.0/255.0,
-            blue:  158.0/255.0),
-        downAnimationTime: 0.1,
-        upAnimationTime: 0.5)
-
-
-    let colorOpProperties = KeyProperties(
-        size: CGSize(width: TE.wkw,  height: TE.kh),
-        font: Font.system(size: TE.kh * 0.36, weight: .bold).monospacedDigit(),
-        textColor: Color(
-            red:   236.0/255.0,
-            green: 235.0/255.0,
-            blue:  235.0/255.0),
-        disabledColor: Color(
-            red:   236.0/255.0,
-            green: 235.0/255.0,
-            blue:  235.0/255.0),
-        bgColor: Color(
-            red:   105.0/255.0,
-            green: 183.0/255.0,
-            blue:  191.0/255.0),
-        downBgColor: Color(
-            red:   203.0/255.0,
-            green: 230.0/255.0,
-            blue:  232.0/255.0),
-        downAnimationTime: 0.1,
-        upAnimationTime: 0.3)
-
-    let ac_plus_minus_percentProperties = KeyProperties(
-        size: CGSize(width: TE.kw,  height: TE.kh),
-        font: Font.system(size: TE.kh * 0.36).monospacedDigit(),
-        textColor: Color(
-            red:   236.0/255.0,
-            green: 235.0/255.0,
-            blue:  235.0/255.0),
-        disabledColor: Color(
-            red:   236.0/255.0,
-            green: 235.0/255.0,
-            blue:  235.0/255.0),
-        bgColor: Color(
-            red:    66.0/255.0,
-            green:  62.0/255.0,
-            blue:   59.0/255.0),
-        downBgColor: Color(
-            red:   124.0/255.0,
-            green: 125.0/255.0,
-            blue:  127.0/255.0),
-        downAnimationTime: 0.1,
-        upAnimationTime: 0.5)
-
-    let scientificProperties = KeyProperties(
-        size: CGSize(width: TE.kw,  height: TE.kh),
-        font: Font.system(size: TE.kh * 0.38).monospacedDigit(),
-        textColor: Color(
-            red:   236.0/255.0,
-            green: 235.0/255.0,
-            blue:  235.0/255.0),
-        disabledColor: Color(
-            red:   236.0/255.0,
-            green: 235.0/255.0,
-            blue:  235.0/255.0),
-        bgColor: Color(
-            red:    66.0/255.0,
-            green:  62.0/255.0,
-            blue:   59.0/255.0),
-        downBgColor: Color(
-            red:   124.0/255.0,
-            green: 125.0/255.0,
-            blue:  127.0/255.0),
-        downAnimationTime: 0.0,
-        upAnimationTime: 0.0)
-
-    /// I have selected "Optimize Interface for Mac" in target settings, general, which is 0.77 times smaller
-    static private let kh: CGFloat  = 63.00 * 0.77 /// key height
-    static private let kw: CGFloat  = 72.75 * 0.77 /// key width
-    static private let wkw: CGFloat = 77.00 * 0.77 /// wider with for +-*/= keys
-    static private let sp: CGFloat  = 1.0          /// space between keys
-
-    static private let zoomIconSize: CGFloat = 30.0 * 0.77
-    static let macWindowWidth: CGFloat = 9.0 * TE.kw + TE.wkw + 9.0 * TE.sp
-    static let macWindowHeight: CGFloat = 419.5 * 0.77
-
-    static private let numberPadWidth = 5.0 * TE.kw + 4.0 * TE.sp
-    
-    let displayFontSize: CGFloat = TE.numberPadWidth * 0.148
-    let scientificKeyFontSize = TE.kh * 0.36
-    let digitsInDisplay: Int = 16
-    let isLandscape: Bool = true
-    let spaceBetweenKeys: CGFloat = TE.sp
-    let widerKeySize: CGSize  = CGSize(width: TE.wkw, height: TE.kh)
-    let scientificKeySize: CGSize   = CGSize(width: TE.kw,  height: TE.kh)
-    let allkeysHeight: CGFloat = 5.0 * TE.kh + 4.0 * TE.sp
-    let isPad: Bool = false
-    let zeroTrailingPadding: CGFloat = TE.kw * 3
-    let zoomTopPadding: CGFloat = 0.0
-    let displayTopPaddingZoomed: CGFloat = 0.0
-    let displayTopPaddingNotZoomed: CGFloat = 0.0
-    let displayHeight: CGFloat = 0.0
-    let iconSize: CGFloat = TE.kh * 0.7
-    var circularProgressViewScaleFactor: CGFloat = 0.77
-    let isIPad = false
-    let isPortrait = false
-    struct ButtonShape: View {
-        var body: some View {
-            Rectangle()
-        }
-    }
-
-#else
-    ///
-    /// iOS
-    ///
-    
 //    static let appBackgroundColor = Color(.brown).opacity(0.7)
     static let appBackgroundColor = Color(.brown)
 
@@ -207,7 +43,7 @@ class TE {
     static let landscapeSpacingFraction: CGFloat = 0.01
     static let portraitSpacingFraction: CGFloat = 0.03
 
-    var displayFontSize: CGFloat
+    var displayUIFont: UIFont
     var spaceBetweenKeys: CGFloat
     var allkeysHeight: CGFloat
     var digitsInDisplayWithoutComma: Int
@@ -249,12 +85,12 @@ class TE {
         
         let scientificKeyFontSize = keySize.height * 0.35
         let digitsKeyFontSize     = keySize.height * 0.5
-        displayFontSize           = keySize.height * 0.79
+        let displayFontSize           = keySize.height * 0.79
+        displayUIFont = UIFont.monospacedDigitSystemFont(ofSize: displayFontSize, weight: .thin)
         iconSize = keySize.height * 0.7
 
         var w = 0.0
         var s = ""
-        let f = UIFont.monospacedSystemFont(ofSize: displayFontSize, weight: .thin)
         var displayLength = appFrame.width
         if isPad || !isPortrait {
             displayLength -= iconSize
@@ -263,7 +99,7 @@ class TE {
         print("displayLength = \(displayLength)")
         while w < displayLength {
             s.append("0")
-            w = s.sizeOf_String(font: f).width
+            w = s.sizeOf_String(uiFont: displayUIFont).width
         }
         digitsInDisplayWithoutComma = s.count - 1
         print("digitsInDisplayWithoutComma: \(digitsInDisplayWithoutComma)")
@@ -272,9 +108,9 @@ class TE {
         s = ","
         while w < displayLength {
             s.append("0")
-            w = s.sizeOf_String(font: f).width
+            w = s.sizeOf_String(uiFont: displayUIFont).width
         }
-        digitsInDisplayWithComma = s.count
+        digitsInDisplayWithComma = s.count - 1
         print("digitsInDisplayWithComma: \(digitsInDisplayWithComma)")
 
         allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenKeys
@@ -413,15 +249,13 @@ class TE {
             Capsule()
         }
     }
-
-#endif
-        
 }
 
 extension String {
-    func sizeOf_String( font: UIFont) -> CGSize {
-        let fontAttribute = [NSAttributedString.Key.font: font]
+    func sizeOf_String(uiFont: UIFont) -> CGSize {
+        let fontAttribute = [NSAttributedString.Key.font: uiFont]
         let size = self.size(withAttributes: fontAttribute)  // for Single Line
        return size;
     }
 }
+
