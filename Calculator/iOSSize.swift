@@ -19,7 +19,6 @@ struct iOSSize: View {
     var body: some View {
         GeometryReader { geo in
             let isPortrait = geo.size.height > geo.size.width
-            // let _ = print("isPortrait \(isPortrait ? "Y" : "N")")
             let fraction = isPortrait ? TE.portraitSpacingFraction : TE.landscapeSpacingFraction
             let horizontalFactor: CGFloat = CGFloat(1.0) -
             (leadingPaddingNeeded ? fraction : 0) -
@@ -32,7 +31,7 @@ struct iOSSize: View {
                 width: geo.size.width * horizontalFactor,
                 height: geo.size.height * verticalFactor)
             let _ = print("appFrame \(appFrame.width)x\(appFrame.height)")
-            let t = TE(appFrame: appFrame, isPortrait: isPortrait)
+            let t = TE(appFrame: appFrame)
             MainView(brain: brain, t: t)
                 .padding(.leading,   leadingPaddingNeeded ? geo.size.width * fraction : 0)
                 .padding(.trailing, trailingPaddingNeeded ? geo.size.width * fraction : 0)

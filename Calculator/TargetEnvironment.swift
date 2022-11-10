@@ -61,9 +61,9 @@ class TE {
     var isZoomAllowed: Bool {
         return isPad || !isPortrait
     }
-    init(appFrame: CGSize, isPortrait: Bool) {
+    init(appFrame: CGSize) {
         self.isPad = (UIDevice.current.userInterfaceIdiom == .pad)
-        self.isPortrait = isPortrait
+        self.isPortrait = appFrame.height > appFrame.width
         let keySize: CGSize
         let keyWidth: CGFloat
         if !isPad && isPortrait {
@@ -79,9 +79,17 @@ class TE {
         if isPortrait {
             keySize = CGSize(width: keyWidth, height: keyWidth)
         } else {
-            let squareKeysHeight = 5.0 * keyWidth + 4.0 * spaceBetweenKeys
-            let factor:CGFloat = min(1.0, appFrame.height * 0.8 / squareKeysHeight)
-            keySize = CGSize(width: keyWidth, height: keyWidth * factor)
+            /// landscape
+            if isPad {
+                let allKeys = appFrame.height * 0.5
+                let smallerKeyHeight = (allKeys - 4.0 * spaceBetweenKeys) / 5.0
+                keySize = CGSize(width: keyWidth, height: smallerKeyHeight)
+            } else {
+                /// iPhone
+                let squareKeysHeight = 5.0 * keyWidth + 4.0 * spaceBetweenKeys
+                let factor:CGFloat = min(1.0, appFrame.height * 0.8 / squareKeysHeight)
+                keySize = CGSize(width: keyWidth, height: keyWidth * factor)
+            }
         }
         
         let scientificKeyFontSize = keySize.height * 0.35

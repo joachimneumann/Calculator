@@ -5,6 +5,13 @@
 //  Created by Joachim Neumann on 24/09/2021.
 //
 
+/*
+ iPhone portrait: no "+", only Single Line Display
+ iPhone landscape: "+" and Single Line Display above keyboard. Expand: keyboard disappears
+ iPad portrait:    "+" and Single Line Display above keyboard. Expand: above keyboard
+ iPad landscape:   "+" and Single Line Display above keyboard. keyboard less high (50% of screen). Expand: above keyboard
+ Mac: change window size?
+ */
 import SwiftUI
 
 struct MainView: View {
@@ -94,9 +101,9 @@ struct MainView: View {
                         }
                         Spacer(minLength: 0.0)
                     }
-                    .padding(.top, t.iconSize*0.2)
-                    .padding(.leading, t.iconSize * TE.iconLeadingPadding)
-//                    .frame(height: t.displayheight + (isZoomed && t.isZoomAllowed ? t.allkeysHeight : 0.0), alignment: .topTrailing)
+//                    .padding(.top, t.iconSize*0.2)
+//                    .padding(.leading, t.iconSize * TE.iconLeadingPadding)
+////                    .frame(height: t.displayheight + (isZoomed && t.isZoomAllowed ? t.allkeysHeight : 0.0), alignment: .topTrailing)
                 }
             }
             if !isZoomed || !t.isZoomAllowed {
