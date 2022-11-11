@@ -86,9 +86,8 @@ class TE {
                 keySize = CGSize(width: keyWidth, height: smallerKeyHeight)
             } else {
                 /// iPhone
-                let squareKeysHeight = 5.0 * keyWidth + 4.0 * spaceBetweenKeys
-                let factor:CGFloat = min(1.0, appFrame.height * 0.8 / squareKeysHeight)
-                keySize = CGSize(width: keyWidth, height: keyWidth * factor)
+                let keyHeight = (appFrame.height - 4.0 * spaceBetweenKeys) / 6 /// 5 keys and display, which is also keyHeight
+                keySize = CGSize(width: keyWidth, height: keyHeight)
             }
         }
         
@@ -152,7 +151,10 @@ class TE {
                 zoomTopPadding = 0.5 * (keySize.height + spaceBetweenKeys - iconSize) + spaceBetweenKeys * 0.5
             }
         }
-
+        
+        /// TODO: should I use displayTopPaddingZoomed or not?
+        displayTopPaddingZoomed = 0.0
+        
         digits_1_9 = KeyProperties(
             size: keySize,
             font: Font.system(size: digitsKeyFontSize).monospacedDigit(),

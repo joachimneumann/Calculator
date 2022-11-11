@@ -17,7 +17,7 @@ struct PlusIcon: View {
         size = t.iconSize
         color = t.digits_1_9.textColor
         self._isZoomed = isZoomed
-        self.topPadding = t.iconSize*0.4
+        self.topPadding = t.iconSize*0.2
     }
     
     var body: some View {
