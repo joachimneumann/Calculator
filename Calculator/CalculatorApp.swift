@@ -56,7 +56,8 @@ struct CalculatorApp: App {
                                height: expandedDeviceSize,
                                alignment: .center)
                             .foregroundColor(TE.appBackgroundColor)
-                            .ignoresSafeArea())
+//                            .ignoresSafeArea()
+                    )
                 
             }
         }

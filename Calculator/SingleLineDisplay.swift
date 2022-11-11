@@ -41,13 +41,15 @@ struct SingleLineDisplay: View {
     
     var body: some View {
         // TODO: use growthfactor and minimumScaleFactor only if the length of the single ine is less than the max length
-        Text(text)
-            .font(Font(uiFont))
-            .minimumScaleFactor(1.0/fontGrowthFactor)
-            .foregroundColor(color)
-            .frame(height: height, alignment: .topTrailing)
-            .frame(maxWidth: .infinity, alignment: .topTrailing)
-            .background(Color.yellow).opacity(0.4)
+        HStack(spacing: 0.0) {
+            Spacer(minLength: 0.0)
+            Text(text)
+                .font(Font(uiFont))
+                .minimumScaleFactor(1.0/fontGrowthFactor)
+                .foregroundColor(color)
+                .frame(height: height, alignment: .topTrailing)
+                .background(Color.yellow).opacity(0.4)
+        }
     }
     
 }
@@ -76,11 +78,10 @@ struct MultiLineDisplay: View {
                 .font(Font(uiFont))
                 .minimumScaleFactor(1.0)
                 .foregroundColor(color)
-            //.background(Color.yellow)
                 .lineLimit(100)
-                .frame(maxWidth: .infinity, alignment: .trailing)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                .background(Color.yellow.opacity(0.4))
                 .frame(height: height)
-                .background(Color.yellow).opacity(0.4)
         }
     }
 }
