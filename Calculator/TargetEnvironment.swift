@@ -43,8 +43,6 @@ class TE {
     let parenthesisProperties: KeyProperties
     static var digitsInOneLine: Int = 0
     static let zoomIconSize: CGFloat = 30.0
-    static let landscapeSpacingFraction: CGFloat = 0.01
-    static let portraitSpacingFraction: CGFloat = 0.04
     static let iconLeadingPadding: CGFloat = 0.2
     
     var displayUIFont: UIFont
@@ -54,10 +52,11 @@ class TE {
     var withComma: Int
     var isPad: Bool
     var zeroTrailingPadding: CGFloat
-    var displayTopPaddingZoomed: CGFloat
-    var displayTopPaddingNotZoomed: CGFloat
+//    var displayTopPaddingZoomed: CGFloat
+//    var displayTopPaddingNotZoomed: CGFloat
     var displayHeight: CGFloat
-    var zoomTopPadding: CGFloat
+    var zoomTopPaddingZoomed: CGFloat
+    var zoomTopPaddingNotZoomed: CGFloat
     var iconSize: CGFloat
     var circularProgressViewScaleFactor: CGFloat
     var isPortrait: Bool
@@ -71,11 +70,11 @@ class TE {
         let keyWidth: CGFloat
         if !isPad && isPortrait {
             /// portrait iPhone
-            spaceBetweenKeys = appFrame.width * Self.portraitSpacingFraction
+            spaceBetweenKeys = appFrame.width * 0.04
             keyWidth = (appFrame.width - 3.0 * spaceBetweenKeys) * 0.25
         } else {
             /// all other cases
-            spaceBetweenKeys = appFrame.width * Self.landscapeSpacingFraction
+            spaceBetweenKeys = appFrame.width * 0.01
             keyWidth = (appFrame.width - 9.0 * spaceBetweenKeys) * 0.1
         }
 
@@ -130,33 +129,19 @@ class TE {
         
         if isPad {
             circularProgressViewScaleFactor = 2.0
-            if isPortrait {
-                /// iPad portrait
-                displayTopPaddingNotZoomed = appFrame.height - allkeysHeight - keySize.height - spaceBetweenKeys
-                displayTopPaddingZoomed = displayTopPaddingNotZoomed
-                zoomTopPadding = displayTopPaddingNotZoomed + spaceBetweenKeys * 0.5
-            } else {
-                /// iPad landscape
-                zoomTopPadding = spaceBetweenKeys * 0.5
-                displayTopPaddingNotZoomed = appFrame.height - allkeysHeight - keySize.height - spaceBetweenKeys
-                displayTopPaddingZoomed = 0.0
-            }
+            zoomTopPaddingNotZoomed = appFrame.height - allkeysHeight - displayHeight + displayHeight * 0.15
+            zoomTopPaddingZoomed = displayHeight * 0.15
         } else {
             /// iPhone
             circularProgressViewScaleFactor = 0.77
-            displayTopPaddingNotZoomed = appFrame.height - allkeysHeight - keySize.height - spaceBetweenKeys
-            displayTopPaddingZoomed = displayTopPaddingNotZoomed
-            if isPortrait {
-                /// iPhone portrait
-                zoomTopPadding = displayTopPaddingNotZoomed + spaceBetweenKeys * 0.5
-            } else {
-                /// iPhone landscape
-                zoomTopPadding = 0.5 * (keySize.height + spaceBetweenKeys - iconSize) + spaceBetweenKeys * 0.5
-            }
+//            displayTopPaddingNotZoomed = appFrame.height - allkeysHeight - keySize.height - spaceBetweenKeys
+//            displayTopPaddingZoomed = displayTopPaddingNotZoomed
+            zoomTopPaddingNotZoomed = displayHeight * 0.15
+            zoomTopPaddingZoomed = zoomTopPaddingNotZoomed
         }
         
         /// TODO: should I use displayTopPaddingZoomed or not?
-        displayTopPaddingZoomed = 0.0
+//        displayTopPaddingZoomed = 0.0
         
         digits_1_9 = KeyProperties(
             size: keySize,

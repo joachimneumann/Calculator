@@ -11,13 +11,15 @@ struct PlusIcon: View {
     @Binding var isZoomed: Bool
     let size: CGFloat
     let color: Color
-    let topPadding: CGFloat
-    
+    let zoomTopPaddingZoomed: CGFloat
+    let zoomTopPaddingNotZoomed: CGFloat
+
     init(brain: Brain, t: TE, isZoomed: Binding<Bool>) {
         size = t.iconSize
         color = t.digits_1_9.textColor
         self._isZoomed = isZoomed
-        self.topPadding = t.iconSize*0.2
+        self.zoomTopPaddingNotZoomed = t.zoomTopPaddingNotZoomed
+        self.zoomTopPaddingZoomed = t.zoomTopPaddingZoomed
     }
     
     var body: some View {
@@ -33,7 +35,7 @@ struct PlusIcon: View {
                     isZoomed.toggle()
                 }
             }
-            .padding(.top, topPadding)
+            .padding(.top, isZoomed ? zoomTopPaddingZoomed : zoomTopPaddingNotZoomed)
     }
 }
 

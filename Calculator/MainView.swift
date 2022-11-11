@@ -19,42 +19,8 @@ struct MainView: View {
     @State private var isZoomed = false
     var t: TE
     
-    struct Keys: View {
-        let brain: Brain
-        var t: TE
-        var body: some View {
-            VStack(spacing: 0.0) {
-                Spacer(minLength: 0.0)
-                HStack(spacing: 0.0) {
-                    if t.isPad || !t.isPortrait {
-                        ScientificKeys(brain: brain, t: t)
-                            .padding(.trailing, t.spaceBetweenKeys)
-                    }
-                    NumberKeys(brain: brain, t: t)
-                }
-            }
-            .frame(height: t.allkeysHeight)
-            .transition(.move(edge: .bottom))
-        }
-    }
-    
-    struct Rad: View {
-        let keySize: CGSize
-        let textColor: Color
-        var body: some View {
-            VStack(spacing: 0.0) {
-                Spacer(minLength: 0.0)
-                Text("Rad")
-                    .font(Font.system(size: keySize.height*0.27).monospacedDigit())
-                //.foregroundColor(Color.yellow)
-                    .padding(.leading, keySize.height*0.27)
-                    .padding(.bottom, keySize.height*0.1)
-            }
-        }
-    }
-    
     var body: some View {
-        let trailingAfterDisplay = (t.isPad || !t.isPortrait) ? t.iconSize*1.2 : 0.0
+        let trailingAfterDisplay = (t.isPad || !t.isPortrait) ? t.iconSize * 1.2 : 0.0
         ZStack {
             /// Icons - except for portrait iPhone
             if t.isPad || !t.isPortrait {
@@ -72,17 +38,33 @@ struct MainView: View {
                 }
             }
             
-            VStack(spacing: 0.0) {
-                if isZoomed {
-                    MultiLineDisplay(brain: brain, t: t)
-                        .padding(.trailing, trailingAfterDisplay)
-                } else {
+            if t.isPad {
+                VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    SingleLineDisplay(brain: brain, t: t)
-                        .padding(.trailing, trailingAfterDisplay)
+                    if isZoomed {
+                        MultiLineDisplay(brain: brain, t: t)
+                            .padding(.trailing, trailingAfterDisplay)
+                    } else {
+                        SingleLineDisplay(brain: brain, t: t)
+                            .padding(.trailing, trailingAfterDisplay)
+                    }
                     Keys(brain: brain, t: t)
                 }
+            } else {
+                VStack(spacing: 0.0) {
+                    if isZoomed {
+                        MultiLineDisplay(brain: brain, t: t)
+                            .padding(.trailing, trailingAfterDisplay)
+                    } else {
+                        Spacer(minLength: 0.0)
+                        SingleLineDisplay(brain: brain, t: t)
+                            .padding(.trailing, trailingAfterDisplay)
+                        Keys(brain: brain, t: t)
+                    }
+                }
             }
+            
+            
             /// Display and Keys
             if !t.isPad && false {
                 /// iPhone
@@ -154,5 +136,41 @@ struct MainView: View {
          }
          */
     }
+    
+    
+    struct Keys: View {
+        let brain: Brain
+        var t: TE
+        var body: some View {
+            VStack(spacing: 0.0) {
+                Spacer(minLength: 0.0)
+                HStack(spacing: 0.0) {
+                    if t.isPad || !t.isPortrait {
+                        ScientificKeys(brain: brain, t: t)
+                            .padding(.trailing, t.spaceBetweenKeys)
+                    }
+                    NumberKeys(brain: brain, t: t)
+                }
+            }
+            .frame(height: t.allkeysHeight)
+            .transition(.move(edge: .bottom))
+        }
+    }
+    
+    struct Rad: View {
+        let keySize: CGSize
+        let textColor: Color
+        var body: some View {
+            VStack(spacing: 0.0) {
+                Spacer(minLength: 0.0)
+                Text("Rad")
+                    .font(Font.system(size: keySize.height*0.27).monospacedDigit())
+                //.foregroundColor(Color.yellow)
+                    .padding(.leading, keySize.height*0.27)
+                    .padding(.bottom, keySize.height*0.1)
+            }
+        }
+    }
+    
 }
 
