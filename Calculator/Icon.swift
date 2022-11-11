@@ -56,7 +56,7 @@ struct ControlIcon: View {
         Image(systemName: "switch.2")
             .resizable()
             .scaledToFit()
-            .frame(width: size, height: size)
+            .frame(width: size*0.8, height: size*0.8)
             .font(.system(size: size, weight: .thin))
             .foregroundColor(color)
             .onTapGesture {

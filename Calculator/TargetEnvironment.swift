@@ -63,6 +63,8 @@ class TE {
     var isZoomAllowed: Bool {
         return isPad || !isPortrait
     }
+    let trailingAfterDisplay: CGFloat
+
     init(appFrame: CGSize) {
         self.isPad = (UIDevice.current.userInterfaceIdiom == .pad)
         self.isPortrait = appFrame.height > appFrame.width
@@ -98,6 +100,7 @@ class TE {
         let displayFontSize           = keySize.height * 0.79
         displayUIFont = UIFont.monospacedDigitSystemFont(ofSize: displayFontSize, weight: .thin)
         iconSize = keySize.height * 0.7
+        trailingAfterDisplay = (isPad || !isPortrait) ? iconSize * 1.2 : 0.0
 
         var w = 0.0
         var s = ""
