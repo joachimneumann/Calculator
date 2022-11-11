@@ -30,10 +30,10 @@ import SwiftUI
 
 struct iOSSize: View {
     var brain: Brain
-    let leadingPaddingNeeded : Bool
-    let trailingPaddingNeeded : Bool
-    let bottomPaddingNeeded : Bool
-    
+    let leadingPaddingNeeded:  Bool
+    let trailingPaddingNeeded: Bool
+    let bottomPaddingNeeded:   Bool
+    let topPaddingNeeded:      Bool
     let orientationDidChangeNotification =
       NotificationCenter
         .default
@@ -42,34 +42,19 @@ struct iOSSize: View {
     
     var body: some View {
         GeometryReader { geo in
-            Color.clear
-              .onReceive(orientationDidChangeNotification) { _ in
-                  print(geo.size.height)
-                  print(geo.size.height)
-                  print(geo.size.height)
-                  print(geo.size.height)
-              }
-            let isPortrait = geo.size.height > geo.size.width
-            let fraction = isPortrait ? TE.portraitSpacingFraction : TE.landscapeSpacingFraction
-            let horizontalFactor: CGFloat = CGFloat(1.0) -
-            (leadingPaddingNeeded ? fraction : 0) -
-            (trailingPaddingNeeded ? fraction : 0 )
-            let verticalFactor: CGFloat = CGFloat(1.0) -
-            (bottomPaddingNeeded ? TE.landscapeSpacingFraction : 0.0)
-            
-//            let _ = print("geometry.safeAreaInsets \(geo.safeAreaInsets)")
-            // TODO: only redraw when EdgeInsets are noce numbers, e.g., max 1 digit
+            // TODO: investigate it it makes sense to only redraw the MainView when EdgeInsets are round numbers (or max 1 digit)
+            var t = TE(appFrame: geo.size)
             let appFrame = CGSize(
-                width: geo.size.width * horizontalFactor,
-                height: geo.size.height * verticalFactor)
-//            let _ = print("appFrame \(appFrame.width)x\(appFrame.height)")
-            let t = TE(appFrame: appFrame)
+                width: geo.size.width   - (leadingPaddingNeeded ? t.spaceBetweenKeys : 0) - (trailingPaddingNeeded ? t.spaceBetweenKeys : 0),
+                height: geo.size.height - (topPaddingNeeded     ? t.spaceBetweenKeys : 0) - (bottomPaddingNeeded   ? t.spaceBetweenKeys : 0))
+            let _ = t = TE(appFrame: appFrame)
             MainView(brain: brain, t: t)
-                .padding(.leading,   leadingPaddingNeeded ? geo.size.width * fraction : 0)
-                .padding(.trailing, trailingPaddingNeeded ? geo.size.width * fraction : 0)
+                .padding(.leading,   leadingPaddingNeeded ? t.spaceBetweenKeys : 0)
+                .padding(.trailing, trailingPaddingNeeded ? t.spaceBetweenKeys : 0)
+                .padding(.top,         topPaddingNeeded   ? t.spaceBetweenKeys : 0)
                 .padding(.bottom,   bottomPaddingNeeded   ? t.spaceBetweenKeys : 0)
         }
-        .background(Color.green).opacity(0.8)
+//        .background(Color.green).opacity(0.8)
     }
 }
 
@@ -77,6 +62,6 @@ struct iOSSize: View {
 
 struct Previews_iOSSize_Previews: PreviewProvider {
     static var previews: some View {
-        iOSSize(brain: Brain(), leadingPaddingNeeded: false, trailingPaddingNeeded: false, bottomPaddingNeeded: false)
+        iOSSize(brain: Brain(), leadingPaddingNeeded: false, trailingPaddingNeeded: false, bottomPaddingNeeded: false, topPaddingNeeded: false)
     }
 }

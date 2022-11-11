@@ -34,9 +34,10 @@ struct CalculatorApp: App {
     
     var body: some Scene {
         let brain = Brain()
-        var leadingPaddingNeeded: Bool = false
+        var leadingPaddingNeeded:  Bool = false
         var trailingPaddingNeeded: Bool = false
-        var bottomPaddingNeeded: Bool = false
+        var bottomPaddingNeeded:   Bool = false
+        var topPaddingNeeded:      Bool = false
         WindowGroup {
             ZStack {
                 GeometryReader { geo in
@@ -44,12 +45,21 @@ struct CalculatorApp: App {
                     let _ = (leadingPaddingNeeded  = (geo.safeAreaInsets.leading  == 0))
                     let _ = (trailingPaddingNeeded = (geo.safeAreaInsets.trailing == 0))
                     let _ = (bottomPaddingNeeded   = (geo.safeAreaInsets.bottom   == 0))
-                }
+                    let _ = (topPaddingNeeded      = (geo.safeAreaInsets.top      == 0))
+                    let _ = print("leadingPaddingNeeded  \(leadingPaddingNeeded)")
+                    let _ = print("trailingPaddingNeeded \(trailingPaddingNeeded)")
+                    let _ = print("bottomPaddingNeeded   \(bottomPaddingNeeded)")
+                    let _ = print("topPaddingNeeded      \(topPaddingNeeded)")
                 /// The factor 1.5 is a little hack to prevent that the white background
                 /// shows up during device orientation change rotation
                 let expandedDeviceSize: CGFloat = 1.5 * max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
                 //let _ = print("XXXXXXXX \(expandedDeviceSize)")
-                iOSSize(brain: brain, leadingPaddingNeeded: leadingPaddingNeeded, trailingPaddingNeeded: trailingPaddingNeeded, bottomPaddingNeeded: bottomPaddingNeeded)
+                iOSSize(brain: brain,
+                        leadingPaddingNeeded: leadingPaddingNeeded,
+                        trailingPaddingNeeded: trailingPaddingNeeded,
+                        bottomPaddingNeeded: bottomPaddingNeeded,
+                        topPaddingNeeded: topPaddingNeeded
+                )
                     .statusBar(hidden: true)
                     .background(Rectangle()
                         .frame(width: expandedDeviceSize,
@@ -58,7 +68,7 @@ struct CalculatorApp: App {
                             .foregroundColor(TE.appBackgroundColor)
 //                            .ignoresSafeArea()
                     )
-                
+                }
             }
         }
     }

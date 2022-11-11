@@ -16,6 +16,7 @@ struct KeyProperties {
     let downBgColor: Color
     let downAnimationTime: Double
     let upAnimationTime: Double
+    let bottomPadding: CGFloat
 }
 
 class TE {
@@ -31,6 +32,7 @@ class TE {
 
 
 //    static let appBackgroundColor = Color(.brown).opacity(0.7)
+//    static let appBackgroundColor = Color(.black)
     static let appBackgroundColor = Color(.brown)
 
     let digits_1_9: KeyProperties
@@ -38,10 +40,11 @@ class TE {
     let colorOpProperties: KeyProperties
     let ac_plus_minus_percentProperties: KeyProperties
     let scientificProperties: KeyProperties
+    let parenthesisProperties: KeyProperties
     static var digitsInOneLine: Int = 0
     static let zoomIconSize: CGFloat = 30.0
     static let landscapeSpacingFraction: CGFloat = 0.01
-    static let portraitSpacingFraction: CGFloat = 0.03
+    static let portraitSpacingFraction: CGFloat = 0.04
     static let iconLeadingPadding: CGFloat = 0.2
     
     var displayUIFont: UIFont
@@ -92,7 +95,7 @@ class TE {
         }
         
         let scientificKeyFontSize = keySize.height * 0.35
-        let digitsKeyFontSize     = keySize.height * 0.5
+        let digitsKeyFontSize     = keySize.height * 0.47
         let displayFontSize           = keySize.height * 0.79
         displayUIFont = UIFont.monospacedDigitSystemFont(ofSize: displayFontSize, weight: .thin)
         iconSize = keySize.height * 0.7
@@ -172,7 +175,8 @@ class TE {
                 green: 159.0/255.0,
                 blue:  158.0/255.0),
             downAnimationTime: 0.1,
-            upAnimationTime: 0.5)
+            upAnimationTime: 0.5,
+            bottomPadding: 0.0)
         
         digits_0 = KeyProperties(
             size: CGSize(width: 2.0 * keySize.width + spaceBetweenKeys, height: keySize.height),
@@ -191,7 +195,8 @@ class TE {
                 green: 159.0/255.0,
                 blue:  158.0/255.0),
             downAnimationTime: 0.1,
-            upAnimationTime: 0.5)
+            upAnimationTime: 0.5,
+            bottomPadding: 0.0)
 
 
         colorOpProperties = KeyProperties(
@@ -211,7 +216,8 @@ class TE {
                 green: 230.0/255.0,
                 blue:  232.0/255.0),
             downAnimationTime: 0.1,
-            upAnimationTime: 0.3)
+            upAnimationTime: 0.3,
+            bottomPadding: 0.0)
 
         ac_plus_minus_percentProperties = KeyProperties(
             size: keySize,
@@ -233,7 +239,8 @@ class TE {
                 green: 125.0/255.0,
                 blue:  127.0/255.0),
             downAnimationTime: 0.1,
-            upAnimationTime: 0.5)
+            upAnimationTime: 0.5,
+            bottomPadding: 0.0)
 
         scientificProperties = KeyProperties(
             size: keySize,
@@ -252,7 +259,28 @@ class TE {
                 green: 125.0/255.0,
                 blue:  127.0/255.0),
             downAnimationTime: 0.0,
-            upAnimationTime: 0.0)
+            upAnimationTime: 0.0,
+            bottomPadding: 0.0)
+
+        parenthesisProperties = KeyProperties(
+            size: keySize,
+            font: Font.system(size: scientificKeyFontSize).monospacedDigit(),
+            textColor: Color(
+                red:   236.0/255.0,
+                green: 235.0/255.0,
+                blue:  235.0/255.0),
+            disabledColor: Color.gray,
+            bgColor: Color(
+                red:    33.0/255.0,
+                green:  33.0/255.0,
+                blue:   33.0/255.0),
+            downBgColor: Color(
+                red:   124.0/255.0,
+                green: 125.0/255.0,
+                blue:  127.0/255.0),
+            downAnimationTime: 0.0,
+            upAnimationTime: 0.0,
+            bottomPadding: keySize.height * 0.05)
     }
 
     struct ButtonShape: View {

@@ -91,7 +91,7 @@ struct SingleLineDisplay_Previews: PreviewProvider {
         let brain = Brain()
         let _ = brain.nonWaitingOperation("π")
         SingleLineDisplay(brain: brain, t: TE(appFrame: CGSize(width: 200, height: 200)))
-            .background(Color.green)
+//            .background(Color.green)
     }
 }
 

@@ -14,8 +14,8 @@ struct ScientificKeys: View {
     var body: some View {
         VStack(spacing: t.spaceBetweenKeys) {
             HStack(spacing: t.spaceBetweenKeys) {
-                Key("(", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key(")", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                Key("( ", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.parenthesisProperties)
+                Key(" )", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.parenthesisProperties)
                 Key("mc", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
                 Key("m+", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
                 Key("m-", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)

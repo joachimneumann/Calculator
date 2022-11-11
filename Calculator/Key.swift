@@ -81,6 +81,7 @@ struct Key: View {
                 button
                     .font(keyProperties.font)
                     .foregroundColor(fgColor(enabled: enabled, pending: brain.isPending(symbol)))
+                    .padding(.bottom, keyProperties.bottomPadding)
             }
         }
         .gesture(

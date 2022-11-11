@@ -177,9 +177,9 @@ class Brain: ObservableObject {
                     n.replaceLast(with: Number(memory!.copy()))
                 }
             }
-        } else if symbol == "(" {
+        } else if symbol == "( " {
             self.operatorStack.push(self.openParenthesis)
-        } else if symbol == ")" {
+        } else if symbol == " )" {
             self.execute(priority: Operator.closedParenthesesPriority)
         } else if symbol == "%" {
             self.percentage()
