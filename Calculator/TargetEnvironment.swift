@@ -32,8 +32,8 @@ class TE {
 
 
 //    static let appBackgroundColor = Color(.brown).opacity(0.7)
-//    static let appBackgroundColor = Color(.black)
-    static let appBackgroundColor = Color(.brown)
+    static let appBackgroundColor = Color(.black)
+//    static let appBackgroundColor = Color(.brown)
 
     let digits_1_9: KeyProperties
     let digits_0: KeyProperties

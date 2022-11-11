@@ -48,10 +48,9 @@ struct SingleLineDisplay: View {
                 .minimumScaleFactor(1.0/fontGrowthFactor)
                 .foregroundColor(color)
                 .frame(height: height, alignment: .topTrailing)
-                .background(Color.yellow).opacity(0.4)
+                //.background(Color.yellow).opacity(0.4)
         }
     }
-    
 }
 
 struct MultiLineDisplay: View {
@@ -80,7 +79,8 @@ struct MultiLineDisplay: View {
                 .foregroundColor(color)
                 .lineLimit(100)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                .background(Color.yellow.opacity(0.4))
+                .multilineTextAlignment(.trailing)
+                //.background(Color.yellow.opacity(0.4))
                 .frame(height: height)
         }
     }

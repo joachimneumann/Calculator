@@ -29,23 +29,28 @@ struct MainView: View {
                         Spacer()
                         VStack(spacing: 0.0) {
                             PlusIcon(brain: brain, t: t, isZoomed: $isZoomed)
+                            CopyIcon(brain: brain, t: t, isZoomed: $isZoomed)
+                            PasteIcon(brain: brain, t: t, isZoomed: $isZoomed)
                             ControlIcon(brain: brain, t: t, isZoomed: $isZoomed)
                         }
                     }
                     Spacer()
                 }
             }
-            
+
+            /// Display and Keys
             if t.isPad {
                 VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    if isZoomed {
+//                    if isZoomed {
                         MultiLineDisplay(brain: brain, t: t)
                             .padding(.trailing, trailingAfterDisplay)
-                    } else {
+                            .opacity(isZoomed ? 1.0 : 0.0)
+//                    } else {
                         SingleLineDisplay(brain: brain, t: t)
                             .padding(.trailing, trailingAfterDisplay)
-                    }
+                            .opacity(isZoomed ? 0.0 : 1.0)
+//                    }
                     Keys(brain: brain, t: t)
                 }
             } else {

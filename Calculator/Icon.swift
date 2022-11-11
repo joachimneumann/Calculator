@@ -49,7 +49,7 @@ struct ControlIcon: View {
         size = t.iconSize
         color = t.digits_1_9.textColor
         self._isZoomed = isZoomed
-        self.topPadding = t.iconSize*0.4
+        self.topPadding = t.iconSize*0.6
     }
     
     var body: some View {
@@ -69,3 +69,52 @@ struct ControlIcon: View {
     }
 }
 
+struct CopyIcon: View {
+    @Binding var isZoomed: Bool
+    let size: CGFloat
+    let color: Color
+    let topPadding: CGFloat
+
+    init(brain: Brain, t: TE, isZoomed: Binding<Bool>) {
+        size = t.iconSize
+        color = t.digits_1_9.textColor
+        self._isZoomed = isZoomed
+        self.topPadding = t.iconSize*0.6
+    }
+    
+    var body: some View {
+        Button(action: {}) {
+            Text("Copy")
+                .scaledToFill()
+        }
+            .frame(width: size, height: size)
+            .foregroundColor(color)
+            .opacity(isZoomed ? 1.0 : 0.0)
+            .padding(.top, topPadding)
+    }
+}
+
+struct PasteIcon: View {
+    @Binding var isZoomed: Bool
+    let size: CGFloat
+    let color: Color
+    let topPadding: CGFloat
+
+    init(brain: Brain, t: TE, isZoomed: Binding<Bool>) {
+        size = t.iconSize
+        color = t.digits_1_9.textColor
+        self._isZoomed = isZoomed
+        self.topPadding = t.iconSize*0.4
+    }
+    
+    var body: some View {
+        Button(action: {}) {
+            Text("Paste")
+                .scaledToFill()
+        }
+            .frame(width: size, height: size)
+            .foregroundColor(color)
+            .opacity(isZoomed ? 1.0 : 0.0)
+            .padding(.top, topPadding)
+    }
+}
