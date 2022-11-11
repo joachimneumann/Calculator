@@ -29,9 +29,7 @@ struct MainView: View {
                         Spacer()
                         VStack(spacing: 0.0) {
                             PlusIcon(brain: brain, t: t, isZoomed: $isZoomed)
-                            if isZoomed {
-                                ControlIcon(brain: brain, t: t, isZoomed: $isZoomed)
-                            }
+                            ControlIcon(brain: brain, t: t, isZoomed: $isZoomed)
                         }
                     }
                     Spacer()
