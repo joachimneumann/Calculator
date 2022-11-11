@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA02AF76291CE0550079F40E /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA02AF75291CE0550079F40E /* Icon.swift */; };
 		AA08C7C6272EDA4A001B8575 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA08C7C5272EDA4A001B8575 /* Assets.xcassets */; };
 		AA08C7C9272EDA4A001B8575 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA08C7C8272EDA4A001B8575 /* Preview Assets.xcassets */; };
 		AA08C7D3272EDA4A001B8575 /* CalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA08C7D2272EDA4A001B8575 /* CalculatorTests.swift */; };
@@ -56,6 +57,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AA02AF75291CE0550079F40E /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
 		AA08C7BE272EDA48001B8575 /* Better Calc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Better Calc.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA08C7C5272EDA4A001B8575 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA08C7C8272EDA4A001B8575 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				AA2FABFE272F2348006DE4C8 /* KeyInputSubjectWrapper.swift */,
 				AA2FAC06272F2348006DE4C8 /* MainView.swift */,
 				AA393CD927F8921A003C48AA /* SingleLineDisplay.swift */,
+				AA02AF75291CE0550079F40E /* Icon.swift */,
 				AA2FABF8272F2348006DE4C8 /* Number.swift */,
 				AA2FAC0C272F2349006DE4C8 /* NumberKeys.swift */,
 				AA2FABFB272F2348006DE4C8 /* NumberStack.swift */,
@@ -298,6 +301,7 @@
 				AA2FAC17272F2349006DE4C8 /* Brain.swift in Sources */,
 				AA2FAC14272F2349006DE4C8 /* KeyInputSubjectWrapper.swift in Sources */,
 				AA2FAC12272F2349006DE4C8 /* NumberStack.swift in Sources */,
+				AA02AF76291CE0550079F40E /* Icon.swift in Sources */,
 				AA2FAC10272F2349006DE4C8 /* Symbols.swift in Sources */,
 				AA2FAC21272F2349006DE4C8 /* Key.swift in Sources */,
 				AA2FABF2272F217F006DE4C8 /* Gmp.swift in Sources */,

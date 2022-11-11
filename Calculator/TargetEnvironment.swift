@@ -47,13 +47,13 @@ class TE {
     var displayUIFont: UIFont
     var spaceBetweenKeys: CGFloat
     var allkeysHeight: CGFloat
-    var digitsInDisplayWithoutComma: Int
-    var digitsInDisplayWithComma: Int
+    var withoutComma: Int
+    var withComma: Int
     var isPad: Bool
     var zeroTrailingPadding: CGFloat
     var displayTopPaddingZoomed: CGFloat
     var displayTopPaddingNotZoomed: CGFloat
-    var displayheight: CGFloat
+    var displayHeight: CGFloat
     var zoomTopPadding: CGFloat
     var iconSize: CGFloat
     var circularProgressViewScaleFactor: CGFloat
@@ -110,7 +110,7 @@ class TE {
             s.append("0")
             w = s.sizeOf_String(uiFont: displayUIFont).width
         }
-        digitsInDisplayWithoutComma = s.count - 1
+        withoutComma = s.count - 1
         //print("digitsInDisplayWithoutComma: \(digitsInDisplayWithoutComma)")
 
         w = 0.0
@@ -119,12 +119,12 @@ class TE {
             s.append("0")
             w = s.sizeOf_String(uiFont: displayUIFont).width
         }
-        digitsInDisplayWithComma = s.count - 1
+        withComma = s.count - 1
         // print("digitsInDisplayWithComma: \(digitsInDisplayWithComma)")
 
         allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenKeys
         zeroTrailingPadding = keySize.width * 1 + digitsKeyFontSize*0.25
-        displayheight = keySize.height
+        displayHeight = keySize.height
         
         if isPad {
             circularProgressViewScaleFactor = 2.0

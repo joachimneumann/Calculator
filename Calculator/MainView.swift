@@ -16,7 +16,7 @@ import SwiftUI
 
 struct MainView: View {
     @ObservedObject var brain: Brain
-    @State var isZoomed = false
+    @State private var isZoomed = false
     var t: TE
     
     struct Keys: View {
@@ -53,63 +53,106 @@ struct MainView: View {
         }
     }
     
-    @State private var showDetails = false
     var body: some View {
-        VStack(spacing: 0.0) {
-            Spacer(minLength: 0.0)
-            HStack(spacing: 0.0) {
-                if !isZoomed || !t.isZoomAllowed {
-                    SingleLineDisplay(number: brain.last, uiFont: t.displayUIFont,
-                                      withoutComma: t.digitsInDisplayWithoutComma,
-                                      withComma: t.digitsInDisplayWithComma)
-                        .frame(height: t.displayheight, alignment: .topTrailing)
-                        .frame(maxWidth: .infinity, alignment: .topTrailing)
-                        .background(Color.yellow).opacity(0.4)
-                } else {
-                    MultiLineDisplay(number: brain.last, uiFont: t.displayUIFont, length: brain.precision)
-                        .frame(height: t.displayheight + t.allkeysHeight)
-                        .background(Color.yellow).opacity(0.4)
-                }
-                if t.isPad || !t.isPortrait {
-                    VStack(spacing: 0.0) {
-                        Image(systemName: "plus.circle.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: t.iconSize, height: t.iconSize)
-                            .font(.system(size: t.iconSize, weight: .thin))
-                            .foregroundColor(t.digits_1_9.textColor)
-                            .rotationEffect(isZoomed && t.isZoomAllowed  ? .degrees(-45.0) : .degrees(0.0))
-                            .onTapGesture {
-                                withAnimation() {
-                                    isZoomed.toggle()
-                                }
+        let trailingAfterDisplay = (t.isPad || !t.isPortrait) ? t.iconSize*1.2 : 0.0
+        ZStack {
+            /// Icons - except for portrait iPhone
+            if t.isPad || !t.isPortrait {
+                VStack(spacing: 0.0) {
+                    HStack(spacing: 0.0) {
+                        Spacer()
+                        VStack(spacing: 0.0) {
+                            PlusIcon(brain: brain, t: t, isZoomed: $isZoomed)
+                            if isZoomed {
+                                ControlIcon(brain: brain, t: t, isZoomed: $isZoomed)
                             }
-                            .padding(.top, t.iconSize*0.2)
-                        if isZoomed && t.isZoomAllowed  {
-                            Image(systemName: "switch.2")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: t.iconSize, height: t.iconSize)
-                                .font(.system(size: t.iconSize*0.75, weight: .thin))
-                                .padding(.top, t.iconSize*0.25)
-                                .foregroundColor(t.digits_1_9.textColor)
-                                .onTapGesture {
-                                    withAnimation() {
-                                    }
-                                }
-                                .padding(.top, t.iconSize*0.2)
                         }
-                        Spacer(minLength: 0.0)
                     }
-//                    .padding(.top, t.iconSize*0.2)
-//                    .padding(.leading, t.iconSize * TE.iconLeadingPadding)
-////                    .frame(height: t.displayheight + (isZoomed && t.isZoomAllowed ? t.allkeysHeight : 0.0), alignment: .topTrailing)
+                    Spacer()
                 }
             }
-            if !isZoomed || !t.isZoomAllowed {
-                Keys(brain: brain, t: t)
+            
+            VStack(spacing: 0.0) {
+                if isZoomed {
+                    MultiLineDisplay(brain: brain, t: t)
+                        .padding(.trailing, trailingAfterDisplay)
+                } else {
+                    Spacer(minLength: 0.0)
+                    SingleLineDisplay(brain: brain, t: t)
+                        .padding(.trailing, trailingAfterDisplay)
+                    Keys(brain: brain, t: t)
+                }
+            }
+            /// Display and Keys
+            if !t.isPad && false {
+                /// iPhone
+                if t.isPortrait {
+                    /// no zoom
+                    VStack(spacing: 0.0) {
+                        Spacer(minLength: 0.0)
+                        SingleLineDisplay(brain: brain, t: t)
+                        Keys(brain: brain, t: t)
+                    }
+                } else {
+                    if !isZoomed {
+                        VStack(spacing: 0.0) {
+                            Spacer(minLength: 0.0)
+                            HStack(spacing: 0.0) {
+                                SingleLineDisplay(brain: brain, t: t)
+                            }
+                            Keys(brain: brain, t: t)
+                        }
+                    } else {
+                        /// iPhone landscape zoomed
+                        HStack(spacing: 0.0) {
+                            MultiLineDisplay(brain: brain, t: t)
+                        }
+                    }
+                }
+            } else {
+                /// iPad or Mac
             }
         }
+        
+        
+        /*
+         VStack(spacing: 0.0) {
+         Spacer(minLength: 0.0)
+         HStack(spacing: 0.0) {
+         if !isZoomed || !t.isZoomAllowed {
+         SingleLineDisplay(brain: brain, t: t)
+         } else {
+         MultiLineDisplay(brain: brain, t: t)
+         }
+         if t.isPad || !t.isPortrait {
+         VStack(spacing: 0.0) {
+         PlusIcon(brain: brain, t: t, isZoomed: $isZoomed)
+         if isZoomed && t.isZoomAllowed  {
+         Image(systemName: "switch.2")
+         .resizable()
+         .scaledToFit()
+         .frame(width: t.iconSize, height: t.iconSize)
+         .font(.system(size: t.iconSize*0.75, weight: .thin))
+         .padding(.top, t.iconSize*0.25)
+         .foregroundColor(t.digits_1_9.textColor)
+         .onTapGesture {
+         withAnimation() {
+         }
+         }
+         .padding(.top, t.iconSize*0.2)
+         }
+         Spacer(minLength: 0.0)
+         }
+         //                    .padding(.top, t.iconSize*0.2)
+         //                    .padding(.leading, t.iconSize * TE.iconLeadingPadding)
+         ////                    .frame(height: t.displayheight + (isZoomed && t.isZoomAllowed ? t.allkeysHeight : 0.0), alignment: .topTrailing)
+         }
+         }
+         if !isZoomed || !t.isZoomAllowed {
+         Keys(brain: brain, t: t)
+         }
+         }
+         */
     }
 }
 

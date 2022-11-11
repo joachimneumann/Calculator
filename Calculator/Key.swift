@@ -14,7 +14,7 @@ struct Key: View {
     let t: TE
     let keyProperties: KeyProperties
     private var button: AnyView?
-    @State var down: Bool = false
+    @State private var down: Bool = false
     //@State var enabled: Bool = true
 
     private let sfImageNames: [String: String] = [

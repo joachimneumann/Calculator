@@ -25,16 +25,18 @@ struct SingleLineDisplay: View {
     let text: String
     let uiFont: UIFont
     let fontGrowthFactor = 1.0
+    let height: CGFloat
     
-    init(number: Number, uiFont: UIFont, withoutComma: Int, withComma: Int) {
+    init(brain: Brain, t: TE) {
         self.color = Color.white
-        let oneLiner = number.oneLiner(withoutComma: withoutComma, withComma: withComma)
+        let oneLiner = brain.last.oneLiner(withoutComma: t.withoutComma, withComma: t.withComma)
         if let right = oneLiner.right {
             text = oneLiner.left+right
         } else {
             text = oneLiner.left
         }
-        self.uiFont = uiFont
+        self.uiFont = t.displayUIFont
+        self.height = t.displayHeight
     }
     
     var body: some View {
@@ -43,6 +45,9 @@ struct SingleLineDisplay: View {
             .font(Font(uiFont))
             .minimumScaleFactor(1.0/fontGrowthFactor)
             .foregroundColor(color)
+            .frame(height: height, alignment: .topTrailing)
+            .frame(maxWidth: .infinity, alignment: .topTrailing)
+            .background(Color.yellow).opacity(0.4)
     }
     
 }
@@ -51,17 +56,18 @@ struct MultiLineDisplay: View {
     let color: Color
     let text: String
     let uiFont: UIFont
-    let fontGrowthFactor = 1.0
-    
-    init(number: Number, uiFont: UIFont, length: Int) {
+    let height: CGFloat
+
+    init(brain: Brain, t: TE) {
         self.color = Color.white
-        let oneLiner = number.oneLiner(withoutComma: length, withComma: length)
+        let oneLiner = brain.last.oneLiner(withoutComma: brain.precision, withComma: brain.precision)
         if let right = oneLiner.right {
             text = oneLiner.left+right
         } else {
             text = oneLiner.left
         }
-        self.uiFont = uiFont
+        self.uiFont = t.displayUIFont
+        self.height = t.displayHeight + t.allkeysHeight
     }
     
     var body: some View {
@@ -73,14 +79,17 @@ struct MultiLineDisplay: View {
             //.background(Color.yellow)
                 .lineLimit(100)
                 .frame(maxWidth: .infinity, alignment: .trailing)
+                .frame(height: height)
+                .background(Color.yellow).opacity(0.4)
         }
     }
 }
 
 struct SingleLineDisplay_Previews: PreviewProvider {
     static var previews: some View {
-        
-        SingleLineDisplay(number: Number("123,456789"), uiFont: UIFont.monospacedDigitSystemFont(ofSize: 46, weight: .light), withoutComma: 8, withComma: 9)
+        let brain = Brain()
+        let _ = brain.nonWaitingOperation("π")
+        SingleLineDisplay(brain: brain, t: TE(appFrame: CGSize(width: 200, height: 200)))
             .background(Color.green)
     }
 }

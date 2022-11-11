@@ -18,12 +18,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         /// detect mac:
         /// 1. size of screen 834.0x1194.0
         /// 2. EdgeInsets all 0
-        let isMac = false
-        if isMac {
-            return UIInterfaceOrientationMask.landscape
-        } else {
+//        let isMac = false
+//        if isMac {
+//            return UIInterfaceOrientationMask.landscape
+//        } else {
             return UIInterfaceOrientationMask.all
-        }
+//        }
     }
 }
 
