@@ -31,7 +31,7 @@ struct PlusIcon: View {
             .foregroundColor(color)
             .rotationEffect(isZoomed  ? .degrees(-45.0) : .degrees(0.0))
             .onTapGesture {
-                withAnimation(.easeIn) {
+                withAnimation() {
                     isZoomed.toggle()
                 }
             }

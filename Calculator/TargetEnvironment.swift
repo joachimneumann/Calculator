@@ -52,9 +52,8 @@ class TE {
     var withComma: Int
     var isPad: Bool
     var zeroTrailingPadding: CGFloat
-//    var displayTopPaddingZoomed: CGFloat
-//    var displayTopPaddingNotZoomed: CGFloat
-    var displayHeight: CGFloat
+    var singleLineDisplayHeight: CGFloat
+    var multipleLineDisplayHeight: CGFloat
     var zoomTopPaddingZoomed: CGFloat
     var zoomTopPaddingNotZoomed: CGFloat
     var iconSize: CGFloat
@@ -128,23 +127,20 @@ class TE {
 
         allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenKeys
         zeroTrailingPadding = keySize.width * 1 + digitsKeyFontSize*0.25
-        displayHeight = keySize.height
+        singleLineDisplayHeight = keySize.height
         
         if isPad {
             circularProgressViewScaleFactor = 2.0
-            zoomTopPaddingNotZoomed = appFrame.height - allkeysHeight - displayHeight + displayHeight * 0.15
-            zoomTopPaddingZoomed = displayHeight * 0.15
+            zoomTopPaddingNotZoomed = appFrame.height - allkeysHeight - singleLineDisplayHeight + singleLineDisplayHeight * 0.15
+            zoomTopPaddingZoomed = singleLineDisplayHeight * 0.15
+            multipleLineDisplayHeight = appFrame.height - allkeysHeight
         } else {
             /// iPhone
             circularProgressViewScaleFactor = 0.77
-//            displayTopPaddingNotZoomed = appFrame.height - allkeysHeight - keySize.height - spaceBetweenKeys
-//            displayTopPaddingZoomed = displayTopPaddingNotZoomed
-            zoomTopPaddingNotZoomed = displayHeight * 0.15
+            zoomTopPaddingNotZoomed = singleLineDisplayHeight * 0.15
             zoomTopPaddingZoomed = zoomTopPaddingNotZoomed
+            multipleLineDisplayHeight = singleLineDisplayHeight + allkeysHeight
         }
-        
-        /// TODO: should I use displayTopPaddingZoomed or not?
-//        displayTopPaddingZoomed = 0.0
         
         digits_1_9 = KeyProperties(
             size: keySize,

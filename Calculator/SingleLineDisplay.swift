@@ -36,7 +36,7 @@ struct SingleLineDisplay: View {
             text = oneLiner.left
         }
         self.uiFont = t.displayUIFont
-        self.height = t.displayHeight
+        self.height = t.singleLineDisplayHeight
     }
     
     var body: some View {
@@ -48,8 +48,9 @@ struct SingleLineDisplay: View {
                 .minimumScaleFactor(1.0/fontGrowthFactor)
                 .foregroundColor(color)
                 .frame(height: height, alignment: .topTrailing)
-                //.background(Color.yellow).opacity(0.4)
+//                .background(Color.yellow).opacity(0.4)
         }
+//        .transition(.move(edge: .trailing))
     }
 }
 
@@ -68,7 +69,7 @@ struct MultiLineDisplay: View {
             text = oneLiner.left
         }
         self.uiFont = t.displayUIFont
-        self.height = t.displayHeight + t.allkeysHeight
+        self.height = t.multipleLineDisplayHeight
     }
     
     var body: some View {
@@ -80,8 +81,8 @@ struct MultiLineDisplay: View {
                 .lineLimit(100)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                 .multilineTextAlignment(.trailing)
-                //.background(Color.yellow.opacity(0.4))
                 .frame(height: height)
+                .background(Color.yellow.opacity(0.4))
         }
     }
 }

@@ -41,12 +41,18 @@ struct MainView: View {
             if t.isPad {
                 VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    MultiLineDisplay(brain: brain, t: t)
-                        .padding(.trailing, t.trailingAfterDisplay)
-                        .opacity(isZoomed ? 1.0 : 0.0)
-                    SingleLineDisplay(brain: brain, t: t)
-                        .padding(.trailing, t.trailingAfterDisplay)
-                        .opacity(isZoomed ? 0.0 : 1.0)
+                    if isZoomed {
+                        MultiLineDisplay(brain: brain, t: t)
+                            .padding(.trailing, t.trailingAfterDisplay)
+                            .opacity(isZoomed ? 1.0 : 0.0)
+                            .transition(.move(edge: .bottom))
+                    } else {
+                        if !isZoomed {
+                            SingleLineDisplay(brain: brain, t: t)
+                                .padding(.trailing, t.trailingAfterDisplay)
+                                .opacity(isZoomed ? 0.0 : 1.0)
+                        }
+                    }
                     Keys(brain: brain, t: t)
                 }
             } else {
@@ -152,6 +158,7 @@ struct MainView: View {
                 }
             }
             .frame(height: t.allkeysHeight)
+            .background(Color.black)
             .transition(.move(edge: .bottom))
         }
     }
