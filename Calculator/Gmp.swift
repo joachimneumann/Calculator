@@ -45,7 +45,9 @@ class Gmp: Equatable {
     static func isValidGmpString(_ s: String) -> Bool {
         var temp_mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
         mpfr_init2 (&temp_mpfr, globalGmpSignificantBits)
-        return mpfr_set_str (&temp_mpfr, s, 10, MPFR_RNDN) == 0
+        var s_dot = s
+        s_dot.replace(",", with: ".")
+        return mpfr_set_str (&temp_mpfr, s_dot, 10, MPFR_RNDN) == 0
     }
 
     convenience init(_ s: String?) {

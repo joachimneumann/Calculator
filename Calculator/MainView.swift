@@ -57,7 +57,7 @@ struct MainView: View {
                 }
             } else {
                 VStack(spacing: 0.0) {
-                    if iconState != .plus {
+                    if iconState != .plus && !t.isPortrait {
                         MultiLineDisplay(brain: brain, t: t)
                             .padding(.trailing, t.trailingAfterDisplay)
                     } else {

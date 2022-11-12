@@ -100,7 +100,9 @@ struct CopyIcon: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
                 iconState = .plusRotated
             }
-            UIPasteboard.general.string = brain.last.singleLine(len: brain.precision)
+            var s = brain.last.singleLine(len: brain.precision)
+            s.replace(",", with: ".")
+            UIPasteboard.general.string = s
         }
         .frame(width: size, height: size)
         .foregroundColor(color)

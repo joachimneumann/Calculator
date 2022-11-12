@@ -77,7 +77,7 @@ struct MultiLineDisplay: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                 .multilineTextAlignment(.trailing)
                 .frame(height: height)
-                .background(Color.yellow.opacity(0.4))
+//                .background(Color.yellow.opacity(0.4))
         }
     }
 }
