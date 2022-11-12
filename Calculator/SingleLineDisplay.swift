@@ -62,12 +62,7 @@ struct MultiLineDisplay: View {
 
     init(brain: Brain, t: TE) {
         self.color = Color.white
-        let oneLiner = brain.last.oneLiner(withoutComma: brain.precision, withComma: brain.precision)
-        if let right = oneLiner.right {
-            text = oneLiner.left+right
-        } else {
-            text = oneLiner.left
-        }
+        self.text = brain.last.singleLine(len: brain.precision)
         self.uiFont = t.displayUIFont
         self.height = t.multipleLineDisplayHeight
     }

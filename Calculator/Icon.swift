@@ -7,48 +7,167 @@
 
 import SwiftUI
 
+enum IconState: Int {
+    case plus = 0
+    case plusRotated
+    case ok
+    case noNumber
+    func sizeFactor() -> CGFloat {
+        switch self {
+        case .plus:
+            return 1.0
+        case .plusRotated:
+            return 1.0
+        case .ok:
+            return 0.7
+        case .noNumber:
+            return 1.0
+        }
+    }
+    func image() -> Image {
+        switch self {
+        case .plus:
+            return Image(systemName: "plus.circle.fill")
+        case .plusRotated:
+            return Image(systemName: "plus.circle.fill")
+        case .ok:
+            return Image("wing")
+        case .noNumber:
+            return Image("noNumber")
+        }
+    }
+}
+
 struct PlusIcon: View {
-    @Binding var isZoomed: Bool
+    @Binding var iconState: IconState
     let size: CGFloat
     let color: Color
     let topPaddingZoomed: CGFloat
     let topPaddingNotZoomed: CGFloat
-
-    init(brain: Brain, t: TE, isZoomed: Binding<Bool>) {
+    
+    init(brain: Brain, t: TE, iconState: Binding<IconState>) {
         size = t.iconSize
+        self._iconState = iconState
         color = t.digits_1_9.textColor
-        self._isZoomed = isZoomed
         self.topPaddingNotZoomed = t.zoomTopPaddingNotZoomed
         self.topPaddingZoomed = t.zoomTopPaddingZoomed
     }
     
     var body: some View {
-        Image(systemName: "plus.circle.fill")
+        iconState.image()
             .resizable()
             .scaledToFit()
-            .frame(width: size, height: size)
+            .frame(width: size*iconState.sizeFactor(), height: size*iconState.sizeFactor())
+            .padding(.leading, 0.5*size*(1.0-iconState.sizeFactor()))
+            .padding(.top, 0.5*size*(1.0-iconState.sizeFactor()))
+            .padding(.bottom, 0.5*size*(1.0-iconState.sizeFactor()))
             .font(.system(size: size, weight: .thin))
             .foregroundColor(color)
-            .rotationEffect(isZoomed  ? .degrees(-45.0) : .degrees(0.0))
+            .rotationEffect(iconState == .plusRotated ? .degrees(-45.0) : .degrees(0.0))
             .onTapGesture {
-                withAnimation() {
-                    isZoomed.toggle()
+                if iconState == .plus {
+                    withAnimation() {
+                        iconState = .plusRotated
+                    }
+                } else if iconState == .plusRotated {
+                    withAnimation() {
+                        iconState = .plus
+                    }
                 }
             }
-            .padding(.top, isZoomed ? topPaddingZoomed : topPaddingNotZoomed)
+            .padding(.top, iconState == .plusRotated ? topPaddingZoomed : topPaddingNotZoomed)
     }
 }
 
-struct ControlIcon: View {
-    @Binding var isZoomed: Bool
+struct CopyIcon: View {
+    @Binding var iconState: IconState
+    let brain: Brain
     let size: CGFloat
     let color: Color
     let topPadding: CGFloat
-
-    init(brain: Brain, t: TE, isZoomed: Binding<Bool>) {
+    
+    init(brain: Brain, t: TE, iconState: Binding<IconState>) {
+        self.brain = brain
+        self._iconState = iconState
         size = t.iconSize
         color = t.digits_1_9.textColor
-        self._isZoomed = isZoomed
+        self.topPadding = t.iconSize*0.6
+    }
+    
+    var body: some View {
+        Button("Copy") {
+            iconState = .ok
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                iconState = .plusRotated
+            }
+            UIPasteboard.general.string = brain.last.singleLine(len: brain.precision)
+        }
+        .frame(width: size, height: size)
+        .foregroundColor(color)
+        //        .opacity(iconState == .plusRotated ? 1.0 : 0.0)
+        .padding(.top, topPadding)
+    }
+}
+
+struct PasteIcon: View {
+    @Environment(\.scenePhase) var scenePhase
+    @State var hasValidNumberToPaste = false
+    @Binding var iconState: IconState
+    let brain: Brain
+    let size: CGFloat
+    let color: Color
+    let topPadding: CGFloat
+    
+    init(brain: Brain, t: TE, iconState: Binding<IconState>) {
+        self.brain = brain
+        self._iconState = iconState
+        size = t.iconSize
+        color = t.digits_1_9.textColor
+        self.topPadding = t.iconSize*0.4
+    }
+    
+    var body: some View {
+        VStack(spacing: 0.0) {
+            Button("Paste") {
+                iconState = .ok
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                    iconState = .plusRotated
+                }
+                DispatchQueue.main.async {
+                    if let s = UIPasteboard.general.string {
+                        let valid = Gmp.isValidGmpString(s)
+                        if valid {
+                            brain.asyncOperation("fromPasteboard")
+                        } else {
+                            /// TODO error handling
+                        }
+                    }
+                }
+            }
+            .onChange(of: scenePhase) { newPhase in
+                if newPhase == .active {
+                    print("active")
+                }
+            }
+            .frame(width: size, height: size)
+            .foregroundColor(color)
+            //            .opacity(iconState != .plusRotated ? 1.0 : 0.0)
+            .padding(.top, topPadding)
+        }
+    }
+}
+
+
+struct ControlIcon: View {
+    @Binding var iconState: IconState
+    let size: CGFloat
+    let color: Color
+    let topPadding: CGFloat
+    
+    init(brain: Brain, t: TE, iconState: Binding<IconState>) {
+        self._iconState = iconState
+        size = t.iconSize
+        color = t.digits_1_9.textColor
         self.topPadding = t.iconSize*0.6
     }
     
@@ -61,60 +180,10 @@ struct ControlIcon: View {
             .foregroundColor(color)
             .onTapGesture {
                 withAnimation(.easeIn) {
-//                    isZoomed.toggle()
+                    //                    isZoomed.toggle()
                 }
             }
-            .opacity(isZoomed ? 1.0 : 0.0)
-            .padding(.top, topPadding)
-    }
-}
-
-struct CopyIcon: View {
-    @Binding var isZoomed: Bool
-    let size: CGFloat
-    let color: Color
-    let topPadding: CGFloat
-
-    init(brain: Brain, t: TE, isZoomed: Binding<Bool>) {
-        size = t.iconSize
-        color = t.digits_1_9.textColor
-        self._isZoomed = isZoomed
-        self.topPadding = t.iconSize*0.6
-    }
-    
-    var body: some View {
-        Button(action: {}) {
-            Text("Copy")
-                .scaledToFill()
-        }
-            .frame(width: size, height: size)
-            .foregroundColor(color)
-            .opacity(isZoomed ? 1.0 : 0.0)
-            .padding(.top, topPadding)
-    }
-}
-
-struct PasteIcon: View {
-    @Binding var isZoomed: Bool
-    let size: CGFloat
-    let color: Color
-    let topPadding: CGFloat
-
-    init(brain: Brain, t: TE, isZoomed: Binding<Bool>) {
-        size = t.iconSize
-        color = t.digits_1_9.textColor
-        self._isZoomed = isZoomed
-        self.topPadding = t.iconSize*0.4
-    }
-    
-    var body: some View {
-        Button(action: {}) {
-            Text("Paste")
-                .scaledToFill()
-        }
-            .frame(width: size, height: size)
-            .foregroundColor(color)
-            .opacity(isZoomed ? 1.0 : 0.0)
+        //            .opacity(iconState == .plusRotated ? 1.0 : 0.0)
             .padding(.top, topPadding)
     }
 }

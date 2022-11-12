@@ -124,6 +124,16 @@ class Number: CustomDebugStringConvertible {
         return ret
     }
     
+    func singleLine(len: Int) -> String {
+        let ret: String
+        let oneLiner = oneLiner(withoutComma: len, withComma: len)
+        if let right = oneLiner.right {
+            ret = oneLiner.left+right
+        } else {
+            ret = oneLiner.left
+        }
+        return ret
+    }
     func oneLiner(withoutComma: Int, withComma: Int) -> OneLiner {
         var ret = OneLiner(left: "0", abreviated: false)
         ret.abreviated = false

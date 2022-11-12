@@ -16,7 +16,7 @@ import SwiftUI
 
 struct MainView: View {
     @ObservedObject var brain: Brain
-    @State private var isZoomed = false
+    @State var iconState: IconState = .plus
     var t: TE
     
     var body: some View {
@@ -27,10 +27,10 @@ struct MainView: View {
                     HStack(spacing: 0.0) {
                         Spacer()
                         VStack(spacing: 0.0) {
-                            PlusIcon(brain: brain, t: t, isZoomed: $isZoomed)
-                            CopyIcon(brain: brain, t: t, isZoomed: $isZoomed)
-                            PasteIcon(brain: brain, t: t, isZoomed: $isZoomed)
-                            ControlIcon(brain: brain, t: t, isZoomed: $isZoomed)
+                            PlusIcon(brain: brain, t: t, iconState: $iconState)
+                            CopyIcon(brain: brain, t: t, iconState: $iconState)
+                            PasteIcon(brain: brain, t: t, iconState: $iconState)
+                            ControlIcon(brain: brain, t: t, iconState: $iconState)
                         }
                     }
                     Spacer()
@@ -41,23 +41,23 @@ struct MainView: View {
             if t.isPad {
                 VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    if isZoomed {
+                    if iconState != .plus {
                         MultiLineDisplay(brain: brain, t: t)
                             .padding(.trailing, t.trailingAfterDisplay)
-                            .opacity(isZoomed ? 1.0 : 0.0)
+                            .opacity(iconState != .plus ? 1.0 : 0.0)
                             .transition(.move(edge: .bottom))
                     } else {
-                        if !isZoomed {
+                        if !(iconState != .plus) {
                             SingleLineDisplay(brain: brain, t: t)
                                 .padding(.trailing, t.trailingAfterDisplay)
-                                .opacity(isZoomed ? 0.0 : 1.0)
+                                .opacity(iconState != .plus ? 0.0 : 1.0)
                         }
                     }
                     Keys(brain: brain, t: t)
                 }
             } else {
                 VStack(spacing: 0.0) {
-                    if isZoomed {
+                    if iconState != .plus {
                         MultiLineDisplay(brain: brain, t: t)
                             .padding(.trailing, t.trailingAfterDisplay)
                     } else {
@@ -81,7 +81,7 @@ struct MainView: View {
                         Keys(brain: brain, t: t)
                     }
                 } else {
-                    if !isZoomed {
+                    if !(iconState != .plus) {
                         VStack(spacing: 0.0) {
                             Spacer(minLength: 0.0)
                             HStack(spacing: 0.0) {

@@ -185,12 +185,11 @@ class Brain: ObservableObject {
             self.percentage()
         } else if symbol == "fromPasteboard" {
             if let s = UIPasteboard.general.string {
-                let gmp = Gmp(s)
                 if pendingOperator != nil {
                     n.append(Number(Gmp()))
                     pendingOperator = nil
                 }
-                n.replaceLast(with: Number(gmp))
+                n.replaceLast(with: Number(Gmp(s)))
             }
         } else if symbol == "," {
             if pendingOperator != nil {

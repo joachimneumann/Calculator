@@ -41,6 +41,13 @@ class Gmp: Equatable {
         mpfr_init2 (&mpfr, globalGmpSignificantBits)
         mpfr_set_str (&mpfr, s1, 10, MPFR_RNDN)
     }
+
+    static func isValidGmpString(_ s: String) -> Bool {
+        var temp_mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
+        mpfr_init2 (&temp_mpfr, globalGmpSignificantBits)
+        return mpfr_set_str (&temp_mpfr, s, 10, MPFR_RNDN) == 0
+    }
+
     convenience init(_ s: String?) {
         if s == nil {
             assert(false)
@@ -180,11 +187,6 @@ class Gmp: Equatable {
         mpfr_clear(&temp)
     }
     
-//    func isValidGmpString(s: String) -> Bool {
-//        var temp_mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
-//        mpfr_init2 (&temp_mpfr, xxxx) // TODO precision
-//        return mpfr_set_str (&temp_mpfr, s, 10, MPFR_RNDN) == 0
-//    }
     func toDouble() -> Double {
         return mpfr_get_d(&mpfr, MPFR_RNDN)
     }
