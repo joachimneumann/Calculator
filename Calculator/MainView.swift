@@ -16,7 +16,7 @@ import SwiftUI
 
 struct MainView: View {
     @ObservedObject var brain: Brain
-    @State var iconState: IconState = .plus
+    @State var isZoomed: Bool = false
     var t: TE
     
     var body: some View {
@@ -27,10 +27,10 @@ struct MainView: View {
                     HStack(spacing: 0.0) {
                         Spacer()
                         VStack(spacing: 0.0) {
-                            PlusIcon(brain: brain, t: t, iconState: $iconState)
-                            CopyIcon(brain: brain, t: t, iconState: $iconState)
-                            PasteIcon(brain: brain, t: t, iconState: $iconState)
-                            ControlIcon(brain: brain, t: t, iconState: $iconState)
+                            PlusIcon(brain: brain, t: t, isZoomed: $isZoomed)
+                            CopyIcon(brain: brain, t: t)
+                            PasteIcon(brain: brain, t: t)
+                            ControlIcon(brain: brain, t: t)
                         }
                     }
                     Spacer()
@@ -41,23 +41,21 @@ struct MainView: View {
             if t.isPad {
                 VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    if iconState != .plus {
+                    if isZoomed {
                         MultiLineDisplay(brain: brain, t: t)
                             .padding(.trailing, t.trailingAfterDisplay)
-                            .opacity(iconState != .plus ? 1.0 : 0.0)
+                            .opacity(isZoomed ? 1.0 : 0.0)
                             .transition(.move(edge: .bottom))
                     } else {
-                        if !(iconState != .plus) {
-                            SingleLineDisplay(brain: brain, t: t)
-                                .padding(.trailing, t.trailingAfterDisplay)
-                                .opacity(iconState != .plus ? 0.0 : 1.0)
-                        }
+                        SingleLineDisplay(brain: brain, t: t)
+                            .padding(.trailing, t.trailingAfterDisplay)
+                            .opacity(isZoomed ? 0.0 : 1.0)
                     }
                     Keys(brain: brain, t: t)
                 }
             } else {
                 VStack(spacing: 0.0) {
-                    if iconState != .plus && !t.isPortrait {
+                    if isZoomed && !t.isPortrait {
                         MultiLineDisplay(brain: brain, t: t)
                             .padding(.trailing, t.trailingAfterDisplay)
                     } else {
@@ -68,78 +66,7 @@ struct MainView: View {
                     }
                 }
             }
-            
-            
-            /// Display and Keys
-            if !t.isPad && false {
-                /// iPhone
-                if t.isPortrait {
-                    /// no zoom
-                    VStack(spacing: 0.0) {
-                        Spacer(minLength: 0.0)
-                        SingleLineDisplay(brain: brain, t: t)
-                        Keys(brain: brain, t: t)
-                    }
-                } else {
-                    if !(iconState != .plus) {
-                        VStack(spacing: 0.0) {
-                            Spacer(minLength: 0.0)
-                            HStack(spacing: 0.0) {
-                                SingleLineDisplay(brain: brain, t: t)
-                            }
-                            Keys(brain: brain, t: t)
-                        }
-                    } else {
-                        /// iPhone landscape zoomed
-                        HStack(spacing: 0.0) {
-                            MultiLineDisplay(brain: brain, t: t)
-                        }
-                    }
-                }
-            } else {
-                /// iPad or Mac
-            }
         }
-        
-        
-        /*
-         VStack(spacing: 0.0) {
-         Spacer(minLength: 0.0)
-         HStack(spacing: 0.0) {
-         if !isZoomed || !t.isZoomAllowed {
-         SingleLineDisplay(brain: brain, t: t)
-         } else {
-         MultiLineDisplay(brain: brain, t: t)
-         }
-         if t.isPad || !t.isPortrait {
-         VStack(spacing: 0.0) {
-         PlusIcon(brain: brain, t: t, isZoomed: $isZoomed)
-         if isZoomed && t.isZoomAllowed  {
-         Image(systemName: "switch.2")
-         .resizable()
-         .scaledToFit()
-         .frame(width: t.iconSize, height: t.iconSize)
-         .font(.system(size: t.iconSize*0.75, weight: .thin))
-         .padding(.top, t.iconSize*0.25)
-         .foregroundColor(t.digits_1_9.textColor)
-         .onTapGesture {
-         withAnimation() {
-         }
-         }
-         .padding(.top, t.iconSize*0.2)
-         }
-         Spacer(minLength: 0.0)
-         }
-         //                    .padding(.top, t.iconSize*0.2)
-         //                    .padding(.leading, t.iconSize * TE.iconLeadingPadding)
-         ////                    .frame(height: t.displayheight + (isZoomed && t.isZoomAllowed ? t.allkeysHeight : 0.0), alignment: .topTrailing)
-         }
-         }
-         if !isZoomed || !t.isZoomAllowed {
-         Keys(brain: brain, t: t)
-         }
-         }
-         */
     }
     
     

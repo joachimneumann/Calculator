@@ -7,106 +7,81 @@
 
 import SwiftUI
 
-enum IconState: Int {
-    case plus = 0
-    case plusRotated
-    case ok
-    case noNumber
-    func sizeFactor() -> CGFloat {
-        switch self {
-        case .plus:
-            return 1.0
-        case .plusRotated:
-            return 1.0
-        case .ok:
-            return 0.7
-        case .noNumber:
-            return 1.0
-        }
-    }
-    func image() -> Image {
-        switch self {
-        case .plus:
-            return Image(systemName: "plus.circle.fill")
-        case .plusRotated:
-            return Image(systemName: "plus.circle.fill")
-        case .ok:
-            return Image("wing")
-        case .noNumber:
-            return Image("noNumber")
-        }
-    }
-}
-
 struct PlusIcon: View {
-    @Binding var iconState: IconState
+    @Binding var isZoomed: Bool
     let size: CGFloat
     let color: Color
     let topPaddingZoomed: CGFloat
     let topPaddingNotZoomed: CGFloat
     
-    init(brain: Brain, t: TE, iconState: Binding<IconState>) {
-        size = t.iconSize
-        self._iconState = iconState
+    init(brain: Brain, t: TE, isZoomed: Binding<Bool>) {
+        size = t.iconSize*0.8
+        self._isZoomed = isZoomed
         color = t.digits_1_9.textColor
         self.topPaddingNotZoomed = t.zoomTopPaddingNotZoomed
         self.topPaddingZoomed = t.zoomTopPaddingZoomed
     }
     
     var body: some View {
-        iconState.image()
+        Image(systemName: "plus.circle.fill")
             .resizable()
             .scaledToFit()
-            .frame(width: size*iconState.sizeFactor(), height: size*iconState.sizeFactor())
-            .padding(.leading, 0.5*size*(1.0-iconState.sizeFactor()))
-            .padding(.top, 0.5*size*(1.0-iconState.sizeFactor()))
-            .padding(.bottom, 0.5*size*(1.0-iconState.sizeFactor()))
+            .frame(width: size, height: size)
             .font(.system(size: size, weight: .thin))
             .foregroundColor(color)
-            .rotationEffect(iconState == .plusRotated ? .degrees(-45.0) : .degrees(0.0))
+            .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
             .onTapGesture {
-                if iconState == .plus {
-                    withAnimation() {
-                        iconState = .plusRotated
-                    }
-                } else if iconState == .plusRotated {
-                    withAnimation() {
-                        iconState = .plus
-                    }
+                withAnimation() {
+                    isZoomed.toggle()
                 }
             }
-            .padding(.top, iconState == .plusRotated ? topPaddingZoomed : topPaddingNotZoomed)
+            .padding(.top, isZoomed ? topPaddingZoomed : topPaddingNotZoomed)
     }
 }
 
 struct CopyIcon: View {
-    @Binding var iconState: IconState
+    @State var copying = false
     let brain: Brain
     let size: CGFloat
     let color: Color
     let topPadding: CGFloat
     
-    init(brain: Brain, t: TE, iconState: Binding<IconState>) {
+    init(brain: Brain, t: TE) {
         self.brain = brain
-        self._iconState = iconState
         size = t.iconSize
         color = t.digits_1_9.textColor
         self.topPadding = t.iconSize*0.6
     }
     
     var body: some View {
-        Button("Copy") {
-            iconState = .ok
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                iconState = .plusRotated
+        Group() {
+            if copying {
+                Button(action: {
+                    print("button pressed")
+                    
+                }) {
+                    Image("wing")
+                        .resizable()
+//                        .frame(width: size*iconState.sizeFactor(), height: size*iconState.sizeFactor())
+                }
+            } else {
+                Button("Copy") {
+                    copying = true
+//                    iconState = .noNumber
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                        withAnimation() {
+                            copying = false
+                        }
+                    }
+                    var s = brain.last.singleLine(len: brain.precision)
+                    s.replace(",", with: ".")
+                    UIPasteboard.general.string = s
+                }
+                .foregroundColor(color)
+                //        .opacity(iconState == .plusRotated ? 1.0 : 0.0)
             }
-            var s = brain.last.singleLine(len: brain.precision)
-            s.replace(",", with: ".")
-            UIPasteboard.general.string = s
         }
         .frame(width: size, height: size)
-        .foregroundColor(color)
-        //        .opacity(iconState == .plusRotated ? 1.0 : 0.0)
         .padding(.top, topPadding)
     }
 }
@@ -114,15 +89,13 @@ struct CopyIcon: View {
 struct PasteIcon: View {
     @Environment(\.scenePhase) var scenePhase
     @State var hasValidNumberToPaste = false
-    @Binding var iconState: IconState
     let brain: Brain
     let size: CGFloat
     let color: Color
     let topPadding: CGFloat
     
-    init(brain: Brain, t: TE, iconState: Binding<IconState>) {
+    init(brain: Brain, t: TE) {
         self.brain = brain
-        self._iconState = iconState
         size = t.iconSize
         color = t.digits_1_9.textColor
         self.topPadding = t.iconSize*0.4
@@ -131,9 +104,8 @@ struct PasteIcon: View {
     var body: some View {
         VStack(spacing: 0.0) {
             Button("Paste") {
-                iconState = .ok
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                    iconState = .plusRotated
+                    
                 }
                 DispatchQueue.main.async {
                     if let s = UIPasteboard.general.string {
@@ -161,13 +133,11 @@ struct PasteIcon: View {
 
 
 struct ControlIcon: View {
-    @Binding var iconState: IconState
     let size: CGFloat
     let color: Color
     let topPadding: CGFloat
     
-    init(brain: Brain, t: TE, iconState: Binding<IconState>) {
-        self._iconState = iconState
+    init(brain: Brain, t: TE) {
         size = t.iconSize
         color = t.digits_1_9.textColor
         self.topPadding = t.iconSize*0.6
