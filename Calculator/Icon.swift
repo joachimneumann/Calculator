@@ -40,53 +40,40 @@ struct PlusIcon: View {
 }
 
 struct CopyIcon: View {
-    @State var copying = false
+    @Binding var isCopyingOrPasting: Bool
     let brain: Brain
     let size: CGFloat
     let color: Color
     let topPadding: CGFloat
     
-    init(brain: Brain, t: TE) {
+    init(brain: Brain, t: TE, isCopyingOrPasting: Binding<Bool>) {
         self.brain = brain
+        self._isCopyingOrPasting = isCopyingOrPasting
         size = t.iconSize
         color = t.digits_1_9.textColor
         self.topPadding = t.iconSize*0.6
     }
     
     var body: some View {
-        Group() {
-            if copying {
-                Button(action: {
-                    print("button pressed")
-                    
-                }) {
-                    Image("wing")
-                        .resizable()
-//                        .frame(width: size*iconState.sizeFactor(), height: size*iconState.sizeFactor())
+        Button("Copy") {
+            isCopyingOrPasting = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                withAnimation() {
+                    isCopyingOrPasting = false
                 }
-            } else {
-                Button("Copy") {
-                    copying = true
-//                    iconState = .noNumber
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                        withAnimation() {
-                            copying = false
-                        }
-                    }
-                    var s = brain.last.singleLine(len: brain.precision)
-                    s.replace(",", with: ".")
-                    UIPasteboard.general.string = s
-                }
-                .foregroundColor(color)
-                //        .opacity(iconState == .plusRotated ? 1.0 : 0.0)
             }
+            var s = brain.last.singleLine(len: brain.precision)
+            s.replace(",", with: ".")
+            UIPasteboard.general.string = s
         }
+        .foregroundColor(color)
         .frame(width: size, height: size)
         .padding(.top, topPadding)
     }
 }
 
 struct PasteIcon: View {
+    @Binding var isCopyingOrPasting: Bool
     @Environment(\.scenePhase) var scenePhase
     @State var hasValidNumberToPaste = false
     let brain: Brain
@@ -94,8 +81,9 @@ struct PasteIcon: View {
     let color: Color
     let topPadding: CGFloat
     
-    init(brain: Brain, t: TE) {
+    init(brain: Brain, t: TE, isCopyingOrPasting: Binding<Bool>) {
         self.brain = brain
+        self._isCopyingOrPasting = isCopyingOrPasting
         size = t.iconSize
         color = t.digits_1_9.textColor
         self.topPadding = t.iconSize*0.4
@@ -104,8 +92,9 @@ struct PasteIcon: View {
     var body: some View {
         VStack(spacing: 0.0) {
             Button("Paste") {
+                isCopyingOrPasting = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                    
+                    isCopyingOrPasting = false
                 }
                 DispatchQueue.main.async {
                     if let s = UIPasteboard.general.string {
@@ -125,7 +114,6 @@ struct PasteIcon: View {
             }
             .frame(width: size, height: size)
             .foregroundColor(color)
-            //            .opacity(iconState != .plusRotated ? 1.0 : 0.0)
             .padding(.top, topPadding)
         }
     }

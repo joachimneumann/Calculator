@@ -17,6 +17,7 @@ import SwiftUI
 struct MainView: View {
     @ObservedObject var brain: Brain
     @State var isZoomed: Bool = false
+    @State var isCopyingOrPasting: Bool = false
     var t: TE
     
     var body: some View {
@@ -28,8 +29,8 @@ struct MainView: View {
                         Spacer()
                         VStack(spacing: 0.0) {
                             PlusIcon(brain: brain, t: t, isZoomed: $isZoomed)
-                            CopyIcon(brain: brain, t: t)
-                            PasteIcon(brain: brain, t: t)
+                            CopyIcon(brain: brain, t: t, isCopyingOrPasting: $isCopyingOrPasting)
+                            PasteIcon(brain: brain, t: t, isCopyingOrPasting: $isCopyingOrPasting)
                             ControlIcon(brain: brain, t: t)
                         }
                     }
@@ -42,7 +43,7 @@ struct MainView: View {
                 VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
                     if isZoomed {
-                        MultiLineDisplay(brain: brain, t: t)
+                        MultiLineDisplay(brain: brain, t: t, isCopyingOrPasting: isCopyingOrPasting)
                             .padding(.trailing, t.trailingAfterDisplay)
                             .opacity(isZoomed ? 1.0 : 0.0)
                             .transition(.move(edge: .bottom))
@@ -56,7 +57,7 @@ struct MainView: View {
             } else {
                 VStack(spacing: 0.0) {
                     if isZoomed && !t.isPortrait {
-                        MultiLineDisplay(brain: brain, t: t)
+                        MultiLineDisplay(brain: brain, t: t, isCopyingOrPasting: isCopyingOrPasting)
                             .padding(.trailing, t.trailingAfterDisplay)
                     } else {
                         Spacer(minLength: 0.0)

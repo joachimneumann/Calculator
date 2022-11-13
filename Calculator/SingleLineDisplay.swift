@@ -48,9 +48,7 @@ struct SingleLineDisplay: View {
                 .minimumScaleFactor(1.0/fontGrowthFactor)
                 .foregroundColor(color)
                 .frame(height: height, alignment: .topTrailing)
-//                .background(Color.yellow).opacity(0.4)
         }
-//        .transition(.move(edge: .trailing))
     }
 }
 
@@ -59,9 +57,15 @@ struct MultiLineDisplay: View {
     let text: String
     let uiFont: UIFont
     let height: CGFloat
+    let isCopyingOrPasting: Bool
+    let highlightColor = Color(
+        red:    118.0/255.0,
+        green:  250.0/255.0,
+        blue:   113.0/255.0)
 
-    init(brain: Brain, t: TE) {
+    init(brain: Brain, t: TE, isCopyingOrPasting: Bool) {
         self.color = Color.white
+        self.isCopyingOrPasting = isCopyingOrPasting
         self.text = brain.last.singleLine(len: brain.precision)
         self.uiFont = t.displayUIFont
         self.height = t.multipleLineDisplayHeight
@@ -72,12 +76,11 @@ struct MultiLineDisplay: View {
             Text(text)
                 .font(Font(uiFont))
                 .minimumScaleFactor(1.0)
-                .foregroundColor(color)
+                .foregroundColor(isCopyingOrPasting ? highlightColor : color)
                 .lineLimit(100)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                 .multilineTextAlignment(.trailing)
                 .frame(height: height)
-//                .background(Color.yellow.opacity(0.4))
         }
     }
 }
