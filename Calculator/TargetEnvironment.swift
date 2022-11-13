@@ -190,15 +190,31 @@ class TE {
                 red:   255.0/255.0,
                 green: 255.0/255.0,
                 blue:  255.0/255.0),
-            disabledColor: Color.gray,
+            disabledColor: Color(
+                red:    80.0/255.0,
+                green:  80.0/255.0,
+                blue:   80.0/255.0),
             bgColor: Color(
-                red:   105.0/255.0,
-                green: 183.0/255.0,
-                blue:  191.0/255.0),
+                red:   165.0/255.0,
+                green: 165.0/255.0,
+                blue:  165.0/255.0),
             downBgColor: Color(
-                red:   203.0/255.0,
-                green: 230.0/255.0,
-                blue:  232.0/255.0),
+                red:   124.0/255.0,
+                green: 125.0/255.0,
+                blue:  127.0/255.0),
+//            textColor: Color(
+//                red:   255.0/255.0,
+//                green: 255.0/255.0,
+//                blue:  255.0/255.0),
+//            disabledColor: Color.gray,
+//            bgColor: Color(
+//                red:   105.0/255.0,
+//                green: 183.0/255.0,
+//                blue:  191.0/255.0),
+//            downBgColor: Color(
+//                red:   203.0/255.0,
+//                green: 230.0/255.0,
+//                blue:  232.0/255.0),
             downAnimationTime: 0.1,
             upAnimationTime: 0.3,
             bottomPadding: 0.0)
@@ -207,9 +223,9 @@ class TE {
             size: keySize,
             font: Font.system(size: scientificKeyFontSize).monospacedDigit(),
             textColor: Color(
-                red:     0.0/255.0,
-                green:   0.0/255.0,
-                blue:    0.0/255.0),
+                red:   255.0/255.0,
+                green: 255.0/255.0,
+                blue:  255.0/255.0),
             disabledColor: Color(
                 red:    80.0/255.0,
                 green:  80.0/255.0,
