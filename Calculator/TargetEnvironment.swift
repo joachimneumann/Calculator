@@ -46,6 +46,7 @@ class TE {
     static let iconLeadingPadding: CGFloat = 0.2
     
     var displayUIFont: UIFont
+    var iPhonePortraitDisplayUIFont: UIFont
     var spaceBetweenKeys: CGFloat
     var allkeysHeight: CGFloat
     var withoutComma: Int
@@ -53,6 +54,7 @@ class TE {
     var isPad: Bool
     var zeroTrailingPadding: CGFloat
     var singleLineDisplayHeight: CGFloat
+    var iPhonePortraitSingleLineDisplayHeight: CGFloat
     var multipleLineDisplayHeight: CGFloat
     var zoomTopPaddingZoomed: CGFloat
     var zoomTopPaddingNotZoomed: CGFloat
@@ -128,7 +130,10 @@ class TE {
         allkeysHeight = 5.0 * keySize.height + 4.0 * spaceBetweenKeys
         zeroTrailingPadding = keySize.width * 1 + digitsKeyFontSize*0.25
         singleLineDisplayHeight = keySize.height
-        
+        let fontFactor = 1.5
+        iPhonePortraitSingleLineDisplayHeight = keySize.height * fontFactor
+        iPhonePortraitDisplayUIFont = UIFont.monospacedDigitSystemFont(ofSize: displayFontSize * fontFactor, weight: .thin)
+
         if isPad {
             circularProgressViewScaleFactor = 2.0
             zoomTopPaddingNotZoomed = appFrame.height - allkeysHeight - singleLineDisplayHeight + singleLineDisplayHeight * 0.15

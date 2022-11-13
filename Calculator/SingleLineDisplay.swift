@@ -24,8 +24,9 @@ struct SingleLineDisplay: View {
     let color: Color
     let text: String
     let uiFont: UIFont
-    let fontGrowthFactor = 1.0
+    let fontGrowthFactor: CGFloat
     let height: CGFloat
+    let isPortraitIPhone: Bool
     
     init(brain: Brain, t: TE) {
         self.color = Color.white
@@ -35,19 +36,36 @@ struct SingleLineDisplay: View {
         } else {
             text = oneLiner.left
         }
-        self.uiFont = t.displayUIFont
-        self.height = t.singleLineDisplayHeight
+        isPortraitIPhone = !t.isPad && t.isPortrait
+        if isPortraitIPhone {
+            fontGrowthFactor = t.iPhonePortraitSingleLineDisplayHeight / t.singleLineDisplayHeight
+            self.uiFont = t.iPhonePortraitDisplayUIFont
+            self.height = t.iPhonePortraitSingleLineDisplayHeight
+        } else {
+            fontGrowthFactor = 1.0
+            self.uiFont = t.displayUIFont
+            self.height = t.singleLineDisplayHeight
+        }
     }
     
     var body: some View {
         // TODO: use growthfactor and minimumScaleFactor only if the length of the single ine is less than the max length
         HStack(spacing: 0.0) {
             Spacer(minLength: 0.0)
-            Text(text)
-                .font(Font(uiFont))
-                .minimumScaleFactor(1.0/fontGrowthFactor)
-                .foregroundColor(color)
-                .frame(height: height, alignment: .topTrailing)
+            if isPortraitIPhone {
+                Text(text)
+                    .font(Font(uiFont))
+                    .scaledToFit()
+                    .minimumScaleFactor(1.0 / fontGrowthFactor)
+                    .lineLimit(1)
+                    .foregroundColor(color)
+            } else {
+                Text(text)
+                    .font(Font(uiFont))
+                    .minimumScaleFactor(1.0/fontGrowthFactor)
+                    .foregroundColor(color)
+                    .frame(height: height, alignment: .topTrailing)
+            }
         }
     }
 }

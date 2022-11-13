@@ -55,7 +55,9 @@ struct CopyIcon: View {
     }
     
     var body: some View {
-        Button("Copy") {
+        Text("Copy")
+            .scaledToFill()
+            .onTapGesture() {
             isCopyingOrPasting = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                 withAnimation() {
@@ -75,11 +77,22 @@ struct CopyIcon: View {
 struct PasteIcon: View {
     @Binding var isCopyingOrPasting: Bool
     @Environment(\.scenePhase) var scenePhase
-    @State var hasValidNumberToPaste = false
     let brain: Brain
     let size: CGFloat
     let color: Color
     let topPadding: CGFloat
+    @State var showPasteButton = true
+    
+    func hasValidNumberToPaste() -> Bool {
+        if let pasteString = UIPasteboard.general.string {
+            if pasteString.count > 0 {
+                if Gmp.isValidGmpString(pasteString) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
     
     init(brain: Brain, t: TE, isCopyingOrPasting: Binding<Bool>) {
         self.brain = brain
@@ -90,35 +103,37 @@ struct PasteIcon: View {
     }
     
     var body: some View {
-        VStack(spacing: 0.0) {
-            Button("Paste") {
-                isCopyingOrPasting = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                    isCopyingOrPasting = false
-                }
-                DispatchQueue.main.async {
-                    if let s = UIPasteboard.general.string {
-                        let valid = Gmp.isValidGmpString(s)
-                        if valid {
-                            brain.asyncOperation("fromPasteboard")
+        Group {
+            if showPasteButton {
+                Text("Paste")
+                    .scaledToFill()
+                    .onTapGesture() {
+                        if hasValidNumberToPaste() {
+                            DispatchQueue.main.async {
+                                isCopyingOrPasting = true
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                                    isCopyingOrPasting = false
+                                }
+                                brain.asyncOperation("fromPasteboard")
+                            }
                         } else {
-                            /// TODO error handling
+                            showPasteButton = false
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                                showPasteButton = true
+                            }
                         }
                     }
-                }
+            } else {
+                Image("noNumber")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
             }
-            .onChange(of: scenePhase) { newPhase in
-                if newPhase == .active {
-                    print("active")
-                }
-            }
-            .frame(width: size, height: size)
-            .foregroundColor(color)
-            .padding(.top, topPadding)
         }
+        .frame(width: size, height: size)
+        .foregroundColor(color)
+        .padding(.top, topPadding)
     }
 }
-
 
 struct ControlIcon: View {
     let size: CGFloat

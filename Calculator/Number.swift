@@ -217,7 +217,7 @@ class Number: CustomDebugStringConvertible {
             
             /// restore trailing zeros that have been removed
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
-            print(mantissa)
+            // print(mantissa)
             if mantissa.count <= charactersWithoutComma {
                 ret.left = (isNegative ? "-" : "") + mantissa
                 return ret
