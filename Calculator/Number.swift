@@ -160,7 +160,7 @@ class Number: CustomDebugStringConvertible {
             oneLinerGmp = Gmp(str!)
         }
         if oneLinerGmp.NaN {
-            ret.left = "not real"
+            ret.left = "not a number"
             return ret
         }
         if oneLinerGmp.inf {

@@ -74,6 +74,18 @@ struct MainView: View {
     struct Keys: View {
         let brain: Brain
         var t: TE
+        let bottomPadding: CGFloat
+        
+        init(brain: Brain, t: TE) {
+            self.brain = brain
+            self.t = t
+            if !t.isPad && t.isPortrait {
+                bottomPadding = t.allkeysHeight * 0.07
+            } else {
+                bottomPadding = 0
+            }
+        }
+
         var body: some View {
             VStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
@@ -88,6 +100,7 @@ struct MainView: View {
             .frame(height: t.allkeysHeight)
             .background(Color.black)
             .transition(.move(edge: .bottom))
+            .padding(.bottom, bottomPadding)
         }
     }
     

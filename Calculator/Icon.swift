@@ -65,7 +65,7 @@ struct CopyIcon: View {
                 }
             }
             var s = brain.last.singleLine(len: brain.precision)
-            s.replace(",", with: ".")
+            s.replacingOccurrences(of: ",", with: ".")
             UIPasteboard.general.string = s
         }
         .foregroundColor(color)
