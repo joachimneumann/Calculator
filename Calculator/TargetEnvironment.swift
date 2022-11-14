@@ -22,14 +22,6 @@ struct KeyProperties {
 class TE {
     static let iPhoneSymbolFontSizeReduction: CGFloat = 0.85//1.0
     static let digitsInAllDigitsDisplay: Int = 100
-    
-    static let lowPrecision          = 100
-    static let lowPrecisionString    = "one hundred digits"
-    static let mediumPrecision       = 10000
-    static let mediumPrecisionString = "ten thousand digits"
-    static let highPrecision         = 1000000
-    static let highPrecisionString   = "one million digits"
-
 
 //    static let appBackgroundColor = Color(.brown).opacity(0.7)
     static let appBackgroundColor = Color(.black)

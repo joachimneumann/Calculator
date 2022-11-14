@@ -64,9 +64,7 @@ struct CopyIcon: View {
                     isCopyingOrPasting = false
                 }
             }
-            var s = brain.last.singleLine(len: brain.precision)
-            s.replacingOccurrences(of: ",", with: ".")
-            UIPasteboard.general.string = s
+            UIPasteboard.general.string = brain.last.singleLine(len: brain.precision).replacingOccurrences(of: ",", with: ".")
         }
         .foregroundColor(color)
         .frame(width: size, height: size)
@@ -136,29 +134,29 @@ struct PasteIcon: View {
 }
 
 struct ControlIcon: View {
+    let brain: Brain
     let size: CGFloat
     let color: Color
     let topPadding: CGFloat
+    @Binding var copyAndPastePurchased: Bool
     
-    init(brain: Brain, t: TE) {
+    init(brain: Brain, t: TE, copyAndPastePurchased: Binding<Bool>) {
+        self.brain = brain
+        self._copyAndPastePurchased = copyAndPastePurchased
         size = t.iconSize
         color = t.digits_1_9.textColor
         self.topPadding = t.iconSize*0.6
     }
     
     var body: some View {
-        Image(systemName: "switch.2")
-            .resizable()
-            .scaledToFit()
-            .frame(width: size*0.8, height: size*0.8)
-            .font(.system(size: size, weight: .thin))
-            .foregroundColor(color)
-            .onTapGesture {
-                withAnimation(.easeIn) {
-                    //                    isZoomed.toggle()
-                }
-            }
-        //            .opacity(iconState == .plusRotated ? 1.0 : 0.0)
-            .padding(.top, topPadding)
+        NavigationLink(destination: ControlCenter(brain: brain, copyAndPastePurchased: _copyAndPastePurchased)) {
+            Image(systemName: "switch.2")
+                .resizable()
+                .scaledToFit()
+                .frame(width: size*0.8, height: size*0.8)
+                .font(.system(size: size, weight: .thin))
+                .foregroundColor(color)
+                .padding(.top, topPadding)
+        }
     }
 }

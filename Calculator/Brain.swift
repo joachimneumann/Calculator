@@ -14,49 +14,14 @@ class Brain: ObservableObject {
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
 
-    var precision: Int = TE.lowPrecision
-//    @AppStorage("precision") var precision: Int = TE.lowPrecision {
-//        didSet {
-//            calculateSignificantBits()
-//            Gmp.deleteConstants()
-//            nonWaitingOperation("C")
-//            nonWaitingOperation("messageToUser")
-//        }
-//    }
+    @Published var precision: Int = 100
     var precisionInternal: Int {
-        switch precision {
-        case TE.lowPrecision:
-            return 2*TE.lowPrecision
-        case TE.mediumPrecision:
-            return 2*TE.mediumPrecision
-        case TE.highPrecision:
-            return Int(round(1.5*Double(TE.highPrecision)))
-        default:
-            return 2*TE.lowPrecision
-        }
-    }
-    var precisionIconName: String {
-        switch precision {
-        case TE.lowPrecision:
-            return "h.circle.fill"
-        case TE.mediumPrecision:
-            return "t.circle.fill"
-        case TE.highPrecision:
-            return "m.circle.fill"
-        default:
-            return "questionmark.circle.fill"
-        }
-    }
-    var precisionMessage: String {
-        switch precision {
-        case TE.lowPrecision:
-            return TE.lowPrecisionString
-        case TE.mediumPrecision:
-            return TE.mediumPrecisionString
-        case TE.highPrecision:
-            return TE.highPrecisionString
-        default:
-            return "unknown precision"
+        if precision <= 1000 {
+            return 2 * precision
+        } else if precision <= 100000 {
+            return Int(round(1.5*Double(precision)))
+        } else {
+            return precision + 50000
         }
     }
     
@@ -279,7 +244,7 @@ class Brain: ObservableObject {
     var no: Int { operatorStack.count }
     //    var last: Number { n.last() }
     
-    private func calculateSignificantBits() {
+    func calculateSignificantBits() {
         globalGmpPrecision = precisionInternal
         globalGmpSignificantBits = Int( Double(precisionInternal) * 3.32192809489) /// log2(10)
     }

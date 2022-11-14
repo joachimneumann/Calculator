@@ -7,9 +7,7 @@ __pr="--print-path"
 __name="xcode-select"
 DEVELOPER=`${__name} ${__pr}`
 
-SDKVERSION="15.7" #`xcrun -sdk iphoneos --show-sdk-version`
-
-MIN_IOS="14.0"
+MIN_IOS_VERSION="-mios-version-min=15.0" #`xcrun -sdk iphoneos --show-sdk-version`
 
 BITCODE="-fembed-bitcode"
 
@@ -39,7 +37,7 @@ build()
 
 	export PATH="${PLATFORM}/Developer/usr/bin:${DEVELOPER}/usr/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
-	CFLAGS="${BITCODE} -isysroot ${SDK} -Wno-error -Wno-implicit-function-declaration -arch ${ARCH} ${COMPILEARGS}"
+	CFLAGS="${BITCODE} ${MIN_IOS_VERSION} -isysroot ${SDK} -Wno-error -Wno-implicit-function-declaration -arch ${ARCH} ${COMPILEARGS}"
 
 	./configure CC="${CLANG} ${CFLAGS}"  CPP="${CLANG} -E"  CPPFLAGS="${CFLAGS}" \
 	--host=aarch64-apple-darwin --disable-assembly --enable-static --disable-shared ${CONFIGUREARGS}
