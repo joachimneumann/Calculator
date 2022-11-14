@@ -94,11 +94,11 @@ struct ControlCenter: View {
                 .padding(.top, 20)
                 if brain.precision >= 100000 {
                     Text("Warning: processing might be slow and the app may crash!")
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.top, 10)
                         .foregroundColor(Color.red)
                 }
-                Text("The app calculats internally with \(globalGmpSignificantBits) bits (corresponding to \(globalGmpPrecision) digits) to reduce the effect of error accumulation")
+                Text("The app calculates internally with \(globalGmpSignificantBits) bits (corresponding to \(globalGmpPrecision) digits) to reduce the effect of error accumulation")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top, 10)
                     .padding(.leading, 0)
