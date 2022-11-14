@@ -82,6 +82,8 @@ struct ControlCenter: View {
                         }
                         brain.calculateSignificantBits()
                         Gmp.deleteConstants()
+                        let testMemoryResult = testMemory(size: globalGmpSignificantBits/8 * 10)
+                        print("testmemory \(testMemoryResult)")
                         brain.nonWaitingOperation("C")
                     }) {
                         Image(systemName: "plus.circle")
@@ -114,6 +116,7 @@ struct ControlCenter: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     HStack {
                         Text("Purchase Copy and Paste")
+                            .padding(.trailing, 20)
                         Button {
                             copyAndPastePurchased = true
                         }

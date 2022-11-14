@@ -25,6 +25,10 @@ var globalUnsignedLongInt: CUnsignedLong = 0
 var globalGmpSignificantBits: Int = 0 /// Will be be set be brain.init() and in the menu
 var globalGmpPrecision: Int = 0
 
+func testMemory(size: Int) -> Bool {
+    return testmalloc(size) == 1
+}
+
 class Gmp: Equatable {
     static func == (lhs: Gmp, rhs: Gmp) -> Bool {
         return mpfr_cmp(&lhs.mpfr, &rhs.mpfr) == 0
