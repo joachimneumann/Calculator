@@ -24,11 +24,11 @@ struct MainView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color.black
-                
-                Color.black
-                    .navigationBarTitle("Calculator").hidden()
-                    .navigationBarHidden(true)
+//                Color.black
+//                
+//                Color.black
+//                    .navigationBarTitle("Calculator").hidden()
+//                    .navigationBarHidden(true)
                 
                 /// Icons - except for portrait iPhone
                 if t.isPad || !t.isPortrait {
@@ -81,6 +81,7 @@ struct MainView: View {
             }
             .foregroundColor(Color.gray)
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     
