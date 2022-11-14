@@ -16,7 +16,9 @@ class Brain: ObservableObject {
 
     @Published var precision: Int = 100
     var precisionInternal: Int {
-        if precision <= 1000 {
+        if precision <= 500 {
+            return 1000
+        } else if precision <= 10000 {
             return 2 * precision
         } else if precision <= 100000 {
             return Int(round(1.5*Double(precision)))
