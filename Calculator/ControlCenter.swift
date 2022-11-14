@@ -44,14 +44,18 @@ struct ControlCenter: View {
     var body: some View {
         ZStack {
             Color.black
-            VStack {
-                HStack {
+            VStack(spacing: 0.0) {
+//                Spacer(minLength: 0.0)
+                HStack(spacing: 0.0) {
                     Button(action: {
-                        if "\(brain.precision)".starts(with: "3") {
-                            brain.precision /= 3
+                        if "\(brain.precision)".starts(with: "2") {
+                            brain.precision /= 2
+                        } else if "\(brain.precision)".starts(with: "5") {
+                            brain.precision /= 5
+                            brain.precision *= 2
                         } else {
                             brain.precision /= 10
-                            brain.precision *= 3
+                            brain.precision *= 5
                         }
                         brain.calculateSignificantBits()
                         Gmp.deleteConstants()
@@ -61,17 +65,20 @@ struct ControlCenter: View {
                             .resizable()
                             .frame(width: 25, height: 25)
                     }
-                    .foregroundColor(brain.precision > 100 ? Color.white : Color.gray)
-                    .disabled(brain.precision <= 100)
+                    .foregroundColor(brain.precision > 10 ? Color.white : Color.gray)
+                    .disabled(brain.precision <= 10)
                     Text("\(formattedInteger(brain.precision)) digits").bold()
                         .padding(.horizontal, 10)
                         .frame(minWidth: 180)
                     Button(action: {
-                        if "\(brain.precision)".starts(with: "3") {
-                            brain.precision /= 3
+                        if "\(brain.precision)".starts(with: "2") {
+                            brain.precision /= 2
+                            brain.precision *= 5
+                        } else if "\(brain.precision)".starts(with: "5") {
+                            brain.precision /= 5
                             brain.precision *= 10
                         } else {
-                            brain.precision *= 3
+                            brain.precision *= 2
                         }
                         brain.calculateSignificantBits()
                         Gmp.deleteConstants()
@@ -86,25 +93,37 @@ struct ControlCenter: View {
                 }
                 .padding(.top, 20)
                 if brain.precision >= 100000 {
-                    Text("Warning: processing might be slow and you might experience out of memory problems including app crashes!")
+                    Text("Warning: processing might be slow and the app may crash!")
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.top, 5)
+                        .padding(.top, 10)
                         .foregroundColor(Color.red)
                 }
                 Text("The app calculats internally with \(globalGmpSignificantBits) bits (corresponding to \(globalGmpPrecision) digits) to reduce the effect of error accumulation")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top, 10)
-                    .foregroundColor(Color.white)
+                    .padding(.leading, 0)
                 Text("Copy & Paste").bold()
-                    .padding(.vertical, 10)
+                    .padding(.top, 30)
+                    .padding(.bottom, 10)
                 if copyAndPastePurchased {
-                    Text("You have purchased this feature and can use Copy and Paste to import and export numbers with high precision")
+                    Text("Use Copy and Paste to import and export numbers with high precision.")
+                    Text("You have purchased Copy and Paste")
+                        .padding(.top, 20)
                 } else {
-                    Text("This is disabled in the free version.")
-                        .padding(.bottom, 10)
-                    Button("Purchase this feature ($0.99) to import and export numbers with high precision.") {
-                        copyAndPastePurchased = true
+                    Text("Use Copy and Paste to import and export numbers with high precision. This feature is disabled in the free version.")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    HStack {
+                        Text("Purchase Copy and Paste")
+                        Button {
+                            copyAndPastePurchased = true
+                        }
+                    label: {
+                        Text("$0.99")
+                            .frame(height: 10)
                     }
+                    .buttonStyle(BuyButton())
+                    }
+                    .padding(.top, 20)
                 }
                 Spacer()
             }
@@ -113,6 +132,16 @@ struct ControlCenter: View {
     }
 }
 
+struct BuyButton: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label.padding()
+            .background(.gray)
+            .foregroundColor(.white)
+            .clipShape(Capsule())
+            .scaleEffect(configuration.isPressed ? 1.2 : 1)
+            .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
+    }
+}
 struct ControlCenter_Previews: PreviewProvider {
     static var previews: some View {
         ControlCenter(brain: Brain(), copyAndPastePurchased: .constant(false))
