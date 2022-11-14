@@ -87,27 +87,28 @@ struct ControlCenter: View {
                 .padding(.top, 20)
                 if brain.precision >= 100000 {
                     Text("Warning: processing might be slow and you might experience out of memory problems including app crashes!")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.top, 5)
                         .foregroundColor(Color.red)
-//                        .padding(.bottom)
                 }
                 Text("The app calculats internally with \(globalGmpSignificantBits) bits (corresponding to \(globalGmpPrecision) digits) to reduce the effect of error accumulation")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, 10)
                     .foregroundColor(Color.white)
-                    .padding(.vertical)
                 Text("Copy & Paste").bold()
                     .padding(.vertical, 10)
                 if copyAndPastePurchased {
-                    Text("You can use Copy and Paste to import and export numbers with high precision")
+                    Text("You have purchased this feature and can use Copy and Paste to import and export numbers with high precision")
                 } else {
                     Text("This is disabled in the free version.")
+                        .padding(.bottom, 10)
                     Button("Purchase this feature ($0.99) to import and export numbers with high precision.") {
                         copyAndPastePurchased = true
                     }
-                    .padding(.vertical, 10)
                 }
                 Spacer()
             }
             .foregroundColor(Color.white)
-            .padding()
         }
     }
 }
