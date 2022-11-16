@@ -80,6 +80,7 @@ struct ControlCenter: View {
                     Text("Presicion:")
                     ColoredStepper(
                         plusEnabled: !showMemoryWarning,
+                        minusEnabled: brain.precision > 10,
                         onIncrement: {
                             let newPrecision = increasedPrecision(current: brain.precision)
                             showMemoryWarning = !sufficientMemoryfor(precision: increasedPrecision(current: newPrecision))
@@ -113,7 +114,6 @@ struct ControlCenter: View {
                 if copyAndPastePurchased {
                     Text("You have purchased Copy and Paste to import and export numbers with high precision.")
                 } else {
-                    Text("Use Copy and Paste to import and export numbers with high precision. This feature is disabled in the free version.")
                     HStack {
                         Text("Purchase Copy and Paste")
                             .padding(.trailing, 20)
@@ -127,6 +127,8 @@ struct ControlCenter: View {
                     .buttonStyle(BuyButton())
                     }
                     .padding(.top, 20)
+                    .padding(.bottom, 5)
+                    Text("Copy and Paste allows you to import and export numbers with high precision. This feature is disabled in the free version.").italic()
                 }
                 Spacer()
             }
@@ -168,10 +170,12 @@ typealias CallBack = ( ()->() )?
 struct ColoredStepper: View {
     internal init(
         plusEnabled: Bool,
+        minusEnabled: Bool,
         onIncrement: CallBack,
         onDecrement: CallBack) {
             self.stepperColors = StepperColors(leftBtnColor: .white, rightBtnColor: .white, backgroundColor: .gray)
             self.plusEnabled = plusEnabled
+            self.minusEnabled = minusEnabled
             self.onIncrement = onIncrement
             self.onDecrement = onDecrement
         }
@@ -180,25 +184,25 @@ struct ColoredStepper: View {
     private let onDecrement: CallBack
     private let stepperColors: StepperColors
     private let plusEnabled: Bool
-    
+    private let minusEnabled: Bool
+
     var body: some View {
         HStack {
             Button {
                 decrement()
             } label: {
-                Image(systemName: "minus")
-                    .frame(width: 38, height: 35)
+                Image(systemName: "minus").frame(width: 38, height: 35)
             }
-            .foregroundColor(stepperColors.leftBtnColor)
-            .background(stepperColors.backgroundColor)
-            
+            .disabled(!minusEnabled)
+            .foregroundColor(minusEnabled ? stepperColors.leftBtnColor : Color.gray)
+            .background(minusEnabled ? stepperColors.backgroundColor : Color(UIColor.darkGray))
+
             Spacer().frame(width: 2)
             
             Button {
                 increment()
             } label: {
-                Image(systemName: "plus")
-                    .frame(width: 38, height: 35)
+                Image(systemName: "plus").frame(width: 38, height: 35)
             }
             .disabled(!plusEnabled)
             .foregroundColor(plusEnabled ? stepperColors.rightBtnColor : Color.gray)
