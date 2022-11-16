@@ -88,7 +88,7 @@ struct ControlCenter: View {
                             let testMemoryResult = testMemory(size: numberOfbytes * 10)
                             if testMemoryResult {
                                 brain.nonWaitingOperation("C")
-                                brain.precision = newPrecision
+                                brain.setPrecision(newPrecision)
                                 Gmp.deleteConstants()
                             }
                         },
@@ -96,7 +96,7 @@ struct ControlCenter: View {
                             showMemoryWarning = false
                             let newPrecision = decreasedPrecision(current: brain.precision)
                             brain.nonWaitingOperation("C")
-                            brain.precision = newPrecision
+                            brain.setPrecision(newPrecision)
                             Gmp.deleteConstants()
                         })
                     .padding(.horizontal, 10)
@@ -107,7 +107,9 @@ struct ControlCenter: View {
                     Spacer()
                 }
                 .padding(.top, 40)
-                .padding(.bottom, 40)
+                .padding(.bottom, 5)
+                Text("The app calculates internally with \(brain.bits) bits (corresponding to \(Brain.internalPrecision(brain.precision)) digits) to mitigate error accumulation").italic()
+                    .padding(.bottom, 40)
                 if copyAndPastePurchased {
                     Text("You have purchased Copy and Paste to import and export numbers with high precision.")
                 } else {

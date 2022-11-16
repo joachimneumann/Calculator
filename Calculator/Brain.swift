@@ -16,7 +16,6 @@ class Brain: ObservableObject {
     @Published var precision: Int = 100
     @Published var bits: Int
 
-    
 //    @Published var speedTestResult: Double?
 //    {
 //        didSet {
@@ -282,11 +281,15 @@ class Brain: ObservableObject {
     var no: Int { operatorStack.count }
     //    var last: Number { n.last() }
     
+    func setPrecision(_ newPrecision: Int) {
+        self.precision = newPrecision
+        self.bits = Int(Double(Brain.internalPrecision(newPrecision)) * 3.32192809489)
+        n.newPrecision(newPrecision: self.precision, newBits: self.bits)
+    }
     init(precision initialPrecision: Int) {
-        precision = initialPrecision
-        bits = Int(Double(Brain.internalPrecision(initialPrecision)) * 3.32192809489) /// log2(10)
+        self.precision = initialPrecision
+        self.bits = Int(Double(Brain.internalPrecision(initialPrecision)) * 3.32192809489)
 
-        
         self.nonWaitingOperation("C")
         
         constantOperators = [

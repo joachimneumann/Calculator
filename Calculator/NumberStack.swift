@@ -18,6 +18,15 @@ struct NumberStack: CustomDebugStringConvertible{
         assert(array.count > 0)
         return array.last!
     }
+    
+    mutating func newPrecision(newPrecision: Int, newBits: Int) {
+        for index in 0..<array.count {
+            let old = array[index]
+            let oldString = old.singleLine(len: newPrecision)
+            let newGmp = Gmp(oldString, bits: newBits)
+            array[index] = Number(newGmp)
+        }
+    }
 
     mutating func replaceLast(with number: Number) {
         removeLast()
