@@ -37,6 +37,10 @@ struct CalculatorApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate // used to disallow Landscape in Mac
     
+    init() {
+        UINavigationBar.appearance().backgroundColor = .black
+    }
+
     var body: some Scene {
         let brain = Brain(precision: 100)
         var leadingPaddingNeeded:  Bool = false

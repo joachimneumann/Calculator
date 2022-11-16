@@ -69,17 +69,9 @@ struct ControlCenter: View {
         let numberOfbytes = Int(Double(precision) * 3.32192809489) * 8
         return testMemory(size: numberOfbytes * needToAppocateNumbers)
     }
-    
-    init(brain: Brain, copyAndPastePurchased: Binding<Bool>) {
-        self.brain = brain
-        self._copyAndPastePurchased = copyAndPastePurchased
-        warning = nil
-        //        UIStepper.appearance().setDecrementImage(UIImage(named: "minus")?.withTintColor(.white), for: .normal)
-        //            UIStepper.appearance().setIncrementImage(UIImage(systemName: "plus"), for: .normal)
-    }
-    
-    @State var showMemoryWarning = false
         
+    @State var showMemoryWarning = false
+    
     var body: some View {
         ZStack {
             Color.black
@@ -116,16 +108,6 @@ struct ControlCenter: View {
                 }
                 .padding(.top, 40)
                 .padding(.bottom, 40)
-                
-                //                let speedTestString = brain.speedTestResult != nil ? "speed: \(brain.speedTestResult!)" : "---"
-                //                Text(speedTestString)
-                //                    .frame(maxWidth: .infinity, alignment: .center)
-                //                    .padding(.top, 10)
-                //                    .foregroundColor(Color.red)
-                //                Text("The app calculates internally with \(globalGmpSignificantBits) bits (corresponding to \(brain.internalPrecision(brain.precision)) digits) to mitigate error accumulation")
-                //                .frame(maxWidth: .infinity, alignment: .leading)
-                //                .padding(.top, 10)
-                //                .padding(.leading, 0)
                 if copyAndPastePurchased {
                     Text("You have purchased Copy and Paste to import and export numbers with high precision.")
                 } else {
@@ -146,7 +128,7 @@ struct ControlCenter: View {
                 }
                 Spacer()
             }
-//            .background(Color.yellow)
+            //            .background(Color.yellow)
             .foregroundColor(Color.white)
         }
         .onAppear() {
@@ -232,3 +214,13 @@ struct ColoredStepper: View {
         onIncrement?()
     }
 }
+
+//                let speedTestString = brain.speedTestResult != nil ? "speed: \(brain.speedTestResult!)" : "---"
+//                Text(speedTestString)
+//                    .frame(maxWidth: .infinity, alignment: .center)
+//                    .padding(.top, 10)
+//                    .foregroundColor(Color.red)
+//                Text("The app calculates internally with \(globalGmpSignificantBits) bits (corresponding to \(brain.internalPrecision(brain.precision)) digits) to mitigate error accumulation")
+//                .frame(maxWidth: .infinity, alignment: .leading)
+//                .padding(.top, 10)
+//                .padding(.leading, 0)

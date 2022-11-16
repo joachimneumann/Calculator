@@ -81,6 +81,7 @@ struct MainView: View {
             }
             .foregroundColor(Color.gray)
         }
+        .accentColor(.white) // for the color of the "back" button
         .navigationViewStyle(StackNavigationViewStyle())
     }
     
