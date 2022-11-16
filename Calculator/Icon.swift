@@ -84,7 +84,7 @@ struct PasteIcon: View {
     func hasValidNumberToPaste() -> Bool {
         if let pasteString = UIPasteboard.general.string {
             if pasteString.count > 0 {
-                if Gmp.isValidGmpString(pasteString) {
+                if Gmp("0", bits: brain.bits).isValidGmpString(pasteString) {
                     return true
                 }
             }

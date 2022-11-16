@@ -22,14 +22,13 @@ extension String {
 }
 
 var globalUnsignedLongInt: CUnsignedLong = 0
-var globalGmpSignificantBits: Int = 0 /// Will be be set be brain.init() and in the menu
-var globalGmpPrecision: Int = 0
 
 func testMemory(size: Int) -> Bool {
     return testmalloc(size) == 1
 }
 
 class Gmp: Equatable {
+    var bits: Int
     static func == (lhs: Gmp, rhs: Gmp) -> Bool {
         return mpfr_cmp(&lhs.mpfr, &rhs.mpfr) == 0
     }
@@ -40,32 +39,33 @@ class Gmp: Equatable {
 
     /// there is only ine initialzer that takes a string.
     /// Implementing an initializer that accepts a double which is created from a string leads to a loss of precision.
-    init(_ s: String) {
+    init(_ s: String, bits: Int) {
+        self.bits = bits
         let s1 = s.replacingOccurrences(of: ",", with: ".")
-        mpfr_init2 (&mpfr, globalGmpSignificantBits)
+        mpfr_init2 (&mpfr, bits)
         mpfr_set_str (&mpfr, s1, 10, MPFR_RNDN)
     }
 
-    static func isValidGmpString(_ s: String) -> Bool {
+    func isValidGmpString(_ s: String) -> Bool {
         var temp_mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
-        mpfr_init2 (&temp_mpfr, globalGmpSignificantBits)
+        mpfr_init2 (&temp_mpfr, self.bits)
         let s_dot = s.replacingOccurrences(of: ",", with: ".")
         return mpfr_set_str (&temp_mpfr, s_dot, 10, MPFR_RNDN) == 0
     }
 
-    convenience init(_ s: String?) {
-        if s == nil {
-            assert(false)
-        }
-        self.init(s!)
-    }
+//    convenience init(_ s: String?) {
+//        if s == nil {
+//            assert(false)
+//        }
+//        self.init(s!)
+//    }
     
-    convenience init() {
-        self.init("0")
-    }
+//    convenience init() {
+//        self.init("0", bits: bits)
+//    }
     
     func copy() -> Gmp {
-        let ret = Gmp()
+        let ret = Gmp("0", bits: bits)
         mpfr_set(&ret.mpfr, &mpfr, MPFR_RNDN)
         return ret
     }
@@ -107,21 +107,22 @@ class Gmp: Equatable {
     static var rad2deg: Gmp? = nil
 
     static func deleteConstants() {
-        Gmp.deg2rad = nil
-        Gmp.rad2deg = nil
+        deg2rad = nil
+        rad2deg = nil
     }
     static func assertConstants() {
-        if Gmp.deg2rad == nil {
-            Gmp.deg2rad = Gmp("0");
-            Gmp.deg2rad!.π()
-            Gmp.deg2rad!.div(other: Gmp("180"))
-        }
-        if Gmp.rad2deg == nil {
-            Gmp.rad2deg = Gmp("0");
-            Gmp.rad2deg!.π()
-            Gmp.rad2deg!.rez()
-            Gmp.rad2deg!.mul(other: Gmp("180"))
-        }
+        // todo: pre-compile deg2rad etc
+//        if deg2rad == nil {
+//            deg2rad = Gmp("0", bits: bits);
+//            deg2rad!.π()
+//            deg2rad!.div(other: Gmp("180"))
+//        }
+//        if Gmp.rad2deg == nil {
+//            Gmp.rad2deg = Gmp("0");
+//            Gmp.rad2deg!.π()
+//            Gmp.rad2deg!.rez()
+//            Gmp.rad2deg!.mul(other: Gmp("180"))
+//        }
     }
 
     func sinD()  { Gmp.assertConstants(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_sin(  &mpfr, &mpfr, MPFR_RNDN) }
@@ -134,7 +135,7 @@ class Gmp: Equatable {
     func π() {
         mpfr_const_pi(&mpfr, MPFR_RNDN)
     }
-    func e() { mpfr_exp( &mpfr, &Gmp("1.0").mpfr, MPFR_RNDN)}
+    func e() { mpfr_exp( &mpfr, &Gmp("1.0", bits: bits).mpfr, MPFR_RNDN)}
 
     func rand() {
         if Gmp.randstate == nil {

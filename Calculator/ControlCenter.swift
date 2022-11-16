@@ -83,8 +83,7 @@ struct ControlCenter: View {
                         let newPrecision = decreasedPrecision(current: brain.precision)
                         brain.nonWaitingOperation("C")
                         brain.precision = newPrecision
-                        globalGmpPrecision = brain.internalPrecision(brain.precision)
-                        globalGmpSignificantBits = Int( Double(brain.internalPrecision(brain.precision)) * 3.32192809489) /// log2(10)
+//                        globalGmpSignificantBits = Int( Double(brain.internalPrecision(brain.precision)) * 3.32192809489) /// log2(10)
                         Gmp.deleteConstants()
                     }) {
                         Image(systemName: "minus.circle")
@@ -102,14 +101,13 @@ struct ControlCenter: View {
                     Button(action: {
                         let newPrecision = increasedPrecision(current: brain.precision)
                         showMemoryWarning = !sufficientMemoryfor(precision: increasedPrecision(current: newPrecision))
-                        let newInternalPrecision = brain.internalPrecision(newPrecision)
+                        let newInternalPrecision = Brain.internalPrecision(newPrecision)
                         let numberOfbytes = Int( Double(newInternalPrecision) * 3.32192809489) * 8
                         let testMemoryResult = testMemory(size: numberOfbytes * 10)
                         if testMemoryResult {
                             brain.nonWaitingOperation("C")
                             brain.precision = newPrecision
-                            globalGmpPrecision = brain.internalPrecision(brain.precision)
-                            globalGmpSignificantBits = Int( Double(brain.internalPrecision(brain.precision)) * 3.32192809489) /// log2(10)
+//                            globalGmpSignificantBits = Int( Double(brain.internalPrecision(brain.precision)) * 3.32192809489) /// log2(10)
                             Gmp.deleteConstants()
                         } else {
                             //                            warning = "Not enough memory for more than \(formattedInteger(brain.precision)) digits"
@@ -128,12 +126,12 @@ struct ControlCenter: View {
                     }
                 }
                 .padding(.top, 20)
-                let speedTestString = brain.speedTestResult != nil ? "speed: \(brain.speedTestResult!)" : "---"
-                Text(speedTestString)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.top, 10)
-                    .foregroundColor(Color.red)
-                Text("The app calculates internally with \(globalGmpSignificantBits) bits (corresponding to \(globalGmpPrecision) digits) to mitigate error accumulation")
+//                let speedTestString = brain.speedTestResult != nil ? "speed: \(brain.speedTestResult!)" : "---"
+//                Text(speedTestString)
+//                    .frame(maxWidth: .infinity, alignment: .center)
+//                    .padding(.top, 10)
+//                    .foregroundColor(Color.red)
+//                Text("The app calculates internally with \(globalGmpSignificantBits) bits (corresponding to \(brain.internalPrecision(brain.precision)) digits) to mitigate error accumulation")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top, 10)
                     .padding(.leading, 0)
@@ -186,7 +184,7 @@ struct BuyButton: ButtonStyle {
 }
 struct ControlCenter_Previews: PreviewProvider {
     static var previews: some View {
-        ControlCenter(brain: Brain(), copyAndPastePurchased: .constant(false))
+        ControlCenter(brain: Brain(precision: 100), copyAndPastePurchased: .constant(false))
     }
 }
 

@@ -19,9 +19,8 @@ struct MultipleLiner {
     var abreviated: Bool // show a message that there is more?
 }
 
-
-
 class Number: CustomDebugStringConvertible {
+    private var _bits: Int
     private var _str: String?
     private var _gmp: Gmp?
     
@@ -35,14 +34,14 @@ class Number: CustomDebugStringConvertible {
     }
     func copy() -> Number {
         if isStr {
-            return Number(str!)
+            return Number(str!, bits: _bits)
         } else {
             return Number(gmp!.copy())
         }
     }
     func toGmp() {
         if isStr {
-            _gmp = Gmp(str!)
+            _gmp = Gmp(str!, bits: _bits)
             _str = nil
         }
     }
@@ -56,18 +55,22 @@ class Number: CustomDebugStringConvertible {
         _gmp!.inPlace(op: op)
     }
     
-    init(_ str: String) {
+    init(_ str: String, bits: Int) {
         _str = str
         _gmp = nil
+        _bits = bits
     }
     init(_ gmp: Gmp) {
         _str = nil
         _gmp = gmp
+        _bits = gmp.bits
     }
-    convenience init() {
-        self.init("0")
+    fileprivate init() {
+        _str = nil
+        _gmp = nil
+        _bits = 0
     }
-    
+
     func appendZero()  {
         if isStr {
             if _str != "0" {
@@ -157,7 +160,7 @@ class Number: CustomDebugStringConvertible {
         if gmp != nil {
             oneLinerGmp = gmp!
         } else {
-            oneLinerGmp = Gmp(str!)
+            oneLinerGmp = Gmp(str!, bits: _bits)
         }
         if oneLinerGmp.NaN {
             ret.left = "not a number"

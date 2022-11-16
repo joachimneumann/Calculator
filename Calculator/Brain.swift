@@ -13,34 +13,38 @@ class Brain: ObservableObject {
     var messageToUser: String? = nil
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
-    @Published var speedTestResult: Double?
     @Published var precision: Int = 100
-    {
-        didSet {
-            DispatchQueue.main.async {
-                self.speedTestResult = nil
-            }
-            Task {
-                let res = await speedTest()
-                DispatchQueue.main.async {
-                    self.speedTestResult = res * 1000
-                }
-            }
-        }
-    }
+    @Published var bits: Int
+
     
-    func speedTest() async -> Double {
-        let testBrain = Brain()
-        testBrain.nonWaitingOperation("C")
-        testBrain.press("2")
-        let timer = ParkBenchTimer()
-        testBrain.nonWaitingOperation("√")
-        let seconds = timer.stop()
-        print("The task took \(seconds) seconds.")
-        return seconds
-    }
+//    @Published var speedTestResult: Double?
+//    {
+//        didSet {
+//            DispatchQueue.main.async {
+//                self.speedTestResult = nil
+//            }
+//            Task {
+//                let res = await speedTest()
+//                DispatchQueue.main.async {
+//                    self.speedTestResult = res * 1000
+//                }
+//            }
+//        }
+//    }
     
-    func internalPrecision(_ precision: Int) -> Int {
+//    func speedTest() async -> Double {
+//        let testBrain = Brain()
+//        testBrain.nonWaitingOperation("C")
+//        testBrain.press("2")
+//        let timer = ParkBenchTimer()
+//        testBrain.nonWaitingOperation("√")
+//        let seconds = timer.stop()
+//        print("The task took \(seconds) seconds.")
+//        return seconds
+//    }
+    
+    
+    static func internalPrecision(_ precision: Int) -> Int {
         if precision <= 500 {
             return 1000
         } else if precision <= 10000 {
@@ -67,7 +71,15 @@ class Brain: ObservableObject {
     var isValidNumber: Bool { n.last.isValid }
     var pendingOperator: String?
     var memory: Gmp? = nil
-    
+    var nullNumber: Number {
+        return Number("0", bits: bits)
+    }
+    func number(_ s: String) -> Number {
+        return Number(s, bits: bits)
+    }
+    func gmpNumber(_ s: String) -> Number {
+        return Number(Gmp(s, bits: bits))
+    }
     var digitOperators: [String] = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     var zeroOperators:       Dictionary <String, Inplace> = [:]
     var commaOperators:      Dictionary <String, Inplace> = [:]
@@ -116,10 +128,10 @@ class Brain: ObservableObject {
     
     func percentage() {
         if operatorStack.count == 0 {
-            n.last.execute(Gmp.mul, with: Number("0.01"))
+            n.last.execute(Gmp.mul, with: number("0.01"))
         } else if operatorStack.count >= 1 && n.count >= 2 {
             if let secondLast = n.secondLast {
-                n.last.execute(Gmp.mul, with: Number("0.01"))
+                n.last.execute(Gmp.mul, with: number("0.01"))
                 n.last.execute(Gmp.mul, with: secondLast)
             }
         }
@@ -129,12 +141,10 @@ class Brain: ObservableObject {
         if symbol == "=" {
             self.execute(priority: Operator.equalPriority)
         } else if symbol == "C" {
-            globalGmpPrecision = internalPrecision(precision)
-            globalGmpSignificantBits = Int( Double(internalPrecision(precision)) * 3.32192809489) /// log2(10)
             operatorStack.removeAll()
             n.removeAll()
             pendingOperator = nil
-            n.append(Number("0"))
+            n.append(nullNumber)
         } else if symbol == "2nd" {
             DispatchQueue.main.async {
                 self.secondKeys.toggle()
@@ -179,20 +189,20 @@ class Brain: ObservableObject {
         } else if symbol == "fromPasteboard" {
             if let s = UIPasteboard.general.string {
                 if pendingOperator != nil {
-                    n.append(Number(Gmp()))
+                    n.append(nullNumber)
                     pendingOperator = nil
                 }
-                n.replaceLast(with: Number(Gmp(s)))
+                n.replaceLast(with: gmpNumber(s))
             }
         } else if symbol == "," {
             if pendingOperator != nil {
-                n.append(Number("0"))
+                n.append(nullNumber)
                 pendingOperator = nil
             }
             n.last.appendComma()
         } else if symbol == "0" {
             if pendingOperator != nil {
-                n.append(Number("0"))
+                n.append(nullNumber)
                 pendingOperator = nil
             }
             n.last.appendZero()
@@ -200,13 +210,13 @@ class Brain: ObservableObject {
             n.last.changeSign()
         } else if self.digitOperators.contains(symbol) {
             if pendingOperator != nil {
-                n.append(Number("0"))
+                n.append(nullNumber)
                 pendingOperator = nil
             }
             n.last.appendDigit(symbol)
         } else if let op = self.constantOperators[symbol] {
             if self.pendingOperator != nil {
-                self.n.append(Number(Gmp()))
+                self.n.append(nullNumber)
                 self.pendingOperator = nil
             }
             self.n.last.execute(op.operation)
@@ -272,7 +282,11 @@ class Brain: ObservableObject {
     var no: Int { operatorStack.count }
     //    var last: Number { n.last() }
     
-    init() {
+    init(precision initialPrecision: Int) {
+        precision = initialPrecision
+        bits = Int(Double(Brain.internalPrecision(initialPrecision)) * 3.32192809489) /// log2(10)
+
+        
         self.nonWaitingOperation("C")
         
         constantOperators = [

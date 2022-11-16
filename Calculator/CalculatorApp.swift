@@ -38,7 +38,7 @@ struct CalculatorApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate // used to disallow Landscape in Mac
     
     var body: some Scene {
-        let brain = Brain()
+        let brain = Brain(precision: 100)
         var leadingPaddingNeeded:  Bool = false
         var trailingPaddingNeeded: Bool = false
         var bottomPaddingNeeded:   Bool = false
