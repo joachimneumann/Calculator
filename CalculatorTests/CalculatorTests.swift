@@ -501,7 +501,7 @@ class CalculatorTests: XCTestCase {
         XCTAssertTrue( oneliner.abreviated)
     }
     
-//    func XXXtest() {
+    func test() {
 //        let digits = 16
 //        
 //        var res = ""
@@ -509,14 +509,21 @@ class CalculatorTests: XCTestCase {
 //        var correct = ""
 //        var sci = ""
 //        
-//        let brain = Brain()
-//        
+        let brain = Brain()
+        var oneliner = OneLiner(left: "0", abreviated: false)
+//
 //        /// 1
 //        
-//        brain.nonWaitingOperation("C")
-//        XCTAssertEqual(brain.nonScientific, "0")
-//        brain.press(1)
-//        
+        brain.nonWaitingOperation("C")
+        brain.press("2")
+        oneliner = brain.last.oneLiner(withoutComma: 8, withComma: 9)
+        XCTAssertEqual(oneliner.left, "2")
+        XCTAssertNil(  oneliner.right)
+        XCTAssertFalse( oneliner.abreviated)
+        brain.nonWaitingOperation("√")
+        oneliner = brain.last.oneLiner(withoutComma: 8, withComma: 9)
+        XCTAssertEqual(oneliner.left, "1,4142135")
+//
 //        /// 0
 //        brain.nonWaitingOperation("C")
 //        XCTAssertEqual(brain.nonScientific, "0")
@@ -1107,7 +1114,7 @@ class CalculatorTests: XCTestCase {
 //        brain.nonWaitingOperation("%")
 //        brain.nonWaitingOperation("=")
 //        XCTAssertEqual(brain.debugLastDouble, 44.0)
-//    }
+    }
     
     func XXtestPerformanceExample() throws {
         // This is an example of a performance test case.

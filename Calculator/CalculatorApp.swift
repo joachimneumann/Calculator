@@ -9,10 +9,12 @@ import SwiftUI
 
 
 class AppDelegate: NSObject, UIApplicationDelegate {
+    static var forceLandscape = false
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         return true
     }
-    var deviceOrientation = UIInterfaceOrientationMask.portrait
+    
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         /// detect mac:
         /// 1. size of screen 834.0x1194.0
@@ -21,7 +23,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 //        if isMac {
 //            return UIInterfaceOrientationMask.landscape
 //        } else {
+        if AppDelegate.forceLandscape {
+            return UIInterfaceOrientationMask.landscape
+        } else {
             return UIInterfaceOrientationMask.all
+        }
 //        }
     }
 }

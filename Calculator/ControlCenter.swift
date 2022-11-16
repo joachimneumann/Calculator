@@ -38,28 +38,54 @@ func formattedInteger(_ n: Int) -> String {
     }
     return ret
 }
+
 struct ControlCenter: View {
     @ObservedObject var brain: Brain
     @Binding var copyAndPastePurchased: Bool
+    @State var warning: String? = nil
+    
+    func decreasedPrecision(current: Int) -> Int {
+        let asString = "\(current)"
+        if asString.starts(with: "2") {
+            return current / 2
+        } else if asString.starts(with: "5") {
+            return (current / 5) * 2
+        } else {
+            return (current / 10) * 5
+        }
+    }
+    func increasedPrecision(current: Int) -> Int {
+        let asString = "\(current)"
+        if asString.starts(with: "2") {
+            return (current / 2) * 5
+        } else if asString.starts(with: "5") {
+            return (current / 5) * 10
+        } else {
+            return current * 2
+        }
+    }
+    func sufficientMemoryfor(precision: Int) -> Bool {
+        let needToAppocateNumbers = 10 // estimate for internal calculations
+        let numberOfbytes = Int(Double(precision) * 3.32192809489) * 8
+        return testMemory(size: numberOfbytes * needToAppocateNumbers)
+    }
+
+    @State var showMemoryWarning = false
+
     var body: some View {
         ZStack {
             Color.black
-            VStack(spacing: 0.0) {
-//                Spacer(minLength: 0.0)
+            VStack(alignment: .customCenter, spacing: 0.0) {
+                //                Spacer(minLength: 0.0)
                 HStack(spacing: 0.0) {
                     Button(action: {
-                        if "\(brain.precision)".starts(with: "2") {
-                            brain.precision /= 2
-                        } else if "\(brain.precision)".starts(with: "5") {
-                            brain.precision /= 5
-                            brain.precision *= 2
-                        } else {
-                            brain.precision /= 10
-                            brain.precision *= 5
-                        }
-                        brain.calculateSignificantBits()
-                        Gmp.deleteConstants()
+                        showMemoryWarning = false
+                        let newPrecision = decreasedPrecision(current: brain.precision)
                         brain.nonWaitingOperation("C")
+                        brain.precision = newPrecision
+                        globalGmpPrecision = brain.internalPrecision(brain.precision)
+                        globalGmpSignificantBits = Int( Double(brain.internalPrecision(brain.precision)) * 3.32192809489) /// log2(10)
+                        Gmp.deleteConstants()
                     }) {
                         Image(systemName: "minus.circle")
                             .resizable()
@@ -70,37 +96,44 @@ struct ControlCenter: View {
                     Text("\(formattedInteger(brain.precision)) digits").bold()
                         .padding(.horizontal, 10)
                         .frame(minWidth: 180)
-                    Button(action: {
-                        if "\(brain.precision)".starts(with: "2") {
-                            brain.precision /= 2
-                            brain.precision *= 5
-                        } else if "\(brain.precision)".starts(with: "5") {
-                            brain.precision /= 5
-                            brain.precision *= 10
-                        } else {
-                            brain.precision *= 2
+                        .alignmentGuide(.customCenter) {
+                          $0[HorizontalAlignment.center]
                         }
-                        brain.calculateSignificantBits()
-                        Gmp.deleteConstants()
-                        let testMemoryResult = testMemory(size: globalGmpSignificantBits/8 * 10)
-                        print("testmemory \(testMemoryResult)")
-                        brain.nonWaitingOperation("C")
+                    Button(action: {
+                        let newPrecision = increasedPrecision(current: brain.precision)
+                        showMemoryWarning = !sufficientMemoryfor(precision: increasedPrecision(current: newPrecision))
+                        let newInternalPrecision = brain.internalPrecision(newPrecision)
+                        let numberOfbytes = Int( Double(newInternalPrecision) * 3.32192809489) * 8
+                        let testMemoryResult = testMemory(size: numberOfbytes * 10)
+                        if testMemoryResult {
+                            brain.nonWaitingOperation("C")
+                            brain.precision = newPrecision
+                            globalGmpPrecision = brain.internalPrecision(brain.precision)
+                            globalGmpSignificantBits = Int( Double(brain.internalPrecision(brain.precision)) * 3.32192809489) /// log2(10)
+                            Gmp.deleteConstants()
+                        } else {
+                            //                            warning = "Not enough memory for more than \(formattedInteger(brain.precision)) digits"
+                        }
                     }) {
                         Image(systemName: "plus.circle")
                             .resizable()
                             .frame(width: 25, height: 25)
                     }
-                    .foregroundColor(brain.precision < 1000000000000000 ? Color.white : Color.gray)
-                    .disabled(brain.precision >= 1000000000000000)
+                    .foregroundColor(showMemoryWarning || brain.precision >= 1000000000000000 ? Color.gray : Color.white)
+                    .disabled(showMemoryWarning || brain.precision >= 1000000000000000)
+                    if showMemoryWarning {
+                        Text("Memory Limit Reached")
+                            .padding(.leading, 20)
+                            .foregroundColor(Color.red)
+                    }
                 }
                 .padding(.top, 20)
-                if brain.precision >= 100000 {
-                    Text("Warning: processing might be slow and the app may crash!")
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(.top, 10)
-                        .foregroundColor(Color.red)
-                }
-                Text("The app calculates internally with \(globalGmpSignificantBits) bits (corresponding to \(globalGmpPrecision) digits) to reduce the effect of error accumulation")
+                let speedTestString = brain.speedTestResult != nil ? "speed: \(brain.speedTestResult!)" : "---"
+                Text(speedTestString)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.top, 10)
+                    .foregroundColor(Color.red)
+                Text("The app calculates internally with \(globalGmpSignificantBits) bits (corresponding to \(globalGmpPrecision) digits) to mitigate error accumulation")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top, 10)
                     .padding(.leading, 0)
@@ -132,6 +165,12 @@ struct ControlCenter: View {
             }
             .foregroundColor(Color.white)
         }
+        .onAppear() {
+            AppDelegate.forceLandscape = true
+        }
+        .onDisappear() {
+            AppDelegate.forceLandscape = false
+        }
     }
 }
 
@@ -149,4 +188,14 @@ struct ControlCenter_Previews: PreviewProvider {
     static var previews: some View {
         ControlCenter(brain: Brain(), copyAndPastePurchased: .constant(false))
     }
+}
+
+struct CustomCenter: AlignmentID {
+  static func defaultValue(in context: ViewDimensions) -> CGFloat {
+    context[HorizontalAlignment.center]
+  }
+}
+
+extension HorizontalAlignment {
+  static let customCenter: HorizontalAlignment = .init(CustomCenter.self)
 }

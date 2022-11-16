@@ -13,9 +13,34 @@ class Brain: ObservableObject {
     var messageToUser: String? = nil
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
-
+    @Published var speedTestResult: Double?
     @Published var precision: Int = 100
-    var precisionInternal: Int {
+    {
+        didSet {
+            DispatchQueue.main.async {
+                self.speedTestResult = nil
+            }
+            Task {
+                let res = await speedTest()
+                DispatchQueue.main.async {
+                    self.speedTestResult = res * 1000
+                }
+            }
+        }
+    }
+    
+    func speedTest() async -> Double {
+        let testBrain = Brain()
+        testBrain.nonWaitingOperation("C")
+        testBrain.press("2")
+        let timer = ParkBenchTimer()
+        testBrain.nonWaitingOperation("√")
+        let seconds = timer.stop()
+        print("The task took \(seconds) seconds.")
+        return seconds
+    }
+    
+    func internalPrecision(_ precision: Int) -> Int {
         if precision <= 500 {
             return 1000
         } else if precision <= 10000 {
@@ -31,7 +56,7 @@ class Brain: ObservableObject {
     @Published var rad: Bool = false
     @Published var showCalculating: Bool = false
     var isCalculating: Bool = false
-
+    
     var debugLastDouble: Double { n.last.gmp!.toDouble() }
     var debugLastGmp: Gmp { n.last.gmp! }
     
@@ -65,7 +90,7 @@ class Brain: ObservableObject {
             nonWaitingOperation(String(digit))
         }
     }
-
+    
     func press(_ digit: Int) {
         if digit >= 0 && digit <= 9 {
             nonWaitingOperation(String(digit))
@@ -104,7 +129,8 @@ class Brain: ObservableObject {
         if symbol == "=" {
             self.execute(priority: Operator.equalPriority)
         } else if symbol == "C" {
-            calculateSignificantBits()
+            globalGmpPrecision = internalPrecision(precision)
+            globalGmpSignificantBits = Int( Double(internalPrecision(precision)) * 3.32192809489) /// log2(10)
             operatorStack.removeAll()
             n.removeAll()
             pendingOperator = nil
@@ -191,7 +217,7 @@ class Brain: ObservableObject {
             self.execute(priority: op.priority)
             self.self.operatorStack.push(op)
         } else {
-//            print("### non-existing operation \(symbol)")
+            //            print("### non-existing operation \(symbol)")
             assert(false)
         }
     }
@@ -199,18 +225,18 @@ class Brain: ObservableObject {
     private func waitingOperation(_ symbol: String) async {
         operation(symbol)
     }
-
+    
     func nonWaitingOperation(_ symbol: String) {
         if symbol == "messageToUser" {
             operation("C")
-//            self.nonScientific = messageToUser
-//            self.scientific = nil
+            //            self.nonScientific = messageToUser
+            //            self.scientific = nil
             messageToUser = nil
         } else {
             operation(symbol)
         }
     }
-
+    
     func asyncOperation(_ symbol: String) {
         Task {
             if !isCalculating {
@@ -226,14 +252,14 @@ class Brain: ObservableObject {
                         //print("asyncOperation showCalculating \(self.showCalculating)")
                     }
                 }
-
+                
                 await waitingOperation(symbol)
-
+                
             }
             //print("display1... \(showCalculating)")
             DispatchQueue.main.async {
-//                self.nonScientific = self.displayData.nonScientific
-//                self.scientific = self.displayData.scientific
+                //                self.nonScientific = self.displayData.nonScientific
+                //                self.scientific = self.displayData.scientific
                 self.showCalculating = false
                 //print("asyncOperation showCalculating \(self.showCalculating)")
                 self.isCalculating = false
@@ -245,11 +271,6 @@ class Brain: ObservableObject {
     var nn: Int { n.count }
     var no: Int { operatorStack.count }
     //    var last: Number { n.last() }
-    
-    func calculateSignificantBits() {
-        globalGmpPrecision = precisionInternal
-        globalGmpSignificantBits = Int( Double(precisionInternal) * 3.32192809489) /// log2(10)
-    }
     
     init() {
         self.nonWaitingOperation("C")
@@ -307,6 +328,27 @@ class Brain: ObservableObject {
         openParenthesis   = Operator(Operator.openParenthesesPriority)
         closedParenthesis = Operator(Operator.openParenthesesPriority)
         equalOperator     = Operator(Operator.equalPriority)
+    }
+    
+    class ParkBenchTimer {
+        let startTime: CFAbsoluteTime
+        var endTime: CFAbsoluteTime?
+
+        init() {
+            startTime = CFAbsoluteTimeGetCurrent()
+        }
+
+        func stop() -> Double {
+            endTime = CFAbsoluteTimeGetCurrent()
+            return duration!
+        }
+        var duration: CFAbsoluteTime? {
+            if let endTime = endTime {
+                return endTime - startTime
+            } else {
+                return nil
+            }
+        }
     }
     
 }
