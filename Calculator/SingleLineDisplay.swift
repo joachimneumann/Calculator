@@ -30,12 +30,7 @@ struct SingleLineDisplay: View {
     
     init(brain: Brain, t: TE) {
         self.color = Color.white
-        let oneLiner = brain.last.oneLiner(withoutComma: t.withoutComma, withComma: t.withComma)
-        if let right = oneLiner.right {
-            text = oneLiner.left+right
-        } else {
-            text = oneLiner.left
-        }
+        text = brain.last.singleLine(len: t.withComma)
         isPortraitIPhone = !t.isPad && t.isPortrait
         if isPortraitIPhone {
             fontGrowthFactor = t.iPhonePortraitSingleLineDisplayHeight / t.singleLineDisplayHeight

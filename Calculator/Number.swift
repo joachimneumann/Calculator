@@ -8,8 +8,7 @@
 import Foundation
 
 struct OneLiner {
-    var left: String
-    var right: String? = nil
+    var text: String
     var abreviated: Bool // shall the + be enabled or not?
 }
 
@@ -27,6 +26,8 @@ class Number: CustomDebugStringConvertible {
     var isStr: Bool { _str != nil }
     var str: String? { return _str }
     var gmp: Gmp? { return _gmp }
+    var oneLine: String?
+    var multipleLines: MultipleLiner?
     
     var isValid: Bool {
         if isStr { return true }
@@ -118,68 +119,68 @@ class Number: CustomDebugStringConvertible {
         }
     }
     
-    func multipleLiner(length: Int) -> MultipleLiner {
-        var ret = MultipleLiner(left: "0", abreviated: false)
-        guard let multipleLinerStr = str, multipleLinerStr.count <= length else {
-            return ret
-        }
-        ret.left = multipleLinerStr
-        return ret
-    }
+//    func multipleLiner(length: Int) -> MultipleLiner {
+//        var ret = MultipleLiner(left: "0", abreviated: false)
+//        guard let multipleLinerStr = str, multipleLinerStr.count <= length else {
+//            return ret
+//        }
+//        ret.left = multipleLinerStr
+//        return ret
+//    }
     
     func singleLine(len: Int) -> String {
         let ret: String
-        let oneLiner = oneLiner(withoutComma: len, withComma: len)
-        if let right = oneLiner.right {
-            ret = oneLiner.left+right
+        let singleLiner = forDisplay(withoutComma: len, withComma: len)
+        if let right = singleLiner.right {
+            ret = singleLiner.left+right
         } else {
-            ret = oneLiner.left
+            ret = singleLiner.left
         }
         return ret
     }
     
-    func oneLiner(withoutComma: Int, withComma: Int) -> OneLiner {
-        var ret = OneLiner(left: "0", abreviated: false)
+    func forDisplay(withoutComma: Int, withComma: Int) -> MultipleLiner {
+        var ret = MultipleLiner(left: "0", abreviated: false)
         ret.abreviated = false
-        if let oneLinerStr = str {
-            if oneLinerStr.contains(",") {
-                if oneLinerStr.count <= withComma {
-                    ret.left = oneLinerStr
+        if let s = str {
+            if s.contains(",") {
+                if s.count <= withComma {
+                    ret.left = s
                     return ret
                 }
             } else {
                 /// no comma
-                if oneLinerStr.count <= withoutComma {
-                    ret.left = oneLinerStr
+                if s.count <= withoutComma {
+                    ret.left = s
                     return ret
                 }
             }
         }
 
         /// not a short enough str, use gmp
-        let oneLinerGmp: Gmp
+        let displayGmp: Gmp
         if gmp != nil {
-            oneLinerGmp = gmp!
+            displayGmp = gmp!
         } else {
-            oneLinerGmp = Gmp(str!, bits: _bits)
+            displayGmp = Gmp(str!, bits: _bits)
         }
-        if oneLinerGmp.NaN {
+        if displayGmp.NaN {
             ret.left = "not a number"
             return ret
         }
-        if oneLinerGmp.inf {
+        if displayGmp.inf {
             ret.left = "too large"
             return ret
         }
         
-        if oneLinerGmp.isZero {
+        if displayGmp.isZero {
             ret.left = "0"
             return ret
         }
         
         var exponent: mpfr_exp_t = 0
         var charArray: Array<CChar> = Array(repeating: 0, count: withComma)
-        mpfr_get_str(&charArray, &exponent, 10, withComma, &oneLinerGmp.mpfr, MPFR_RNDN)
+        mpfr_get_str(&charArray, &exponent, 10, withComma, &displayGmp.mpfr, MPFR_RNDN)
 
         var mantissa: String = ""
         for c in charArray {
