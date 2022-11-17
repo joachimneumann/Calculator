@@ -137,6 +137,7 @@ class Number: CustomDebugStringConvertible {
         }
         return ret
     }
+    
     func oneLiner(withoutComma: Int, withComma: Int) -> OneLiner {
         var ret = OneLiner(left: "0", abreviated: false)
         ret.abreviated = false

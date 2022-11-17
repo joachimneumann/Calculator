@@ -103,12 +103,12 @@ struct MultiLineDisplay: View {
     }
 }
 
-struct SingleLineDisplay_Previews: PreviewProvider {
-    static var previews: some View {
-        let brain = Brain(precision: 100)
-        let _ = brain.nonWaitingOperation("π")
-        SingleLineDisplay(brain: brain, t: TE(appFrame: CGSize(width: 200, height: 200)))
-//            .background(Color.green)
-    }
-}
+//struct SingleLineDisplay_Previews: PreviewProvider {
+//    static var previews: some View {
+//        let brain = Brain(precision: 100)
+//        let _ = brain.nonWaitingOperation("π")
+//        SingleLineDisplay(brain: brain, t: TE(appFrame: CGSize(width: 200, height: 200)))
+////            .background(Color.green)
+//    }
+//}
 

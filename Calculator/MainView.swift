@@ -36,7 +36,12 @@ struct MainView: View {
                         HStack(spacing: 0.0) {
                             Spacer()
                             VStack(spacing: 0.0) {
-                                PlusIcon(brain: brain, t: t, isZoomed: $isZoomed)
+                                PlusIcon(
+                                    brain: brain,
+                                    t: t,
+                                    isZoomed: $isZoomed,
+                                    showCalculating: brain.showCalculating,
+                                    progressViewScaleFactor: t.circularProgressViewScaleFactor)
                                 if copyAndPastePurchased {
                                     CopyIcon(brain: brain, t: t, isCopyingOrPasting: $isCopyingOrPasting)
                                     PasteIcon(brain: brain, t: t, isCopyingOrPasting: $isCopyingOrPasting)

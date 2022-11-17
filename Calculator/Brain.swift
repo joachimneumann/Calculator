@@ -16,21 +16,6 @@ class Brain: ObservableObject {
     @Published var precision: Int = 100
     @Published var bits: Int
 
-//    @Published var speedTestResult: Double?
-//    {
-//        didSet {
-//            DispatchQueue.main.async {
-//                self.speedTestResult = nil
-//            }
-//            Task {
-//                let res = await speedTest()
-//                DispatchQueue.main.async {
-//                    self.speedTestResult = res * 1000
-//                }
-//            }
-//        }
-//    }
-    
     func speedTest(testPrecision: Int) async -> Speed {
         let testBrain = Brain(precision: testPrecision)
 

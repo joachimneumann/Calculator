@@ -9,32 +9,45 @@ import SwiftUI
 
 struct PlusIcon: View {
     @Binding var isZoomed: Bool
+    let showCalculating: Bool
     let size: CGFloat
     let color: Color
     let topPaddingZoomed: CGFloat
     let topPaddingNotZoomed: CGFloat
+    let progressViewScaleFactor: CGFloat
     
-    init(brain: Brain, t: TE, isZoomed: Binding<Bool>) {
+    init(brain: Brain, t: TE, isZoomed: Binding<Bool>, showCalculating: Bool, progressViewScaleFactor: CGFloat) {
         size = t.iconSize*0.8
+        self.progressViewScaleFactor = progressViewScaleFactor
         self._isZoomed = isZoomed
+        self.showCalculating = showCalculating
         color = t.digits_1_9.textColor
         self.topPaddingNotZoomed = t.zoomTopPaddingNotZoomed
         self.topPaddingZoomed = t.zoomTopPaddingZoomed
     }
     
     var body: some View {
-        Image(systemName: "plus.circle.fill")
-            .resizable()
+        Group {
+            if showCalculating {
+                ProgressView()
+                    .frame(width: size * progressViewScaleFactor, height: size * progressViewScaleFactor)
+                    .foregroundColor(.white)
+                    .tint(Color.white)
+            } else {
+                Image(systemName: "plus.circle.fill")
+                    .resizable()
+                    .onTapGesture {
+                        withAnimation() {
+                            isZoomed.toggle()
+                        }
+                    }
+            }
+        }
             .scaledToFit()
             .frame(width: size, height: size)
             .font(.system(size: size, weight: .thin))
             .foregroundColor(color)
             .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
-            .onTapGesture {
-                withAnimation() {
-                    isZoomed.toggle()
-                }
-            }
             .padding(.top, isZoomed ? topPaddingZoomed : topPaddingNotZoomed)
     }
 }
