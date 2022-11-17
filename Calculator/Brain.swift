@@ -31,16 +31,18 @@ class Brain: ObservableObject {
 //        }
 //    }
     
-//    func speedTest() async -> Double {
-//        let testBrain = Brain()
-//        testBrain.nonWaitingOperation("C")
-//        testBrain.press("2")
-//        let timer = ParkBenchTimer()
-//        testBrain.nonWaitingOperation("√")
-//        let seconds = timer.stop()
-//        print("The task took \(seconds) seconds.")
-//        return seconds
-//    }
+    func speedTest(testPrecision: Int) async -> Speed {
+        let testBrain = Brain(precision: testPrecision)
+
+        testBrain.nonWaitingOperation("C")
+        testBrain.nonWaitingOperation("Rand")
+
+        let timer = ParkBenchTimer()
+        testBrain.nonWaitingOperation("√")
+        let seconds = timer.stop()
+        // print("The task took \(seconds) seconds. Percision \(precision)")
+        return Speed(sqrt2Time: seconds, precision: testPrecision)
+    }
     
     
     static func internalPrecision(_ precision: Int) -> Int {
@@ -281,11 +283,26 @@ class Brain: ObservableObject {
     var no: Int { operatorStack.count }
     //    var last: Number { n.last() }
     
+    struct Speed {
+        let sqrt2Time: Double
+        let precision: Int
+    }
+    
+    @Published var speed: Speed?
+    
     func setPrecision(_ newPrecision: Int) {
         self.precision = newPrecision
         self.bits = Int(Double(Brain.internalPrecision(newPrecision)) * 3.32192809489)
-        n.newPrecision(newPrecision: self.precision, newBits: self.bits)
+        n.changePrecision(to: self.precision, newBits: self.bits)
+        speed = nil
+        Task {
+            let speedResult =  await speedTest(testPrecision: newPrecision)
+            DispatchQueue.main.async {
+                self.speed = speedResult
+            }
+        }
     }
+    
     init(precision initialPrecision: Int) {
         self.precision = initialPrecision
         self.bits = Int(Double(Brain.internalPrecision(initialPrecision)) * 3.32192809489)

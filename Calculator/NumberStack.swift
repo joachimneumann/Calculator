@@ -19,7 +19,7 @@ struct NumberStack: CustomDebugStringConvertible{
         return array.last!
     }
     
-    mutating func newPrecision(newPrecision: Int, newBits: Int) {
+    mutating func changePrecision(to newPrecision: Int, newBits: Int) {
         for index in 0..<array.count {
             let old = array[index]
             let oldString = old.singleLine(len: newPrecision)
