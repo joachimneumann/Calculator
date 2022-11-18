@@ -48,7 +48,7 @@ struct iOSSize: View {
                 width: geo.size.width   - (leadingPaddingNeeded ? t.spaceBetweenKeys : 0) - (trailingPaddingNeeded ? t.spaceBetweenKeys : 0),
                 height: geo.size.height - (topPaddingNeeded     ? t.spaceBetweenKeys : 0) - (bottomPaddingNeeded   ? t.spaceBetweenKeys : 0))
             let _ = t = TE(appFrame: appFrame)
-            MainView(brain: brain, t: t)
+            CalculatorView(brain: brain, t: t)
                 .padding(.leading,   leadingPaddingNeeded ? t.spaceBetweenKeys : 0)
                 .padding(.trailing, trailingPaddingNeeded ? t.spaceBetweenKeys : 0)
                 .padding(.top,         topPaddingNeeded   ? t.spaceBetweenKeys : 0)

@@ -8,6 +8,11 @@
 import Foundation
 import SwiftUI
 
+
+/// TODO
+/// Viewmodel, brain without @Published
+/// brain has result -> update the display infor for what is needed
+/// brain new number: delete old infos
 class Brain: ObservableObject {
     @Published var scrollViewTarget: Int? = nil
     var messageToUser: String? = nil

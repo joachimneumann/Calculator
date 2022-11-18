@@ -1,5 +1,5 @@
 //
-//  MainView.swift
+//  CalculatorView.swift
 //  Calculator
 //
 //  Created by Joachim Neumann on 24/09/2021.
@@ -14,7 +14,7 @@
  */
 import SwiftUI
 
-struct MainView: View {
+struct CalculatorView: View {
     @ObservedObject var brain: Brain
     @State var isZoomed: Bool = false
     @State var copyAndPastePurchased: Bool = false
