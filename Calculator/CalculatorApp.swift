@@ -42,6 +42,25 @@ struct CalculatorApp: App {
     }
 
     var body: some Scene {
+        WindowGroup {
+            GeometryReader { geo in
+                let isPad = (UIDevice.current.userInterfaceIdiom == .pad)
+                let isPortrait = geo.size.height > geo.size.width
+                let padding = (!isPad && isPortrait) ? geo.size.width * 0.04 : geo.size.width * 0.01
+                Calculator(isPad: isPad, isPortrait: isPortrait, size: CGSize(width: 100, height: 100))
+                    .padding(.leading,  geo.safeAreaInsets.leading  == 0 ? padding : 0)
+                    .padding(.trailing, geo.safeAreaInsets.trailing == 0 ? padding : 0)
+                    .padding(.top,      geo.safeAreaInsets.top      == 0 ? padding : 0)
+                    .padding(.bottom,   geo.safeAreaInsets.bottom   == 0 ? padding : 0)
+                    .background(Color.black)
+            }
+            .withHostingWindow { window in
+                /// this stops white background from showing *during* a device rotation
+                window?.rootViewController?.view.backgroundColor = UIColor.black
+            }
+            .statusBar(hidden: true)
+        }
+        /*
         let brain = Brain(precision: 100)
         var leadingPaddingNeeded:  Bool = false
         var trailingPaddingNeeded: Bool = false
@@ -74,6 +93,28 @@ struct CalculatorApp: App {
                 }
             }
         }
+         */
     }
 }
 
+
+extension View {
+    func withHostingWindow(_ callback: @escaping (UIWindow?) -> Void) -> some View {
+        self.background(HostingWindowFinder(callback: callback))
+    }
+}
+
+struct HostingWindowFinder: UIViewRepresentable {
+    var callback: (UIWindow?) -> ()
+
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView()
+        DispatchQueue.main.async { [weak view] in
+            self.callback(view?.window)
+        }
+        return view
+    }
+
+    func updateUIView(_ uiView: UIView, context: Context) {
+    }
+}
