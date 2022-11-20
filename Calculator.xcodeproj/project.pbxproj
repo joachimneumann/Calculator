@@ -26,7 +26,7 @@
 		AA2FAC1A272F2349006DE4C8 /* CalculatorCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC04272F2348006DE4C8 /* CalculatorCommands.swift */; };
 		AA2FAC1C272F2349006DE4C8 /* CalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC06272F2348006DE4C8 /* CalculatorView.swift */; };
 		AA2FAC20272F2349006DE4C8 /* iOSSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0A272F2348006DE4C8 /* iOSSize.swift */; };
-		AA2FAC21272F2349006DE4C8 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0B272F2348006DE4C8 /* Key.swift */; };
+		AA2FAC21272F2349006DE4C8 /* OldKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0B272F2348006DE4C8 /* OldKey.swift */; };
 		AA2FAC22272F2349006DE4C8 /* NumberKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0C272F2349006DE4C8 /* NumberKeys.swift */; };
 		AA2FAC23272F2349006DE4C8 /* OperatorStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0D272F2349006DE4C8 /* OperatorStack.swift */; };
 		AA393CDA27F8921A003C48AA /* SingleLineDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA393CD927F8921A003C48AA /* SingleLineDisplay.swift */; };
@@ -39,6 +39,12 @@
 		AA92B4CD29279B0F005E43F0 /* KeysView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92B4CC29279B0F005E43F0 /* KeysView.swift */; };
 		AA92B4CF2927A153005E43F0 /* KeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92B4CE2927A153005E43F0 /* KeyView.swift */; };
 		AA92B4D12927A1B1005E43F0 /* ScientificView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92B4D02927A1B1005E43F0 /* ScientificView.swift */; };
+		AA92B4D329287514005E43F0 /* KeyModelOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92B4D229287514005E43F0 /* KeyModelOld.swift */; };
+		AAB10B9A292A2222004707E9 /* KeyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB10B94292A2222004707E9 /* KeyLabel.swift */; };
+		AAB10B9C292A2222004707E9 /* NonScientificKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB10B96292A2222004707E9 /* NonScientificKeys.swift */; };
+		AAB10B9D292A2222004707E9 /* KeyBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB10B97292A2222004707E9 /* KeyBackground.swift */; };
+		AAB10B9E292A2222004707E9 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB10B98292A2222004707E9 /* Key.swift */; };
+		AAB10B9F292A2222004707E9 /* KeyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB10B99292A2222004707E9 /* KeyModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,7 +99,7 @@
 		AA2FAC04272F2348006DE4C8 /* CalculatorCommands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorCommands.swift; sourceTree = "<group>"; };
 		AA2FAC06272F2348006DE4C8 /* CalculatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorView.swift; sourceTree = "<group>"; };
 		AA2FAC0A272F2348006DE4C8 /* iOSSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOSSize.swift; sourceTree = "<group>"; };
-		AA2FAC0B272F2348006DE4C8 /* Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
+		AA2FAC0B272F2348006DE4C8 /* OldKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldKey.swift; sourceTree = "<group>"; };
 		AA2FAC0C272F2349006DE4C8 /* NumberKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberKeys.swift; sourceTree = "<group>"; };
 		AA2FAC0D272F2349006DE4C8 /* OperatorStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperatorStack.swift; sourceTree = "<group>"; };
 		AA393CD927F8921A003C48AA /* SingleLineDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLineDisplay.swift; sourceTree = "<group>"; };
@@ -106,6 +112,12 @@
 		AA92B4CC29279B0F005E43F0 /* KeysView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeysView.swift; sourceTree = "<group>"; };
 		AA92B4CE2927A153005E43F0 /* KeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyView.swift; sourceTree = "<group>"; };
 		AA92B4D02927A1B1005E43F0 /* ScientificView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScientificView.swift; sourceTree = "<group>"; };
+		AA92B4D229287514005E43F0 /* KeyModelOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyModelOld.swift; sourceTree = "<group>"; };
+		AAB10B94292A2222004707E9 /* KeyLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyLabel.swift; sourceTree = "<group>"; };
+		AAB10B96292A2222004707E9 /* NonScientificKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonScientificKeys.swift; sourceTree = "<group>"; };
+		AAB10B97292A2222004707E9 /* KeyBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackground.swift; sourceTree = "<group>"; };
+		AAB10B98292A2222004707E9 /* Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
+		AAB10B99292A2222004707E9 /* KeyModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeyModel.swift; path = ../../ViewBuilder/ViewBuilder/KeyModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,12 +164,17 @@
 		AA08C7C0272EDA48001B8575 /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
+				AAB10B98292A2222004707E9 /* Key.swift */,
+				AAB10B97292A2222004707E9 /* KeyBackground.swift */,
+				AAB10B94292A2222004707E9 /* KeyLabel.swift */,
+				AAB10B99292A2222004707E9 /* KeyModel.swift */,
+				AAB10B96292A2222004707E9 /* NonScientificKeys.swift */,
 				AA2FAC01272F2348006DE4C8 /* Brain.swift */,
 				AA2FABF1272F217F006DE4C8 /* Gmp.swift */,
 				AA2FABFF272F2348006DE4C8 /* CalculatorApp.swift */,
 				AA2FABFD272F2348006DE4C8 /* TargetEnvironment.swift */,
 				AA2FAC0A272F2348006DE4C8 /* iOSSize.swift */,
-				AA2FAC0B272F2348006DE4C8 /* Key.swift */,
+				AA2FAC0B272F2348006DE4C8 /* OldKey.swift */,
 				AA2FABFE272F2348006DE4C8 /* KeyInputSubjectWrapper.swift */,
 				AA2FAC06272F2348006DE4C8 /* CalculatorView.swift */,
 				AA3FB8262920E0E5002ECCEB /* ControlCenter.swift */,
@@ -185,6 +202,7 @@
 				AA92B4CA29274842005E43F0 /* LongDisplay.swift */,
 				AA92B4CC29279B0F005E43F0 /* KeysView.swift */,
 				AA92B4CE2927A153005E43F0 /* KeyView.swift */,
+				AA92B4D229287514005E43F0 /* KeyModelOld.swift */,
 				AA92B4D02927A1B1005E43F0 /* ScientificView.swift */,
 			);
 			path = Calculator;
@@ -317,6 +335,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA393CDA27F8921A003C48AA /* SingleLineDisplay.swift in Sources */,
+				AAB10B9C292A2222004707E9 /* NonScientificKeys.swift in Sources */,
+				AAB10B9E292A2222004707E9 /* Key.swift in Sources */,
 				AA2FAC20272F2349006DE4C8 /* iOSSize.swift in Sources */,
 				AA92B4CB29274842005E43F0 /* LongDisplay.swift in Sources */,
 				AA92B4C329250827005E43F0 /* ColoredStepper.swift in Sources */,
@@ -329,14 +349,18 @@
 				AA2FAC12272F2349006DE4C8 /* NumberStack.swift in Sources */,
 				AA02AF76291CE0550079F40E /* Icon.swift in Sources */,
 				AA92B4C72927279B005E43F0 /* ViewLogic.swift in Sources */,
+				AAB10B9F292A2222004707E9 /* KeyModel.swift in Sources */,
 				AA2FAC10272F2349006DE4C8 /* Symbols.swift in Sources */,
-				AA2FAC21272F2349006DE4C8 /* Key.swift in Sources */,
+				AA2FAC21272F2349006DE4C8 /* OldKey.swift in Sources */,
 				AA2FABF2272F217F006DE4C8 /* Gmp.swift in Sources */,
+				AAB10B9A292A2222004707E9 /* KeyLabel.swift in Sources */,
 				AA2FAC1C272F2349006DE4C8 /* CalculatorView.swift in Sources */,
 				AA92B4C929273A58005E43F0 /* Calculator.swift in Sources */,
 				AA92B4CF2927A153005E43F0 /* KeyView.swift in Sources */,
 				AA2FAC23272F2349006DE4C8 /* OperatorStack.swift in Sources */,
 				AA2FAC22272F2349006DE4C8 /* NumberKeys.swift in Sources */,
+				AAB10B9D292A2222004707E9 /* KeyBackground.swift in Sources */,
+				AA92B4D329287514005E43F0 /* KeyModelOld.swift in Sources */,
 				AA92B4D12927A1B1005E43F0 /* ScientificView.swift in Sources */,
 				AA3FB8272920E0E5002ECCEB /* ControlCenter.swift in Sources */,
 				AA2FAC15272F2349006DE4C8 /* CalculatorApp.swift in Sources */,

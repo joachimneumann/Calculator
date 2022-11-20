@@ -14,44 +14,44 @@ struct ScientificKeys: View {
     var body: some View {
         VStack(spacing: t.spaceBetweenKeys) {
             HStack(spacing: t.spaceBetweenKeys) {
-                Key("( ", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.parenthesisProperties)
-                Key(" )", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.parenthesisProperties)
-                Key("mc", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key("m+", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key("m-", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key("mr", requiresValidNuber: false, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey("( ", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.parenthesisProperties)
+                OldKey(" )", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.parenthesisProperties)
+                OldKey("mc", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey("m+", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey("m-", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey("mr", requiresValidNuber: false, brain: brain, t: t, keyProperties: t.scientificProperties)
             }
             HStack(spacing: t.spaceBetweenKeys) {
-                Key("2nd", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key("x^2", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key("x^3", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key("x^y", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key(brain.secondKeys ? "y^x" : "e^x", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key(brain.secondKeys ? "2^x" : "10^x", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey("2nd", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey("x^2", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey("x^3", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey("x^y", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey(brain.secondKeys ? "y^x" : "e^x", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey(brain.secondKeys ? "2^x" : "10^x", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
             }
             HStack(spacing: t.spaceBetweenKeys) {
-                Key("One_x", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key("√", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key("3√", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key("y√", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key(brain.secondKeys ? "logy" : "ln", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key(brain.secondKeys ? "log2" : "log10", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey("One_x", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey("√", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey("3√", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey("y√", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey(brain.secondKeys ? "logy" : "ln", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey(brain.secondKeys ? "log2" : "log10", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
             }
             HStack(spacing: t.spaceBetweenKeys) {
-                Key("x!", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key(brain.rad ? (brain.secondKeys ? "asin" : "sin") : (brain.secondKeys ? "asinD" : "sinD"), requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key(brain.rad ? (brain.secondKeys ? "acos" : "cos") : (brain.secondKeys ? "acosD" : "cosD"), requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key(brain.rad ? (brain.secondKeys ? "atan" : "tan") : (brain.secondKeys ? "atanD" : "tanD"), requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key("e", requiresValidNuber: false, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key("EE", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey("x!", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey(brain.rad ? (brain.secondKeys ? "asin" : "sin") : (brain.secondKeys ? "asinD" : "sinD"), requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey(brain.rad ? (brain.secondKeys ? "acos" : "cos") : (brain.secondKeys ? "acosD" : "cosD"), requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey(brain.rad ? (brain.secondKeys ? "atan" : "tan") : (brain.secondKeys ? "atanD" : "tanD"), requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey("e", requiresValidNuber: false, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey("EE", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
             }
             HStack(spacing: t.spaceBetweenKeys) {
-                Key(brain.rad ? "Deg" : "Rad", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key(brain.secondKeys ? "asinh" : "sinh", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key(brain.secondKeys ? "acosh" : "cosh", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key(brain.secondKeys ? "atanh" : "tanh", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key("π", requiresValidNuber: false, brain: brain, t: t, keyProperties: t.scientificProperties)
-                Key("Rand", requiresValidNuber: false, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey(brain.rad ? "Deg" : "Rad", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey(brain.secondKeys ? "asinh" : "sinh", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey(brain.secondKeys ? "acosh" : "cosh", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey(brain.secondKeys ? "atanh" : "tanh", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey("π", requiresValidNuber: false, brain: brain, t: t, keyProperties: t.scientificProperties)
+                OldKey("Rand", requiresValidNuber: false, brain: brain, t: t, keyProperties: t.scientificProperties)
             }
         }
     }

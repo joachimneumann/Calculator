@@ -11,6 +11,7 @@ struct ScientificView: View {
     let spaceBetweenKeys: CGFloat
     var body: some View {
         VStack(spacing: spaceBetweenKeys) {
+            Text("S")
 //            HStack(spacing: spaceBetweenKeys) {
 //                let isEnabled = (!requiresValidNuber || brain.isValidNumber) && !brain.isCalculating && (symbol != "mr" || brain.memory != nil)
 //                let isPending = brain.isPending(symbol)
