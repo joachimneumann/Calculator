@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ScientificKeys: View {
-    var keyModel: KeyModel
+    @ObservedObject var keyModel: KeyModel
     let spaceBetweenKeys: CGFloat
     let keySize: CGSize
 
@@ -20,6 +20,14 @@ struct ScientificKeys: View {
         self.keySize = CGSize(width: w, height: h)
     }
 
+    //                OldKey(brain.secondKeys ? "logy" : "ln", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+    //                OldKey(brain.secondKeys ? "log2" : "log10", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+    //                OldKey(brain.rad ? (brain.secondKeys ? "asin" : "sin") : (brain.secondKeys ? "asinD" : "sinD"), requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+    //                OldKey(brain.rad ? (brain.secondKeys ? "acos" : "cos") : (brain.secondKeys ? "acosD" : "cosD"), requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+    //                OldKey(brain.rad ? (brain.secondKeys ? "atan" : "tan") : (brain.secondKeys ? "atanD" : "tanD"), requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+    //                OldKey(brain.secondKeys ? "asinh" : "sinh", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+    //                OldKey(brain.secondKeys ? "acosh" : "cosh", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
+    //                OldKey(brain.secondKeys ? "atanh" : "tanh", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
     var body: some View {
         VStack(spacing: spaceBetweenKeys) {
             HStack(spacing: spaceBetweenKeys) {
@@ -35,30 +43,30 @@ struct ScientificKeys: View {
                 KeyBuilder("x^2", keySize, keyModel)
                 KeyBuilder("x^3", keySize, keyModel)
                 KeyBuilder("x^y", keySize, keyModel)
-                KeyBuilder("y^x", keySize, keyModel)
-                KeyBuilder("2^x", keySize, keyModel)
+                KeyBuilder(keyModel._2ndActive ? "y^x" : "e^x", keySize, keyModel)
+                KeyBuilder(keyModel._2ndActive ? "2^x" : "10^x", keySize, keyModel)
             }
             HStack(spacing: spaceBetweenKeys) {
                 KeyBuilder("One_x", keySize, keyModel)
                 KeyBuilder("√", keySize, keyModel)
                 KeyBuilder("3√", keySize, keyModel)
                 KeyBuilder("y√", keySize, keyModel)
-                KeyBuilder("logy", keySize, keyModel)
-                KeyBuilder("log2", keySize, keyModel) /// todo: brain.secondkeys
+                KeyBuilder(keyModel._2ndActive ? "logy" : "ln", keySize, keyModel)
+                KeyBuilder(keyModel._2ndActive ? "log2" : "log10", keySize, keyModel)
             }
             HStack(spacing: spaceBetweenKeys) {
                 KeyBuilder("x!", keySize, keyModel)
-                KeyBuilder("sin", keySize, keyModel)
-                KeyBuilder("cos", keySize, keyModel)
-                KeyBuilder("tan", keySize, keyModel)
+                KeyBuilder(keyModel._2ndActive ? "asin" : "sin", keySize, keyModel)
+                KeyBuilder(keyModel._2ndActive ? "acos" : "cos", keySize, keyModel)
+                KeyBuilder(keyModel._2ndActive ? "atan" : "tan", keySize, keyModel)
                 KeyBuilder("e", keySize, keyModel)
                 KeyBuilder("EE", keySize, keyModel)
             }
             HStack(spacing: spaceBetweenKeys) {
                 KeyBuilder("Deg", keySize, keyModel)
-                KeyBuilder("sinh", keySize, keyModel)
-                KeyBuilder("cosh", keySize, keyModel)
-                KeyBuilder("tanh", keySize, keyModel)
+                KeyBuilder(keyModel._2ndActive ? "asinh" : "sinh", keySize, keyModel)
+                KeyBuilder(keyModel._2ndActive ? "acosh" : "cosh", keySize, keyModel)
+                KeyBuilder(keyModel._2ndActive ? "atanh" : "tanh", keySize, keyModel)
                 KeyBuilder("π", keySize, keyModel)
                 KeyBuilder("Rand", keySize, keyModel)
             }
