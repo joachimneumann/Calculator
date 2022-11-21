@@ -217,7 +217,7 @@ struct KeyView2_Previews: PreviewProvider {
 //            downAnimationTime: 0.1,
 //            upAnimationTime: 0.5,
 //            bottomPadding: 0.0)
-//        KeyView("C", callback: dummy, enabled: true, pending: false, keyProperties: digits_1_9)
+//        KeyView("AC", callback: dummy, enabled: true, pending: false, keyProperties: digits_1_9)
     }
 }
 

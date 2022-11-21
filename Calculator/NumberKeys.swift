@@ -15,7 +15,7 @@
 //    var body: some View {
 //        VStack(spacing: t.spaceBetweenKeys) {
 //            HStack(spacing: t.spaceBetweenKeys) {
-//                OldKey("C", requiresValidNuber: false, brain: brain, t: t, keyProperties: t.ac_plus_minus_percentProperties)
+//                OldKey("AC", requiresValidNuber: false, brain: brain, t: t, keyProperties: t.ac_plus_minus_percentProperties)
 //                OldKey("±", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.ac_plus_minus_percentProperties)
 //                OldKey("%", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.ac_plus_minus_percentProperties)
 //                OldKey("/", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.colorOpProperties)

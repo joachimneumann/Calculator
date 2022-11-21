@@ -90,7 +90,7 @@
 //                            let numberOfbytes = Int( Double(newInternalPrecision) * 3.32192809489) * 8
 //                            let testMemoryResult = testMemory(size: numberOfbytes * 10)
 //                            if testMemoryResult {
-//                                brain.nonWaitingOperation("C")
+//                                brain.nonWaitingOperation("AC")
 //                                brain.setPrecision(newPrecision)
 //                                Gmp.deleteConstants()
 //                            }
@@ -98,7 +98,7 @@
 //                        onDecrement: {
 //                            showMemoryWarning = false
 //                            let newPrecision = decreasedPrecision(current: brain.precision)
-//                            brain.nonWaitingOperation("C")
+//                            brain.nonWaitingOperation("AC")
 //                            brain.setPrecision(newPrecision)
 //                            Gmp.deleteConstants()
 //                        })

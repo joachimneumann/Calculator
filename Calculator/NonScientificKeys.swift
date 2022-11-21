@@ -15,7 +15,7 @@ struct KeyBuilder: View {
         if keyModel.allKeyColors.keys.contains(symbol) {
             self.symbol = symbol
         } else {
-            self.symbol = "C"
+            self.symbol = "?"
         }
         self.size = size
         self.keyModel = keyModel
@@ -43,7 +43,7 @@ struct NonScientificKeys: View {
     var body: some View {
         VStack(spacing: spaceBetweenKeys) {
             HStack(spacing: spaceBetweenKeys) {
-                KeyBuilder("C", keySize, keyModel)
+                KeyBuilder(keyModel._AC ? "AC" : "C", keySize, keyModel)
                 KeyBuilder("±", keySize, keyModel)
                 KeyBuilder("%", keySize, keyModel)
                 KeyBuilder("/", keySize, keyModel)

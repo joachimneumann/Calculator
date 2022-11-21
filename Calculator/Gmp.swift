@@ -86,7 +86,7 @@ class Gmp: Equatable {
     func ln()         { mpfr_log(  &mpfr, &mpfr, MPFR_RNDN) }
     func log10()      { mpfr_log10(&mpfr, &mpfr, MPFR_RNDN) }
     func log2()       { mpfr_log2 (&mpfr, &mpfr, MPFR_RNDN) }
-    func sin()        { mpfr_sin(  &mpfr, &mpfr, MPFR_RNDN) }
+    func sin()        { mpfr_sin(  &mpfr, &mpfr, MPFR_RNDN) } // TODO: add sinDeg()
     func cos()        { mpfr_cos(  &mpfr, &mpfr, MPFR_RNDN) }
     func tan()        { mpfr_tan(  &mpfr, &mpfr, MPFR_RNDN) }
     func asin()       { mpfr_asin( &mpfr, &mpfr, MPFR_RNDN) }

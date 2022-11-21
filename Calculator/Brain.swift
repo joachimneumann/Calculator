@@ -16,7 +16,7 @@ class Brain {
     private func speedTest(testPrecision: Int) async -> Speed {
         let testBrain = Brain(precision: testPrecision)
 
-        testBrain.nonWaitingOperation("C")
+        testBrain.nonWaitingOperation("AC")
         testBrain.nonWaitingOperation("Rand")
 
         let timer = ParkBenchTimer()
@@ -39,7 +39,6 @@ class Brain {
         }
     }
     
-    var secondKeys: Bool = false
     var rad: Bool = false
     var showCalculating: Bool = false
     var isCalculating: Bool = false
@@ -116,15 +115,11 @@ class Brain {
     private func operation(_ symbol: String) {
         if symbol == "=" {
             self.execute(priority: Operator.equalPriority)
-        } else if symbol == "C" {
+        } else if symbol == "AC" {
             operatorStack.removeAll()
             n.removeAll()
             pendingOperator = nil
             n.append(nullNumber)
-        } else if symbol == "2nd" {
-            DispatchQueue.main.async {
-                self.secondKeys.toggle()
-            }
         } else if symbol == "Rad" || symbol == "Deg" {
             DispatchQueue.main.async {
                 self.rad.toggle()
@@ -275,7 +270,7 @@ class Brain {
         self.precision = initialPrecision
         self.bits = Int(Double(Brain.internalPrecision(initialPrecision)) * 3.32192809489)
 
-        self.nonWaitingOperation("C")
+        self.nonWaitingOperation("AC")
         
         constantOperators = [
             "π":    Inplace(Gmp.π, 0),

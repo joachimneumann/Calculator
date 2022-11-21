@@ -96,7 +96,7 @@
 //        } label: {
 //            Text("Copy")
 //        }
-//        .keyboardShortcut("C", modifiers: [.command])
+//        .keyboardShortcut("AC", modifiers: [.command])
 //    }
 //}
 //
