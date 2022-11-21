@@ -38,7 +38,7 @@ struct CalculatorApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate // used to disallow Landscape in Mac
     
     init() {
-        UINavigationBar.appearance().backgroundColor = .black
+//        UINavigationBar.appearance().backgroundColor = .black
     }
 
     var body: some Scene {
@@ -48,10 +48,10 @@ struct CalculatorApp: App {
                 let isPad = (UIDevice.current.userInterfaceIdiom == .pad)
                 let isPortrait = geo.size.height > geo.size.width
                 let padding = (!isPad && isPortrait) ? geo.size.width * 0.04 : geo.size.width * 0.01
-                let leadingPadding = geo.safeAreaInsets.leading  == 0 ? padding : 0
-                let trailingPadding = geo.safeAreaInsets.trailing  == 0 ? padding : 0
+                let leadingPadding = geo.safeAreaInsets.leading == 0 ? padding : 0
+                let trailingPadding = geo.safeAreaInsets.trailing == 0 ? padding : 0
                 let topPadding = geo.safeAreaInsets.top  == 0 ? padding : 0
-                let bottomPadding = geo.safeAreaInsets.bottom  == 0 ? padding : 0
+                let bottomPadding = geo.safeAreaInsets.bottom == 0 ? padding : 0
                 let newWidth = geo.size.width - leadingPadding - trailingPadding
                 let newheight = geo.size.height - topPadding - bottomPadding
                 let newSize = CGSize(width: newWidth, height: newheight)
@@ -61,15 +61,15 @@ struct CalculatorApp: App {
                     .padding(.top, topPadding)
                     .padding(.bottom, bottomPadding)
                     .background(Color.black)
+//                    .frame(width: newWidth, height: newheight)
             }
-            .background(Color.black)
             .withHostingWindow { window in
                 /// this stops white background from showing *during* a device rotation
                 window?.rootViewController?.view.backgroundColor = UIColor.black
             }
             .statusBar(hidden: true)
         }
-        
+
         
         
         

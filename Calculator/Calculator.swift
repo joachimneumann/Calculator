@@ -58,7 +58,7 @@ struct Calculator: View {
                     //                            .padding(.trailing, TE().trailingAfterDisplay)
                     //                            .opacity(viewLogic.isZoomed ? 0.0 : 1.0)
                     //                    }
-                    KeysView(keyModel: keyModel, bottomPadding: 10, isScientific: false, scientificTrailingPadding: 100, size: keyboardSize)
+                    KeysView(keyModel: keyModel, isScientific: false, size: keyboardSize)
                 }
             } else {
                 VStack(spacing: 0.0) {
@@ -71,7 +71,10 @@ struct Calculator: View {
                     //                        Spacer(minLength: 0.0)
                     //                        SingleLineDisplay(brain: Brain(), t: TE())
                     //                            .padding(.trailing, TE().trailingAfterDisplay)
-                    KeysView(keyModel: keyModel, bottomPadding: 10, isScientific: !isPortrait, scientificTrailingPadding: 100, size: keyboardSize)
+                    Spacer(minLength: 0.0)
+//                    Rectangle().foregroundColor(Color.red)
+                    KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
+                        .padding(.bottom, isPortrait ? size.height*0.06 : 0.0)
                 }
             }
         }
@@ -120,6 +123,6 @@ struct Calculator: View {
 
 struct Calculator_Previews: PreviewProvider {
     static var previews: some View {
-        Calculator(isPad: true, isPortrait: true, size: CGSize(width: UIScreen.main.bounds.width*0.9, height: UIScreen.main.bounds.height*0.85))
+        Calculator(isPad: false, isPortrait: true, size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
     }
 }

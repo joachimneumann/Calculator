@@ -72,7 +72,6 @@ struct NonScientificKeys: View {
                 KeyBuilder("=", keySize, keyModel)
             }
         }
-        .background(Color.black)
     }
 }
 
