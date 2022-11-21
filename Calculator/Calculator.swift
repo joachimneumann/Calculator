@@ -62,6 +62,7 @@ struct Calculator: View {
                 }
             } else {
                 VStack(spacing: 0.0) {
+                    Spacer(minLength: 0.0)
                     //                    if viewLogic.isZoomed && !isPortrait {
                     //                        LongDisplay(text: viewLogic.longText, uiFont: viewLogic.displayUIFont, isCopyingOrPasting: viewLogic.isCopyingOrPasting, color: viewLogic.textColor)
                     //
@@ -71,8 +72,7 @@ struct Calculator: View {
                     //                        Spacer(minLength: 0.0)
                     //                        SingleLineDisplay(brain: Brain(), t: TE())
                     //                            .padding(.trailing, TE().trailingAfterDisplay)
-                    Spacer(minLength: 0.0)
-//                    Rectangle().foregroundColor(Color.red)
+                    OneLineDisplay(keyModel: keyModel)
                     KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
                         .padding(.bottom, isPortrait ? size.height*0.06 : 0.0)
                 }

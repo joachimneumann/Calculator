@@ -7,10 +7,6 @@
 
 import Foundation
 
-struct OneLiner {
-    var text: String
-    var abreviated: Bool // shall the + be enabled or not?
-}
 
 struct MultipleLiner {
     var left: String
@@ -26,8 +22,21 @@ class Number: CustomDebugStringConvertible {
     var isStr: Bool { _str != nil }
     var str: String? { return _str }
     var gmp: Gmp? { return _gmp }
-    var oneLine: String?
     var multipleLines: MultipleLiner?
+    
+    var isNull: Bool {
+        if isStr {
+            if str == "0" { return true }
+            if str == "0," { return true }
+            if str == "0,0" { return true }
+            return false
+        } else {
+            if let g = gmp {
+                return g.isNull()
+            }
+            assert(false)
+        }
+    }
     
     var isValid: Bool {
         if isStr { return true }

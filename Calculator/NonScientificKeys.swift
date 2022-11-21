@@ -26,7 +26,7 @@ struct KeyBuilder: View {
 }
 
 struct NonScientificKeys: View {
-    var keyModel: KeyModel
+    @ObservedObject var keyModel: KeyModel
     let spaceBetweenKeys: CGFloat
     let keySize: CGSize
     let doubleKeySize: CGSize

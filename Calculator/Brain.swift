@@ -39,7 +39,6 @@ class Brain {
         }
     }
     
-    var rad: Bool = false
     var showCalculating: Bool = false
     var isCalculating: Bool = false
     
@@ -48,6 +47,7 @@ class Brain {
     
     var isValidNumber: Bool { n.last.isValid }
 
+    var haveResultCallback: (Number) -> () = {_ in }
     var pendingOperatorCallback: ((String?) -> ()) = {_ in }
     var pendingOperator: String? {
         didSet { pendingOperatorCallback(pendingOperator) }
@@ -115,15 +115,14 @@ class Brain {
     private func operation(_ symbol: String) {
         if symbol == "=" {
             self.execute(priority: Operator.equalPriority)
+        } else if symbol == "C" {
+            n.removeLast()
+            n.append(nullNumber)
         } else if symbol == "AC" {
             operatorStack.removeAll()
             n.removeAll()
             pendingOperator = nil
             n.append(nullNumber)
-        } else if symbol == "Rad" || symbol == "Deg" {
-            DispatchQueue.main.async {
-                self.rad.toggle()
-            }
         } else if symbol == "mc" {
             memory = nil
         } else if symbol == "m+" {
@@ -201,6 +200,7 @@ class Brain {
             //            print("### non-existing operation \(symbol)")
             assert(false)
         }
+        haveResultCallback(last)
     }
     
     private func waitingOperation(_ symbol: String) async {
