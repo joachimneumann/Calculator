@@ -11,44 +11,44 @@ struct Calculator: View {
     let isPad: Bool
     let isPortrait: Bool
     let size: CGSize
-    @StateObject private var viewLogic = ViewLogic(size: CGSize(width: 100, height: 100))
+    //    @StateObject private var viewLogic = ViewLogic(size: CGSize(width: 100, height: 100))
     var body: some View {
         ZStack {
             Color.gray
             if isPad {
                 VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    if viewLogic.isZoomed {
-                        LongDisplay(text: viewLogic.longText, uiFont: viewLogic.displayUIFont, isCopyingOrPasting: viewLogic.isCopyingOrPasting, color: viewLogic.textColor)
-//                        MultiLineDisplay(brain: Brain(), t: TE(), isCopyingOrPasting: false)
-//                            .padding(.trailing, TE().trailingAfterDisplay)
-//                            .opacity(viewLogic.isZoomed ? 1.0 : 0.0)
-//                            .transition(.move(edge: .bottom))
-//                    } else {
-//                        SingleLineDisplay(brain: Brain(), t: TE())
-//                            .padding(.trailing, TE().trailingAfterDisplay)
-//                            .opacity(viewLogic.isZoomed ? 0.0 : 1.0)
-                    }
+                    //                    if viewLogic.isZoomed {
+                    //                        LongDisplay(text: viewLogic.longText, uiFont: viewLogic.displayUIFont, isCopyingOrPasting: viewLogic.isCopyingOrPasting, color: viewLogic.textColor)
+                    //                        MultiLineDisplay(brain: Brain(), t: TE(), isCopyingOrPasting: false)
+                    //                            .padding(.trailing, TE().trailingAfterDisplay)
+                    //                            .opacity(viewLogic.isZoomed ? 1.0 : 0.0)
+                    //                            .transition(.move(edge: .bottom))
+                    //                    } else {
+                    //                        SingleLineDisplay(brain: Brain(), t: TE())
+                    //                            .padding(.trailing, TE().trailingAfterDisplay)
+                    //                            .opacity(viewLogic.isZoomed ? 0.0 : 1.0)
+                    //                    }
                     KeysView(bottomPadding: 10, isScientific: true, scientificTrailingPadding: 100, size: size)
                 }
             } else {
                 VStack(spacing: 0.0) {
-                    if viewLogic.isZoomed && !isPortrait {
-                        LongDisplay(text: viewLogic.longText, uiFont: viewLogic.displayUIFont, isCopyingOrPasting: viewLogic.isCopyingOrPasting, color: viewLogic.textColor)
-//
-//                        MultiLineDisplay(brain: Brain(), t: TE(), isCopyingOrPasting: false)
-//                            .padding(.trailing, TE().trailingAfterDisplay)
-                    } else {
-                        Spacer(minLength: 0.0)
-//                        SingleLineDisplay(brain: Brain(), t: TE())
-//                            .padding(.trailing, TE().trailingAfterDisplay)
-                        KeysView(bottomPadding: 10, isScientific: false, scientificTrailingPadding: 100, size: size)
-                    }
+                    //                    if viewLogic.isZoomed && !isPortrait {
+                    //                        LongDisplay(text: viewLogic.longText, uiFont: viewLogic.displayUIFont, isCopyingOrPasting: viewLogic.isCopyingOrPasting, color: viewLogic.textColor)
+                    //
+                    //                        MultiLineDisplay(brain: Brain(), t: TE(), isCopyingOrPasting: false)
+                    //                            .padding(.trailing, TE().trailingAfterDisplay)
+                    //                    } else {
+                    //                        Spacer(minLength: 0.0)
+                    //                        SingleLineDisplay(brain: Brain(), t: TE())
+                    //                            .padding(.trailing, TE().trailingAfterDisplay)
+                    KeysView(bottomPadding: 10, isScientific: false, scientificTrailingPadding: 100, size: size)
                 }
             }
         }
     }
 }
+
 
 //struct Keys: View {
 //    let brain: Brain

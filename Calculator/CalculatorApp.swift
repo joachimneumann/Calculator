@@ -47,12 +47,18 @@ struct CalculatorApp: App {
                 let isPad = (UIDevice.current.userInterfaceIdiom == .pad)
                 let isPortrait = geo.size.height > geo.size.width
                 let padding = (!isPad && isPortrait) ? geo.size.width * 0.04 : geo.size.width * 0.01
-                let s = CGSize(width: 100, height: 100)
-                Calculator(isPad: isPad, isPortrait: isPortrait, size: s)
-                    .padding(.leading,  geo.safeAreaInsets.leading  == 0 ? padding : 0)
-                    .padding(.trailing, geo.safeAreaInsets.trailing == 0 ? padding : 0)
-                    .padding(.top,      geo.safeAreaInsets.top      == 0 ? padding : 0)
-                    .padding(.bottom,   geo.safeAreaInsets.bottom   == 0 ? padding : 0)
+                let leadingPadding = geo.safeAreaInsets.leading  == 0 ? padding : 0
+                let trailingPadding = geo.safeAreaInsets.trailing  == 0 ? padding : 0
+                let topPadding = geo.safeAreaInsets.top  == 0 ? padding : 0
+                let bottomPadding = geo.safeAreaInsets.bottom  == 0 ? padding : 0
+                let newWidth = geo.size.width - leadingPadding - trailingPadding
+                let newheight = geo.size.height - topPadding - bottomPadding
+                let newSize = CGSize(width: newWidth, height: newheight)
+                Calculator(isPad: isPad, isPortrait: isPortrait, size: newSize)
+                    .padding(.leading, leadingPadding)
+                    .padding(.trailing, trailingPadding)
+                    .padding(.top, topPadding)
+                    .padding(.bottom, bottomPadding)
                     .background(Color.black)
             }
             .withHostingWindow { window in
