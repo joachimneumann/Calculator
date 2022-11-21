@@ -21,13 +21,22 @@ struct KeysView: View {
 
     var body: some View {
         VStack(spacing: 0.0) {
-            Spacer(minLength: 0.0)
+            Spacer(minLength: 100.0)
             HStack(spacing: 0.0) {
                 if isScientific {
-                    ScientificKeys(keyModel: keyModel, spaceBetweenKeys: KeyModel.spaceBetweenkeysFraction(withScientificKeys: true) * size.width, size: size)
-//                        .padding(.trailing, scientificTrailingPadding)
+                    let space = KeyModel.spaceBetweenkeysFraction(withScientificKeys: true) * size.width
+                    let keyWidth = (1.0 * size.width - 9.0 * space) / 10.0
+                    let leftWidth = 6 * keyWidth + 5 * space
+                    let rightWidth = 4 * keyWidth + 3 * space
+                    let sizeLeft  = CGSize(width: leftWidth, height: size.height)
+                    let sizeRight = CGSize(width: rightWidth, height: size.height)
+                    ScientificKeys(keyModel: keyModel, spaceBetweenKeys: space, size: sizeLeft)
+                    //                        .padding(.trailing, scientificTrailingPadding)
+                        .padding(.trailing, space)
+                    NonScientificKeys(keyModel: keyModel, spaceBetweenKeys: space, size: sizeRight)
                 } else {
-                    NonScientificKeys(keyModel: keyModel, spaceBetweenKeys: KeyModel.spaceBetweenkeysFraction(withScientificKeys: false) * size.width, size: size)
+                    let space = KeyModel.spaceBetweenkeysFraction(withScientificKeys: false) * size.width
+                    NonScientificKeys(keyModel: keyModel, spaceBetweenKeys: space, size: size)
                 }
             }
         }
@@ -38,7 +47,7 @@ struct KeysView: View {
     }
 }
 
-struct Keys_Previews: PreviewProvider {
+struct KeysView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             KeysView(keyModel: KeyModel(), bottomPadding: 100, isScientific: false, scientificTrailingPadding: 100, size: CGSize(width: 100, height: 100))
