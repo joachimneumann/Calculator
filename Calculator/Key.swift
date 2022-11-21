@@ -20,7 +20,7 @@ struct Key: View {
     let keyContent: any View
     let keyLabel: KeyLabel
     let size: CGSize
-    var keyColors: KeyColors
+    @ObservedObject var keyColors: KeyColors
     let symbol: String
     let callback: (String) -> ()
 

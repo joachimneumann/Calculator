@@ -164,11 +164,6 @@
 		AA08C7C0272EDA48001B8575 /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
-				AAB10B98292A2222004707E9 /* Key.swift */,
-				AAB10B97292A2222004707E9 /* KeyBackground.swift */,
-				AAB10B94292A2222004707E9 /* KeyLabel.swift */,
-				AAB10B99292A2222004707E9 /* KeyModel.swift */,
-				AAB10B96292A2222004707E9 /* NonScientificKeys.swift */,
 				AA2FAC01272F2348006DE4C8 /* Brain.swift */,
 				AA2FABF1272F217F006DE4C8 /* Gmp.swift */,
 				AA2FABFF272F2348006DE4C8 /* CalculatorApp.swift */,
@@ -204,6 +199,11 @@
 				AA92B4CE2927A153005E43F0 /* KeyView.swift */,
 				AA92B4D229287514005E43F0 /* KeyModelOld.swift */,
 				AA92B4D02927A1B1005E43F0 /* ScientificView.swift */,
+				AAB10B98292A2222004707E9 /* Key.swift */,
+				AAB10B97292A2222004707E9 /* KeyBackground.swift */,
+				AAB10B94292A2222004707E9 /* KeyLabel.swift */,
+				AAB10B99292A2222004707E9 /* KeyModel.swift */,
+				AAB10B96292A2222004707E9 /* NonScientificKeys.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";

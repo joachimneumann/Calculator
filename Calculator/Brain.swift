@@ -50,6 +50,7 @@ class Brain: ObservableObject {
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
     @Published var showCalculating: Bool = false
+    var pendingOperatorCallback: ((String?) -> ()) = {_ in }
     var isCalculating: Bool = false
     
     var debugLastDouble: Double { n.last.gmp!.toDouble() }
@@ -60,7 +61,11 @@ class Brain: ObservableObject {
     }
     
     var isValidNumber: Bool { n.last.isValid }
-    var pendingOperator: String?
+    var pendingOperator: String? {
+        didSet {
+            pendingOperatorCallback(pendingOperator)
+        }
+    }
     var memory: Gmp? = nil
     var nullNumber: Number {
         return Number("0", bits: bits)
@@ -82,6 +87,7 @@ class Brain: ObservableObject {
     var equalOperator:     Operator = Operator(0)
     
     func isPending(_ symbol: String) -> Bool {
+        /// TODO remove this function 
         if pendingOperator != nil {
             return pendingOperator == symbol
         }

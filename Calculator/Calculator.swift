@@ -42,7 +42,7 @@ struct Calculator: View {
                         Spacer(minLength: 0.0)
 //                        SingleLineDisplay(brain: Brain(), t: TE())
 //                            .padding(.trailing, TE().trailingAfterDisplay)
-                        KeysView(bottomPadding: 10, isScientific: true, scientificTrailingPadding: 100, height: 300)
+                        KeysView(bottomPadding: 10, isScientific: false, scientificTrailingPadding: 100, height: 300)
                     }
                 }
             }

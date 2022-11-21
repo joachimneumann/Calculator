@@ -26,7 +26,7 @@ struct KeysView: View {
                     ScientificView(spaceBetweenKeys: 5)
                         .padding(.trailing, scientificTrailingPadding)
                 }
-//                NumberKeysView()
+                NonScientificKeys(spaceBetweenKeys: 10, size: CGSize(width: 300, height: 300))
             }
         }
         .frame(height: height)
