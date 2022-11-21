@@ -7,27 +7,29 @@
 
 import SwiftUI
 
-func doNothing(s: String) {
-        print("do something")
-}
 struct KeyView_Previews: PreviewProvider {
+    static func doNothing(s: String) {
+            print("do something")
+    }
     static var previews: some View {
-        Key("√", size: CGSize(width: 300, height: 100), keyColors: KeyColors(textColor: Color.white, upColor: Color.red, downColor: Color.orange), callback: doNothing)
+        Key("√", size: CGSize(width: 300, height: 100), keyColors: KeyColors(textColor: UIColor.white, upColor: UIColor.red, downColor: UIColor.orange), callback: KeyView_Previews.doNothing)
     }
 }
 
 struct Key: View {
-    let keyContent: any View
-    let keyLabel: KeyLabel
-    let size: CGSize
-    @ObservedObject var keyColors: KeyColors
-    let symbol: String
-    let callback: (String) -> ()
+//    private let keyModel: KeyModel
+    private let symbol: String
+    private let size: CGSize
+    private var keyColors: KeyColors
+    private let callback: (String) -> ()
+
+    private let keyLabel: KeyLabel
+    private let keyContent: any View
 
     init(_ symbol: String, size: CGSize, keyColors: KeyColors, callback: @escaping (String) -> ()) {
         self.keyColors = keyColors
         self.size = size
-        self.keyLabel = KeyLabel(size: size, textColor: keyColors.textColor)
+        self.keyLabel = KeyLabel(size: size, textColor: Color(uiColor: keyColors.textColor))
         keyContent = keyLabel.of(symbol)
         self.symbol = symbol
         self.callback = callback
@@ -39,7 +41,7 @@ struct Key: View {
     var body: some View {
         KeyBackground(callback: doSomething, keyColors: keyColors) {
             AnyView(keyContent)
-                .foregroundColor(keyColors.textColor)
+                .foregroundColor(Color(uiColor: keyColors.textColor))
         }
         .frame(width: size.width, height: size.height)
     }

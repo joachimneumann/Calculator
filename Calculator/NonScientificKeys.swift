@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NonScientificKeys: View {
-    @ObservedObject var keyModel = KeyModel()
+    @StateObject private var keyModel = KeyModel()
     let spaceBetweenKeys: CGFloat
     let keySize: CGSize
     let doubleKeySize: CGSize
@@ -22,9 +22,6 @@ struct NonScientificKeys: View {
     }
     var body: some View {
         VStack(spacing: spaceBetweenKeys) {
-            Rectangle()
-                .frame(width: 20, height: 20)
-                .foregroundColor(Color.red)
             HStack(spacing: spaceBetweenKeys) {
                 Key("C", size: keySize, keyColors: keyModel.allKeyColors["C"]!, callback: keyModel.pressed)
                 Key("+/-", size: keySize, keyColors: keyModel.allKeyColors["+/-"]!, callback: keyModel.pressed)

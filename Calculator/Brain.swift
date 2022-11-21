@@ -6,18 +6,12 @@
 //
 
 import Foundation
-import SwiftUI
 
-
-/// TODO
-/// Viewmodel, brain without @Published
-/// brain has result -> update the display infor for what is needed
-/// brain new number: delete old infos
-class Brain: ObservableObject {
+class Brain {
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
-    @Published var precision: Int = 100
-    @Published var bits: Int
+    var precision: Int = 100
+    var bits: Int
 
     private func speedTest(testPrecision: Int) async -> Speed {
         let testBrain = Brain(precision: testPrecision)
@@ -45,9 +39,9 @@ class Brain: ObservableObject {
         }
     }
     
-    @Published var secondKeys: Bool = false
-    @Published var rad: Bool = false
-    @Published var showCalculating: Bool = false
+    var secondKeys: Bool = false
+    var rad: Bool = false
+    var showCalculating: Bool = false
     var isCalculating: Bool = false
     
     var debugLastDouble: Double { n.last.gmp!.toDouble() }
@@ -169,13 +163,13 @@ class Brain: ObservableObject {
         } else if symbol == "%" {
             self.percentage()
         } else if symbol == "fromPasteboard" {
-            if let s = UIPasteboard.general.string {
-                if pendingOperator != nil {
-                    n.append(nullNumber)
-                    pendingOperator = nil
-                }
-                n.replaceLast(with: gmpNumber(s))
-            }
+//            if let s = UIPasteboard.general.string {
+//                if pendingOperator != nil {
+//                    n.append(nullNumber)
+//                    pendingOperator = nil
+//                }
+//                n.replaceLast(with: gmpNumber(s))
+//            }
         } else if symbol == "," {
             if pendingOperator != nil {
                 n.append(nullNumber)
@@ -262,7 +256,7 @@ class Brain: ObservableObject {
         let precision: Int
     }
     
-    @Published var speed: Speed?
+    var speed: Speed?
     
     func setPrecision(_ newPrecision: Int) {
         self.precision = newPrecision

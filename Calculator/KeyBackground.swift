@@ -20,7 +20,7 @@ struct KeyBackground<Content: View>: View {
     var body: some View {
         ZStack {
             Capsule()
-                .foregroundColor(tapped ? keyColors.downColor : keyColors.upColor)
+                .foregroundColor(tapped ? Color(uiColor: keyColors.downColor) : Color(uiColor: keyColors.upColor))
             content
         }
         .onTouchUpGesture(tapped: $tapped, callback: callback)
