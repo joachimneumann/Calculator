@@ -24,10 +24,11 @@ struct KeysView: View {
             Spacer(minLength: 0.0)
             HStack(spacing: 0.0) {
                 if isScientific {
-                    ScientificView(spaceBetweenKeys: 5)
-                        .padding(.trailing, scientificTrailingPadding)
+                    ScientificKeys(keyModel: keyModel, spaceBetweenKeys: KeyModel.spaceBetweenkeysFraction(withScientificKeys: true) * size.width, size: size)
+//                        .padding(.trailing, scientificTrailingPadding)
+                } else {
+                    NonScientificKeys(keyModel: keyModel, spaceBetweenKeys: KeyModel.spaceBetweenkeysFraction(withScientificKeys: false) * size.width, size: size)
                 }
-                NonScientificKeys(keyModel: keyModel, spaceBetweenKeys: KeyModel.spaceBetweenkeysFraction(withScientificKeys: false) * size.width, size: size)
             }
         }
         .frame(width: size.width, height: size.height)

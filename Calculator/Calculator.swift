@@ -44,7 +44,6 @@ struct Calculator: View {
     //    @StateObject private var viewLogic = ViewLogic(size: CGSize(width: 100, height: 100))
     var body: some View {
         ZStack {
-            Color.gray
             if isPad {
                 VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
@@ -72,7 +71,7 @@ struct Calculator: View {
                     //                        Spacer(minLength: 0.0)
                     //                        SingleLineDisplay(brain: Brain(), t: TE())
                     //                            .padding(.trailing, TE().trailingAfterDisplay)
-                    KeysView(keyModel: keyModel, bottomPadding: 10, isScientific: false, scientificTrailingPadding: 100, size: keyboardSize)
+                    KeysView(keyModel: keyModel, bottomPadding: 10, isScientific: !isPortrait, scientificTrailingPadding: 100, size: keyboardSize)
                 }
             }
         }

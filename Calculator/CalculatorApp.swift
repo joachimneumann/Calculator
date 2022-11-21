@@ -43,8 +43,6 @@ struct CalculatorApp: App {
 
     var body: some Scene {
         
-        
-        
         WindowGroup {
             GeometryReader { geo in
                 let isPad = (UIDevice.current.userInterfaceIdiom == .pad)
@@ -64,6 +62,7 @@ struct CalculatorApp: App {
                     .padding(.bottom, bottomPadding)
                     .background(Color.black)
             }
+            .background(Color.black)
             .withHostingWindow { window in
                 /// this stops white background from showing *during* a device rotation
                 window?.rootViewController?.view.backgroundColor = UIColor.black

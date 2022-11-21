@@ -182,7 +182,7 @@ class TE {
 
         colorOpProperties = KeyProperties(
             size: keySize,
-            font: Font.system(size: scientificKeyFontSize, weight: .bold).monospacedDigit(),
+            font: Font.system(size: scientificKeyFontSize, weight: .semibold).monospacedDigit(),
             textColor: Color(
                 red:   255.0/255.0,
                 green: 255.0/255.0,

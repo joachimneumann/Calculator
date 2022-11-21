@@ -1,58 +1,74 @@
-////
-////  ScientificKeys.swift
-////  Calculator
-////
-////  Created by Joachim Neumann on 23/09/2021.
-////
 //
-//import SwiftUI
+//  ScientificKeys.swift
+//  Calculator
 //
-//struct ScientificKeys: View {
-//    @ObservedObject var brain: Brain
-//    let t: TE
-//    
-//    var body: some View {
-//        VStack(spacing: t.spaceBetweenKeys) {
-//            HStack(spacing: t.spaceBetweenKeys) {
-//                OldKey("( ", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.parenthesisProperties)
-//                OldKey(" )", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.parenthesisProperties)
-//                OldKey("mc", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey("m+", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey("m-", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey("mr", requiresValidNuber: false, brain: brain, t: t, keyProperties: t.scientificProperties)
-//            }
-//            HStack(spacing: t.spaceBetweenKeys) {
-//                OldKey("2nd", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey("x^2", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey("x^3", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey("x^y", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey(brain.secondKeys ? "y^x" : "e^x", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey(brain.secondKeys ? "2^x" : "10^x", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//            }
-//            HStack(spacing: t.spaceBetweenKeys) {
-//                OldKey("One_x", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey("√", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey("3√", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey("y√", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey(brain.secondKeys ? "logy" : "ln", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey(brain.secondKeys ? "log2" : "log10", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//            }
-//            HStack(spacing: t.spaceBetweenKeys) {
-//                OldKey("x!", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey(brain.rad ? (brain.secondKeys ? "asin" : "sin") : (brain.secondKeys ? "asinD" : "sinD"), requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey(brain.rad ? (brain.secondKeys ? "acos" : "cos") : (brain.secondKeys ? "acosD" : "cosD"), requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey(brain.rad ? (brain.secondKeys ? "atan" : "tan") : (brain.secondKeys ? "atanD" : "tanD"), requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey("e", requiresValidNuber: false, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey("EE", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//            }
-//            HStack(spacing: t.spaceBetweenKeys) {
-//                OldKey(brain.rad ? "Deg" : "Rad", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey(brain.secondKeys ? "asinh" : "sinh", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey(brain.secondKeys ? "acosh" : "cosh", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey(brain.secondKeys ? "atanh" : "tanh", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey("π", requiresValidNuber: false, brain: brain, t: t, keyProperties: t.scientificProperties)
-//                OldKey("Rand", requiresValidNuber: false, brain: brain, t: t, keyProperties: t.scientificProperties)
-//            }
-//        }
-//    }
-//}
+//  Created by Joachim Neumann on 11/21/22.
+//
+
+import SwiftUI
+
+struct ScientificKeys: View {
+    var keyModel: KeyModel
+    let spaceBetweenKeys: CGFloat
+    let keySize: CGSize
+
+    init(keyModel: KeyModel, spaceBetweenKeys: CGFloat, size: CGSize) {
+        self.keyModel = keyModel
+        self.spaceBetweenKeys = spaceBetweenKeys
+        let w = (size.width - 5.0 * spaceBetweenKeys) / 6.0
+        let h = (size.height - 4.0 * spaceBetweenKeys) / 5.0
+        self.keySize = CGSize(width: w, height: h)
+    }
+
+    var body: some View {
+        VStack(spacing: spaceBetweenKeys) {
+            HStack(spacing: spaceBetweenKeys) {
+                KeyBuilder("( ", keySize, keyModel)
+                KeyBuilder(" )", keySize, keyModel)
+                KeyBuilder("mc", keySize, keyModel)
+                KeyBuilder("m+", keySize, keyModel)
+                KeyBuilder("m-", keySize, keyModel)
+                KeyBuilder("mr", keySize, keyModel)
+            }
+            HStack(spacing: spaceBetweenKeys) {
+                KeyBuilder("2nd", keySize, keyModel)
+                KeyBuilder("x^2", keySize, keyModel)
+                KeyBuilder("x^3", keySize, keyModel)
+                KeyBuilder("x^y", keySize, keyModel)
+                KeyBuilder("y^x", keySize, keyModel)
+                KeyBuilder("2^x", keySize, keyModel)
+            }
+            HStack(spacing: spaceBetweenKeys) {
+                KeyBuilder("One_x", keySize, keyModel)
+                KeyBuilder("√", keySize, keyModel)
+                KeyBuilder("3√", keySize, keyModel)
+                KeyBuilder("y√", keySize, keyModel)
+                KeyBuilder("logy", keySize, keyModel)
+                KeyBuilder("log2", keySize, keyModel) /// todo: brain.secondkeys
+            }
+            HStack(spacing: spaceBetweenKeys) {
+                KeyBuilder("x!", keySize, keyModel)
+                KeyBuilder("sin", keySize, keyModel)
+                KeyBuilder("cos", keySize, keyModel)
+                KeyBuilder("tan", keySize, keyModel)
+                KeyBuilder("e", keySize, keyModel)
+                KeyBuilder("EE", keySize, keyModel)
+            }
+            HStack(spacing: spaceBetweenKeys) {
+                KeyBuilder("Deg", keySize, keyModel)
+                KeyBuilder("sinh", keySize, keyModel)
+                KeyBuilder("cosh", keySize, keyModel)
+                KeyBuilder("tanh", keySize, keyModel)
+                KeyBuilder("π", keySize, keyModel)
+                KeyBuilder("Rand", keySize, keyModel)
+            }
+        }
+        .background(Color.black)
+    }
+}
+
+struct ScientificKeys_Previews: PreviewProvider {
+    static var previews: some View {
+        ScientificKeys(keyModel: KeyModel(), spaceBetweenKeys: 10, size: CGSize(width: 650, height: 300))
+    }
+}

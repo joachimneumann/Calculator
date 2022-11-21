@@ -7,6 +7,24 @@
 
 import SwiftUI
 
+struct KeyBuilder: View {
+    let symbol: String
+    let size: CGSize
+    @ObservedObject var keyModel: KeyModel
+    init(_ symbol: String, _ size: CGSize, _ keyModel: KeyModel) {
+        if keyModel.allKeyColors.keys.contains(symbol) {
+            self.symbol = symbol
+        } else {
+            self.symbol = "C"
+        }
+        self.size = size
+        self.keyModel = keyModel
+    }
+    var body: some View {
+        Key(symbol, size: size, keyColors: keyModel.allKeyColors[symbol]!, callback: keyModel.pressed)
+    }
+}
+
 struct NonScientificKeys: View {
     var keyModel: KeyModel
     let spaceBetweenKeys: CGFloat
@@ -22,24 +40,6 @@ struct NonScientificKeys: View {
         self.doubleKeySize = CGSize(width: 2.0 * w + spaceBetweenKeys, height: h)
     }
     
-    struct KeyBuilder: View {
-        let symbol: String
-        let size: CGSize
-        @ObservedObject var keyModel: KeyModel
-        init(_ symbol: String, _ size: CGSize, _ keyModel: KeyModel) {
-            if keyModel.allKeyColors.keys.contains(symbol) {
-                self.symbol = symbol
-            } else {
-                self.symbol = "C"
-            }
-            self.size = size
-            self.keyModel = keyModel
-        }
-        var body: some View {
-            Key(symbol, size: size, keyColors: keyModel.allKeyColors[symbol]!, callback: keyModel.pressed)
-        }
-    }
-
     var body: some View {
         VStack(spacing: spaceBetweenKeys) {
             HStack(spacing: spaceBetweenKeys) {

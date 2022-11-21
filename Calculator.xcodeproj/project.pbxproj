@@ -14,7 +14,7 @@
 		AA2FABEB272F2135006DE4C8 /* mpfr.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA2FABEA272F2135006DE4C8 /* mpfr.xcframework */; };
 		AA2FABEF272F2141006DE4C8 /* gmp.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA2FABEE272F2141006DE4C8 /* gmp.xcframework */; };
 		AA2FABF2272F217F006DE4C8 /* Gmp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FABF1272F217F006DE4C8 /* Gmp.swift */; };
-		AA2FAC0E272F2349006DE4C8 /* ScientificKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FABF7272F2348006DE4C8 /* ScientificKeys.swift */; };
+		AA2FAC0E272F2349006DE4C8 /* OldScientificKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FABF7272F2348006DE4C8 /* OldScientificKeys.swift */; };
 		AA2FAC0F272F2349006DE4C8 /* Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FABF8272F2348006DE4C8 /* Number.swift */; };
 		AA2FAC10272F2349006DE4C8 /* Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FABF9272F2348006DE4C8 /* Symbols.swift */; };
 		AA2FAC12272F2349006DE4C8 /* NumberStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FABFB272F2348006DE4C8 /* NumberStack.swift */; };
@@ -45,6 +45,7 @@
 		AAB10B9D292A2222004707E9 /* KeyBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB10B97292A2222004707E9 /* KeyBackground.swift */; };
 		AAB10B9E292A2222004707E9 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB10B98292A2222004707E9 /* Key.swift */; };
 		AAB10B9F292A2222004707E9 /* KeyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB10B99292A2222004707E9 /* KeyModel.swift */; };
+		AABCF8BA292B8818007E5C35 /* ScientificKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABCF8B9292B8818007E5C35 /* ScientificKeys.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,7 +87,7 @@
 		AA2FABF4272F22AC006DE4C8 /* bridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bridge.h; path = dist/include/bridge.h; sourceTree = SOURCE_ROOT; };
 		AA2FABF5272F22AC006DE4C8 /* mpfr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mpfr.h; path = dist/include/mpfr.h; sourceTree = SOURCE_ROOT; };
 		AA2FABF6272F22AC006DE4C8 /* gmp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gmp.h; path = dist/include/gmp.h; sourceTree = SOURCE_ROOT; };
-		AA2FABF7272F2348006DE4C8 /* ScientificKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScientificKeys.swift; sourceTree = "<group>"; };
+		AA2FABF7272F2348006DE4C8 /* OldScientificKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldScientificKeys.swift; sourceTree = "<group>"; };
 		AA2FABF8272F2348006DE4C8 /* Number.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Number.swift; sourceTree = "<group>"; };
 		AA2FABF9272F2348006DE4C8 /* Symbols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Symbols.swift; sourceTree = "<group>"; };
 		AA2FABFB272F2348006DE4C8 /* NumberStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberStack.swift; sourceTree = "<group>"; };
@@ -118,6 +119,7 @@
 		AAB10B97292A2222004707E9 /* KeyBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackground.swift; sourceTree = "<group>"; };
 		AAB10B98292A2222004707E9 /* Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		AAB10B99292A2222004707E9 /* KeyModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeyModel.swift; path = ../../ViewBuilder/ViewBuilder/KeyModel.swift; sourceTree = "<group>"; };
+		AABCF8B9292B8818007E5C35 /* ScientificKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScientificKeys.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,7 +182,7 @@
 				AA2FAC0C272F2349006DE4C8 /* NumberKeys.swift */,
 				AA2FABFB272F2348006DE4C8 /* NumberStack.swift */,
 				AA2FAC0D272F2349006DE4C8 /* OperatorStack.swift */,
-				AA2FABF7272F2348006DE4C8 /* ScientificKeys.swift */,
+				AA2FABF7272F2348006DE4C8 /* OldScientificKeys.swift */,
 				AA2FABF9272F2348006DE4C8 /* Symbols.swift */,
 				AA2FABFC272F2348006DE4C8 /* Calculator.entitlements */,
 				AA2FABF4272F22AC006DE4C8 /* bridge.h */,
@@ -204,6 +206,7 @@
 				AAB10B94292A2222004707E9 /* KeyLabel.swift */,
 				AAB10B99292A2222004707E9 /* KeyModel.swift */,
 				AAB10B96292A2222004707E9 /* NonScientificKeys.swift */,
+				AABCF8B9292B8818007E5C35 /* ScientificKeys.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -342,7 +345,7 @@
 				AA92B4C329250827005E43F0 /* ColoredStepper.swift in Sources */,
 				AA2FAC0F272F2349006DE4C8 /* Number.swift in Sources */,
 				AA92B4C529266CC1005E43F0 /* AnimatedDots.swift in Sources */,
-				AA2FAC0E272F2349006DE4C8 /* ScientificKeys.swift in Sources */,
+				AA2FAC0E272F2349006DE4C8 /* OldScientificKeys.swift in Sources */,
 				AA2FAC16272F2349006DE4C8 /* CalculatorAppCatalyst.swift in Sources */,
 				AA2FAC17272F2349006DE4C8 /* Brain.swift in Sources */,
 				AA2FAC14272F2349006DE4C8 /* KeyInputSubjectWrapper.swift in Sources */,
@@ -354,6 +357,7 @@
 				AA2FAC21272F2349006DE4C8 /* OldKey.swift in Sources */,
 				AA2FABF2272F217F006DE4C8 /* Gmp.swift in Sources */,
 				AAB10B9A292A2222004707E9 /* KeyLabel.swift in Sources */,
+				AABCF8BA292B8818007E5C35 /* ScientificKeys.swift in Sources */,
 				AA2FAC1C272F2349006DE4C8 /* CalculatorView.swift in Sources */,
 				AA92B4C929273A58005E43F0 /* Calculator.swift in Sources */,
 				AA92B4CF2927A153005E43F0 /* KeyView.swift in Sources */,

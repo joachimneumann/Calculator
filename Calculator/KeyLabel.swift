@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-let TE_iPhoneSymbolFontSizeReduction = 1.0
-
 class KeyLabel {
     let size: CGSize
     let textColor: Color
@@ -21,6 +19,29 @@ class KeyLabel {
     @ViewBuilder func of(_ symbol: String) -> some View {
         switch symbol {
         case "√" : RootShape(rootDigit: "2", color: textColor, size: size)
+        case "3√": RootShape(rootDigit: "3", color: textColor, size: size)
+        case "y√": RootShape(rootDigit: "y", color: textColor, size: size)
+        case "log10": Logx("10")
+        case "log2":  Logx("2")
+        case "logy":  Logx("y")
+        case "One_x": One_x(color: textColor)
+        case "x^2":   Pow(base:  "x",   exponent: "2")
+        case "x^3":   Pow(base:  "x",   exponent: "3")
+        case "x^y":   Pow(base:  "x",   exponent: "y")
+        case "e^x":   Pow(base:  "e",   exponent: "x")
+        case "y^x":   Pow(base:  "y",   exponent: "x")
+        case "2^x":   Pow(base:  "2",   exponent: "x")
+        case "10^x":  Pow(base: "10",   exponent: "x")
+        case "2nd":   Pow(base: "2",    exponent: "nd")
+        case "asin":  Pow(base: "sin",  exponent: "-1")
+        case "acos":  Pow(base: "cos",  exponent: "-1")
+        case "atan":  Pow(base: "tan",  exponent: "-1")
+        case "asinD":  Pow(base: "sin",  exponent: "-1")
+        case "acosD":  Pow(base: "cos",  exponent: "-1")
+        case "atanD":  Pow(base: "tan",  exponent: "-1")
+        case "asinh": Pow(base: "sinh", exponent: "-1")
+        case "acosh": Pow(base: "cosh", exponent: "-1")
+        case "atanh": Pow(base: "tanh", exponent: "-1")
         default:
             if let sfImage = sfImageNames[symbol] {
                 Image(systemName: sfImage)
@@ -29,7 +50,7 @@ class KeyLabel {
                     .frame(width: size.height*0.4)
             } else {
                 AnyView(Text(symbol))
-                    .font(.system(size: size.height*0.4, weight: .semibold))
+                    .font(.system(size: size.height*0.4, weight: .none))
             }
         }
     }
@@ -44,12 +65,12 @@ class KeyLabel {
                 .stroke(color, style: StrokeStyle(lineWidth: lineWidth, lineCap: CGLineCap.round, lineJoin: CGLineJoin.bevel))
                 .aspectRatio(contentMode: .fit)
             Text(rootDigit)
-                .font(.system(size: size.height*0.17)).bold()
+                .font(.system(size: size.height*0.17, weight: .semibold))
                 .foregroundColor(textColor)
                 .padding(.leading, size.height * -0.26)
                 .padding(.top, size.height * -0.14)
             Text("x")
-                .font(.system(size: size.height*0.3)).bold()
+                .font(.system(size: size.height*0.3, weight: .semibold))
                 .foregroundColor(textColor)
                 .padding(.leading, size.height * 0.1)
                 .padding(.top, size.height * 0.05)
@@ -102,11 +123,10 @@ class KeyLabel {
             var path = Path()
             let w: CGFloat = rect.size.width
             let h: CGFloat = rect.size.height
-            var sw = 0.2 * w
+            let sw = 0.2 * h
             let steepness: CGFloat = 1.3
-            let startX: CGFloat = 0.5 * w - 0.5 * sw * TE_iPhoneSymbolFontSizeReduction
-            let startY: CGFloat = 0.5 * h + 0.5 * sw * steepness * TE_iPhoneSymbolFontSizeReduction
-            sw *= TE_iPhoneSymbolFontSizeReduction
+            let startX: CGFloat = 0.5 * w - 0.5 * sw
+            let startY: CGFloat = 0.5 * h + 0.5 * sw * steepness
             let upX: CGFloat = startX+sw
             let upY: CGFloat = startY-sw*steepness
             
@@ -116,76 +136,13 @@ class KeyLabel {
         }
     }
     
-//    struct RootShape: Shape {
-//        func path(in rect: CGRect) -> Path {
-//            var path = Path()
-//            let w: CGFloat = rect.size.width
-//            let h: CGFloat = rect.size.height
-//            let steepness: CGFloat = 2.8
-//            let f: CGFloat = 0.6
-//            let startX: CGFloat = (0.5 - 0.2) * w
-//            let startY: CGFloat = (0.5 + 0.05) * h
-//            let downX: CGFloat = startX + f * 0.08 * w
-//            let downY: CGFloat = startY + f * 0.08 * h * steepness
-//            let upX: CGFloat = downX + f * 0.2 * w
-//            let upY: CGFloat = downY - f * 0.2 * h * steepness
-//            let endX: CGFloat = upX + f * 0.35 * w
-//            let endY: CGFloat = upY
-//
-//            path.move(to: CGPoint(x: startX, y: startY))
-//            path.addLine(to: CGPoint(x: downX, y: downY))
-//            path.addLine(to: CGPoint(x: upX,   y: upY))
-//            path.addLine(to: CGPoint(x: endX,  y: endY))
-//            return path
-//        }
-//    }
-    
-    
-    
-//    struct Root: View {
-//        let root: String
-//        let strokeColor: Color
-//        var body: some View {
-//            ZStack {
-//                GeometryReader { geo in
-//                    let w = geo.size.width * TE_iPhoneSymbolFontSizeReduction
-//                    let h = geo.size.height * TE_iPhoneSymbolFontSizeReduction
-//                    VStack(spacing:0.0) {
-//                        Spacer(minLength: 0.0)
-//                        HStack(spacing:0.0) {
-//                            ZStack {
-//                                Spacer(minLength: 0.0)
-//                                let fontSize1:CGFloat = 0.21276 * h
-//                                let fontSize2:CGFloat = 0.27659 * h
-//                                Text(root)
-//                                    .font(.system(size: fontSize1, weight: .semibold))
-//                                    .offset(x: -0.18 * w, y: -0.10 * h)
-//                                RootShape()
-//                                    .stroke(strokeColor, style: StrokeStyle(lineWidth: 1.6 * h / 47.0, lineCap: CGLineCap.square, lineJoin: CGLineJoin.bevel))
-//                                Text("X")
-//                                    .font(.system(size: fontSize2, weight: .semibold))
-//                                    .offset(x: 0.08 * w, y: 0.05 * h)
-//                            }
-//                            Spacer(minLength: 0.0)
-//                        }
-//                        Spacer(minLength: 0.0)
-//                    }
-//                }
-//            }
-//        }
-//        init(_ root: String, strokeColor: Color) {
-//            self.strokeColor = strokeColor
-//            self.root = root
-//        }
-//    }
-    
     struct One_x: View {
-        let strokeColor: Color
+        let color: Color
         var body: some View {
             ZStack {
                 GeometryReader { geo in
-                    let w: CGFloat = geo.size.width*TE_iPhoneSymbolFontSizeReduction
-                    let h: CGFloat = geo.size.height*TE_iPhoneSymbolFontSizeReduction
+                    let w: CGFloat = geo.size.width
+                    let h: CGFloat = geo.size.height
                     VStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
                         HStack(spacing: 0.0) {
@@ -193,12 +150,12 @@ class KeyLabel {
                             ZStack {
                                 Text("1")
                                     .font(.system(size: h * 0.25))
-                                    .offset(x: -0.10 * w, y: -0.10 * h)
+                                    .offset(x: -0.05 * w, y: -0.10 * h)
                                 SlashShape()
-                                    .stroke(strokeColor, style: StrokeStyle(lineWidth: 1.6 * w / 47.0, lineCap: CGLineCap.square, lineJoin: CGLineJoin.bevel))
+                                    .stroke(color, style: StrokeStyle(lineWidth: 1.6 * h / 47.0, lineCap: CGLineCap.square, lineJoin: CGLineJoin.bevel))
                                 Text("x")
                                     .font(.system(size: h * 0.25))
-                                    .offset(x: 0.10 * w, y: 0.07 * h)
+                                    .offset(x: 0.05 * w, y: 0.07 * h)
                             }
                             Spacer(minLength: 0.0)
                         }
@@ -215,7 +172,7 @@ class KeyLabel {
         var body: some View {
             ZStack {
                 GeometryReader { geo in
-                    let s = min(geo.size.width, geo.size.height)*TE_iPhoneSymbolFontSizeReduction
+                    let s = min(geo.size.width, geo.size.height)
                     VStack(spacing:0.0) {
                         Spacer(minLength: 0.0)
                         HStack(spacing:0.0) {
@@ -241,7 +198,7 @@ class KeyLabel {
         var body: some View {
             ZStack {
                 GeometryReader { geo in
-                    let s = min(geo.size.width, geo.size.height) * TE_iPhoneSymbolFontSizeReduction
+                    let s = min(geo.size.width, geo.size.height)
                     VStack(spacing:0.0) {
                         Spacer(minLength: 0.0)
                         HStack(spacing: 0.0) {
@@ -262,48 +219,25 @@ class KeyLabel {
     
 }
 
-/*private extension ContentView {
-    @ViewBuilder func makeButton(symbol: String, strokeColor: Color) -> some View {
-        switch symbol {
-        case "√":     Root("2", strokeColor: strokeColor)
-        case "3√":    Root("3", strokeColor: strokeColor)
-        case "y√":    Root("y", strokeColor: strokeColor)
-        case "log10": Logx("10")
-        case "log2":  Logx("2")
-        case "logy":  Logx("y")
-        case "One_x": One_x(strokeColor: strokeColor)
-        case "x^2":   Pow(base:  "x",   exponent: "2")
-        case "x^3":   Pow(base:  "x",   exponent: "3")
-        case "x^y":   Pow(base:  "x",   exponent: "y")
-        case "e^x":   Pow(base:  "e",   exponent: "x")
-        case "y^x":   Pow(base:  "y",   exponent: "x")
-        case "2^x":   Pow(base:  "2",   exponent: "x")
-        case "10^x":  Pow(base: "10",   exponent: "x")
-        case "2nd":   Pow(base: "2",    exponent: "nd")
-        case "asin":  Pow(base: "sin",  exponent: "-1")
-        case "acos":  Pow(base: "cos",  exponent: "-1")
-        case "atan":  Pow(base: "tan",  exponent: "-1")
-        case "asinD":  Pow(base: "sin",  exponent: "-1")
-        case "acosD":  Pow(base: "cos",  exponent: "-1")
-        case "atanD":  Pow(base: "tan",  exponent: "-1")
-        case "asinh": Pow(base: "sinh", exponent: "-1")
-        case "acosh": Pow(base: "cosh", exponent: "-1")
-        case "atanh": Pow(base: "tanh", exponent: "-1")
-        default:
-//            if let sfImage = sfImageNames[symbol] {
-//                Image(systemName: sfImage)
-//            } else {
-//                if symbol.hasSuffix("D") {
-//                    Text(symbol.prefix(symbol.count-1))
-//                } else {
-                    Text(symbol)
-//                }
-//            }
+struct KeyLabel_Previews: PreviewProvider {
+    static var previews: some View {
+        let w = 131.7
+        let h = 57.1
+//        let h = 131.7
+        let size = CGSize(width: w, height: h)
+        let keyLabel = KeyLabel(size: size, textColor: Color.white)
+        let keyContent2: any View = keyLabel.of("x^2")
+        let keyContent1: any View = keyLabel.of("One_x")
+        VStack {
+            AnyView(keyContent1)
+                .foregroundColor(Color.white)
+                .frame(width: w, height: h)
+                .background(Color.black)
+                .padding(.bottom, 20)
+            AnyView(keyContent2)
+                .foregroundColor(Color.white)
+                .frame(width: w, height: h)
+                .background(Color.black)
         }
     }
-    
-    func makeButtonLabel(symbol: String) -> any View {
-        Text(symbol)
-    }
 }
-*/
