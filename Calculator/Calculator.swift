@@ -8,9 +8,17 @@
 import SwiftUI
 
 struct Calculator: View {
+    @StateObject private var keyModel = KeyModel()
     let isPad: Bool
     let isPortrait: Bool
     let size: CGSize
+    @State var keyboardSize = CGSize(width: 0, height: 0)
+    
+    init(isPad: Bool, isPortrait: Bool, size: CGSize) {
+        self.isPad = isPad
+        self.isPortrait = isPortrait
+        self.size = size
+    }
     //    @StateObject private var viewLogic = ViewLogic(size: CGSize(width: 100, height: 100))
     var body: some View {
         ZStack {
@@ -29,7 +37,7 @@ struct Calculator: View {
                     //                            .padding(.trailing, TE().trailingAfterDisplay)
                     //                            .opacity(viewLogic.isZoomed ? 0.0 : 1.0)
                     //                    }
-                    KeysView(bottomPadding: 10, isScientific: true, scientificTrailingPadding: 100, size: size)
+                    KeysView(keyModel: keyModel, bottomPadding: 10, isScientific: false, scientificTrailingPadding: 100, size: keyboardSize)
                 }
             } else {
                 VStack(spacing: 0.0) {
@@ -42,9 +50,34 @@ struct Calculator: View {
                     //                        Spacer(minLength: 0.0)
                     //                        SingleLineDisplay(brain: Brain(), t: TE())
                     //                            .padding(.trailing, TE().trailingAfterDisplay)
-                    KeysView(bottomPadding: 10, isScientific: false, scientificTrailingPadding: 100, size: size)
+                    KeysView(keyModel: keyModel, bottomPadding: 10, isScientific: false, scientificTrailingPadding: 100, size: keyboardSize)
                 }
             }
+        }
+        .onAppear() {
+            keyboardSize = CGSize(width: 1, height: 1)
+            if isPad {
+                if isPortrait {
+                    keyboardSize = CGSize(width: size.width, height: size.height*0.5)
+                } else {
+                    /// landscape iPad
+                    keyboardSize = CGSize(width: size.width, height: size.height*0.5)
+                }
+            } else {
+                /// iPhone
+                if isPortrait {
+                    /// we want square buttons :)
+                    /// let
+                    let spaceBetweenKeys = keyModel.spaceBetweenkeysFraction(withScientificKeys: false) * size.width
+                    let oneKeyWidth = (size.width - 3.0 * spaceBetweenKeys) * 0.25
+                    let allKeysheight = 5 * oneKeyWidth + 4 * spaceBetweenKeys
+                    keyboardSize = CGSize(width: size.width, height: allKeysheight)
+                } else {
+                    /// landscape iPhone
+                    keyboardSize = CGSize(width: size.width, height: size.height*0.8)
+                }
+            }
+
         }
     }
 }
@@ -85,6 +118,6 @@ struct Calculator: View {
 
 struct Calculator_Previews: PreviewProvider {
     static var previews: some View {
-        Calculator(isPad: true, isPortrait: true, size: CGSize(width: 100, height: 100))
+        Calculator(isPad: true, isPortrait: true, size: CGSize(width: UIScreen.main.bounds.width*0.9, height: UIScreen.main.bounds.height*0.85))
     }
 }

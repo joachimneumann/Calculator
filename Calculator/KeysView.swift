@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct KeysView: View {
+    let keyModel: KeyModel
     let bottomPadding: CGFloat
     let isScientific: Bool
     let scientificTrailingPadding: CGFloat
@@ -26,7 +27,7 @@ struct KeysView: View {
                     ScientificView(spaceBetweenKeys: 5)
                         .padding(.trailing, scientificTrailingPadding)
                 }
-                NonScientificKeys(spaceBetweenKeys: 10, size: size)
+                NonScientificKeys(keyModel: keyModel, spaceBetweenKeys: keyModel.spaceBetweenkeysFraction(withScientificKeys: false) * size.width, size: size)
             }
         }
         .frame(width: size.width, height: size.height)
@@ -39,8 +40,8 @@ struct KeysView: View {
 struct Keys_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            KeysView(bottomPadding: 100, isScientific: true, scientificTrailingPadding: 100, size: CGSize(width: 100, height: 100))
-            KeysView(bottomPadding: 100, isScientific: true, scientificTrailingPadding: 100, size: CGSize(width: 400, height: 400))
+            KeysView(keyModel: KeyModel(), bottomPadding: 100, isScientific: false, scientificTrailingPadding: 100, size: CGSize(width: 100, height: 100))
+            KeysView(keyModel: KeyModel(), bottomPadding: 100, isScientific: false, scientificTrailingPadding: 100, size: CGSize(width: 400, height: 400))
         }
     }
 }

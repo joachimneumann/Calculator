@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct NonScientificKeys: View {
-    @StateObject private var keyModel = KeyModel()
+    var keyModel: KeyModel
     let spaceBetweenKeys: CGFloat
     let keySize: CGSize
     let doubleKeySize: CGSize
     
-    init(spaceBetweenKeys: CGFloat, size: CGSize) {
+    init(keyModel: KeyModel, spaceBetweenKeys: CGFloat, size: CGSize) {
+        self.keyModel = keyModel
         self.spaceBetweenKeys = spaceBetweenKeys
         let w = (size.width - 3.0 * spaceBetweenKeys) / 4.0
         let h = (size.height - 4.0 * spaceBetweenKeys) / 5.0
@@ -77,7 +78,7 @@ struct NonScientificKeys: View {
 
 struct NonScientificKeys_Previews: PreviewProvider {
     static var previews: some View {
-        NonScientificKeys(spaceBetweenKeys: 10, size: CGSize(width: 250, height: 300))
+        NonScientificKeys(keyModel: KeyModel(), spaceBetweenKeys: 10, size: CGSize(width: 250, height: 300))
     }
 }
 
