@@ -12,7 +12,7 @@ struct NonScientificKeys: View {
     let spaceBetweenKeys: CGFloat
     let keySize: CGSize
     let doubleKeySize: CGSize
-
+    
     init(spaceBetweenKeys: CGFloat, size: CGSize) {
         self.spaceBetweenKeys = spaceBetweenKeys
         let w = (size.width - 3.0 * spaceBetweenKeys) / 4.0
@@ -23,41 +23,58 @@ struct NonScientificKeys: View {
     var body: some View {
         VStack(spacing: spaceBetweenKeys) {
             HStack(spacing: spaceBetweenKeys) {
-                Key("C", size: keySize, keyColors: keyModel.allKeyColors["C"]!, callback: keyModel.pressed)
-                Key("±", size: keySize, keyColors: keyModel.allKeyColors["±"]!, callback: keyModel.pressed)
-                Key("%", size: keySize, keyColors: keyModel.allKeyColors["%"]!, callback: keyModel.pressed)
-                Key("/", size: keySize, keyColors: keyModel.allKeyColors["/"]!, callback: keyModel.pressed)
+                KeyBuilder("C", keySize, keyModel)
+                KeyBuilder("±", keySize, keyModel)
+                KeyBuilder("%", keySize, keyModel)
+                KeyBuilder("/", keySize, keyModel)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key("7", size: keySize, keyColors: keyModel.allKeyColors["7"]!, callback: keyModel.pressed)
-                Key("8", size: keySize, keyColors: keyModel.allKeyColors["8"]!, callback: keyModel.pressed)
-                Key("9", size: keySize, keyColors: keyModel.allKeyColors["9"]!, callback: keyModel.pressed)
-                Key("x", size: keySize, keyColors: keyModel.allKeyColors["x"]!, callback: keyModel.pressed)
+                KeyBuilder("7", keySize, keyModel)
+                KeyBuilder("8", keySize, keyModel)
+                KeyBuilder("9", keySize, keyModel)
+                KeyBuilder("x", keySize, keyModel)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key("4", size: keySize, keyColors: keyModel.allKeyColors["4"]!, callback: keyModel.pressed)
-                Key("5", size: keySize, keyColors: keyModel.allKeyColors["5"]!, callback: keyModel.pressed)
-                Key("6", size: keySize, keyColors: keyModel.allKeyColors["6"]!, callback: keyModel.pressed)
-                Key("-", size: keySize, keyColors: keyModel.allKeyColors["-"]!, callback: keyModel.pressed)
+                KeyBuilder("4", keySize, keyModel)
+                KeyBuilder("5", keySize, keyModel)
+                KeyBuilder("6", keySize, keyModel)
+                KeyBuilder("-", keySize, keyModel)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key("1", size: keySize, keyColors: keyModel.allKeyColors["1"]!, callback: keyModel.pressed)
-                Key("2", size: keySize, keyColors: keyModel.allKeyColors["2"]!, callback: keyModel.pressed)
-                Key("3", size: keySize, keyColors: keyModel.allKeyColors["3"]!, callback: keyModel.pressed)
-                Key("+", size: keySize, keyColors: keyModel.allKeyColors["+"]!, callback: keyModel.pressed)
+                KeyBuilder("1", keySize, keyModel)
+                KeyBuilder("2", keySize, keyModel)
+                KeyBuilder("3", keySize, keyModel)
+                KeyBuilder("+", keySize, keyModel)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key("0", size: doubleKeySize, keyColors: keyModel.allKeyColors["0"]!, callback: keyModel.pressed)
-                Key(",", size: keySize, keyColors: keyModel.allKeyColors[","]!, callback: keyModel.pressed)
-                Key("=", size: keySize, keyColors: keyModel.allKeyColors["="]!, callback: keyModel.pressed)
+                KeyBuilder("0", doubleKeySize, keyModel)
+                KeyBuilder(",", keySize, keyModel)
+                KeyBuilder("=", keySize, keyModel)
             }
         }
         .background(Color.black)
     }
+    
+    struct KeyBuilder: View {
+        let symbol: String
+        let size: CGSize
+        let keyModel: KeyModel
+        
+        init(_ symbol: String, _ size: CGSize, _ keyModel: KeyModel) {
+            self.symbol = symbol
+            self.size = size
+            self.keyModel = keyModel
+        }
+        var body: some View {
+            Key(symbol, size: size, keyColors: keyModel.allKeyColors[symbol]!, callback: keyModel.pressed)
+        }
+    }
+    
 }
 
 struct NonScientificKeys_Previews: PreviewProvider {
     static var previews: some View {
-        NonScientificKeys(spaceBetweenKeys: 10, size: CGSize(width: 200, height: 200))
+        NonScientificKeys(spaceBetweenKeys: 10, size: CGSize(width: 200, height: 300))
     }
 }
+
