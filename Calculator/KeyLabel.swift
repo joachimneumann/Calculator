@@ -46,8 +46,9 @@ class KeyLabel {
             if let sfImage = sfImageNames[symbol] {
                 Image(systemName: sfImage)
                     .resizable()
+                    .font(Font.title.weight(.semibold))
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: size.height*0.4)
+                    .frame(width: (symbol == "±" || symbol == "%") ? size.height*0.25 : size.height*0.23)
             } else {
                 AnyView(Text(symbol))
                     .font(.system(size: size.height*0.4, weight: .none))
