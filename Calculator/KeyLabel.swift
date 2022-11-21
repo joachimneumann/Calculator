@@ -141,7 +141,6 @@ class KeyLabel {
         var body: some View {
             ZStack {
                 GeometryReader { geo in
-                    let w: CGFloat = geo.size.width
                     let h: CGFloat = geo.size.height
                     VStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
@@ -150,12 +149,12 @@ class KeyLabel {
                             ZStack {
                                 Text("1")
                                     .font(.system(size: h * 0.25))
-                                    .offset(x: -0.05 * w, y: -0.10 * h)
+                                    .offset(x: -0.1 * h, y: -0.10 * h)
                                 SlashShape()
                                     .stroke(color, style: StrokeStyle(lineWidth: 1.6 * h / 47.0, lineCap: CGLineCap.square, lineJoin: CGLineJoin.bevel))
                                 Text("x")
                                     .font(.system(size: h * 0.25))
-                                    .offset(x: 0.05 * w, y: 0.07 * h)
+                                    .offset(x: 0.1 * h, y: 0.07 * h)
                             }
                             Spacer(minLength: 0.0)
                         }
