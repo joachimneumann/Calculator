@@ -49,7 +49,6 @@ struct CalculatorApp: App {
             GeometryReader { geo in
                 let isPad = (UIDevice.current.userInterfaceIdiom == .pad)
                 let isPortrait = geo.size.height > geo.size.width
-//                let _ = print("orientation orientation orientation \(isPortrait)")
                 let padding = (!isPad && isPortrait) ? geo.size.width * 0.04 : geo.size.width * 0.01
                 let leadingPadding = geo.safeAreaInsets.leading  == 0 ? padding : 0
                 let trailingPadding = geo.safeAreaInsets.trailing  == 0 ? padding : 0

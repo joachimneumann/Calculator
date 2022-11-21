@@ -27,7 +27,7 @@ struct KeysView: View {
                     ScientificView(spaceBetweenKeys: 5)
                         .padding(.trailing, scientificTrailingPadding)
                 }
-                NonScientificKeys(keyModel: keyModel, spaceBetweenKeys: keyModel.spaceBetweenkeysFraction(withScientificKeys: false) * size.width, size: size)
+                NonScientificKeys(keyModel: keyModel, spaceBetweenKeys: KeyModel.spaceBetweenkeysFraction(withScientificKeys: false) * size.width, size: size)
             }
         }
         .frame(width: size.width, height: size.height)
