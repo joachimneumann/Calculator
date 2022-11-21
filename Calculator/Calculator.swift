@@ -10,11 +10,12 @@ import SwiftUI
 struct Calculator: View {
     @StateObject private var keyModel = KeyModel()
     let isPad: Bool
-    let isPortrait: Bool
+    var isPortrait: Bool
     let size: CGSize
     @State var keyboardSize = CGSize(width: 0, height: 0)
     
     init(isPad: Bool, isPortrait: Bool, size: CGSize) {
+        let _ = print("Calculator init() size = \(size)")
         self.isPad = isPad
         self.isPortrait = isPortrait
         self.size = size
@@ -54,30 +55,32 @@ struct Calculator: View {
                 }
             }
         }
-        .onAppear() {
-            keyboardSize = CGSize(width: 1, height: 1)
-            if isPad {
-                if isPortrait {
-                    keyboardSize = CGSize(width: size.width, height: size.height*0.5)
+        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+//            GeometryReader { geo in
+                let isPortrait = size.height < size.width
+                if isPad {
+                    if isPortrait {
+                        keyboardSize = CGSize(width: size.width, height: size.height*0.5)
+                    } else {
+                        /// landscape iPad
+                        keyboardSize = CGSize(width: size.width, height: size.height*0.5)
+                    }
                 } else {
-                    /// landscape iPad
-                    keyboardSize = CGSize(width: size.width, height: size.height*0.5)
+                    /// iPhone
+                    if isPortrait {
+                        /// we want square buttons :)
+                        /// let
+                        let spaceBetweenKeys = keyModel.spaceBetweenkeysFraction(withScientificKeys: false) * size.width
+                        let oneKeyWidth = (size.width - 3.0 * spaceBetweenKeys) * 0.25
+                        let allKeysheight = 5 * oneKeyWidth + 4 * spaceBetweenKeys
+                        keyboardSize = CGSize(width: size.width, height: allKeysheight)
+                    } else {
+                        /// landscape iPhone
+                        keyboardSize = CGSize(width: size.width, height: size.height*0.8)
+                    }
                 }
-            } else {
-                /// iPhone
-                if isPortrait {
-                    /// we want square buttons :)
-                    /// let
-                    let spaceBetweenKeys = keyModel.spaceBetweenkeysFraction(withScientificKeys: false) * size.width
-                    let oneKeyWidth = (size.width - 3.0 * spaceBetweenKeys) * 0.25
-                    let allKeysheight = 5 * oneKeyWidth + 4 * spaceBetweenKeys
-                    keyboardSize = CGSize(width: size.width, height: allKeysheight)
-                } else {
-                    /// landscape iPhone
-                    keyboardSize = CGSize(width: size.width, height: size.height*0.8)
-                }
-            }
-
+                let _ = print("orientation Notification \(isPortrait) \(size) \(keyboardSize)")
+//            }
         }
     }
 }

@@ -17,7 +17,7 @@
 ////    NotificationCenter
 ////      .default
 ////      .publisher(for: UIDevice.orientationDidChangeNotification)
-////   
+////
 ////  var body: some View {
 ////      Color.clear
 ////        .onReceive(orientationDidChangeNotification) { _ in
