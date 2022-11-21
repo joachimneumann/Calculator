@@ -16,7 +16,7 @@ struct NonScientificKeys: View {
     init(spaceBetweenKeys: CGFloat, size: CGSize) {
         self.spaceBetweenKeys = spaceBetweenKeys
         let w = (size.width - 3.0 * spaceBetweenKeys) / 4.0
-        let h = (size.width - 4.0 * spaceBetweenKeys) / 5.0
+        let h = (size.height - 4.0 * spaceBetweenKeys) / 5.0
         self.keySize = CGSize(width: w, height: h)
         self.doubleKeySize = CGSize(width: 2.0 * w + spaceBetweenKeys, height: h)
     }
@@ -24,7 +24,7 @@ struct NonScientificKeys: View {
         VStack(spacing: spaceBetweenKeys) {
             HStack(spacing: spaceBetweenKeys) {
                 Key("C", size: keySize, keyColors: keyModel.allKeyColors["C"]!, callback: keyModel.pressed)
-                Key("+/-", size: keySize, keyColors: keyModel.allKeyColors["+/-"]!, callback: keyModel.pressed)
+                Key("±", size: keySize, keyColors: keyModel.allKeyColors["±"]!, callback: keyModel.pressed)
                 Key("%", size: keySize, keyColors: keyModel.allKeyColors["%"]!, callback: keyModel.pressed)
                 Key("/", size: keySize, keyColors: keyModel.allKeyColors["/"]!, callback: keyModel.pressed)
             }
@@ -58,6 +58,6 @@ struct NonScientificKeys: View {
 
 struct NonScientificKeys_Previews: PreviewProvider {
     static var previews: some View {
-        NonScientificKeys(spaceBetweenKeys: 10, size: CGSize(width: 300, height: 500))
+        NonScientificKeys(spaceBetweenKeys: 10, size: CGSize(width: 200, height: 200))
     }
 }

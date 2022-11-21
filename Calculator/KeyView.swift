@@ -75,7 +75,7 @@ struct KeyView: View {
  "-":   "minus",
  "x":   "multiply",
  "/":   "divide",
- "+/-": "plus.slash.minus",
+ "±": "plus.slash.minus",
  "=":   "equal",
  "%":   "percent",
  ]

@@ -11,7 +11,7 @@ struct KeysView: View {
     let bottomPadding: CGFloat
     let isScientific: Bool
     let scientificTrailingPadding: CGFloat
-    let height: CGFloat
+    let size: CGSize
 //    if !t.isPad && t.isPortrait {
 //        bottomPadding = t.allkeysHeight * 0.07
 //    } else {
@@ -26,10 +26,10 @@ struct KeysView: View {
                     ScientificView(spaceBetweenKeys: 5)
                         .padding(.trailing, scientificTrailingPadding)
                 }
-                NonScientificKeys(spaceBetweenKeys: 10, size: CGSize(width: 300, height: 300))
+                NonScientificKeys(spaceBetweenKeys: 10, size: size)
             }
         }
-        .frame(height: height)
+        .frame(width: size.width, height: size.height)
         .background(Color.black)
         .transition(.move(edge: .bottom))
         .padding(.bottom, bottomPadding)
@@ -38,6 +38,9 @@ struct KeysView: View {
 
 struct Keys_Previews: PreviewProvider {
     static var previews: some View {
-        KeysView(bottomPadding: 100, isScientific: true, scientificTrailingPadding: 100, height: 100)
+        VStack {
+            KeysView(bottomPadding: 100, isScientific: true, scientificTrailingPadding: 100, size: CGSize(width: 100, height: 100))
+            KeysView(bottomPadding: 100, isScientific: true, scientificTrailingPadding: 100, size: CGSize(width: 400, height: 400))
+        }
     }
 }

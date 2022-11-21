@@ -12,12 +12,14 @@ struct KeyView_Previews: PreviewProvider {
             print("do something")
     }
     static var previews: some View {
-        Key("√", size: CGSize(width: 300, height: 100), keyColors: KeyColors(textColor: UIColor.white, upColor: UIColor.red, downColor: UIColor.orange), callback: KeyView_Previews.doNothing)
+        VStack {
+            Key("-", size: CGSize(width: 117, height: 112), keyColors: KeyColors(textColor: UIColor.white, upColor: UIColor.red, downColor: UIColor.orange), callback: KeyView_Previews.doNothing)
+            Key("-", size: CGSize(width: 27, height: 27), keyColors: KeyColors(textColor: UIColor.white, upColor: UIColor.red, downColor: UIColor.orange), callback: KeyView_Previews.doNothing)
+        }
     }
 }
 
 struct Key: View {
-//    private let keyModel: KeyModel
     private let symbol: String
     private let size: CGSize
     private var keyColors: KeyColors

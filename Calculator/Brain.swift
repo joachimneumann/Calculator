@@ -182,7 +182,7 @@ class Brain {
                 pendingOperator = nil
             }
             n.last.appendZero()
-        } else if symbol == "+/-" {
+        } else if symbol == "±" {
             n.last.changeSign()
         } else if self.digitOperators.contains(symbol) {
             if pendingOperator != nil {

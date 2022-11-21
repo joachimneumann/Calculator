@@ -579,7 +579,7 @@ class CalculatorTests: XCTestCase {
 //        /// -12345678901234
 //        brain.nonWaitingOperation("C")
 //        brain.press("12345678901234")
-//        brain.nonWaitingOperation("+/-")
+//        brain.nonWaitingOperation("±")
 //        XCTAssertEqual(brain.nonScientific, "-12345678901234")
 //        XCTAssertEqual(brain.scientific, nil)
 //        
@@ -633,17 +633,17 @@ class CalculatorTests: XCTestCase {
 //        brain.press(3)
 //        brain.press(4)
 //        brain.press(5)
-//        brain.nonWaitingOperation("+/-")
+//        brain.nonWaitingOperation("±")
 //        XCTAssertEqual(brain.nonScientific, "-123456789012345")
 //        XCTAssertEqual(brain.scientific, nil)
 //        
 //        
-//        /// +/-
+//        /// ±
 //        brain.nonWaitingOperation("C")
 //        brain.press(7)
 //        XCTAssertEqual(brain.nonScientific, "7")
 //        XCTAssertEqual(brain.scientific, nil)
-//        brain.nonWaitingOperation("+/-")
+//        brain.nonWaitingOperation("±")
 //        XCTAssertEqual(brain.nonScientific, "-7")
 //        XCTAssertEqual(brain.scientific, nil)
 //        
@@ -664,7 +664,7 @@ class CalculatorTests: XCTestCase {
 //        brain.press(7)
 //        XCTAssertEqual(brain.nonScientific, "0,7")
 //        XCTAssertEqual(brain.scientific, nil)
-//        brain.nonWaitingOperation("+/-")
+//        brain.nonWaitingOperation("±")
 //        XCTAssertEqual(brain.nonScientific, "-0,7")
 //        XCTAssertEqual(brain.scientific, nil)
 //        
@@ -709,7 +709,7 @@ class CalculatorTests: XCTestCase {
 //        brain.nonWaitingOperation("EE")
 //        brain.press(7)
 //        brain.press(7)
-//        brain.nonWaitingOperation("+/-")
+//        brain.nonWaitingOperation("±")
 //        brain.nonWaitingOperation("=")
 //        XCTAssertEqual(brain.nonScientific, nil)
 //        XCTAssertEqual(brain.scientific, DisplayData.Scientific("3,0", "e-77").forDisplay(withoutComma: 8, withComma: 9)
@@ -720,20 +720,20 @@ class CalculatorTests: XCTestCase {
 //        brain.nonWaitingOperation("EE")
 //        brain.press(7)
 //        brain.press(7)
-//        brain.nonWaitingOperation("+/-")
+//        brain.nonWaitingOperation("±")
 //        brain.nonWaitingOperation("=")
-//        brain.nonWaitingOperation("+/-")
+//        brain.nonWaitingOperation("±")
 //        XCTAssertEqual(brain.nonScientific, nil)
 //        XCTAssertEqual(brain.scientific, DisplayData.Scientific("-3,0", "e-77").forDisplay(withoutComma: 8, withComma: 9)
 //        
 //        /// -3 e-77
 //        brain.nonWaitingOperation("C")
 //        brain.press(3)
-//        brain.nonWaitingOperation("+/-")
+//        brain.nonWaitingOperation("±")
 //        brain.nonWaitingOperation("EE")
 //        brain.press(7)
 //        brain.press(7)
-//        brain.nonWaitingOperation("+/-")
+//        brain.nonWaitingOperation("±")
 //        brain.nonWaitingOperation("=")
 //        XCTAssertEqual(brain.nonScientific, nil)
 //        XCTAssertEqual(brain.scientific, DisplayData.Scientific("-3,0", "e-77").forDisplay(withoutComma: 8, withComma: 9)
@@ -861,7 +861,7 @@ class CalculatorTests: XCTestCase {
 //        res = brain.nonScientific!
 //        resTruncated = String(res.prefix(correct.count))
 //        XCTAssertEqual (resTruncated, correct)
-//        brain.nonWaitingOperation("+/-")
+//        brain.nonWaitingOperation("±")
 //        correct = "-0,3333333333333333"
 //        res = brain.nonScientific!
 //        resTruncated = String(res.prefix(correct.count))

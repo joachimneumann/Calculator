@@ -24,6 +24,9 @@ class KeyLabel {
         default:
             if let sfImage = sfImageNames[symbol] {
                 Image(systemName: sfImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: size.height*0.4)
             } else {
                 AnyView(Text(symbol))
                     .font(.system(size: size.height*0.4, weight: .semibold))
@@ -58,7 +61,7 @@ class KeyLabel {
         "-":   "minus",
         "x":   "multiply",
         "/":   "divide",
-        "+/-": "plus.slash.minus",
+        "±": "plus.slash.minus",
         "=":   "equal",
         "%":   "percent",
     ]

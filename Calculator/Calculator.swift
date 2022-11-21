@@ -29,7 +29,7 @@ struct Calculator: View {
 //                            .padding(.trailing, TE().trailingAfterDisplay)
 //                            .opacity(viewLogic.isZoomed ? 0.0 : 1.0)
                     }
-                    KeysView(bottomPadding: 10, isScientific: true, scientificTrailingPadding: 100, height: 300)
+                    KeysView(bottomPadding: 10, isScientific: true, scientificTrailingPadding: 100, size: size)
                 }
             } else {
                 VStack(spacing: 0.0) {
@@ -42,7 +42,7 @@ struct Calculator: View {
                         Spacer(minLength: 0.0)
 //                        SingleLineDisplay(brain: Brain(), t: TE())
 //                            .padding(.trailing, TE().trailingAfterDisplay)
-                        KeysView(bottomPadding: 10, isScientific: false, scientificTrailingPadding: 100, height: 300)
+                        KeysView(bottomPadding: 10, isScientific: false, scientificTrailingPadding: 100, size: size)
                     }
                 }
             }
@@ -54,7 +54,7 @@ struct Calculator: View {
 //    let brain: Brain
 //    var t: TE
 //    let bottomPadding: CGFloat
-//    
+//
 //    init(brain: Brain, t: TE) {
 //        self.brain = brain
 //        self.t = t
@@ -64,7 +64,7 @@ struct Calculator: View {
 //            bottomPadding = 0
 //        }
 //    }
-//    
+//
 //    var body: some View {
 //        VStack(spacing: 0.0) {
 //            Spacer(minLength: 0.0)
