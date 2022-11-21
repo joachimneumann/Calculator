@@ -13,7 +13,8 @@ struct Calculator: View {
     var isPortrait: Bool
     let size: CGSize
     var keyboardSize = CGSize(width: 0, height: 0)
-    
+    var displaySize = CGSize(width: 0, height: 0)
+
     init(isPad: Bool, isPortrait: Bool, size: CGSize) {
         self.isPad = isPad
         self.isPortrait = isPortrait
@@ -30,14 +31,19 @@ struct Calculator: View {
             /// iPhone
             if isPortrait {
                 /// we want square buttons :)
-                /// let
                 let spaceBetweenKeys = KeyModel.spaceBetweenkeysFraction(withScientificKeys: false) * size.width
                 let oneKeyWidth = (size.width - 3.0 * spaceBetweenKeys) * 0.25
                 let allKeysheight = 5 * oneKeyWidth + 4 * spaceBetweenKeys
                 keyboardSize = CGSize(width: size.width, height: allKeysheight)
+                displaySize = CGSize(width: size.width, height: oneKeyWidth) /// keys are as wide as high
             } else {
                 /// landscape iPhone
-                keyboardSize = CGSize(width: size.width, height: size.height*0.8)
+                let spaceBetweenKeys = KeyModel.spaceBetweenkeysFraction(withScientificKeys: true) * size.width
+                let oneKeyheight = (size.height - 5.0 * spaceBetweenKeys) / 6.0
+                let keyboardHeight = 5 * oneKeyheight + 4.0 * spaceBetweenKeys
+                let displayHeight = oneKeyheight
+                keyboardSize = CGSize(width: size.width, height: keyboardHeight)
+                displaySize = CGSize(width: size.width, height: displayHeight)
             }
         }
     }
@@ -72,7 +78,7 @@ struct Calculator: View {
                     //                        Spacer(minLength: 0.0)
                     //                        SingleLineDisplay(brain: Brain(), t: TE())
                     //                            .padding(.trailing, TE().trailingAfterDisplay)
-                    OneLineDisplay(keyModel: keyModel)
+                    OneLineDisplay(keyModel: keyModel, size: displaySize)
                     KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
                         .padding(.bottom, isPortrait ? size.height*0.06 : 0.0)
                 }

@@ -528,6 +528,15 @@ class CalculatorTests: XCTestCase {
         brain.nonWaitingOperation("√")
         multipleLiner = brain.last.forDisplay(withoutComma: 8, withComma: 9)
         XCTAssertEqual(multipleLiner.left, "1,4142135")
+
+        /// sin(pi) =? 0
+        brain.nonWaitingOperation("AC")
+        brain.press("π")
+        brain.nonWaitingOperation("sin")
+        multipleLiner = brain.last.forDisplay(withoutComma: 8, withComma: 9)
+        XCTAssertEqual(multipleLiner.left, "0")
+        XCTAssertNil(  multipleLiner.right)
+        XCTAssertFalse( multipleLiner.abreviated)
 //
 //        /// 0
 //        brain.nonWaitingOperation("AC")
