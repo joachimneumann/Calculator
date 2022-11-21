@@ -14,14 +14,12 @@ import SwiftUI
 /// brain has result -> update the display infor for what is needed
 /// brain new number: delete old infos
 class Brain: ObservableObject {
-    @Published var scrollViewTarget: Int? = nil
-    var messageToUser: String? = nil
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
     @Published var precision: Int = 100
     @Published var bits: Int
 
-    func speedTest(testPrecision: Int) async -> Speed {
+    private func speedTest(testPrecision: Int) async -> Speed {
         let testBrain = Brain(precision: testPrecision)
 
         testBrain.nonWaitingOperation("C")
@@ -50,21 +48,16 @@ class Brain: ObservableObject {
     @Published var secondKeys: Bool = false
     @Published var rad: Bool = false
     @Published var showCalculating: Bool = false
-    var pendingOperatorCallback: ((String?) -> ()) = {_ in }
     var isCalculating: Bool = false
     
     var debugLastDouble: Double { n.last.gmp!.toDouble() }
     var debugLastGmp: Gmp { n.last.gmp! }
     
-    var nonScientificAllDigits: String {
-        "not implemented"
-    }
-    
     var isValidNumber: Bool { n.last.isValid }
+
+    var pendingOperatorCallback: ((String?) -> ()) = {_ in }
     var pendingOperator: String? {
-        didSet {
-            pendingOperatorCallback(pendingOperator)
-        }
+        didSet { pendingOperatorCallback(pendingOperator) }
     }
     var memory: Gmp? = nil
     var nullNumber: Number {
@@ -85,14 +78,6 @@ class Brain: ObservableObject {
     var openParenthesis:   Operator = Operator(0)
     var closedParenthesis: Operator = Operator(0)
     var equalOperator:     Operator = Operator(0)
-    
-    func isPending(_ symbol: String) -> Bool {
-        /// TODO remove this function 
-        if pendingOperator != nil {
-            return pendingOperator == symbol
-        }
-        return false
-    }
     
     func press(_ digits: String) {
         for digit in digits {
@@ -234,14 +219,7 @@ class Brain: ObservableObject {
     }
     
     func nonWaitingOperation(_ symbol: String) {
-        if symbol == "messageToUser" {
-            operation("C")
-            //            self.nonScientific = messageToUser
-            //            self.scientific = nil
-            messageToUser = nil
-        } else {
-            operation(symbol)
-        }
+        operation(symbol)
     }
     
     func asyncOperation(_ symbol: String) {

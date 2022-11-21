@@ -50,38 +50,38 @@ struct Calculator: View {
     }
 }
 
-struct Keys: View {
-    let brain: Brain
-    var t: TE
-    let bottomPadding: CGFloat
-    
-    init(brain: Brain, t: TE) {
-        self.brain = brain
-        self.t = t
-        if !t.isPad && t.isPortrait {
-            bottomPadding = t.allkeysHeight * 0.07
-        } else {
-            bottomPadding = 0
-        }
-    }
-    
-    var body: some View {
-        VStack(spacing: 0.0) {
-            Spacer(minLength: 0.0)
-            HStack(spacing: 0.0) {
-                if t.isPad || !t.isPortrait {
-                    ScientificKeys(brain: brain, t: t)
-                        .padding(.trailing, t.spaceBetweenKeys)
-                }
-                NumberKeys(brain: brain, t: t)
-            }
-        }
-        .frame(height: t.allkeysHeight)
-        .background(Color.black)
-        .transition(.move(edge: .bottom))
-        .padding(.bottom, bottomPadding)
-    }
-}
+//struct Keys: View {
+//    let brain: Brain
+//    var t: TE
+//    let bottomPadding: CGFloat
+//    
+//    init(brain: Brain, t: TE) {
+//        self.brain = brain
+//        self.t = t
+//        if !t.isPad && t.isPortrait {
+//            bottomPadding = t.allkeysHeight * 0.07
+//        } else {
+//            bottomPadding = 0
+//        }
+//    }
+//    
+//    var body: some View {
+//        VStack(spacing: 0.0) {
+//            Spacer(minLength: 0.0)
+//            HStack(spacing: 0.0) {
+//                if t.isPad || !t.isPortrait {
+////                    ScientificKeys(brain: brain, t: t)
+////                        .padding(.trailing, t.spaceBetweenKeys)
+//                }
+////                NumberKeys(brain: brain, t: t)
+//            }
+//        }
+//        .frame(height: t.allkeysHeight)
+//        .background(Color.black)
+//        .transition(.move(edge: .bottom))
+//        .padding(.bottom, bottomPadding)
+//    }
+//}
 
 struct Calculator_Previews: PreviewProvider {
     static var previews: some View {
