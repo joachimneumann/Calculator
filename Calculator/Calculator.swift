@@ -44,11 +44,16 @@ struct Calculator: View {
                 let displayHeight = oneKeyheight
                 keyboardSize = CGSize(width: size.width, height: keyboardHeight)
                 displaySize = CGSize(width: size.width, height: displayHeight)
+                if isPad || !isPortrait {
+                    /// make space for "rad" info
+                    displaySize.width -= displayHeight
+                }
             }
         }
     }
     //    @StateObject private var viewLogic = ViewLogic(size: CGSize(width: 100, height: 100))
     var body: some View {
+        let info = keyModel.last == "0" ? "\(keyModel.precisionDescription) digits" : (keyModel._rad) ? "Rad" : ""
         ZStack {
             if isPad {
                 VStack(spacing: 0.0) {
@@ -67,20 +72,32 @@ struct Calculator: View {
                     KeysView(keyModel: keyModel, isScientific: false, size: keyboardSize)
                 }
             } else {
-                VStack(spacing: 0.0) {
-                    Spacer(minLength: 0.0)
-                    //                    if viewLogic.isZoomed && !isPortrait {
-                    //                        LongDisplay(text: viewLogic.longText, uiFont: viewLogic.displayUIFont, isCopyingOrPasting: viewLogic.isCopyingOrPasting, color: viewLogic.textColor)
-                    //
-                    //                        MultiLineDisplay(brain: Brain(), t: TE(), isCopyingOrPasting: false)
-                    //                            .padding(.trailing, TE().trailingAfterDisplay)
-                    //                    } else {
-                    //                        Spacer(minLength: 0.0)
-                    //                        SingleLineDisplay(brain: Brain(), t: TE())
-                    //                            .padding(.trailing, TE().trailingAfterDisplay)
-                    OneLineDisplay(keyModel: keyModel, size: displaySize, fontShouldScale: !isPad && isPortrait)
-                    KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
-                        .padding(.bottom, isPortrait ? size.height*0.06 : 0.0)
+                ZStack {
+                    VStack(spacing: 0.0) {
+                        Spacer()
+                        HStack(spacing: 0.0) {
+                            Text(info)
+                                .foregroundColor(Color.white)
+                            Spacer()
+                        }
+                    }
+                    .padding(.bottom, keyboardSize.height+displaySize.height*0.2)
+                    .padding(.leading, displaySize.height*0.4)
+                    VStack(spacing: 0.0) {
+                        Spacer(minLength: 0.0)
+                        //                    if viewLogic.isZoomed && !isPortrait {
+                        //                        LongDisplay(text: viewLogic.longText, uiFont: viewLogic.displayUIFont, isCopyingOrPasting: viewLogic.isCopyingOrPasting, color: viewLogic.textColor)
+                        //
+                        //                        MultiLineDisplay(brain: Brain(), t: TE(), isCopyingOrPasting: false)
+                        //                            .padding(.trailing, TE().trailingAfterDisplay)
+                        //                    } else {
+                        //                        Spacer(minLength: 0.0)
+                        //                        SingleLineDisplay(brain: Brain(), t: TE())
+                        //                            .padding(.trailing, TE().trailingAfterDisplay)
+                        OneLineDisplay(keyModel: keyModel, size: displaySize, fontShouldScale: !isPad && isPortrait)
+                        KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
+                            .padding(.bottom, isPortrait ? size.height*0.06 : 0.0)
+                    }
                 }
             }
         }

@@ -65,5 +65,6 @@ struct OneLineDisplay: View {
 struct OneLineDisplay_Previews: PreviewProvider {
     static var previews: some View {
         OneLineDisplay(keyModel: KeyModel(), size: CGSize(width: 300, height: 100), fontShouldScale: true)
+            .background(Color.black)
     }
 }
