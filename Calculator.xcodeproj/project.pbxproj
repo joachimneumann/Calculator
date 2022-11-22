@@ -30,6 +30,7 @@
 		AA2FAC22272F2349006DE4C8 /* NumberKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0C272F2349006DE4C8 /* NumberKeys.swift */; };
 		AA2FAC23272F2349006DE4C8 /* OperatorStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0D272F2349006DE4C8 /* OperatorStack.swift */; };
 		AA393CDA27F8921A003C48AA /* SingleLineDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA393CD927F8921A003C48AA /* SingleLineDisplay.swift */; };
+		AA3E7A66292CA66200A064DE /* keyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3E7A65292CA66200A064DE /* keyModel.swift */; };
 		AA3FB8272920E0E5002ECCEB /* ControlCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3FB8262920E0E5002ECCEB /* ControlCenter.swift */; };
 		AA92B4C329250827005E43F0 /* ColoredStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92B4C229250827005E43F0 /* ColoredStepper.swift */; };
 		AA92B4C529266CC1005E43F0 /* AnimatedDots.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92B4C429266CC1005E43F0 /* AnimatedDots.swift */; };
@@ -44,7 +45,6 @@
 		AAB10B9C292A2222004707E9 /* NonScientificKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB10B96292A2222004707E9 /* NonScientificKeys.swift */; };
 		AAB10B9D292A2222004707E9 /* KeyBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB10B97292A2222004707E9 /* KeyBackground.swift */; };
 		AAB10B9E292A2222004707E9 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB10B98292A2222004707E9 /* Key.swift */; };
-		AAB10B9F292A2222004707E9 /* KeyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB10B99292A2222004707E9 /* KeyModel.swift */; };
 		AABCF8BA292B8818007E5C35 /* ScientificKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABCF8B9292B8818007E5C35 /* ScientificKeys.swift */; };
 		AABCF8BC292BBCEB007E5C35 /* OneLineDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABCF8BB292BBCEB007E5C35 /* OneLineDisplay.swift */; };
 /* End PBXBuildFile section */
@@ -105,6 +105,7 @@
 		AA2FAC0C272F2349006DE4C8 /* NumberKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberKeys.swift; sourceTree = "<group>"; };
 		AA2FAC0D272F2349006DE4C8 /* OperatorStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperatorStack.swift; sourceTree = "<group>"; };
 		AA393CD927F8921A003C48AA /* SingleLineDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLineDisplay.swift; sourceTree = "<group>"; };
+		AA3E7A65292CA66200A064DE /* keyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = keyModel.swift; sourceTree = "<group>"; };
 		AA3FB8262920E0E5002ECCEB /* ControlCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlCenter.swift; sourceTree = "<group>"; };
 		AA92B4C229250827005E43F0 /* ColoredStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredStepper.swift; sourceTree = "<group>"; };
 		AA92B4C429266CC1005E43F0 /* AnimatedDots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedDots.swift; sourceTree = "<group>"; };
@@ -119,7 +120,6 @@
 		AAB10B96292A2222004707E9 /* NonScientificKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonScientificKeys.swift; sourceTree = "<group>"; };
 		AAB10B97292A2222004707E9 /* KeyBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackground.swift; sourceTree = "<group>"; };
 		AAB10B98292A2222004707E9 /* Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
-		AAB10B99292A2222004707E9 /* KeyModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeyModel.swift; path = ../../ViewBuilder/ViewBuilder/KeyModel.swift; sourceTree = "<group>"; };
 		AABCF8B9292B8818007E5C35 /* ScientificKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScientificKeys.swift; sourceTree = "<group>"; };
 		AABCF8BB292BBCEB007E5C35 /* OneLineDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneLineDisplay.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -206,10 +206,10 @@
 				AAB10B98292A2222004707E9 /* Key.swift */,
 				AAB10B97292A2222004707E9 /* KeyBackground.swift */,
 				AAB10B94292A2222004707E9 /* KeyLabel.swift */,
-				AAB10B99292A2222004707E9 /* KeyModel.swift */,
 				AAB10B96292A2222004707E9 /* NonScientificKeys.swift */,
 				AABCF8B9292B8818007E5C35 /* ScientificKeys.swift */,
 				AABCF8BB292BBCEB007E5C35 /* OneLineDisplay.swift */,
+				AA3E7A65292CA66200A064DE /* keyModel.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -356,8 +356,8 @@
 				AA2FAC12272F2349006DE4C8 /* NumberStack.swift in Sources */,
 				AA02AF76291CE0550079F40E /* Icon.swift in Sources */,
 				AA92B4C72927279B005E43F0 /* ViewLogic.swift in Sources */,
-				AAB10B9F292A2222004707E9 /* KeyModel.swift in Sources */,
 				AA2FAC10272F2349006DE4C8 /* Symbols.swift in Sources */,
+				AA3E7A66292CA66200A064DE /* keyModel.swift in Sources */,
 				AA2FAC21272F2349006DE4C8 /* OldKey.swift in Sources */,
 				AA2FABF2272F217F006DE4C8 /* Gmp.swift in Sources */,
 				AAB10B9A292A2222004707E9 /* KeyLabel.swift in Sources */,
