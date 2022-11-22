@@ -12,6 +12,13 @@ struct MultipleLiner {
     var left: String
     var right: String? = nil
     var abreviated: Bool // show a message that there is more?
+    var oneLine: String {
+        if right != nil {
+            return left+right!
+        } else {
+            return left
+        }
+    }
 }
 
 class Number: CustomDebugStringConvertible {
@@ -137,18 +144,11 @@ class Number: CustomDebugStringConvertible {
 //        return ret
 //    }
     
-    func singleLine(len: Int) -> String {
-        let ret: String
-        let singleLiner = forDisplay(withoutComma: len, withComma: len)
-        if let right = singleLiner.right {
-            ret = singleLiner.left+right
-        } else {
-            ret = singleLiner.left
-        }
-        return ret
+    func singleLine(withoutComma: Int, withComma: Int) -> String {
+        return multipleLines(withoutComma: withoutComma, withComma: withComma).oneLine
     }
     
-    func forDisplay(withoutComma: Int, withComma: Int) -> MultipleLiner {
+    func multipleLines(withoutComma: Int, withComma: Int) -> MultipleLiner {
         var ret = MultipleLiner(left: "0", abreviated: false)
         ret.abreviated = false
         if let s = str {

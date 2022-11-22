@@ -78,7 +78,7 @@ struct Calculator: View {
                     //                        Spacer(minLength: 0.0)
                     //                        SingleLineDisplay(brain: Brain(), t: TE())
                     //                            .padding(.trailing, TE().trailingAfterDisplay)
-                    OneLineDisplay(keyModel: keyModel, size: displaySize)
+                    OneLineDisplay(keyModel: keyModel, size: displaySize, fontShouldScale: !isPad && isPortrait)
                     KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
                         .padding(.bottom, isPortrait ? size.height*0.06 : 0.0)
                 }
@@ -130,5 +130,6 @@ struct Calculator: View {
 struct Calculator_Previews: PreviewProvider {
     static var previews: some View {
         Calculator(isPad: false, isPortrait: true, size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+            .background(Color.black)
     }
 }

@@ -22,7 +22,7 @@ struct NumberStack: CustomDebugStringConvertible{
     mutating func changePrecision(to newPrecision: Int, newBits: Int) {
         for index in 0..<array.count {
             let old = array[index]
-            let oldString = old.singleLine(len: newPrecision)
+            let oldString = old.singleLine(withoutComma: newPrecision, withComma: newPrecision)
             let newGmp = Gmp(oldString, bits: newBits)
             array[index] = Number(newGmp)
         }

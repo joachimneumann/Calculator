@@ -30,7 +30,7 @@ struct SingleLineDisplay: View {
     
     init(brain: Brain, t: TE) {
         self.color = Color.white
-        text = brain.last.singleLine(len: t.withComma)
+        text = brain.last.singleLine(withoutComma: t.withoutComma, withComma: t.withComma)
         isPortraitIPhone = !t.isPad && t.isPortrait
         if isPortraitIPhone {
             fontGrowthFactor = t.iPhonePortraitSingleLineDisplayHeight / t.singleLineDisplayHeight
@@ -79,7 +79,7 @@ struct MultiLineDisplay: View {
     init(brain: Brain, t: TE, isCopyingOrPasting: Bool) {
         self.color = Color.white
         self.isCopyingOrPasting = isCopyingOrPasting
-        self.text = brain.last.singleLine(len: brain.precision)
+        self.text = brain.last.singleLine(withoutComma: brain.precision, withComma: brain.precision)
         self.uiFont = t.displayUIFont
         self.height = t.multipleLineDisplayHeight
     }
