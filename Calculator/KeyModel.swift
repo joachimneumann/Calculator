@@ -65,7 +65,16 @@ class KeyModel: ObservableObject {
             DispatchQueue.main.async {
                 self._isCalculating = false
                 for key in [self.digitKeys, self.operatorKeys, self.scientificKeys].joined() {
-                    self.allKeyColors[key] = self.getKeyColors(for: key, enabled: true, pending: self.lastPending == key )
+                    if self.brain.isValidNumber {
+                        self.allKeyColors[key] = self.getKeyColors(for: key, enabled: true, pending: self.lastPending == key )
+                    } else {
+                        if self.requireValidNumber.contains(key) {
+                            /// TODO: also disable the button!!! combine color and status!!!
+                            self.allKeyColors[key] = self.getKeyColors(for: key, enabled: false, pending: self.lastPending == key )
+                        } else {
+                            self.allKeyColors[key] = self.getKeyColors(for: key, enabled: true, pending: self.lastPending == key )
+                        }
+                    }
                 }
             }
         }
@@ -119,6 +128,7 @@ class KeyModel: ObservableObject {
         "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10",
         "x!", "sin", "cos", "tan", "asin", "acos", "atan", "e", "EE",
         "Deg", "Rad", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh", "π", "Rand"]
+    private let requireValidNumber = ["±", "%", "/", "x", "-", "+", "=", "( ", " )", "m+", "m-", "mr", "x^2", "x^3", "x^y", "e^x", "y^x", "2^x", "10^x", "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10", "x!", "sin", "cos", "tan", "asin", "acos", "atan", "EE", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh"]
     private let digitColors = KeyColors(
         textColor: UIColor(.white),
         upColor:   UIColor(white: 0.2, alpha: 1.0),
