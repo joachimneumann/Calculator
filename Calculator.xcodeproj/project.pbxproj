@@ -30,7 +30,7 @@
 		AA2FAC22272F2349006DE4C8 /* NumberKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0C272F2349006DE4C8 /* NumberKeys.swift */; };
 		AA2FAC23272F2349006DE4C8 /* OperatorStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0D272F2349006DE4C8 /* OperatorStack.swift */; };
 		AA393CDA27F8921A003C48AA /* SingleLineDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA393CD927F8921A003C48AA /* SingleLineDisplay.swift */; };
-		AA3E7A66292CA66200A064DE /* keyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3E7A65292CA66200A064DE /* keyModel.swift */; };
+		AA3E7A66292CA66200A064DE /* KeyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3E7A65292CA66200A064DE /* KeyModel.swift */; };
 		AA3FB8272920E0E5002ECCEB /* ControlCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3FB8262920E0E5002ECCEB /* ControlCenter.swift */; };
 		AA92B4C329250827005E43F0 /* ColoredStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92B4C229250827005E43F0 /* ColoredStepper.swift */; };
 		AA92B4C529266CC1005E43F0 /* AnimatedDots.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92B4C429266CC1005E43F0 /* AnimatedDots.swift */; };
@@ -105,7 +105,7 @@
 		AA2FAC0C272F2349006DE4C8 /* NumberKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberKeys.swift; sourceTree = "<group>"; };
 		AA2FAC0D272F2349006DE4C8 /* OperatorStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperatorStack.swift; sourceTree = "<group>"; };
 		AA393CD927F8921A003C48AA /* SingleLineDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLineDisplay.swift; sourceTree = "<group>"; };
-		AA3E7A65292CA66200A064DE /* keyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = keyModel.swift; sourceTree = "<group>"; };
+		AA3E7A65292CA66200A064DE /* KeyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyModel.swift; sourceTree = "<group>"; };
 		AA3FB8262920E0E5002ECCEB /* ControlCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlCenter.swift; sourceTree = "<group>"; };
 		AA92B4C229250827005E43F0 /* ColoredStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredStepper.swift; sourceTree = "<group>"; };
 		AA92B4C429266CC1005E43F0 /* AnimatedDots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedDots.swift; sourceTree = "<group>"; };
@@ -209,7 +209,7 @@
 				AAB10B96292A2222004707E9 /* NonScientificKeys.swift */,
 				AABCF8B9292B8818007E5C35 /* ScientificKeys.swift */,
 				AABCF8BB292BBCEB007E5C35 /* OneLineDisplay.swift */,
-				AA3E7A65292CA66200A064DE /* keyModel.swift */,
+				AA3E7A65292CA66200A064DE /* KeyModel.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -357,7 +357,7 @@
 				AA02AF76291CE0550079F40E /* Icon.swift in Sources */,
 				AA92B4C72927279B005E43F0 /* ViewLogic.swift in Sources */,
 				AA2FAC10272F2349006DE4C8 /* Symbols.swift in Sources */,
-				AA3E7A66292CA66200A064DE /* keyModel.swift in Sources */,
+				AA3E7A66292CA66200A064DE /* KeyModel.swift in Sources */,
 				AA2FAC21272F2349006DE4C8 /* OldKey.swift in Sources */,
 				AA2FABF2272F217F006DE4C8 /* Gmp.swift in Sources */,
 				AAB10B9A292A2222004707E9 /* KeyLabel.swift in Sources */,
