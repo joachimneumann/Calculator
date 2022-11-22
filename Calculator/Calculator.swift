@@ -53,8 +53,7 @@ struct Calculator: View {
     }
     //    @StateObject private var viewLogic = ViewLogic(size: CGSize(width: 100, height: 100))
     var body: some View {
-//        let info1 = "\(keyModel._hasBeenReset ? "Precision: "+keyModel.precisionDescription+" digits" : "")"
-        let info1 = "\(keyModel._isCalculating ? "..." : "")"
+        let info1 = "\(keyModel._hasBeenReset ? "Precision: "+keyModel.precisionDescription+" digits" : "")"
         let info2 = "\(keyModel._rad ? "Rad      " : "")"
         ZStack {
             if isPad {
@@ -76,16 +75,25 @@ struct Calculator: View {
             } else {
                 ZStack {
                     VStack(spacing: 0.0) {
-                        HStack(spacing: 0.0) {
-                            Text(info1)
-                                .foregroundColor(Color.white)
+                        if keyModel._isCalculating {
+                            Spacer()
+                            HStack(spacing: 0.0) {
+                                AnimatedDots(color: Color(white: 0.7))
+                                Spacer()
+                            }
+                            Spacer()
+                        } else {
+                            HStack(spacing: 0.0) {
+                                Text(info1)
+                                    .foregroundColor(Color.white)
+                                Spacer()
+                            }
                             Spacer()
                         }
-                        Spacer()
                     }
-                    .padding(.bottom, keyboardSize.height+displaySize.height*0.2)
+                    .padding(.bottom, keyboardSize.height)//+displaySize.height*0.2)
                     .padding(.leading, displaySize.height*0.4)
-                    if isPad || !isPortrait {
+                    if (isPad || !isPortrait) && !keyModel._isCalculating {
                         VStack(spacing: 0.0) {
                             Spacer()
                             HStack(spacing: 0.0) {

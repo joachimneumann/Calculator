@@ -10,27 +10,39 @@ import SwiftUI
 struct AnimatedDots: View {
     
     @State private var shouldAnimate = false
-    
+    let color: Color
+    let small = 0.5
+    let large = 0.7
+    let size = 15.0
+    let duration = 0.5
     var body: some View {
-        HStack {
+        HStack(spacing: 0.0) {
             Circle()
-                .fill(Color.white)
-                .frame(width: 15, height: 15)
-                .scaleEffect(shouldAnimate ? 1.0 : 0.5)
-                .animation(Animation.easeInOut(duration: 0.3).repeatForever(), value: shouldAnimate)
+                .fill(color)
+                .frame(width: size, height: size)
+                .scaleEffect(shouldAnimate ? large : small)
+                .animation(Animation.easeInOut(duration: duration).repeatForever(), value: shouldAnimate)
             Circle()
-                .fill(Color.white)
-                .frame(width: 15, height: 15)
-                .scaleEffect(shouldAnimate ? 1.0 : 0.5)
-                .animation(Animation.easeInOut(duration: 0.3).repeatForever().delay(0.3), value: shouldAnimate)
+                .fill(color)
+                .frame(width: size, height: size)
+                .scaleEffect(shouldAnimate ? large : small)
+                .animation(Animation.easeInOut(duration: duration).repeatForever().delay(duration/2), value: shouldAnimate)
             Circle()
-                .fill(Color.white)
-                .frame(width: 15, height: 15)
-                .scaleEffect(shouldAnimate ? 1.0 : 0.5)
-                .animation(Animation.easeInOut(duration: 0.3).repeatForever().delay(0.6), value: shouldAnimate)
+                .fill(color)
+                .frame(width: size, height: size)
+                .scaleEffect(shouldAnimate ? large : small)
+                .animation(Animation.easeInOut(duration: duration).repeatForever().delay(duration), value: shouldAnimate)
         }
         .onAppear {
             self.shouldAnimate = true
         }
     }
 }
+
+struct Dots_Previews: PreviewProvider {
+    static var previews: some View {
+        AnimatedDots(color: Color.red)
+            .background(Color.black)
+    }
+}
+
