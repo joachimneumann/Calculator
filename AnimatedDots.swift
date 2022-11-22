@@ -8,14 +8,17 @@
 import SwiftUI
 
 struct AnimatedDots: View {
-    
     @State private var shouldAnimate = false
+    @State private var shouldShow = false
     let color: Color
     let small = 0.5
     let large = 0.7
     let size = 15.0
     let duration = 0.5
+    let startDelay = 0.2
+    
     var body: some View {
+        let color = shouldShow ? color : Color.black
         HStack(spacing: 0.0) {
             Circle()
                 .fill(color)
@@ -35,6 +38,11 @@ struct AnimatedDots: View {
         }
         .onAppear {
             self.shouldAnimate = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + startDelay) {
+                withAnimation() {
+                    self.shouldShow = true
+                }
+            }
         }
     }
 }

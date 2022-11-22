@@ -135,7 +135,10 @@ class Gmp: Equatable {
     func π() {
         mpfr_const_pi(&mpfr, MPFR_RNDN)
     }
-    func e() { mpfr_exp( &mpfr, &Gmp("1.0", bits: bits).mpfr, MPFR_RNDN)}
+    func e() {
+        mpfr_exp( &mpfr, &Gmp("1.0", bits: bits).mpfr, MPFR_RNDN)
+        /// Note: mpfr_const_euler() returns 0.577..., not 2.718
+    }
 
     func rand() {
         if Gmp.randstate == nil {

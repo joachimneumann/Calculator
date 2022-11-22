@@ -55,80 +55,59 @@ struct Calculator: View {
     var body: some View {
         let info1 = "\(keyModel._hasBeenReset ? "Precision: "+keyModel.precisionDescription+" digits" : "")"
         let info2 = "\(keyModel._rad ? "Rad      " : "")"
-        ZStack {
-            if isPad {
+        if isPad {
+            VStack(spacing: 0.0) {
+                Spacer(minLength: 0.0)
+                KeysView(keyModel: keyModel, isScientific: false, size: keyboardSize)
+            }
+        } else {
+            ZStack {
+                /// display
                 VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    //                    if viewLogic.isZoomed {
-                    //                        LongDisplay(text: viewLogic.longText, uiFont: viewLogic.displayUIFont, isCopyingOrPasting: viewLogic.isCopyingOrPasting, color: viewLogic.textColor)
-                    //                        MultiLineDisplay(brain: Brain(), t: TE(), isCopyingOrPasting: false)
-                    //                            .padding(.trailing, TE().trailingAfterDisplay)
-                    //                            .opacity(viewLogic.isZoomed ? 1.0 : 0.0)
-                    //                            .transition(.move(edge: .bottom))
-                    //                    } else {
-                    //                        SingleLineDisplay(brain: Brain(), t: TE())
-                    //                            .padding(.trailing, TE().trailingAfterDisplay)
-                    //                            .opacity(viewLogic.isZoomed ? 0.0 : 1.0)
-                    //                    }
-                    KeysView(keyModel: keyModel, isScientific: false, size: keyboardSize)
+                    OneLineDisplay(keyModel: keyModel, size: displaySize, fontShouldScale: !isPad && isPortrait)
+                    KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
+                        .padding(.bottom, isPortrait ? size.height*0.06 : 0.0)
                 }
-            } else {
-                ZStack {
-                    VStack(spacing: 0.0) {
-                        if keyModel._isCalculating {
-                            Spacer()
-                            HStack(spacing: 0.0) {
-                                AnimatedDots(color: Color(white: 0.7))
-                                Spacer()
-                            }
-                            Spacer()
-                        } else {
-                            HStack(spacing: 0.0) {
-                                Text(info1)
-                                    .foregroundColor(Color.white)
-                                Spacer()
-                            }
-                            Spacer()
-                        }
-                    }
-                    .padding(.bottom, keyboardSize.height)//+displaySize.height*0.2)
-                    .padding(.leading, displaySize.height*0.4)
-                    if (isPad || !isPortrait) && !keyModel._isCalculating {
-                        VStack(spacing: 0.0) {
-                            Spacer()
-                            HStack(spacing: 0.0) {
-                                Text(info2)
-                                    .foregroundColor(Color.white)
-                                Spacer()
-                            }
-                        }
-                        .padding(.bottom, keyboardSize.height+displaySize.height*0.2)
-                        .padding(.leading, displaySize.height*0.4)
-                    }
-                    VStack(spacing: 0.0) {
+                VStack(spacing: 0.0) {
+                    if keyModel._isCalculating {
                         Spacer(minLength: 0.0)
-                        //                    if viewLogic.isZoomed && !isPortrait {
-                        //                        LongDisplay(text: viewLogic.longText, uiFont: viewLogic.displayUIFont, isCopyingOrPasting: viewLogic.isCopyingOrPasting, color: viewLogic.textColor)
-                        //
-                        //                        MultiLineDisplay(brain: Brain(), t: TE(), isCopyingOrPasting: false)
-                        //                            .padding(.trailing, TE().trailingAfterDisplay)
-                        //                    } else {
-                        //                        Spacer(minLength: 0.0)
-                        //                        SingleLineDisplay(brain: Brain(), t: TE())
-                        //                            .padding(.trailing, TE().trailingAfterDisplay)
-                        OneLineDisplay(keyModel: keyModel, size: displaySize, fontShouldScale: !isPad && isPortrait)
-                        KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
-                            .padding(.bottom, isPortrait ? size.height*0.06 : 0.0)
+                        HStack(spacing: 0.0) {
+                            AnimatedDots(color: Color(white: 0.7))
+                                .padding(.top, displaySize.height * 0.2)
+                            Spacer()
+                        }
+                        Spacer(minLength: 0.0)
+                    } else {
+                        HStack(spacing: 0.0) {
+                            Text(info1)
+                                .foregroundColor(Color.white)
+                            Spacer()
+                        }
+                        Spacer()
+                        HStack(spacing: 0.0) {
+                            Text(info2)
+                                .foregroundColor(Color.white)
+                                .padding(.bottom, displaySize.height * 0.2)
+                            Spacer()
+                        }
                     }
                 }
+                .padding(.bottom, keyboardSize.height)//+displaySize.height*0.2)
+                .padding(.leading, displaySize.height*0.4)
             }
         }
-//        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-//            GeometryReader { geo in
+        
+        //                    if viewLogic.isZoomed && !isPortrait {
+        //                        LongDisplay(text: viewLogic.longText, uiFont: viewLogic.displayUIFont, isCopyingOrPasting: viewLogic.isCopyingOrPasting, color: viewLogic.textColor)
+        //
+        //                        MultiLineDisplay(brain: Brain(), t: TE(), isCopyingOrPasting: false)
+        //                            .padding(.trailing, TE().trailingAfterDisplay)
+        //                    } else {
+        //                        Spacer(minLength: 0.0)
+        //                        SingleLineDisplay(brain: Brain(), t: TE())
+        //                            .padding(.trailing, TE().trailingAfterDisplay)
 
-//                let _ = print("orientation Notification \(isPortrait) \(size) \(keyboardSize)")
-//            }
-//        }
     }
 }
 
