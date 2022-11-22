@@ -39,8 +39,8 @@ class Brain {
         }
     }
     
-    var showCalculating: Bool = false
-    var isCalculating: Bool = false
+    var isCalculatingCallback: (Bool) -> () = {_ in }
+    var isCalculating: Bool = false { didSet { isCalculatingCallback(isCalculating) } }
     
     var debugLastDouble: Double { n.last.gmp!.toDouble() }
     var debugLastGmp: Gmp { n.last.gmp! }
@@ -49,9 +49,7 @@ class Brain {
 
     var haveResultCallback: (Number) -> () = {_ in }
     var pendingOperatorCallback: ((String?) -> ()) = {_ in }
-    var pendingOperator: String? {
-        didSet { pendingOperatorCallback(pendingOperator) }
-    }
+    var pendingOperator: String? { didSet { pendingOperatorCallback(pendingOperator) } }
     var memory: Gmp? = nil
     var nullNumber: Number {
         return Number("0", bits: bits)
@@ -116,8 +114,15 @@ class Brain {
         if symbol == "=" {
             self.execute(priority: Operator.equalPriority)
         } else if symbol == "C" {
-            n.removeLast()
-            n.append(nullNumber)
+            if last.isNull {
+                operatorStack.removeAll()
+                n.removeAll()
+                pendingOperator = nil
+                n.append(nullNumber)
+            } else {
+                n.removeLast()
+                n.append(nullNumber)
+            }
         } else if symbol == "AC" {
             operatorStack.removeAll()
             n.removeAll()
@@ -208,36 +213,21 @@ class Brain {
     }
     
     func nonWaitingOperation(_ symbol: String) {
-        operation(symbol)
+        if !isCalculating {
+            self.isCalculating = true
+            operation(symbol)
+        }
+        self.isCalculating = false
     }
     
     func asyncOperation(_ symbol: String) {
         Task {
             if !isCalculating {
-                DispatchQueue.main.async {
-                    self.isCalculating = true
-                }
-                let now = DispatchTime.now()
-                var whenWhen: DispatchTime
-                whenWhen = now + DispatchTimeInterval.milliseconds(Int(200.0))
-                DispatchQueue.main.asyncAfter(deadline: whenWhen) {
-                    if self.isCalculating { // still calculating?
-                        self.showCalculating = true
-                        //print("asyncOperation showCalculating \(self.showCalculating)")
-                    }
-                }
-                
+                self.isCalculating = true
                 await waitingOperation(symbol)
                 
             }
-            //print("display1... \(showCalculating)")
-            DispatchQueue.main.async {
-                //                self.nonScientific = self.displayData.nonScientific
-                //                self.scientific = self.displayData.scientific
-                self.showCalculating = false
-                //print("asyncOperation showCalculating \(self.showCalculating)")
-                self.isCalculating = false
-            }
+            self.isCalculating = false
         }
     }
     

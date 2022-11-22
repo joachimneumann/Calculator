@@ -9,6 +9,7 @@ import SwiftUI
 
 struct KeyBuilder: View {
     let symbol: String
+    let enabled: Bool
     let size: CGSize
     @ObservedObject var keyModel: KeyModel
     init(_ symbol: String, _ size: CGSize, _ keyModel: KeyModel) {
@@ -19,9 +20,10 @@ struct KeyBuilder: View {
         }
         self.size = size
         self.keyModel = keyModel
+        self.enabled = !keyModel._isCalculating
     }
     var body: some View {
-        Key(symbol, size: size, keyColors: keyModel.allKeyColors[symbol]!, callback: keyModel.pressed)
+        Key(symbol, enabled: enabled, size: size, keyColors: keyModel.allKeyColors[symbol]!, callback: keyModel.pressed)
     }
 }
 

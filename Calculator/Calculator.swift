@@ -53,7 +53,8 @@ struct Calculator: View {
     }
     //    @StateObject private var viewLogic = ViewLogic(size: CGSize(width: 100, height: 100))
     var body: some View {
-        let info1 = "\(keyModel.last == "0" ? "Precision: "+keyModel.precisionDescription+" digits" : "")"
+//        let info1 = "\(keyModel._hasBeenReset ? "Precision: "+keyModel.precisionDescription+" digits" : "")"
+        let info1 = "\(keyModel._isCalculating ? "..." : "")"
         let info2 = "\(keyModel._rad ? "Rad      " : "")"
         ZStack {
             if isPad {
