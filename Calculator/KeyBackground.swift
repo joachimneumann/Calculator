@@ -9,7 +9,6 @@ import SwiftUI
 
 struct KeyBackground<Content: View>: View {
     @State var tapped: Bool = false
-    @State var illegal: Bool = false
     let enabled: Bool
     var callback : () -> ()
     let keyColors: KeyColors
@@ -19,29 +18,27 @@ struct KeyBackground<Content: View>: View {
         self.keyColors = keyColors
         self.content = content()
         self.enabled = enabled
-        self.illegal = false
     }
     var body: some View {
         ZStack {
             Capsule()
-                .foregroundColor(illegal ? Color.red : tapped ? Color(uiColor: keyColors.downColor) : Color(uiColor: keyColors.upColor))
+                .foregroundColor(tapped ? Color(uiColor: keyColors.downColor) : Color(uiColor: keyColors.upColor))
             content
         }
-        .onTouchUpGesture(enabled: enabled, tapped: $tapped, illegal: $illegal, callback: callback)
+        .onTouchUpGesture(enabled: enabled, tapped: $tapped, callback: callback)
     }
     
 }
 
 fileprivate extension View {
-    func onTouchUpGesture(enabled: Bool, tapped: Binding<Bool>, illegal: Binding<Bool>, callback: @escaping () -> Void) -> some View {
-        modifier(OnTouchUpGestureModifier(enabled: enabled, tapped: tapped, illegal: illegal, callback: callback))
+    func onTouchUpGesture(enabled: Bool, tapped: Binding<Bool>, callback: @escaping () -> Void) -> some View {
+        modifier(OnTouchUpGestureModifier(enabled: enabled, tapped: tapped, callback: callback))
     }
 }
 
 private struct OnTouchUpGestureModifier: ViewModifier {
     let enabled: Bool
     @Binding var tapped: Bool
-    @Binding var illegal: Bool
     let callback: () -> Void
     @State var downAnimationFinished = false
     @State var upHasHappended = false
@@ -70,13 +67,6 @@ private struct OnTouchUpGestureModifier: ViewModifier {
                                 }
                             }
                         }
-                    } else {
-                        withAnimation(.easeIn(duration: downTime)) {
-                            illegal = true
-                            DispatchQueue.main.asyncAfter(deadline: .now() + downTime) {
-                                illegal = false
-                            }
-                        }
                     }
                 }
                 .onEnded { _ in
@@ -88,13 +78,6 @@ private struct OnTouchUpGestureModifier: ViewModifier {
                             }
                         } else {
                             upHasHappended = true
-                        }
-                    } else {
-                        withAnimation(.easeIn(duration: downTime)) {
-                            illegal = true
-                            DispatchQueue.main.asyncAfter(deadline: .now() + downTime) {
-                                illegal = false
-                            }
                         }
                     }
                 })

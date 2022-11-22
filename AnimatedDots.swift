@@ -15,7 +15,6 @@ struct AnimatedDots: View {
     let large = 0.7
     let size = 15.0
     let duration = 0.5
-    let startDelay = 0.2
     
     var body: some View {
         let color = shouldShow ? color : Color.black
@@ -38,10 +37,8 @@ struct AnimatedDots: View {
         }
         .onAppear {
             self.shouldAnimate = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + startDelay) {
-                withAnimation() {
-                    self.shouldShow = true
-                }
+            withAnimation() {
+                self.shouldShow = true
             }
         }
     }
@@ -49,7 +46,7 @@ struct AnimatedDots: View {
 
 struct Dots_Previews: PreviewProvider {
     static var previews: some View {
-        AnimatedDots(color: Color.red)
+        AnimatedDots(color: Color.gray)
             .background(Color.black)
     }
 }

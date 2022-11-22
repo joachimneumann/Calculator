@@ -20,7 +20,7 @@ struct KeyBuilder: View {
         }
         self.size = size
         self.keyModel = keyModel
-        self.enabled = !keyModel._isCalculating
+        self.enabled = true // !keyModel._isCalculating
     }
     var body: some View {
         Key(symbol, enabled: enabled, size: size, keyColors: keyModel.allKeyColors[symbol]!, callback: keyModel.pressed)
