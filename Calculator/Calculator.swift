@@ -53,7 +53,8 @@ struct Calculator: View {
     }
     //    @StateObject private var viewLogic = ViewLogic(size: CGSize(width: 100, height: 100))
     var body: some View {
-        let info = keyModel.last == "0" ? "\(keyModel.precisionDescription) digits" : (keyModel._rad) ? "Rad" : ""
+        let info1 = "\(keyModel.last == "0" ? "Precision: "+keyModel.precisionDescription+" digits" : "")"
+        let info2 = "\(keyModel._rad ? "Rad      " : "")"
         ZStack {
             if isPad {
                 VStack(spacing: 0.0) {
@@ -74,15 +75,27 @@ struct Calculator: View {
             } else {
                 ZStack {
                     VStack(spacing: 0.0) {
-                        Spacer()
                         HStack(spacing: 0.0) {
-                            Text(info)
+                            Text(info1)
                                 .foregroundColor(Color.white)
                             Spacer()
                         }
+                        Spacer()
                     }
                     .padding(.bottom, keyboardSize.height+displaySize.height*0.2)
                     .padding(.leading, displaySize.height*0.4)
+                    if isPad || !isPortrait {
+                        VStack(spacing: 0.0) {
+                            Spacer()
+                            HStack(spacing: 0.0) {
+                                Text(info2)
+                                    .foregroundColor(Color.white)
+                                Spacer()
+                            }
+                        }
+                        .padding(.bottom, keyboardSize.height+displaySize.height*0.2)
+                        .padding(.leading, displaySize.height*0.4)
+                    }
                     VStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
                         //                    if viewLogic.isZoomed && !isPortrait {
