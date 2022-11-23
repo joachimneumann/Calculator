@@ -7,11 +7,14 @@
 
 import SwiftUI
 
+enum KeyType {
+    case digit
+}
 class KeyModel: ObservableObject {
-    @Published var keyColors : KeyColors
+    @Published var colors : KeyColors
     
-    init() {
-        keyColors = digitColors
+    init(type: KeyType) {
+        colors = digitColors
     }
     
     private let digitColors = KeyColors(

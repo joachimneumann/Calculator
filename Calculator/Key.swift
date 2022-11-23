@@ -7,18 +7,6 @@
 
 import SwiftUI
 
-struct KeyView_Previews: PreviewProvider {
-    static func doNothing(s: String) {
-            print("do something")
-    }
-    static var previews: some View {
-        VStack {
-            Key("-", enabled: true, size: CGSize(width: 117, height: 112), keyColors: KeyColors(textColor: UIColor.white, upColor: UIColor.red, downColor: UIColor.orange), callback: KeyView_Previews.doNothing)
-            Key("-", enabled: true, size: CGSize(width: 27, height: 27), keyColors: KeyColors(textColor: UIColor.white, upColor: UIColor.red, downColor: UIColor.orange), callback: KeyView_Previews.doNothing)
-        }
-    }
-}
-
 struct Key: View {
     private let symbol: String
     private let enabled: Bool
@@ -29,8 +17,11 @@ struct Key: View {
     private let keyLabel: KeyLabel
     private let keyContent: any View
 
-    init(_ symbol: String, enabled: Bool, size: CGSize, keyColors: KeyColors, callback: @escaping (String) -> ()) {
-        self.keyColors = keyColors
+    private let keyModel: KeyModel
+    
+    init(_ symbol: String, enabled: Bool, size: CGSize, keyColors: KeyColors, callback: @escaping (String) -> (), type: KeyType = .digit) {
+        keyModel = KeyModel(type: type)
+        self.keyColors = keyModel.colors
         self.size = size
         self.keyLabel = KeyLabel(size: size, textColor: Color(uiColor: keyColors.textColor))
         keyContent = keyLabel.of(symbol)
@@ -51,3 +42,15 @@ struct Key: View {
     }
 }
 
+
+struct KeyView_Previews: PreviewProvider {
+    static func doNothing(s: String) {
+            print("do something")
+    }
+    static var previews: some View {
+        VStack {
+            Key("-", enabled: true, size: CGSize(width: 117, height: 112), keyColors: KeyColors(textColor: UIColor.white, upColor: UIColor.red, downColor: UIColor.orange), callback: KeyView_Previews.doNothing)
+            Key("-", enabled: true, size: CGSize(width: 27, height: 27), keyColors: KeyColors(textColor: UIColor.white, upColor: UIColor.red, downColor: UIColor.orange), callback: KeyView_Previews.doNothing)
+        }
+    }
+}
