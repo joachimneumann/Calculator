@@ -17,10 +17,11 @@ class KeyLabel {
     }
     
     @ViewBuilder func of(_ symbol: String) -> some View {
+//        let _ = print("ViewBuilder KeyLabel.of()")
         switch symbol {
-        case "√" : RootShape(rootDigit: "2", color: textColor, size: size)
-        case "3√": RootShape(rootDigit: "3", color: textColor, size: size)
-        case "y√": RootShape(rootDigit: "y", color: textColor, size: size)
+        case "√" : RootShapeView(rootDigit: "2", color: textColor, size: size)
+        case "3√": RootShapeView(rootDigit: "3", color: textColor, size: size)
+        case "y√": RootShapeView(rootDigit: "y", color: textColor, size: size)
         case "log10": Logx("10")
         case "log2":  Logx("2")
         case "logy":  Logx("y")
@@ -56,28 +57,6 @@ class KeyLabel {
         }
     }
     
-    @ViewBuilder func RootShape(rootDigit: String, color: Color, size: CGSize) -> some View {
-        let lineWidth = size.height*0.03
-        ZStack {
-            RootShape1(part: 1)
-                .stroke(color, style: StrokeStyle(lineWidth: lineWidth, lineCap: CGLineCap.round, lineJoin: CGLineJoin.bevel))
-                .aspectRatio(contentMode: .fit)
-            RootShape1(part: 2)
-                .stroke(color, style: StrokeStyle(lineWidth: lineWidth, lineCap: CGLineCap.round, lineJoin: CGLineJoin.bevel))
-                .aspectRatio(contentMode: .fit)
-            Text(rootDigit)
-                .font(.system(size: size.height*0.17, weight: .semibold))
-                .foregroundColor(textColor)
-                .padding(.leading, size.height * -0.26)
-                .padding(.top, size.height * -0.14)
-            Text("x")
-                .font(.system(size: size.height*0.3, weight: .semibold))
-                .foregroundColor(textColor)
-                .padding(.leading, size.height * 0.1)
-                .padding(.top, size.height * 0.05)
-        }
-    }
-    
     private let sfImageNames: [String: String] = [
         "+":   "plus",
         "-":   "minus",
@@ -88,8 +67,33 @@ class KeyLabel {
         "%":   "percent",
     ]
 
-    
-    struct RootShape1: Shape {
+    struct RootShapeView: View {
+        let rootDigit: String
+        let color: Color
+        let size: CGSize
+        var body: some View {
+            let lineWidth = size.height*0.03
+            ZStack {
+                RootShape(part: 1)
+                    .stroke(color, style: StrokeStyle(lineWidth: lineWidth, lineCap: CGLineCap.round, lineJoin: CGLineJoin.bevel))
+                    .aspectRatio(contentMode: .fit)
+                RootShape(part: 2)
+                    .stroke(color, style: StrokeStyle(lineWidth: lineWidth, lineCap: CGLineCap.round, lineJoin: CGLineJoin.bevel))
+                    .aspectRatio(contentMode: .fit)
+                Text(rootDigit)
+                    .font(.system(size: size.height*0.17, weight: .semibold))
+                    .foregroundColor(color)
+                    .padding(.leading, size.height * -0.26)
+                    .padding(.top, size.height * -0.14)
+                Text("x")
+                    .font(.system(size: size.height*0.3, weight: .semibold))
+                    .foregroundColor(color)
+                    .padding(.leading, size.height * 0.1)
+                    .padding(.top, size.height * 0.05)
+            }
+        }
+    }
+    struct RootShape: Shape {
         let part: Int
         func path(in rect: CGRect) -> Path {
             var path = Path()

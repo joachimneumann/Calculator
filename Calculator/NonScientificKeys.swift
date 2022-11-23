@@ -11,8 +11,8 @@ struct KeyBuilder: View {
     let symbol: String
     let enabled: Bool
     let size: CGSize
-    @ObservedObject var keyModel: KeyModel
-    init(_ symbol: String, _ size: CGSize, _ keyModel: KeyModel) {
+    @ObservedObject var keyModel: CalculatorModel
+    init(_ symbol: String, _ size: CGSize, _ keyModel: CalculatorModel) {
         if keyModel.allKeyColors.keys.contains(symbol) {
             self.symbol = symbol
         } else {
@@ -28,12 +28,12 @@ struct KeyBuilder: View {
 }
 
 struct NonScientificKeys: View {
-    @ObservedObject var keyModel: KeyModel
+    @ObservedObject var keyModel: CalculatorModel
     let spaceBetweenKeys: CGFloat
     let keySize: CGSize
     let doubleKeySize: CGSize
     
-    init(keyModel: KeyModel, spaceBetweenKeys: CGFloat, size: CGSize) {
+    init(keyModel: CalculatorModel, spaceBetweenKeys: CGFloat, size: CGSize) {
         self.keyModel = keyModel
         self.spaceBetweenKeys = spaceBetweenKeys
         let w = (size.width - 3.0 * spaceBetweenKeys) / 4.0
@@ -79,7 +79,7 @@ struct NonScientificKeys: View {
 
 struct NonScientificKeys_Previews: PreviewProvider {
     static var previews: some View {
-        NonScientificKeys(keyModel: KeyModel(), spaceBetweenKeys: 10, size: CGSize(width: 250, height: 300))
+        NonScientificKeys(keyModel: CalculatorModel(), spaceBetweenKeys: 10, size: CGSize(width: 250, height: 300))
     }
 }
 

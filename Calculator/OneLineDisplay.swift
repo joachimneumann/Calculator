@@ -15,7 +15,7 @@ struct OneLineDisplay: View {
     private let maximalTextLength: Int
     private var fontScaleFactor = 1.0
 
-    init(keyModel: KeyModel, size: CGSize, fontShouldScale: Bool) {
+    init(keyModel: CalculatorModel, size: CGSize, fontShouldScale: Bool) {
         text = keyModel.last
         self.size = size
         let displayFontSize  = round(size.height * 0.79)
@@ -64,7 +64,7 @@ struct OneLineDisplay: View {
 
 struct OneLineDisplay_Previews: PreviewProvider {
     static var previews: some View {
-        OneLineDisplay(keyModel: KeyModel(), size: CGSize(width: 300, height: 100), fontShouldScale: true)
+        OneLineDisplay(keyModel: CalculatorModel(), size: CGSize(width: 300, height: 100), fontShouldScale: true)
             .background(Color.black)
     }
 }
