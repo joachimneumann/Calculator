@@ -111,9 +111,8 @@ class Brain {
     }
     
     private func operation(_ symbol: String) {
-        if symbol == "=" {
-            self.execute(priority: Operator.equalPriority)
-        } else if symbol == "C" {
+        /// TODO: do the switch in CalculatorModel
+        if symbol == "C" {
             if last.isNull {
                 operatorStack.removeAll()
                 n.removeAll()

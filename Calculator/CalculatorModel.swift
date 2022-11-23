@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+class Pending: ObservableObject {
+    @Published var symbol = 0
+}
 
 class CalculatorModel: ObservableObject {
     let brain: Brain
@@ -80,38 +83,31 @@ class CalculatorModel: ObservableObject {
         }
     }
     func pressed(symbol: String) {
-        if symbol == "2nd" {
-            _2ndActive.toggle()
-            if _2ndActive {
-                withAnimation() {
+        switch symbol {
+        case "2nd":
+            withAnimation() {
+                _2ndActive.toggle()
+                if _2ndActive {
+                    allKeyColors["2nd"] = getKeyColors(for: "2nd", enabled: true, pending: _2ndActive)
+                } else {
                     allKeyColors["2nd"] = getKeyColors(for: "2nd", enabled: true, pending: _2ndActive)
                 }
-            } else {
-                withAnimation() {
-                    allKeyColors["2nd"] = getKeyColors(for: "2nd", enabled: true, pending: _2ndActive)
+            }
+        case "Deg":
+            withAnimation() { _rad = true }
+        case "Rad":
+            withAnimation() { _rad = false }
+        case "=":
+            brain.execute(priority: Operator.equalPriority)
+        default:
+            if !_isCalculating {
+                if symbol == "AC" {
+                    _hasBeenReset = true
+                    brain.asyncOperation("AC")
+                } else {
+                    _hasBeenReset = false
+                    brain.asyncOperation(symbol)
                 }
-            }
-            return
-        }
-        if symbol == "Deg" {
-            withAnimation() {
-                _rad = true
-            }
-            return
-        }
-        if symbol == "Rad" {
-            withAnimation() {
-                _rad = false
-            }
-            return
-        }
-        if !_isCalculating {
-            if symbol == "AC" {
-                _hasBeenReset = true
-                brain.asyncOperation("AC")
-            } else {
-                _hasBeenReset = false
-                brain.asyncOperation(symbol)
             }
         }
     }
