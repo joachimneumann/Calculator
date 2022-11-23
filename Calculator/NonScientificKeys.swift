@@ -11,30 +11,31 @@ struct KeyBuilder: View {
     let symbol: String
     let enabled: Bool
     let size: CGSize
-    @ObservedObject var keyModel: CalculatorModel
-    init(_ symbol: String, _ size: CGSize, _ keyModel: CalculatorModel) {
-        if keyModel.allKeyColors.keys.contains(symbol) {
+    @ObservedObject var calculatorModel: CalculatorModel
+    
+    init(_ symbol: String, _ size: CGSize, _ calculatorModel: CalculatorModel) {
+        if calculatorModel.allKeyColors.keys.contains(symbol) {
             self.symbol = symbol
         } else {
             self.symbol = "?"
         }
         self.size = size
-        self.keyModel = keyModel
-        self.enabled = true // !keyModel._isCalculating
+        self.calculatorModel = calculatorModel
+        self.enabled = true // !calculatorModel._isCalculating
     }
     var body: some View {
-        Key(symbol, enabled: enabled, size: size, keyColors: keyModel.allKeyColors[symbol]!, callback: keyModel.pressed)
+        Key(symbol, enabled: enabled, size: size, keyColors: calculatorModel.allKeyColors[symbol]!, callback: calculatorModel.pressed)
     }
 }
 
 struct NonScientificKeys: View {
-    @ObservedObject var keyModel: CalculatorModel
+    @ObservedObject var calculatorModel: CalculatorModel
     let spaceBetweenKeys: CGFloat
     let keySize: CGSize
     let doubleKeySize: CGSize
     
-    init(keyModel: CalculatorModel, spaceBetweenKeys: CGFloat, size: CGSize) {
-        self.keyModel = keyModel
+    init(calculatorModel: CalculatorModel, spaceBetweenKeys: CGFloat, size: CGSize) {
+        self.calculatorModel = calculatorModel
         self.spaceBetweenKeys = spaceBetweenKeys
         let w = (size.width - 3.0 * spaceBetweenKeys) / 4.0
         let h = (size.height - 4.0 * spaceBetweenKeys) / 5.0
@@ -45,33 +46,33 @@ struct NonScientificKeys: View {
     var body: some View {
         VStack(spacing: spaceBetweenKeys) {
             HStack(spacing: spaceBetweenKeys) {
-                KeyBuilder(keyModel._AC ? "AC" : "C", keySize, keyModel)
-                KeyBuilder("±", keySize, keyModel)
-                KeyBuilder("%", keySize, keyModel)
-                KeyBuilder("/", keySize, keyModel)
+                KeyBuilder(calculatorModel._AC ? "AC" : "C", keySize, calculatorModel)
+                KeyBuilder("±", keySize, calculatorModel)
+                KeyBuilder("%", keySize, calculatorModel)
+                KeyBuilder("/", keySize, calculatorModel)
             }
             HStack(spacing: spaceBetweenKeys) {
-                KeyBuilder("7", keySize, keyModel)
-                KeyBuilder("8", keySize, keyModel)
-                KeyBuilder("9", keySize, keyModel)
-                KeyBuilder("x", keySize, keyModel)
+                KeyBuilder("7", keySize, calculatorModel)
+                KeyBuilder("8", keySize, calculatorModel)
+                KeyBuilder("9", keySize, calculatorModel)
+                KeyBuilder("x", keySize, calculatorModel)
             }
             HStack(spacing: spaceBetweenKeys) {
-                KeyBuilder("4", keySize, keyModel)
-                KeyBuilder("5", keySize, keyModel)
-                KeyBuilder("6", keySize, keyModel)
-                KeyBuilder("-", keySize, keyModel)
+                KeyBuilder("4", keySize, calculatorModel)
+                KeyBuilder("5", keySize, calculatorModel)
+                KeyBuilder("6", keySize, calculatorModel)
+                KeyBuilder("-", keySize, calculatorModel)
             }
             HStack(spacing: spaceBetweenKeys) {
-                KeyBuilder("1", keySize, keyModel)
-                KeyBuilder("2", keySize, keyModel)
-                KeyBuilder("3", keySize, keyModel)
-                KeyBuilder("+", keySize, keyModel)
+                KeyBuilder("1", keySize, calculatorModel)
+                KeyBuilder("2", keySize, calculatorModel)
+                KeyBuilder("3", keySize, calculatorModel)
+                KeyBuilder("+", keySize, calculatorModel)
             }
             HStack(spacing: spaceBetweenKeys) {
-                KeyBuilder("0", doubleKeySize, keyModel)
-                KeyBuilder(",", keySize, keyModel)
-                KeyBuilder("=", keySize, keyModel)
+                KeyBuilder("0", doubleKeySize, calculatorModel)
+                KeyBuilder(",", keySize, calculatorModel)
+                KeyBuilder("=", keySize, calculatorModel)
             }
         }
     }
@@ -79,7 +80,7 @@ struct NonScientificKeys: View {
 
 struct NonScientificKeys_Previews: PreviewProvider {
     static var previews: some View {
-        NonScientificKeys(keyModel: CalculatorModel(), spaceBetweenKeys: 10, size: CGSize(width: 250, height: 300))
+        NonScientificKeys(calculatorModel: CalculatorModel(), spaceBetweenKeys: 10, size: CGSize(width: 250, height: 300))
     }
 }
 

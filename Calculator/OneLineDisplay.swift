@@ -15,8 +15,8 @@ struct OneLineDisplay: View {
     private let maximalTextLength: Int
     private var fontScaleFactor = 1.0
 
-    init(keyModel: CalculatorModel, size: CGSize, fontShouldScale: Bool) {
-        text = keyModel.last
+    init(calculatorModel: CalculatorModel, size: CGSize, fontShouldScale: Bool) {
+        text = calculatorModel.last
         self.size = size
         let displayFontSize  = round(size.height * 0.79)
         let uiFont = UIFont.monospacedDigitSystemFont(ofSize: displayFontSize, weight: .thin)
@@ -26,7 +26,7 @@ struct OneLineDisplay: View {
             s.append("0")
             w = s.sizeOf_String(uiFont: uiFont).width
         }
-        keyModel.oneLineWithoutCommaLength = s.count - 1
+        calculatorModel.oneLineWithoutCommaLength = s.count - 1
         
         w = 0.0
         s = ","
@@ -34,13 +34,13 @@ struct OneLineDisplay: View {
             s.append("0")
             w = s.sizeOf_String(uiFont: uiFont).width
         }
-        keyModel.oneLineWithCommaLength = s.count - 1
+        calculatorModel.oneLineWithCommaLength = s.count - 1
         if fontShouldScale {
             fontScaleFactor = 1.5
         }
         smallFont = Font(UIFont.monospacedDigitSystemFont(ofSize: displayFontSize, weight: .thin))
         largeFont = Font(UIFont.monospacedDigitSystemFont(ofSize: displayFontSize*fontScaleFactor, weight: .thin))
-        maximalTextLength = text.contains(",") ? keyModel.oneLineWithCommaLength : keyModel.oneLineWithoutCommaLength
+        maximalTextLength = text.contains(",") ? calculatorModel.oneLineWithCommaLength : calculatorModel.oneLineWithoutCommaLength
     }
     
     var body: some View {
@@ -64,7 +64,7 @@ struct OneLineDisplay: View {
 
 struct OneLineDisplay_Previews: PreviewProvider {
     static var previews: some View {
-        OneLineDisplay(keyModel: CalculatorModel(), size: CGSize(width: 300, height: 100), fontShouldScale: true)
+        OneLineDisplay(calculatorModel: CalculatorModel(), size: CGSize(width: 300, height: 100), fontShouldScale: true)
             .background(Color.black)
     }
 }

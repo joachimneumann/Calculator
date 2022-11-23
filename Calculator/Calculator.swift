@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Calculator: View {
-    @StateObject private var keyModel = CalculatorModel()
+    @StateObject private var calculatorModel = CalculatorModel()
     let isPad: Bool
     var isPortrait: Bool
     let size: CGSize
@@ -53,24 +53,24 @@ struct Calculator: View {
     }
     //    @StateObject private var viewLogic = ViewLogic(size: CGSize(width: 100, height: 100))
     var body: some View {
-        let info1 = "\(keyModel._hasBeenReset ? "Precision: "+keyModel.precisionDescription+" digits" : "")"
-        let info2 = "\(keyModel._rad ? "Rad      " : "")"
+        let info1 = "\(calculatorModel._hasBeenReset ? "Precision: "+calculatorModel.precisionDescription+" digits" : "")"
+        let info2 = "\(calculatorModel._rad ? "Rad      " : "")"
         if isPad {
             VStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
-                KeysView(keyModel: keyModel, isScientific: false, size: keyboardSize)
+                KeysView(calculatorModel: calculatorModel, isScientific: false, size: keyboardSize)
             }
         } else {
             ZStack {
                 /// display
                 VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    OneLineDisplay(keyModel: keyModel, size: displaySize, fontShouldScale: !isPad && isPortrait)
-                    KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
+                    OneLineDisplay(calculatorModel: calculatorModel, size: displaySize, fontShouldScale: !isPad && isPortrait)
+                    KeysView(calculatorModel: calculatorModel, isScientific: !isPortrait, size: keyboardSize)
                         .padding(.bottom, isPortrait ? size.height*0.06 : 0.0)
                 }
                 VStack(spacing: 0.0) {
-                    if keyModel._isCalculating {
+                    if calculatorModel._isCalculating {
                         Spacer(minLength: 0.0)
                         HStack(spacing: 0.0) {
                             AnimatedDots(color: Color(white: 0.7))

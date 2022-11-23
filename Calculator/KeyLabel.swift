@@ -17,7 +17,7 @@ class KeyLabel {
     }
     
     @ViewBuilder func of(_ symbol: String) -> some View {
-//        let _ = print("ViewBuilder KeyLabel.of()")
+        let _ = print("ViewBuilder KeyLabel.of()")
         switch symbol {
         case "√" : RootShapeView(rootDigit: "2", color: textColor, size: size)
         case "3√": RootShapeView(rootDigit: "3", color: textColor, size: size)
@@ -93,6 +93,7 @@ class KeyLabel {
             }
         }
     }
+    
     struct RootShape: Shape {
         let part: Int
         func path(in rect: CGRect) -> Path {

@@ -9,6 +9,7 @@ import SwiftUI
 
 class KeyModel: ObservableObject {
     @Published var keyColors : KeyColors
+    
     init() {
         keyColors = digitColors
     }
