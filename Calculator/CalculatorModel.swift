@@ -30,7 +30,7 @@ class CalculatorModel: ObservableObject {
         brain.isCalculatingCallback = isCalculatingCallback
 
         for key in [digitKeys, operatorKeys, scientificKeys].joined() {
-            self.allKeyColors[key] = self.getKeyColors(for: key, enabled: true, pending: false)
+            self.allKeyColors[key] = self.getKeyColors(for: key, pending: false)
         }
         self.precisionDescription = self.brain.precision.useWords
     }
@@ -59,7 +59,7 @@ class CalculatorModel: ObservableObject {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     for key in [self.digitKeys, self.operatorKeys, self.scientificKeys].joined() {
                         if self._isCalculating {
-                            self.allKeyColors[key] = self.getKeyColors(for: key, enabled: false, pending: false)
+                            self.allKeyColors[key] = self.getKeyColors(for: key, pending: false)
                         }
                     }
                 }
@@ -69,13 +69,13 @@ class CalculatorModel: ObservableObject {
                 self._isCalculating = false
                 for key in [self.digitKeys, self.operatorKeys, self.scientificKeys].joined() {
                     if self.brain.isValidNumber {
-                        self.allKeyColors[key] = self.getKeyColors(for: key, enabled: true, pending: self.lastPending == key )
+                        self.allKeyColors[key] = self.getKeyColors(for: key, pending: self.lastPending == key )
                     } else {
                         if self.requireValidNumber.contains(key) {
                             /// TODO: also disable the button!!! combine color and status!!!
-                            self.allKeyColors[key] = self.getKeyColors(for: key, enabled: false, pending: self.lastPending == key )
+                            self.allKeyColors[key] = self.getKeyColors(for: key, pending: self.lastPending == key )
                         } else {
-                            self.allKeyColors[key] = self.getKeyColors(for: key, enabled: true, pending: self.lastPending == key )
+                            self.allKeyColors[key] = self.getKeyColors(for: key, pending: self.lastPending == key )
                         }
                     }
                 }
@@ -88,9 +88,9 @@ class CalculatorModel: ObservableObject {
             withAnimation() {
                 _2ndActive.toggle()
                 if _2ndActive {
-                    allKeyColors["2nd"] = getKeyColors(for: "2nd", enabled: true, pending: _2ndActive)
+                    allKeyColors["2nd"] = getKeyColors(for: "2nd", pending: _2ndActive)
                 } else {
-                    allKeyColors["2nd"] = getKeyColors(for: "2nd", enabled: true, pending: _2ndActive)
+                    allKeyColors["2nd"] = getKeyColors(for: "2nd", pending: _2ndActive)
                 }
             }
         case "Deg":
@@ -158,14 +158,14 @@ class CalculatorModel: ObservableObject {
         if let last = lastPending {
             DispatchQueue.main.async {
                 withAnimation(.easeIn(duration: 0.1)) {
-                    self.allKeyColors[last] = self.getKeyColors(for: last, enabled: false, pending: false)
+                    self.allKeyColors[last] = self.getKeyColors(for: last, pending: false)
                 }
             }
         }
         if let s = symbol {
             DispatchQueue.main.async {
                 withAnimation(.easeIn(duration: 0.1)) {
-                    self.allKeyColors[s] = self.getKeyColors(for: s, enabled: false, pending: true)
+                    self.allKeyColors[s] = self.getKeyColors(for: s, pending: true)
                 }
             }
         }
@@ -179,7 +179,8 @@ class CalculatorModel: ObservableObject {
         }
     }
     
-    private func getKeyColors(for symbol: String, enabled: Bool, pending: Bool) -> KeyColors {
+    private func getKeyColors(for symbol: String, pending: Bool) -> KeyColors {
+        let enabled = true
         if digitKeys.contains(symbol) {
             if !enabled {
                 return disabledDigitColors

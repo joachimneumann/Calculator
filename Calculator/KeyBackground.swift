@@ -9,15 +9,13 @@ import SwiftUI
 
 struct KeyBackground<Content: View>: View {
     @State var tapped: Bool = false
-    let enabled: Bool
     var callback : () -> ()
     let keyColors: KeyColors
     let content: Content
-    init(enabled: Bool, callback: @escaping () -> (), keyColors: KeyColors, @ViewBuilder content: () -> Content) {
+    init(callback: @escaping () -> (), keyColors: KeyColors, @ViewBuilder content: () -> Content) {
         self.callback = callback
         self.keyColors = keyColors
         self.content = content()
-        self.enabled = enabled
     }
     var body: some View {
         ZStack {
@@ -25,19 +23,18 @@ struct KeyBackground<Content: View>: View {
                 .foregroundColor(tapped ? Color(uiColor: keyColors.downColor) : Color(uiColor: keyColors.upColor))
             content
         }
-        .onTouchUpGesture(enabled: enabled, tapped: $tapped, callback: callback)
+        .onTouchUpGesture(tapped: $tapped, callback: callback)
     }
     
 }
 
 fileprivate extension View {
-    func onTouchUpGesture(enabled: Bool, tapped: Binding<Bool>, callback: @escaping () -> Void) -> some View {
-        modifier(OnTouchUpGestureModifier(enabled: enabled, tapped: tapped, callback: callback))
+    func onTouchUpGesture(tapped: Binding<Bool>, callback: @escaping () -> Void) -> some View {
+        modifier(OnTouchUpGestureModifier(tapped: tapped, callback: callback))
     }
 }
 
 private struct OnTouchUpGestureModifier: ViewModifier {
-    let enabled: Bool
     @Binding var tapped: Bool
     let callback: () -> Void
     @State var downAnimationFinished = false
@@ -51,34 +48,30 @@ private struct OnTouchUpGestureModifier: ViewModifier {
         content
             .simultaneousGesture(DragGesture(minimumDistance: 0)
                 .onChanged { _ in
-                    if self.enabled {
-                        self.downAnimationFinished = false
-                        upHasHappended = false
-                        if !self.tapped {
-                            withAnimation(.easeIn(duration: downTime)) {
-                                self.tapped = true
-                            }
-                            DispatchQueue.main.asyncAfter(deadline: .now() + downTime) {
-                                self.downAnimationFinished = true
-                                if upHasHappended {
-                                    withAnimation(.easeIn(duration: upTime)) {
-                                        self.tapped = false
-                                    }
+                    self.downAnimationFinished = false
+                    upHasHappended = false
+                    if !self.tapped {
+                        withAnimation(.easeIn(duration: downTime)) {
+                            self.tapped = true
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + downTime) {
+                            self.downAnimationFinished = true
+                            if upHasHappended {
+                                withAnimation(.easeIn(duration: upTime)) {
+                                    self.tapped = false
                                 }
                             }
                         }
                     }
                 }
                 .onEnded { _ in
-                    if self.enabled {
-                        self.callback()
-                        if self.downAnimationFinished {
-                            withAnimation(.easeIn(duration: upTime)) {
-                                self.tapped = false
-                            }
-                        } else {
-                            upHasHappended = true
+                    self.callback()
+                    if self.downAnimationFinished {
+                        withAnimation(.easeIn(duration: upTime)) {
+                            self.tapped = false
                         }
+                    } else {
+                        upHasHappended = true
                     }
                 })
     }
