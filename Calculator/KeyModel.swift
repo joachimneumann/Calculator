@@ -30,21 +30,21 @@ class KeyModel : ObservableObject {
             using: updatePendingKey)
     }
     
-    private var lastPending: String = "none"
+    private var lastPending: String? = nil
     func updatePendingKey(notification: Notification) {
         if let userInfo = notification.userInfo {
-            if let symbol = userInfo[C.notificationDictionaryKey] as? String {
-                guard lastPending != symbol else { return }
+            if let pendingSymbol = userInfo[C.notificationDictionaryKey] as? String? {
+                
+                /// did something change?
+                guard lastPending != pendingSymbol else { return }
 
-                DispatchQueue.main.async {
-                    if self.lastPending != "none" {
-                        self.colorsOf[self.lastPending] = C.operatorColors
-                    }
-                    if symbol != "none" {
-                        self.colorsOf[symbol] = C.pendingOperatorColors
-                    }
-                    self.lastPending = symbol
+                if let lastPending = self.lastPending {
+                    DispatchQueue.main.async { self.colorsOf[lastPending] = C.operatorColors }
                 }
+                if let pendingSymbol = pendingSymbol {
+                    DispatchQueue.main.async { self.colorsOf[pendingSymbol] = C.pendingOperatorColors }
+                }
+                self.lastPending = pendingSymbol
             }
         }
     }
@@ -69,15 +69,6 @@ class KeyModel : ObservableObject {
                         _rad = true
                 default: break
                 }
-//                                colorsOf[symbol] = C.disabledColors
-                //
-                //                if symbol == "/" {
-                //                    colorsOf["/"]! = C.pendingOperatorColors
-                //                } else if symbol == "x" {
-                //                    colorsOf["x"]! = C.pendingOperatorColors
-                //                } else {
-                //                    colorsOf["x"]! = C.operatorColors
-                //                }
             }
         }
     }

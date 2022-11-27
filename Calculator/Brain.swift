@@ -50,13 +50,14 @@ class Brain {
     var haveResultCallback: () -> () = { }
     var pendingOperator: String? {
         didSet {
-            var notificationDictionary: [String: String] = [:]
+            var notificationDictionary: [String: String?] = [:]
+            notificationDictionary[C.notificationDictionaryKey] = pendingOperator
             if let pendingOperator = pendingOperator {
-                notificationDictionary[C.notificationDictionaryKey] = pendingOperator
+                notificationDictionary[C.notificationDictionaryKey] = pendingOperator as String?
             } else {
-                notificationDictionary[C.notificationDictionaryKey] = "none"
+                notificationDictionary[C.notificationDictionaryKey] = nil
             }
-            NotificationCenter.default.post(name: Notification.Name(C.notificationNamePending), object: nil, userInfo: notificationDictionary)
+            NotificationCenter.default.post(name: Notification.Name(C.notificationNamePending), object: nil, userInfo: notificationDictionary as [AnyHashable : Any])
         }
     }
     var memory: Gmp? = nil
