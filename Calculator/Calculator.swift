@@ -9,6 +9,7 @@ import SwiftUI
 
 struct Calculator: View {
     @StateObject private var calculatorModel = CalculatorModel()
+    @StateObject private var keyModel = KeyModel()
     let isPad: Bool
     var isPortrait: Bool
     let size: CGSize
@@ -31,14 +32,14 @@ struct Calculator: View {
             /// iPhone
             if isPortrait {
                 /// we want square buttons :)
-                let spaceBetweenKeys = CalculatorModel.spaceBetweenkeysFraction(withScientificKeys: false) * size.width
+                let spaceBetweenKeys = C.spaceBetweenkeysFraction(withScientificKeys: false) * size.width
                 let oneKeyWidth = (size.width - 3.0 * spaceBetweenKeys) * 0.25
                 let allKeysheight = 5 * oneKeyWidth + 4 * spaceBetweenKeys
                 keyboardSize = CGSize(width: size.width, height: allKeysheight)
                 displaySize = CGSize(width: size.width, height: oneKeyWidth) /// keys are as wide as high
             } else {
                 /// landscape iPhone
-                let spaceBetweenKeys = CalculatorModel.spaceBetweenkeysFraction(withScientificKeys: true) * size.width
+                let spaceBetweenKeys = C.spaceBetweenkeysFraction(withScientificKeys: true) * size.width
                 let oneKeyheight = (size.height - 5.0 * spaceBetweenKeys) / 6.0
                 let keyboardHeight = 5 * oneKeyheight + 4.0 * spaceBetweenKeys
                 let displayHeight = oneKeyheight
@@ -58,7 +59,7 @@ struct Calculator: View {
         if isPad {
             VStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
-                KeysView(calculatorModel: calculatorModel, isScientific: false, size: keyboardSize)
+                KeysView(calculatorModel: calculatorModel, keyModel: keyModel, isScientific: false, size: keyboardSize)
             }
         } else {
             ZStack {
@@ -66,7 +67,7 @@ struct Calculator: View {
                 VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
                     OneLineDisplay(calculatorModel: calculatorModel, size: displaySize, fontShouldScale: !isPad && isPortrait)
-                    KeysView(calculatorModel: calculatorModel, isScientific: !isPortrait, size: keyboardSize)
+                    KeysView(calculatorModel: calculatorModel, keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
                         .padding(.bottom, isPortrait ? size.height*0.06 : 0.0)
                 }
                 VStack(spacing: 0.0) {

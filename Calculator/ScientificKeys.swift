@@ -30,46 +30,46 @@ struct ScientificKeys: View {
     //                OldKey(brain.secondKeys ? "atanh" : "tanh", requiresValidNuber: true, brain: brain, t: t, keyProperties: t.scientificProperties)
     var body: some View {
         VStack(spacing: spaceBetweenKeys) {
-            HStack(spacing: spaceBetweenKeys) {
-                KeyBuilder("( ", keySize, calculatorModel)
-                KeyBuilder(" )", keySize, calculatorModel)
-                KeyBuilder("mc", keySize, calculatorModel)
-                KeyBuilder("m+", keySize, calculatorModel)
-                KeyBuilder("m-", keySize, calculatorModel)
-                KeyBuilder("mr", keySize, calculatorModel)
-            }
-            HStack(spacing: spaceBetweenKeys) {
-                KeyBuilder("2nd", keySize, calculatorModel)
-                KeyBuilder("x^2", keySize, calculatorModel)
-                KeyBuilder("x^3", keySize, calculatorModel)
-                KeyBuilder("x^y", keySize, calculatorModel)
-                KeyBuilder(calculatorModel._2ndActive ? "y^x" : "e^x", keySize, calculatorModel)
-                KeyBuilder(calculatorModel._2ndActive ? "2^x" : "10^x", keySize, calculatorModel)
-            }
-            HStack(spacing: spaceBetweenKeys) {
-                KeyBuilder("One_x", keySize, calculatorModel)
-                KeyBuilder("√", keySize, calculatorModel)
-                KeyBuilder("3√", keySize, calculatorModel)
-                KeyBuilder("y√", keySize, calculatorModel)
-                KeyBuilder(calculatorModel._2ndActive ? "logy" : "ln", keySize, calculatorModel)
-                KeyBuilder(calculatorModel._2ndActive ? "log2" : "log10", keySize, calculatorModel)
-            }
-            HStack(spacing: spaceBetweenKeys) {
-                KeyBuilder("x!", keySize, calculatorModel)
-                KeyBuilder(calculatorModel._2ndActive ? "asin" : "sin", keySize, calculatorModel)
-                KeyBuilder(calculatorModel._2ndActive ? "acos" : "cos", keySize, calculatorModel)
-                KeyBuilder(calculatorModel._2ndActive ? "atan" : "tan", keySize, calculatorModel)
-                KeyBuilder("e", keySize, calculatorModel)
-                KeyBuilder("EE", keySize, calculatorModel)
-            }
-            HStack(spacing: spaceBetweenKeys) {
-                KeyBuilder(calculatorModel._rad ? "Rad" : "Deg", keySize, calculatorModel)
-                KeyBuilder(calculatorModel._2ndActive ? "asinh" : "sinh", keySize, calculatorModel)
-                KeyBuilder(calculatorModel._2ndActive ? "acosh" : "cosh", keySize, calculatorModel)
-                KeyBuilder(calculatorModel._2ndActive ? "atanh" : "tanh", keySize, calculatorModel)
-                KeyBuilder("π", keySize, calculatorModel)
-                KeyBuilder("Rand", keySize, calculatorModel)
-            }
+//            HStack(spacing: spaceBetweenKeys) {
+//                KeyBuilder("( ", keySize, calculatorModel)
+//                KeyBuilder(" )", keySize, calculatorModel)
+//                KeyBuilder("mc", keySize, calculatorModel)
+//                KeyBuilder("m+", keySize, calculatorModel)
+//                KeyBuilder("m-", keySize, calculatorModel)
+//                KeyBuilder("mr", keySize, calculatorModel)
+//            }
+//            HStack(spacing: spaceBetweenKeys) {
+//                KeyBuilder("2nd", keySize, calculatorModel)
+//                KeyBuilder("x^2", keySize, calculatorModel)
+//                KeyBuilder("x^3", keySize, calculatorModel)
+//                KeyBuilder("x^y", keySize, calculatorModel)
+//                KeyBuilder(calculatorModel._2ndActive ? "y^x" : "e^x", keySize, calculatorModel)
+//                KeyBuilder(calculatorModel._2ndActive ? "2^x" : "10^x", keySize, calculatorModel)
+//            }
+//            HStack(spacing: spaceBetweenKeys) {
+//                KeyBuilder("One_x", keySize, calculatorModel)
+//                KeyBuilder("√", keySize, calculatorModel)
+//                KeyBuilder("3√", keySize, calculatorModel)
+//                KeyBuilder("y√", keySize, calculatorModel)
+//                KeyBuilder(calculatorModel._2ndActive ? "logy" : "ln", keySize, calculatorModel)
+//                KeyBuilder(calculatorModel._2ndActive ? "log2" : "log10", keySize, calculatorModel)
+//            }
+//            HStack(spacing: spaceBetweenKeys) {
+//                KeyBuilder("x!", keySize, calculatorModel)
+//                KeyBuilder(calculatorModel._2ndActive ? "asin" : "sin", keySize, calculatorModel)
+//                KeyBuilder(calculatorModel._2ndActive ? "acos" : "cos", keySize, calculatorModel)
+//                KeyBuilder(calculatorModel._2ndActive ? "atan" : "tan", keySize, calculatorModel)
+//                KeyBuilder("e", keySize, calculatorModel)
+//                KeyBuilder("EE", keySize, calculatorModel)
+//            }
+//            HStack(spacing: spaceBetweenKeys) {
+//                KeyBuilder(calculatorModel._rad ? "Rad" : "Deg", keySize, calculatorModel)
+//                KeyBuilder(calculatorModel._2ndActive ? "asinh" : "sinh", keySize, calculatorModel)
+//                KeyBuilder(calculatorModel._2ndActive ? "acosh" : "cosh", keySize, calculatorModel)
+//                KeyBuilder(calculatorModel._2ndActive ? "atanh" : "tanh", keySize, calculatorModel)
+//                KeyBuilder("π", keySize, calculatorModel)
+//                KeyBuilder("Rand", keySize, calculatorModel)
+//            }
         }
         .background(Color.black)
     }

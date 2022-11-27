@@ -51,7 +51,7 @@ class KeyLabel {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: (symbol == "±" || symbol == "%") ? size.height*0.25 : size.height*0.23)
             } else {
-                AnyView(Text(symbol))
+                Text(symbol)
                     .font(.system(size: size.height*0.4, weight: .none))
             }
         }

@@ -1,51 +1,87 @@
 //
 //  Key.swift
-//  ViewBuilder
+//  bg
 //
-//  Created by Joachim Neumann on 11/19/22.
+//  Created by Joachim Neumann on 11/27/22.
 //
 
 import SwiftUI
 
 struct Key: View {
-    private let symbol: String
-    private let size: CGSize
-    private var keyColors: KeyColors
-    private let callback: (String) -> ()
-
-    private let keyLabel: KeyLabel
-    private let keyContent: any View
-
-    init(_ symbol: String, size: CGSize, keyColors: KeyColors, callback: @escaping (String) -> ()) {
-        self.keyColors = keyColors
-        self.size = size
-        self.keyLabel = KeyLabel(size: size, textColor: Color(uiColor: keyColors.textColor))
-        keyContent = keyLabel.of(symbol)
-        self.symbol = symbol
-        self.callback = callback
-    }
-
-    func doSomething() {
-        callback(symbol)
-    }
+    let symbol: String
+    let keyColors: ColorsOf
+    let size: CGSize
+    
+    @State var tapped: Bool = false
     var body: some View {
-        KeyBackground(callback: doSomething, keyColors: keyColors) {
-            AnyView(keyContent)
+//        let _ = print("Key \(symbol) with color \(Color(uiColor: tapped ? keyColors.downColor : keyColors.upColor))")
+        ZStack {
+            Text(symbol)
+                .font(.largeTitle)
+                .frame(width: size.width, height: size.height)
                 .foregroundColor(Color(uiColor: keyColors.textColor))
+                .background(Color(uiColor: tapped ? keyColors.downColor : keyColors.upColor))
+                .clipShape(Capsule())
+                .onTouchGesture(tapped: $tapped, symbol: symbol)
         }
-        .frame(width: size.width, height: size.height)
     }
 }
 
-
-struct KeyView_Previews: PreviewProvider {
-    static func doNothing(s: String) {
-            print("do something")
+fileprivate extension View {
+    func onTouchGesture(tapped: Binding<Bool>, symbol: String) -> some View {
+        modifier(OnTouchGestureModifier(tapped: tapped, symbol: symbol))
     }
+}
+
+private struct OnTouchGestureModifier: ViewModifier {
+    @Binding var tapped: Bool
+    let symbol: String
+    @State var downAnimationFinished = false
+    @State var upHasHappended = false
+    let downTime = 0.1
+    let upTime = 0.3
+    
+    ///  The animation will always wait for the downanimation to finish
+    ///  This is a more clear visual feedback to the user that the button has been pressed
+    func body(content: Content) -> some View {
+        content
+            .simultaneousGesture(DragGesture(minimumDistance: 0)
+                .onChanged { _ in
+                    let notificationDictionary: [String: String] = [C.notificationDictionaryKey: symbol]
+                    NotificationCenter.default.post(name: Notification.Name(C.notificationNameDown), object: nil, userInfo: notificationDictionary)
+                    //                    self.tapped.toggle()
+                    self.downAnimationFinished = false
+                    upHasHappended = false
+                    if !self.tapped {
+                        withAnimation(.easeIn(duration: downTime)) {
+                            self.tapped = true
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + downTime) {
+                            self.downAnimationFinished = true
+                            if upHasHappended {
+                                withAnimation(.easeIn(duration: upTime)) {
+                                    self.tapped = false
+                                }
+                            }
+                        }
+                    }
+                }
+                .onEnded { _ in
+                    let notificationDictionary: [String: String] = [C.notificationDictionaryKey: symbol]
+                    NotificationCenter.default.post(name: Notification.Name(C.notificationNameUp), object: nil, userInfo: notificationDictionary)
+                    if self.downAnimationFinished {
+                        withAnimation(.easeIn(duration: upTime)) {
+                            self.tapped = false
+                        }
+                    } else {
+                        upHasHappended = true
+                    }
+                })
+    }
+}
+
+struct Key_Previews: PreviewProvider {
     static var previews: some View {
-        VStack {
-            Key("-", size: CGSize(width: 117, height: 112), keyColors: KeyColors(textColor: UIColor.white, upColor: UIColor.red, downColor: UIColor.orange), callback: KeyView_Previews.doNothing)
-            Key("-", size: CGSize(width: 27, height: 27), keyColors: KeyColors(textColor: UIColor.white, upColor: UIColor.red, downColor: UIColor.orange), callback: KeyView_Previews.doNothing)
-        }
+        Key(symbol: "5", keyColors: C.digitColors, size: CGSize(width: 100, height: 100))
     }
 }

@@ -47,9 +47,18 @@ class Brain {
     
     var isValidNumber: Bool { n.last.isValid }
 
-    var haveResultCallback: (Number) -> () = {_ in }
-    var pendingOperatorCallback: ((String?) -> ()) = {_ in }
-    var pendingOperator: String? { didSet { pendingOperatorCallback(pendingOperator) } }
+    var haveResultCallback: () -> () = { }
+    var pendingOperator: String? {
+        didSet {
+            var notificationDictionary: [String: String] = [:]
+            if let pendingOperator = pendingOperator {
+                notificationDictionary[C.notificationDictionaryKey] = pendingOperator
+            } else {
+                notificationDictionary[C.notificationDictionaryKey] = "none"
+            }
+            NotificationCenter.default.post(name: Notification.Name(C.notificationNamePending), object: nil, userInfo: notificationDictionary)
+        }
+    }
     var memory: Gmp? = nil
     var nullNumber: Number {
         return Number("0", bits: bits)
@@ -204,7 +213,7 @@ class Brain {
             //            print("### non-existing operation \(symbol)")
             assert(false)
         }
-        haveResultCallback(last)
+        haveResultCallback()
     }
     
     private func waitingOperation(_ symbol: String) async {

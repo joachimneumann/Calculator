@@ -7,33 +7,16 @@
 
 import SwiftUI
 
-struct KeyBuilder: View {
-    let symbol: String
-    let size: CGSize
-    @ObservedObject var calculatorModel: CalculatorModel
-    
-    init(_ symbol: String, _ size: CGSize, _ calculatorModel: CalculatorModel) {
-        if calculatorModel.allKeyColors.keys.contains(symbol) {
-            self.symbol = symbol
-        } else {
-            self.symbol = "?"
-        }
-        self.size = size
-        self.calculatorModel = calculatorModel
-    }
-    var body: some View {
-        Key(symbol, size: size, keyColors: calculatorModel.allKeyColors[symbol]!, callback: calculatorModel.pressed)
-    }
-}
-
 struct NonScientificKeys: View {
-    @ObservedObject var calculatorModel: CalculatorModel
+    let calculatorModel: CalculatorModel
+    @ObservedObject var keyModel: KeyModel
     let spaceBetweenKeys: CGFloat
     let keySize: CGSize
     let doubleKeySize: CGSize
     
-    init(calculatorModel: CalculatorModel, spaceBetweenKeys: CGFloat, size: CGSize) {
+    init(calculatorModel: CalculatorModel, keyModel: KeyModel, spaceBetweenKeys: CGFloat, size: CGSize) {
         self.calculatorModel = calculatorModel
+        self.keyModel = keyModel
         self.spaceBetweenKeys = spaceBetweenKeys
         let w = (size.width - 3.0 * spaceBetweenKeys) / 4.0
         let h = (size.height - 4.0 * spaceBetweenKeys) / 5.0
@@ -44,33 +27,33 @@ struct NonScientificKeys: View {
     var body: some View {
         VStack(spacing: spaceBetweenKeys) {
             HStack(spacing: spaceBetweenKeys) {
-                KeyBuilder(calculatorModel._AC ? "AC" : "C", keySize, calculatorModel)
-                KeyBuilder("±", keySize, calculatorModel)
-                KeyBuilder("%", keySize, calculatorModel)
-                KeyBuilder("/", keySize, calculatorModel)
+                Key(symbol: calculatorModel._AC ? "AC" : "C", keyColors: keyModel.colorsOf[calculatorModel._AC ? "AC" : "C"]!, size: keySize)
+                Key(symbol: "±", keyColors: keyModel.colorsOf["±"]!, size: keySize)
+                Key(symbol: "%", keyColors: keyModel.colorsOf["%"]!, size: keySize)
+                Key(symbol: "/", keyColors: keyModel.colorsOf["/"]!, size: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                KeyBuilder("7", keySize, calculatorModel)
-                KeyBuilder("8", keySize, calculatorModel)
-                KeyBuilder("9", keySize, calculatorModel)
-                KeyBuilder("x", keySize, calculatorModel)
+                Key(symbol: "7", keyColors: keyModel.colorsOf["7"]!, size: keySize)
+                Key(symbol: "8", keyColors: keyModel.colorsOf["8"]!, size: keySize)
+                Key(symbol: "9", keyColors: keyModel.colorsOf["9"]!, size: keySize)
+                Key(symbol: "x", keyColors: keyModel.colorsOf["x"]!, size: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                KeyBuilder("4", keySize, calculatorModel)
-                KeyBuilder("5", keySize, calculatorModel)
-                KeyBuilder("6", keySize, calculatorModel)
-                KeyBuilder("-", keySize, calculatorModel)
+                Key(symbol: "4", keyColors: keyModel.colorsOf["4"]!, size: keySize)
+                Key(symbol: "5", keyColors: keyModel.colorsOf["5"]!, size: keySize)
+                Key(symbol: "6", keyColors: keyModel.colorsOf["6"]!, size: keySize)
+                Key(symbol: "-", keyColors: keyModel.colorsOf["-"]!, size: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                KeyBuilder("1", keySize, calculatorModel)
-                KeyBuilder("2", keySize, calculatorModel)
-                KeyBuilder("3", keySize, calculatorModel)
-                KeyBuilder("+", keySize, calculatorModel)
+                Key(symbol: "1", keyColors: keyModel.colorsOf["1"]!, size: keySize)
+                Key(symbol: "2", keyColors: keyModel.colorsOf["2"]!, size: keySize)
+                Key(symbol: "3", keyColors: keyModel.colorsOf["3"]!, size: keySize)
+                Key(symbol: "+", keyColors: keyModel.colorsOf["+"]!, size: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                KeyBuilder("0", doubleKeySize, calculatorModel)
-                KeyBuilder(",", keySize, calculatorModel)
-                KeyBuilder("=", keySize, calculatorModel)
+                Key(symbol: "0", keyColors: keyModel.colorsOf["0"]!, size: doubleKeySize)
+                Key(symbol: ",", keyColors: keyModel.colorsOf[","]!, size: keySize)
+                Key(symbol: "=", keyColors: keyModel.colorsOf["="]!, size: keySize)
             }
         }
     }
@@ -78,7 +61,7 @@ struct NonScientificKeys: View {
 
 struct NonScientificKeys_Previews: PreviewProvider {
     static var previews: some View {
-        NonScientificKeys(calculatorModel: CalculatorModel(), spaceBetweenKeys: 10, size: CGSize(width: 250, height: 300))
+        NonScientificKeys(calculatorModel: CalculatorModel(), keyModel: KeyModel(), spaceBetweenKeys: 10, size: CGSize(width: 250, height: 300))
     }
 }
 

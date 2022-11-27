@@ -48,6 +48,7 @@ private struct OnTouchUpGestureModifier: ViewModifier {
         content
             .simultaneousGesture(DragGesture(minimumDistance: 0)
                 .onChanged { _ in
+//                    self.tapped.toggle()
                     self.downAnimationFinished = false
                     upHasHappended = false
                     if !self.tapped {

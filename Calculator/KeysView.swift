@@ -9,6 +9,7 @@ import SwiftUI
 
 struct KeysView: View {
     let calculatorModel: CalculatorModel
+    let keyModel : KeyModel
     let isScientific: Bool
     let size: CGSize
     //    if !t.isPad && t.isPortrait {
@@ -21,7 +22,7 @@ struct KeysView: View {
         Group {
             if isScientific {
                 HStack(spacing: 0.0) {
-                    let space = CalculatorModel.spaceBetweenkeysFraction(withScientificKeys: true) * size.width
+                    let space = C.spaceBetweenkeysFraction(withScientificKeys: true) * size.width
                     let keyWidth = (1.0 * size.width - 9.0 * space) / 10.0
                     let leftWidth = 6 * keyWidth + 5 * space
                     let rightWidth = 4 * keyWidth + 3 * space
@@ -29,11 +30,11 @@ struct KeysView: View {
                     let sizeRight = CGSize(width: rightWidth, height: size.height)
                     ScientificKeys(calculatorModel: calculatorModel, spaceBetweenKeys: space, size: sizeLeft)
                         .padding(.trailing, space)
-                    NonScientificKeys(calculatorModel: calculatorModel, spaceBetweenKeys: space, size: sizeRight)
+                    NonScientificKeys(calculatorModel: calculatorModel, keyModel: keyModel, spaceBetweenKeys: space, size: sizeRight)
                 }
             } else {
-                let space = CalculatorModel.spaceBetweenkeysFraction(withScientificKeys: false) * size.width
-                NonScientificKeys(calculatorModel: calculatorModel, spaceBetweenKeys: space, size: size)
+                let space = C.spaceBetweenkeysFraction(withScientificKeys: false) * size.width
+                NonScientificKeys(calculatorModel: calculatorModel, keyModel: keyModel, spaceBetweenKeys: space, size: size)
             }
         }
         .transition(.move(edge: .bottom))
@@ -43,8 +44,8 @@ struct KeysView: View {
 struct KeysView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            KeysView(calculatorModel: CalculatorModel(), isScientific: false, size: CGSize(width: 100, height: 100))
-            KeysView(calculatorModel: CalculatorModel(), isScientific: false, size: CGSize(width: 400, height: 400))
+            KeysView(calculatorModel: CalculatorModel(), keyModel: KeyModel(), isScientific: false, size: CGSize(width: 100, height: 100))
+            KeysView(calculatorModel: CalculatorModel(), keyModel: KeyModel(), isScientific: false, size: CGSize(width: 400, height: 400))
         }
     }
 }
