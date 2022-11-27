@@ -9,7 +9,9 @@ import Foundation
 
 class KeyModel : ObservableObject {
     @Published var colorsOf: [String: ColorsOf] = [:]
-    
+    @Published var _2ndActive = false
+    @Published var _rad = false
+
     init() {
         for key in [C.digitKeys, C.operatorKeys, C.scientificKeys].joined() {
             colorsOf[key] = C.getKeyColors(for: key)
@@ -52,6 +54,21 @@ class KeyModel : ObservableObject {
     func keyUpEvent(notification: Notification) {
         if let userInfo = notification.userInfo {
             if let symbol = userInfo[C.notificationDictionaryKey] as? String {
+                switch symbol {
+                case "2nd":
+                    if _2ndActive {
+                        _2ndActive = false
+                        colorsOf["2nd"] = C.scientificColors
+                    } else {
+                        _2ndActive = true
+                        colorsOf["2nd"] = C.pendingScientificColors
+                    }
+                case "Rad":
+                        _rad = false
+                case "Deg":
+                        _rad = true
+                default: break
+                }
 //                                colorsOf[symbol] = C.disabledColors
                 //
                 //                if symbol == "/" {

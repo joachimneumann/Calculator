@@ -10,16 +10,12 @@ import SwiftUI
 class CalculatorModel: ObservableObject {
     let brain: Brain
     
-    //    @Published var _2ndActive = false
-    //    @Published var _rad = false
     //    @Published var _AC = true
     //    @Published var _hasBeenReset = false
     //    @Published var _isCalculating = false
     //    @Published var last: String = "0"
     //    @Published var precisionDescription = "unknown"
     
-    var _2ndActive = false
-    var _rad = false
     var _AC = true
     var _hasBeenReset = false
     var _isCalculating = false
@@ -30,7 +26,7 @@ class CalculatorModel: ObservableObject {
     var oneLineWithCommaLength: Int = 4
     
     init() {
-        brain = Brain(precision: 1000000)
+        brain = Brain(precision: 1000)
         brain.haveResultCallback = haveResultCallback
         brain.isCalculatingCallback = isCalculatingCallback
         self.precisionDescription = self.brain.precision.useWords
@@ -92,6 +88,8 @@ class CalculatorModel: ObservableObject {
         if let userInfo = notification.userInfo {
             if let symbol = userInfo[C.notificationDictionaryKey] as? String {
                 switch symbol {
+                case "2nd", "Rad", "Deg":
+                    break // handled in keyModel
                 case "=":
                     brain.execute(priority: Operator.equalPriority)
                     brain.haveResultCallback()
@@ -111,10 +109,6 @@ class CalculatorModel: ObservableObject {
     //                    allKeyColors["2nd"] = getKeyColors(for: "2nd", pending: _2ndActive)
     //                }
     //            }
-    //        case "Deg":
-    //            withAnimation() { _rad = true }
-    //        case "Rad":
-    //            withAnimation() { _rad = false }
     //        case "=":
     //            brain.execute(priority: Operator.equalPriority)
     //        default:

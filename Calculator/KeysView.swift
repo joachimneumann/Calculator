@@ -28,7 +28,7 @@ struct KeysView: View {
                     let rightWidth = 4 * keyWidth + 3 * space
                     let sizeLeft  = CGSize(width: leftWidth, height: size.height)
                     let sizeRight = CGSize(width: rightWidth, height: size.height)
-                    ScientificKeys(calculatorModel: calculatorModel, spaceBetweenKeys: space, size: sizeLeft)
+                    ScientificKeys(calculatorModel: calculatorModel, keyModel: keyModel, spaceBetweenKeys: space, size: sizeLeft)
                         .padding(.trailing, space)
                     NonScientificKeys(calculatorModel: calculatorModel, keyModel: keyModel, spaceBetweenKeys: space, size: sizeRight)
                 }
