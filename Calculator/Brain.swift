@@ -39,8 +39,13 @@ class Brain {
         }
     }
     
-    var isCalculatingCallback: (Bool) -> () = {_ in }
-    var isCalculating: Bool = false { didSet { isCalculatingCallback(isCalculating) } }
+    var isCalculating: Bool = false {
+        didSet {
+            var notificationDictionary: [String: Bool] = [:]
+            notificationDictionary[C.notificationDictionaryKey] = isCalculating
+            NotificationCenter.default.post(name: Notification.Name(C.notificationNameisCalculating), object: nil, userInfo: notificationDictionary)
+        }
+    }
     
     var debugLastDouble: Double { n.last.gmp!.toDouble() }
     var debugLastGmp: Gmp { n.last.gmp! }

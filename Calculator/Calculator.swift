@@ -71,7 +71,7 @@ struct Calculator: View {
                         .padding(.bottom, isPortrait ? size.height*0.06 : 0.0)
                 }
                 VStack(spacing: 0.0) {
-                    if calculatorModel._isCalculating {
+                    if keyModel.isCalculating {
                         Spacer(minLength: 0.0)
                         HStack(spacing: 0.0) {
                             AnimatedDots(color: Color(white: 0.7))

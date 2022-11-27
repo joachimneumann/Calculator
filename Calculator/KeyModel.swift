@@ -11,6 +11,7 @@ class KeyModel : ObservableObject {
     @Published var colorsOf: [String: ColorsOf] = [:]
     @Published var _2ndActive = false
     @Published var _rad = false
+    @Published var isCalculating = false
 
     init() {
         for key in [C.digitKeys, C.operatorKeys, C.scientificKeys].joined() {
@@ -28,6 +29,11 @@ class KeyModel : ObservableObject {
             forName: NSNotification.Name(C.notificationNamePending),
             object: nil, queue: nil,
             using: updatePendingKey)
+        NotificationCenter.default.addObserver(
+            forName: NSNotification.Name(C.notificationNameisCalculating),
+            object: nil, queue: nil,
+            using: isCalculating)
+        
     }
     
     private var lastPending: String? = nil
@@ -48,7 +54,15 @@ class KeyModel : ObservableObject {
             }
         }
     }
-    
+
+    func isCalculating(notification: Notification) {
+        if let userInfo = notification.userInfo {
+            if let isCalculating = userInfo[C.notificationDictionaryKey] as? Bool {
+                DispatchQueue.main.async { self.isCalculating = isCalculating }
+            }
+        }
+    }
+
     
     
     func keyUpEvent(notification: Notification) {

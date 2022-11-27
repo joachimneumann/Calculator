@@ -12,13 +12,11 @@ class CalculatorModel: ObservableObject {
     
     //    @Published var _AC = true
     //    @Published var _hasBeenReset = false
-    //    @Published var _isCalculating = false
     //    @Published var last: String = "0"
     //    @Published var precisionDescription = "unknown"
     
     var _AC = true
     var _hasBeenReset = false
-    var _isCalculating = false
     @Published var last: String = "0"
     var precisionDescription = "unknown"
     
@@ -26,9 +24,8 @@ class CalculatorModel: ObservableObject {
     var oneLineWithCommaLength: Int = 4
     
     init() {
-        brain = Brain(precision: 1000)
+        brain = Brain(precision: 1000000)
         brain.haveResultCallback = haveResultCallback
-        brain.isCalculatingCallback = isCalculatingCallback
         self.precisionDescription = self.brain.precision.useWords
         NotificationCenter.default.addObserver(
             forName: NSNotification.Name(C.notificationNameUp),
@@ -53,7 +50,7 @@ class CalculatorModel: ObservableObject {
         }
     }
     
-    private func isCalculatingCallback(calculating: Bool) {
+//    private func isCalculatingCallback(calculating: Bool) {
         //        if calculating {
         //            DispatchQueue.main.async {
         //                self._isCalculating = true
@@ -82,7 +79,7 @@ class CalculatorModel: ObservableObject {
         //                }
         //            }
         //        }
-    }
+//    }
     
     func keyUpEvent(notification: Notification) {
         if let userInfo = notification.userInfo {

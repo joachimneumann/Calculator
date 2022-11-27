@@ -73,5 +73,5 @@ struct C {
     static let notificationNameDown      = "keyDownEvent"
     static let notificationNameUp        = "keyUpEvent"
     static let notificationNamePending   = "pendingEvent"
-    
+    static let notificationNameisCalculating = "isCalculatingUpdate"
 }
