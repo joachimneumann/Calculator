@@ -8,13 +8,11 @@
 import SwiftUI
 
 struct ScientificKeys: View {
-    let calculatorModel: CalculatorModel
     @ObservedObject var keyModel: KeyModel
     let spaceBetweenKeys: CGFloat
     let keySize: CGSize
 
-    init(calculatorModel: CalculatorModel, keyModel: KeyModel, spaceBetweenKeys: CGFloat, size: CGSize) {
-        self.calculatorModel = calculatorModel
+    init(keyModel: KeyModel, spaceBetweenKeys: CGFloat, size: CGSize) {
         self.keyModel = keyModel
         self.spaceBetweenKeys = spaceBetweenKeys
         let w = (size.width - 5.0 * spaceBetweenKeys) / 6.0
@@ -70,7 +68,7 @@ struct ScientificKeys: View {
 
 struct ScientificKeys_Previews: PreviewProvider {
     static var previews: some View {
-        ScientificKeys(calculatorModel: CalculatorModel(), keyModel: KeyModel(), spaceBetweenKeys: 10, size: CGSize(width: 400, height: 300))
+        ScientificKeys(keyModel: KeyModel(), spaceBetweenKeys: 10, size: CGSize(width: 400, height: 300))
     }
 }
 

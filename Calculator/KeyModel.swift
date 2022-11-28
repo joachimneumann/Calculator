@@ -8,11 +8,18 @@
 import Foundation
 
 class KeyModel : ObservableObject {
+    let brain = Brain(precision: 100)
     @Published var colorsOf: [String: ColorsOf] = [:]
+    @Published var _AC = true
     @Published var _2ndActive = false
     @Published var _rad = false
     @Published var isCalculating = false
-    
+    @Published var last: String = "0"
+    @Published var precisionDescription = "unknown"
+
+    var oneLineWithoutCommaLength: Int = 4
+    var oneLineWithCommaLength: Int = 4
+
     init() {
         for key in [C.digitKeys, C.operatorKeys, C.scientificKeys].joined() {
             colorsOf[key] = C.getKeyColors(for: key)
@@ -33,9 +40,26 @@ class KeyModel : ObservableObject {
             forName: NSNotification.Name(C.notificationNameisCalculating),
             object: nil, queue: nil,
             using: isCalculating)
-        
+        brain.haveResultCallback = haveResultCallback
     }
     
+    private func haveResultCallback() {
+        if brain.last.isNull {
+            DispatchQueue.main.async {
+                self._AC = true
+            }
+        } else {
+            DispatchQueue.main.async {
+                self._AC = false
+            }
+        }
+        let res = brain.last.multipleLines(withoutComma: oneLineWithoutCommaLength, withComma: oneLineWithCommaLength)
+        DispatchQueue.main.async {
+            self.last = res.oneLine
+            self.precisionDescription = self.brain.precision.useWords
+        }
+    }
+
     private var previouslyPendingKey: String? = nil
     func updatePendingKey(notification: Notification) {
         if let userInfo = notification.userInfo {
@@ -90,7 +114,11 @@ class KeyModel : ObservableObject {
                     _rad = false
                 case "Deg":
                     _rad = true
-                default: break
+                case "=":
+                    brain.execute(priority: Operator.equalPriority)
+                    brain.haveResultCallback()
+                default:
+                    brain.asyncOperation(symbol)
                 }
             }
         }

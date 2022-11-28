@@ -8,14 +8,12 @@
 import SwiftUI
 
 struct NonScientificKeys: View {
-    let calculatorModel: CalculatorModel
     @ObservedObject var keyModel: KeyModel
     let spaceBetweenKeys: CGFloat
     let keySize: CGSize
     let doubleKeySize: CGSize
     
-    init(calculatorModel: CalculatorModel, keyModel: KeyModel, spaceBetweenKeys: CGFloat, size: CGSize) {
-        self.calculatorModel = calculatorModel
+    init(keyModel: KeyModel, spaceBetweenKeys: CGFloat, size: CGSize) {
         self.keyModel = keyModel
         self.spaceBetweenKeys = spaceBetweenKeys
         let w = (size.width - 3.0 * spaceBetweenKeys) / 4.0
@@ -27,7 +25,7 @@ struct NonScientificKeys: View {
     var body: some View {
         VStack(spacing: spaceBetweenKeys) {
             HStack(spacing: spaceBetweenKeys) {
-                Key(calculatorModel._AC ? "AC" : "C", keyColors: keyModel.colorsOf[calculatorModel._AC ? "AC" : "C"]!, size: keySize)
+                Key(keyModel._AC ? "AC" : "C", keyColors: keyModel.colorsOf[keyModel._AC ? "AC" : "C"]!, size: keySize)
                 Key("±", keyColors: keyModel.colorsOf["±"]!, size: keySize)
                 Key("%", keyColors: keyModel.colorsOf["%"]!, size: keySize)
                 Key("/", keyColors: keyModel.colorsOf["/"]!, size: keySize)
@@ -61,7 +59,7 @@ struct NonScientificKeys: View {
 
 struct NonScientificKeys_Previews: PreviewProvider {
     static var previews: some View {
-        NonScientificKeys(calculatorModel: CalculatorModel(), keyModel: KeyModel(), spaceBetweenKeys: 10, size: CGSize(width: 250, height: 300))
+        NonScientificKeys(keyModel: KeyModel(), spaceBetweenKeys: 10, size: CGSize(width: 250, height: 300))
     }
 }
 

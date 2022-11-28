@@ -19,12 +19,10 @@ struct Key: View {
         self.symbol = symbol
         self.keyColors = keyColors
         self.size = size
-//        let keyLabel = KeyLabel(size: size, textColor: Color(uiColor: keyColors.textColor))
-//        keyContent = keyLabel.of(symbol)
     }
 
     var body: some View {
-//        let _ = print("Key \(symbol) with color \(Color(uiColor: tapped ? keyColors.downColor : keyColors.upColor))")
+        /// let _ = print("Key \(symbol) with color \(Color(uiColor: tapped ? keyColors.downColor : keyColors.upColor))")
         ZStack {
             AnyView(KeyLabel(size: size, textColor: Color(uiColor: keyColors.textColor)).of(symbol))
                 .font(.largeTitle)

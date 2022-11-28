@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct Calculator: View {
-    @StateObject private var calculatorModel = CalculatorModel()
     @StateObject private var keyModel = KeyModel()
     let isPad: Bool
     var isPortrait: Bool
@@ -54,20 +53,20 @@ struct Calculator: View {
     }
     //    @StateObject private var viewLogic = ViewLogic(size: CGSize(width: 100, height: 100))
     var body: some View {
-        let info1 = "\(calculatorModel._hasBeenReset ? "Precision: "+calculatorModel.precisionDescription+" digits" : "")"
+//        let info1 = "\(calculatorModel._hasBeenReset ? "Precision: "+calculatorModel.precisionDescription+" digits" : "")"
         let info2 = "\(keyModel._rad ? "Rad      " : "")"
         if isPad {
             VStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
-                KeysView(calculatorModel: calculatorModel, keyModel: keyModel, isScientific: false, size: keyboardSize)
+                KeysView(keyModel: keyModel, isScientific: false, size: keyboardSize)
             }
         } else {
             ZStack {
                 /// display
                 VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    OneLineDisplay(calculatorModel: calculatorModel, size: displaySize, fontShouldScale: !isPad && isPortrait)
-                    KeysView(calculatorModel: calculatorModel, keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
+                    OneLineDisplay(keyModel: keyModel, size: displaySize, fontShouldScale: !isPad && isPortrait)
+                    KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
                         .padding(.bottom, isPortrait ? size.height*0.06 : 0.0)
                 }
                 VStack(spacing: 0.0) {
@@ -81,7 +80,7 @@ struct Calculator: View {
                         Spacer(minLength: 0.0)
                     } else {
                         HStack(spacing: 0.0) {
-                            Text(info1)
+                            Text("info1")
                                 .foregroundColor(Color.white)
                             Spacer()
                         }

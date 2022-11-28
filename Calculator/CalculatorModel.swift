@@ -5,8 +5,8 @@
 //  Created by Joachim Neumann on 11/20/22.
 //
 
-import SwiftUI
-
+//import SwiftUI
+/*
 class CalculatorModel: ObservableObject {
     let brain: Brain
     
@@ -162,3 +162,4 @@ extension Int {
         return ret
     }
 }
+*/

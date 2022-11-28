@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct KeysView: View {
-    let calculatorModel: CalculatorModel
     let keyModel : KeyModel
     let isScientific: Bool
     let size: CGSize
@@ -28,13 +27,13 @@ struct KeysView: View {
                     let rightWidth = 4 * keyWidth + 3 * space
                     let sizeLeft  = CGSize(width: leftWidth, height: size.height)
                     let sizeRight = CGSize(width: rightWidth, height: size.height)
-                    ScientificKeys(calculatorModel: calculatorModel, keyModel: keyModel, spaceBetweenKeys: space, size: sizeLeft)
+                    ScientificKeys(keyModel: keyModel, spaceBetweenKeys: space, size: sizeLeft)
                         .padding(.trailing, space)
-                    NonScientificKeys(calculatorModel: calculatorModel, keyModel: keyModel, spaceBetweenKeys: space, size: sizeRight)
+                    NonScientificKeys(keyModel: keyModel, spaceBetweenKeys: space, size: sizeRight)
                 }
             } else {
                 let space = C.spaceBetweenkeysFraction(withScientificKeys: false) * size.width
-                NonScientificKeys(calculatorModel: calculatorModel, keyModel: keyModel, spaceBetweenKeys: space, size: size)
+                NonScientificKeys(keyModel: keyModel, spaceBetweenKeys: space, size: size)
             }
         }
         .transition(.move(edge: .bottom))
@@ -44,8 +43,8 @@ struct KeysView: View {
 struct KeysView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            KeysView(calculatorModel: CalculatorModel(), keyModel: KeyModel(), isScientific: false, size: CGSize(width: 100, height: 100))
-            KeysView(calculatorModel: CalculatorModel(), keyModel: KeyModel(), isScientific: false, size: CGSize(width: 400, height: 400))
+            KeysView(keyModel: KeyModel(), isScientific: false, size: CGSize(width: 100, height: 100))
+            KeysView(keyModel: KeyModel(), isScientific: false, size: CGSize(width: 400, height: 400))
         }
     }
 }
