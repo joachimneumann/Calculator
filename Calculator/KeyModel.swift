@@ -12,7 +12,7 @@ class KeyModel : ObservableObject {
     @Published var _2ndActive = false
     @Published var _rad = false
     @Published var isCalculating = false
-
+    
     init() {
         for key in [C.digitKeys, C.operatorKeys, C.scientificKeys].joined() {
             colorsOf[key] = C.getKeyColors(for: key)
@@ -36,25 +36,34 @@ class KeyModel : ObservableObject {
         
     }
     
-    private var lastPending: String? = nil
+    private var previouslyPendingKey: String? = nil
     func updatePendingKey(notification: Notification) {
         if let userInfo = notification.userInfo {
-            if let pendingSymbol = userInfo[C.notificationDictionaryKey] as? String? {
-                
-                /// did something change?
-                guard lastPending != pendingSymbol else { return }
+            if userInfo[C.notificationDictionaryKey] as? String == nil {
+                /// no pending key. Set the previous one back to normal?
+                if let previous = previouslyPendingKey {
+                    DispatchQueue.main.async { self.colorsOf[previous] = C.operatorColors }
+                }
+                previouslyPendingKey = nil
+            } else {
+                /// we have a pending key
+                if let newPendingkey = userInfo[C.notificationDictionaryKey] as? String {
+                    /// Set the pending key
+                    DispatchQueue.main.async { self.colorsOf[newPendingkey] = C.pendingOperatorColors }
 
-                if let lastPending = self.lastPending {
-                    DispatchQueue.main.async { self.colorsOf[lastPending] = C.operatorColors }
+                    /// And set the previous one back to normal?
+                    if let previous = previouslyPendingKey {
+                        /// wait, are the different?
+                        if previous != newPendingkey {
+                            DispatchQueue.main.async { self.colorsOf[previous] = C.operatorColors }
+                        }
+                    }
+                    previouslyPendingKey = newPendingkey
                 }
-                if let pendingSymbol = pendingSymbol {
-                    DispatchQueue.main.async { self.colorsOf[pendingSymbol] = C.pendingOperatorColors }
-                }
-                self.lastPending = pendingSymbol
             }
         }
     }
-
+    
     func isCalculating(notification: Notification) {
         if let userInfo = notification.userInfo {
             if let isCalculating = userInfo[C.notificationDictionaryKey] as? Bool {
@@ -62,7 +71,7 @@ class KeyModel : ObservableObject {
             }
         }
     }
-
+    
     
     
     func keyUpEvent(notification: Notification) {
@@ -78,9 +87,9 @@ class KeyModel : ObservableObject {
                         colorsOf["2nd"] = C.pendingScientificColors
                     }
                 case "Rad":
-                        _rad = false
+                    _rad = false
                 case "Deg":
-                        _rad = true
+                    _rad = true
                 default: break
                 }
             }

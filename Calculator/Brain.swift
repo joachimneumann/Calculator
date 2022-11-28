@@ -57,11 +57,6 @@ class Brain {
         didSet {
             var notificationDictionary: [String: String?] = [:]
             notificationDictionary[C.notificationDictionaryKey] = pendingOperator
-            if let pendingOperator = pendingOperator {
-                notificationDictionary[C.notificationDictionaryKey] = pendingOperator as String?
-            } else {
-                notificationDictionary[C.notificationDictionaryKey] = nil
-            }
             NotificationCenter.default.post(name: Notification.Name(C.notificationNamePending), object: nil, userInfo: notificationDictionary as [AnyHashable : Any])
         }
     }

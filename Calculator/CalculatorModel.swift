@@ -24,7 +24,7 @@ class CalculatorModel: ObservableObject {
     var oneLineWithCommaLength: Int = 4
     
     init() {
-        brain = Brain(precision: 1000000)
+        brain = Brain(precision: 10000)
         brain.haveResultCallback = haveResultCallback
         self.precisionDescription = self.brain.precision.useWords
         NotificationCenter.default.addObserver(
