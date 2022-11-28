@@ -27,33 +27,33 @@ struct NonScientificKeys: View {
     var body: some View {
         VStack(spacing: spaceBetweenKeys) {
             HStack(spacing: spaceBetweenKeys) {
-                Key(symbol: calculatorModel._AC ? "AC" : "C", keyColors: keyModel.colorsOf[calculatorModel._AC ? "AC" : "C"]!, size: keySize)
-                Key(symbol: "±", keyColors: keyModel.colorsOf["±"]!, size: keySize)
-                Key(symbol: "%", keyColors: keyModel.colorsOf["%"]!, size: keySize)
-                Key(symbol: "/", keyColors: keyModel.colorsOf["/"]!, size: keySize)
+                Key(calculatorModel._AC ? "AC" : "C", keyColors: keyModel.colorsOf[calculatorModel._AC ? "AC" : "C"]!, size: keySize)
+                Key("±", keyColors: keyModel.colorsOf["±"]!, size: keySize)
+                Key("%", keyColors: keyModel.colorsOf["%"]!, size: keySize)
+                Key("/", keyColors: keyModel.colorsOf["/"]!, size: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key(symbol: "7", keyColors: keyModel.colorsOf["7"]!, size: keySize)
-                Key(symbol: "8", keyColors: keyModel.colorsOf["8"]!, size: keySize)
-                Key(symbol: "9", keyColors: keyModel.colorsOf["9"]!, size: keySize)
-                Key(symbol: "x", keyColors: keyModel.colorsOf["x"]!, size: keySize)
+                Key("7", keyColors: keyModel.colorsOf["7"]!, size: keySize)
+                Key("8", keyColors: keyModel.colorsOf["8"]!, size: keySize)
+                Key("9", keyColors: keyModel.colorsOf["9"]!, size: keySize)
+                Key("x", keyColors: keyModel.colorsOf["x"]!, size: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key(symbol: "4", keyColors: keyModel.colorsOf["4"]!, size: keySize)
-                Key(symbol: "5", keyColors: keyModel.colorsOf["5"]!, size: keySize)
-                Key(symbol: "6", keyColors: keyModel.colorsOf["6"]!, size: keySize)
-                Key(symbol: "-", keyColors: keyModel.colorsOf["-"]!, size: keySize)
+                Key("4", keyColors: keyModel.colorsOf["4"]!, size: keySize)
+                Key("5", keyColors: keyModel.colorsOf["5"]!, size: keySize)
+                Key("6", keyColors: keyModel.colorsOf["6"]!, size: keySize)
+                Key("-", keyColors: keyModel.colorsOf["-"]!, size: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key(symbol: "1", keyColors: keyModel.colorsOf["1"]!, size: keySize)
-                Key(symbol: "2", keyColors: keyModel.colorsOf["2"]!, size: keySize)
-                Key(symbol: "3", keyColors: keyModel.colorsOf["3"]!, size: keySize)
-                Key(symbol: "+", keyColors: keyModel.colorsOf["+"]!, size: keySize)
+                Key("1", keyColors: keyModel.colorsOf["1"]!, size: keySize)
+                Key("2", keyColors: keyModel.colorsOf["2"]!, size: keySize)
+                Key("3", keyColors: keyModel.colorsOf["3"]!, size: keySize)
+                Key("+", keyColors: keyModel.colorsOf["+"]!, size: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key(symbol: "0", keyColors: keyModel.colorsOf["0"]!, size: doubleKeySize)
-                Key(symbol: ",", keyColors: keyModel.colorsOf[","]!, size: keySize)
-                Key(symbol: "=", keyColors: keyModel.colorsOf["="]!, size: keySize)
+                Key("0", keyColors: keyModel.colorsOf["0"]!, size: doubleKeySize)
+                Key(",", keyColors: keyModel.colorsOf[","]!, size: keySize)
+                Key("=", keyColors: keyModel.colorsOf["="]!, size: keySize)
             }
         }
     }

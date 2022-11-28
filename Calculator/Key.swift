@@ -11,12 +11,22 @@ struct Key: View {
     let symbol: String
     let keyColors: ColorsOf
     let size: CGSize
-    
+//    private let keyContent: any View
+
     @State var tapped: Bool = false
+    
+    init(_ symbol: String, keyColors: ColorsOf, size: CGSize) {
+        self.symbol = symbol
+        self.keyColors = keyColors
+        self.size = size
+//        let keyLabel = KeyLabel(size: size, textColor: Color(uiColor: keyColors.textColor))
+//        keyContent = keyLabel.of(symbol)
+    }
+
     var body: some View {
 //        let _ = print("Key \(symbol) with color \(Color(uiColor: tapped ? keyColors.downColor : keyColors.upColor))")
         ZStack {
-            Text(symbol)
+            AnyView(KeyLabel(size: size, textColor: Color(uiColor: keyColors.textColor)).of(symbol))
                 .font(.largeTitle)
                 .frame(width: size.width, height: size.height)
                 .foregroundColor(Color(uiColor: keyColors.textColor))
@@ -82,6 +92,6 @@ private struct OnTouchGestureModifier: ViewModifier {
 
 struct Key_Previews: PreviewProvider {
     static var previews: some View {
-        Key(symbol: "5", keyColors: C.digitColors, size: CGSize(width: 100, height: 100))
+        Key("5", keyColors: C.digitColors, size: CGSize(width: 100, height: 100))
     }
 }

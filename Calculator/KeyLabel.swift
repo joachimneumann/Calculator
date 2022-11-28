@@ -19,30 +19,30 @@ class KeyLabel {
     @ViewBuilder func of(_ symbol: String) -> some View {
         let _ = print("ViewBuilder KeyLabel.of()")
         switch symbol {
-        case "√" : RootShapeView(rootDigit: "2", color: textColor, size: size)
-        case "3√": RootShapeView(rootDigit: "3", color: textColor, size: size)
-        case "y√": RootShapeView(rootDigit: "y", color: textColor, size: size)
-        case "log10": Logx("10")
-        case "log2":  Logx("2")
-        case "logy":  Logx("y")
-        case "One_x": One_x(color: textColor)
-        case "x^2":   Pow(base:  "x",   exponent: "2")
-        case "x^3":   Pow(base:  "x",   exponent: "3")
-        case "x^y":   Pow(base:  "x",   exponent: "y")
-        case "e^x":   Pow(base:  "e",   exponent: "x")
-        case "y^x":   Pow(base:  "y",   exponent: "x")
-        case "2^x":   Pow(base:  "2",   exponent: "x")
-        case "10^x":  Pow(base: "10",   exponent: "x")
-        case "2nd":   Pow(base: "2",    exponent: "nd")
-        case "asin":  Pow(base: "sin",  exponent: "-1")
-        case "acos":  Pow(base: "cos",  exponent: "-1")
-        case "atan":  Pow(base: "tan",  exponent: "-1")
-        case "asinD":  Pow(base: "sin",  exponent: "-1")
-        case "acosD":  Pow(base: "cos",  exponent: "-1")
-        case "atanD":  Pow(base: "tan",  exponent: "-1")
-        case "asinh": Pow(base: "sinh", exponent: "-1")
-        case "acosh": Pow(base: "cosh", exponent: "-1")
-        case "atanh": Pow(base: "tanh", exponent: "-1")
+        case "√" :    RootShapeView(rootDigit: "2", color: textColor, size: size)
+        case "3√":    RootShapeView(rootDigit: "3", color: textColor, size: size)
+        case "y√":    RootShapeView(rootDigit: "y", color: textColor, size: size)
+        case "log10": Logx(base: "10", size: size)
+        case "log2":  Logx(base: "2", size: size)
+        case "logy":  Logx(base: "y", size: size)
+        case "One_x": One_x(color: textColor, size: size)
+        case "x^2":   Pow(base:  "x",   exponent: "2", size: size)
+        case "x^3":   Pow(base:  "x",   exponent: "3", size: size)
+        case "x^y":   Pow(base:  "x",   exponent: "y", size: size)
+        case "e^x":   Pow(base:  "e",   exponent: "x", size: size)
+        case "y^x":   Pow(base:  "y",   exponent: "x", size: size)
+        case "2^x":   Pow(base:  "2",   exponent: "x", size: size)
+        case "10^x":  Pow(base: "10",   exponent: "x", size: size)
+        case "2nd":   Pow(base: "2",    exponent: "nd", size: size)
+        case "asin":  Pow(base: "sin",  exponent: "-1", size: size)
+        case "acos":  Pow(base: "cos",  exponent: "-1", size: size)
+        case "atan":  Pow(base: "tan",  exponent: "-1", size: size)
+        case "asinD": Pow(base: "sin",  exponent: "-1", size: size)
+        case "acosD": Pow(base: "cos",  exponent: "-1", size: size)
+        case "atanD": Pow(base: "tan",  exponent: "-1", size: size)
+        case "asinh": Pow(base: "sinh", exponent: "-1", size: size)
+        case "acosh": Pow(base: "cosh", exponent: "-1", size: size)
+        case "atanh": Pow(base: "tanh", exponent: "-1", size: size)
         default:
             if let sfImage = sfImageNames[symbol] {
                 Image(systemName: sfImage)
@@ -144,10 +144,10 @@ class KeyLabel {
     
     struct One_x: View {
         let color: Color
+        let size: CGSize
         var body: some View {
             ZStack {
-                GeometryReader { geo in
-                    let h: CGFloat = geo.size.height
+                    let h: CGFloat = size.height
                     VStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
                         HStack(spacing: 0.0) {
@@ -165,7 +165,6 @@ class KeyLabel {
                             Spacer(minLength: 0.0)
                         }
                         Spacer(minLength: 0.0)
-                    }
                 }
             }
         }
@@ -174,36 +173,34 @@ class KeyLabel {
     
     struct Logx: View {
         let base: String
+        let size: CGSize
         var body: some View {
             ZStack {
-                GeometryReader { geo in
-                    let s = min(geo.size.width, geo.size.height)
-                    VStack(spacing:0.0) {
+                let s = min(size.width, size.height)
+                VStack(spacing:0.0) {
+                    Spacer(minLength: 0.0)
+                    HStack(spacing:0.0) {
                         Spacer(minLength: 0.0)
-                        HStack(spacing:0.0) {
-                            Spacer(minLength: 0.0)
-                            Text("log")
-                                .font(.system(size: s * 0.4))
-                            Text(base)
-                                .font(.system(size: s * 0.22))
-                                .offset(x: 0.0, y: 0.13 * s)
-                            Spacer(minLength: 0.0)
-                        }
+                        Text("log")
+                            .font(.system(size: s * 0.4))
+                        Text(base)
+                            .font(.system(size: s * 0.22))
+                            .offset(x: 0.0, y: 0.13 * s)
                         Spacer(minLength: 0.0)
                     }
+                    Spacer(minLength: 0.0)
                 }
             }
         }
-        init(_ base: String) { self.base = base }
     }
     
     struct Pow: View {
         let base: String
         let exponent: String
+        let size: CGSize
         var body: some View {
             ZStack {
-                GeometryReader { geo in
-                    let s = min(geo.size.width, geo.size.height)
+                    let s = min(size.width, size.height)
                     VStack(spacing:0.0) {
                         Spacer(minLength: 0.0)
                         HStack(spacing: 0.0) {
@@ -217,7 +214,6 @@ class KeyLabel {
                         }
                         Spacer(minLength: 0.0)
                     }
-                }
             }
         }
     }
