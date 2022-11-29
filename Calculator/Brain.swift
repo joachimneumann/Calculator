@@ -40,10 +40,10 @@ class Brain {
     }
     
     var isCalculating: Bool = false {
-        didSet {
-            var notificationDictionary: [String: Bool] = [:]
-            notificationDictionary[C.notificationDictionaryKey] = isCalculating
-            NotificationCenter.default.post(name: Notification.Name(C.notificationNameisCalculating), object: nil, userInfo: notificationDictionary)
+        willSet {
+            if isCalculating != newValue {
+                isCalculatingCallback(newValue)
+            }
         }
     }
     
@@ -53,11 +53,14 @@ class Brain {
     var isValidNumber: Bool { n.last.isValid }
 
     var haveResultCallback: () -> () = { }
+    var pendingOperatorCallback: (String?) -> () = { _ in }
+    var isCalculatingCallback: (Bool) -> () = { _ in }
+    
     var pendingOperator: String? {
-        didSet {
-            var notificationDictionary: [String: String?] = [:]
-            notificationDictionary[C.notificationDictionaryKey] = pendingOperator
-            NotificationCenter.default.post(name: Notification.Name(C.notificationNamePending), object: nil, userInfo: notificationDictionary as [AnyHashable : Any])
+        willSet {
+            if pendingOperator != newValue {
+                pendingOperatorCallback(pendingOperator)
+            }
         }
     }
     var memory: Gmp? = nil

@@ -8,7 +8,7 @@
 import Foundation
 
 class KeyModel : ObservableObject {
-    let brain = Brain(precision: 100)
+    let brain = Brain(precision: 1000000)
     @Published var colorsOf: [String: ColorsOf] = [:]
     @Published var _AC = true
     @Published var _2ndActive = false
@@ -32,15 +32,9 @@ class KeyModel : ObservableObject {
             forName: NSNotification.Name(C.notificationNameDown),
             object: nil, queue: nil,
             using: keyDownEvent)
-        NotificationCenter.default.addObserver(
-            forName: NSNotification.Name(C.notificationNamePending),
-            object: nil, queue: nil,
-            using: updatePendingKey)
-        NotificationCenter.default.addObserver(
-            forName: NSNotification.Name(C.notificationNameisCalculating),
-            object: nil, queue: nil,
-            using: isCalculating)
         brain.haveResultCallback = haveResultCallback
+        brain.pendingOperatorCallback = pendingOperatorCallback
+        brain.isCalculatingCallback = isCalculatingCallback
     }
     
     private func haveResultCallback() {
@@ -61,39 +55,35 @@ class KeyModel : ObservableObject {
     }
 
     private var previouslyPendingKey: String? = nil
-    func updatePendingKey(notification: Notification) {
-        if let userInfo = notification.userInfo {
-            if userInfo[C.notificationDictionaryKey] as? String == nil {
-                /// no pending key. Set the previous one back to normal?
-                if let previous = previouslyPendingKey {
-                    DispatchQueue.main.async { self.colorsOf[previous] = C.operatorColors }
-                }
-                previouslyPendingKey = nil
-            } else {
-                /// we have a pending key
-                if let newPendingkey = userInfo[C.notificationDictionaryKey] as? String {
-                    /// Set the pending key
-                    DispatchQueue.main.async { self.colorsOf[newPendingkey] = C.pendingOperatorColors }
+    func pendingOperatorCallback(op: String?) {
+        if op == nil {
+            /// no pending key. Set the previous one back to normal?
+            if let previous = previouslyPendingKey {
+                DispatchQueue.main.async { self.colorsOf[previous] = C.operatorColors }
+            }
+            previouslyPendingKey = nil
+        } else {
+            /// we have a pending key
+            if let newPendingkey = op {
+                /// Set the pending key
+                DispatchQueue.main.async { self.colorsOf[newPendingkey] = C.pendingOperatorColors }
 
-                    /// And set the previous one back to normal?
-                    if let previous = previouslyPendingKey {
-                        /// wait, are the different?
-                        if previous != newPendingkey {
-                            DispatchQueue.main.async { self.colorsOf[previous] = C.operatorColors }
-                        }
+                /// And set the previous one back to normal?
+                if let previous = previouslyPendingKey {
+                    /// wait, are the different?
+                    if previous != newPendingkey {
+                        DispatchQueue.main.async { self.colorsOf[previous] = C.operatorColors }
                     }
-                    previouslyPendingKey = newPendingkey
                 }
+                previouslyPendingKey = newPendingkey
             }
         }
     }
+
     
-    func isCalculating(notification: Notification) {
-        if let userInfo = notification.userInfo {
-            if let isCalculating = userInfo[C.notificationDictionaryKey] as? Bool {
-                DispatchQueue.main.async { self.isCalculating = isCalculating }
-            }
-        }
+    func isCalculatingCallback(calculating: Bool) {
+        print("isCalculatingCallback \(calculating)")
+        DispatchQueue.main.async { self.isCalculating = calculating }
     }
     
     
