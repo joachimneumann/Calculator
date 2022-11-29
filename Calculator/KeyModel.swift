@@ -10,6 +10,7 @@ import Foundation
 class KeyModel : ObservableObject {
     let brain = Brain(precision: 1000000)
     @Published var colorsOf: [String: ColorsOf] = [:]
+//    @Published var enabledDict: [String: Bool] = [:]
     @Published var _AC = true
     @Published var _2ndActive = false
     @Published var _rad = false
@@ -21,7 +22,7 @@ class KeyModel : ObservableObject {
     var oneLineWithCommaLength: Int = 4
 
     init() {
-        for key in [C.digitKeys, C.operatorKeys, C.scientificKeys].joined() {
+        for key in C.allKeys {
             colorsOf[key] = C.getKeyColors(for: key)
         }
         NotificationCenter.default.addObserver(
@@ -85,6 +86,12 @@ class KeyModel : ObservableObject {
     
     func isCalculatingCallback(calculating: Bool) {
         DispatchQueue.main.async { self.isCalculating = calculating }
+//        print("enabled: \(!calculating)")
+//        DispatchQueue.main.async {
+//            for key in C.allKeys {
+//                self.enabledDict[key] = true//!calculating
+//            }
+//        }
     }
     
     
