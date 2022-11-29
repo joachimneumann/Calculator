@@ -43,6 +43,7 @@ class Number: CustomDebugStringConvertible {
             }
             assert(false)
         }
+        return false
     }
     
     var isValid: Bool {
