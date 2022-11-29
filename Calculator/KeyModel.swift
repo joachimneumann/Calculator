@@ -57,28 +57,29 @@ class KeyModel : ObservableObject {
     private var previouslyPendingKey: String? = nil
     func pendingOperatorCallback(op: String?) {
         /// In the brain, we already check if the new operator is different from the old one.
-        if op == nil {
-            /// no pending key. Set the previous one back to normal?
-            if let previous = previouslyPendingKey {
-                DispatchQueue.main.async { self.colorsOf[previous] = C.operatorColors }
-            }
-            previouslyPendingKey = nil
-        } else {
-            /// we have a pending key
-            if let newPendingkey = op {
-                /// Set the pending key
-                DispatchQueue.main.async { self.colorsOf[newPendingkey] = C.pendingOperatorColors }
 
-                /// And set the previous one back to normal?
-                if let previous = previouslyPendingKey {
-                    /// wait, are the different?
-                    if previous != newPendingkey {
-                        DispatchQueue.main.async { self.colorsOf[previous] = C.operatorColors }
-                    }
+        /// Set the previous one back to normal?
+        if let previous = previouslyPendingKey {
+            DispatchQueue.main.async {
+                if C.scientificPendingOperations.contains(previous) {
+                    self.colorsOf[previous] = C.scientificColors
+                } else {
+                    self.colorsOf[previous] = C.operatorColors
                 }
-                previouslyPendingKey = newPendingkey
             }
         }
+
+        /// Set the colors for the pending operation key
+        if let op = op {
+            DispatchQueue.main.async {
+                if C.scientificPendingOperations.contains(op) {
+                    self.colorsOf[op] = C.pendingScientificColors
+                } else {
+                    self.colorsOf[op] = C.pendingOperatorColors
+                }
+            }
+        }
+        previouslyPendingKey = op
     }
 
     
