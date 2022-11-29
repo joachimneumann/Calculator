@@ -13,9 +13,9 @@ class KeyModel : ObservableObject {
     @Published var _AC = true
     @Published var _2ndActive = false
     @Published var _rad = false
-    @Published var isCalculating = false
     @Published var last: String = "0"
     @Published var precisionDescription = "unknown"
+    @Published var isCalculating = false
 
     var oneLineWithoutCommaLength: Int = 4
     var oneLineWithCommaLength: Int = 4
@@ -56,6 +56,7 @@ class KeyModel : ObservableObject {
 
     private var previouslyPendingKey: String? = nil
     func pendingOperatorCallback(op: String?) {
+        /// In the brain, we already check if the new operator is different from the old one.
         if op == nil {
             /// no pending key. Set the previous one back to normal?
             if let previous = previouslyPendingKey {
@@ -82,7 +83,6 @@ class KeyModel : ObservableObject {
 
     
     func isCalculatingCallback(calculating: Bool) {
-        print("isCalculatingCallback \(calculating)")
         DispatchQueue.main.async { self.isCalculating = calculating }
     }
     

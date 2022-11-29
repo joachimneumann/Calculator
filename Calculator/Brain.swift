@@ -55,11 +55,10 @@ class Brain {
     var haveResultCallback: () -> () = { }
     var pendingOperatorCallback: (String?) -> () = { _ in }
     var isCalculatingCallback: (Bool) -> () = { _ in }
-    
     var pendingOperator: String? {
         willSet {
             if pendingOperator != newValue {
-                pendingOperatorCallback(pendingOperator)
+                pendingOperatorCallback(newValue)
             }
         }
     }

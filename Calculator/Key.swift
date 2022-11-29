@@ -11,7 +11,6 @@ struct Key: View {
     let symbol: String
     let keyColors: ColorsOf
     let size: CGSize
-//    private let keyContent: any View
 
     @State var tapped: Bool = false
     
@@ -22,7 +21,7 @@ struct Key: View {
     }
 
     var body: some View {
-        /// let _ = print("Key \(symbol) with color \(Color(uiColor: tapped ? keyColors.downColor : keyColors.upColor))")
+        let _ = print("Key \(symbol) with color \(Color(uiColor: tapped ? keyColors.downColor : keyColors.upColor))")
         ZStack {
             AnyView(KeyLabel(size: size, textColor: Color(uiColor: keyColors.textColor)).of(symbol))
                 .font(.largeTitle)
@@ -57,7 +56,6 @@ private struct OnTouchGestureModifier: ViewModifier {
                 .onChanged { _ in
                     let notificationDictionary: [String: String] = [C.notificationDictionaryKey: symbol]
                     NotificationCenter.default.post(name: Notification.Name(C.notificationNameDown), object: nil, userInfo: notificationDictionary)
-                    //                    self.tapped.toggle()
                     self.downAnimationFinished = false
                     upHasHappended = false
                     if !self.tapped {
