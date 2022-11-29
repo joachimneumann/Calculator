@@ -96,6 +96,7 @@ class KeyLabel {
     struct RootShape: Shape {
         let part: Int
         func path(in rect: CGRect) -> Path {
+            /// print("RootShape \(rect)")
             var path = Path()
             let w: CGFloat = rect.size.width
             let h: CGFloat = rect.size.height
