@@ -18,9 +18,9 @@ class KeyLabel {
     
     @ViewBuilder func of(_ symbol: String) -> some View {
         switch symbol {
-        case "√" :    RootShapeView(rootDigit: "2", color: textColor, size: size)
-        case "3√":    RootShapeView(rootDigit: "3", color: textColor, size: size)
-        case "y√":    RootShapeView(rootDigit: "y", color: textColor, size: size)
+        case "√" :    RootShapeView(rootDigit: "2", color: textColor, height: size.height)
+        case "3√":    RootShapeView(rootDigit: "3", color: textColor, height: size.height)
+        case "y√":    RootShapeView(rootDigit: "y", color: textColor, height: size.height)
         case "log10": Logx(base: "10", size: size)
         case "log2":  Logx(base: "2", size: size)
         case "logy":  Logx(base: "y", size: size)
@@ -69,61 +69,76 @@ class KeyLabel {
     struct RootShapeView: View {
         let rootDigit: String
         let color: Color
-        let size: CGSize
+        let height: CGFloat
         var body: some View {
-            let lineWidth = size.height*0.03
+            let lineWidth = height*0.03
             ZStack {
-                RootShape(part: 1)
-                    .stroke(color, style: StrokeStyle(lineWidth: lineWidth, lineCap: CGLineCap.round, lineJoin: CGLineJoin.bevel))
-                    .aspectRatio(contentMode: .fit)
-                RootShape(part: 2)
-                    .stroke(color, style: StrokeStyle(lineWidth: lineWidth, lineCap: CGLineCap.round, lineJoin: CGLineJoin.bevel))
-                    .aspectRatio(contentMode: .fit)
+                Root(color: color, lineWidth: lineWidth, height: height)
                 Text(rootDigit)
-                    .font(.system(size: size.height*0.17, weight: .semibold))
+                    .font(.system(size: height*0.17, weight: .semibold))
                     .foregroundColor(color)
-                    .padding(.leading, size.height * -0.26)
-                    .padding(.top, size.height * -0.14)
+                    .padding(.leading, height * -0.27)
+                    .padding(.top, height * -0.14)
                 Text("x")
-                    .font(.system(size: size.height*0.3, weight: .semibold))
+                    .font(.system(size: height*0.3, weight: .semibold))
                     .foregroundColor(color)
-                    .padding(.leading, size.height * 0.1)
-                    .padding(.top, size.height * 0.05)
+                    .padding(.leading, height * 0.1)
+                    .padding(.top, height * 0.05)
             }
         }
     }
     
-    struct RootShape: Shape {
-        let part: Int
-        func path(in rect: CGRect) -> Path {
-            /// print("RootShape \(rect)")
-            var path = Path()
-            let w: CGFloat = rect.size.width
-            let h: CGFloat = rect.size.height
-            let steepness: CGFloat = 2.8
-            let f: CGFloat = 0.6
-            let startX: CGFloat = (0.5 - 0.2) * w
-            let startY: CGFloat = (0.5 + 0.05) * h
-            let downX: CGFloat = startX + f * 0.08 * w
-            let downY: CGFloat = startY + f * 0.08 * h * steepness
-            let upX: CGFloat = downX + f * 0.2 * w
-            let upY: CGFloat = downY - f * 0.2 * h * steepness
-            let endX: CGFloat = upX + f * 0.35 * w
-            let endY: CGFloat = upY
-            
-            if part == 1 {
+//    struct RootShape: Shape {
+//        func path(in rect: CGRect) -> Path {
+//            /// print("RootShape \(rect)")
+//            var path = Path()
+//            let w: CGFloat = rect.size.width
+//            let h: CGFloat = rect.size.height
+//            let steepness: CGFloat = 2.8
+//            let f: CGFloat = 0.6
+//            let startX: CGFloat = (0.5 - 0.2) * w
+//            let startY: CGFloat = (0.5 + 0.05) * h
+//            let downX: CGFloat = startX + f * 0.08 * w
+//            let downY: CGFloat = startY + f * 0.08 * h * steepness
+//            let upX: CGFloat = downX + f * 0.2 * w
+//            let upY: CGFloat = downY - f * 0.2 * h * steepness
+//            let endX: CGFloat = upX + f * 0.35 * w
+//            let endY: CGFloat = upY
+//            path.move(to: CGPoint(x: startX, y: startY))
+//            path.addLine(to: CGPoint(x: downX, y: downY))
+//            path.addLine(to: CGPoint(x: upX,  y: upY))
+//            path.addLine(to: CGPoint(x: endX,  y: endY))
+//            return path
+//        }
+//    }
+
+    struct Root: View {
+        let color: Color
+        let lineWidth: CGFloat
+        let height: CGFloat
+        var body: some View {
+            Path { path in
+                let steepness: CGFloat = 2.8
+                let f: CGFloat = 0.6
+                let startX: CGFloat = 0.3 * height
+                let startY: CGFloat = (0.5 + 0.05) * height
+                let downX: CGFloat = startX + f * 0.08 * height
+                let downY: CGFloat = startY + f * 0.08 * height * steepness
+                let upX: CGFloat = downX + f * 0.2 * height
+                let upY: CGFloat = downY - f * 0.2 * height * steepness
+                let endX: CGFloat = upX + f * 0.35 * height
+                let endY: CGFloat = upY
+                
                 path.move(to: CGPoint(x: startX, y: startY))
                 path.addLine(to: CGPoint(x: downX, y: downY))
                 path.addLine(to: CGPoint(x: upX,   y: upY))
-            }
-            if part == 2 {
-                path.move(to: CGPoint(x: upX,  y: upY))
                 path.addLine(to: CGPoint(x: endX,  y: endY))
             }
-            return path
+            .stroke(color, style: StrokeStyle(lineWidth: lineWidth, lineCap: CGLineCap.round, lineJoin: CGLineJoin.round))
+            .aspectRatio(contentMode: .fit)
         }
     }
-    
+
     struct SlashShape: Shape {
         func path(in rect: CGRect) -> Path {
             var path = Path()
@@ -223,22 +238,30 @@ class KeyLabel {
 struct KeyLabel_Previews: PreviewProvider {
     static var previews: some View {
         let w = 131.7
-        let h = 57.1
+        let h = 131.1
 //        let h = 131.7
         let size = CGSize(width: w, height: h)
         let keyLabel = KeyLabel(size: size, textColor: Color.white)
-        let keyContent2: any View = keyLabel.of("x^2")
-        let keyContent1: any View = keyLabel.of("One_x")
+        let keyContent: any View = keyLabel.of("√")
         VStack {
-            AnyView(keyContent1)
+            AnyView(keyContent)
                 .foregroundColor(Color.white)
                 .frame(width: w, height: h)
                 .background(Color.black)
+                .clipShape(Capsule())
                 .padding(.bottom, 20)
-            AnyView(keyContent2)
+            AnyView(keyContent)
                 .foregroundColor(Color.white)
-                .frame(width: w, height: h)
+                .frame(width: w*2, height: h)
                 .background(Color.black)
+                .clipShape(Capsule())
+                .padding(.bottom, 20)
+            AnyView(keyContent)
+                .foregroundColor(Color.white)
+                .frame(width: w*3, height: h)
+                .background(Color.black)
+                .clipShape(Capsule())
+                .padding(.bottom, 20)
         }
     }
 }
