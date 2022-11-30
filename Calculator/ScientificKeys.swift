@@ -54,7 +54,7 @@ struct ScientificKeys: View {
                 Key("EE", keyModel: keyModel, size: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key(keyModel._rad ? "Rad" : "Deg", keyModel: keyModel, size: keySize)
+                Key(keyModel._rad ? "Deg" : "Rad", keyModel: keyModel, size: keySize)
                 Key(keyModel._2ndActive ? "asinh" : "sinh", keyModel: keyModel, size: keySize)
                 Key(keyModel._2ndActive ? "acosh" : "cosh", keyModel: keyModel, size: keySize)
                 Key(keyModel._2ndActive ? "atanh" : "tanh", keyModel: keyModel, size: keySize)

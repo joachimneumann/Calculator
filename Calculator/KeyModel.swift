@@ -12,7 +12,7 @@ class KeyModel : ObservableObject {
     @Published var _2ndActive = false
     @Published var isCalculating = false
 
-    let brain = Brain(precision: 1000000)
+    let brain = Brain(precision: 100)
     var colorsOf: [String: ColorsOf] = [:]
     var enabledDict: [String: Bool] = [:]
     var _AC = true
@@ -114,9 +114,9 @@ class KeyModel : ObservableObject {
                 colorsOf["2nd"] = C._2ndActiveColors
             }
         case "Rad":
-            _rad = false
-        case "Deg":
             _rad = true
+        case "Deg":
+            _rad = false
         case "AC":
             _hasBeenReset = true
             brain.asyncOperation("AC")
