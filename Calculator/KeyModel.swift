@@ -10,7 +10,7 @@ import Foundation
 class KeyModel : ObservableObject {
     let brain = Brain(precision: 1000000)
     @Published var colorsOf: [String: ColorsOf] = [:]
-//    @Published var enabledDict: [String: Bool] = [:]
+    var enabledDict: [String: Bool] = [:]
     @Published var _AC = true
     @Published var _2ndActive = false
     @Published var _rad = false
@@ -25,14 +25,6 @@ class KeyModel : ObservableObject {
         for key in C.allKeys {
             colorsOf[key] = C.getKeyColors(for: key)
         }
-        NotificationCenter.default.addObserver(
-            forName: NSNotification.Name(C.notificationNameUp),
-            object: nil, queue: nil,
-            using: keyUpEvent)
-        NotificationCenter.default.addObserver(
-            forName: NSNotification.Name(C.notificationNameDown),
-            object: nil, queue: nil,
-            using: keyDownEvent)
         brain.haveResultCallback = haveResultCallback
         brain.pendingOperatorCallback = pendingOperatorCallback
         brain.isCalculatingCallback = isCalculatingCallback
@@ -86,47 +78,36 @@ class KeyModel : ObservableObject {
     
     func isCalculatingCallback(calculating: Bool) {
         DispatchQueue.main.async { self.isCalculating = calculating }
-//        print("enabled: \(!calculating)")
-//        DispatchQueue.main.async {
-//            for key in C.allKeys {
-//                self.enabledDict[key] = true//!calculating
-//            }
-//        }
-    }
-    
-    
-    
-    func keyUpEvent(notification: Notification) {
-        if let userInfo = notification.userInfo {
-            if let symbol = userInfo[C.notificationDictionaryKey] as? String {
-                switch symbol {
-                case "2nd":
-                    if _2ndActive {
-                        _2ndActive = false
-                        colorsOf["2nd"] = C.scientificColors
-                    } else {
-                        _2ndActive = true
-                        colorsOf["2nd"] = C.pendingScientificColors
-                    }
-                case "Rad":
-                    _rad = false
-                case "Deg":
-                    _rad = true
-                case "=":
-                    brain.execute(priority: Operator.equalPriority)
-                    brain.haveResultCallback()
-                default:
-                    brain.asyncOperation(symbol)
-                }
+        print("enabled: \(!calculating)")
+        for key in C.allKeys {
+            if calculating {
+                enabledDict[key] = false
+            } else {
+                enabledDict[key] = false
             }
         }
     }
     
-    func keyDownEvent(notification: Notification) {
-        if let userInfo = notification.userInfo {
-            if let symbol = userInfo[C.notificationDictionaryKey] as? String {
-                //                colorsOf[symbol]! = C.disabledColors
+    
+    func keyUpCallback(_ symbol: String) {
+        switch symbol {
+        case "2nd":
+            if _2ndActive {
+                _2ndActive = false
+                colorsOf["2nd"] = C.scientificColors
+            } else {
+                _2ndActive = true
+                colorsOf["2nd"] = C.pendingScientificColors
             }
+        case "Rad":
+            _rad = false
+        case "Deg":
+            _rad = true
+        case "=":
+            brain.execute(priority: Operator.equalPriority)
+            brain.haveResultCallback()
+        default:
+            brain.asyncOperation(symbol)
         }
     }
 }

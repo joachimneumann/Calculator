@@ -9,40 +9,47 @@ import SwiftUI
 
 struct Key: View {
     let symbol: String
-    let keyColors: ColorsOf
+    let keyModel: KeyModel
+    let textColor: Color
+    let upColor: Color
+    let downColor: Color
     let size: CGSize
 
     @State var tapped: Bool = false
     
-    init(_ symbol: String, keyColors: ColorsOf, size: CGSize) {
+    init(_ symbol: String, keyModel: KeyModel, size: CGSize) {
         self.symbol = symbol
-        self.keyColors = keyColors
+        self.keyModel = keyModel
+        self.textColor = Color(uiColor: keyModel.colorsOf[symbol]!.textColor)
+        self.upColor   = Color(uiColor: keyModel.colorsOf[symbol]!.upColor)
+        self.downColor = Color(uiColor: keyModel.colorsOf[symbol]!.downColor)
         self.size = size
     }
 
     var body: some View {
-//        let _ = print("Key \(symbol) with color \(Color(uiColor: tapped ? keyColors.downColor : keyColors.upColor))")
+//        let _ = print("Key \(symbol) with color \(tapped ? downColor : upColor)")
         ZStack {
-            AnyView(KeyLabel(height: size.height, textColor: Color(uiColor: keyColors.textColor)).of(symbol))
+            AnyView(KeyLabel(height: size.height, textColor: textColor).of(symbol))
                 .font(.largeTitle)
                 .frame(width: size.width, height: size.height)
-                .foregroundColor(Color(uiColor: keyColors.textColor))
-                .background(Color(uiColor: tapped ? keyColors.downColor : keyColors.upColor))
+                .foregroundColor(textColor)
+                .background(tapped ? downColor : upColor)
                 .clipShape(Capsule())
-                .onTouchGesture(tapped: $tapped, symbol: symbol)
+                .onTouchGesture(tapped: $tapped, symbol: symbol, keyModel: keyModel)
         }
     }
 }
 
 fileprivate extension View {
-    func onTouchGesture(tapped: Binding<Bool>, symbol: String) -> some View {
-        modifier(OnTouchGestureModifier(tapped: tapped, symbol: symbol))
+    func onTouchGesture(tapped: Binding<Bool>, symbol: String, keyModel: KeyModel) -> some View {
+        modifier(OnTouchGestureModifier(tapped: tapped, symbol: symbol, keyModel: keyModel))
     }
 }
 
 private struct OnTouchGestureModifier: ViewModifier {
     @Binding var tapped: Bool
     let symbol: String
+    let keyModel: KeyModel
     @State var downAnimationFinished = false
     @State var upHasHappended = false
     let downTime = 0.1
@@ -54,8 +61,9 @@ private struct OnTouchGestureModifier: ViewModifier {
         content
             .simultaneousGesture(DragGesture(minimumDistance: 0)
                 .onChanged { _ in
-                    let notificationDictionary: [String: String] = [C.notificationDictionaryKey: symbol]
-                    NotificationCenter.default.post(name: Notification.Name(C.notificationNameDown), object: nil, userInfo: notificationDictionary)
+                    
+                    keyModel.keyUpCallback(symbol)
+                    
                     self.downAnimationFinished = false
                     upHasHappended = false
                     if !self.tapped {
@@ -73,8 +81,6 @@ private struct OnTouchGestureModifier: ViewModifier {
                     }
                 }
                 .onEnded { _ in
-                    let notificationDictionary: [String: String] = [C.notificationDictionaryKey: symbol]
-                    NotificationCenter.default.post(name: Notification.Name(C.notificationNameUp), object: nil, userInfo: notificationDictionary)
                     if self.downAnimationFinished {
                         withAnimation(.easeIn(duration: upTime)) {
                             self.tapped = false
@@ -88,6 +94,6 @@ private struct OnTouchGestureModifier: ViewModifier {
 
 struct Key_Previews: PreviewProvider {
     static var previews: some View {
-        Key("5", keyColors: C.digitColors, size: CGSize(width: 100, height: 100))
+        Key("5", keyModel: KeyModel(), size: CGSize(width: 100, height: 100))
     }
 }

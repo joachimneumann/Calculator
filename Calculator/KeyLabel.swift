@@ -95,7 +95,7 @@ class KeyLabel {
         let height: CGFloat
         var body: some View {
             Path { path in
-                ///print("Root")
+                print("Root")
                 let steepness: CGFloat = 2.8
                 let f: CGFloat = 0.6
                 let startX: CGFloat = 0.3 * height

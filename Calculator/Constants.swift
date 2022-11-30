@@ -69,10 +69,6 @@ struct C {
     static let allKeys = [digitKeys, operatorKeys, scientificKeys].joined()
     static let requireValidNumber = ["±", "%", "/", "x", "-", "+", "=", "( ", " )", "m+", "m-", "mr", "x^2", "x^3", "x^y", "e^x", "y^x", "2^x", "10^x", "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10", "x!", "sin", "cos", "tan", "asin", "acos", "atan", "EE", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh"]
     static let scientificPendingOperations = ["y√", "x^y", "y^x", "logy", "x↑↑y", "EE"]
-    
-    static let notificationDictionaryKey = "key"
-    static let notificationNameDown      = "keyDownEvent"
-    static let notificationNameUp        = "keyUpEvent"
 }
 
 extension Int {
