@@ -14,9 +14,11 @@ struct Key: View {
     let upColor: Color
     let downColor: Color
     let size: CGSize
+    let disabledColor = Color.red
 
     @State var tapped: Bool = false
-    
+    @State var enabled: Bool = true
+
     init(_ symbol: String, keyModel: KeyModel, size: CGSize) {
         self.symbol = symbol
         self.keyModel = keyModel
@@ -33,21 +35,22 @@ struct Key: View {
                 .font(.largeTitle)
                 .frame(width: size.width, height: size.height)
                 .foregroundColor(textColor)
-                .background(tapped ? downColor : upColor)
+                .background(tapped ? (enabled ? downColor : disabledColor) : upColor)
                 .clipShape(Capsule())
-                .onTouchGesture(tapped: $tapped, symbol: symbol, keyModel: keyModel)
+                .onTouchGesture(tapped: $tapped, enabled: $enabled, symbol: symbol, keyModel: keyModel)
         }
     }
 }
 
 fileprivate extension View {
-    func onTouchGesture(tapped: Binding<Bool>, symbol: String, keyModel: KeyModel) -> some View {
-        modifier(OnTouchGestureModifier(tapped: tapped, symbol: symbol, keyModel: keyModel))
+    func onTouchGesture(tapped: Binding<Bool>, enabled: Binding<Bool>, symbol: String, keyModel: KeyModel) -> some View {
+        modifier(OnTouchGestureModifier(tapped: tapped, enabled: enabled, symbol: symbol, keyModel: keyModel))
     }
 }
 
 private struct OnTouchGestureModifier: ViewModifier {
     @Binding var tapped: Bool
+    @Binding var enabled: Bool
     let symbol: String
     let keyModel: KeyModel
     @State var downAnimationFinished = false
@@ -62,7 +65,9 @@ private struct OnTouchGestureModifier: ViewModifier {
             .simultaneousGesture(DragGesture(minimumDistance: 0)
                 .onChanged { _ in
                     
-                    keyModel.keyUpCallback(symbol)
+                    enabled = keyModel.enabledDict[symbol]! /// this activated the red button background for disabled button
+                    
+                    if enabled { keyModel.keyUpCallback(symbol) } /// disabled buttons do not work (but their background color is animated)
                     
                     self.downAnimationFinished = false
                     upHasHappended = false

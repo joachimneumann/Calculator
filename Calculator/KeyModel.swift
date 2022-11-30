@@ -28,6 +28,9 @@ class KeyModel : ObservableObject {
         brain.haveResultCallback = haveResultCallback
         brain.pendingOperatorCallback = pendingOperatorCallback
         brain.isCalculatingCallback = isCalculatingCallback
+        for key in C.allKeys {
+            enabledDict[key] = true
+        }
     }
     
     private func haveResultCallback() {
@@ -83,7 +86,7 @@ class KeyModel : ObservableObject {
             if calculating {
                 enabledDict[key] = false
             } else {
-                enabledDict[key] = false
+                enabledDict[key] = true
             }
         }
     }
