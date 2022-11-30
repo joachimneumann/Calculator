@@ -39,6 +39,14 @@ struct C {
         textColor: UIColor(white: 0.3, alpha: 1.0),
         upColor:   UIColor(white: 0.7, alpha: 1.0),
         downColor: UIColor(white: 0.6, alpha: 1.0))
+    static let _2ndColors = ColorsOf(
+        textColor: UIColor(.white),
+        upColor:   UIColor(white: 0.12, alpha: 1.0),
+        downColor: UIColor(white: 0.12, alpha: 1.0))
+    static let _2ndActiveColors = ColorsOf(
+        textColor: UIColor(white: 0.2, alpha: 1.0),
+        upColor:   UIColor(white: 0.6, alpha: 1.0),
+        downColor: UIColor(white: 0.6, alpha: 1.0))
     static func spaceBetweenkeysFraction(withScientificKeys: Bool) -> CGFloat {
         if withScientificKeys {
             return 0.012
@@ -49,6 +57,8 @@ struct C {
     static func getKeyColors(for symbol: String) -> ColorsOf {
         if digitKeys.contains(symbol) {
             return digitColors
+        } else if symbol == "2nd" {
+            return _2ndColors
         } else if operatorKeys.contains(symbol) {
             return operatorColors
         } else if scientificKeys.contains(symbol) {

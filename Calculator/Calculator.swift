@@ -53,7 +53,7 @@ struct Calculator: View {
     }
     //    @StateObject private var viewLogic = ViewLogic(size: CGSize(width: 100, height: 100))
     var body: some View {
-//        let info1 = "\(calculatorModel._hasBeenReset ? "Precision: "+calculatorModel.precisionDescription+" digits" : "")"
+        let info1 = "\(keyModel._hasBeenReset ? "Precision: "+keyModel.precisionDescription+" digits" : "")"
         let info2 = "\(keyModel._rad ? "Rad      " : "")"
         if isPad {
             VStack(spacing: 0.0) {
@@ -80,7 +80,7 @@ struct Calculator: View {
                         Spacer(minLength: 0.0)
                     } else {
                         HStack(spacing: 0.0) {
-                            Text("info1")
+                            Text(info1)
                                 .foregroundColor(Color.white)
                             Spacer()
                         }
