@@ -86,7 +86,15 @@ class KeyModel : ObservableObject {
             if calculating {
                 enabledDict[key] = false
             } else {
-                enabledDict[key] = true
+                if brain.isValidNumber {
+                    enabledDict[key] = true
+                } else {
+                    if C.requireValidNumber.contains(key) {
+                        enabledDict[key] = false
+                    } else {
+                        enabledDict[key] = true
+                    }
+                }
             }
         }
     }
