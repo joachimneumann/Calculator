@@ -86,7 +86,7 @@ class Gmp: Equatable {
     func ln()         { mpfr_log(  &mpfr, &mpfr, MPFR_RNDN) }
     func log10()      { mpfr_log10(&mpfr, &mpfr, MPFR_RNDN) }
     func log2()       { mpfr_log2 (&mpfr, &mpfr, MPFR_RNDN) }
-    func sin()        { mpfr_sin(  &mpfr, &mpfr, MPFR_RNDN) } // TODO: add sinDeg()
+    func sin()        { mpfr_sin(  &mpfr, &mpfr, MPFR_RNDN) }
     func cos()        { mpfr_cos(  &mpfr, &mpfr, MPFR_RNDN) }
     func tan()        { mpfr_tan(  &mpfr, &mpfr, MPFR_RNDN) }
     func asin()       { mpfr_asin( &mpfr, &mpfr, MPFR_RNDN) }
@@ -105,32 +105,27 @@ class Gmp: Equatable {
 
     static var deg2rad: Gmp? = nil
     static var rad2deg: Gmp? = nil
-
-    static func deleteConstants() {
-        deg2rad = nil
-        rad2deg = nil
-    }
-    static func assertConstants() {
-        // todo: pre-compile deg2rad etc
-//        if deg2rad == nil {
-//            deg2rad = Gmp("0", bits: bits);
-//            deg2rad!.π()
-//            deg2rad!.div(other: Gmp("180"))
-//        }
-//        if Gmp.rad2deg == nil {
-//            Gmp.rad2deg = Gmp("0");
-//            Gmp.rad2deg!.π()
-//            Gmp.rad2deg!.rez()
-//            Gmp.rad2deg!.mul(other: Gmp("180"))
-//        }
+    static var rad_deg_bits: Int = 0
+    
+    static func assertConstants(bits: Int) {
+        if bits != rad_deg_bits {
+            deg2rad = Gmp("0", bits: bits);
+            deg2rad!.π()
+            deg2rad!.div(other: Gmp("180", bits: bits))
+            Gmp.rad2deg = Gmp("0", bits: bits);
+            Gmp.rad2deg!.π()
+            Gmp.rad2deg!.rez()
+            Gmp.rad2deg!.mul(other: Gmp("180", bits: bits))
+        }
+        rad_deg_bits = bits
     }
 
-    func sinD()  { Gmp.assertConstants(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_sin(  &mpfr, &mpfr, MPFR_RNDN) }
-    func cosD()  { Gmp.assertConstants(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_cos(  &mpfr, &mpfr, MPFR_RNDN) }
-    func tanD()  { Gmp.assertConstants(); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_tan(  &mpfr, &mpfr, MPFR_RNDN) }
-    func asinD() { Gmp.assertConstants(); mpfr_asin( &mpfr, &mpfr, MPFR_RNDN); mpfr_mul(&mpfr, &mpfr, &Gmp.rad2deg!.mpfr, MPFR_RNDN) }
-    func acosD() { Gmp.assertConstants(); mpfr_acos( &mpfr, &mpfr, MPFR_RNDN); mpfr_mul(&mpfr, &mpfr, &Gmp.rad2deg!.mpfr, MPFR_RNDN) }
-    func atanD() { Gmp.assertConstants(); mpfr_atan( &mpfr, &mpfr, MPFR_RNDN); mpfr_mul(&mpfr, &mpfr, &Gmp.rad2deg!.mpfr, MPFR_RNDN) }
+    func sinD()  { Gmp.assertConstants(bits: bits); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_sin(  &mpfr, &mpfr, MPFR_RNDN) }
+    func cosD()  { Gmp.assertConstants(bits: bits); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_cos(  &mpfr, &mpfr, MPFR_RNDN) }
+    func tanD()  { Gmp.assertConstants(bits: bits); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_tan(  &mpfr, &mpfr, MPFR_RNDN) }
+    func asinD() { Gmp.assertConstants(bits: bits); mpfr_asin( &mpfr, &mpfr, MPFR_RNDN); mpfr_mul(&mpfr, &mpfr, &Gmp.rad2deg!.mpfr, MPFR_RNDN) }
+    func acosD() { Gmp.assertConstants(bits: bits); mpfr_acos( &mpfr, &mpfr, MPFR_RNDN); mpfr_mul(&mpfr, &mpfr, &Gmp.rad2deg!.mpfr, MPFR_RNDN) }
+    func atanD() { Gmp.assertConstants(bits: bits); mpfr_atan( &mpfr, &mpfr, MPFR_RNDN); mpfr_mul(&mpfr, &mpfr, &Gmp.rad2deg!.mpfr, MPFR_RNDN) }
     
     func π() {
         mpfr_const_pi(&mpfr, MPFR_RNDN)

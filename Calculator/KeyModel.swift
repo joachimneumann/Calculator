@@ -103,6 +103,7 @@ class KeyModel : ObservableObject {
     
     
     func keyUpCallback(_ symbol: String) {
+        let radOrDegOperators = ["sin", "cos", "tan", "asin", "acos", "atan"]
         switch symbol {
         case "2nd":
             if _2ndActive {
@@ -121,7 +122,11 @@ class KeyModel : ObservableObject {
             brain.asyncOperation("AC")
         default:
             _hasBeenReset = false
-            brain.asyncOperation(symbol)
+            if _rad == false && radOrDegOperators.contains(symbol) {
+                brain.asyncOperation(symbol+"D")
+            } else {
+                brain.asyncOperation(symbol)
+            }
         }
     }
 }
