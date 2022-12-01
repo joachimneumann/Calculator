@@ -1,90 +1,134 @@
-////
-////  Icon.swift
-////  Calculator
-////
-////  Created by Joachim Neumann on 11/10/22.
-////
 //
-//import SwiftUI
+//  Icon.swift
+//  Calculator
 //
-//struct PlusIcon: View {
-//    @Binding var isZoomed: Bool
-//    let showCalculating: Bool
-//    let size: CGFloat
-//    let color: Color
-//    let topPaddingZoomed: CGFloat
-//    let topPaddingNotZoomed: CGFloat
-//    let progressViewScaleFactor: CGFloat
-//    
-//    init(brain: Brain, t: TE, isZoomed: Binding<Bool>, showCalculating: Bool, progressViewScaleFactor: CGFloat) {
-//        size = t.iconSize*0.8
-//        self.progressViewScaleFactor = progressViewScaleFactor
-//        self._isZoomed = isZoomed
-//        self.showCalculating = showCalculating
-//        color = t.digits_1_9.textColor
-//        self.topPaddingNotZoomed = t.zoomTopPaddingNotZoomed
-//        self.topPaddingZoomed = t.zoomTopPaddingZoomed
-//    }
-//    
-//    var body: some View {
-//        Group {
-//            if showCalculating {
-//                ProgressView()
-//                    .frame(width: size * progressViewScaleFactor, height: size * progressViewScaleFactor)
-//                    .foregroundColor(.white)
-//                    .tint(Color.white)
-//            } else {
-//                Image(systemName: "plus.circle.fill")
-//                    .resizable()
-//                    .onTapGesture {
-//                        withAnimation() {
+//  Created by Joachim Neumann on 11/10/22.
+//
+
+import SwiftUI
+
+struct PlusIcon: View {
+    @Binding var isZoomed: Bool
+    @State var color: Color
+    let isEnabled: Bool
+    let size: CGFloat
+    let topPaddingZoomed: CGFloat
+    let topPaddingNotZoomed: CGFloat
+    let progressViewScaleFactor: CGFloat
+    @State var downAnimationFinished = false
+
+    init(isZoomed: Binding<Bool>, isEnabled: Bool, progressViewScaleFactor: CGFloat, size: CGFloat) {
+        self.isEnabled = isEnabled
+        self.size = size
+        self.progressViewScaleFactor = progressViewScaleFactor
+        self._isZoomed = isZoomed
+        color = Color(uiColor: C.digitColors.textColor)
+        self.topPaddingNotZoomed = 0.0//t.zoomTopPaddingNotZoomed
+        self.topPaddingZoomed = 0.0//t.zoomTopPaddingZoomed
+    }
+    
+    var body: some View {
+        Image(systemName: "plus.circle.fill")
+            .resizable()
+            .scaledToFit()
+            .frame(width: size, height: size)
+            .font(.system(size: size, weight: .thin))
+            .foregroundColor(color)
+            .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
+            .padding(.top, isZoomed ? topPaddingZoomed : topPaddingNotZoomed)
+            .simultaneousGesture(DragGesture(minimumDistance: 0)
+                .onChanged { _ in
+                    if isEnabled {
+                        withAnimation() {
+                            isZoomed.toggle()
+                        }
+                    } else {
+                        withAnimation(.easeIn(duration: 0.1)) {
+                            self.downAnimationFinished = false
+                            color = Color.red
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            withAnimation(.easeIn(duration: 0.3)) {
+                                color = Color(uiColor: C.digitColors.textColor)
+                            }
+                        }
+                    }
+                })
+    }
+//                    if isEnabled {
 //                            isZoomed.toggle()
 //                        }
+//                    } else {
+//                        withAnimation(.easeIn(duration: 0.1)) {
+//                            color = Color.red
+//                        }
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+//                            withAnimation(.easeIn(duration: 0.3)) {
+//                                color = Color(uiColor: C.digitColors.textColor)
+//                            }
+//                        }
 //                    }
-//            }
-//        }
-//            .scaledToFit()
-//            .frame(width: size, height: size)
-//            .font(.system(size: size, weight: .thin))
-//            .foregroundColor(color)
-//            .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
-//            .padding(.top, isZoomed ? topPaddingZoomed : topPaddingNotZoomed)
-//    }
-//}
-//
-//struct CopyIcon: View {
-//    @Binding var isCopyingOrPasting: Bool
-//    let brain: Brain
-//    let size: CGFloat
-//    let color: Color
-//    let topPadding: CGFloat
-//    
-//    init(brain: Brain, t: TE, isCopyingOrPasting: Binding<Bool>) {
-//        self.brain = brain
-//        self._isCopyingOrPasting = isCopyingOrPasting
-//        size = t.iconSize
-//        color = t.digits_1_9.textColor
-//        self.topPadding = t.iconSize*0.6
-//    }
-//    
-//    var body: some View {
-//        Text("Copy")
-//            .scaledToFill()
-//            .onTapGesture() {
-//            isCopyingOrPasting = true
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-//                withAnimation() {
-//                    isCopyingOrPasting = false
+//                }
+//                .onEnded { _ in
+////                    if !isEnabled {
+//                        withAnimation(.easeIn(duration: 0.3)) {
+//                            color = Color(uiColor: C.digitColors.textColor)
+//                        }
+////                    }
+//                })
+//            .onTapGesture {
+//                if isEnabled {
+//                    color = Color(uiColor: C.digitColors.textColor)
+//                    withAnimation() {
+//                        isZoomed.toggle()
+//                    }
+//                } else {
+//                    withAnimation(.easeIn(duration: 0.1)) {
+//                        color = Color.red
+//                    }
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+//                        withAnimation(.easeIn(duration: 0.3)) {
+//                            color = Color(uiColor: C.digitColors.textColor)
+//                        }
+//                    }
 //                }
 //            }
-//            UIPasteboard.general.string = brain.last.singleLine(len: brain.precision).replacingOccurrences(of: ",", with: ".")
-//        }
-//        .foregroundColor(color)
-//        .frame(width: size, height: size)
-//        .padding(.top, topPadding)
 //    }
-//}
-//
+}
+
+struct CopyIcon: View {
+    @Binding var isCopyingOrPasting: Bool
+    let keyModel: KeyModel
+    let size: CGFloat
+    let color: Color
+    let topPadding: CGFloat
+    
+    init(keyModel: KeyModel, isCopyingOrPasting: Binding<Bool>, size: CGFloat) {
+        self.keyModel = keyModel
+        self._isCopyingOrPasting = isCopyingOrPasting
+        self.size = size
+        color = Color(uiColor: C.digitColors.textColor)
+        self.topPadding = 0.0//t.iconSize*0.6
+    }
+    
+    var body: some View {
+        Text("Copy")
+            .scaledToFill()
+            .onTapGesture() {
+            isCopyingOrPasting = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                withAnimation() {
+                    isCopyingOrPasting = false
+                }
+            }
+            UIPasteboard.general.string = keyModel.oneLine.replacingOccurrences(of: ",", with: ".")
+        }
+        .foregroundColor(color)
+        .frame(width: size, height: size)
+        .padding(.top, topPadding)
+    }
+}
+
 //struct PasteIcon: View {
 //    @Binding var isCopyingOrPasting: Bool
 //    @Environment(\.scenePhase) var scenePhase

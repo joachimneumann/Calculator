@@ -37,12 +37,7 @@ struct CalculatorApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate // used to disallow Landscape in Mac
     
-    init() {
-//        UINavigationBar.appearance().backgroundColor = .black
-    }
-
     var body: some Scene {
-        
         WindowGroup {
             GeometryReader { geo in
                 let isPad = (UIDevice.current.userInterfaceIdiom == .pad)

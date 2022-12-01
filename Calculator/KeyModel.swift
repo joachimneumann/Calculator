@@ -12,18 +12,27 @@ class KeyModel : ObservableObject {
     @Published var _2ndActive = false
     @Published var isCalculating = false
 
-    let brain = Brain(precision: 100)
+    let precision = 1000000
+    let brain: Brain
     var colorsOf: [String: ColorsOf] = [:]
     var enabledDict: [String: Bool] = [:]
     var _AC = true
     var _hasBeenReset = false
-    var last: String = "0"
+    var oneLine: String {
+        brain.last.multipleLines(withoutComma: oneLineWithoutCommaLength, withComma: oneLineWithCommaLength).oneLine
+    }
+    var multipleLines: MultipleLiner {
+        let len = min(precision, C.maxDigitsInLongDisplay)
+        return brain.last.multipleLines(withoutComma: len, withComma: len)
+    }
+    
     var precisionDescription = "unknown"
 
     var oneLineWithoutCommaLength: Int = 4
     var oneLineWithCommaLength: Int = 4
 
     init() {
+        brain = Brain(precision: precision)
         for key in C.allKeys {
             colorsOf[key] = C.getKeyColors(for: key)
         }
@@ -39,17 +48,17 @@ class KeyModel : ObservableObject {
         if brain.last.isNull {
             DispatchQueue.main.async {
                 self._AC = true
+                self.precisionDescription = self.brain.precision.useWords
             }
         } else {
             DispatchQueue.main.async {
                 self._AC = false
             }
         }
-        let res = brain.last.multipleLines(withoutComma: oneLineWithoutCommaLength, withComma: oneLineWithCommaLength)
-        DispatchQueue.main.async {
-            self.last = res.oneLine
-            self.precisionDescription = self.brain.precision.useWords
-        }
+////        let res = brain.last.multipleLines(withoutComma: oneLineWithoutCommaLength, withComma: oneLineWithCommaLength)
+//        DispatchQueue.main.async {
+////            self.last = res.oneLine
+//        }
     }
 
     private var previouslyPendingKey: String? = nil

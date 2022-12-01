@@ -1,5 +1,5 @@
 //
-//  Key.swift
+//  PlusKey.swift
 //  bg
 //
 //  Created by Joachim Neumann on 11/27/22.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct Key: View {
-    let symbol: String
+struct PlusKey: View {
+    @Binding var isZoomed: Bool
     let keyModel: KeyModel
     let textColor: Color
     let upColor: Color
@@ -19,38 +19,38 @@ struct Key: View {
     @State var tapped: Bool = false
     @State var enabled: Bool = true
 
-    init(_ symbol: String, keyModel: KeyModel, size: CGSize) {
-        self.symbol = symbol
+    init(isZoomed: Binding<Bool>, keyModel: KeyModel, size: CGSize) {
+        self._isZoomed = isZoomed
         self.keyModel = keyModel
-        self.textColor = Color(uiColor: keyModel.colorsOf[symbol]!.textColor)
-        self.upColor   = Color(uiColor: keyModel.colorsOf[symbol]!.upColor)
-        self.downColor = Color(uiColor: keyModel.colorsOf[symbol]!.downColor)
+        self.textColor = Color(uiColor: keyModel.colorsOf["plusKey"]!.textColor)
+        self.upColor   = Color(uiColor: keyModel.colorsOf["plusKey"]!.upColor)
+        self.downColor = Color(uiColor: keyModel.colorsOf["plusKey"]!.downColor)
         self.size = size
     }
 
     var body: some View {
-//        let _ = print("Key \(symbol) with color \(tapped ? downColor : upColor)")
-        ZStack {
-            AnyView(KeyLabel(height: size.height, textColor: textColor).of(symbol))
-                .font(.largeTitle)
-                .frame(width: size.width, height: size.height)
-                .foregroundColor(textColor)
-                .background(tapped ? (enabled ? downColor : disabledColor) : upColor)
-                .clipShape(Capsule())
-                .onTouchGesture(tapped: $tapped, enabled: $enabled, symbol: symbol, keyModel: keyModel)
-        }
+        Image(systemName: "plus.circle.fill")
+            .resizable()
+            .font(Font.title.weight(.thin))
+            .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
+            .frame(width: size.width, height: size.height)
+            .foregroundColor(tapped ? (enabled ? downColor : disabledColor) : upColor)
+            .background(textColor)//tapped ? (enabled ? downColor : disabledColor) : upColor)
+            .clipShape(Capsule())
+            .onTouchGesture(tapped: $tapped, enabled: $enabled, isZoomed: $isZoomed, symbol: "plusKey", keyModel: keyModel)
     }
 }
 
 fileprivate extension View {
-    func onTouchGesture(tapped: Binding<Bool>, enabled: Binding<Bool>, symbol: String, keyModel: KeyModel) -> some View {
-        modifier(OnTouchGestureModifier(tapped: tapped, enabled: enabled, symbol: symbol, keyModel: keyModel))
+    func onTouchGesture(tapped: Binding<Bool>, enabled: Binding<Bool>, isZoomed: Binding<Bool>, symbol: String, keyModel: KeyModel) -> some View {
+        modifier(OnTouchGestureModifier(tapped: tapped, enabled: enabled, isZoomed: isZoomed, symbol: symbol, keyModel: keyModel))
     }
 }
 
 private struct OnTouchGestureModifier: ViewModifier {
     @Binding var tapped: Bool
     @Binding var enabled: Bool
+    @Binding var isZoomed: Bool
     let symbol: String
     let keyModel: KeyModel
     @State var downAnimationFinished = false
@@ -66,7 +66,11 @@ private struct OnTouchGestureModifier: ViewModifier {
                 .onChanged { _ in
                     if !self.tapped {
                         enabled = keyModel.enabledDict[symbol]! /// this activated the red button background for disabled button
-                        if enabled { keyModel.keyUpCallback(symbol) } /// disabled buttons do not work (but their background color is animated)
+                        if enabled {
+                            withAnimation() {
+                                isZoomed.toggle()
+                            }
+                        } /// disabled buttons do not work (but their background color is animated)
                         
                         upHasHappended = false
                         //print("self.tapped \(self.tapped)")
@@ -87,6 +91,7 @@ private struct OnTouchGestureModifier: ViewModifier {
                     }
                 }
                 .onEnded { _ in
+                    //print("ended downAnimationFinished \(downAnimationFinished)")
                     if self.downAnimationFinished {
                         withAnimation(.easeIn(duration: upTime)) {
                             self.tapped = false
@@ -98,8 +103,8 @@ private struct OnTouchGestureModifier: ViewModifier {
     }
 }
 
-struct Key_Previews: PreviewProvider {
+struct Plus_Previews: PreviewProvider {
     static var previews: some View {
-        Key("5", keyModel: KeyModel(), size: CGSize(width: 100, height: 100))
+        PlusKey(isZoomed: .constant(false), keyModel: KeyModel(), size: CGSize(width: 100, height: 100))
     }
 }

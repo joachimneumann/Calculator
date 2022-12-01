@@ -46,7 +46,7 @@ class KeyLabel {
                     .resizable()
                     .font(Font.title.weight(.semibold))
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: (symbol == "±" || symbol == "%") ? height*0.25 : height*0.23)
+                    .frame(width: symbol == "±" || symbol == "%" ? height*0.25 : height*0.23)
             } else {
                 Text(symbol)
                     .font(.system(size: height*0.4, weight: .none))
@@ -92,7 +92,7 @@ class KeyLabel {
         let height: CGFloat
         var body: some View {
             Path { path in
-                print("Root")
+                // print("Root")
                 let steepness: CGFloat = 2.8
                 let f: CGFloat = 0.6
                 let startX: CGFloat = 0.3 * height

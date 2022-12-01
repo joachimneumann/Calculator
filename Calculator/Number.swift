@@ -144,7 +144,7 @@ class Number: CustomDebugStringConvertible {
 //        ret.left = multipleLinerStr
 //        return ret
 //    }
-    
+
     func singleLine(withoutComma: Int, withComma: Int) -> String {
         return multipleLines(withoutComma: withoutComma, withComma: withComma).oneLine
     }

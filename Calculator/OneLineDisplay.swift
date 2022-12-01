@@ -15,11 +15,11 @@ struct OneLineDisplay: View {
     private let maximalTextLength: Int
     private var fontScaleFactor = 1.0
 
-    init(keyModel: KeyModel, size: CGSize, fontShouldScale: Bool) {
-        text = keyModel.last
+    init(keyModel: KeyModel, size: CGSize, fontSize: CGFloat, fontShouldScale: Bool) {
+        // print("OneLineDisplay init")
+        text = keyModel.oneLine
         self.size = size
-        let displayFontSize  = round(size.height * 0.79)
-        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: displayFontSize, weight: .thin)
+        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: .thin)
         var w = 0.0
         var s = ""
         while w < size.width {
@@ -38,8 +38,8 @@ struct OneLineDisplay: View {
         if fontShouldScale {
             fontScaleFactor = 1.5
         }
-        smallFont = Font(UIFont.monospacedDigitSystemFont(ofSize: displayFontSize, weight: .thin))
-        largeFont = Font(UIFont.monospacedDigitSystemFont(ofSize: displayFontSize*fontScaleFactor, weight: .thin))
+        smallFont = Font(UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: .thin))
+        largeFont = Font(UIFont.monospacedDigitSystemFont(ofSize: fontSize*fontScaleFactor, weight: .thin))
         maximalTextLength = text.contains(",") ? keyModel.oneLineWithCommaLength : keyModel.oneLineWithoutCommaLength
     }
     
@@ -64,7 +64,10 @@ struct OneLineDisplay: View {
 
 struct OneLineDisplay_Previews: PreviewProvider {
     static var previews: some View {
-        OneLineDisplay(keyModel: KeyModel(), size: CGSize(width: 300, height: 100), fontShouldScale: true)
+        OneLineDisplay(keyModel: KeyModel(), size: CGSize(width: 300, height: 100.0), fontSize: round(100.0 * 0.79), fontShouldScale: true)
             .background(Color.black)
     }
 }
+
+
+//        let displayFontSize  =

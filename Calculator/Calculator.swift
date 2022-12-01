@@ -9,12 +9,15 @@ import SwiftUI
 
 struct Calculator: View {
     @StateObject private var keyModel = KeyModel()
+    @State var isZoomed = false
     let isPad: Bool
     var isPortrait: Bool
     let size: CGSize
-    var keyboardSize = CGSize(width: 0, height: 0)
-    var displaySize = CGSize(width: 0, height: 0)
-
+    
+    var keyboardSize: CGSize
+    var displaySize: CGSize
+    var singleLineFontSize: CGFloat
+    
     init(isPad: Bool, isPortrait: Bool, size: CGSize) {
         self.isPad = isPad
         self.isPortrait = isPortrait
@@ -27,6 +30,7 @@ struct Calculator: View {
                 /// landscape iPad
                 keyboardSize = CGSize(width: size.width, height: size.height*0.5)
             }
+            displaySize = CGSize(width: size.width, height: size.height*0.1)
         } else {
             /// iPhone
             if isPortrait {
@@ -47,11 +51,14 @@ struct Calculator: View {
                 if isPad || !isPortrait {
                     /// make space for "rad" info
                     displaySize.width -= displayHeight
+                    /// make space for the icon
+                    displaySize.width -= displayHeight
                 }
             }
         }
+        singleLineFontSize = 0.79 * displaySize.height
     }
-    //    @StateObject private var viewLogic = ViewLogic(size: CGSize(width: 100, height: 100))
+    
     var body: some View {
         let info1 = "\(keyModel._hasBeenReset ? "Precision: "+keyModel.precisionDescription+" digits" : "")"
         let info2 = "\(keyModel._rad ? "Rad      " : "")"
@@ -62,88 +69,87 @@ struct Calculator: View {
             }
         } else {
             ZStack {
-                /// display
+                /// display and keyboard
                 VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    OneLineDisplay(keyModel: keyModel, size: displaySize, fontShouldScale: !isPad && isPortrait)
-                    KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
-                        .padding(.bottom, isPortrait ? size.height*0.06 : 0.0)
+                    HStack(spacing: 0.0) {
+                        Spacer(minLength: 0.0)
+                        if isZoomed {
+                            LongDisplay(keyModel: keyModel, fontSize: singleLineFontSize)
+                                .padding(.top, displaySize.height * 0.21)
+                                .padding(.trailing, displaySize.height * 0.9)
+                                .transition(.opacity)
+                        } else {
+                            OneLineDisplay(keyModel: keyModel, size: displaySize, fontSize: singleLineFontSize, fontShouldScale: !isPad && isPortrait)
+                                .padding(.trailing, isPortrait ? 0.0 : displaySize.height * 0.9)
+                                .transition(.opacity)
+                        }
+                    }
+                    if !isZoomed {
+                        KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
+                            .padding(.bottom, isPortrait ? size.height*0.06 : 0.0)
+                    }
                 }
-                VStack(spacing: 0.0) {
-                    if keyModel.isCalculating {
+                
+                /// Icons
+                if !isPortrait {
+                    VStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
                         HStack(spacing: 0.0) {
-                            AnimatedDots(color: Color(white: 0.7))
-                                .padding(.top, displaySize.height * 0.2)
-                            Spacer()
-                        }
-                        Spacer(minLength: 0.0)
-                    } else {
-                        HStack(spacing: 0.0) {
-                            Text(info1)
-                                .foregroundColor(Color.white)
-                            Spacer()
-                        }
-                        Spacer()
-                        HStack(spacing: 0.0) {
-                            Text(info2)
-                                .foregroundColor(Color.white)
-                                .padding(.bottom, displaySize.height * 0.2)
-                            Spacer()
+                            Spacer(minLength: 0.0)
+                            PlusKey(isZoomed: $isZoomed, keyModel: keyModel, size: CGSize(width: displaySize.height * 0.7, height: displaySize.height * 0.7))
+//                            PlusIcon(isZoomed: $isZoomed, isEnabled: keyModel.enabledDict["plusButton"]!, progressViewScaleFactor: 1.0, size: displaySize.height * 0.7)
+                                .padding(.bottom, keyboardSize.height + displaySize.height * 0.12)
                         }
                     }
                 }
-                .padding(.bottom, keyboardSize.height)//+displaySize.height*0.2)
-                .padding(.leading, displaySize.height*0.4)
+
+                /// info1, info2 and animated dots
+                if !isZoomed {
+                    VStack(spacing: 0.0) {
+                        if keyModel.isCalculating {
+                            Spacer(minLength: 0.0)
+                            HStack(spacing: 0.0) {
+                                AnimatedDots(color: Color(white: 0.7))
+                                    .padding(.top, displaySize.height * 0.2)
+                                Spacer()
+                            }
+                            Spacer(minLength: 0.0)
+                        } else {
+                            HStack(spacing: 0.0) {
+                                Text(info1)
+                                    .foregroundColor(Color.white)
+                                Spacer()
+                            }
+                            Spacer()
+                            HStack(spacing: 0.0) {
+                                Text(info2)
+                                    .foregroundColor(Color.white)
+                                    .padding(.bottom, displaySize.height * 0.2)
+                                Spacer()
+                            }
+                        }
+                    }
+                    .transition(.move(edge: .bottom))
+                    .padding(.bottom, keyboardSize.height)//+displaySize.height*0.2)
+                    .padding(.leading, displaySize.height*0.4)
+                }
             }
         }
         
-        //                    if viewLogic.isZoomed && !isPortrait {
-        //                        LongDisplay(text: viewLogic.longText, uiFont: viewLogic.displayUIFont, isCopyingOrPasting: viewLogic.isCopyingOrPasting, color: viewLogic.textColor)
-        //
-        //                        MultiLineDisplay(brain: Brain(), t: TE(), isCopyingOrPasting: false)
-        //                            .padding(.trailing, TE().trailingAfterDisplay)
-        //                    } else {
-        //                        Spacer(minLength: 0.0)
-        //                        SingleLineDisplay(brain: Brain(), t: TE())
-        //                            .padding(.trailing, TE().trailingAfterDisplay)
-
+        if isZoomed && !isPortrait {
+            //            LongDisplay(text: viewLogic.longText, uiFont: viewLogic.displayUIFont, isCopyingOrPasting: viewLogic.isCopyingOrPasting, color: viewLogic.textColor)
+            
+            //            MultiLineDisplay(brain: Brain(), t: TE(), isCopyingOrPasting: false)
+            //                .padding(.trailing, TE().trailingAfterDisplay)
+            //        } else {
+            //            Spacer(minLength: 0.0)
+            //            SingleLineDisplay(brain: Brain(), t: TE())
+            //                .padding(.trailing, TE().trailingAfterDisplay)
+        }
     }
 }
 
-
-//struct Keys: View {
-//    let brain: Brain
-//    var t: TE
-//    let bottomPadding: CGFloat
-//
-//    init(brain: Brain, t: TE) {
-//        self.brain = brain
-//        self.t = t
-//        if !t.isPad && t.isPortrait {
-//            bottomPadding = t.allkeysHeight * 0.07
-//        } else {
-//            bottomPadding = 0
-//        }
-//    }
-//
-//    var body: some View {
-//        VStack(spacing: 0.0) {
-//            Spacer(minLength: 0.0)
-//            HStack(spacing: 0.0) {
-//                if t.isPad || !t.isPortrait {
-////                    ScientificKeys(brain: brain, t: t)
-////                        .padding(.trailing, t.spaceBetweenKeys)
-//                }
-////                NumberKeys(brain: brain, t: t)
-//            }
-//        }
-//        .frame(height: t.allkeysHeight)
-//        .background(Color.black)
-//        .transition(.move(edge: .bottom))
-//        .padding(.bottom, bottomPadding)
-//    }
-//}
 
 struct Calculator_Previews: PreviewProvider {
     static var previews: some View {

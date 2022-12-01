@@ -14,6 +14,8 @@ struct ColorsOf {
 }
 
 struct C {
+    static let maxDigitsInLongDisplay = 1000
+    
     private static let disabled = UIColor(red: 0.4, green: 0.2, blue: 0.2, alpha: 1.0)
     static let digitColors = ColorsOf(
         textColor: UIColor(.white),
@@ -47,6 +49,7 @@ struct C {
         textColor: UIColor(white: 0.2, alpha: 1.0),
         upColor:   UIColor(white: 0.6, alpha: 1.0),
         downColor: UIColor(white: 0.6, alpha: 1.0))
+    
     static func spaceBetweenkeysFraction(withScientificKeys: Bool) -> CGFloat {
         if withScientificKeys {
             return 0.012
@@ -59,6 +62,8 @@ struct C {
             return digitColors
         } else if symbol == "2nd" {
             return _2ndColors
+        } else if symbol == "plusKey" {
+            return operatorColors
         } else if operatorKeys.contains(symbol) {
             return operatorColors
         } else if scientificKeys.contains(symbol) {
@@ -76,8 +81,9 @@ struct C {
         "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10",
         "x!", "sin", "cos", "tan", "asin", "acos", "atan", "e", "EE",
         "Deg", "Rad", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh", "π", "Rand"]
-    static let allKeys = [digitKeys, operatorKeys, scientificKeys].joined()
-    static let requireValidNumber = ["±", "%", "/", "x", "-", "+", "=", "( ", " )", "m+", "m-", "mr", "x^2", "x^3", "x^y", "e^x", "y^x", "2^x", "10^x", "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10", "x!", "sin", "cos", "tan", "asin", "acos", "atan", "EE", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh"]
+    static let iconKeys = ["plusKey"]
+    static let allKeys = [digitKeys, operatorKeys, scientificKeys, iconKeys].joined()
+    static let requireValidNumber = ["±", "%", "/", "x", "-", "+", "=", "( ", " )", "m+", "m-", "mr", "x^2", "x^3", "x^y", "e^x", "y^x", "2^x", "10^x", "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10", "x!", "sin", "cos", "tan", "asin", "acos", "atan", "EE", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh", "plusKey"]
     static let scientificPendingOperations = ["y√", "x^y", "y^x", "logy", "x↑↑y", "EE"]
 }
 
