@@ -88,27 +88,28 @@ struct C {
 }
 
 extension Int {
+    func remainderInWords(_ remainder: String) -> String {
+        if remainder == "1" { return "one" }
+        if remainder == "10" { return "ten" }
+        return remainder
+    }
     var useWords: String {
         let ret = "\(self)"
         if ret.hasSuffix("000000000000") {
-            var substring1 = ret.dropLast(12)
-            substring1 = substring1 + " trillion"
-            return String(substring1)
+            let remainder = String(ret.dropLast(12))
+            return remainderInWords(remainder) + " trillion"
         }
         if ret.hasSuffix("000000000") {
-            var substring1 = ret.dropLast(9)
-            substring1 = substring1 + " billion"
-            return String(substring1)
+            let remainder = String(ret.dropLast(9))
+            return remainderInWords(remainder) + " billion"
         }
         if ret.hasSuffix("000000") {
-            var substring1 = ret.dropLast(6)
-            substring1 = substring1 + " million"
-            return String(substring1)
+            let remainder = String(ret.dropLast(6))
+            return remainderInWords(remainder) + " million"
         }
         if ret.hasSuffix("000") {
-            var substring1 = ret.dropLast(3)
-            substring1 = substring1 + " thousand"
-            return String(substring1)
+            let remainder = String(ret.dropLast(3))
+            return remainderInWords(remainder) + " thousand"
         }
         return ret
     }

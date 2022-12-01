@@ -121,7 +121,7 @@ struct CopyIcon: View {
                     isCopyingOrPasting = false
                 }
             }
-            UIPasteboard.general.string = keyModel.oneLine.replacingOccurrences(of: ",", with: ".")
+//            UIPasteboard.general.string = keyModel.oneLine.replacingOccurrences(of: ",", with: ".")
         }
         .foregroundColor(color)
         .frame(width: size, height: size)

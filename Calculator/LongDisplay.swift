@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct LongDisplay: View {
-    private let text: String
+    private let mantissa: String
+    private let exponent: String?
+    private let abbreviated: Bool
     let keyModel: KeyModel
     let fontSize: CGFloat
     let isCopyingOrPasting: Bool
@@ -21,22 +23,51 @@ struct LongDisplay: View {
     init(keyModel: KeyModel, fontSize: CGFloat) {
         self.keyModel = keyModel
         self.fontSize = fontSize
-        text = keyModel.multipleLines.oneLine
+        let multipleLines = keyModel.multipleLines
+        abbreviated = multipleLines.abbreviated
+        mantissa = multipleLines.left + (abbreviated ? "..." : "")
+        exponent = multipleLines.right
+//        private var abbreviated = false
+//        text = multipleLines.oneLine(showAbbreviation: true)
+//        if multipleLines.abbreviated {
+//            if keyModel.precision > C.maxDigitsInLongDisplay {
+//                abbreviated = true
+//                print("precision \(keyModel.precision) C.maxDigitsInLongDisplay \(C.maxDigitsInLongDisplay) text.count \(text.count)")
+//            }
+//        }
         isCopyingOrPasting = false
         color = Color(uiColor: C.digitColors.textColor)
     }
     
     var body: some View {
-        ScrollView {
-            Text(text)
-                .font(Font(UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: .thin)))
-                .minimumScaleFactor(1.0)
-                .foregroundColor(isCopyingOrPasting ? highlightColor : color)
-                .lineLimit(100)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                .multilineTextAlignment(.trailing)
-//                .frame(height: height)
-        }
+            HStack(alignment: .top, spacing: 0.0) {
+                ScrollView(.vertical) {
+                    Text(mantissa)
+                        .font(Font(UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: .thin)))
+                        .minimumScaleFactor(1.0)
+                        .foregroundColor(isCopyingOrPasting ? highlightColor : color)
+                        .lineLimit(100)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                        .multilineTextAlignment(.trailing)
+                    if abbreviated {
+                        HStack() {
+                            Spacer()
+                            Text("This result is abbreviated to \(C.maxDigitsInLongDisplay.useWords) significant digits. To get up to \(keyModel.precision.useWords) significant digits use copy")
+                                .foregroundColor(.white)
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                }
+                if exponent != nil {
+                    Text(exponent!)
+                        .font(Font(UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: .thin)))
+                        .minimumScaleFactor(1.0)
+                        .foregroundColor(isCopyingOrPasting ? highlightColor : color)
+                        .lineLimit(100)
+                        .multilineTextAlignment(.trailing)
+                }
+            }
     }
 }
 

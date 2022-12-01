@@ -11,12 +11,12 @@ import Foundation
 struct MultipleLiner {
     var left: String
     var right: String? = nil
-    var abreviated: Bool // show a message that there is more?
-    var oneLine: String {
-        if right != nil {
-            return left+right!
+    var abbreviated: Bool // show a message that there is more?
+    func oneLine(showAbbreviation: Bool) -> String {
+        if let right = right {
+            return left + (abbreviated && showAbbreviation ? "..." : "") + right
         } else {
-            return left
+            return left + (abbreviated && showAbbreviation ? "..." : "")
         }
     }
 }
@@ -145,13 +145,9 @@ class Number: CustomDebugStringConvertible {
 //        return ret
 //    }
 
-    func singleLine(withoutComma: Int, withComma: Int) -> String {
-        return multipleLines(withoutComma: withoutComma, withComma: withComma).oneLine
-    }
-    
     func multipleLines(withoutComma: Int, withComma: Int) -> MultipleLiner {
-        var ret = MultipleLiner(left: "0", abreviated: false)
-        ret.abreviated = false
+        var ret = MultipleLiner(left: "0", abbreviated: false)
+        ret.abbreviated = false
         if let s = str {
             if s.contains(",") {
                 if s.count <= withComma {
@@ -250,7 +246,7 @@ class Number: CustomDebugStringConvertible {
                     ret.left = floatString
                 } else {
                     ret.left = String(floatString.prefix(charactersWithComma))
-                    ret.abreviated = true
+                    ret.abbreviated = true
                 }
                 if isNegative { ret.left = "-" + ret.left }
                 return ret
@@ -269,7 +265,7 @@ class Number: CustomDebugStringConvertible {
                     ret.left = floatString
                 } else {
                     ret.left = String(floatString.prefix(charactersWithComma))
-                    ret.abreviated = true
+                    ret.abbreviated = true
                 }
                 if isNegative { ret.left = "-" + ret.left }
                 return ret
@@ -285,7 +281,7 @@ class Number: CustomDebugStringConvertible {
             ret.left = mantissa
         } else {
             ret.left = String(mantissa.prefix(charactersWithComma - ret.right!.count))
-            ret.abreviated = true
+            ret.abbreviated = true
         }
         if isNegative { ret.left = "-" + ret.left }
         return ret

@@ -20,11 +20,12 @@ class KeyModel : ObservableObject {
     var _AC = true
     var _hasBeenReset = false
     var oneLine: String {
-        brain.last.multipleLines(withoutComma: oneLineWithoutCommaLength, withComma: oneLineWithCommaLength).oneLine
+        brain.last.multipleLines(withoutComma: oneLineWithoutCommaLength, withComma: oneLineWithCommaLength).oneLine(showAbbreviation: false)
     }
     var multipleLines: MultipleLiner {
         let len = min(precision, C.maxDigitsInLongDisplay)
-        return brain.last.multipleLines(withoutComma: len, withComma: len)
+        let ret = brain.last.multipleLines(withoutComma: len, withComma: len)
+        return ret
     }
     
     var precisionDescription = "unknown"

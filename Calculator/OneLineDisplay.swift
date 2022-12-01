@@ -17,7 +17,6 @@ struct OneLineDisplay: View {
 
     init(keyModel: KeyModel, size: CGSize, fontSize: CGFloat, fontShouldScale: Bool) {
         // print("OneLineDisplay init")
-        text = keyModel.oneLine
         self.size = size
         let uiFont = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: .thin)
         var w = 0.0
@@ -38,6 +37,7 @@ struct OneLineDisplay: View {
         if fontShouldScale {
             fontScaleFactor = 1.5
         }
+        text = keyModel.oneLine
         smallFont = Font(UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: .thin))
         largeFont = Font(UIFont.monospacedDigitSystemFont(ofSize: fontSize*fontScaleFactor, weight: .thin))
         maximalTextLength = text.contains(",") ? keyModel.oneLineWithCommaLength : keyModel.oneLineWithoutCommaLength
