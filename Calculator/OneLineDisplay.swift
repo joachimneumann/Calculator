@@ -16,7 +16,7 @@ struct OneLineDisplay: View {
     private var fontScaleFactor = 1.0
 
     init(keyModel: KeyModel, size: CGSize, fontSize: CGFloat, fontShouldScale: Bool) {
-        // print("OneLineDisplay init")
+         print("OneLineDisplay init")
         self.size = size
         let uiFont = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: .thin)
         var w = 0.0
@@ -44,6 +44,7 @@ struct OneLineDisplay: View {
     }
     
     var body: some View {
+        let _ = print("OneLineDisplay body")
         HStack(spacing: 0.0) {
             Spacer(minLength: 0.0)
             if text.count >= maximalTextLength {
@@ -69,5 +70,10 @@ struct OneLineDisplay_Previews: PreviewProvider {
     }
 }
 
-
-//        let displayFontSize  =
+extension String {
+    func sizeOf_String(uiFont: UIFont) -> CGSize {
+        let fontAttribute = [NSAttributedString.Key.font: uiFont]
+        let size = self.size(withAttributes: fontAttribute)  // for Single Line
+       return size;
+    }
+}
