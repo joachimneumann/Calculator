@@ -64,14 +64,15 @@ private struct OnTouchGestureModifier: ViewModifier {
         content
             .simultaneousGesture(DragGesture(minimumDistance: 0)
                 .onChanged { _ in
-                    
-                    enabled = keyModel.enabledDict[symbol]! /// this activated the red button background for disabled button
-                    
-                    if enabled { keyModel.keyUpCallback(symbol) } /// disabled buttons do not work (but their background color is animated)
-                    
-                    self.downAnimationFinished = false
-                    upHasHappended = false
                     if !self.tapped {
+                        enabled = keyModel.enabledDict[symbol]! /// this activated the red button background for disabled button
+                        if enabled { keyModel.keyUpCallback(symbol) } /// disabled buttons do not work (but their background color is animated)
+                        
+                        upHasHappended = false
+                        print("self.tapped \(self.tapped)")
+
+                        self.downAnimationFinished = false
+                        //print("onChanged downAnimationFinished \(downAnimationFinished)")
                         withAnimation(.easeIn(duration: downTime)) {
                             self.tapped = true
                         }
