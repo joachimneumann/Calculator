@@ -9,7 +9,6 @@ import SwiftUI
 
 struct Calculator: View {
     @StateObject private var keyModel = KeyModel()
-    @State var isZoomed = false
     let isPad: Bool
     var isPortrait: Bool
     let size: CGSize
@@ -74,7 +73,7 @@ struct Calculator: View {
                     Spacer(minLength: 0.0)
                     HStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
-                        if isZoomed {
+                        if keyModel.zoomed {
                             LongDisplay(keyModel: keyModel, fontSize: singleLineFontSize)
                                 .padding(.top, displaySize.height * 0.21)
                                 .padding(.trailing, displaySize.height * 0.9)
@@ -85,7 +84,7 @@ struct Calculator: View {
                                 .transition(.opacity)
                         }
                     }
-                    if !isZoomed {
+                    if !keyModel.zoomed {
                         KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
                             .padding(.bottom, isPortrait ? size.height*0.06 : 0.0)
                     }
@@ -97,7 +96,7 @@ struct Calculator: View {
                         Spacer(minLength: 0.0)
                         HStack(spacing: 0.0) {
                             Spacer(minLength: 0.0)
-                            PlusKey(isZoomed: $isZoomed, keyModel: keyModel, size: CGSize(width: displaySize.height * 0.7, height: displaySize.height * 0.7))
+                            PlusKey(keyModel: keyModel, size: CGSize(width: displaySize.height * 0.7, height: displaySize.height * 0.7))
 //                            PlusIcon(isZoomed: $isZoomed, isEnabled: keyModel.enabledDict["plusButton"]!, progressViewScaleFactor: 1.0, size: displaySize.height * 0.7)
                                 .padding(.bottom, keyboardSize.height + displaySize.height * 0.12)
                         }
@@ -105,7 +104,7 @@ struct Calculator: View {
                 }
 
                 /// info1, info2 and animated dots
-                if !isZoomed {
+                if !keyModel.zoomed {
                     VStack(spacing: 0.0) {
                         if keyModel.isCalculating {
                             Spacer(minLength: 0.0)
@@ -137,7 +136,7 @@ struct Calculator: View {
             }
         }
         
-        if isZoomed && !isPortrait {
+        if keyModel.zoomed && !isPortrait {
             //            LongDisplay(text: viewLogic.longText, uiFont: viewLogic.displayUIFont, isCopyingOrPasting: viewLogic.isCopyingOrPasting, color: viewLogic.textColor)
             
             //            MultiLineDisplay(brain: Brain(), t: TE(), isCopyingOrPasting: false)

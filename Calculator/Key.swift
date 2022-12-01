@@ -42,7 +42,7 @@ struct Key: View {
     }
 }
 
-fileprivate extension View {
+extension View {
     func onTouchGesture(tapped: Binding<Bool>, enabled: Binding<Bool>, symbol: String, keyModel: KeyModel) -> some View {
         modifier(OnTouchGestureModifier(tapped: tapped, enabled: enabled, symbol: symbol, keyModel: keyModel))
     }
@@ -66,7 +66,15 @@ private struct OnTouchGestureModifier: ViewModifier {
                 .onChanged { _ in
                     if !self.tapped {
                         enabled = keyModel.enabledDict[symbol]! /// this activated the red button background for disabled button
-                        if enabled { keyModel.keyUpCallback(symbol) } /// disabled buttons do not work (but their background color is animated)
+                        if enabled {
+                            if symbol == "plusKey" {
+                                withAnimation(.easeIn(duration: upTime)) {
+                                    keyModel.keyUpCallback(symbol)
+                                }
+                            } else {
+                                keyModel.keyUpCallback(symbol)
+                            }
+                        } /// disabled buttons do not work (but their background color is animated)
                         
                         upHasHappended = false
                         //print("self.tapped \(self.tapped)")

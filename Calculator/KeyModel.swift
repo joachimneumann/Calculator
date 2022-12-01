@@ -11,6 +11,7 @@ class KeyModel : ObservableObject {
     @Published var _rad = false
     @Published var _2ndActive = false
     @Published var isCalculating = false
+    @Published var zoomed = false
 
     let precision = 1000000
     let brain: Brain
@@ -129,6 +130,8 @@ class KeyModel : ObservableObject {
         case "AC":
             _hasBeenReset = true
             brain.asyncOperation("AC")
+        case "plusKey":
+            zoomed.toggle()
         default:
             _hasBeenReset = false
             if _rad == false && radOrDegOperators.contains(symbol) {
