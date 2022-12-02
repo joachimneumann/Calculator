@@ -19,6 +19,7 @@ struct PlusKey: View {
     @State var enabled: Bool = true
 
     init(keyModel: KeyModel, size: CGSize) {
+        print("PlusKey init()")
         self.keyModel = keyModel
         self.textColor = Color(uiColor: keyModel.colorsOf["plusKey"]!.textColor)
         self.upColor   = Color(uiColor: keyModel.colorsOf["plusKey"]!.upColor)

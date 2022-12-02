@@ -57,7 +57,7 @@ struct Calculator: View {
             }
         }
         singleLineFontSize = 0.79 * displaySize.height
-        //print("Calculator init()")
+        print("Calculator init()")
     }
     
     var body: some View {

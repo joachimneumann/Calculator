@@ -305,6 +305,7 @@ class Brain {
     }
     
     init(precision initialPrecision: Int) {
+        print("brain init()")
         self.precision = initialPrecision
         self.bits = Int(Double(Brain.internalPrecision(initialPrecision)) * 3.32192809489)
         self.nonWaitingOperation("AC")
@@ -322,6 +323,7 @@ class Brain {
         var endTime: CFAbsoluteTime?
 
         init() {
+            print("ParkBenchTimer init()")
             startTime = CFAbsoluteTimeGetCurrent()
         }
 

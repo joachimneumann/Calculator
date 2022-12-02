@@ -20,6 +20,7 @@ struct ColoredStepper: View {
         minusEnabled: Bool,
         onIncrement: CallBack,
         onDecrement: CallBack) {
+            print("StepperColors init()")
             self.stepperColors = StepperColors(leftBtnColor: .white, rightBtnColor: .white, backgroundColor: .gray)
             self.plusEnabled = plusEnabled
             self.minusEnabled = minusEnabled

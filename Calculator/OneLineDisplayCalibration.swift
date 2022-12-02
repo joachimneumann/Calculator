@@ -16,7 +16,7 @@ struct OneLineDisplayCalibration: View {
     var fontScaleFactor = 1.0
     
         init(keyModel: KeyModel, size: CGSize, fontSize: CGFloat, fontShouldScale: Bool) {
-             print("OneLineDisplayCalibration init()")
+            print("OneLineDisplayCalibration init()")
             self.size = size
             let uiFont = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: .thin)
             var w = 0.0
@@ -44,7 +44,8 @@ struct OneLineDisplayCalibration: View {
             print("oneLineWithCommaLength \(keyModel.oneLineWithCommaLength)")
         }
     var body: some View {
-        Text("calibrating")
+        Rectangle()
+            .foregroundColor(Color.black)
     }
 }
     

@@ -21,6 +21,7 @@ struct LongDisplay: View {
         blue:   113.0/255.0)
 
     init(keyModel: KeyModel, fontSize: CGFloat) {
+        print("LongDisplay init()")
         self.keyModel = keyModel
         self.fontSize = fontSize
         let multipleLines = keyModel.multipleLines

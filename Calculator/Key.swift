@@ -20,6 +20,7 @@ struct Key: View {
     @State var enabled: Bool = true
 
     init(_ symbol: String, keyModel: KeyModel, size: CGSize) {
+        print("Key init()")
         self.symbol = symbol
         self.keyModel = keyModel
         self.textColor = Color(uiColor: keyModel.colorsOf[symbol]!.textColor)

@@ -34,6 +34,7 @@ class KeyModel : ObservableObject {
     var oneLineWithCommaLength: Int = 4
 
     init() {
+        print("KeyModel init()")
         brain = Brain(precision: precision)
         for key in C.allKeys {
             colorsOf[key] = C.getKeyColors(for: key)

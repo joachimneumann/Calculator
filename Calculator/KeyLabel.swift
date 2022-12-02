@@ -13,6 +13,7 @@ class KeyLabel {
     let textColor: Color
     
     init(height: CGFloat, textColor: Color) {
+        print("KeyLabel init()")
         self.height = height
         self.textColor = textColor
     }
