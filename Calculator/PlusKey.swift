@@ -18,15 +18,6 @@ struct PlusKey: View {
     @State var tapped: Bool = false
     @State var enabled: Bool = true
 
-    init(keyModel: KeyModel, size: CGSize) {
-        print("PlusKey init()")
-        self.keyModel = keyModel
-        self.textColor = Color(uiColor: keyModel.colorsOf["plusKey"]!.textColor)
-        self.upColor   = Color(uiColor: keyModel.colorsOf["plusKey"]!.upColor)
-        self.downColor = Color(uiColor: keyModel.colorsOf["plusKey"]!.downColor)
-        self.size = size
-    }
-
     var body: some View {
         Image(systemName: "plus.circle.fill")
             .resizable()
@@ -43,6 +34,7 @@ struct PlusKey: View {
 
 struct Plus_Previews: PreviewProvider {
     static var previews: some View {
-        PlusKey(keyModel: KeyModel(), size: CGSize(width: 100, height: 100))
+        let keyModel = KeyModel()
+        PlusKey(keyModel: keyModel, textColor: Color(uiColor: keyModel.colorsOf["plusKey"]!.textColor), upColor: Color(uiColor: keyModel.colorsOf["plusKey"]!.upColor), downColor: Color(uiColor: keyModel.colorsOf["plusKey"]!.downColor), size: CGSize(width: 100, height: 100))
     }
 }

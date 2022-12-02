@@ -7,18 +7,13 @@
 
 import SwiftUI
 
-
-class KeyLabel {
+//@ViewBuilder func of(_ symbol: String, height: CGFloat, textColor: Color) -> some View {
+struct of: View {
+    let symbol: String
     let height: CGFloat
     let textColor: Color
-    
-    init(height: CGFloat, textColor: Color) {
-        print("KeyLabel init()")
-        self.height = height
-        self.textColor = textColor
-    }
-    
-    @ViewBuilder func of(_ symbol: String) -> some View {
+    var body: some View {
+        let _ = print("of \(symbol)")
         switch symbol {
         case "√" :    RootShapeView(rootDigit: "2", color: textColor, height: height)
         case "3√":    RootShapeView(rootDigit: "3", color: textColor, height: height)
@@ -49,11 +44,13 @@ class KeyLabel {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: symbol == "±" || symbol == "%" ? height*0.25 : height*0.23)
             } else {
+                let _ = print("of Text")
                 Text(symbol)
                     .font(.system(size: height*0.4, weight: .none))
             }
         }
     }
+}
     
     private let sfImageNames: [String: String] = [
         "+":   "plus",
@@ -209,35 +206,33 @@ class KeyLabel {
             }
         }
     }
-    
-}
 
-struct KeyLabel_Previews: PreviewProvider {
-    static var previews: some View {
-        let w = 131.7
-        let h = 131.1
-        let size = CGSize(width: w, height: h)
-        let keyLabel = KeyLabel(height: size.height, textColor: Color.white)
-        let keyContent: any View = keyLabel.of("One_x")
-        VStack {
-            AnyView(keyContent)
-                .foregroundColor(Color.white)
-                .frame(width: w, height: h)
-                .background(Color.black)
-                .clipShape(Capsule())
-                .padding(.bottom, 20)
-            AnyView(keyContent)
-                .foregroundColor(Color.white)
-                .frame(width: w*2, height: h)
-                .background(Color.black)
-                .clipShape(Capsule())
-                .padding(.bottom, 20)
-            AnyView(keyContent)
-                .foregroundColor(Color.white)
-                .frame(width: w*3, height: h)
-                .background(Color.black)
-                .clipShape(Capsule())
-                .padding(.bottom, 20)
-        }
-    }
-}
+//struct KeyLabel_Previews: PreviewProvider {
+//    static var previews: some View {
+//        let w = 131.7
+//        let h = 131.1
+//        let size = CGSize(width: w, height: h)
+//        let keyLabel = KeyLabel()
+//        let keyContent: any View = keyLabel.of("One_x", height: size.height, textColor: Color.white)
+//        VStack {
+//            AnyView(keyContent)
+//                .foregroundColor(Color.white)
+//                .frame(width: w, height: h)
+//                .background(Color.black)
+//                .clipShape(Capsule())
+//                .padding(.bottom, 20)
+//            AnyView(keyContent)
+//                .foregroundColor(Color.white)
+//                .frame(width: w*2, height: h)
+//                .background(Color.black)
+//                .clipShape(Capsule())
+//                .padding(.bottom, 20)
+//            AnyView(keyContent)
+//                .foregroundColor(Color.white)
+//                .frame(width: w*3, height: h)
+//                .background(Color.black)
+//                .clipShape(Capsule())
+//                .padding(.bottom, 20)
+//        }
+//    }
+//}

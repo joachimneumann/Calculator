@@ -106,8 +106,7 @@ struct Calculator: View {
                             Spacer(minLength: 0.0)
                             HStack(spacing: 0.0) {
                                 Spacer(minLength: 0.0)
-                                PlusKey(keyModel: keyModel, size: CGSize(width: displaySize.height * 0.7, height: displaySize.height * 0.7))
-                                //                            PlusIcon(isZoomed: $isZoomed, isEnabled: keyModel.enabledDict["plusButton"]!, progressViewScaleFactor: 1.0, size: displaySize.height * 0.7)
+                                PlusKey(keyModel: keyModel, textColor: Color(uiColor: keyModel.colorsOf["plusKey"]!.textColor), upColor: Color(uiColor: keyModel.colorsOf["plusKey"]!.upColor), downColor: Color(uiColor: keyModel.colorsOf["plusKey"]!.downColor), size: CGSize(width: displaySize.height * 0.7, height: displaySize.height * 0.7))
                                     .padding(.bottom, keyboardSize.height + displaySize.height * 0.12)
                             }
                         }

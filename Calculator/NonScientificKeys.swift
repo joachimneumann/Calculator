@@ -25,35 +25,37 @@ struct NonScientificKeys: View {
     
     var body: some View {
         VStack(spacing: spaceBetweenKeys) {
+//            HStack(spacing: spaceBetweenKeys) {
+//                Key(keyModel._AC ? "AC" : "C", keyModel: keyModel, size: keySize)
+//                Key("±", keyModel: keyModel, size: keySize)
+//                Key("%", keyModel: keyModel, size: keySize)
+//                Key("/", keyModel: keyModel, size: keySize)
+//            }
             HStack(spacing: spaceBetweenKeys) {
-                Key(keyModel._AC ? "AC" : "C", keyModel: keyModel, size: keySize)
-                Key("±", keyModel: keyModel, size: keySize)
-                Key("%", keyModel: keyModel, size: keySize)
-                Key("/", keyModel: keyModel, size: keySize)
+                Key(symbol: "7", keyModel: keyModel, textColor: Color(uiColor: keyModel.colorsOf["7"]!.textColor), upColor: Color(uiColor: keyModel.colorsOf["7"]!.upColor), downColor: Color(uiColor: keyModel.colorsOf["7"]!.downColor), size: keySize)
+//                Key("7", keyModel: keyModel, size: keySize)
+//                Key("8", keyModel: keyModel, size: keySize)
+//                Key("9", keyModel: keyModel, size: keySize)
+//                Key("x", keyModel: keyModel, size: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key("7", keyModel: keyModel, size: keySize)
-                Key("8", keyModel: keyModel, size: keySize)
-                Key("9", keyModel: keyModel, size: keySize)
-                Key("x", keyModel: keyModel, size: keySize)
+//                Key(symbol: "7", keyModel: keyModel, textColor: keyModel.colorsOf["7"]?.textColor, upColor: keyModel.colorsOf["7"]?.upColor, downColor: keyModel.colorsOf["7"]?.downColor, size: keySize)
+//                Key("4", keyModel: keyModel, size: keySize)
+//                Key("5", keyModel: keyModel, size: keySize)
+//                Key("6", keyModel: keyModel, size: keySize)
+//                Key("-", keyModel: keyModel, size: keySize)
             }
-            HStack(spacing: spaceBetweenKeys) {
-                Key("4", keyModel: keyModel, size: keySize)
-                Key("5", keyModel: keyModel, size: keySize)
-                Key("6", keyModel: keyModel, size: keySize)
-                Key("-", keyModel: keyModel, size: keySize)
-            }
-            HStack(spacing: spaceBetweenKeys) {
-                Key("1", keyModel: keyModel, size: keySize)
-                Key("2", keyModel: keyModel, size: keySize)
-                Key("3", keyModel: keyModel, size: keySize)
-                Key("+", keyModel: keyModel, size: keySize)
-            }
-            HStack(spacing: spaceBetweenKeys) {
-                Key("0", keyModel: keyModel, size: doubleKeySize)
-                Key(",", keyModel: keyModel, size: keySize)
-                Key("=", keyModel: keyModel, size: keySize)
-            }
+//            HStack(spacing: spaceBetweenKeys) {
+//                Key("1", keyModel: keyModel, size: keySize)
+//                Key("2", keyModel: keyModel, size: keySize)
+//                Key("3", keyModel: keyModel, size: keySize)
+//                Key("+", keyModel: keyModel, size: keySize)
+//            }
+//            HStack(spacing: spaceBetweenKeys) {
+//                Key("0", keyModel: keyModel, size: doubleKeySize)
+//                Key(",", keyModel: keyModel, size: keySize)
+//                Key("=", keyModel: keyModel, size: keySize)
+//            }
         }
     }
 }
