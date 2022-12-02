@@ -36,7 +36,6 @@ struct KeysView: View {
                 NonScientificKeys(keyModel: keyModel, spaceBetweenKeys: space, size: size)
             }
         }
-        .transition(.move(edge: .bottom))
     }
 }
 
