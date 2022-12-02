@@ -5,7 +5,15 @@
 //  Created by Joachim Neumann on 11/27/22.
 //
 
-import Foundation
+import UIKit
+
+struct KeyInfo {
+    let symbol: String
+    let textColor: UIColor
+    let upColor: UIColor
+    let downColor: UIColor
+    let enabled: Bool
+}
 
 class KeyModel : ObservableObject {
     @Published var _rad = false
@@ -114,7 +122,7 @@ class KeyModel : ObservableObject {
     }
     
     
-    func keyUpCallback(_ symbol: String) {
+    func keyDownCallback(_ symbol: String) {
         let radOrDegOperators = ["sin", "cos", "tan", "asin", "acos", "atan"]
         switch symbol {
         case "2nd":

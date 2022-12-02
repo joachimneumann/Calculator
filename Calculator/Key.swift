@@ -22,7 +22,7 @@ struct Key: View {
     var body: some View {
         let _ = print("Key body \(symbol) with color \(tapped ? downColor : upColor)")
         ZStack {
-            AnyView(Label(symbol: symbol, height: size.height, textColor: textColor))
+            Label(symbol: symbol, height: size.height, textColor: textColor)
                 .font(.largeTitle)
                 .frame(width: size.width, height: size.height)
                 .foregroundColor(textColor)
@@ -60,10 +60,10 @@ private struct OnTouchGestureModifier: ViewModifier {
                         if enabled {
                             if symbol == "plusKey" {
                                 withAnimation(.easeIn(duration: upTime)) {
-                                    keyModel.keyUpCallback(symbol)
+                                    keyModel.keyDownCallback(symbol)
                                 }
                             } else {
-                                keyModel.keyUpCallback(symbol)
+                                keyModel.keyDownCallback(symbol)
                             }
                         } /// disabled buttons do not work (but their background color is animated)
                         

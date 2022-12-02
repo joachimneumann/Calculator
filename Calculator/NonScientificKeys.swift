@@ -23,15 +23,8 @@ struct NonScientificKeys: View {
         self.doubleKeySize = CGSize(width: 2.0 * w + spaceBetweenKeys, height: h)
     }
     
-    struct KeyInfo {
-        let symbol: String
-        let textColor: Color
-        let upColor: Color
-        let downColor: Color
-    }
-    
     var body: some View {
-        let k = KeyInfo(symbol: "7", textColor: Color(uiColor: keyModel.colorsOf["7"]!.textColor), upColor: Color(uiColor: keyModel.colorsOf["7"]!.upColor), downColor: Color(uiColor: keyModel.colorsOf["7"]!.downColor))
+        let k = KeyInfo(symbol: "7", textColor: keyModel.colorsOf["7"]!.textColor, upColor: keyModel.colorsOf["7"]!.upColor, downColor: keyModel.colorsOf["7"]!.downColor, enabled: true)
         VStack(spacing: spaceBetweenKeys) {
 //            HStack(spacing: spaceBetweenKeys) {
 //                Key(keyModel._AC ? "AC" : "C", keyModel: keyModel, size: keySize)
