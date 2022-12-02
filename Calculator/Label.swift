@@ -1,5 +1,5 @@
 //
-//  KeyLabel.swift
+//  Label.swift
 //  ViewBuilder
 //
 //  Created by Joachim Neumann on 11/19/22.
@@ -12,7 +12,7 @@ struct Label: View {
     let height: CGFloat
     let textColor: Color
     var body: some View {
-        let _ = print("of \(symbol)")
+        let _ = print("Label \(symbol)")
         switch symbol {
         case "√" :    RootShapeView(rootDigit: "2", color: textColor, height: height)
         case "3√":    RootShapeView(rootDigit: "3", color: textColor, height: height)
