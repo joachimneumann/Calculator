@@ -8,12 +8,9 @@
 import SwiftUI
 
 struct PlusKey: View {
+    var keyInfo: KeyModel.KeyInfo
     let keyModel: KeyModel
-    let textColor: Color
-    let upColor: Color
-    let downColor: Color
     let size: CGSize
-    let disabledColor = Color.red
 
     @State var tapped: Bool = false
     @State var enabled: Bool = true
@@ -25,10 +22,10 @@ struct PlusKey: View {
             .rotationEffect(keyModel.zoomed ? .degrees(-45.0) : .degrees(0.0))
             .animation(.linear(duration: 0.2).delay(0), value: keyModel.zoomed)
             .frame(width: size.width, height: size.height)
-            .foregroundColor(tapped ? (enabled ? downColor : disabledColor) : upColor)
-            .background(textColor)//tapped ? (enabled ? downColor : disabledColor) : upColor)
+            .foregroundColor(Color(uiColor: tapped ? (enabled ? keyInfo.colors.downColor : C.disabledColor) : keyInfo.colors.upColor))
+            .background(Color(uiColor: keyInfo.colors.textColor))
             .clipShape(Capsule())
-//            .onTouchGesture(tapped: $tapped, enabled: $enabled, symbol: "plusKey")
+            .onTouchGesture(tapped: $tapped, keyInfo: keyInfo, keyModel: keyModel)
     }
 }
 

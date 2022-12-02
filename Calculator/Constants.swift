@@ -5,26 +5,28 @@
 //  Created by Joachim Neumann on 11/27/22.
 //
 
-import UIKit
+import SwiftUI
 
-struct ColorsOf {
-    var textColor: UIColor
-    var upColor: UIColor
-    var downColor: UIColor
+class ColorsOf: ObservableObject {
+    @Published var textColor: UIColor
+    @Published var upColor: UIColor
+    @Published var downColor: UIColor
+    init(textColor: UIColor, upColor: UIColor, downColor: UIColor) {
+        self.textColor = textColor
+        self.upColor = upColor
+        self.downColor = downColor
+    }
 }
 
 struct C {
     static let maxDigitsInLongDisplay = 1000
     
-    private static let disabled = UIColor(red: 0.4, green: 0.2, blue: 0.2, alpha: 1.0)
+    private static let disabled = UIColor.red
     static let digitColors = ColorsOf(
         textColor: UIColor(.white),
         upColor:   UIColor(white: 0.2, alpha: 1.0),
         downColor: UIColor(white: 0.4, alpha: 1.0))
-    static let disabledColors = ColorsOf(
-        textColor: UIColor(.white),
-        upColor:   disabled,
-        downColor: disabled)
+    static let disabledColor = UIColor.red
     static let operatorColors = ColorsOf(
         textColor: UIColor(.white),
         upColor:   UIColor(white: 0.5, alpha: 1.0),

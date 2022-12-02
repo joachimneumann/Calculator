@@ -8,22 +8,21 @@
 import SwiftUI
 
 struct Key: View {
-    var keyInfo: KeyModel.KeyInfo
-    let keyModel: KeyModel
+    @ObservedObject var keyInfo: KeyModel.KeyInfo
+    var keyModel: KeyModel
     let size: CGSize
-    let disabledColor = Color.red
 
     @State var tapped: Bool = false
     @State var enabled: Bool = true
 
     var body: some View {
-        let _ = print("Key body \(keyInfo.symbol) with color \(tapped ? keyInfo.downColor : keyInfo.upColor)")
+        let _ = print("Key body \(keyInfo.symbol) with color \(tapped ? keyInfo.colors.downColor : keyInfo.colors.upColor)")
         ZStack {
             Label(keyInfo: keyInfo, height: size.height)
                 .font(.largeTitle)
                 .frame(width: size.width, height: size.height)
-                .foregroundColor(Color(uiColor: keyInfo.textColor))
-                .background(tapped ? (keyInfo.enabled() ? Color(uiColor: keyInfo.downColor) : disabledColor) : Color(uiColor: keyInfo.upColor))
+                .foregroundColor(Color(uiColor: keyInfo.colors.textColor))
+                .background(Color(uiColor: tapped ? (enabled ? keyInfo.colors.downColor : C.disabledColor) : keyInfo.colors.upColor))
                 .clipShape(Capsule())
                 .onTouchGesture(tapped: $tapped, keyInfo: keyInfo, keyModel: keyModel)
         }

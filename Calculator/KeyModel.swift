@@ -5,23 +5,14 @@
 //  Created by Joachim Neumann on 11/27/22.
 //
 
-import UIKit
+import SwiftUI
 
 
 class KeyModel : ObservableObject {
-    class KeyInfo {
+    class KeyInfo: ObservableObject {
         let symbol: String
-        var colors: ColorsOf
-        var _enabled = true
-        var textColor: UIColor {
-            colors.textColor
-        }
-        var upColor: UIColor{
-            colors.upColor
-        }
-        var downColor: UIColor{
-            colors.downColor
-        }
+        @Published var colors: ColorsOf
+        @Published var _enabled = true
         init(symbol: String, colors: ColorsOf) {
             self.symbol = symbol
             self.colors = colors
@@ -38,7 +29,7 @@ class KeyModel : ObservableObject {
 
     let precision = 1000000
     let brain: Brain
-    var keyInfo: [String: KeyInfo] = [:]
+    @Published var keyInfo: [String: KeyInfo] = [:]
     var enabledDict: [String: Bool] = [:]
     var _AC = true
     var _hasBeenReset = false
@@ -89,6 +80,14 @@ class KeyModel : ObservableObject {
 
     private var previouslyPendingKey: String? = nil
     func pendingOperatorCallback(op: String?) {
+//        DispatchQueue.main.async {
+//            for key in C.allKeys {
+//                self.keyInfo[key]!.colors = ColorsOf(textColor: .white, upColor: C.disabledColor, downColor: C.disabledColor)
+////                self.keyInfo[key] = KeyInfo(symbol: key, colors: ColorsOf(textColor: .white, upColor: C.disabledColor, downColor: C.disabledColor))
+//            }
+//        }
+        
+        
         /// In the brain, we already check if the new operator is different from the old one.
 
         /// Set the previous one back to normal?
@@ -138,6 +137,9 @@ class KeyModel : ObservableObject {
     
     
     func keyDownCallback(_ symbol: String) {
+//        for key in C.allKeys {
+//            keyInfo[key] = KeyInfo(symbol: key, colors: ColorsOf(textColor: .white, upColor: C.disabledColor, downColor: C.disabledColor))
+//        }
         let radOrDegOperators = ["sin", "cos", "tan", "asin", "acos", "atan"]
         switch symbol {
         case "2nd":

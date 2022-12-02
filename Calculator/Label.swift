@@ -11,7 +11,7 @@ struct Label: View {
     let keyInfo: KeyModel.KeyInfo
     let height: CGFloat
     var body: some View {
-        let color = Color(uiColor: keyInfo.textColor)
+        let color = Color(uiColor: keyInfo.colors.textColor)
         let symbol = keyInfo.symbol
         let _ = print("Label \(symbol)")
         switch symbol {
