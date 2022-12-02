@@ -8,11 +8,8 @@
 import SwiftUI
 
 struct Key: View {
-    let symbol: String
+    var keyInfo: KeyModel.KeyInfo
     let keyModel: KeyModel
-    let textColor: Color
-    let upColor: Color
-    let downColor: Color
     let size: CGSize
     let disabledColor = Color.red
 
@@ -20,30 +17,30 @@ struct Key: View {
     @State var enabled: Bool = true
 
     var body: some View {
-        let _ = print("Key body \(symbol) with color \(tapped ? downColor : upColor)")
+        let _ = print("Key body \(keyInfo.symbol) with color \(tapped ? keyInfo.downColor : keyInfo.upColor)")
         ZStack {
-            Label(symbol: symbol, height: size.height, textColor: textColor)
+            Label(keyInfo: keyInfo, height: size.height)
                 .font(.largeTitle)
                 .frame(width: size.width, height: size.height)
-                .foregroundColor(textColor)
-                .background(tapped ? (enabled ? downColor : disabledColor) : upColor)
+                .foregroundColor(Color(uiColor: keyInfo.textColor))
+                .background(tapped ? (keyInfo.enabled() ? Color(uiColor: keyInfo.downColor) : disabledColor) : Color(uiColor: keyInfo.upColor))
                 .clipShape(Capsule())
-                .onTouchGesture(tapped: $tapped, enabled: $enabled, symbol: symbol, keyModel: keyModel)
+                .onTouchGesture(tapped: $tapped, keyInfo: keyInfo, keyModel: keyModel)
         }
     }
 }
 
 extension View {
-    func onTouchGesture(tapped: Binding<Bool>, enabled: Binding<Bool>, symbol: String, keyModel: KeyModel) -> some View {
-        modifier(OnTouchGestureModifier(tapped: tapped, enabled: enabled, symbol: symbol, keyModel: keyModel))
+    func onTouchGesture(tapped: Binding<Bool>, keyInfo: KeyModel.KeyInfo, keyModel: KeyModel) -> some View {
+        modifier(OnTouchGestureModifier(tapped: tapped, keyInfo: keyInfo, keyModel: keyModel))
     }
 }
 
 private struct OnTouchGestureModifier: ViewModifier {
     @Binding var tapped: Bool
-    @Binding var enabled: Bool
-    let symbol: String
+    let keyInfo: KeyModel.KeyInfo
     let keyModel: KeyModel
+
     @State var downAnimationFinished = false
     @State var upHasHappended = false
     let downTime = 0.1
@@ -56,17 +53,17 @@ private struct OnTouchGestureModifier: ViewModifier {
             .simultaneousGesture(DragGesture(minimumDistance: 0)
                 .onChanged { _ in
                     if !self.tapped {
-                        enabled = keyModel.enabledDict[symbol]! /// this activated the red button background for disabled button
-                        if enabled {
-                            if symbol == "plusKey" {
+//                        keyInfo._enabled = keyModel.enabledDict[symbol]! /// this activated the red button background for disabled button
+                        if keyInfo._enabled {
+                            if keyInfo.symbol == "plusKey" {
                                 withAnimation(.easeIn(duration: upTime)) {
-                                    keyModel.keyDownCallback(symbol)
+                                    keyModel.keyDownCallback(keyInfo.symbol)
                                 }
                             } else {
-                                keyModel.keyDownCallback(symbol)
+                                keyModel.keyDownCallback(keyInfo.symbol)
                             }
                         } /// disabled buttons do not work (but their background color is animated)
-                        
+
                         upHasHappended = false
                         //print("self.tapped \(self.tapped)")
 
@@ -97,8 +94,8 @@ private struct OnTouchGestureModifier: ViewModifier {
     }
 }
 
-struct Key_Previews: PreviewProvider {
-    static var previews: some View {
-        Key(symbol: "5", keyModel: KeyModel(), textColor: Color.white, upColor: Color.green, downColor: Color.yellow, size: CGSize(width: 100, height: 100))
-    }
-}
+//struct Key_Previews: PreviewProvider {
+//    static var previews: some View {
+//        Key(symbol: "5", keyModel: KeyModel(), textColor: Color.white, upColor: Color.green, downColor: Color.yellow, size: CGSize(width: 100, height: 100))
+//    }
+//}

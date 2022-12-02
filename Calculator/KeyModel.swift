@@ -7,15 +7,30 @@
 
 import UIKit
 
-struct KeyInfo {
-    let symbol: String
-    let textColor: UIColor
-    let upColor: UIColor
-    let downColor: UIColor
-    let enabled: Bool
-}
 
 class KeyModel : ObservableObject {
+    class KeyInfo {
+        let symbol: String
+        var colors: ColorsOf
+        var _enabled = true
+        var textColor: UIColor {
+            colors.textColor
+        }
+        var upColor: UIColor{
+            colors.upColor
+        }
+        var downColor: UIColor{
+            colors.downColor
+        }
+        init(symbol: String, colors: ColorsOf) {
+            self.symbol = symbol
+            self.colors = colors
+        }
+        func enabled() -> Bool {
+            return _enabled
+        }
+    }
+    
     @Published var _rad = false
     @Published var _2ndActive = false
     @Published var isCalculating = false
@@ -23,7 +38,7 @@ class KeyModel : ObservableObject {
 
     let precision = 1000000
     let brain: Brain
-    var colorsOf: [String: ColorsOf] = [:]
+    var keyInfo: [String: KeyInfo] = [:]
     var enabledDict: [String: Bool] = [:]
     var _AC = true
     var _hasBeenReset = false
@@ -45,7 +60,7 @@ class KeyModel : ObservableObject {
         print("KeyModel init()")
         brain = Brain(precision: precision)
         for key in C.allKeys {
-            colorsOf[key] = C.getKeyColors(for: key)
+            keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))
         }
         brain.haveResultCallback = haveResultCallback
         brain.pendingOperatorCallback = pendingOperatorCallback
@@ -80,9 +95,9 @@ class KeyModel : ObservableObject {
         if let previous = previouslyPendingKey {
             DispatchQueue.main.async {
                 if C.scientificPendingOperations.contains(previous) {
-                    self.colorsOf[previous] = C.scientificColors
+                    self.keyInfo[previous]!.colors = C.scientificColors
                 } else {
-                    self.colorsOf[previous] = C.operatorColors
+                    self.keyInfo[previous]!.colors = C.operatorColors
                 }
             }
         }
@@ -91,9 +106,9 @@ class KeyModel : ObservableObject {
         if let op = op {
             DispatchQueue.main.async {
                 if C.scientificPendingOperations.contains(op) {
-                    self.colorsOf[op] = C.pendingScientificColors
+                    self.keyInfo[op]!.colors = C.pendingScientificColors
                 } else {
-                    self.colorsOf[op] = C.pendingOperatorColors
+                    self.keyInfo[op]!.colors = C.pendingOperatorColors
                 }
             }
         }
@@ -128,10 +143,10 @@ class KeyModel : ObservableObject {
         case "2nd":
             if _2ndActive {
                 _2ndActive = false
-                colorsOf["2nd"] = C._2ndColors
+                self.keyInfo["2nd"]!.colors = C._2ndColors
             } else {
                 _2ndActive = true
-                colorsOf["2nd"] = C._2ndActiveColors
+                self.keyInfo["2nd"]!.colors = C._2ndActiveColors
             }
         case "Rad":
             _rad = true

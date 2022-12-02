@@ -8,19 +8,20 @@
 import SwiftUI
 
 struct Label: View {
-    let symbol: String
+    let keyInfo: KeyModel.KeyInfo
     let height: CGFloat
-    let textColor: Color
     var body: some View {
+        let color = Color(uiColor: keyInfo.textColor)
+        let symbol = keyInfo.symbol
         let _ = print("Label \(symbol)")
         switch symbol {
-        case "√" :    RootShapeView(rootDigit: "2", color: textColor, height: height)
-        case "3√":    RootShapeView(rootDigit: "3", color: textColor, height: height)
-        case "y√":    RootShapeView(rootDigit: "y", color: textColor, height: height)
+        case "√" :    RootShapeView(rootDigit: "2", color: color, height: height)
+        case "3√":    RootShapeView(rootDigit: "3", color: color, height: height)
+        case "y√":    RootShapeView(rootDigit: "y", color: color, height: height)
         case "log10": Logx(base: "10", height: height)
         case "log2":  Logx(base: "2", height: height)
         case "logy":  Logx(base: "y", height: height)
-        case "One_x": One_x(color: textColor, height: height)
+        case "One_x": One_x(color: color, height: height)
         case "x^2":   Pow(base:  "x",   exponent: "2", height: height)
         case "x^3":   Pow(base:  "x",   exponent: "3", height: height)
         case "x^y":   Pow(base:  "x",   exponent: "y", height: height)
@@ -210,20 +211,21 @@ struct Label: View {
 struct Label_Previews: PreviewProvider {
     static var previews: some View {
         let h = 131.1
+        let keyInfo = KeyModel.KeyInfo(symbol: "One_x", colors: C.getKeyColors(for: "One_x"))
         VStack {
-            Label(symbol: "One_x", height: h, textColor: .white)
+            Label(keyInfo: keyInfo, height: h)
                 .foregroundColor(Color.white)
                 .frame(width: h, height: h)
                 .background(Color.black)
                 .clipShape(Capsule())
                 .padding(.bottom, 20)
-            Label(symbol: "One_x", height: h, textColor: .white)
+            Label(keyInfo: keyInfo, height: h)
                 .foregroundColor(Color.white)
                 .frame(width: h*2, height: h)
                 .background(Color.black)
                 .clipShape(Capsule())
                 .padding(.bottom, 20)
-            Label(symbol: "One_x", height: h, textColor: .white)
+            Label(keyInfo: keyInfo, height: h)
                 .foregroundColor(Color.white)
                 .frame(width: h*3, height: h)
                 .background(Color.black)

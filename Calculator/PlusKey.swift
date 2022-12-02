@@ -28,13 +28,13 @@ struct PlusKey: View {
             .foregroundColor(tapped ? (enabled ? downColor : disabledColor) : upColor)
             .background(textColor)//tapped ? (enabled ? downColor : disabledColor) : upColor)
             .clipShape(Capsule())
-            .onTouchGesture(tapped: $tapped, enabled: $enabled, symbol: "plusKey", keyModel: keyModel)
+//            .onTouchGesture(tapped: $tapped, enabled: $enabled, symbol: "plusKey")
     }
 }
 
-struct Plus_Previews: PreviewProvider {
-    static var previews: some View {
-        let keyModel = KeyModel()
-        PlusKey(keyModel: keyModel, textColor: Color(uiColor: keyModel.colorsOf["plusKey"]!.textColor), upColor: Color(uiColor: keyModel.colorsOf["plusKey"]!.upColor), downColor: Color(uiColor: keyModel.colorsOf["plusKey"]!.downColor), size: CGSize(width: 100, height: 100))
-    }
-}
+//struct Plus_Previews: PreviewProvider {
+//    static var previews: some View {
+//        let keyModel = KeyModel()
+//        PlusKey(keyModel: keyModel, textColor: Color(uiColor: keyModel.colorsOf["plusKey"]!.textColor), upColor: Color(uiColor: keyModel.colorsOf["plusKey"]!.upColor), downColor: Color(uiColor: keyModel.colorsOf["plusKey"]!.downColor), size: CGSize(width: 100, height: 100))
+//    }
+//}

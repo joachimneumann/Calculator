@@ -23,7 +23,8 @@ struct ScientificKeys: View {
     var body: some View {
         VStack(spacing: spaceBetweenKeys) {
             HStack(spacing: spaceBetweenKeys) {
-                Key(symbol: "8", keyModel: keyModel, textColor: Color(uiColor: keyModel.colorsOf["8"]!.textColor), upColor: Color(uiColor: keyModel.colorsOf["8"]!.upColor), downColor: Color(uiColor: keyModel.colorsOf["8"]!.downColor), size: keySize)
+//                Key(symbol: "8", keyModel: keyModel, textColor: Color(uiColor: keyModel.colorsOf["8"]!.textColor), upColor: Color(uiColor: keyModel.colorsOf["8"]!.upColor), downColor: Color(uiColor: keyModel.colorsOf["8"]!.downColor), size: keySize)
+//                Key(symbol: "8", keyModel: keyModel, textColor: Color(uiColor: keyModel.colorsOf["8"]!.textColor), upColor: Color(uiColor: keyModel.colorsOf["8"]!.upColor), downColor: Color(uiColor: keyModel.colorsOf["8"]!.downColor), size: keySize)
 //                Key("( ", keyModel: keyModel, size: keySize)
 //                Key(" )", keyModel: keyModel, size: keySize)
 //                Key("mc", keyModel: keyModel, size: keySize)
