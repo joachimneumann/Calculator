@@ -31,13 +31,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }
 }
 
-class DL: ObservableObject {
-    @Published var displayLength: [CGFloat : [Int]] = [:]
-}
-
 @main
 struct CalculatorApp: App {
-    @ObservedObject var dl = DL()
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate // used to disallow Landscape in Mac
     
     var body: some Scene {
@@ -52,32 +47,33 @@ struct CalculatorApp: App {
                 let topPadding: CGFloat = geo.safeAreaInsets.top  == 0 ? padding : 0
                 let bottomPadding: CGFloat = geo.safeAreaInsets.bottom == 0 ? padding : 0
                 let newWidth: CGFloat = geo.size.width - leadingPadding - trailingPadding
-                let newheight: CGFloat = geo.size.height - topPadding - bottomPadding
-                let newSize: CGSize = CGSize(width: newWidth, height: newheight)
+                let newHeight: CGFloat = geo.size.height - topPadding - bottomPadding
                 
-                let spaceBetweenKeys: CGFloat = C.spaceBetweenkeysFraction(withScientificKeys: !isPortrait) * newSize.width
-                let oneKeyWidth: CGFloat = (newSize.width - (isPortrait ? 3.0 : 5.0) * spaceBetweenKeys) * (isPortrait ? 0.25 : (1.0/6.0))
-                let oneKeyheight: CGFloat = isPortrait ? oneKeyWidth : (newSize.height - 5.0 * spaceBetweenKeys) / 6.0
+                let spaceBetweenKeys: CGFloat = C.spaceBetweenkeysFraction(withScientificKeys: !isPortrait) * newWidth
+                let oneKeyWidth: CGFloat = (newWidth - (isPortrait ? 3.0 : 5.0) * spaceBetweenKeys) * (isPortrait ? 0.25 : (1.0/6.0))
+                let oneKeyheight: CGFloat = isPortrait ? oneKeyWidth : (newHeight - 5.0 * spaceBetweenKeys) / 6.0
                 let allKeysheight: CGFloat = 5 * oneKeyheight + 4 * spaceBetweenKeys
-                let keyboardSize: CGSize = CGSize(width: newSize.width, height: allKeysheight)
+                let keyboardSize: CGSize = CGSize(width: newWidth, height: allKeysheight)
                 /// make space for "rad" info
                 /// make space for the icon
-                let displaySize: CGSize = CGSize(width: newSize.width - ((isPad || !isPortrait) ? 2 * oneKeyWidth : 0.0), height: oneKeyWidth) /// keys are as wide as high
-                let singleLineFontSize = 0.18 * keyboardSize.height
-                let _ = print("displayLength.keys.count \(dl.displayLength.keys.count)")
-                if dl.displayLength.keys.contains(geo.size.width) {
-                    let _ = print("displayLength Calculator()")
-                    Calculator(isPad: isPad, isPortrait: isPortrait, size: newSize, keyboardSize: keyboardSize, displaySize: displaySize, singleLineFontSize: singleLineFontSize, displayLength: dl.displayLength[geo.size.width]!)
-                        .padding(.leading, leadingPadding)
-                        .padding(.trailing, trailingPadding)
-                        .padding(.top, topPadding)
-                        .padding(.bottom, bottomPadding)
-                        .background(Color.black)
-                } else {
-                    let x = oneLineDisplayCalibration(size: geo.size, fontSize: singleLineFontSize)
-                    let _ = print("displayLength = \(x)")
-                    let _ = (dl.displayLength[geo.size.width] = x)
-                }
+                let singleLineFontSize = (isPortrait ? 0.18 : 0.16) * keyboardSize.height
+                let displayPaddingLeading = isPortrait ? 0.0 : keyboardSize.height * 0.15
+                let displayPaddingTrailing = isPortrait ? 0.0 : keyboardSize.height * 0.15
+                let displayWidth = newWidth - displayPaddingLeading - displayPaddingTrailing
+                Calculator(isPad: isPad,
+                           isPortrait: isPortrait,
+                           size: CGSize(width: newWidth, height: newHeight),
+                           keyboardSize: keyboardSize,
+                           keyHeight: oneKeyheight,
+                           singleLineFontSize: singleLineFontSize,
+                           displayPaddingLeading: displayPaddingLeading,
+                           displayPaddingTrailing: displayPaddingTrailing,
+                           displayLength: lengthMeasurement(size: CGSize(width: displayWidth, height: newHeight), fontSize: singleLineFontSize))
+                    .padding(.leading, leadingPadding)
+                    .padding(.trailing, trailingPadding)
+                    .padding(.top, topPadding)
+                    .padding(.bottom, bottomPadding)
+                    .background(Color.black)
             }
             .withHostingWindow { window in
                 /// this stops white background from showing *during* a device rotation

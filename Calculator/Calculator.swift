@@ -14,15 +14,19 @@ struct Calculator: View {
     let size: CGSize
     
     var keyboardSize: CGSize
-    var displaySize: CGSize
+    var keyHeight: CGFloat
     var singleLineFontSize: CGFloat
+    let displayPaddingLeading: CGFloat
+    let displayPaddingTrailing: CGFloat
     let displayLength: [Int]
     
     var body: some View {
-        let _ = print("Calculator body")
+        let _ = print("Calculator body displayLength \(displayLength)")
         let info1 = "\(keyModel._hasBeenReset ? "Precision: "+keyModel.precisionDescription+" digits" : "")"
         let info2 = "\(keyModel._rad ? "Rad      " : "")"
-        let text = keyModel.oneLineP
+        let _ = keyModel.oneLineWithCommaLength = displayLength[0]
+        let _ = keyModel.oneLineWithoutCommaLength = displayLength[1]
+        let _ = print("displayLength \(displayLength)")
         if isPad {
             VStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
@@ -36,18 +40,26 @@ struct Calculator: View {
                     HStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
                         if keyModel.zoomed {
-                            LongDisplay(keyModel: keyModel, fontSize: singleLineFontSize)
-                                .padding(.top, displaySize.height * 0.21)
-                                .padding(.trailing, displaySize.height * 0.9)
+                            let text = keyModel.multipleLines
+                            LongDisplay(
+                                mantissa: text.left,
+                                exponent: text.right,
+                                abbreviated: text.abbreviated,
+                                font: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
+                                isCopyingOrPasting: false,
+                                precisionString: keyModel.precision.useWords)
+                                .padding(.trailing, displayPaddingTrailing)
                                 .transition(.opacity)
                         } else {
+                            let text = keyModel.oneLineP
                             OneLineDisplay(
                                 text: text,
-                                size: displaySize,
                                 largeFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * (isPortrait ? 1.5 : 1.0), weight: .thin)),
                                 smallFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
-                                maximalTextLength: text.contains(",") ? keyModel.oneLineWithCommaLength : keyModel.oneLineWithoutCommaLength)
-                            .padding(.trailing, isPortrait ? 0.0 : displaySize.height * 0.9)
+                                maximalTextLength: text.contains(",") ? keyModel.oneLineWithCommaLength : keyModel.oneLineWithoutCommaLength,
+                                fontScaleFactor: isPortrait ? 1.5 : 1.0)
+                            .padding(.leading, displayPaddingLeading)
+                            .padding(.trailing, displayPaddingTrailing)
                             .transition(.opacity)
                         }
                     }
@@ -64,23 +76,21 @@ struct Calculator: View {
                         HStack(spacing: 0.0) {
                             Spacer(minLength: 0.0)
                             PlusKey(keyInfo: keyModel.keyInfo["plusKey"]!, keyModel: keyModel, size: CGSize(width: keyboardSize.height * 0.13, height: keyboardSize.height * 0.13))
-                                .padding(.bottom, keyboardSize.height + displaySize.height * 0.12)
+                                .padding(.bottom, keyboardSize.height + keyHeight * 0.12)
                         }
                     }
                 }
                 
                 /// info1, info2 and animated dots
                 if !keyModel.zoomed {
-                    VStack(spacing: 0.0) {
-                        if keyModel.isCalculating {
-                            Spacer(minLength: 0.0)
-                            HStack(spacing: 0.0) {
-                                AnimatedDots(color: Color(white: 0.7))
-                                    .padding(.top, displaySize.height * 0.2)
-                                Spacer()
-                            }
-                            Spacer(minLength: 0.0)
-                        } else {
+                    if keyModel.isCalculating {
+                        HStack(spacing: 0.0) {
+                            AnimatedDots(color: Color(white: 0.7))
+                            Spacer()
+                        }
+                        .padding(.bottom, keyboardSize.height)
+                    } else {
+                        VStack(spacing: 0.0) {
                             HStack(spacing: 0.0) {
                                 Text(info1)
                                     .foregroundColor(Color.white)
@@ -89,21 +99,17 @@ struct Calculator: View {
                             Spacer()
                             HStack(spacing: 0.0) {
                                 Text(info2)
+                                    .padding(.bottom, keyboardSize.height*0.01)
                                     .foregroundColor(Color.white)
-                                    .padding(.bottom, displaySize.height * 0.2)
                                 Spacer()
                             }
                         }
+                        //.background(Color.green).opacity(0.2)
+                        .transition(.move(edge: .bottom))
+                        .padding(.bottom, keyboardSize.height)
+                        .padding(.leading, keyboardSize.height*0.04)
                     }
-                    .transition(.move(edge: .bottom))
-                    .padding(.bottom, keyboardSize.height)//+displaySize.height*0.2)
-                    .padding(.leading, displaySize.height*0.4)
                 }
-            }
-            .onAppear() {
-                keyModel.oneLineWithCommaLength = displayLength[0]
-                keyModel.oneLineWithoutCommaLength = displayLength[1]
-                print("displayLength \(displayLength)")
             }
         }
         

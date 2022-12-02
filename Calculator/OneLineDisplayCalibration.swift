@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-func oneLineDisplayCalibration(size: CGSize, fontSize: CGFloat) -> [Int] {
-    print("OneLineDisplayCalibration init()")
+func lengthMeasurement(size: CGSize, fontSize: CGFloat) -> [Int] {
     let uiFont = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: .thin)
     var w = 0.0
     var s = ""
@@ -25,6 +24,7 @@ func oneLineDisplayCalibration(size: CGSize, fontSize: CGFloat) -> [Int] {
         w = s.length(for: uiFont)
     }
     let with = s.count - 1
+    print("OneLineDisplayCalibration \([with, without])")
     return [with, without]
 }
 
