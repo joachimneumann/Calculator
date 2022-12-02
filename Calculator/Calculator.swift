@@ -18,48 +18,6 @@ struct Calculator: View {
     var displaySize: CGSize
     var singleLineFontSize: CGFloat
     
-    init(isPad: Bool, isPortrait: Bool, size: CGSize) {
-        print("Calculator init() size=\(size)")
-        self.isPad = isPad
-        self.isPortrait = isPortrait
-        self.size = size
-        
-        if isPad {
-            if isPortrait {
-                keyboardSize = CGSize(width: size.width, height: size.height*0.5)
-            } else {
-                /// landscape iPad
-                keyboardSize = CGSize(width: size.width, height: size.height*0.5)
-            }
-            displaySize = CGSize(width: size.width, height: size.height*0.1)
-        } else {
-            /// iPhone
-            if isPortrait {
-                /// we want square buttons :)
-                let spaceBetweenKeys = C.spaceBetweenkeysFraction(withScientificKeys: false) * size.width
-                let oneKeyWidth = (size.width - 3.0 * spaceBetweenKeys) * 0.25
-                let allKeysheight = 5 * oneKeyWidth + 4 * spaceBetweenKeys
-                keyboardSize = CGSize(width: size.width, height: allKeysheight)
-                displaySize = CGSize(width: size.width, height: oneKeyWidth) /// keys are as wide as high
-            } else {
-                /// landscape iPhone
-                let spaceBetweenKeys = C.spaceBetweenkeysFraction(withScientificKeys: true) * size.width
-                let oneKeyheight = (size.height - 5.0 * spaceBetweenKeys) / 6.0
-                let keyboardHeight = 5 * oneKeyheight + 4.0 * spaceBetweenKeys
-                let displayHeight = oneKeyheight
-                keyboardSize = CGSize(width: size.width, height: keyboardHeight)
-                displaySize = CGSize(width: size.width, height: displayHeight)
-                if isPad || !isPortrait {
-                    /// make space for "rad" info
-                    displaySize.width -= displayHeight
-                    /// make space for the icon
-                    displaySize.width -= displayHeight
-                }
-            }
-        }
-        singleLineFontSize = 0.79 * displaySize.height
-    }
-    
     var body: some View {
         let _ = print("Calculator body \(lengthOfSingleLineDisplayDetermined)")
         let info1 = "\(keyModel._hasBeenReset ? "Precision: "+keyModel.precisionDescription+" digits" : "")"
@@ -106,7 +64,7 @@ struct Calculator: View {
                             Spacer(minLength: 0.0)
                             HStack(spacing: 0.0) {
                                 Spacer(minLength: 0.0)
-                                PlusKey(keyInfo: keyModel.keyInfo["plusKey"]!, keyModel: keyModel, size: CGSize(width: displaySize.height * 0.7, height: displaySize.height * 0.7))
+                                PlusKey(keyInfo: keyModel.keyInfo["plusKey"]!, keyModel: keyModel, size: CGSize(width: keyboardSize.height * 0.13, height: keyboardSize.height * 0.13))
                                     .padding(.bottom, keyboardSize.height + displaySize.height * 0.12)
                             }
                         }
@@ -166,9 +124,9 @@ struct Calculator: View {
 }
 
 
-struct Calculator_Previews: PreviewProvider {
-    static var previews: some View {
-        Calculator(isPad: false, isPortrait: true, size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
-            .background(Color.black)
-    }
-}
+//struct Calculator_Previews: PreviewProvider {
+//    static var previews: some View {
+//        Calculator(isPad: false, isPortrait: true, size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+//            .background(Color.black)
+//    }
+//}

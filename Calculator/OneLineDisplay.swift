@@ -13,7 +13,7 @@ struct OneLineDisplay: View {
     let largeFont: Font
     let smallFont: Font
     let maximalTextLength: Int
-    var fontScaleFactor = 1.0
+    var fontScaleFactor = 1.5
 
     var body: some View {
         let _ = print("OneLineDisplay body \(text)")

@@ -281,16 +281,19 @@ class Number: CustomDebugStringConvertible {
         mantissa.insert(",", at: indexOne)
         if mantissa.count <= 2 { mantissa += "0" } /// e.g. 1e16 -> 1,e16 -> 1,0e16
         if mantissa.count + ret.right!.count > charactersWithComma {
-            ret.left = "too large"
-            ret.right = nil
-            return ret
+            /// Do I need to shorten the mantissa to fit into the display?
+            let remainingMantissaLength = charactersWithComma - ret.right!.count
+            if remainingMantissaLength < 3 {
+                ret.left = "too large"
+                ret.right = nil
+                return ret
+            } else {
+                /// shorten...
+                mantissa = String(mantissa.prefix(charactersWithComma - ret.right!.count))
+                ret.abbreviated = true
+            }
         }
-        if mantissa.count <= charactersWithComma - ret.right!.count {
-            ret.left = mantissa
-        } else {
-            ret.left = String(mantissa.prefix(charactersWithComma - ret.right!.count))
-            ret.abbreviated = true
-        }
+        ret.left = mantissa
         if isNegative { ret.left = "-" + ret.left }
         return ret
     }

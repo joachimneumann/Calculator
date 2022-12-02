@@ -34,32 +34,39 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct CalculatorApp: App {
-    static var previousSize = CGSize(width: -1.0, height: -1.0)
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate // used to disallow Landscape in Mac
     
     var body: some Scene {
         WindowGroup {
             GeometryReader { geo in
-                if geo.size != CalculatorApp.previousSize {
-                    let _ = print("CalculatorApp init() size=\(geo.size)")
-                    let isPad = (UIDevice.current.userInterfaceIdiom == .pad)
-                    let isPortrait = geo.size.height > geo.size.width
-                    let padding = (!isPad && isPortrait) ? geo.size.width * 0.04 : geo.size.width * 0.01
-                    let leadingPadding = geo.safeAreaInsets.leading == 0 ? padding : 0
-                    let trailingPadding = geo.safeAreaInsets.trailing == 0 ? padding : 0
-                    let topPadding = geo.safeAreaInsets.top  == 0 ? padding : 0
-                    let bottomPadding = geo.safeAreaInsets.bottom == 0 ? padding : 0
-                    let newWidth = geo.size.width - leadingPadding - trailingPadding
-                    let newheight = geo.size.height - topPadding - bottomPadding
-                    let newSize = CGSize(width: newWidth, height: newheight)
-                    Calculator(isPad: isPad, isPortrait: isPortrait, size: newSize)
-                        .padding(.leading, leadingPadding)
-                        .padding(.trailing, trailingPadding)
-                        .padding(.top, topPadding)
-                        .padding(.bottom, bottomPadding)
-                        .background(Color.black)
-//                    let _ = (CalculatorApp.previousSize = geo.size)
-                }
+                let _ = print("CalculatorApp init() size=\(geo.size)")
+                let isPad: Bool = (UIDevice.current.userInterfaceIdiom == .pad)
+                let isPortrait: Bool = geo.size.height > geo.size.width
+                let padding: CGFloat = (!isPad && isPortrait) ? geo.size.width * 0.04 : geo.size.width * 0.01
+                let leadingPadding: CGFloat = geo.safeAreaInsets.leading == 0 ? padding : 0
+                let trailingPadding: CGFloat = geo.safeAreaInsets.trailing == 0 ? padding : 0
+                let topPadding: CGFloat = geo.safeAreaInsets.top  == 0 ? padding : 0
+                let bottomPadding: CGFloat = geo.safeAreaInsets.bottom == 0 ? padding : 0
+                let newWidth: CGFloat = geo.size.width - leadingPadding - trailingPadding
+                let newheight: CGFloat = geo.size.height - topPadding - bottomPadding
+                let newSize: CGSize = CGSize(width: newWidth, height: newheight)
+                
+                let spaceBetweenKeys: CGFloat = C.spaceBetweenkeysFraction(withScientificKeys: !isPortrait) * newSize.width
+                let oneKeyWidth: CGFloat = (newSize.width - (isPortrait ? 3.0 : 5.0) * spaceBetweenKeys) * (isPortrait ? 0.25 : (1.0/6.0))
+                let oneKeyheight: CGFloat = isPortrait ? oneKeyWidth : (newSize.height - 5.0 * spaceBetweenKeys) / 6.0
+                let allKeysheight: CGFloat = 5 * oneKeyheight + 4 * spaceBetweenKeys
+                let keyboardSize: CGSize = CGSize(width: newSize.width, height: allKeysheight)
+                /// make space for "rad" info
+                /// make space for the icon
+                let displaySize: CGSize = CGSize(width: newSize.width - ((isPad || !isPortrait) ? 2 * oneKeyWidth : 0.0), height: oneKeyWidth) /// keys are as wide as high
+                let singleLineFontSize = 0.18 * keyboardSize.height
+                
+                Calculator(isPad: isPad, isPortrait: isPortrait, size: newSize, keyboardSize: keyboardSize, displaySize: displaySize, singleLineFontSize: singleLineFontSize)
+                    .padding(.leading, leadingPadding)
+                    .padding(.trailing, trailingPadding)
+                    .padding(.top, topPadding)
+                    .padding(.bottom, bottomPadding)
+                    .background(Color.black)
             }
             .withHostingWindow { window in
                 /// this stops white background from showing *during* a device rotation
