@@ -280,6 +280,11 @@ class Number: CustomDebugStringConvertible {
         let indexOne = mantissa.index(mantissa.startIndex, offsetBy: 1)
         mantissa.insert(",", at: indexOne)
         if mantissa.count <= 2 { mantissa += "0" } /// e.g. 1e16 -> 1,e16 -> 1,0e16
+        if mantissa.count + ret.right!.count > charactersWithComma {
+            ret.left = "too large"
+            ret.right = nil
+            return ret
+        }
         if mantissa.count <= charactersWithComma - ret.right!.count {
             ret.left = mantissa
         } else {
