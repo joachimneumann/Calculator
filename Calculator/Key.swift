@@ -13,7 +13,6 @@ struct Key: View {
     let size: CGSize
 
     @State var tapped: Bool = false
-    @State var enabled: Bool = true
 
     var body: some View {
         let _ = print("Key body \(keyInfo.symbol) with color \(tapped ? keyInfo.colors.downColor : keyInfo.colors.upColor)")
@@ -22,7 +21,7 @@ struct Key: View {
                 .font(.largeTitle)
                 .frame(width: size.width, height: size.height)
                 .foregroundColor(Color(uiColor: keyInfo.colors.textColor))
-                .background(Color(uiColor: tapped ? (enabled ? keyInfo.colors.downColor : C.disabledColor) : keyInfo.colors.upColor))
+                .background(Color(uiColor: tapped ? (keyInfo.enabled ? keyInfo.colors.downColor : C.disabledColor) : keyInfo.colors.upColor))
                 .clipShape(Capsule())
                 .onTouchGesture(tapped: $tapped, keyInfo: keyInfo, keyModel: keyModel)
         }
@@ -52,8 +51,8 @@ private struct OnTouchGestureModifier: ViewModifier {
             .simultaneousGesture(DragGesture(minimumDistance: 0)
                 .onChanged { _ in
                     if !self.tapped {
-//                        keyInfo._enabled = keyModel.enabledDict[symbol]! /// this activated the red button background for disabled button
-                        if keyInfo._enabled {
+                        keyInfo.enabled = keyModel.enabledDict[keyInfo.symbol]! /// this activated the red button background for disabled button
+                        if keyInfo.enabled {
                             if keyInfo.symbol == "plusKey" {
                                 withAnimation(.easeIn(duration: upTime)) {
                                     keyModel.keyDownCallback(keyInfo.symbol)

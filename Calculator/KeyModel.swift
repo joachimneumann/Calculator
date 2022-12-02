@@ -12,13 +12,10 @@ class KeyModel : ObservableObject {
     class KeyInfo: ObservableObject {
         let symbol: String
         @Published var colors: ColorsOf
-        @Published var _enabled = true
+        @Published var enabled = true
         init(symbol: String, colors: ColorsOf) {
             self.symbol = symbol
             self.colors = colors
-        }
-        func enabled() -> Bool {
-            return _enabled
         }
     }
     
