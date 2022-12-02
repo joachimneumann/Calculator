@@ -23,7 +23,15 @@ struct NonScientificKeys: View {
         self.doubleKeySize = CGSize(width: 2.0 * w + spaceBetweenKeys, height: h)
     }
     
+    struct KeyInfo {
+        let symbol: String
+        let textColor: Color
+        let upColor: Color
+        let downColor: Color
+    }
+    
     var body: some View {
+        let k = KeyInfo(symbol: "7", textColor: Color(uiColor: keyModel.colorsOf["7"]!.textColor), upColor: Color(uiColor: keyModel.colorsOf["7"]!.upColor), downColor: Color(uiColor: keyModel.colorsOf["7"]!.downColor))
         VStack(spacing: spaceBetweenKeys) {
 //            HStack(spacing: spaceBetweenKeys) {
 //                Key(keyModel._AC ? "AC" : "C", keyModel: keyModel, size: keySize)
@@ -32,6 +40,7 @@ struct NonScientificKeys: View {
 //                Key("/", keyModel: keyModel, size: keySize)
 //            }
             HStack(spacing: spaceBetweenKeys) {
+                Key(symbol: "7", keyModel: keyModel, textColor: Color(uiColor: keyModel.colorsOf["7"]!.textColor), upColor: Color(uiColor: keyModel.colorsOf["7"]!.upColor), downColor: Color(uiColor: keyModel.colorsOf["7"]!.downColor), size: keySize)
                 Key(symbol: "7", keyModel: keyModel, textColor: Color(uiColor: keyModel.colorsOf["7"]!.textColor), upColor: Color(uiColor: keyModel.colorsOf["7"]!.upColor), downColor: Color(uiColor: keyModel.colorsOf["7"]!.downColor), size: keySize)
 //                Key("7", keyModel: keyModel, size: keySize)
 //                Key("8", keyModel: keyModel, size: keySize)

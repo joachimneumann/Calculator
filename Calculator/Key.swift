@@ -22,7 +22,7 @@ struct Key: View {
     var body: some View {
         let _ = print("Key body \(symbol) with color \(tapped ? downColor : upColor)")
         ZStack {
-            AnyView(of(symbol: symbol, height: size.height, textColor: textColor))
+            AnyView(Label(symbol: symbol, height: size.height, textColor: textColor))
                 .font(.largeTitle)
                 .frame(width: size.width, height: size.height)
                 .foregroundColor(textColor)

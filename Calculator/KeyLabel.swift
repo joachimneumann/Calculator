@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-//@ViewBuilder func of(_ symbol: String, height: CGFloat, textColor: Color) -> some View {
-struct of: View {
+struct Label: View {
     let symbol: String
     let height: CGFloat
     let textColor: Color
@@ -50,7 +49,6 @@ struct of: View {
             }
         }
     }
-}
     
     private let sfImageNames: [String: String] = [
         "+":   "plus",
@@ -62,7 +60,7 @@ struct of: View {
         "%":   "percent",
     ]
 
-    struct RootShapeView: View {
+    private struct RootShapeView: View {
         let rootDigit: String
         let color: Color
         let height: CGFloat
@@ -84,7 +82,7 @@ struct of: View {
         }
     }
 
-    struct Root: View {
+    private struct Root: View {
         let color: Color
         let lineWidth: CGFloat
         let height: CGFloat
@@ -112,7 +110,7 @@ struct of: View {
         }
     }
 
-    struct SlashShape: View {
+    private struct SlashShape: View {
         let color: Color
         let lineWidth: CGFloat
         let height: CGFloat
@@ -133,36 +131,36 @@ struct of: View {
             .aspectRatio(contentMode: .fit)
         }
     }
-    
-    struct One_x: View {
+
+    private struct One_x: View {
         let color: Color
         let height: CGFloat
         var body: some View {
             ///let _ = print("One_x \(height)")
             ZStack {
-                    VStack(spacing: 0.0) {
+                VStack(spacing: 0.0) {
+                    Spacer(minLength: 0.0)
+                    HStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
-                        HStack(spacing: 0.0) {
-                            Spacer(minLength: 0.0)
-                            ZStack {
-                                Text("1")
-                                    .font(.system(size: height * 0.25))
-                                    .offset(x: -0.1 * height, y: -0.10 * height)
-                                SlashShape(color: color, lineWidth: height * 0.034, height: height)
-                                Text("x")
-                                    .font(.system(size: height * 0.25))
-                                    .offset(x: 0.1 * height, y: 0.07 * height)
-                            }
-                            Spacer(minLength: 0.0)
+                        ZStack {
+                            Text("1")
+                                .font(.system(size: height * 0.25))
+                                .offset(x: -0.1 * height, y: -0.10 * height)
+                            SlashShape(color: color, lineWidth: height * 0.034, height: height)
+                            Text("x")
+                                .font(.system(size: height * 0.25))
+                                .offset(x: 0.1 * height, y: 0.07 * height)
                         }
                         Spacer(minLength: 0.0)
+                    }
+                    Spacer(minLength: 0.0)
                 }
             }
         }
     }
-    
-    
-    struct Logx: View {
+
+
+    private struct Logx: View {
         let base: String
         let height: CGFloat
         var body: some View {
@@ -183,56 +181,54 @@ struct of: View {
             }
         }
     }
-    
-    struct Pow: View {
+
+    private struct Pow: View {
         let base: String
         let exponent: String
         let height: CGFloat
         var body: some View {
             ZStack {
-                    VStack(spacing:0.0) {
+                VStack(spacing:0.0) {
+                    Spacer(minLength: 0.0)
+                    HStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
-                        HStack(spacing: 0.0) {
-                            Spacer(minLength: 0.0)
-                            Text(base)
-                                .font(.system(size: height * 0.4))
-                            Text(exponent)
-                                .font(.system(size: height * 0.22))
-                                .offset(x: 0.0, y: -0.13 * height)
-                            Spacer(minLength: 0.0)
-                        }
+                        Text(base)
+                            .font(.system(size: height * 0.4))
+                        Text(exponent)
+                            .font(.system(size: height * 0.22))
+                            .offset(x: 0.0, y: -0.13 * height)
                         Spacer(minLength: 0.0)
                     }
+                    Spacer(minLength: 0.0)
+                }
             }
         }
     }
+}
 
-//struct KeyLabel_Previews: PreviewProvider {
-//    static var previews: some View {
-//        let w = 131.7
-//        let h = 131.1
-//        let size = CGSize(width: w, height: h)
-//        let keyLabel = KeyLabel()
-//        let keyContent: any View = keyLabel.of("One_x", height: size.height, textColor: Color.white)
-//        VStack {
-//            AnyView(keyContent)
-//                .foregroundColor(Color.white)
-//                .frame(width: w, height: h)
-//                .background(Color.black)
-//                .clipShape(Capsule())
-//                .padding(.bottom, 20)
-//            AnyView(keyContent)
-//                .foregroundColor(Color.white)
-//                .frame(width: w*2, height: h)
-//                .background(Color.black)
-//                .clipShape(Capsule())
-//                .padding(.bottom, 20)
-//            AnyView(keyContent)
-//                .foregroundColor(Color.white)
-//                .frame(width: w*3, height: h)
-//                .background(Color.black)
-//                .clipShape(Capsule())
-//                .padding(.bottom, 20)
-//        }
-//    }
-//}
+
+struct Label_Previews: PreviewProvider {
+    static var previews: some View {
+        let h = 131.1
+        VStack {
+            Label(symbol: "One_x", height: h, textColor: .white)
+                .foregroundColor(Color.white)
+                .frame(width: h, height: h)
+                .background(Color.black)
+                .clipShape(Capsule())
+                .padding(.bottom, 20)
+            Label(symbol: "One_x", height: h, textColor: .white)
+                .foregroundColor(Color.white)
+                .frame(width: h*2, height: h)
+                .background(Color.black)
+                .clipShape(Capsule())
+                .padding(.bottom, 20)
+            Label(symbol: "One_x", height: h, textColor: .white)
+                .foregroundColor(Color.white)
+                .frame(width: h*3, height: h)
+                .background(Color.black)
+                .clipShape(Capsule())
+                .padding(.bottom, 20)
+        }
+    }
+}
