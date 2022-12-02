@@ -19,6 +19,7 @@ struct Calculator: View {
     var singleLineFontSize: CGFloat
     
     init(isPad: Bool, isPortrait: Bool, size: CGSize) {
+        print("Calculator init() size=\(size)")
         self.isPad = isPad
         self.isPortrait = isPortrait
         self.size = size
@@ -57,7 +58,6 @@ struct Calculator: View {
             }
         }
         singleLineFontSize = 0.79 * displaySize.height
-        print("Calculator init()")
     }
     
     var body: some View {

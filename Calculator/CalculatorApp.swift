@@ -10,7 +10,7 @@ import SwiftUI
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     static var forceLandscape = false
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         return true
     }
@@ -19,44 +19,47 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         /// detect mac:
         /// 1. size of screen 834.0x1194.0
         /// 2. EdgeInsets all 0
-//        let isMac = false
-//        if isMac {
-//            return UIInterfaceOrientationMask.landscape
-//        } else {
+        //        let isMac = false
+        //        if isMac {
+        //            return UIInterfaceOrientationMask.landscape
+        //        } else {
         if AppDelegate.forceLandscape {
             return UIInterfaceOrientationMask.landscape
         } else {
             return UIInterfaceOrientationMask.all
         }
-//        }
+        //        }
     }
 }
 
 @main
 struct CalculatorApp: App {
-    
+    static var previousSize = CGSize(width: -1.0, height: -1.0)
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate // used to disallow Landscape in Mac
     
     var body: some Scene {
         WindowGroup {
             GeometryReader { geo in
-                let isPad = (UIDevice.current.userInterfaceIdiom == .pad)
-                let isPortrait = geo.size.height > geo.size.width
-                let padding = (!isPad && isPortrait) ? geo.size.width * 0.04 : geo.size.width * 0.01
-                let leadingPadding = geo.safeAreaInsets.leading == 0 ? padding : 0
-                let trailingPadding = geo.safeAreaInsets.trailing == 0 ? padding : 0
-                let topPadding = geo.safeAreaInsets.top  == 0 ? padding : 0
-                let bottomPadding = geo.safeAreaInsets.bottom == 0 ? padding : 0
-                let newWidth = geo.size.width - leadingPadding - trailingPadding
-                let newheight = geo.size.height - topPadding - bottomPadding
-                let newSize = CGSize(width: newWidth, height: newheight)
-                Calculator(isPad: isPad, isPortrait: isPortrait, size: newSize)
-                    .padding(.leading, leadingPadding)
-                    .padding(.trailing, trailingPadding)
-                    .padding(.top, topPadding)
-                    .padding(.bottom, bottomPadding)
-                    .background(Color.black)
-//                    .frame(width: newWidth, height: newheight)
+                if geo.size != CalculatorApp.previousSize {
+                    let _ = print("CalculatorApp init() size=\(geo.size)")
+                    let isPad = (UIDevice.current.userInterfaceIdiom == .pad)
+                    let isPortrait = geo.size.height > geo.size.width
+                    let padding = (!isPad && isPortrait) ? geo.size.width * 0.04 : geo.size.width * 0.01
+                    let leadingPadding = geo.safeAreaInsets.leading == 0 ? padding : 0
+                    let trailingPadding = geo.safeAreaInsets.trailing == 0 ? padding : 0
+                    let topPadding = geo.safeAreaInsets.top  == 0 ? padding : 0
+                    let bottomPadding = geo.safeAreaInsets.bottom == 0 ? padding : 0
+                    let newWidth = geo.size.width - leadingPadding - trailingPadding
+                    let newheight = geo.size.height - topPadding - bottomPadding
+                    let newSize = CGSize(width: newWidth, height: newheight)
+                    Calculator(isPad: isPad, isPortrait: isPortrait, size: newSize)
+                        .padding(.leading, leadingPadding)
+                        .padding(.trailing, trailingPadding)
+                        .padding(.top, topPadding)
+                        .padding(.bottom, bottomPadding)
+                        .background(Color.black)
+//                    let _ = (CalculatorApp.previousSize = geo.size)
+                }
             }
             .withHostingWindow { window in
                 /// this stops white background from showing *during* a device rotation
@@ -76,7 +79,7 @@ extension View {
 
 struct HostingWindowFinder: UIViewRepresentable {
     var callback: (UIWindow?) -> ()
-
+    
     func makeUIView(context: Context) -> UIView {
         let view = UIView()
         DispatchQueue.main.async { [weak view] in
@@ -84,7 +87,7 @@ struct HostingWindowFinder: UIViewRepresentable {
         }
         return view
     }
-
+    
     func updateUIView(_ uiView: UIView, context: Context) {
     }
 }
