@@ -19,7 +19,7 @@ struct OneLineDisplay: View {
         let _ = print("OneLineDisplay body \(text)")
         HStack(spacing: 0.0) {
             Spacer(minLength: 0.0)
-            if text.count >= maximalTextLength {
+            if text.count >= maximalTextLength { /// This makes sure that the font size is not dynamic when the text is longer
                 Text(text)
                     .foregroundColor(Color.white)
                     .scaledToFit()

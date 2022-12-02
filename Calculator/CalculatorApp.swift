@@ -10,7 +10,6 @@ import SwiftUI
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     static var forceLandscape = false
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         return true
     }
@@ -32,8 +31,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }
 }
 
+class DL: ObservableObject {
+    @Published var displayLength: [CGFloat : [Int]] = [:]
+}
+
 @main
 struct CalculatorApp: App {
+    @ObservedObject var dl = DL()
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate // used to disallow Landscape in Mac
     
     var body: some Scene {
@@ -60,13 +64,20 @@ struct CalculatorApp: App {
                 /// make space for the icon
                 let displaySize: CGSize = CGSize(width: newSize.width - ((isPad || !isPortrait) ? 2 * oneKeyWidth : 0.0), height: oneKeyWidth) /// keys are as wide as high
                 let singleLineFontSize = 0.18 * keyboardSize.height
-                
-                Calculator(isPad: isPad, isPortrait: isPortrait, size: newSize, keyboardSize: keyboardSize, displaySize: displaySize, singleLineFontSize: singleLineFontSize)
-                    .padding(.leading, leadingPadding)
-                    .padding(.trailing, trailingPadding)
-                    .padding(.top, topPadding)
-                    .padding(.bottom, bottomPadding)
-                    .background(Color.black)
+                let _ = print("displayLength.keys.count \(dl.displayLength.keys.count)")
+                if dl.displayLength.keys.contains(geo.size.width) {
+                    let _ = print("displayLength Calculator()")
+                    Calculator(isPad: isPad, isPortrait: isPortrait, size: newSize, keyboardSize: keyboardSize, displaySize: displaySize, singleLineFontSize: singleLineFontSize, displayLength: dl.displayLength[geo.size.width]!)
+                        .padding(.leading, leadingPadding)
+                        .padding(.trailing, trailingPadding)
+                        .padding(.top, topPadding)
+                        .padding(.bottom, bottomPadding)
+                        .background(Color.black)
+                } else {
+                    let x = oneLineDisplayCalibration(size: geo.size, fontSize: singleLineFontSize)
+                    let _ = print("displayLength = \(x)")
+                    let _ = (dl.displayLength[geo.size.width] = x)
+                }
             }
             .withHostingWindow { window in
                 /// this stops white background from showing *during* a device rotation

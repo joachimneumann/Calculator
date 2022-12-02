@@ -31,11 +31,7 @@ class KeyModel : ObservableObject {
     var _AC = true
     var _hasBeenReset = false
     @Published var oneLineP: String
-    func updateDisplay() {
-        DispatchQueue.main.async {
-            self.oneLineP = self.brain.last.multipleLines(withoutComma: self.oneLineWithoutCommaLength, withComma: self.oneLineWithCommaLength).oneLine(showAbbreviation: false)
-        }
-    }
+
     var multipleLines: MultipleLiner {
         let len = min(precision, C.maxDigitsInLongDisplay)
         let ret = brain.last.multipleLines(withoutComma: len, withComma: len)
@@ -73,11 +69,9 @@ class KeyModel : ObservableObject {
                 self._AC = false
             }
         }
-        updateDisplay()
-        ////        let res = brain.last.multipleLines(withoutComma: oneLineWithoutCommaLength, withComma: oneLineWithCommaLength)
-//        DispatchQueue.main.async {
-////            self.last = res.oneLine
-//        }
+        DispatchQueue.main.async {
+            self.oneLineP = self.brain.last.multipleLines(withoutComma: self.oneLineWithoutCommaLength, withComma: self.oneLineWithCommaLength).oneLine(showAbbreviation: false)
+        }
     }
 
     private var previous: String? = nil
