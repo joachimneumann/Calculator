@@ -37,7 +37,7 @@ struct OneLineDisplayCalibration: View {
             if fontShouldScale {
                 fontScaleFactor = 1.5
             }
-            text = keyModel.oneLine
+            text = keyModel.oneLineP
             smallFont = Font(UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: .thin))
             largeFont = Font(UIFont.monospacedDigitSystemFont(ofSize: fontSize*fontScaleFactor, weight: .thin))
             maximalTextLength = text.contains(",") ? keyModel.oneLineWithCommaLength : keyModel.oneLineWithoutCommaLength

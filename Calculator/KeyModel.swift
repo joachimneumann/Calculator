@@ -33,8 +33,11 @@ class KeyModel : ObservableObject {
     var enabledDict: [String: Bool] = [:]
     var _AC = true
     var _hasBeenReset = false
-    var oneLine: String {
-        brain.last.multipleLines(withoutComma: oneLineWithoutCommaLength, withComma: oneLineWithCommaLength).oneLine(showAbbreviation: false)
+    @Published var oneLineP: String
+    func updateDisplay() {
+        DispatchQueue.main.async {
+            self.oneLineP = self.brain.last.multipleLines(withoutComma: self.oneLineWithoutCommaLength, withComma: self.oneLineWithCommaLength).oneLine(showAbbreviation: false)
+        }
     }
     var multipleLines: MultipleLiner {
         let len = min(precision, C.maxDigitsInLongDisplay)
@@ -50,6 +53,7 @@ class KeyModel : ObservableObject {
     init() {
         print("KeyModel init()")
         brain = Brain(precision: precision)
+        oneLineP = "0"
         for key in C.allKeys {
             keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))
         }
@@ -72,26 +76,19 @@ class KeyModel : ObservableObject {
                 self._AC = false
             }
         }
-////        let res = brain.last.multipleLines(withoutComma: oneLineWithoutCommaLength, withComma: oneLineWithCommaLength)
+        updateDisplay()
+        ////        let res = brain.last.multipleLines(withoutComma: oneLineWithoutCommaLength, withComma: oneLineWithCommaLength)
 //        DispatchQueue.main.async {
 ////            self.last = res.oneLine
 //        }
     }
 
-    private var previouslyPendingKey: String? = nil
+    private var previous: String? = nil
     func pendingOperatorCallback(op: String?) {
-//        DispatchQueue.main.async {
-//            for key in C.allKeys {
-//                self.keyInfo[key]!.colors = ColorsOf(textColor: .white, upColor: C.disabledColor, downColor: C.disabledColor)
-////                self.keyInfo[key] = KeyInfo(symbol: key, colors: ColorsOf(textColor: .white, upColor: C.disabledColor, downColor: C.disabledColor))
-//            }
-//        }
-        
-        
-        /// In the brain, we already check if the new operator is different from the old one.
+        /// In the brain, we have already asserted that the new op is different from previous
 
         /// Set the previous one back to normal?
-        if let previous = previouslyPendingKey {
+        if let previous = previous {
             DispatchQueue.main.async {
                 if C.scientificPendingOperations.contains(previous) {
                     self.keyInfo[previous]!.colors = C.scientificColors
@@ -111,7 +108,7 @@ class KeyModel : ObservableObject {
                 }
             }
         }
-        previouslyPendingKey = op
+        previous = op
     }
 
     

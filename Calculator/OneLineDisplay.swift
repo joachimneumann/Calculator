@@ -16,7 +16,7 @@ struct OneLineDisplay: View {
     var fontScaleFactor = 1.0
 
     var body: some View {
-        let _ = print("OneLineDisplay body")
+        let _ = print("OneLineDisplay body \(text)")
         HStack(spacing: 0.0) {
             Spacer(minLength: 0.0)
             if text.count >= maximalTextLength {

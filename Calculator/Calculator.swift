@@ -64,7 +64,7 @@ struct Calculator: View {
         let _ = print("Calculator body \(lengthOfSingleLineDisplayDetermined)")
         let info1 = "\(keyModel._hasBeenReset ? "Precision: "+keyModel.precisionDescription+" digits" : "")"
         let info2 = "\(keyModel._rad ? "Rad      " : "")"
-        let text = keyModel.oneLine
+        let text = keyModel.oneLineP
         if lengthOfSingleLineDisplayDetermined {
             if isPad {
                 VStack(spacing: 0.0) {
@@ -88,7 +88,7 @@ struct Calculator: View {
                                     text: text,
                                     size: displaySize,
                                     largeFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * (isPortrait ? 1.5 : 1.0), weight: .thin)),
-                                    smallFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize      , weight: .thin)),
+                                    smallFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
                                     maximalTextLength: text.contains(",") ? keyModel.oneLineWithCommaLength : keyModel.oneLineWithoutCommaLength)
                                 .padding(.trailing, isPortrait ? 0.0 : displaySize.height * 0.9)
                                 .transition(.opacity)
