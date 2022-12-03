@@ -8,26 +8,34 @@
 import SwiftUI
 
 struct Calculator: View {
-    @State var zoomed = false
+    @StateObject var keyModel: KeyModel
+    let isPad: Bool
+    var isPortrait: Bool
+    let size: CGSize
+    
+    var keyboardSize: CGSize
+    var keyHeight: CGFloat
+    var singleLineFontSize: CGFloat
+    let displayXOffset: CGFloat
+    let displayYOffset: CGFloat
+    let displayPaddingBottom: CGFloat
+    let keyboardPaddingBottom: CGFloat
+    let displayLength: [Int]
     var body: some View {
         Rectangle()
             .offset(x: -30)
             .foregroundColor(Color.yellow)
             .padding(30)
             .overlay() {
-                HStack {
-                    Spacer()
-                    VStack {
-                        Image(systemName: "globe")
-                            .imageScale(.large)
-                            .foregroundColor(.accentColor)
-                            .padding()
-                            .onTapGesture {
-                                withAnimation() {
-                                    zoomed.toggle()
-                                }
-                            }
-                        Spacer()
+                VStack(spacing: 0.0) {
+                    if !isPortrait {
+                        HStack(spacing: 0.0) {
+                            Spacer(minLength: 0.0)
+                            PlusKey(keyInfo: keyModel.keyInfo["plusKey"]!, keyModel: keyModel, size: CGSize(width: keyboardSize.height * 0.13, height: keyboardSize.height * 0.13))
+                                .offset(y: displayYOffset)
+                        }
+                        .padding(.top, keyHeight * 0.15)
+                        Spacer(minLength: 0.0)
                     }
                 }
             }
@@ -35,21 +43,27 @@ struct Calculator: View {
                 ScrollView() {
                     HStack {
                         Spacer()
-                        Text(zoomed ? "hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello helsdflo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello sdfhello hello hello hello hello hello hello hello hsdfello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellsdfo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellohello hello hello hello hello hesdfllo hellosdf hello hello hello hello hello hello hello hello hello hello hello hellosdfhello hello hello hello hello hello hello hello sdfsdfhello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellsdfo hello hello helsdflo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellosdf hello hello hello hello hello hello hello helsdflo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellosdf hello hsdfello hello hello hello hello hello hello hello hello hello hello hello hello hello sdfhello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellosdf hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hedsfllo hello hello hello hello hello hello hello helsdflo hesdfllo hello hello hello hello hello hello hello hello hello hello hello hello hello sdfhello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello " : "hello")
+                        Text(keyModel.zoomed ? "hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello helsdflo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello sdfhello hello hello hello hello hello hello hello hsdfello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellsdfo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellohello hello hello hello hello hesdfllo hellosdf hello hello hello hello hello hello hello hello hello hello hello hellosdfhello hello hello hello hello hello hello hello sdfsdfhello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellsdfo hello hello helsdflo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellosdf hello hello hello hello hello hello hello helsdflo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellosdf hello hsdfello hello hello hello hello hello hello hello hello hello hello hello hello hello sdfhello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellosdf hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hedsfllo hello hello hello hello hello hello hello helsdflo hesdfllo hello hello hello hello hello hello hello hello hello hello hello hello hello sdfhello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello " : "hello")
                     }
                 }
                 .multilineTextAlignment(.trailing)
                     .padding(30)
                     .offset(x: -30)
-                    .animation(Animation.linear(duration: 0.5) , value: zoomed)
+                    .animation(Animation.linear(duration: 0.5) , value: keyModel.zoomed)
             }
             .overlay() {
-                if !zoomed {
-                    Rectangle()
-                        .foregroundColor(.red).opacity(0.3)
-                        .padding(50)
-                        .transition(.move(edge: .bottom))
+                let info = "\(keyModel._hasBeenReset ? "Precision: "+keyModel.precisionDescription+" digits" : "\(keyModel._rad ? "Rad" : "")")"
+                VStack(spacing: 0.0) {
+                    Spacer()
+                    HStack(spacing: 0.0) {
+                        Text(info).foregroundColor(.white)
+                            .offset(x: keyHeight * 0.3, y: keyHeight * -0.05)
+                        Spacer()
+                    }
+                    KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
                 }
+                .transition(.move(edge: .bottom))
+                .offset(y: keyModel.zoomed ? size.height : 0)
             }
     }
     /*
