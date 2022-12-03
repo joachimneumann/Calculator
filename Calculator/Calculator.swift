@@ -8,6 +8,51 @@
 import SwiftUI
 
 struct Calculator: View {
+    @State var zoomed = false
+    var body: some View {
+        Rectangle()
+            .offset(x: -30)
+            .foregroundColor(Color.yellow)
+            .padding(30)
+            .overlay() {
+                HStack {
+                    Spacer()
+                    VStack {
+                        Image(systemName: "globe")
+                            .imageScale(.large)
+                            .foregroundColor(.accentColor)
+                            .padding()
+                            .onTapGesture {
+                                withAnimation() {
+                                    zoomed.toggle()
+                                }
+                            }
+                        Spacer()
+                    }
+                }
+            }
+            .overlay() {
+                ScrollView() {
+                    HStack {
+                        Spacer()
+                        Text(zoomed ? "hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello helsdflo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello sdfhello hello hello hello hello hello hello hello hsdfello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellsdfo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellohello hello hello hello hello hesdfllo hellosdf hello hello hello hello hello hello hello hello hello hello hello hellosdfhello hello hello hello hello hello hello hello sdfsdfhello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellsdfo hello hello helsdflo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellosdf hello hello hello hello hello hello hello helsdflo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellosdf hello hsdfello hello hello hello hello hello hello hello hello hello hello hello hello hello sdfhello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellosdf hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hedsfllo hello hello hello hello hello hello hello helsdflo hesdfllo hello hello hello hello hello hello hello hello hello hello hello hello hello sdfhello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello " : "hello")
+                    }
+                }
+                .multilineTextAlignment(.trailing)
+                    .padding(30)
+                    .offset(x: -30)
+                    .animation(Animation.linear(duration: 0.5) , value: zoomed)
+            }
+            .overlay() {
+                if !zoomed {
+                    Rectangle()
+                        .foregroundColor(.red).opacity(0.3)
+                        .padding(50)
+                        .transition(.move(edge: .bottom))
+                }
+            }
+    }
+    /*
     @StateObject var keyModel: KeyModel
     let isPad: Bool
     var isPortrait: Bool
@@ -23,10 +68,7 @@ struct Calculator: View {
     let displayLength: [Int]
     
     var body: some View {
-        //        let _ = print("Calculator body displayLength \(displayLength)")
-        //        let _ = keyModel.oneLineWithCommaLength = displayLength[0]
-        //        let _ = keyModel.oneLineWithoutCommaLength = displayLength[1]
-        //        let _ = print("displayLength \(displayLength)")
+        
         VStack {
             HStack(spacing: 0.0) {
                 let multipleLines = keyModel.zoomed ? keyModel.multipleLines : MultipleLiner(left: "0", abbreviated: false)
@@ -80,6 +122,7 @@ struct Calculator: View {
             .offset(y: keyModel.zoomed ? size.height : 0)
         }
     }
+     */
 }
 
 

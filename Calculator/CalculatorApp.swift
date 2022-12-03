@@ -67,19 +67,19 @@ struct CalculatorApp: App {
                 let displayLength = lengthMeasurement(size: CGSize(width: keyModel.displayWidth, height: newHeight), fontSize: singleLineFontSize)
                 let _ = (keyModel.oneLineWithCommaLength = displayLength[0])
                 let _ = (keyModel.oneLineWithoutCommaLength = displayLength[1])
-
-                Calculator(keyModel: keyModel,
-                           isPad: isPad,
-                           isPortrait: isPortrait,
-                           size: CGSize(width: newWidth, height: newHeight),
-                           keyboardSize: keyboardSize,
-                           keyHeight: oneKeyheight,
-                           singleLineFontSize: singleLineFontSize,
-                           displayXOffset: -displayXOffset,
-                           displayYOffset: displayYOffset,
-                           displayPaddingBottom: displayPaddingBottom,
-                           keyboardPaddingBottom: keyboardPaddingBottom,
-                           displayLength: displayLength)
+                Calculator()
+//                Calculator(keyModel: keyModel,
+//                           isPad: isPad,
+//                           isPortrait: isPortrait,
+//                           size: CGSize(width: newWidth, height: newHeight),
+//                           keyboardSize: keyboardSize,
+//                           keyHeight: oneKeyheight,
+//                           singleLineFontSize: singleLineFontSize,
+//                           displayXOffset: -displayXOffset,
+//                           displayYOffset: displayYOffset,
+//                           displayPaddingBottom: displayPaddingBottom,
+//                           keyboardPaddingBottom: keyboardPaddingBottom,
+//                           displayLength: displayLength)
 //                    .padding(.leading, leadingPadding)
 //                    .padding(.trailing, trailingPadding)
 //                    .padding(.top, topPadding)
