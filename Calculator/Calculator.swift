@@ -40,32 +40,28 @@ struct Calculator: View {
                 }
             }
             .overlay() {
-                LongDisplay(mantissa: keyModel.zoomed ? "hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello helsdflo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello sdfhello hello hello hello hello hello hello hello hsdfello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellsdfo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellohello hello hello hello hello hesdfllo hellosdf hello hello hello hello hello hello hello hello hello hello hello hellosdfhello hello hello hello hello hello hello hello sdfsdfhello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellsdfo hello hello helsdflo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellosdf hello hello hello hello hello hello hello helsdflo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellosdf hello hsdfello hello hello hello hello hello hello hello hello hello hello hello hello hello sdfhello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellosdf hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hedsfllo hello hello hello hello hello hello hello helsdflo hesdfllo hello hello hello hello hello hello hello hello hello hello hello hello hello sdfhello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello " : "hello", zoomed: keyModel.zoomed)
-//                ScrollView() {
-//                    HStack {
-//                        Spacer()
-//                        Text(keyModel.zoomed ? "hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello helsdflo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello sdfhello hello hello hello hello hello hello hello hsdfello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellsdfo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellohello hello hello hello hello hesdfllo hellosdf hello hello hello hello hello hello hello hello hello hello hello hellosdfhello hello hello hello hello hello hello hello sdfsdfhello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellsdfo hello hello helsdflo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellosdf hello hello hello hello hello hello hello helsdflo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellosdf hello hsdfello hello hello hello hello hello hello hello hello hello hello hello hello hello sdfhello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellosdf hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hedsfllo hello hello hello hello hello hello hello helsdflo hesdfllo hello hello hello hello hello hello hello hello hello hello hello hello hello sdfhello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello " : "hello")
-//                    }
-//                }
-//                .scrollDisabled(!keyModel.zoomed)
-//                .multilineTextAlignment(.trailing)
-//                    .padding(30)
-//                    .offset(x: -30)
-//                    .animation(Animation.linear(duration: 0.5) , value: keyModel.zoomed)
+                LongDisplay(
+                    zoomed: keyModel.zoomed,
+                    smallFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin))
+                )
+                .animation(.linear(duration: 00), value: keyModel.zoomed)
+//                .withAnimation(Animation.linear(duration: 0.0))
             }
             .overlay() {
-                let info = "\(keyModel._hasBeenReset ? "Precision: "+keyModel.precisionDescription+" digits" : "\(keyModel._rad ? "Rad" : "")")"
-                VStack(spacing: 0.0) {
-                    Spacer()
-                    HStack(spacing: 0.0) {
-                        Text(info).foregroundColor(.white)
-                            .offset(x: keyHeight * 0.3, y: keyHeight * -0.05)
+                if !keyModel.zoomed {
+                    let info = "\(keyModel._hasBeenReset ? "Precision: "+keyModel.precisionDescription+" digits" : "\(keyModel._rad ? "Rad" : "")")"
+                    VStack(spacing: 0.0) {
                         Spacer()
+                        HStack(spacing: 0.0) {
+                            Text(info).foregroundColor(.white)
+                                .offset(x: keyHeight * 0.3, y: keyHeight * -0.05)
+                            Spacer()
+                        }
+                        KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
                     }
-                    KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
+                    .transition(.move(edge: .bottom))
                 }
-                .transition(.move(edge: .bottom))
-                .offset(y: keyModel.zoomed ? size.height : 0)
+//                .offset(y: keyModel.zoomed ? size.height : 0)
             }
     }
     /*

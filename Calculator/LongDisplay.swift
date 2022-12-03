@@ -8,20 +8,47 @@
 import SwiftUI
 
 struct LongDisplay: View {
-    let mantissa: String
+//    let mantissa: String
+//    let zoomed: Bool
+//    let exponent: String?
+//    let abbreviated: Bool
+//    let smallFont: Font
+//    let largeFont: Font
+//    let scaleFont: Bool
+//    let isCopyingOrPasting: Bool
+//    let precisionString: String
     let zoomed: Bool
+    let smallFont: Font
     var body: some View {
         ScrollView() {
             HStack {
                 Spacer()
-                Text(mantissa)
+                if zoomed {
+                    Text("hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello helsdflo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello sdfhello hello hello hello hello hello hello hello hsdfello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellsdfo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellohello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello helsdflo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello sdfhello hello hello hello hello hello hello hello hsdfello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellsdfo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellohello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello helsdflo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello sdfhello hello hello hello hello hello hello hello hsdfello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellsdfo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellohello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello helsdflo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello sdfhello hello hello hello hello hello hello hello hsdfello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hellsdfo hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello")
+                        .font(smallFont)
+                } else {
+                    Text("hello")
+                        .font(smallFont)
+                }
+//                    .font(Font(UIFont.monospacedSystemFont(ofSize: 53, weight: .thin)))
             }
         }
-        .scrollDisabled(!zoomed)
         .multilineTextAlignment(.trailing)
             .padding(30)
             .offset(x: -30)
-            .animation(Animation.linear(duration: 0.5) , value: zoomed)
+            .animation(Animation.linear(duration: 0.1) , value: zoomed)
+//        ScrollView() {
+//            HStack {
+//                Spacer()
+//                Text(mantissa)
+//                    .font(smallFont)
+//            }
+//        }
+//        .scrollDisabled(!zoomed)
+//        .multilineTextAlignment(.trailing)
+//            .padding(30)
+//            .offset(x: -30)
+//            .animation(Animation.linear(duration: 0.5) , value: zoomed)
     }
 }
 /*
