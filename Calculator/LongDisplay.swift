@@ -9,70 +9,89 @@ import SwiftUI
 
 struct LongDisplay: View {
     let mantissa: String
-    let exponent: String?
-    let abbreviated: Bool
-    let smallFont: Font
-    let largeFont: Font
-    let scaleFont: Bool
-    let isCopyingOrPasting: Bool
-    let precisionString: String
-    let scrollingDisabled: Bool
-    
-    private let isCopyingOrPastingColor = Color(
-        red:    118.0/255.0,
-        green:  250.0/255.0,
-        blue:   113.0/255.0)
-    
+    let zoomed: Bool
     var body: some View {
-        if scaleFont {
-            VStack(spacing: 0.0) {
+        ScrollView() {
+            HStack {
                 Spacer()
-                HStack(spacing: 0.0) {
-                    Spacer()
-                    Text(mantissa)
-                        .foregroundColor(Color.white)
-                        .scaledToFit()
-                        .font(largeFont)
-                        .minimumScaleFactor(1.0 / 1.5)
-                }
-            }
-        } else {
-            VStack(spacing: 0.0) {
-                HStack(alignment: .top, spacing: 0.0) {
-                    ScrollView(.vertical) {
-                        Text(mantissa)
-                            .background(Color.green)
-                            .font(scaleFont ? largeFont : smallFont)
-                            .minimumScaleFactor(scaleFont ? 1.0/1.5 : 1.0)
-                            .foregroundColor(isCopyingOrPasting ? isCopyingOrPastingColor : .white)
-                            .lineLimit(scaleFont ? 1 : 100)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                            .multilineTextAlignment(.trailing)
-                        if abbreviated {
-                            HStack() {
-                                Spacer()
-                                Text("This result is abbreviated to \(C.maxDigitsInLongDisplay.useWords) significant digits. To get up to \(precisionString) significant digits use copy")
-                                    .foregroundColor(.white)
-                                Spacer()
-                            }
-                            .frame(maxWidth: .infinity)
-                        }
-                    }
-                    .scrollDisabled(scrollingDisabled)
-                    if exponent != nil {
-                        Text(exponent!)
-                            .font(smallFont)
-                            .minimumScaleFactor(1.0)
-                            .foregroundColor(isCopyingOrPasting ? isCopyingOrPastingColor : .white)
-                            .lineLimit(100)
-                            .multilineTextAlignment(.trailing)
-                    }
-                }
-                Spacer()
+                Text(mantissa)
             }
         }
+        .scrollDisabled(!zoomed)
+        .multilineTextAlignment(.trailing)
+            .padding(30)
+            .offset(x: -30)
+            .animation(Animation.linear(duration: 0.5) , value: zoomed)
     }
 }
+/*
+ struct LongDisplay: View {
+ let mantissa: String
+ let exponent: String?
+ let abbreviated: Bool
+ let smallFont: Font
+ let largeFont: Font
+ let scaleFont: Bool
+ let isCopyingOrPasting: Bool
+ let precisionString: String
+ let scrollingDisabled: Bool
+ 
+ private let isCopyingOrPastingColor = Color(
+ red:    118.0/255.0,
+ green:  250.0/255.0,
+ blue:   113.0/255.0)
+ 
+ var body: some View {
+ if scaleFont {
+ VStack(spacing: 0.0) {
+ Spacer()
+ HStack(spacing: 0.0) {
+ Spacer()
+ Text(mantissa)
+ .foregroundColor(Color.white)
+ .scaledToFit()
+ .font(largeFont)
+ .minimumScaleFactor(1.0 / 1.5)
+ }
+ }
+ } else {
+ VStack(spacing: 0.0) {
+ HStack(alignment: .top, spacing: 0.0) {
+ ScrollView(.vertical) {
+ Text(mantissa)
+ .background(Color.green)
+ .font(scaleFont ? largeFont : smallFont)
+ .minimumScaleFactor(scaleFont ? 1.0/1.5 : 1.0)
+ .foregroundColor(isCopyingOrPasting ? isCopyingOrPastingColor : .white)
+ .lineLimit(scaleFont ? 1 : 100)
+ .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+ .multilineTextAlignment(.trailing)
+ if abbreviated {
+ HStack() {
+ Spacer()
+ Text("This result is abbreviated to \(C.maxDigitsInLongDisplay.useWords) significant digits. To get up to \(precisionString) significant digits use copy")
+ .foregroundColor(.white)
+ Spacer()
+ }
+ .frame(maxWidth: .infinity)
+ }
+ }
+ .scrollDisabled(scrollingDisabled)
+ if exponent != nil {
+ Text(exponent!)
+ .font(smallFont)
+ .minimumScaleFactor(1.0)
+ .foregroundColor(isCopyingOrPasting ? isCopyingOrPastingColor : .white)
+ .lineLimit(100)
+ .multilineTextAlignment(.trailing)
+ }
+ }
+ Spacer()
+ }
+ }
+ }
+ }
+ */
 
 /*
  struct MultiLineDisplay: View {

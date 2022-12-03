@@ -23,14 +23,14 @@ struct KeysView: View {
                 let sizeRight = CGSize(width: rightWidth, height: size.height)
                 ScientificKeys(keyModel: keyModel, spaceBetweenKeys: space, size: sizeLeft)
                     .padding(.trailing, space)
-//                    .background(Color.black)
+                    .background(Color.black)
                 NonScientificKeys(keyModel: keyModel, spaceBetweenKeys: space, size: sizeRight)
-//                    .background(Color.black)
+                    .background(Color.black)
             }
         } else {
             let space = C.spaceBetweenkeysFraction(withScientificKeys: false) * size.width
             NonScientificKeys(keyModel: keyModel, spaceBetweenKeys: space, size: size)
-//                .background(Color.black)
+                .background(Color.black)
         }
     }
 }
