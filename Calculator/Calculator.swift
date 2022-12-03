@@ -16,9 +16,8 @@ struct Calculator: View {
     var keyboardSize: CGSize
     var keyHeight: CGFloat
     var singleLineFontSize: CGFloat
-    let displayPaddingLeading: CGFloat
-    let displayPaddingTrailing: CGFloat
-    let displayPaddingTop: CGFloat
+    let displayXOffset: CGFloat
+    let displayYOffset: CGFloat
     let displayPaddingBottom: CGFloat
     let keyboardPaddingBottom: CGFloat
     let displayLength: [Int]
@@ -39,15 +38,17 @@ struct Calculator: View {
                     mantissa: left,
                     exponent: right,
                     abbreviated: abbreviated,
-                    font: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
+                    smallFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
+                    largeFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * 1.5, weight: .thin)),
+                    scaleFont: isPortrait,
                     isCopyingOrPasting: false,
                     precisionString: keyModel.precision.useWords,
                     scrollingDisabled: !keyModel.zoomed)
-                .background(Color.yellow)
-                .offset(y: displayPaddingTop)
+                .background(Color.yellow).opacity(0.4)
+                .offset(x: displayXOffset, y: displayYOffset)
                 .animation(Animation.easeInOut(duration: 0.4), value: keyModel.zoomed)
             }
-            .padding(.trailing, displayPaddingTrailing)
+            Spacer()
         }
         
         .overlay() { /// Icons
@@ -56,7 +57,7 @@ struct Calculator: View {
                     HStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
                         PlusKey(keyInfo: keyModel.keyInfo["plusKey"]!, keyModel: keyModel, size: CGSize(width: keyboardSize.height * 0.13, height: keyboardSize.height * 0.13))
-                            .offset(y: displayPaddingTop)
+                            .offset(y: displayYOffset)
                     }
                     .padding(.top, keyHeight * 0.15)
                     Spacer(minLength: 0.0)
@@ -77,20 +78,6 @@ struct Calculator: View {
             }
             .transition(.move(edge: .bottom))
             .offset(y: keyModel.zoomed ? size.height : 0)
-        }
-        
-        .overlay() { /// Info texts
-            VStack(spacing: 0.0) {
-                if !isPortrait {
-                    HStack(spacing: 0.0) {
-                        Spacer(minLength: 0.0)
-                        PlusKey(keyInfo: keyModel.keyInfo["plusKey"]!, keyModel: keyModel, size: CGSize(width: keyboardSize.height * 0.13, height: keyboardSize.height * 0.13))
-                            .offset(y: displayPaddingTop)
-                    }
-                    .padding(.top, keyHeight * 0.15)
-                    Spacer(minLength: 0.0)
-                }
-            }
         }
     }
 }

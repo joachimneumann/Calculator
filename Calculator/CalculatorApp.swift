@@ -60,11 +60,10 @@ struct CalculatorApp: App {
                 /// make space for the icon
                 let singleLineFontSize = (isPortrait ? 0.18 : 0.16) * keyboardSize.height
                 let keyboardPaddingBottom = 0.0//isPortrait ? keyboardSize.height * 0.1 : 0.0
-                let displayPaddingLeading = isPortrait ? 0.0 : keyboardSize.height * 0.15
-                let displayPaddingTrailing = isPortrait ? 0.0 : keyboardSize.height * 0.15
-                let displayPaddingTop = isPortrait ? newHeight - keyboardSize.height - keyboardPaddingBottom - oneKeyheight * 1.2 : oneKeyheight * 0.2
+                let displayXOffset = isPortrait ? 0.0 : keyboardSize.height * 0.15
+                let displayYOffset = isPortrait ? newHeight - keyboardSize.height - keyboardPaddingBottom - oneKeyheight * 1.2 : oneKeyheight * 0.2
                 let displayPaddingBottom = keyboardSize.height
-                let _ = (keyModel.displayWidth = newWidth - displayPaddingLeading - displayPaddingTrailing)
+                let _ = (keyModel.displayWidth = newWidth - 2 * displayXOffset)
                 let displayLength = lengthMeasurement(size: CGSize(width: keyModel.displayWidth, height: newHeight), fontSize: singleLineFontSize)
                 let _ = (keyModel.oneLineWithCommaLength = displayLength[0])
                 let _ = (keyModel.oneLineWithoutCommaLength = displayLength[1])
@@ -76,9 +75,8 @@ struct CalculatorApp: App {
                            keyboardSize: keyboardSize,
                            keyHeight: oneKeyheight,
                            singleLineFontSize: singleLineFontSize,
-                           displayPaddingLeading: displayPaddingLeading,
-                           displayPaddingTrailing: displayPaddingTrailing,
-                           displayPaddingTop: displayPaddingTop,
+                           displayXOffset: -displayXOffset,
+                           displayYOffset: displayYOffset,
                            displayPaddingBottom: displayPaddingBottom,
                            keyboardPaddingBottom: keyboardPaddingBottom,
                            displayLength: displayLength)
