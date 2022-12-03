@@ -11,11 +11,6 @@ struct KeysView: View {
     let keyModel : KeyModel
     let isScientific: Bool
     let size: CGSize
-    //    if !t.isPad && t.isPortrait {
-    //        bottomPadding = t.allkeysHeight * 0.07
-    //    } else {
-    //        bottomPadding = 0
-    //    }
     
     var body: some View {
         Group {
@@ -30,10 +25,12 @@ struct KeysView: View {
                     ScientificKeys(keyModel: keyModel, spaceBetweenKeys: space, size: sizeLeft)
                         .padding(.trailing, space)
                     NonScientificKeys(keyModel: keyModel, spaceBetweenKeys: space, size: sizeRight)
+//                        .background(Color.red)
                 }
             } else {
                 let space = C.spaceBetweenkeysFraction(withScientificKeys: false) * size.width
                 NonScientificKeys(keyModel: keyModel, spaceBetweenKeys: space, size: size)
+//                    .background(Color.red)
             }
         }
     }

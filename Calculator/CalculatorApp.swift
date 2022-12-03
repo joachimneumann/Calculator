@@ -35,6 +35,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct CalculatorApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate // used to disallow Landscape in Mac
     
+    var keyModel = KeyModel()
+
     var body: some Scene {
         WindowGroup {
             GeometryReader { geo in
@@ -57,10 +59,18 @@ struct CalculatorApp: App {
                 /// make space for "rad" info
                 /// make space for the icon
                 let singleLineFontSize = (isPortrait ? 0.18 : 0.16) * keyboardSize.height
+                let keyboardPaddingBottom = 0.0//isPortrait ? keyboardSize.height * 0.5 : 0.0
                 let displayPaddingLeading = isPortrait ? 0.0 : keyboardSize.height * 0.15
                 let displayPaddingTrailing = isPortrait ? 0.0 : keyboardSize.height * 0.15
-                let displayWidth = newWidth - displayPaddingLeading - displayPaddingTrailing
-                Calculator(isPad: isPad,
+                let displayPaddingTop = isPortrait ? 0.0 : oneKeyheight * 0.3
+                let displayPaddingBottom = keyboardSize.height
+                let _ = (keyModel.displayWidth = newWidth - displayPaddingLeading - displayPaddingTrailing)
+                let displayLength = lengthMeasurement(size: CGSize(width: keyModel.displayWidth, height: newHeight), fontSize: singleLineFontSize)
+                let _ = (keyModel.oneLineWithCommaLength = displayLength[0])
+                let _ = (keyModel.oneLineWithoutCommaLength = displayLength[1])
+
+                Calculator(keyModel: keyModel,
+                           isPad: isPad,
                            isPortrait: isPortrait,
                            size: CGSize(width: newWidth, height: newHeight),
                            keyboardSize: keyboardSize,
@@ -68,12 +78,15 @@ struct CalculatorApp: App {
                            singleLineFontSize: singleLineFontSize,
                            displayPaddingLeading: displayPaddingLeading,
                            displayPaddingTrailing: displayPaddingTrailing,
-                           displayLength: lengthMeasurement(size: CGSize(width: displayWidth, height: newHeight), fontSize: singleLineFontSize))
-                    .padding(.leading, leadingPadding)
-                    .padding(.trailing, trailingPadding)
-                    .padding(.top, topPadding)
-                    .padding(.bottom, bottomPadding)
-                    .background(Color.black)
+                           displayPaddingTop: displayPaddingTop,
+                           displayPaddingBottom: displayPaddingBottom,
+                           keyboardPaddingBottom: keyboardPaddingBottom,
+                           displayLength: displayLength)
+//                    .padding(.leading, leadingPadding)
+//                    .padding(.trailing, trailingPadding)
+//                    .padding(.top, topPadding)
+//                    .padding(.bottom, bottomPadding)
+//                    .background(Color.black)
             }
             .withHostingWindow { window in
                 /// this stops white background from showing *during* a device rotation

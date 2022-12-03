@@ -63,7 +63,7 @@ struct ScientificKeys: View {
                 Key(keyInfo: keyModel.keyInfo["Rand"]!, keyModel: keyModel, size: keySize)
             }
         }
-        .background(Color.black)
+        //.background(Color.black)
     }
 }
 

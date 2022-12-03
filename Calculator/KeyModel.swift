@@ -9,6 +9,7 @@ import SwiftUI
 
 
 class KeyModel : ObservableObject {
+    var displayWidth: CGFloat = 0
     class KeyInfo: ObservableObject {
         let symbol: String
         @Published var colors: ColorsOf
@@ -146,7 +147,9 @@ class KeyModel : ObservableObject {
             _hasBeenReset = true
             brain.asyncOperation("AC")
         case "plusKey":
-            zoomed.toggle()
+//            withAnimation() {
+                zoomed.toggle()
+//            }
         default:
             _hasBeenReset = false
             if _rad == false && radOrDegOperators.contains(symbol) {

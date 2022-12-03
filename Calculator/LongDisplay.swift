@@ -20,6 +20,7 @@ struct LongDisplay: View {
         green:  250.0/255.0,
         blue:   113.0/255.0)
     let precisionString: String
+    let scrollingDisabled: Bool
 
 //    init(keyModel: KeyModel, fontSize: CGFloat) {
 //        print("LongDisplay init()")
@@ -61,6 +62,7 @@ struct LongDisplay: View {
                         .frame(maxWidth: .infinity)
                     }
                 }
+                .scrollDisabled(scrollingDisabled)
                 if exponent != nil {
                     Text(exponent!)
                         .font(font)

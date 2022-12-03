@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Calculator: View {
-    @StateObject private var keyModel = KeyModel()
+    @StateObject var keyModel: KeyModel
     let isPad: Bool
     var isPortrait: Bool
     let size: CGSize
@@ -18,6 +18,9 @@ struct Calculator: View {
     var singleLineFontSize: CGFloat
     let displayPaddingLeading: CGFloat
     let displayPaddingTrailing: CGFloat
+    let displayPaddingTop: CGFloat
+    let displayPaddingBottom: CGFloat
+    let keyboardPaddingBottom: CGFloat
     let displayLength: [Int]
     
     var body: some View {
@@ -31,44 +34,37 @@ struct Calculator: View {
             
             /// display
             HStack(spacing: 0.0) {
-                if keyModel.zoomed {
-                    let text = keyModel.multipleLines
-                    LongDisplay(
-                        mantissa: text.left,
-                        exponent: text.right,
-                        abbreviated: text.abbreviated,
-                        font: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
-                        isCopyingOrPasting: false,
-                        precisionString: keyModel.precision.useWords)
-                    .padding(.trailing, displayPaddingTrailing)
-                    .transition(.opacity)
-                } else {
-                    VStack(spacing: 0.0) {
-                        let text = keyModel.oneLineP
-                        OneLineDisplay(
-                            text: text,
-                            largeFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * (isPortrait ? 1.5 : 1.0), weight: .thin)),
-                            smallFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
-                            maximalTextLength: text.contains(",") ? keyModel.oneLineWithCommaLength : keyModel.oneLineWithoutCommaLength,
-                            fontScaleFactor: isPortrait ? 1.5 : 1.0)
-                        .padding(.leading, displayPaddingLeading)
-                        .padding(.trailing, displayPaddingTrailing)
-                        .transition(.opacity)
-                        Spacer()
-                    }
-                }
+//                let multipleLines = keyModel.zoomed ? keyModel.multipleLines : MultipleLiner(left: "0", abbreviated: false)
+                let multipleLines = MultipleLiner(left: "ksdjhf skjfh skdjhf skdjfh sdkjhf sdkjfh sdkjfh sdkhfj sdkjhf skdjfh sdkjhf skdjhf skdjhf ksdjhf sdkjhf sdkjhf skdjhf skdjfh skdjhf sdkjhf sdkjhf sdkjhf sdkjfh sdkjhf sdkfjh", abbreviated: false)
+                let left = keyModel.zoomed ? multipleLines.left : keyModel.oneLineP
+                let right = keyModel.zoomed ? multipleLines.right : nil
+                let abbreviated = keyModel.zoomed ? multipleLines.abbreviated : false
+                LongDisplay(
+                    mantissa: left,
+                    exponent: right,
+                    abbreviated: abbreviated,
+                    font: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
+                    isCopyingOrPasting: false,
+                    precisionString: keyModel.precision.useWords,
+                    scrollingDisabled: false)
+                .padding(.top, displayPaddingTop)
             }
-            .padding(.top, keyHeight * 0.1)
-            
+            .transition(.opacity)
+            .padding(.trailing, displayPaddingTrailing)
+//            .padding(.bottom, keyModel.zoomed ? 0 : displayPaddingBottom)
+//            .padding(.top, displayPaddingTop)
+            let _ = print("displayPaddingTop \(displayPaddingTop)")
+            let _ = print("displayPaddingBottom \(keyModel.zoomed ? 0 : displayPaddingBottom)")
+
             /// keyboard
-            if !keyModel.zoomed {
-                VStack(spacing: 0.0) {
-                    Spacer()
-                    KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
-                        .padding(.bottom, isPortrait ? size.height*0.06 : 0.0)
-                }
-                .transition(.move(edge: .bottom))
+            VStack(spacing: 0.0) {
+                Spacer()
+                KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
+                    .padding(.bottom, keyboardPaddingBottom)
+                    .padding(.top, keyModel.zoomed ? 0 : 100)
+//                        .background(Color.green)
             }
+            .transition(.move(edge: .bottom))
             
             /// Icons
             if !isPortrait {
@@ -78,6 +74,7 @@ struct Calculator: View {
                         Spacer(minLength: 0.0)
                         PlusKey(keyInfo: keyModel.keyInfo["plusKey"]!, keyModel: keyModel, size: CGSize(width: keyboardSize.height * 0.13, height: keyboardSize.height * 0.13))
                             .padding(.bottom, keyboardSize.height + keyHeight * 0.12)
+                            //.background(Color.yellow)
                     }
                 }
             }
@@ -113,7 +110,7 @@ struct Calculator: View {
             }
         }
         
-        if keyModel.zoomed && !isPortrait {
+//        if keyModel.zoomed && !isPortrait {
             //            LongDisplay(text: viewLogic.longText, uiFont: viewLogic.displayUIFont, isCopyingOrPasting: viewLogic.isCopyingOrPasting, color: viewLogic.textColor)
             
             //            MultiLineDisplay(brain: Brain(), t: TE(), isCopyingOrPasting: false)
@@ -122,7 +119,7 @@ struct Calculator: View {
             //            Spacer(minLength: 0.0)
             //            SingleLineDisplay(brain: Brain(), t: TE())
             //                .padding(.trailing, TE().trailingAfterDisplay)
-        }
+//        }
     }
 }
 
