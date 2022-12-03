@@ -62,7 +62,7 @@ struct CalculatorApp: App {
                 let keyboardPaddingBottom = 0.0//isPortrait ? keyboardSize.height * 0.5 : 0.0
                 let displayPaddingLeading = isPortrait ? 0.0 : keyboardSize.height * 0.15
                 let displayPaddingTrailing = isPortrait ? 0.0 : keyboardSize.height * 0.15
-                let displayPaddingTop = isPortrait ? 0.0 : oneKeyheight * 0.3
+                let displayPaddingTop = isPortrait ? 0.0 : oneKeyheight * 0.2
                 let displayPaddingBottom = keyboardSize.height
                 let _ = (keyModel.displayWidth = newWidth - displayPaddingLeading - displayPaddingTrailing)
                 let displayLength = lengthMeasurement(size: CGSize(width: keyModel.displayWidth, height: newHeight), fontSize: singleLineFontSize)

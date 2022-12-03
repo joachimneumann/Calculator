@@ -25,7 +25,7 @@ class KeyModel : ObservableObject {
     @Published var isCalculating = false
     @Published var zoomed = false
 
-    let precision = 1000000
+    let precision = 100//0000
     let brain: Brain
     @Published var keyInfo: [String: KeyInfo] = [:]
     var enabledDict: [String: Bool] = [:]

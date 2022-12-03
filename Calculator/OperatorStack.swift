@@ -14,7 +14,7 @@ class Operator: Equatable, Identifiable {
     static let closedParenthesesPriority = -1
     static let equalPriority = -3
     init(_ priority: Int) {
-        print("Operator init()")
+        //print("Operator init()")
         self.priority = priority
     }
     static func == (lhs: Operator, rhs: Operator) -> Bool {
