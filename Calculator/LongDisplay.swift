@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct LongDisplay: View {
+    let zoomed: Bool
+    let oneLine: String
     let mantissa: String
     let exponent: String?
     let abbreviated: Bool
@@ -39,32 +41,38 @@ struct LongDisplay: View {
         } else {
             VStack(spacing: 0.0) {
                 HStack(alignment: .top, spacing: 0.0) {
-                    ScrollView(.vertical) {
-                        Text(mantissa)
+                    if zoomed {
+                        ScrollView(.vertical) {
+                            Text(mantissa)
+                                .background(Color.green)
+                                .font(smallFont)
+                                .foregroundColor(isCopyingOrPasting ? isCopyingOrPastingColor : .white)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                                .multilineTextAlignment(.trailing)
+                            if abbreviated {
+                                HStack() {
+                                    Spacer()
+                                    Text("This result is abbreviated to \(C.maxDigitsInLongDisplay.useWords) significant digits. To get up to \(precisionString) significant digits use copy")
+                                        .foregroundColor(.white)
+                                    Spacer()
+                                }
+                                .frame(maxWidth: .infinity)
+                            }
+                        }
+                        if exponent != nil {
+                            Text(exponent!)
+                                .font(smallFont)
+                                .foregroundColor(isCopyingOrPasting ? isCopyingOrPastingColor : .white)
+                                .multilineTextAlignment(.trailing)
+                        }
+                    } else {
+                        Text(oneLine)
                             .background(Color.green)
                             .font(scaleFont ? largeFont : smallFont)
                             .minimumScaleFactor(scaleFont ? 1.0/1.5 : 1.0)
                             .foregroundColor(isCopyingOrPasting ? isCopyingOrPastingColor : .white)
-                            .lineLimit(scaleFont ? 1 : 100)
+                            .lineLimit(1)
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                            .multilineTextAlignment(.trailing)
-                        if abbreviated {
-                            HStack() {
-                                Spacer()
-                                Text("This result is abbreviated to \(C.maxDigitsInLongDisplay.useWords) significant digits. To get up to \(precisionString) significant digits use copy")
-                                    .foregroundColor(.white)
-                                Spacer()
-                            }
-                            .frame(maxWidth: .infinity)
-                        }
-                    }
-                    .scrollDisabled(scrollingDisabled)
-                    if exponent != nil {
-                        Text(exponent!)
-                            .font(smallFont)
-                            .minimumScaleFactor(1.0)
-                            .foregroundColor(isCopyingOrPasting ? isCopyingOrPastingColor : .white)
-                            .lineLimit(100)
                             .multilineTextAlignment(.trailing)
                     }
                 }

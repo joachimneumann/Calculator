@@ -31,10 +31,13 @@ struct Calculator: View {
             HStack(spacing: 0.0) {
                 let multipleLines = keyModel.zoomed ? keyModel.multipleLines : MultipleLiner(left: "0", abbreviated: false)
                 //                let multipleLines = MultipleLiner(left: "ksdjhf skjfh skdjhf skdjfh sdkjhf sdkjfh sdkjfh sdkhfj sdkjhf skdjfh sdkjhf skdjhf skdjhf ksdjhf sdkjhf sdkjhf skdjhf skdjfh skdjhf sdkjhf sdkjhf sdkjhf sdkjfh sdkjhf sdkfjh", abbreviated: false)
-                let left = keyModel.zoomed ? multipleLines.left : keyModel.oneLineP
-                let right = keyModel.zoomed ? multipleLines.right : nil
-                let abbreviated = keyModel.zoomed ? multipleLines.abbreviated : false
+                let oneLine = keyModel.oneLineP
+                let left = multipleLines.left
+                let right = multipleLines.right
+                let abbreviated = multipleLines.abbreviated
                 LongDisplay(
+                    zoomed: keyModel.zoomed,
+                    oneLine: oneLine,
                     mantissa: left,
                     exponent: right,
                     abbreviated: abbreviated,
