@@ -59,10 +59,10 @@ struct CalculatorApp: App {
                 /// make space for "rad" info
                 /// make space for the icon
                 let singleLineFontSize = (isPortrait ? 0.18 : 0.16) * keyboardSize.height
-                let keyboardPaddingBottom = 0.0//isPortrait ? keyboardSize.height * 0.5 : 0.0
+                let keyboardPaddingBottom = 0.0//isPortrait ? keyboardSize.height * 0.1 : 0.0
                 let displayPaddingLeading = isPortrait ? 0.0 : keyboardSize.height * 0.15
                 let displayPaddingTrailing = isPortrait ? 0.0 : keyboardSize.height * 0.15
-                let displayPaddingTop = isPortrait ? 0.0 : oneKeyheight * 0.2
+                let displayPaddingTop = isPortrait ? newHeight - keyboardSize.height - keyboardPaddingBottom - oneKeyheight * 1.2 : oneKeyheight * 0.2
                 let displayPaddingBottom = keyboardSize.height
                 let _ = (keyModel.displayWidth = newWidth - displayPaddingLeading - displayPaddingTrailing)
                 let displayLength = lengthMeasurement(size: CGSize(width: keyModel.displayWidth, height: newHeight), fontSize: singleLineFontSize)
