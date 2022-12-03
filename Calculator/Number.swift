@@ -114,6 +114,7 @@ class Number: CustomDebugStringConvertible {
     func appendDigit(_ digit: String) {
         if !isStr || _str == "0" {
             _str = digit
+            _gmp = nil
         } else {
             _str!.append(digit)
         }
