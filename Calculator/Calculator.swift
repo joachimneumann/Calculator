@@ -47,13 +47,11 @@ struct Calculator: View {
                             largeFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * 1.0, weight: .thin)),
                             scaleFont: isPortrait,
                             isCopyingOrPasting: false,
-                            precisionString: keyModel.precision.useWords,
-                            scrollingDisabled: !keyModel.zoomed)
+                            precisionString: keyModel.precision.useWords)
                         .offset(x: -displayXOffset, y: displayYOffset)
-                        .background(Color.green).opacity(0.4)
+//                        .background(Color.green).opacity(0.4)
                         .animation(Animation.easeInOut(duration: 0.4), value: keyModel.zoomed)
                     }
-//                    .frame(width: keyModel.displayWidth)
                     .background(Color.yellow)
                     Spacer()
                 }
@@ -84,7 +82,7 @@ struct Calculator: View {
                     KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
                 }
                 .transition(.move(edge: .bottom))
-                .offset(y: keyModel.zoomed ? size.height : 0)
+                .offset(y: keyModel.zoomed ? size.height/2 : 0)
             }
     }
 }
