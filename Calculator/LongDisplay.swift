@@ -9,9 +9,9 @@ import SwiftUI
 
 struct LongDisplay: View {
     let zoomed: Bool
-    let oneLine: String
     let mantissa: String
     let exponent: String?
+    let ePadding: CGFloat
     let abbreviated: Bool
     let smallFont: Font
     let largeFont: Font
@@ -64,17 +64,23 @@ struct LongDisplay: View {
                                 .font(smallFont)
                                 .foregroundColor(isCopyingOrPasting ? isCopyingOrPastingColor : .white)
                                 .multilineTextAlignment(.trailing)
-                                .padding(.leading, 100)
+                                .padding(.leading, ePadding)
                         }
                     } else {
-                        Text(oneLine)
-                            .background(Color.green)
-                            .font(scaleFont ? largeFont : smallFont)
-                            .minimumScaleFactor(scaleFont ? 1.0/1.5 : 1.0)
-                            .foregroundColor(isCopyingOrPasting ? isCopyingOrPastingColor : .white)
-                            .lineLimit(1)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                            .multilineTextAlignment(.trailing)
+                        HStack(spacing: 0.0) {
+                            Text(mantissa)
+                            if exponent != nil {
+                                Text(exponent!)
+                                    .padding(.leading, ePadding)
+                            }
+                        }
+                        .background(Color.green)
+                        .font(scaleFont ? largeFont : smallFont)
+                        .minimumScaleFactor(scaleFont ? 1.0/1.5 : 1.0)
+                        .foregroundColor(isCopyingOrPasting ? isCopyingOrPastingColor : .white)
+                        .lineLimit(1)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                        .multilineTextAlignment(.trailing)
                     }
                 }
                 Spacer()

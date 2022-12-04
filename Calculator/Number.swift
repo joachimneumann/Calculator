@@ -149,18 +149,18 @@ class Number: CustomDebugStringConvertible {
 //        return ret
 //    }
 
-    func multipleLines(withoutComma: Int, withComma: Int) -> MultipleLiner {
+    func multipleLines(_ lengthMeasurementResult: LengthMeasurementResult) -> MultipleLiner {
         var ret = MultipleLiner(left: "0", abbreviated: false)
         ret.abbreviated = false
         if let s = str {
             if s.contains(",") {
-                if s.count <= withComma {
+                if s.count <= lengthMeasurementResult.withCommaNonScientific {
                     ret.left = s
                     return ret
                 }
             } else {
                 /// no comma
-                if s.count <= withoutComma {
+                if s.count <= lengthMeasurementResult.withoutComma {
                     ret.left = s
                     return ret
                 }
@@ -189,8 +189,8 @@ class Number: CustomDebugStringConvertible {
         }
         
         var exponent: mpfr_exp_t = 0
-        var charArray: Array<CChar> = Array(repeating: 0, count: withComma)
-        mpfr_get_str(&charArray, &exponent, 10, withComma, &displayGmp.mpfr, MPFR_RNDN)
+        var charArray: Array<CChar> = Array(repeating: 0, count: lengthMeasurementResult.withCommaNonScientific)
+        mpfr_get_str(&charArray, &exponent, 10, lengthMeasurementResult.withCommaNonScientific, &displayGmp.mpfr, MPFR_RNDN)
 
         var mantissa: String = ""
         for c in charArray {
@@ -219,12 +219,12 @@ class Number: CustomDebugStringConvertible {
         if mantissa[0] == "-" {
             mantissa.removeFirst()
             isNegative = true
-            charactersWithoutComma = withoutComma - 1
-            charactersWithComma = withComma - 1
+            charactersWithoutComma = lengthMeasurementResult.withoutComma - 1
+            charactersWithComma = lengthMeasurementResult.withCommaNonScientific - 1
         } else {
             isNegative = false
-            charactersWithoutComma = withoutComma
-            charactersWithComma = withComma
+            charactersWithoutComma = lengthMeasurementResult.withoutComma
+            charactersWithComma = lengthMeasurementResult.withCommaNonScientific
         }
 
         /// Can be displayed as Integer?

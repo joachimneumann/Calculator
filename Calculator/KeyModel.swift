@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 class KeyModel : ObservableObject {
     var displayWidth: CGFloat = 0
     class KeyInfo: ObservableObject {
@@ -31,21 +30,23 @@ class KeyModel : ObservableObject {
     var enabledDict: [String: Bool] = [:]
     var _AC = true
     var _hasBeenReset = false
-    @Published var oneLineP: String
+    @Published var oneLineP: MultipleLiner
 
-    func multipleLines(withoutComma: Int, withComma: Int) -> MultipleLiner {
-        brain.last.multipleLines(withoutComma: withoutComma, withComma: withComma)
+    var multipleLines: MultipleLiner {
+        let len = min(precision, C.maxDigitsInLongDisplay)
+        let lengthMeasurementResult = LengthMeasurementResult(
+            withoutComma: len, withCommaNonScientific: len, withCommaScientific: len, ePadding: 0)
+        return brain.last.multipleLines(lengthMeasurementResult)
     }
     
     var precisionDescription = "unknown"
 
-    var oneLineWithoutCommaLength: Int = 4
-    var oneLineWithCommaLength: Int = 4
+    var lengthMeasurementResult = LengthMeasurementResult(withoutComma: 0, withCommaNonScientific: 0, withCommaScientific: 0, ePadding: 0)
 
     init() {
         print("KeyModel init()")
         brain = Brain(precision: precision)
-        oneLineP = "0"
+        oneLineP = MultipleLiner(left: "0", abbreviated: false)
         for key in C.allKeys {
             keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))
         }
@@ -69,7 +70,7 @@ class KeyModel : ObservableObject {
             }
         }
         DispatchQueue.main.async {
-            self.oneLineP = self.brain.last.multipleLines(withoutComma: self.oneLineWithoutCommaLength, withComma: self.oneLineWithCommaLength).oneLine(showAbbreviation: false)
+            self.oneLineP = self.brain.last.multipleLines(self.lengthMeasurementResult)
         }
     }
 

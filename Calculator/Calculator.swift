@@ -20,7 +20,6 @@ struct Calculator: View {
     let displayYOffset: CGFloat
     let displayPaddingBottom: CGFloat
     let keyboardPaddingBottom: CGFloat
-    let displayLength: [Int]
     
     var body: some View {
         //        let _ = print("Calculator body displayLength \(displayLength)")
@@ -32,17 +31,16 @@ struct Calculator: View {
             .overlay() {
                 VStack {
                     HStack(spacing: 0.0) {
-                        let len = min(keyModel.precision, C.maxDigitsInLongDisplay)
-                        let multipleLines: MultipleLiner? = keyModel.zoomed ? keyModel.multipleLines(withoutComma: len, withComma: len) : nil
-                        let oneLine = keyModel.zoomed ? "" : keyModel.oneLineP
-                        let left = keyModel.zoomed ? multipleLines!.left : ""
-                        let right: String? = keyModel.zoomed ? multipleLines!.right : nil
-                        let abbreviated = keyModel.zoomed ? multipleLines!.abbreviated : false
+                        let multipleLines: MultipleLiner? = keyModel.zoomed ? keyModel.multipleLines : nil
+                        let left = keyModel.zoomed ? multipleLines!.left : keyModel.oneLineP.left
+                        let right: String? = keyModel.zoomed ? multipleLines!.right : keyModel.oneLineP.right
+                        let abbreviated = keyModel.zoomed ? multipleLines!.abbreviated : keyModel.oneLineP.abbreviated
+                        let ePadding = keyModel.lengthMeasurementResult.ePadding
                         LongDisplay(
                             zoomed: keyModel.zoomed,
-                            oneLine: oneLine,
                             mantissa: left,
                             exponent: right,
+                            ePadding: ePadding,
                             abbreviated: abbreviated,
                             smallFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
                             largeFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * 1.5, weight: .thin)),

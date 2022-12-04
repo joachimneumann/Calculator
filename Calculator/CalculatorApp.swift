@@ -64,9 +64,7 @@ struct CalculatorApp: App {
                 let displayYOffset = isPortrait ? newHeight - keyboardSize.height - keyboardPaddingBottom - oneKeyheight * 1.2 : oneKeyheight * 0.2
                 let displayPaddingBottom = keyboardSize.height
                 let _ = (keyModel.displayWidth = newWidth - 2 * displayXOffset)
-                let displayLength = lengthMeasurement(size: CGSize(width: keyModel.displayWidth, height: newHeight), fontSize: singleLineFontSize)
-                let _ = (keyModel.oneLineWithCommaLength = displayLength[0])
-                let _ = (keyModel.oneLineWithoutCommaLength = displayLength[1])
+                let _ = (keyModel.lengthMeasurementResult = lengthMeasurement(size: CGSize(width: keyModel.displayWidth, height: newHeight), fontSize: singleLineFontSize))
 
                 Calculator(keyModel: keyModel,
                            isPad: isPad,
@@ -78,8 +76,7 @@ struct CalculatorApp: App {
                            displayXOffset: displayXOffset,
                            displayYOffset: displayYOffset,
                            displayPaddingBottom: displayPaddingBottom,
-                           keyboardPaddingBottom: keyboardPaddingBottom,
-                           displayLength: displayLength)
+                           keyboardPaddingBottom: keyboardPaddingBottom)
 //                    .padding(.leading, leadingPadding)
 //                    .padding(.trailing, trailingPadding)
 //                    .padding(.top, topPadding)
