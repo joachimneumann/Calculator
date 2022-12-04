@@ -126,7 +126,7 @@ class KeyModel : ObservableObject {
     
     
     func keyDownCallback(_ symbol: String) {
-        let s = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(symbol) ? symbol+"D" : symbol
+        let s = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(symbol) && !_rad ? symbol+"D" : symbol
         
         if s == "AC" {
             _hasBeenReset.toggle()

@@ -12,13 +12,9 @@ struct MultipleLiner {
     var left: String
     var right: String? = nil
     var abbreviated: Bool // show a message that there is more?
-//    func oneLine(showAbbreviation: Bool) -> String {
-//        if let right = right {
-//            return left + (abbreviated && showAbbreviation ? "..." : "") + right
-//        } else {
-//            return left + (abbreviated && showAbbreviation ? "..." : "")
-//        }
-//    }
+    var asOneLine: String {
+        left + (right != nil ? right! : "")
+    }
 }
 
 class Number: CustomDebugStringConvertible {

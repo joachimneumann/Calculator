@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct PortraitDisplay: View {
-    let mantissa: String
-    let exponent: String?
-    let ePadding: CGFloat
-    let fontSize: CGFloat
+    let text: String
+    let isAbbreviated: Bool
+    let smallFont: Font
+    let largeFont: Font
     let fontScaleFactor: CGFloat
     let displayWidth: CGFloat
     
@@ -20,20 +20,13 @@ struct PortraitDisplay: View {
             HStack(alignment: .top, spacing: 0.0) {
                 HStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    Text(mantissa + (fontScaleFactor != 1.0 && exponent != nil ? exponent! : ""))
-                    if fontScaleFactor != 1.0 && exponent != nil {
-                        Text(exponent!)
-                            .padding(.leading, ePadding)
-                            .padding(.trailing, 0.0)
-                    }
+                    Text(text)
                 }
-                .frame(width: displayWidth, alignment: .trailing)
-                //.background(Color.blue)
-                .font(Font(UIFont.monospacedDigitSystemFont(ofSize: fontSize * fontScaleFactor, weight: .thin)))
-                .minimumScaleFactor(1.0/fontScaleFactor)
+                .font(isAbbreviated ? smallFont : largeFont)
+                .minimumScaleFactor(1.0 / (isAbbreviated ? 1.0 : fontScaleFactor))
                 .foregroundColor(.white)
                 .lineLimit(1)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                .frame(maxHeight: .infinity, alignment: .bottomTrailing)
                 .multilineTextAlignment(.trailing)
             }
             Spacer()

@@ -26,7 +26,7 @@
 		AA370C2F293352B10041AE4E /* KeyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA370C2E293352B10041AE4E /* KeyModel.swift */; };
 		AA370C31293352D60041AE4E /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA370C30293352D60041AE4E /* Key.swift */; };
 		AA3FB8272920E0E5002ECCEB /* ControlCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3FB8262920E0E5002ECCEB /* ControlCenter.swift */; };
-		AA584F572938E8A9008823F3 /* OneLineDisplayCalibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA584F562938E8A9008823F3 /* OneLineDisplayCalibration.swift */; };
+		AA584F572938E8A9008823F3 /* LengthMeasurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA584F562938E8A9008823F3 /* LengthMeasurement.swift */; };
 		AA6577F52935B90D00DA98E7 /* TODOs.rtf in Resources */ = {isa = PBXBuildFile; fileRef = AA6577F42935B90D00DA98E7 /* TODOs.rtf */; };
 		AA8C3C7A29388A940084A4FD /* PlusKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8C3C7929388A940084A4FD /* PlusKey.swift */; };
 		AA92B4C329250827005E43F0 /* ColoredStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92B4C229250827005E43F0 /* ColoredStepper.swift */; };
@@ -92,7 +92,7 @@
 		AA370C2E293352B10041AE4E /* KeyModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyModel.swift; sourceTree = "<group>"; };
 		AA370C30293352D60041AE4E /* Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		AA3FB8262920E0E5002ECCEB /* ControlCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlCenter.swift; sourceTree = "<group>"; };
-		AA584F562938E8A9008823F3 /* OneLineDisplayCalibration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneLineDisplayCalibration.swift; sourceTree = "<group>"; };
+		AA584F562938E8A9008823F3 /* LengthMeasurement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LengthMeasurement.swift; sourceTree = "<group>"; };
 		AA6577F42935B90D00DA98E7 /* TODOs.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = TODOs.rtf; sourceTree = "<group>"; };
 		AA8C3C7929388A940084A4FD /* PlusKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusKey.swift; sourceTree = "<group>"; };
 		AA92B4C229250827005E43F0 /* ColoredStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredStepper.swift; sourceTree = "<group>"; };
@@ -177,7 +177,7 @@
 				AAB10B96292A2222004707E9 /* NonScientificKeys.swift */,
 				AABCF8B9292B8818007E5C35 /* ScientificKeys.swift */,
 				AABCF8BB292BBCEB007E5C35 /* OneLineDisplay.swift */,
-				AA584F562938E8A9008823F3 /* OneLineDisplayCalibration.swift */,
+				AA584F562938E8A9008823F3 /* LengthMeasurement.swift */,
 				AA370C2C293352960041AE4E /* Constants.swift */,
 				AA370C2E293352B10041AE4E /* KeyModel.swift */,
 				AA370C30293352D60041AE4E /* Key.swift */,
@@ -338,7 +338,7 @@
 				AA370C2F293352B10041AE4E /* KeyModel.swift in Sources */,
 				AA2FAC1A272F2349006DE4C8 /* CalculatorCommands.swift in Sources */,
 				AA92B4CD29279B0F005E43F0 /* KeysView.swift in Sources */,
-				AA584F572938E8A9008823F3 /* OneLineDisplayCalibration.swift in Sources */,
+				AA584F572938E8A9008823F3 /* LengthMeasurement.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

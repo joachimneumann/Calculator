@@ -1,5 +1,5 @@
 //
-//  OneLineDisplayCalibration.swift
+//  LengthMeasurement.swift
 //  Calculator
 //
 //  Created by Joachim Neumann on 12/1/22.
@@ -14,7 +14,7 @@ struct LengthMeasurementResult {
     let ePadding: CGFloat
 }
 
-func lengthMeasurement(size: CGSize, fontSize: CGFloat) -> LengthMeasurementResult {
+func lengthMeasurement(size: CGSize, fontSize: CGFloat, ePadding: CGFloat) -> LengthMeasurementResult {
     let uiFont = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: .thin)
     var s = ""
     var w = s.length(for: uiFont)
@@ -32,7 +32,6 @@ func lengthMeasurement(size: CGSize, fontSize: CGFloat) -> LengthMeasurementResu
     }
     let withCommaNonScientific = s.count - 1
     
-    let ePadding = fontSize * 0.3
     print("ePadding set to \(ePadding)")
     s = ",e"
     w = s.length(for: uiFont)

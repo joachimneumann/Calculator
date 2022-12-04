@@ -30,29 +30,42 @@ struct Calculator: View {
             .foregroundColor(.black)
             .overlay() {
                 VStack(spacing: 0.0) {
-                    HStack(spacing: 0.0) {
-//                        Spacer(minLength: 100)
-                        let multipleLines: MultipleLiner? = keyModel.zoomed ? keyModel.multipleLines : nil
-                        let left = keyModel.zoomed ? multipleLines!.left : keyModel.oneLineP.left
-                        let right: String? = keyModel.zoomed ? multipleLines!.right : keyModel.oneLineP.right
-                        let abbreviated = keyModel.zoomed ? multipleLines!.abbreviated : keyModel.oneLineP.abbreviated
-                        let ePadding = keyModel.lengthMeasurementResult.ePadding
-                        LongDisplay(
-                            zoomed: keyModel.zoomed,
-                            mantissa: left,
-                            exponent: right,
-                            ePadding: ePadding,
-                            abbreviated: abbreviated,
-                            font: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
-                            isCopyingOrPasting: false,
-                            precisionString: keyModel.precision.useWords,
+                    if isPortrait {
+                        let text = keyModel.oneLineP.asOneLine
+                        PortraitDisplay(
+                            text: text,
+                            isAbbreviated: false,
+                            smallFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
+                            largeFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * 1.5, weight: .thin)),
+                            fontScaleFactor: 1.5,
                             displayWidth: keyModel.displayWidth)
-                        .offset(x: -displayXOffset, y: displayYOffset)
-//                        .background(Color.green).opacity(0.4)
-                        .animation(Animation.easeInOut(duration: 0.4), value: keyModel.zoomed)
+                        //.background(Color.yellow)
+                        .padding(.bottom, keyboardSize.height)
+//                        .offset(y: displayYOffset)
+                    } else {
+                        HStack(spacing: 0.0) {
+                            let multipleLines: MultipleLiner? = keyModel.zoomed ? keyModel.multipleLines : nil
+                            let left = keyModel.zoomed ? multipleLines!.left : keyModel.oneLineP.left
+                            let right: String? = keyModel.zoomed ? multipleLines!.right : keyModel.oneLineP.right
+                            let abbreviated = keyModel.zoomed ? multipleLines!.abbreviated : keyModel.oneLineP.abbreviated
+                            let ePadding = keyModel.lengthMeasurementResult.ePadding
+                            LongDisplay(
+                                zoomed: keyModel.zoomed,
+                                mantissa: left,
+                                exponent: right,
+                                ePadding: ePadding,
+                                abbreviated: abbreviated,
+                                font: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
+                                isCopyingOrPasting: false,
+                                precisionString: keyModel.precision.useWords,
+                                displayWidth: keyModel.displayWidth)
+                            .offset(x: -displayXOffset, y: displayYOffset)
+                            //                        .background(Color.green).opacity(0.4)
+                            .animation(Animation.easeInOut(duration: 0.4), value: keyModel.zoomed)
+                        }
+                        //.background(Color.yellow)
+                        Spacer()
                     }
-                    //.background(Color.yellow)
-                    Spacer()
                 }
             }
             .overlay() { /// Icons
