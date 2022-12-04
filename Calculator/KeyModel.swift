@@ -53,9 +53,8 @@ class KeyModel : ObservableObject {
         brain.haveResultCallback = haveResultCallback
         brain.pendingOperatorCallback = pendingOperatorCallback
         brain.isCalculatingCallback = isCalculatingCallback
-        for key in C.allKeys {
-            enabledDict[key] = true
-        }
+
+        isCalculatingCallback(false) // sets enabledDict
     }
     
     private func haveResultCallback() {
@@ -103,7 +102,7 @@ class KeyModel : ObservableObject {
     }
 
     
-    func isCalculatingCallback(calculating: Bool) {
+    func isCalculatingCallback(_ calculating: Bool) {
         DispatchQueue.main.async { self.isCalculating = calculating }
         /// print("enabled: \(!calculating)")
         for key in C.allKeys {
@@ -119,6 +118,8 @@ class KeyModel : ObservableObject {
                         enabledDict[key] = true
                     }
                 }
+                // check mr
+                enabledDict["mr"] = brain.memory != nil
             }
         }
     }
