@@ -11,6 +11,7 @@
 		AA08C7C6272EDA4A001B8575 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA08C7C5272EDA4A001B8575 /* Assets.xcassets */; };
 		AA08C7C9272EDA4A001B8575 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA08C7C8272EDA4A001B8575 /* Preview Assets.xcassets */; };
 		AA08C7D3272EDA4A001B8575 /* CalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA08C7D2272EDA4A001B8575 /* CalculatorTests.swift */; };
+		AA29F58A293CD608001ADF5A /* PortraitDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA29F589293CD608001ADF5A /* PortraitDisplay.swift */; };
 		AA2FABEB272F2135006DE4C8 /* mpfr.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA2FABEA272F2135006DE4C8 /* mpfr.xcframework */; };
 		AA2FABEF272F2141006DE4C8 /* gmp.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA2FABEE272F2141006DE4C8 /* gmp.xcframework */; };
 		AA2FABF2272F217F006DE4C8 /* Gmp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FABF1272F217F006DE4C8 /* Gmp.swift */; };
@@ -31,7 +32,7 @@
 		AA92B4C329250827005E43F0 /* ColoredStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92B4C229250827005E43F0 /* ColoredStepper.swift */; };
 		AA92B4C529266CC1005E43F0 /* AnimatedDots.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92B4C429266CC1005E43F0 /* AnimatedDots.swift */; };
 		AA92B4C929273A58005E43F0 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92B4C829273A58005E43F0 /* Calculator.swift */; };
-		AA92B4CB29274842005E43F0 /* LongDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92B4CA29274842005E43F0 /* LongDisplay.swift */; };
+		AA92B4CB29274842005E43F0 /* LandscapeDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92B4CA29274842005E43F0 /* LandscapeDisplay.swift */; };
 		AA92B4CD29279B0F005E43F0 /* KeysView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92B4CC29279B0F005E43F0 /* KeysView.swift */; };
 		AAB10B9A292A2222004707E9 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB10B94292A2222004707E9 /* Label.swift */; };
 		AAB10B9C292A2222004707E9 /* NonScientificKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB10B96292A2222004707E9 /* NonScientificKeys.swift */; };
@@ -71,6 +72,7 @@
 		AA08C7D2272EDA4A001B8575 /* CalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorTests.swift; sourceTree = "<group>"; };
 		AA08C7EB272F1241001B8575 /* Calculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Calculator.entitlements; sourceTree = "<group>"; };
 		AA08C7EC272F1572001B8575 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		AA29F589293CD608001ADF5A /* PortraitDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortraitDisplay.swift; sourceTree = "<group>"; };
 		AA2FABEA272F2135006DE4C8 /* mpfr.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = mpfr.xcframework; path = dist/mpfr.xcframework; sourceTree = "<group>"; };
 		AA2FABEE272F2141006DE4C8 /* gmp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = gmp.xcframework; path = dist/gmp.xcframework; sourceTree = "<group>"; };
 		AA2FABF1272F217F006DE4C8 /* Gmp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gmp.swift; sourceTree = "<group>"; };
@@ -96,7 +98,7 @@
 		AA92B4C229250827005E43F0 /* ColoredStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredStepper.swift; sourceTree = "<group>"; };
 		AA92B4C429266CC1005E43F0 /* AnimatedDots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedDots.swift; sourceTree = "<group>"; };
 		AA92B4C829273A58005E43F0 /* Calculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
-		AA92B4CA29274842005E43F0 /* LongDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongDisplay.swift; sourceTree = "<group>"; };
+		AA92B4CA29274842005E43F0 /* LandscapeDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandscapeDisplay.swift; sourceTree = "<group>"; };
 		AA92B4CC29279B0F005E43F0 /* KeysView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeysView.swift; sourceTree = "<group>"; };
 		AAB10B94292A2222004707E9 /* Label.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		AAB10B96292A2222004707E9 /* NonScientificKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonScientificKeys.swift; sourceTree = "<group>"; };
@@ -168,7 +170,8 @@
 				AA08C7C5272EDA4A001B8575 /* Assets.xcassets */,
 				AA08C7C7272EDA4A001B8575 /* Preview Content */,
 				AA92B4C829273A58005E43F0 /* Calculator.swift */,
-				AA92B4CA29274842005E43F0 /* LongDisplay.swift */,
+				AA92B4CA29274842005E43F0 /* LandscapeDisplay.swift */,
+				AA29F589293CD608001ADF5A /* PortraitDisplay.swift */,
 				AA92B4CC29279B0F005E43F0 /* KeysView.swift */,
 				AAB10B94292A2222004707E9 /* Label.swift */,
 				AAB10B96292A2222004707E9 /* NonScientificKeys.swift */,
@@ -313,10 +316,11 @@
 			files = (
 				AAB10B9C292A2222004707E9 /* NonScientificKeys.swift in Sources */,
 				AABCF8BC292BBCEB007E5C35 /* OneLineDisplay.swift in Sources */,
-				AA92B4CB29274842005E43F0 /* LongDisplay.swift in Sources */,
+				AA92B4CB29274842005E43F0 /* LandscapeDisplay.swift in Sources */,
 				AA92B4C329250827005E43F0 /* ColoredStepper.swift in Sources */,
 				AA2FAC0F272F2349006DE4C8 /* Number.swift in Sources */,
 				AA370C2D293352960041AE4E /* Constants.swift in Sources */,
+				AA29F58A293CD608001ADF5A /* PortraitDisplay.swift in Sources */,
 				AA92B4C529266CC1005E43F0 /* AnimatedDots.swift in Sources */,
 				AA2FAC16272F2349006DE4C8 /* CalculatorAppCatalyst.swift in Sources */,
 				AA2FAC17272F2349006DE4C8 /* Brain.swift in Sources */,

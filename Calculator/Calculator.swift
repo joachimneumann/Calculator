@@ -43,9 +43,7 @@ struct Calculator: View {
                             exponent: right,
                             ePadding: ePadding,
                             abbreviated: abbreviated,
-                            smallFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
-                            largeFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * 1.0, weight: .thin)),
-                            scaleFont: isPortrait,
+                            font: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
                             isCopyingOrPasting: false,
                             precisionString: keyModel.precision.useWords,
                             displayWidth: keyModel.displayWidth)
