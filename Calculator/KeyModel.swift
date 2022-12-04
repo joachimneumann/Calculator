@@ -124,37 +124,26 @@ class KeyModel : ObservableObject {
     
     
     func keyDownCallback(_ symbol: String) {
-//        for key in C.allKeys {
-//            keyInfo[key] = KeyInfo(symbol: key, colors: ColorsOf(textColor: .white, upColor: C.disabledColor, downColor: C.disabledColor))
-//        }
-        let radOrDegOperators = ["sin", "cos", "tan", "asin", "acos", "atan"]
-        switch symbol {
+        let s = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(symbol) ? symbol+"D" : symbol
+        
+        if s == "AC" {
+            _hasBeenReset.toggle()
+        } else {
+            _hasBeenReset = false
+        }
+
+        switch s {
         case "2nd":
-            if _2ndActive {
-                _2ndActive = false
-                self.keyInfo["2nd"]!.colors = C._2ndColors
-            } else {
-                _2ndActive = true
-                self.keyInfo["2nd"]!.colors = C._2ndActiveColors
-            }
+            _2ndActive.toggle()
+            self.keyInfo["2nd"]!.colors = _2ndActive ? C._2ndActiveColors : C._2ndColors
         case "Rad":
             _rad = true
         case "Deg":
             _rad = false
-        case "AC":
-            _hasBeenReset = true
-            brain.asyncOperation("AC")
         case "plusKey":
-//            withAnimation() {
                 zoomed.toggle()
-//            }
         default:
-            _hasBeenReset = false
-            if _rad == false && radOrDegOperators.contains(symbol) {
-                brain.asyncOperation(symbol+"D")
-            } else {
-                brain.asyncOperation(symbol)
-            }
+                brain.asyncOperation(s)
         }
     }
 }
