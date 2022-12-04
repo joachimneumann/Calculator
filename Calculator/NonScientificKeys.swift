@@ -14,7 +14,7 @@ struct NonScientificKeys: View {
     let doubleKeySize: CGSize
     
     init(keyModel: KeyModel, spaceBetweenKeys: CGFloat, size: CGSize) {
-        print("NonScientificKeys init()")
+        //print("NonScientificKeys init()")
         self.keyModel = keyModel
         self.spaceBetweenKeys = spaceBetweenKeys
         let w = (size.width - 3.0 * spaceBetweenKeys) / 4.0

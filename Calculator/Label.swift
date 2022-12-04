@@ -13,7 +13,7 @@ struct Label: View {
     var body: some View {
         let color = Color(uiColor: keyInfo.colors.textColor)
         let symbol = keyInfo.symbol
-        let _ = print("Label \(symbol)")
+        //let _ = print("Label \(symbol)")
         switch symbol {
         case "√" :    RootShapeView(rootDigit: "2", color: color, height: height)
         case "3√":    RootShapeView(rootDigit: "3", color: color, height: height)
@@ -44,7 +44,7 @@ struct Label: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: symbol == "±" || symbol == "%" ? height*0.25 : height*0.23)
             } else {
-                let _ = print("of Text")
+                //let _ = print("Label Text")
                 Text(symbol)
                     .font(.system(size: height*0.4, weight: .none))
             }

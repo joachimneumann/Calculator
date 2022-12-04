@@ -40,7 +40,7 @@ struct CalculatorApp: App {
     var body: some Scene {
         WindowGroup {
             GeometryReader { geo in
-                let _ = print("CalculatorApp init() size=\(geo.size)")
+                //let _ = print("CalculatorApp init() size=\(geo.size)")
                 let isPad: Bool = (UIDevice.current.userInterfaceIdiom == .pad)
                 let isPortrait: Bool = geo.size.height > geo.size.width
                 let padding: CGFloat = (!isPad && isPortrait) ? geo.size.width * 0.04 : geo.size.width * 0.01
@@ -48,11 +48,11 @@ struct CalculatorApp: App {
                 let trailingPadding: CGFloat = geo.safeAreaInsets.trailing == 0 ? padding : 0
                 let topPadding: CGFloat = geo.safeAreaInsets.top  == 0 ? padding : 0
                 let bottomPadding: CGFloat = geo.safeAreaInsets.bottom == 0 ? padding : 0
-                let newWidth: CGFloat = geo.size.width - leadingPadding - trailingPadding
+                let newWidth: CGFloat = geo.size.width - leadingPadding - trailingPadding - 1
                 let newHeight: CGFloat = geo.size.height - topPadding - bottomPadding
                 
                 let spaceBetweenKeys: CGFloat = C.spaceBetweenkeysFraction(withScientificKeys: !isPortrait) * newWidth
-                let oneKeyWidth: CGFloat = (newWidth - (isPortrait ? 3.0 : 5.0) * spaceBetweenKeys) * (isPortrait ? 0.25 : (1.0/6.0))
+                let oneKeyWidth: CGFloat = (newWidth - (isPortrait ? 3.0 : 9.0) * spaceBetweenKeys) * (isPortrait ? 0.25 : 0.1)
                 let oneKeyheight: CGFloat = isPortrait ? oneKeyWidth : (newHeight - 5.0 * spaceBetweenKeys) / 6.0
                 let allKeysheight: CGFloat = 5 * oneKeyheight + 4 * spaceBetweenKeys
                 let keyboardSize: CGSize = CGSize(width: newWidth, height: allKeysheight)
@@ -60,10 +60,10 @@ struct CalculatorApp: App {
                 /// make space for the icon
                 let singleLineFontSize = ((isPortrait ? 0.18 : 0.16) * keyboardSize.height).rounded()
                 let keyboardPaddingBottom = 0.0//isPortrait ? keyboardSize.height * 0.1 : 0.0
-                let displayXOffset = isPortrait ? 0.0 : oneKeyWidth * 0.3
-                let displayYOffset = isPortrait ? newHeight - keyboardSize.height - keyboardPaddingBottom - oneKeyheight * 1.2 : oneKeyheight * 0.2
+                let displayXOffset = isPortrait ? 0.0 : oneKeyWidth * 0.7
+                let displayYOffset = isPortrait ? newHeight - keyboardSize.height - keyboardPaddingBottom - oneKeyheight * 1.2 : oneKeyheight * 0.00
                 let displayPaddingBottom = keyboardSize.height
-                let _ = (keyModel.displayWidth = newWidth - 2 * displayXOffset)
+                let _ = (keyModel.displayWidth = newWidth - displayXOffset)
                 let _ = (keyModel.lengthMeasurementResult = lengthMeasurement(size: CGSize(width: keyModel.displayWidth, height: newHeight), fontSize: singleLineFontSize))
 
                 Calculator(keyModel: keyModel,

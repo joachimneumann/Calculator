@@ -29,8 +29,9 @@ struct Calculator: View {
         Rectangle()
             .foregroundColor(.black)
             .overlay() {
-                VStack {
+                VStack(spacing: 0.0) {
                     HStack(spacing: 0.0) {
+//                        Spacer(minLength: 100)
                         let multipleLines: MultipleLiner? = keyModel.zoomed ? keyModel.multipleLines : nil
                         let left = keyModel.zoomed ? multipleLines!.left : keyModel.oneLineP.left
                         let right: String? = keyModel.zoomed ? multipleLines!.right : keyModel.oneLineP.right
@@ -48,11 +49,12 @@ struct Calculator: View {
                             isCopyingOrPasting: false,
                             precisionString: keyModel.precision.useWords,
                             scrollingDisabled: !keyModel.zoomed)
-                        .background(Color.yellow).opacity(0.4)
                         .offset(x: -displayXOffset, y: displayYOffset)
-                        .frame(width: keyModel.displayWidth)
+                        .background(Color.green).opacity(0.4)
                         .animation(Animation.easeInOut(duration: 0.4), value: keyModel.zoomed)
                     }
+//                    .frame(width: keyModel.displayWidth)
+                    .background(Color.yellow)
                     Spacer()
                 }
             }

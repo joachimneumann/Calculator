@@ -44,7 +44,7 @@ class KeyModel : ObservableObject {
     var lengthMeasurementResult = LengthMeasurementResult(withoutComma: 0, withCommaNonScientific: 0, withCommaScientific: 0, ePadding: 0)
 
     init() {
-        print("KeyModel init()")
+        //print("KeyModel init()")
         brain = Brain(precision: precision)
         oneLineP = MultipleLiner(left: "0", abbreviated: false)
         for key in C.allKeys {

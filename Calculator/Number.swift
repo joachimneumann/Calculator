@@ -74,19 +74,19 @@ class Number: CustomDebugStringConvertible {
     }
     
     init(_ str: String, bits: Int) {
-        print("Number init()")
+        //print("Number init()")
         _str = str
         _gmp = nil
         _bits = bits
     }
     init(_ gmp: Gmp) {
-        print("Number init()")
+        //print("Number init()")
         _str = nil
         _gmp = gmp
         _bits = gmp.bits
     }
     fileprivate init() {
-        print("Number init()")
+        //print("Number init()")
         _str = nil
         _gmp = nil
         _bits = 0

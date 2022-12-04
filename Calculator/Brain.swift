@@ -305,7 +305,7 @@ class Brain {
     }
     
     init(precision initialPrecision: Int) {
-        print("brain init()")
+        //print("brain init()")
         self.precision = initialPrecision
         self.bits = Int(Double(Brain.internalPrecision(initialPrecision)) * 3.32192809489)
         self.nonWaitingOperation("AC")

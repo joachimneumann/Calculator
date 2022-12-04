@@ -13,7 +13,7 @@ struct ScientificKeys: View {
     let keySize: CGSize
 
     init(keyModel: KeyModel, spaceBetweenKeys: CGFloat, size: CGSize) {
-        print("ScientificKeys init()")
+        //print("ScientificKeys init()")
         self.keyModel = keyModel
         self.spaceBetweenKeys = spaceBetweenKeys
         let w = (size.width - 5.0 * spaceBetweenKeys) / 6.0

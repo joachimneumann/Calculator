@@ -40,7 +40,7 @@ class Gmp: Equatable {
     /// there is only ine initialzer that takes a string.
     /// Implementing an initializer that accepts a double which is created from a string leads to a loss of precision.
     init(_ s: String, bits: Int) {
-        print("Gmp init()")
+        //print("Gmp init()")
         self.bits = bits
         let s1 = s.replacingOccurrences(of: ",", with: ".")
         mpfr_init2 (&mpfr, bits)
