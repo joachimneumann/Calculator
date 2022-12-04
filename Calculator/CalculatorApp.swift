@@ -68,7 +68,7 @@ struct CalculatorApp: App {
                          lengthMeasurement(
                             size: CGSize(width: keyModel.displayWidth, height: newHeight),
                             fontSize: singleLineFontSize,
-                            ePadding: singleLineFontSize * (isPortrait ? 0.0 : 0.3)))
+                            ePadding: round(singleLineFontSize * (isPortrait ? 0.0 : 0.3))))
 
                 Calculator(keyModel: keyModel,
                            isPad: isPad,

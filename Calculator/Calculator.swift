@@ -20,7 +20,8 @@ struct Calculator: View {
     let displayYOffset: CGFloat
     let displayPaddingBottom: CGFloat
     let keyboardPaddingBottom: CGFloat
-    
+    @State private var orientation = UIDeviceOrientation.unknown
+
     var body: some View {
         //        let _ = print("Calculator body displayLength \(displayLength)")
         //        let _ = keyModel.oneLineWithCommaLength = displayLength[0]
@@ -96,9 +97,30 @@ struct Calculator: View {
                 .transition(.move(edge: .bottom))
                 .offset(y: keyModel.zoomed ? size.height : 0)
             }
+            .onRotate { newOrientation in
+                keyModel.haveResultCallback()
+                orientation = newOrientation
+            }
     }
 }
 
+extension View {
+    func onRotate(perform action: @escaping (UIDeviceOrientation) -> Void) -> some View {
+        self.modifier(DeviceRotationViewModifier(action: action))
+    }
+}
+
+struct DeviceRotationViewModifier: ViewModifier {
+    let action: (UIDeviceOrientation) -> Void
+
+    func body(content: Content) -> some View {
+        content
+            .onAppear()
+            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+                action(UIDevice.current.orientation)
+            }
+    }
+}
 
 //struct Calculator_Previews: PreviewProvider {
 //    static var previews: some View {

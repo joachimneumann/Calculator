@@ -32,7 +32,7 @@ func lengthMeasurement(size: CGSize, fontSize: CGFloat, ePadding: CGFloat) -> Le
     }
     let withCommaNonScientific = s.count - 1
     
-    print("ePadding set to \(ePadding)")
+    //print("ePadding set to \(ePadding)")
     s = ",e"
     w = s.length(for: uiFont)
     while w < (size.width - ePadding) {
@@ -46,7 +46,7 @@ func lengthMeasurement(size: CGSize, fontSize: CGFloat, ePadding: CGFloat) -> Le
         withCommaNonScientific: withCommaNonScientific,
         withCommaScientific: withCommaScientific,
         ePadding: ePadding)
-    print("OneLineDisplayCalibration \(result)")
+    print("length measurement \(result)")
     return result
 }
 

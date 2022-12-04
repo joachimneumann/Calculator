@@ -57,7 +57,7 @@ class KeyModel : ObservableObject {
         isCalculatingCallback(false) // sets enabledDict
     }
     
-    private func haveResultCallback() {
+    func haveResultCallback() {
         if brain.last.isNull {
             DispatchQueue.main.async {
                 self._AC = true
