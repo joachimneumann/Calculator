@@ -44,11 +44,11 @@ class Brain {
     private func speedTest(testPrecision: Int) async -> Speed {
         let testBrain = Brain(precision: testPrecision)
 
-        testBrain.nonWaitingOperation("AC")
-        testBrain.nonWaitingOperation("Rand")
+        await testBrain.operation("AC")
+        await testBrain.operation("Rand")
 
         let timer = ParkBenchTimer()
-        testBrain.nonWaitingOperation("√")
+        await testBrain.operation("√")
         let seconds = timer.stop()
         // print("The task took \(seconds) seconds. Percision \(precision)")
         return Speed(sqrt2Time: seconds, precision: testPrecision)
@@ -129,15 +129,15 @@ class Brain {
     let equalOperator = Operator(Operator.equalPriority)
 
 
-    func press(_ digits: String) {
+    func press(_ digits: String) async {
         for digit in digits {
-            nonWaitingOperation(String(digit))
+            await operation(String(digit))
         }
     }
     
-    func press(_ digit: Int) {
+    func press(_ digit: Int) async {
         if digit >= 0 && digit <= 9 {
-            nonWaitingOperation(String(digit))
+            await operation(String(digit))
         }
     }
     
@@ -169,7 +169,7 @@ class Brain {
         }
     }
     
-    private func operation(_ symbol: String) {
+    private func operation(_ symbol: String) async {
         /// TODO: do the switch in CalculatorModel
         if symbol == "C" {
             if last.isNull {
@@ -268,23 +268,19 @@ class Brain {
         haveResultCallback()
     }
     
-    private func waitingOperation(_ symbol: String) async {
-        operation(symbol)
-    }
-    
-    func nonWaitingOperation(_ symbol: String) {
-        if !isCalculating {
-            self.isCalculating = true
-            operation(symbol)
-        }
-        self.isCalculating = false
-    }
+//    func nonWaitingOperation(_ symbol: String) {
+//        if !isCalculating {
+//            self.isCalculating = true
+//            operation(symbol)
+//        }
+//        self.isCalculating = false
+//    }
     
     func asyncOperation(_ symbol: String) {
         Task {
             if !isCalculating {
                 self.isCalculating = true
-                await waitingOperation(symbol)
+                await operation(symbol)
                 
             }
             self.isCalculating = false
@@ -306,9 +302,11 @@ class Brain {
     
     init(precision initialPrecision: Int) {
         //print("brain init()")
-        self.precision = initialPrecision
-        self.bits = Int(Double(Brain.internalPrecision(initialPrecision)) * 3.32192809489)
-        self.nonWaitingOperation("AC")
+        precision = initialPrecision
+        bits = Int(Double(Brain.internalPrecision(initialPrecision)) * 3.32192809489)
+        Task {
+            await operation("AC")
+        }
     }
     
     struct Speed {
