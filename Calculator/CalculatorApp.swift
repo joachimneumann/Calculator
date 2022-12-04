@@ -58,7 +58,7 @@ struct CalculatorApp: App {
                 let keyboardSize: CGSize = CGSize(width: newWidth, height: allKeysheight)
                 /// make space for "rad" info
                 /// make space for the icon
-                let singleLineFontSize = (isPortrait ? 0.18 : 0.16) * keyboardSize.height
+                let singleLineFontSize = ((isPortrait ? 0.18 : 0.16) * keyboardSize.height).rounded()
                 let keyboardPaddingBottom = 0.0//isPortrait ? keyboardSize.height * 0.1 : 0.0
                 let displayXOffset = isPortrait ? 0.0 : oneKeyWidth * 0.3
                 let displayYOffset = isPortrait ? newHeight - keyboardSize.height - keyboardPaddingBottom - oneKeyheight * 1.2 : oneKeyheight * 0.2

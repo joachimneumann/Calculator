@@ -43,14 +43,14 @@ struct Calculator: View {
                             ePadding: ePadding,
                             abbreviated: abbreviated,
                             smallFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
-                            largeFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * 1.5, weight: .thin)),
+                            largeFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * 1.0, weight: .thin)),
                             scaleFont: isPortrait,
                             isCopyingOrPasting: false,
                             precisionString: keyModel.precision.useWords,
                             scrollingDisabled: !keyModel.zoomed)
                         .background(Color.yellow).opacity(0.4)
                         .offset(x: -displayXOffset, y: displayYOffset)
-                        .frame(maxWidth: keyModel.displayWidth)
+                        .frame(width: keyModel.displayWidth)
                         .animation(Animation.easeInOut(duration: 0.4), value: keyModel.zoomed)
                     }
                     Spacer()

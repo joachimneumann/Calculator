@@ -12,13 +12,13 @@ struct MultipleLiner {
     var left: String
     var right: String? = nil
     var abbreviated: Bool // show a message that there is more?
-    func oneLine(showAbbreviation: Bool) -> String {
-        if let right = right {
-            return left + (abbreviated && showAbbreviation ? "..." : "") + right
-        } else {
-            return left + (abbreviated && showAbbreviation ? "..." : "")
-        }
-    }
+//    func oneLine(showAbbreviation: Bool) -> String {
+//        if let right = right {
+//            return left + (abbreviated && showAbbreviation ? "..." : "") + right
+//        } else {
+//            return left + (abbreviated && showAbbreviation ? "..." : "")
+//        }
+//    }
 }
 
 class Number: CustomDebugStringConvertible {
@@ -212,28 +212,31 @@ class Number: CustomDebugStringConvertible {
             exponent = exponent - 1
         }
         
-        let charactersWithoutComma: Int
-        let charactersWithComma: Int
+        let withoutComma: Int
+        let withCommaNonScientific: Int
+        let withCommaScientific: Int
         /// negative? Special treatment
         let isNegative: Bool
         if mantissa[0] == "-" {
             mantissa.removeFirst()
             isNegative = true
-            charactersWithoutComma = lengthMeasurementResult.withoutComma - 1
-            charactersWithComma = lengthMeasurementResult.withCommaNonScientific - 1
+            withoutComma           = lengthMeasurementResult.withoutComma - 1
+            withCommaNonScientific = lengthMeasurementResult.withCommaNonScientific - 1
+            withCommaScientific    = lengthMeasurementResult.withCommaScientific - 1
         } else {
             isNegative = false
-            charactersWithoutComma = lengthMeasurementResult.withoutComma
-            charactersWithComma = lengthMeasurementResult.withCommaNonScientific
+            withoutComma = lengthMeasurementResult.withoutComma
+            withCommaNonScientific = lengthMeasurementResult.withCommaNonScientific
+            withCommaScientific    = lengthMeasurementResult.withCommaScientific
         }
 
         /// Can be displayed as Integer?
-        if mantissa.count <= exponent+1 && exponent+1 <= charactersWithoutComma { /// smaller than because of possible trailing zeroes in the integer
+        if mantissa.count <= exponent+1 && exponent+1 <= withoutComma { /// smaller than because of possible trailing zeroes in the integer
             
             /// restore trailing zeros that have been removed
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
             // print(mantissa)
-            if mantissa.count <= charactersWithoutComma {
+            if mantissa.count <= withoutComma {
                 ret.left = (isNegative ? "-" : "") + mantissa
                 return ret
             }
@@ -241,15 +244,15 @@ class Number: CustomDebugStringConvertible {
         
         /// Is floating point XXX,xxx?
         if exponent >= 0 {
-            if exponent < charactersWithComma - 1 { /// is the comma visible in the first line and is there at least one digit after the comma?
+            if exponent < withCommaNonScientific - 1 { /// is the comma visible in the first line and is there at least one digit after the comma?
                 var floatString = mantissa
                 let index = floatString.index(floatString.startIndex, offsetBy: exponent+1)
                 floatString.insert(",", at: index)
                 ret.left = floatString
-                if floatString.count <= charactersWithComma {
+                if floatString.count <= withCommaNonScientific {
                     ret.left = floatString
                 } else {
-                    ret.left = String(floatString.prefix(charactersWithComma))
+                    ret.left = String(floatString.prefix(withCommaNonScientific))
                     ret.abbreviated = true
                 }
                 if isNegative { ret.left = "-" + ret.left }
@@ -259,16 +262,16 @@ class Number: CustomDebugStringConvertible {
         
         /// is floating point 0,xxxx
         if exponent < 0 {
-            if -1 * exponent < charactersWithComma - 1 {
+            if -1 * exponent < withCommaNonScientific - 1 {
                 var floatString = mantissa
                 for _ in 0..<(-1*exponent - 1) {
                     floatString = "0" + floatString
                 }
                 floatString = "0," + floatString
-                if floatString.count <= charactersWithComma {
+                if floatString.count <= withCommaNonScientific {
                     ret.left = floatString
                 } else {
-                    ret.left = String(floatString.prefix(charactersWithComma))
+                    ret.left = String(floatString.prefix(withCommaNonScientific))
                     ret.abbreviated = true
                 }
                 if isNegative { ret.left = "-" + ret.left }
@@ -281,16 +284,16 @@ class Number: CustomDebugStringConvertible {
         let indexOne = mantissa.index(mantissa.startIndex, offsetBy: 1)
         mantissa.insert(",", at: indexOne)
         if mantissa.count <= 2 { mantissa += "0" } /// e.g. 1e16 -> 1,e16 -> 1,0e16
-        if mantissa.count + ret.right!.count > charactersWithComma {
+        if mantissa.count + ret.right!.count > withCommaScientific {
             /// Do I need to shorten the mantissa to fit into the display?
-            let remainingMantissaLength = charactersWithComma - ret.right!.count
+            let remainingMantissaLength = withCommaScientific - ret.right!.count
             if remainingMantissaLength < 3 {
                 ret.left = "too large"
                 ret.right = nil
                 return ret
             } else {
                 /// shorten...
-                mantissa = String(mantissa.prefix(charactersWithComma - ret.right!.count))
+                mantissa = String(mantissa.prefix(withCommaScientific - ret.right!.count))
                 ret.abbreviated = true
             }
         }

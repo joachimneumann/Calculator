@@ -32,7 +32,7 @@ func lengthMeasurement(size: CGSize, fontSize: CGFloat) -> LengthMeasurementResu
     }
     let withCommaNonScientific = s.count - 1
     
-    let ePadding = fontSize * 1.0
+    let ePadding = fontSize * 2.0
     print("ePadding set to \(ePadding)")
     s = ",e"
     w = s.length(for: uiFont)

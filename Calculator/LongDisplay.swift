@@ -74,13 +74,13 @@ struct LongDisplay: View {
                                     .padding(.leading, ePadding)
                             }
                         }
-                        .background(Color.green)
+                        .background(Color.blue)
                         .font(scaleFont ? largeFont : smallFont)
-                        .minimumScaleFactor(scaleFont ? 1.0/1.5 : 1.0)
+//                        .minimumScaleFactor(scaleFont ? 1.0/1.5 : 1.0)
                         .foregroundColor(isCopyingOrPasting ? isCopyingOrPastingColor : .white)
-                        .lineLimit(1)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                        .multilineTextAlignment(.trailing)
+//                        .lineLimit(1)
+//                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+//                        .multilineTextAlignment(.trailing)
                     }
                 }
                 Spacer()
