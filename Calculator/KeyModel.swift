@@ -26,17 +26,15 @@ class KeyModel : ObservableObject {
     @Published var zoomed = false
 
     let precision = 10000//0000
-    let brain: Brain
+    private let brain: Brain
     @Published var keyInfo: [String: KeyInfo] = [:]
     var enabledDict: [String: Bool] = [:]
     var _AC = true
     var _hasBeenReset = false
     @Published var oneLineP: String
 
-    var multipleLines: MultipleLiner {
-        let len = min(precision, C.maxDigitsInLongDisplay)
-        let ret = brain.last.multipleLines(withoutComma: len, withComma: len)
-        return ret
+    func multipleLines(withoutComma: Int, withComma: Int) -> MultipleLiner {
+        brain.last.multipleLines(withoutComma: withoutComma, withComma: withComma)
     }
     
     var precisionDescription = "unknown"

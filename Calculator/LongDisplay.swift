@@ -64,6 +64,7 @@ struct LongDisplay: View {
                                 .font(smallFont)
                                 .foregroundColor(isCopyingOrPasting ? isCopyingOrPastingColor : .white)
                                 .multilineTextAlignment(.trailing)
+                                .padding(.leading, 100)
                         }
                     } else {
                         Text(oneLine)

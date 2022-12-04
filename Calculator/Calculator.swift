@@ -27,61 +27,65 @@ struct Calculator: View {
         //        let _ = keyModel.oneLineWithCommaLength = displayLength[0]
         //        let _ = keyModel.oneLineWithoutCommaLength = displayLength[1]
         //        let _ = print("displayLength \(displayLength)")
-        VStack {
-            HStack(spacing: 0.0) {
-                let multipleLines = keyModel.zoomed ? keyModel.multipleLines : MultipleLiner(left: "0", abbreviated: false)
-                //                let multipleLines = MultipleLiner(left: "ksdjhf skjfh skdjhf skdjfh sdkjhf sdkjfh sdkjfh sdkhfj sdkjhf skdjfh sdkjhf skdjhf skdjhf ksdjhf sdkjhf sdkjhf skdjhf skdjfh skdjhf sdkjhf sdkjhf sdkjhf sdkjfh sdkjhf sdkfjh", abbreviated: false)
-                let oneLine = keyModel.oneLineP
-                let left = multipleLines.left
-                let right = multipleLines.right
-                let abbreviated = multipleLines.abbreviated
-                LongDisplay(
-                    zoomed: keyModel.zoomed,
-                    oneLine: oneLine,
-                    mantissa: left,
-                    exponent: right,
-                    abbreviated: abbreviated,
-                    smallFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
-                    largeFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * 1.5, weight: .thin)),
-                    scaleFont: isPortrait,
-                    isCopyingOrPasting: false,
-                    precisionString: keyModel.precision.useWords,
-                    scrollingDisabled: !keyModel.zoomed)
-                .background(Color.yellow).opacity(0.4)
-                .offset(x: displayXOffset, y: displayYOffset)
-                .animation(Animation.easeInOut(duration: 0.4), value: keyModel.zoomed)
-            }
-            Spacer()
-        }
-        
-        .overlay() { /// Icons
-            VStack(spacing: 0.0) {
-                if !isPortrait {
+        Rectangle()
+            .foregroundColor(.black)
+            .overlay() {
+                VStack {
                     HStack(spacing: 0.0) {
-                        Spacer(minLength: 0.0)
-                        PlusKey(keyInfo: keyModel.keyInfo["plusKey"]!, keyModel: keyModel, size: CGSize(width: keyboardSize.height * 0.13, height: keyboardSize.height * 0.13))
-                            .offset(y: displayYOffset)
+                        let len = min(keyModel.precision, C.maxDigitsInLongDisplay)
+                        let multipleLines: MultipleLiner? = keyModel.zoomed ? keyModel.multipleLines(withoutComma: len, withComma: len) : nil
+                        let oneLine = keyModel.zoomed ? "" : keyModel.oneLineP
+                        let left = keyModel.zoomed ? multipleLines!.left : ""
+                        let right: String? = keyModel.zoomed ? multipleLines!.right : nil
+                        let abbreviated = keyModel.zoomed ? multipleLines!.abbreviated : false
+                        LongDisplay(
+                            zoomed: keyModel.zoomed,
+                            oneLine: oneLine,
+                            mantissa: left,
+                            exponent: right,
+                            abbreviated: abbreviated,
+                            smallFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
+                            largeFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * 1.5, weight: .thin)),
+                            scaleFont: isPortrait,
+                            isCopyingOrPasting: false,
+                            precisionString: keyModel.precision.useWords,
+                            scrollingDisabled: !keyModel.zoomed)
+                        .background(Color.yellow).opacity(0.4)
+                        .offset(x: -displayXOffset, y: displayYOffset)
+                        .frame(maxWidth: keyModel.displayWidth)
+                        .animation(Animation.easeInOut(duration: 0.4), value: keyModel.zoomed)
                     }
-                    .padding(.top, keyHeight * 0.15)
-                    Spacer(minLength: 0.0)
-                }
-            }
-        }
-        
-        .overlay() { /// keyboard
-            let info = "\(keyModel._hasBeenReset ? "Precision: "+keyModel.precisionDescription+" digits" : "\(keyModel._rad ? "Rad" : "")")"
-            VStack(spacing: 0.0) {
-                Spacer()
-                HStack(spacing: 0.0) {
-                    Text(info).foregroundColor(.white)
-                        .offset(x: keyHeight * 0.3, y: keyHeight * -0.05)
                     Spacer()
                 }
-                KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
             }
-            .transition(.move(edge: .bottom))
-            .offset(y: keyModel.zoomed ? size.height : 0)
-        }
+            .overlay() { /// Icons
+                VStack(spacing: 0.0) {
+                    if !isPortrait {
+                        HStack(spacing: 0.0) {
+                            Spacer(minLength: 0.0)
+                            PlusKey(keyInfo: keyModel.keyInfo["plusKey"]!, keyModel: keyModel, size: CGSize(width: keyboardSize.height * 0.13, height: keyboardSize.height * 0.13))
+                                .offset(y: displayYOffset)
+                        }
+                        .padding(.top, keyHeight * 0.15)
+                        Spacer(minLength: 0.0)
+                    }
+                }
+            }
+        
+            .overlay() { /// keyboard
+                let info = "\(keyModel._hasBeenReset ? "Precision: "+keyModel.precisionDescription+" digits" : "\(keyModel._rad ? "Rad" : "")")"
+                VStack(spacing: 0.0) {
+                    Spacer()
+                    HStack(spacing: 0.0) {
+                        Text(info).foregroundColor(.white)
+                            .offset(x: keyHeight * 0.3, y: keyHeight * -0.05)
+                        Spacer()
+                    }
+                    KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
+                }
+                .transition(.move(edge: .bottom))
+                .offset(y: keyModel.zoomed ? size.height : 0)
+            }
     }
 }
 

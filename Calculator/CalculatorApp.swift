@@ -60,7 +60,7 @@ struct CalculatorApp: App {
                 /// make space for the icon
                 let singleLineFontSize = (isPortrait ? 0.18 : 0.16) * keyboardSize.height
                 let keyboardPaddingBottom = 0.0//isPortrait ? keyboardSize.height * 0.1 : 0.0
-                let displayXOffset = isPortrait ? 0.0 : keyboardSize.height * 0.15
+                let displayXOffset = isPortrait ? 0.0 : oneKeyWidth * 0.3
                 let displayYOffset = isPortrait ? newHeight - keyboardSize.height - keyboardPaddingBottom - oneKeyheight * 1.2 : oneKeyheight * 0.2
                 let displayPaddingBottom = keyboardSize.height
                 let _ = (keyModel.displayWidth = newWidth - 2 * displayXOffset)
@@ -75,7 +75,7 @@ struct CalculatorApp: App {
                            keyboardSize: keyboardSize,
                            keyHeight: oneKeyheight,
                            singleLineFontSize: singleLineFontSize,
-                           displayXOffset: -displayXOffset,
+                           displayXOffset: displayXOffset,
                            displayYOffset: displayYOffset,
                            displayPaddingBottom: displayPaddingBottom,
                            keyboardPaddingBottom: keyboardPaddingBottom,
