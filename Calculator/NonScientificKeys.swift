@@ -10,20 +10,14 @@ import SwiftUI
 struct NonScientificKeys: View {
     @ObservedObject var keyModel: KeyModel
     let spaceBetweenKeys: CGFloat
-    let keySize: CGSize
-    let doubleKeySize: CGSize
-    
-    init(keyModel: KeyModel, spaceBetweenKeys: CGFloat, size: CGSize) {
-        //print("NonScientificKeys init()")
-        self.keyModel = keyModel
-        self.spaceBetweenKeys = spaceBetweenKeys
-        let w = (size.width - 3.0 * spaceBetweenKeys) / 4.0
-        let h = (size.height - 4.0 * spaceBetweenKeys) / 5.0
-        self.keySize = CGSize(width: w, height: h)
-        self.doubleKeySize = CGSize(width: 2.0 * w + spaceBetweenKeys, height: h)
-    }
+    let size: CGSize
     
     var body: some View {
+        let w = (size.width - 3.0 * spaceBetweenKeys) / 4.0
+        let h = (size.height - 4.0 * spaceBetweenKeys) / 5.0
+        let keySize = CGSize(width: w, height: h)
+        let doubleKeySize = CGSize(width: 2.0 * w + spaceBetweenKeys, height: h)
+
         VStack(spacing: spaceBetweenKeys) {
             HStack(spacing: spaceBetweenKeys) {
                 Key(keyInfo: keyModel.keyInfo[keyModel._AC ? "AC" : "C"]!, keyModel: keyModel, size: keySize)

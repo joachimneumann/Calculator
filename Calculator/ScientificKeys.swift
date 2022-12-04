@@ -10,17 +10,20 @@ import SwiftUI
 struct ScientificKeys: View {
     @ObservedObject var keyModel: KeyModel
     let spaceBetweenKeys: CGFloat
-    let keySize: CGSize
+    let size: CGSize
 
-    init(keyModel: KeyModel, spaceBetweenKeys: CGFloat, size: CGSize) {
-        //print("ScientificKeys init()")
-        self.keyModel = keyModel
-        self.spaceBetweenKeys = spaceBetweenKeys
+//    init(keyModel: KeyModel, spaceBetweenKeys: CGFloat, size: CGSize) {
+//        //print("ScientificKeys init()")
+//        self.keyModel = keyModel
+//        self.spaceBetweenKeys = spaceBetweenKeys
+//        let w = (size.width - 5.0 * spaceBetweenKeys) / 6.0
+//        let h = (size.height - 4.0 * spaceBetweenKeys) / 5.0
+//        self.keySize = CGSize(width: w, height: h)
+//    }
+    var body: some View {
         let w = (size.width - 5.0 * spaceBetweenKeys) / 6.0
         let h = (size.height - 4.0 * spaceBetweenKeys) / 5.0
-        self.keySize = CGSize(width: w, height: h)
-    }
-    var body: some View {
+        let keySize = CGSize(width: w, height: h)
         VStack(spacing: spaceBetweenKeys) {
             HStack(spacing: spaceBetweenKeys) {
                 Key(keyInfo: keyModel.keyInfo["( "]!, keyModel: keyModel, size: keySize)
