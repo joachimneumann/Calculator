@@ -18,9 +18,7 @@ class ColorsOf: ObservableObject {
     }
 }
 
-struct C {
-    static let maxDigitsInLongDisplay = 1000
-    
+struct C {    
     private static let disabled = UIColor.red
     static let digitColors = ColorsOf(
         textColor: UIColor(.white),

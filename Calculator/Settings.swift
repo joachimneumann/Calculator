@@ -58,15 +58,19 @@ struct Settings: View {
                         plusEnabled: !outOfMemory,
                         minusEnabled: model.precision > 10,
                         onIncrement: {
-                            model.pressed("AC")
-                            model.setPrecision(increasedPrecision(current: model.precision))
-                            let nextIncrement = increasedPrecision(current: model.precision)
-                            outOfMemory = outOfMemory(for: Brain.internalPrecision(nextIncrement))
+                            DispatchQueue.main.async {
+                                model.pressed("AC")
+                                model.precision = increasedPrecision(current: model.precision)
+                                let nextIncrement = increasedPrecision(current: model.precision)
+                                outOfMemory = outOfMemory(for: Brain.internalPrecision(nextIncrement))
+                            }
                         },
                         onDecrement: {
-                            outOfMemory = false
-                            model.pressed("AC")
-                            model.setPrecision(decreasedPrecision(current: model.precision))
+                            DispatchQueue.main.async {
+                                outOfMemory = false
+                                model.pressed("AC")
+                                model.precision = decreasedPrecision(current: model.precision)
+                            }
                         })
                     .padding(.horizontal, 4)
                     HStack {
@@ -93,11 +97,17 @@ struct Settings: View {
                         plusEnabled: true,
                         minusEnabled: model.precision > 10,
                         onIncrement: {
+                            DispatchQueue.main.async {
+                                model.longDisplayMax = increasedPrecision(current: model.longDisplayMax)
+                            }
                         },
                         onDecrement: {
+                            DispatchQueue.main.async {
+                                model.longDisplayMax = decreasedPrecision(current: model.longDisplayMax)
+                            }
                         })
                     .padding(.horizontal, 4)
-                    Text("digits")
+                    Text("\(model.longDisplayMax.useWords) digits")
                 }
 
                 if copyAndPastePurchased {

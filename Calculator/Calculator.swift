@@ -58,7 +58,7 @@ struct Calculator: View {
                                     abbreviated: abbreviated,
                                     font: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
                                     isCopyingOrPasting: false,
-                                    precisionString: "model.precision().useWords",
+                                    precisionString: "model.precision.useWords",
                                     displayWidth: model.displayWidth)
                                 .offset(x: -displayXOffset, y: displayYOffset)
                                 //                        .background(Color.green).opacity(0.4)

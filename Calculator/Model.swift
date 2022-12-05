@@ -24,16 +24,6 @@ class Model : ObservableObject {
     @Published var isCalculating = false
     @Published var zoomed = false
 
-    final let precisionKey = "precision"
-    var precision: Int { brain.precision }
-    func setPrecision(_ precision: Int) {
-        DispatchQueue.main.async {
-            UserDefaults.standard.setValue(precision, forKey: self.precisionKey)
-            //print("setPrecision() -> \(precision)")
-        }
-        brain.precision = precision
-    }
-//UserDefaults    }
     var bits: Int {
         brain.bits
     }
@@ -47,7 +37,7 @@ class Model : ObservableObject {
     @Published var oneLineP: MultipleLiner
 
     var multipleLines: MultipleLiner {
-        let len = min(brain.precision, C.maxDigitsInLongDisplay)
+        let len = min(precision, longDisplayMax)
         let lengthMeasurementResult = LengthMeasurementResult(
             withoutComma: len, withCommaNonScientific: len, withCommaScientific: len, ePadding: 0)
         return brain.last.multipleLines(lengthMeasurementResult)
@@ -56,19 +46,12 @@ class Model : ObservableObject {
     var precisionDescription = "unknown"
 
     var lengthMeasurementResult = LengthMeasurementResult(withoutComma: 0, withCommaNonScientific: 0, withCommaScientific: 0, ePadding: 0)
+    
+    @AppStorage("precision", store: .standard) var precision: Int = 100
+    @AppStorage("longDisplayMax", store: .standard) var longDisplayMax: Int = 100
 
     init() {
-        //print("Model init()")
-
-        var precisionUserDefaults = UserDefaults.standard.integer(forKey: precisionKey)
-        print("init precisionUserDefaults() -> \(precisionUserDefaults)")
-        if precisionUserDefaults == 0 {
-            precisionUserDefaults = 1000
-            UserDefaults.standard.set(precisionUserDefaults, forKey: precisionKey)
-            UserDefaults.standard.synchronize()
-        }
-
-        brain = Brain(precision: precisionUserDefaults)
+        brain = Brain(precision: 100)
         oneLineP = MultipleLiner(left: "0", abbreviated: false)
         for key in C.allKeys {
             keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))
@@ -84,7 +67,7 @@ class Model : ObservableObject {
         if brain.last.isNull {
             DispatchQueue.main.async {
                 self._AC = true
-                self.precisionDescription = self.brain.precision.useWords
+                self.precisionDescription = self.precision.useWords
             }
         } else {
             DispatchQueue.main.async {

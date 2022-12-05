@@ -10,7 +10,6 @@ import Foundation
 class Brain {
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
-    var precision: Int = 100
     var bits: Int
     var last: Number { n.last }
 
@@ -295,6 +294,7 @@ class Brain {
         }
     }
     
+    var precision: Int
     func setPrecision(_ newPrecision: Int) {
         self.precision = newPrecision
         self.bits = Int(Double(Brain.internalPrecision(newPrecision)) * 3.32192809489)
