@@ -24,15 +24,21 @@ class Model : ObservableObject {
     @Published var isCalculating = false
     @Published var zoomed = false
 
-    var precision = 10000 {
-        didSet {
-            brain.setPrecision(precision)
+    final let precisionKey = "precision"
+    var precision: Int { brain.precision }
+    func setPrecision(_ precision: Int) {
+        DispatchQueue.main.async {
+            UserDefaults.standard.setValue(precision, forKey: self.precisionKey)
+            //print("setPrecision() -> \(precision)")
         }
+        brain.precision = precision
     }
+//UserDefaults    }
     var bits: Int {
         brain.bits
     }
 
+    
     private let brain: Brain
     @Published var keyInfo: [String: KeyInfo] = [:]
     var enabledDict: [String: Bool] = [:]
@@ -41,7 +47,7 @@ class Model : ObservableObject {
     @Published var oneLineP: MultipleLiner
 
     var multipleLines: MultipleLiner {
-        let len = min(precision, C.maxDigitsInLongDisplay)
+        let len = min(brain.precision, C.maxDigitsInLongDisplay)
         let lengthMeasurementResult = LengthMeasurementResult(
             withoutComma: len, withCommaNonScientific: len, withCommaScientific: len, ePadding: 0)
         return brain.last.multipleLines(lengthMeasurementResult)
@@ -53,7 +59,16 @@ class Model : ObservableObject {
 
     init() {
         //print("Model init()")
-        brain = Brain(precision: precision)
+
+        var precisionUserDefaults = UserDefaults.standard.integer(forKey: precisionKey)
+        print("init precisionUserDefaults() -> \(precisionUserDefaults)")
+        if precisionUserDefaults == 0 {
+            precisionUserDefaults = 1000
+            UserDefaults.standard.set(precisionUserDefaults, forKey: precisionKey)
+            UserDefaults.standard.synchronize()
+        }
+
+        brain = Brain(precision: precisionUserDefaults)
         oneLineP = MultipleLiner(left: "0", abbreviated: false)
         for key in C.allKeys {
             keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))

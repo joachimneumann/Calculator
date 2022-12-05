@@ -59,14 +59,14 @@ struct Settings: View {
                         minusEnabled: model.precision > 10,
                         onIncrement: {
                             model.pressed("AC")
-                            model.precision = increasedPrecision(current: model.precision)
+                            model.setPrecision(increasedPrecision(current: model.precision))
                             let nextIncrement = increasedPrecision(current: model.precision)
                             outOfMemory = outOfMemory(for: Brain.internalPrecision(nextIncrement))
                         },
                         onDecrement: {
                             outOfMemory = false
                             model.pressed("AC")
-                            model.precision = decreasedPrecision(current: model.precision)
+                            model.setPrecision(decreasedPrecision(current: model.precision))
                         })
                     .padding(.horizontal, 4)
                     HStack {
