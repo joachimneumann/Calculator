@@ -20,7 +20,6 @@ struct ColoredStepper: View {
         minusEnabled: Bool,
         onIncrement: CallBack,
         onDecrement: CallBack) {
-            print("StepperColors init()")
             self.stepperColors = StepperColors(leftBtnColor: .white, rightBtnColor: .white, backgroundColor: .gray)
             self.plusEnabled = plusEnabled
             self.minusEnabled = minusEnabled
@@ -39,7 +38,7 @@ struct ColoredStepper: View {
             Button {
                 decrement()
             } label: {
-                Image(systemName: "minus").frame(width: 38, height: 35)
+                Image(systemName: "minus").frame(width: 38, height: 30)
             }
             .disabled(!minusEnabled)
             .foregroundColor(minusEnabled ? stepperColors.leftBtnColor : Color.gray)
@@ -50,7 +49,7 @@ struct ColoredStepper: View {
             Button {
                 increment()
             } label: {
-                Image(systemName: "plus").frame(width: 38, height: 35)
+                Image(systemName: "plus").frame(width: 38, height: 30)
             }
             .disabled(!plusEnabled)
             .foregroundColor(plusEnabled ? stepperColors.rightBtnColor : Color.gray)

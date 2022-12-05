@@ -522,7 +522,7 @@ class CalculatorTests: XCTestCase {
 //        /// 1
 //        
         brain.nonWaitingOperation("AC")
-        brain.press("2")
+        brain.nonWaitingOperation("2")
         multipleLiner = brain.last.multipleLines(lengthMeasurementResult)
         XCTAssertEqual(multipleLiner.left, "2")
         XCTAssertNil(  multipleLiner.right)
@@ -533,7 +533,7 @@ class CalculatorTests: XCTestCase {
 
         /// sin(pi) =? 0
         brain.nonWaitingOperation("AC")
-        brain.press("π")
+        brain.nonWaitingOperation("π")
         brain.nonWaitingOperation("sin")
         multipleLiner = brain.last.multipleLines(lengthMeasurementResult)
         XCTAssertEqual(multipleLiner.left, "0")

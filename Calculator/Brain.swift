@@ -41,18 +41,20 @@ class Brain {
         }
     }
     
-    private func speedTest(testPrecision: Int) async -> Speed {
-        let testBrain = Brain(precision: testPrecision)
-
-        await testBrain.operation("AC")
-        await testBrain.operation("Rand")
-
-        let timer = ParkBenchTimer()
-        await testBrain.operation("√")
-        let seconds = timer.stop()
-        // print("The task took \(seconds) seconds. Percision \(precision)")
-        return Speed(sqrt2Time: seconds, precision: testPrecision)
-    }
+//    private func speedTest(testPrecision: Int) async -> Speed {
+//        let testBrain = Brain(precision: testPrecision)
+//
+//        Task {
+//            testBrain.operation("AC")
+//            testBrain.operation("Rand")
+//
+//            let timer = ParkBenchTimer()
+//            testBrain.operation("√")
+//            let seconds = timer.stop()
+//            // print("The task took \(seconds) seconds. Percision \(precision)")
+//            return Speed(sqrt2Time: seconds, precision: testPrecision)
+//        }
+//    }
     
     
     static func internalPrecision(_ precision: Int) -> Int {
@@ -129,15 +131,21 @@ class Brain {
     let equalOperator = Operator(Operator.equalPriority)
 
 
-    func press(_ digits: String) async {
+    func press(_ digits: String) {
         for digit in digits {
-            await operation(String(digit))
+            if let intValue = digit.wholeNumberValue {
+                press(intValue)
+            } else {
+                assert(false)
+            }
         }
     }
     
-    func press(_ digit: Int) async {
+    func press(_ digit: Int) {
         if digit >= 0 && digit <= 9 {
-            await operation(String(digit))
+            Task {
+                operation(String(digit))
+            }
         }
     }
     
@@ -169,7 +177,7 @@ class Brain {
         }
     }
     
-    private func operation(_ symbol: String) async {
+    private func operation(_ symbol: String) {
         /// TODO: do the switch in CalculatorModel
         if symbol == "C" {
             if last.isNull {
@@ -268,19 +276,19 @@ class Brain {
         haveResultCallback()
     }
     
-//    func nonWaitingOperation(_ symbol: String) {
-//        if !isCalculating {
-//            self.isCalculating = true
-//            operation(symbol)
-//        }
-//        self.isCalculating = false
-//    }
+    func nonWaitingOperation(_ symbol: String) {
+        if !isCalculating {
+            self.isCalculating = true
+            operation(symbol)
+        }
+        self.isCalculating = false
+    }
     
     func asyncOperation(_ symbol: String) {
         Task {
             if !isCalculating {
                 self.isCalculating = true
-                await operation(symbol)
+                operation(symbol)
                 
             }
             self.isCalculating = false
@@ -292,12 +300,12 @@ class Brain {
         self.bits = Int(Double(Brain.internalPrecision(newPrecision)) * 3.32192809489)
         n.changePrecision(to: self.precision, newBits: self.bits)
         speed = nil
-        Task {
-            let speedResult =  await speedTest(testPrecision: newPrecision)
-            DispatchQueue.main.async {
-                self.speed = speedResult
-            }
-        }
+//        Task {
+//            let speedResult =  await speedTest(testPrecision: newPrecision)
+//            DispatchQueue.main.async {
+//                self.speed = speedResult
+//            }
+//        }
     }
     
     init(precision initialPrecision: Int) {
@@ -305,7 +313,7 @@ class Brain {
         precision = initialPrecision
         bits = Int(Double(Brain.internalPrecision(initialPrecision)) * 3.32192809489)
         Task {
-            await operation("AC")
+            operation("AC")
         }
     }
     

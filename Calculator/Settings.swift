@@ -39,13 +39,14 @@ struct Settings: View {
             return current * 2
         }
     }
-    func sufficientMemoryfor(precision: Int) -> Bool {
-        let needToAppocateNumbers = 10 // estimate for internal calculations
-        let numberOfbytes = Int(Double(precision) * 3.32192809489) * 8
-        return testMemory(size: numberOfbytes * needToAppocateNumbers)
+    
+    func outOfMemory(for precision: Int) -> Bool {
+        let estimatedSizeOfNumberInBytes = 3*precision // TODO: improve this estimate
+        let estimatedsNumberOfNumbers = 10
+        return !testMemory(size: estimatedSizeOfNumberInBytes * estimatedsNumberOfNumbers)
     }
     
-    @State var showMemoryWarning = false
+    @State var outOfMemory = false
 
     var body: some View {
         ZStack {
@@ -54,29 +55,23 @@ struct Settings: View {
                 HStack {
                     Text("Precision:")
                     ColoredStepper(
-                        plusEnabled: !showMemoryWarning,
+                        plusEnabled: !outOfMemory,
                         minusEnabled: model.precision > 10,
                         onIncrement: {
-//                            let newPrecision = increasedPrecision(current: brain.precision)
-//                            showMemoryWarning = !sufficientMemoryfor(precision: increasedPrecision(current: newPrecision))
-//                            let newInternalPrecision = Brain.internalPrecision(newPrecision)
-//                            let numberOfbytes = Int( Double(newInternalPrecision) * 3.32192809489) * 8
-//                            let testMemoryResult = testMemory(size: numberOfbytes * 10)
-//                            if testMemoryResult {
-//                                model.pressed("AC")
-////                                brain.setPrecision(newPrecision)
-//                            }
+                            model.pressed("AC")
+                            model.precision = increasedPrecision(current: model.precision)
+                            let nextIncrement = increasedPrecision(current: model.precision)
+                            outOfMemory = outOfMemory(for: Brain.internalPrecision(nextIncrement))
                         },
                         onDecrement: {
-                            showMemoryWarning = false
-//                            let newPrecision = decreasedPrecision(current: brain.precision)
+                            outOfMemory = false
                             model.pressed("AC")
-//                            brain.setPrecision(newPrecision)
+                            model.precision = decreasedPrecision(current: model.precision)
                         })
-                    .padding(.horizontal, 10)
+                    .padding(.horizontal, 4)
                     HStack {
                         Text("\(model.precision.useWords) digits")
-                        if showMemoryWarning {
+                        if outOfMemory {
                             Text("(memory limit reached)")
                         }
 //                        if let speed = brain.speed {
@@ -89,8 +84,22 @@ struct Settings: View {
                 }
                 .padding(.top, 40)
                 .padding(.bottom, 5)
-                Text("The app calculates internally with model.bits bits (corresponding to model.internalPrecision digits) to mitigate error accumulation").italic()
+                Text("The app calculates internally with \(model.bits) bits (corresponding to \(        Brain.internalPrecision(model.precision).useWords) digits) to mitigate error accumulation").italic()
                     .padding(.bottom, 40)
+
+                HStack {
+                    Text("Max length of display:")
+                    ColoredStepper(
+                        plusEnabled: true,
+                        minusEnabled: model.precision > 10,
+                        onIncrement: {
+                        },
+                        onDecrement: {
+                        })
+                    .padding(.horizontal, 4)
+                    Text("digits")
+                }
+
                 if copyAndPastePurchased {
                     Text("You have purchased Copy and Paste to import and export numbers with high precision.")
                 } else {

@@ -24,7 +24,15 @@ class Model : ObservableObject {
     @Published var isCalculating = false
     @Published var zoomed = false
 
-    let precision = 10000//0000
+    var precision = 10000 {
+        didSet {
+            brain.setPrecision(precision)
+        }
+    }
+    var bits: Int {
+        brain.bits
+    }
+
     private let brain: Brain
     @Published var keyInfo: [String: KeyInfo] = [:]
     var enabledDict: [String: Bool] = [:]
