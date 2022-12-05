@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct ScientificKeys: View {
-    @ObservedObject var keyModel: KeyModel
+    @ObservedObject var model: Model
     let spaceBetweenKeys: CGFloat
     let size: CGSize
 
-//    init(keyModel: KeyModel, spaceBetweenKeys: CGFloat, size: CGSize) {
+//    init(model: KeyModel, spaceBetweenKeys: CGFloat, size: CGSize) {
 //        //print("ScientificKeys init()")
-//        self.keyModel = keyModel
+//        self.model = model
 //        self.spaceBetweenKeys = spaceBetweenKeys
 //        let w = (size.width - 5.0 * spaceBetweenKeys) / 6.0
 //        let h = (size.height - 4.0 * spaceBetweenKeys) / 5.0
@@ -26,44 +26,44 @@ struct ScientificKeys: View {
         let keySize = CGSize(width: w, height: h)
         VStack(spacing: spaceBetweenKeys) {
             HStack(spacing: spaceBetweenKeys) {
-                Key(keyInfo: keyModel.keyInfo["( "]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo[" )"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["mc"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["m+"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["m-"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["mr"]!, keyModel: keyModel, size: keySize)
+                Key(keyInfo: model.keyInfo["( "]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo[" )"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["mc"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["m+"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["m-"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["mr"]!, model: model, size: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key(keyInfo: keyModel.keyInfo["2nd"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["x^2"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["x^3"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["x^y"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo[keyModel._2ndActive ? "y^x" : "e^x"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo[keyModel._2ndActive ? "2^x" : "10^x"]!, keyModel: keyModel, size: keySize)
+                Key(keyInfo: model.keyInfo["2nd"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["x^2"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["x^3"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["x^y"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo[model._2ndActive ? "y^x" : "e^x"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo[model._2ndActive ? "2^x" : "10^x"]!, model: model, size: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key(keyInfo: keyModel.keyInfo["One_x"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["√"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["3√"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["y√"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo[keyModel._2ndActive ? "logy" : "ln"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo[keyModel._2ndActive ? "log2" : "log10"]!, keyModel: keyModel, size: keySize)
+                Key(keyInfo: model.keyInfo["One_x"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["√"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["3√"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["y√"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo[model._2ndActive ? "logy" : "ln"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo[model._2ndActive ? "log2" : "log10"]!, model: model, size: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key(keyInfo: keyModel.keyInfo["x!"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo[keyModel._2ndActive ? "asin" : "sin"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo[keyModel._2ndActive ? "acos" : "cos"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo[keyModel._2ndActive ? "atan" : "tan"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["e"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["EE"]!, keyModel: keyModel, size: keySize)
+                Key(keyInfo: model.keyInfo["x!"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo[model._2ndActive ? "asin" : "sin"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo[model._2ndActive ? "acos" : "cos"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo[model._2ndActive ? "atan" : "tan"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["e"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["EE"]!, model: model, size: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key(keyInfo: keyModel.keyInfo[keyModel._rad ? "Deg" : "Rad"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo[keyModel._2ndActive ? "asinh" : "sinh"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo[keyModel._2ndActive ? "acosh" : "cosh"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo[keyModel._2ndActive ? "atanh" : "tanh"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["π"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["Rand"]!, keyModel: keyModel, size: keySize)
+                Key(keyInfo: model.keyInfo[model._rad ? "Deg" : "Rad"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo[model._2ndActive ? "asinh" : "sinh"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo[model._2ndActive ? "acosh" : "cosh"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo[model._2ndActive ? "atanh" : "tanh"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["π"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["Rand"]!, model: model, size: keySize)
             }
         }
         //.background(Color.black)
@@ -72,7 +72,7 @@ struct ScientificKeys: View {
 
 struct ScientificKeys_Previews: PreviewProvider {
     static var previews: some View {
-        ScientificKeys(keyModel: KeyModel(), spaceBetweenKeys: 10, size: CGSize(width: 400, height: 300))
+        ScientificKeys(model: Model(), spaceBetweenKeys: 10, size: CGSize(width: 400, height: 300))
     }
 }
 

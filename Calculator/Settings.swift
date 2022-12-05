@@ -1,5 +1,5 @@
 ////
-////  ControlCenter.swift
+////  Settings.swift
 ////  Calculator
 ////
 ////  Created by Joachim Neumann on 11/13/22.
@@ -13,35 +13,8 @@
 //        return self.replacingCharacters(in: range, with: replacement)
 //    }
 //}
-//
-//extension Int {
-//    var useWords: String {
-//        let ret = "\(self)"
-//        if ret.hasSuffix("000000000000") {
-//            var substring1 = ret.dropLast(12)
-//            substring1 = substring1 + " trillion"
-//            return String(substring1)
-//        }
-//        if ret.hasSuffix("000000000") {
-//            var substring1 = ret.dropLast(9)
-//            substring1 = substring1 + " billion"
-//            return String(substring1)
-//        }
-//        if ret.hasSuffix("000000") {
-//            var substring1 = ret.dropLast(6)
-//            substring1 = substring1 + " million"
-//            return String(substring1)
-//        }
-//        if ret.hasSuffix("000") {
-//            var substring1 = ret.dropLast(3)
-//            substring1 = substring1 + " thousand"
-//            return String(substring1)
-//        }
-//        return ret
-//    }
-//}
-//
-//struct ControlCenter: View {
+
+//struct Settiniconsgs: View {
 //    @ObservedObject var brain: Brain
 //    @Binding var copyAndPastePurchased: Bool
 //    @State var warning: String?

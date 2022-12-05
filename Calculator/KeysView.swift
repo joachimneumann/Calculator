@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct KeysView: View {
-    let keyModel : KeyModel
+    let model : Model
     let isScientific: Bool
     let size: CGSize
     
@@ -21,15 +21,15 @@ struct KeysView: View {
                 let rightWidth = 4 * keyWidth + 3 * space
                 let sizeLeft  = CGSize(width: leftWidth, height: size.height)
                 let sizeRight = CGSize(width: rightWidth, height: size.height)
-                ScientificKeys(keyModel: keyModel, spaceBetweenKeys: space, size: sizeLeft)
+                ScientificKeys(model: model, spaceBetweenKeys: space, size: sizeLeft)
                     .padding(.trailing, space)
 //                    .background(Color.black)
-                NonScientificKeys(keyModel: keyModel, spaceBetweenKeys: space, size: sizeRight)
+                NonScientificKeys(model: model, spaceBetweenKeys: space, size: sizeRight)
 //                    .background(Color.black)
             }
         } else {
             let space = C.spaceBetweenkeysFraction(withScientificKeys: false) * size.width
-            NonScientificKeys(keyModel: keyModel, spaceBetweenKeys: space, size: size)
+            NonScientificKeys(model: model, spaceBetweenKeys: space, size: size)
 //                .background(Color.black)
         }
     }
@@ -38,8 +38,8 @@ struct KeysView: View {
 struct KeysView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            KeysView(keyModel: KeyModel(), isScientific: false, size: CGSize(width: 100, height: 100))
-            KeysView(keyModel: KeyModel(), isScientific: false, size: CGSize(width: 400, height: 400))
+            KeysView(model: Model(), isScientific: false, size: CGSize(width: 100, height: 100))
+            KeysView(model: Model(), isScientific: false, size: CGSize(width: 400, height: 400))
         }
     }
 }

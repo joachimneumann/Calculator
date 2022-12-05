@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct Key: View {
-    @ObservedObject var keyInfo: KeyModel.KeyInfo
-    var keyModel: KeyModel
+    @ObservedObject var keyInfo: Model.KeyInfo
+    var model: Model
     let size: CGSize
 
     @State var tapped: Bool = false
@@ -23,21 +23,21 @@ struct Key: View {
                 .foregroundColor(Color(uiColor: keyInfo.colors.textColor))
                 .background(Color(uiColor: tapped ? (keyInfo.enabled ? keyInfo.colors.downColor : C.disabledColor) : keyInfo.colors.upColor))
                 .clipShape(Capsule())
-                .onTouchGesture(tapped: $tapped, keyInfo: keyInfo, keyModel: keyModel)
+                .onTouchGesture(tapped: $tapped, keyInfo: keyInfo, model: model)
         }
     }
 }
 
 extension View {
-    func onTouchGesture(tapped: Binding<Bool>, keyInfo: KeyModel.KeyInfo, keyModel: KeyModel) -> some View {
-        modifier(OnTouchGestureModifier(tapped: tapped, keyInfo: keyInfo, keyModel: keyModel))
+    func onTouchGesture(tapped: Binding<Bool>, keyInfo: Model.KeyInfo, model: Model) -> some View {
+        modifier(OnTouchGestureModifier(tapped: tapped, keyInfo: keyInfo, model: model))
     }
 }
 
 private struct OnTouchGestureModifier: ViewModifier {
     @Binding var tapped: Bool
-    let keyInfo: KeyModel.KeyInfo
-    let keyModel: KeyModel
+    let keyInfo: Model.KeyInfo
+    let model: Model
 
     @State var downAnimationFinished = false
     @State var upHasHappended = false
@@ -51,14 +51,14 @@ private struct OnTouchGestureModifier: ViewModifier {
             .simultaneousGesture(DragGesture(minimumDistance: 0)
                 .onChanged { _ in
                     if !self.tapped {
-                        keyInfo.enabled = keyModel.enabledDict[keyInfo.symbol]! /// this activated the red button background for disabled button
+                        keyInfo.enabled = model.enabledDict[keyInfo.symbol]! /// this activated the red button background for disabled button
                         if keyInfo.enabled {
                             if keyInfo.symbol == "plusKey" {
                                 withAnimation(.easeIn(duration: upTime)) {
-                                    keyModel.keyDownCallback(keyInfo.symbol)
+                                    model.keyDownCallback(keyInfo.symbol)
                                 }
                             } else {
-                                keyModel.keyDownCallback(keyInfo.symbol)
+                                model.keyDownCallback(keyInfo.symbol)
                             }
                         } /// disabled buttons do not work (but their background color is animated)
 
@@ -94,6 +94,6 @@ private struct OnTouchGestureModifier: ViewModifier {
 
 //struct Key_Previews: PreviewProvider {
 //    static var previews: some View {
-//        Key(symbol: "5", keyModel: KeyModel(), textColor: Color.white, upColor: Color.green, downColor: Color.yellow, size: CGSize(width: 100, height: 100))
+//        Key(symbol: "5", model: KeyModel(), textColor: Color.white, upColor: Color.green, downColor: Color.yellow, size: CGSize(width: 100, height: 100))
 //    }
 //}

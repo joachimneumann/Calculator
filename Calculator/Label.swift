@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Label: View {
-    let keyInfo: KeyModel.KeyInfo
+    let keyInfo: Model.KeyInfo
     let height: CGFloat
     var body: some View {
         let color = Color(uiColor: keyInfo.colors.textColor)
@@ -211,7 +211,7 @@ struct Label: View {
 struct Label_Previews: PreviewProvider {
     static var previews: some View {
         let h = 131.1
-        let keyInfo = KeyModel.KeyInfo(symbol: "One_x", colors: C.getKeyColors(for: "One_x"))
+        let keyInfo = Model.KeyInfo(symbol: "One_x", colors: C.getKeyColors(for: "One_x"))
         VStack {
             Label(keyInfo: keyInfo, height: h)
                 .foregroundColor(Color.white)

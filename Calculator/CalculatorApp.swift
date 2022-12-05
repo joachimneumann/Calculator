@@ -35,7 +35,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct CalculatorApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate // used to disallow Landscape in Mac
     
-    var keyModel = KeyModel()
+    var model = Model()
 
     var body: some Scene {
         WindowGroup {
@@ -63,14 +63,14 @@ struct CalculatorApp: App {
                 let displayXOffset = isPortrait ? 0.0 : oneKeyWidth * 0.7
                 let displayYOffset = isPortrait ? newHeight - keyboardSize.height - keyboardPaddingBottom - oneKeyheight * 1.2 : oneKeyheight * 0.00
                 let displayPaddingBottom = keyboardSize.height
-                let _ = (keyModel.displayWidth = newWidth - displayXOffset)
-                let _ = (keyModel.lengthMeasurementResult =
+                let _ = (model.displayWidth = newWidth - displayXOffset)
+                let _ = (model.lengthMeasurementResult =
                          lengthMeasurement(
-                            size: CGSize(width: keyModel.displayWidth, height: newHeight),
+                            size: CGSize(width: model.displayWidth, height: newHeight),
                             fontSize: singleLineFontSize,
                             ePadding: round(singleLineFontSize * (isPortrait ? 0.0 : 0.3))))
 
-                Calculator(keyModel: keyModel,
+                Calculator(model: model,
                            isPad: isPad,
                            isPortrait: isPortrait,
                            size: CGSize(width: newWidth, height: newHeight),

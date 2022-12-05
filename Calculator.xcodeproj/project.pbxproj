@@ -23,9 +23,9 @@
 		AA2FAC1A272F2349006DE4C8 /* CalculatorCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC04272F2348006DE4C8 /* CalculatorCommands.swift */; };
 		AA2FAC23272F2349006DE4C8 /* OperatorStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0D272F2349006DE4C8 /* OperatorStack.swift */; };
 		AA370C2D293352960041AE4E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA370C2C293352960041AE4E /* Constants.swift */; };
-		AA370C2F293352B10041AE4E /* KeyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA370C2E293352B10041AE4E /* KeyModel.swift */; };
+		AA370C2F293352B10041AE4E /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA370C2E293352B10041AE4E /* Model.swift */; };
 		AA370C31293352D60041AE4E /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA370C30293352D60041AE4E /* Key.swift */; };
-		AA3FB8272920E0E5002ECCEB /* ControlCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3FB8262920E0E5002ECCEB /* ControlCenter.swift */; };
+		AA3FB8272920E0E5002ECCEB /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3FB8262920E0E5002ECCEB /* Settings.swift */; };
 		AA584F572938E8A9008823F3 /* LengthMeasurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA584F562938E8A9008823F3 /* LengthMeasurement.swift */; };
 		AA6577F52935B90D00DA98E7 /* TODOs.rtf in Resources */ = {isa = PBXBuildFile; fileRef = AA6577F42935B90D00DA98E7 /* TODOs.rtf */; };
 		AA8C3C7A29388A940084A4FD /* PlusKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8C3C7929388A940084A4FD /* PlusKey.swift */; };
@@ -89,9 +89,9 @@
 		AA2FAC04272F2348006DE4C8 /* CalculatorCommands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorCommands.swift; sourceTree = "<group>"; };
 		AA2FAC0D272F2349006DE4C8 /* OperatorStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperatorStack.swift; sourceTree = "<group>"; };
 		AA370C2C293352960041AE4E /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		AA370C2E293352B10041AE4E /* KeyModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyModel.swift; sourceTree = "<group>"; };
+		AA370C2E293352B10041AE4E /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		AA370C30293352D60041AE4E /* Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
-		AA3FB8262920E0E5002ECCEB /* ControlCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlCenter.swift; sourceTree = "<group>"; };
+		AA3FB8262920E0E5002ECCEB /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		AA584F562938E8A9008823F3 /* LengthMeasurement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LengthMeasurement.swift; sourceTree = "<group>"; };
 		AA6577F42935B90D00DA98E7 /* TODOs.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = TODOs.rtf; sourceTree = "<group>"; };
 		AA8C3C7929388A940084A4FD /* PlusKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusKey.swift; sourceTree = "<group>"; };
@@ -153,7 +153,7 @@
 				AA2FAC01272F2348006DE4C8 /* Brain.swift */,
 				AA2FABF1272F217F006DE4C8 /* Gmp.swift */,
 				AA2FABFF272F2348006DE4C8 /* CalculatorApp.swift */,
-				AA3FB8262920E0E5002ECCEB /* ControlCenter.swift */,
+				AA3FB8262920E0E5002ECCEB /* Settings.swift */,
 				AA02AF75291CE0550079F40E /* Icon.swift */,
 				AA92B4C229250827005E43F0 /* ColoredStepper.swift */,
 				AA2FABF8272F2348006DE4C8 /* Number.swift */,
@@ -179,7 +179,7 @@
 				AABCF8BB292BBCEB007E5C35 /* OneLineDisplay.swift */,
 				AA584F562938E8A9008823F3 /* LengthMeasurement.swift */,
 				AA370C2C293352960041AE4E /* Constants.swift */,
-				AA370C2E293352B10041AE4E /* KeyModel.swift */,
+				AA370C2E293352B10041AE4E /* Model.swift */,
 				AA370C30293352D60041AE4E /* Key.swift */,
 				AA8C3C7929388A940084A4FD /* PlusKey.swift */,
 				AA6577F42935B90D00DA98E7 /* TODOs.rtf */,
@@ -333,9 +333,9 @@
 				AA92B4C929273A58005E43F0 /* Calculator.swift in Sources */,
 				AA2FAC23272F2349006DE4C8 /* OperatorStack.swift in Sources */,
 				AA370C31293352D60041AE4E /* Key.swift in Sources */,
-				AA3FB8272920E0E5002ECCEB /* ControlCenter.swift in Sources */,
+				AA3FB8272920E0E5002ECCEB /* Settings.swift in Sources */,
 				AA2FAC15272F2349006DE4C8 /* CalculatorApp.swift in Sources */,
-				AA370C2F293352B10041AE4E /* KeyModel.swift in Sources */,
+				AA370C2F293352B10041AE4E /* Model.swift in Sources */,
 				AA2FAC1A272F2349006DE4C8 /* CalculatorCommands.swift in Sources */,
 				AA92B4CD29279B0F005E43F0 /* KeysView.swift in Sources */,
 				AA584F572938E8A9008823F3 /* LengthMeasurement.swift in Sources */,

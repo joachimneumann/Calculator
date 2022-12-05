@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Calculator: View {
-    @StateObject var keyModel: KeyModel
+    @StateObject var model: Model
     let isPad: Bool
     var isPortrait: Bool
     let size: CGSize
@@ -24,45 +24,45 @@ struct Calculator: View {
 
     var body: some View {
         //        let _ = print("Calculator body displayLength \(displayLength)")
-        //        let _ = keyModel.oneLineWithCommaLength = displayLength[0]
-        //        let _ = keyModel.oneLineWithoutCommaLength = displayLength[1]
+        //        let _ = model.oneLineWithCommaLength = displayLength[0]
+        //        let _ = model.oneLineWithoutCommaLength = displayLength[1]
         //        let _ = print("displayLength \(displayLength)")
         Rectangle()
             .foregroundColor(.black)
             .overlay() {
                 VStack(spacing: 0.0) {
                     if isPortrait {
-                        let text = keyModel.oneLineP.asOneLine
+                        let text = model.oneLineP.asOneLine
                         PortraitDisplay(
                             text: text,
                             isAbbreviated: false,
                             smallFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
                             largeFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * 1.5, weight: .thin)),
                             fontScaleFactor: 1.5,
-                            displayWidth: keyModel.displayWidth)
+                            displayWidth: model.displayWidth)
                         //.background(Color.yellow)
                         .padding(.bottom, keyboardSize.height)
 //                        .offset(y: displayYOffset)
                     } else {
                         HStack(spacing: 0.0) {
-                            let multipleLines: MultipleLiner? = keyModel.zoomed ? keyModel.multipleLines : nil
-                            let left = keyModel.zoomed ? multipleLines!.left : keyModel.oneLineP.left
-                            let right: String? = keyModel.zoomed ? multipleLines!.right : keyModel.oneLineP.right
-                            let abbreviated = keyModel.zoomed ? multipleLines!.abbreviated : keyModel.oneLineP.abbreviated
-                            let ePadding = keyModel.lengthMeasurementResult.ePadding
+                            let multipleLines: MultipleLiner? = model.zoomed ? model.multipleLines : nil
+                            let left = model.zoomed ? multipleLines!.left : model.oneLineP.left
+                            let right: String? = model.zoomed ? multipleLines!.right : model.oneLineP.right
+                            let abbreviated = model.zoomed ? multipleLines!.abbreviated : model.oneLineP.abbreviated
+                            let ePadding = model.lengthMeasurementResult.ePadding
                             LongDisplay(
-                                zoomed: keyModel.zoomed,
+                                zoomed: model.zoomed,
                                 mantissa: left,
                                 exponent: right,
                                 ePadding: ePadding,
                                 abbreviated: abbreviated,
                                 font: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
                                 isCopyingOrPasting: false,
-                                precisionString: keyModel.precision.useWords,
-                                displayWidth: keyModel.displayWidth)
+                                precisionString: model.precision.useWords,
+                                displayWidth: model.displayWidth)
                             .offset(x: -displayXOffset, y: displayYOffset)
                             //                        .background(Color.green).opacity(0.4)
-                            .animation(Animation.easeInOut(duration: 0.4), value: keyModel.zoomed)
+                            .animation(Animation.easeInOut(duration: 0.4), value: model.zoomed)
                         }
                         //.background(Color.yellow)
                         Spacer()
@@ -74,17 +74,26 @@ struct Calculator: View {
                     if !isPortrait {
                         HStack(spacing: 0.0) {
                             Spacer(minLength: 0.0)
-                            PlusKey(keyInfo: keyModel.keyInfo["plusKey"]!, keyModel: keyModel, size: CGSize(width: keyboardSize.height * 0.13, height: keyboardSize.height * 0.13))
+                            PlusKey(keyInfo: model.keyInfo["plusKey"]!, model: model, size: CGSize(width: keyboardSize.height * 0.13, height: keyboardSize.height * 0.13))
                                 .offset(y: displayYOffset)
                         }
                         .padding(.top, keyHeight * 0.15)
                         Spacer(minLength: 0.0)
+//                        NavigationLink(destination: Settings(model: model, copyAndPastePurchased: _copyAndPastePurchased)) {
+//                            Image(systemName: "switch.2")
+//                                .resizable()
+//                                .scaledToFit()
+//                                .frame(width: size*0.8, height: size*0.8)
+//                                .font(.system(size: size, weight: .thin))
+//                                .foregroundColor(color)
+//                                .padding(.top, topPadding)
+//                        }
                     }
                 }
             }
         
             .overlay() { /// keyboard
-                let info = "\(keyModel._hasBeenReset ? "Precision: "+keyModel.precisionDescription+" digits" : "\(keyModel._rad ? "Rad" : "")")"
+                let info = "\(model._hasBeenReset ? "Precision: "+model.precisionDescription+" digits" : "\(model._rad ? "Rad" : "")")"
                 VStack(spacing: 0.0) {
                     Spacer()
                     HStack(spacing: 0.0) {
@@ -92,13 +101,13 @@ struct Calculator: View {
                             .offset(x: keyHeight * 0.3, y: keyHeight * -0.05)
                         Spacer()
                     }
-                    KeysView(keyModel: keyModel, isScientific: !isPortrait, size: keyboardSize)
+                    KeysView(model: model, isScientific: !isPortrait, size: keyboardSize)
                 }
                 .transition(.move(edge: .bottom))
-                .offset(y: keyModel.zoomed ? size.height : 0)
+                .offset(y: model.zoomed ? size.height : 0)
             }
             .onRotate { newOrientation in
-                keyModel.haveResultCallback()
+                model.haveResultCallback()
                 orientation = newOrientation
             }
     }

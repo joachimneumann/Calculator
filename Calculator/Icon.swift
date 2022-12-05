@@ -32,7 +32,7 @@
 //            .resizable()
 //            .scaledToFit()
 //            .frame(width: size, height: size)
-//            .font(.system(size: size, weight: .thin))
+//             .font(.system(size: size, weight: .thin))
 //            .foregroundColor(color)
 //            .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
 //            .padding(.top, isZoomed ? topPaddingZoomed : topPaddingNotZoomed)
@@ -98,13 +98,13 @@
 //
 //struct CopyIcon: View {
 //    @Binding var isCopyingOrPasting: Bool
-//    let keyModel: KeyModel
+//    let model: Model
 //    let size: CGFloat
 //    let color: Color
 //    let topPadding: CGFloat
 //    
-//    init(keyModel: KeyModel, isCopyingOrPasting: Binding<Bool>, size: CGFloat) {
-//        self.keyModel = keyModel
+//    init(model: Model, isCopyingOrPasting: Binding<Bool>, size: CGFloat) {
+//        self.model = model
 //        self._isCopyingOrPasting = isCopyingOrPasting
 //        self.size = size
 //        color = Color(uiColor: C.digitColors.textColor)
@@ -121,7 +121,7 @@
 //                    isCopyingOrPasting = false
 //                }
 //            }
-////            UIPasteboard.general.string = keyModel.oneLine.replacingOccurrences(of: ",", with: ".")
+////            UIPasteboard.general.string = model.oneLine.replacingOccurrences(of: ",", with: ".")
 //        }
 //        .foregroundColor(color)
 //        .frame(width: size, height: size)

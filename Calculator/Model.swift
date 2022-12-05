@@ -1,5 +1,5 @@
 //
-//  keyModel.swift
+//  Model.swift
 //  bg
 //
 //  Created by Joachim Neumann on 11/27/22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class KeyModel : ObservableObject {
+class Model : ObservableObject {
     var displayWidth: CGFloat = 0
     class KeyInfo: ObservableObject {
         let symbol: String
@@ -44,7 +44,7 @@ class KeyModel : ObservableObject {
     var lengthMeasurementResult = LengthMeasurementResult(withoutComma: 0, withCommaNonScientific: 0, withCommaScientific: 0, ePadding: 0)
 
     init() {
-        //print("KeyModel init()")
+        //print("Model init()")
         brain = Brain(precision: precision)
         oneLineP = MultipleLiner(left: "0", abbreviated: false)
         for key in C.allKeys {

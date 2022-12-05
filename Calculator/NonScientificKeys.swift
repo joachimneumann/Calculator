@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NonScientificKeys: View {
-    @ObservedObject var keyModel: KeyModel
+    @ObservedObject var model: Model
     let spaceBetweenKeys: CGFloat
     let size: CGSize
     
@@ -20,33 +20,33 @@ struct NonScientificKeys: View {
 
         VStack(spacing: spaceBetweenKeys) {
             HStack(spacing: spaceBetweenKeys) {
-                Key(keyInfo: keyModel.keyInfo[keyModel._AC ? "AC" : "C"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["±"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["%"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["/"]!, keyModel: keyModel, size: keySize)
+                Key(keyInfo: model.keyInfo[model._AC ? "AC" : "C"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["±"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["%"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["/"]!, model: model, size: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key(keyInfo: keyModel.keyInfo["7"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["8"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["9"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["x"]!, keyModel: keyModel, size: keySize)
+                Key(keyInfo: model.keyInfo["7"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["8"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["9"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["x"]!, model: model, size: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key(keyInfo: keyModel.keyInfo["4"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["5"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["6"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["-"]!, keyModel: keyModel, size: keySize)
+                Key(keyInfo: model.keyInfo["4"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["5"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["6"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["-"]!, model: model, size: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key(keyInfo: keyModel.keyInfo["1"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["2"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["3"]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["+"]!, keyModel: keyModel, size: keySize)
+                Key(keyInfo: model.keyInfo["1"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["2"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["3"]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["+"]!, model: model, size: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key(keyInfo: keyModel.keyInfo["0"]!, keyModel: keyModel, size: doubleKeySize)
-                Key(keyInfo: keyModel.keyInfo[","]!, keyModel: keyModel, size: keySize)
-                Key(keyInfo: keyModel.keyInfo["="]!, keyModel: keyModel, size: keySize)
+                Key(keyInfo: model.keyInfo["0"]!, model: model, size: doubleKeySize)
+                Key(keyInfo: model.keyInfo[","]!, model: model, size: keySize)
+                Key(keyInfo: model.keyInfo["="]!, model: model, size: keySize)
             }
         }
     }
@@ -54,7 +54,7 @@ struct NonScientificKeys: View {
 
 struct NonScientificKeys_Previews: PreviewProvider {
     static var previews: some View {
-        NonScientificKeys(keyModel: KeyModel(), spaceBetweenKeys: 10, size: CGSize(width: 250, height: 300))
+        NonScientificKeys(model: Model(), spaceBetweenKeys: 10, size: CGSize(width: 250, height: 300))
     }
 }
 
