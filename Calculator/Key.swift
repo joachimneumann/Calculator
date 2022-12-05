@@ -55,10 +55,10 @@ private struct OnTouchGestureModifier: ViewModifier {
                         if keyInfo.enabled {
                             if keyInfo.symbol == "plusKey" {
                                 withAnimation(.easeIn(duration: upTime)) {
-                                    model.keyDownCallback(keyInfo.symbol)
+                                    model.pressed(keyInfo.symbol)
                                 }
                             } else {
-                                model.keyDownCallback(keyInfo.symbol)
+                                model.pressed(keyInfo.symbol)
                             }
                         } /// disabled buttons do not work (but their background color is animated)
 
