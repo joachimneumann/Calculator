@@ -60,10 +60,9 @@ struct CalculatorApp: App {
                 /// make space for the icon
                 let singleLineFontSize = ((isPortrait ? 0.18 : 0.16) * keyboardSize.height).rounded()
                 let keyboardPaddingBottom = 0.0//isPortrait ? keyboardSize.height * 0.1 : 0.0
-                let displayXOffset = isPortrait ? 0.0 : oneKeyWidth * 0.7
-                let displayYOffset = isPortrait ? newHeight - keyboardSize.height - keyboardPaddingBottom - oneKeyheight * 1.2 : oneKeyheight * 0.00
-                let displayPaddingBottom = keyboardSize.height
-                let _ = (model.displayWidth = newWidth - displayXOffset)
+                let displayTrailingOffset = isPortrait ? 0.0 : oneKeyWidth * 0.7
+                let displayBottomOffset = isPortrait ? newHeight - keyboardSize.height - keyboardPaddingBottom - oneKeyheight * 1.2 : 0.00
+                let _ = (model.displayWidth = newWidth - displayTrailingOffset)
                 let _ = (model.lengthMeasurementResult =
                          lengthMeasurement(
                             size: CGSize(width: model.displayWidth, height: newHeight),
@@ -77,9 +76,8 @@ struct CalculatorApp: App {
                            keyboardSize: keyboardSize,
                            keyHeight: oneKeyheight,
                            singleLineFontSize: singleLineFontSize,
-                           displayXOffset: displayXOffset,
-                           displayYOffset: displayYOffset,
-                           displayPaddingBottom: displayPaddingBottom,
+                           displayTrailingOffset: displayTrailingOffset,
+                           displayBottomOffset: displayBottomOffset,
                            keyboardPaddingBottom: keyboardPaddingBottom)
 //                    .padding(.leading, leadingPadding)
 //                    .padding(.trailing, trailingPadding)

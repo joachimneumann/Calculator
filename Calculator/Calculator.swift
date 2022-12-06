@@ -16,9 +16,8 @@ struct Calculator: View {
     var keyboardSize: CGSize
     var keyHeight: CGFloat
     var singleLineFontSize: CGFloat
-    let displayXOffset: CGFloat
-    let displayYOffset: CGFloat
-    let displayPaddingBottom: CGFloat
+    let displayTrailingOffset: CGFloat
+    let displayBottomOffset: CGFloat
     let keyboardPaddingBottom: CGFloat
     @State private var orientation = UIDeviceOrientation.unknown
     
@@ -60,7 +59,7 @@ struct Calculator: View {
                                     isCopyingOrPasting: false,
                                     precisionString: "model.precision.useWords",
                                     displayWidth: model.displayWidth)
-                                .offset(x: -displayXOffset, y: displayYOffset)
+                                .offset(x: -displayTrailingOffset, y: displayBottomOffset)
                                 //                        .background(Color.green).opacity(0.4)
                                 .animation(Animation.easeInOut(duration: 0.4), value: model.zoomed)
                             }
@@ -71,32 +70,40 @@ struct Calculator: View {
                 }
             
                 .overlay() { /// Icons
+//                    AnimatedDots(color: .gray)
+
                     if !isPortrait {
                         HStack(spacing: 0.0) {
                             Spacer(minLength: 0.0)
                             let size = keyboardSize.height * 0.13
                             VStack(spacing: 0.0) {
-                                PlusKey(keyInfo: model.keyInfo["plusKey"]!, model: model, size: CGSize(width: size, height: size))
-                                    .padding(.top, size * 0.25)
-//                                    .offset(y: size * 0.25)
-                                if model.zoomed {
-                                    NavigationLink {
-                                        Settings(model: model, copyAndPastePurchased: .constant(true))
-                                    } label: {
-                                        Image(systemName: "switch.2")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .font(.system(size: keyboardSize.height, weight: .thin))
-                                            .frame(width: size, height: size)
-                                            .foregroundColor(Color(uiColor: UIColor(white: 0.9, alpha: 1.0)))
+                                if model.isCalculating {
+                                    AnimatedDots(color: .gray)
+                                        .padding(.top, size * 0.55)
+                                        .animation(Animation.easeInOut(duration: 0.4), value: model.zoomed)
+                                } else {
+                                    PlusKey(keyInfo: model.keyInfo["plusKey"]!, model: model, size: CGSize(width: size, height: size))
+                                        .padding(.top, size * 0.25)
+                                    //                                    .offset(y: size * 0.25)
+                                    if model.zoomed {
+                                        NavigationLink {
+                                            Settings(model: model, copyAndPastePurchased: .constant(true))
+                                        } label: {
+                                            Image(systemName: "switch.2")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .font(.system(size: keyboardSize.height, weight: .thin))
+                                                .frame(width: size, height: size)
+                                                .foregroundColor(Color(uiColor: UIColor(white: 0.9, alpha: 1.0)))
+                                        }
+                                        .padding(.top, size * 0.5)
+                                        Text("copy")
+                                            .foregroundColor(.white)
+                                            .padding(.top, size * 0.5)
+                                        Text("paste")
+                                            .foregroundColor(.white)
+                                            .padding(.top, size * 0.5)
                                     }
-                                    .padding(.top, size * 0.5)
-                                    Text("copy")
-                                        .foregroundColor(.white)
-                                        .padding(.top, size * 0.5)
-                                    Text("paste")
-                                        .foregroundColor(.white)
-                                        .padding(.top, size * 0.5)
                                 }
                                 Spacer(minLength: 0.0)
                             }
