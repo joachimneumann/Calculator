@@ -130,3 +130,27 @@ extension Int {
         return "\(self)"
     }
 }
+
+extension Double {
+    var asTime: String {
+        if self < 1e-6 {
+            return String(format: "%.1f microseconds", 1e6 * self)
+        }
+        if self < 1e-4 {
+            return String(format: "%.1f microseconds", 1e6 * self)
+        }
+        if self < 0.1 {
+            return String(format: "%.1f milliseconds", 1e3 * self)
+        }
+        if self < 0 {
+            return String(format: "%.3f seconds", self)
+        }
+        if self < 10 {
+            return String(format: "%.1f seconds", self)
+        }
+        if self < 60 {
+            return String(format: "%.0f seconds", self)
+        }
+        return String(format: "%.1f hours", self/3600.0)
+    }
+}

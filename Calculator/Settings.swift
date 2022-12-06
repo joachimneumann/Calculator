@@ -48,8 +48,8 @@ struct Settings: View {
     
     @State var outOfMemory = false
     @State private var dummyBoolean = true
-    @State private var runButtonText = "run"
-    @State private var speedTestResult = ""
+    private static let runButtonTextUnknown = "run"
+    @State private var runButtonText = runButtonTextUnknown
     private let MIN_PRECISION = 10
     private let MAX_PRECISION = 1000000000000 /// one trillion
     var body: some View {
@@ -63,6 +63,7 @@ struct Settings: View {
                         plusEnabled: !outOfMemory && model.precision < MAX_PRECISION,
                         minusEnabled: model.precision > MIN_PRECISION,
                         onIncrement: {
+                            runButtonText = Settings.runButtonTextUnknown
                             DispatchQueue.main.async {
                                 model.precision = increase(model.precision)
                                 nextIncrement = increase(model.precision)
@@ -71,6 +72,7 @@ struct Settings: View {
                         },
                         onDecrement: {
                             DispatchQueue.main.async {
+                                runButtonText = Settings.runButtonTextUnknown
                                 outOfMemory = false
                                 nextIncrement = 0
                                 model.precision = decrease(model.precision)
@@ -89,36 +91,47 @@ struct Settings: View {
                                 Text("(sorry, that all I got)")
                             }
                         }
-                        //                        if let speed = brain.speed {
-                        //                            if speed.precision == brain.precision {
-                        //                                Text("speed: \(speed.sqrt2Time)s \(speed.precision.useWords)")
-                        //                            }
-                        //                        }
                     }
                     Spacer()
                 }
                 .padding(.top, 40)
                 .padding(.bottom, 5)
                 Text("Note: to mitigate error accumulation calculations are executed with a precision of \(model.bits) bits - corresponding to \(Brain.internalPrecision(model.precision)) digits").italic()
-                    .padding(.bottom, 20)
+                    .padding(.bottom, 40)
                 HStack {
-                    Text("Test the speed of sqrt(2)")
+                    Text("Time to caclulate sin(")
+                    let h = 50.0
+                    Label(keyInfo: model.keyInfo["√"]!, height: h)
+                        .frame(width: h, height: h)
+                        .offset(x: -17.0)
+                    Text("):")
+                        .padding(.leading, -37.0)
+//                    Button("xx", action: {  } )
+//                                        .font(.largeTitle)
+//                                        .frame(width: 36, height: 86, alignment: .center)
+
                     Button {
                         runButtonText = " ... "
-                            Task {
-                                speedTestResult = "\(model.speedTest(precision: model.precision))"
-                                runButtonText = "run"
+                        Task {
+                            let result = await model.speedTest(precision: model.precision)
+                            DispatchQueue.main.async {
+                                runButtonText = result.asTime
                             }
                         }
-                        label: {
-                            Text(runButtonText)
-                                .frame(height: 10)
-                        }
-                        .buttonStyle(BuyButton())
-                        .disabled(runButtonText != "run")
-                    Text(speedTestResult)
+                    }
+                    label: {
+                        Text(runButtonText)
+                            .frame(width: 200, height: 40, alignment: .center)
+                    }
+                    .background(.gray)
+                    .foregroundColor(.white)
+                    .clipShape(Capsule())
+                    .disabled(runButtonText == " ... ")
+                    .animation(.easeIn, value: runButtonText)
+                    Spacer()
                 }
-                .padding(.bottom, 20)
+                .frame(height: 10)
+                .padding(.bottom, 40)
                 
                 HStack {
                     Text("Max length of display:")
