@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NumberStack: CustomDebugStringConvertible{
+struct NumberStack: CustomDebugStringConvertible {
     private var array: [Number] = []
 
     var count: Int {
@@ -19,13 +19,14 @@ struct NumberStack: CustomDebugStringConvertible{
         return array.last!
     }
     
-    mutating func changePrecision(to newPrecision: Int, newBits: Int) {
-//        for index in 0..<array.count {
-//            let old = array[index]
-//            let oldString = old.singleLine(withoutComma: newPrecision, withComma: newPrecision)
-//            let newGmp = Gmp(oldString, bits: newBits)
-//            array[index] = Number(newGmp)
-//        }
+    mutating func updateTo(precision newPrecision: Int, newBits: Int) {
+        for index in 0..<array.count {
+            let old = array[index]
+            let lengths = LengthMeasurementResult(withoutComma: newPrecision, withCommaNonScientific: newPrecision, withCommaScientific: newPrecision, ePadding: 0)
+            let oldString = old.multipleLines(lengths).asOneLine
+            let newGmp = Gmp(oldString, bits: newBits)
+            array[index] = Number(newGmp)
+        }
     }
 
     mutating func replaceLast(with number: Number) {

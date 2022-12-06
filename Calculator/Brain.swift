@@ -294,12 +294,14 @@ class Brain {
         }
     }
     
-    var precision: Int
+    private(set) var precision: Int
+    
     func setPrecision(_ newPrecision: Int) {
-        self.precision = newPrecision
-        self.bits = Int(Double(Brain.internalPrecision(newPrecision)) * 3.32192809489)
-        n.changePrecision(to: self.precision, newBits: self.bits)
+        precision = newPrecision
+        bits = Int(Double(Brain.internalPrecision(newPrecision)) * 3.32192809489)
+        n.updateTo(precision: precision, newBits: bits)
         speed = nil
+        haveResultCallback()
 //        Task {
 //            let speedResult =  await speedTest(testPrecision: newPrecision)
 //            DispatchQueue.main.async {

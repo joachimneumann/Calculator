@@ -47,7 +47,11 @@ class Model : ObservableObject {
 
     var lengthMeasurementResult = LengthMeasurementResult(withoutComma: 0, withCommaNonScientific: 0, withCommaScientific: 0, ePadding: 0)
     
-    @AppStorage("precision", store: .standard) var precision: Int = 100
+    @AppStorage("precision", store: .standard) var precision: Int = 100 {
+        didSet {
+            brain.setPrecision(precision)
+        }
+    }
     @AppStorage("longDisplayMax", store: .standard) var longDisplayMax: Int = 100
 
     init() {

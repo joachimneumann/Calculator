@@ -19,7 +19,7 @@ struct Settings: View {
     @Binding var copyAndPastePurchased: Bool
     @State var warning: String?
     
-    func decreasedPrecision(current: Int) -> Int {
+    func decrease(_ current: Int) -> Int {
         let asString = "\(current)"
         if asString.starts(with: "2") {
             return current / 2
@@ -29,7 +29,7 @@ struct Settings: View {
             return (current / 10) * 5
         }
     }
-    func increasedPrecision(current: Int) -> Int {
+    func increase(_ current: Int) -> Int {
         let asString = "\(current)"
         if asString.starts(with: "2") {
             return (current / 2) * 5
@@ -47,29 +47,33 @@ struct Settings: View {
     }
     
     @State var outOfMemory = false
-
+    private let MIN_PRECISION = 10
+    private let MAX_PRECISION = 1000000000000 /// one trillion
     var body: some View {
+        var nextIncrement: Int = 0
         ZStack {
             Color.black
             VStack(alignment: .leading, spacing: 0.0) {
                 HStack {
                     Text("Precision:")
                     ColoredStepper(
-                        plusEnabled: !outOfMemory,
-                        minusEnabled: model.precision > 10,
+                        plusEnabled: !outOfMemory && model.precision < MAX_PRECISION,
+                        minusEnabled: model.precision > MIN_PRECISION,
                         onIncrement: {
                             DispatchQueue.main.async {
-                                model.pressed("AC")
-                                model.precision = increasedPrecision(current: model.precision)
-                                let nextIncrement = increasedPrecision(current: model.precision)
+                                model.precision = increase(model.precision)
+                                nextIncrement = increase(model.precision)
                                 outOfMemory = outOfMemory(for: Brain.internalPrecision(nextIncrement))
                             }
                         },
                         onDecrement: {
                             DispatchQueue.main.async {
                                 outOfMemory = false
-                                model.pressed("AC")
-                                model.precision = decreasedPrecision(current: model.precision)
+                                nextIncrement = 0
+                                model.precision = decrease(model.precision)
+                                if model.longDisplayMax > model.precision {
+                                    model.longDisplayMax = model.precision
+                                }
                             }
                         })
                     .padding(.horizontal, 4)
@@ -77,6 +81,10 @@ struct Settings: View {
                         Text("\(model.precision.useWords) digits")
                         if outOfMemory {
                             Text("(memory limit reached)")
+                        } else {
+                            if model.precision == MAX_PRECISION {
+                                Text("(sorry, that all I got)")
+                            }
                         }
 //                        if let speed = brain.speed {
 //                            if speed.precision == brain.precision {
@@ -88,22 +96,22 @@ struct Settings: View {
                 }
                 .padding(.top, 40)
                 .padding(.bottom, 5)
-                Text("The app calculates internally with \(model.bits) bits (corresponding to \(        Brain.internalPrecision(model.precision).useWords) digits) to mitigate error accumulation").italic()
+                Text("To mitigate error accumulation calculations are executed with a precision of \(model.bits) bits - corresponding to \(Brain.internalPrecision(model.precision)) digits").italic()
                     .padding(.bottom, 40)
 
                 HStack {
                     Text("Max length of display:")
                     ColoredStepper(
-                        plusEnabled: true,
-                        minusEnabled: model.precision > 10,
+                        plusEnabled: model.longDisplayMax < model.precision,
+                        minusEnabled: model.longDisplayMax > 10,
                         onIncrement: {
                             DispatchQueue.main.async {
-                                model.longDisplayMax = increasedPrecision(current: model.longDisplayMax)
+                                model.longDisplayMax = increase(model.longDisplayMax)
                             }
                         },
                         onDecrement: {
                             DispatchQueue.main.async {
-                                model.longDisplayMax = decreasedPrecision(current: model.longDisplayMax)
+                                model.longDisplayMax = decrease(model.longDisplayMax)
                             }
                         })
                     .padding(.horizontal, 4)

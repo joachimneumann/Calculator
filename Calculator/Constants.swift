@@ -94,23 +94,39 @@ extension Int {
         return remainder
     }
     var useWords: String {
-        let ret = "\(self)"
-        if ret.hasSuffix("000000000000") {
-            let remainder = String(ret.dropLast(12))
-            return remainderInWords(remainder) + " trillion"
+        let asString = "\(self)"
+        if asString.hasSuffix("000000000000") {
+            let remainder = String(asString.dropLast(12))
+            if remainder.count < 4 {
+                return remainderInWords(remainder) + " trillion"
+            } else {
+                return "\(self)"
+            }
         }
-        if ret.hasSuffix("000000000") {
-            let remainder = String(ret.dropLast(9))
-            return remainderInWords(remainder) + " billion"
+        if asString.hasSuffix("000000000") {
+            let remainder = String(asString.dropLast(9))
+            if remainder.count < 4 {
+                return remainderInWords(remainder) + " billion"
+            } else {
+                return "\(self)"
+            }
         }
-        if ret.hasSuffix("000000") {
-            let remainder = String(ret.dropLast(6))
-            return remainderInWords(remainder) + " million"
+        if asString.hasSuffix("000000") {
+            let remainder = String(asString.dropLast(6))
+            if remainder.count < 4 {
+                return remainderInWords(remainder) + " million"
+            } else {
+                return "\(self)"
+            }
         }
-        if ret.hasSuffix("000") {
-            let remainder = String(ret.dropLast(3))
-            return remainderInWords(remainder) + " thousand"
+        if asString.hasSuffix("000") {
+            let remainder = String(asString.dropLast(3))
+            if remainder.count < 4 {
+                return remainderInWords(remainder) + " thousand"
+            } else {
+                return "\(self)"
+            }
         }
-        return ret
+        return "\(self)"
     }
 }
