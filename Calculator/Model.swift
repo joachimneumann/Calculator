@@ -47,16 +47,27 @@ class Model : ObservableObject {
 
     var lengthMeasurementResult = LengthMeasurementResult(withoutComma: 0, withCommaNonScientific: 0, withCommaScientific: 0, ePadding: 0)
     
-    @AppStorage("precision", store: .standard) var precision: Int = 100 {
-        didSet {
-            print("precision -> \(precision)")
-        }
-    }
+    @AppStorage("precision", store: .standard) var precision: Int = 100
     @AppStorage("longDisplayMax", store: .standard) var longDisplayMax: Int = 100
     @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
  
+    // the update of the precision in brain can be slow.
+    // Therefore, I only want to do that when leaving the settings screen
     func updatePrecision() {
         brain.setPrecision(precision)
+    }
+
+    func speedTest(precision: Int) -> Double {
+        let testBrain = Brain()
+        testBrain.setPrecision(precision)
+
+        testBrain.nonWaitingOperation("AC")
+        print("testBrain.n.count \(testBrain.n.count)")
+        testBrain.nonWaitingOperation("Rand")
+
+        let timer = ParkBenchTimer()
+        testBrain.nonWaitingOperation("√")
+        return timer.stop()
     }
 
     init() {
@@ -161,6 +172,28 @@ class Model : ObservableObject {
                 zoomed.toggle()
         default:
                 brain.asyncOperation(s)
+        }
+    }
+}
+
+class ParkBenchTimer {
+    let startTime: CFAbsoluteTime
+    var endTime: CFAbsoluteTime?
+
+    init() {
+        print("ParkBenchTimer init()")
+        startTime = CFAbsoluteTimeGetCurrent()
+    }
+
+    func stop() -> Double {
+        endTime = CFAbsoluteTimeGetCurrent()
+        return duration!
+    }
+    var duration: CFAbsoluteTime? {
+        if let endTime = endTime {
+            return endTime - startTime
+        } else {
+            return nil
         }
     }
 }

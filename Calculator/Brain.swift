@@ -8,7 +8,7 @@
 import Foundation
 
 class Brain {
-    private var n = NumberStack()
+    var n = NumberStack()
     private var operatorStack = OperatorStack()
     var bits: Int = 1000
     var last: Number { n.last }
@@ -39,21 +39,6 @@ class Brain {
             }
         }
     }
-    
-//    private func speedTest(testPrecision: Int) async -> Speed {
-//        let testBrain = Brain(precision: testPrecision)
-//
-//        Task {
-//            testBrain.operation("AC")
-//            testBrain.operation("Rand")
-//
-//            let timer = ParkBenchTimer()
-//            testBrain.operation("√")
-//            let seconds = timer.stop()
-//            // print("The task took \(seconds) seconds. Percision \(precision)")
-//            return Speed(sqrt2Time: seconds, precision: testPrecision)
-//        }
-//    }
     
     static func internalPrecision(_ precision: Int) -> Int {
         if precision <= 500 {
@@ -275,11 +260,11 @@ class Brain {
     }
     
     func nonWaitingOperation(_ symbol: String) {
-        if !isCalculating {
-            self.isCalculating = true
+//        if !isCalculating {
+//            self.isCalculating = true
             operation(symbol)
-        }
-        self.isCalculating = false
+//        }
+//        self.isCalculating = false
     }
     
     func asyncOperation(_ symbol: String) {
@@ -299,52 +284,11 @@ class Brain {
         precision = newPrecision
         bits = Int(Double(Brain.internalPrecision(newPrecision)) * 3.32192809489)
         n.updateTo(precision: precision, newBits: bits)
-        speed = nil
         haveResultCallback()
-//        Task {
-//            let speedResult =  await speedTest(testPrecision: newPrecision)
-//            DispatchQueue.main.async {
-//                self.speed = speedResult
-//            }
-//        }
     }
     
     init() {
-        //print("brain init()")
-//        precision = initialPrecision
-//        bits = Int(Double(Brain.internalPrecision(initialPrecision)) * 3.32192809489)
-        Task {
-            operation("AC")
-        }
+        operation("AC")
     }
-    
-    struct Speed {
-        let sqrt2Time: Double
-        let precision: Int
-    }
-    
-    var speed: Speed?
-
-    class ParkBenchTimer {
-        let startTime: CFAbsoluteTime
-        var endTime: CFAbsoluteTime?
-
-        init() {
-            print("ParkBenchTimer init()")
-            startTime = CFAbsoluteTimeGetCurrent()
-        }
-
-        func stop() -> Double {
-            endTime = CFAbsoluteTimeGetCurrent()
-            return duration!
-        }
-        var duration: CFAbsoluteTime? {
-            if let endTime = endTime {
-                return endTime - startTime
-            } else {
-                return nil
-            }
-        }
-    }
-    
+            
 }

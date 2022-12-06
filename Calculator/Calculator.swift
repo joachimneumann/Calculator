@@ -131,10 +131,9 @@ struct Calculator: View {
                 }
                 .background(Color.black)
                 .onAppear() {
-                    model.updatePrecision()
-
-                    /// coming back from the settings screen
-                    model.haveResultCallback()
+                    /// executed when returning from the settings screen
+                    model.updatePrecision()    /// updates the precision in the NumberStack
+                    model.haveResultCallback() /// redraws the display
                 }
         }
     }

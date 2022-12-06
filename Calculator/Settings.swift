@@ -48,7 +48,8 @@ struct Settings: View {
     
     @State var outOfMemory = false
     @State private var dummyBoolean = true
-    
+    @State private var runButtonText = "run"
+    @State private var speedTestResult = ""
     private let MIN_PRECISION = 10
     private let MAX_PRECISION = 1000000000000 /// one trillion
     var body: some View {
@@ -88,19 +89,37 @@ struct Settings: View {
                                 Text("(sorry, that all I got)")
                             }
                         }
-//                        if let speed = brain.speed {
-//                            if speed.precision == brain.precision {
-//                                Text("speed: \(speed.sqrt2Time)s \(speed.precision.useWords)")
-//                            }
-//                        }
+                        //                        if let speed = brain.speed {
+                        //                            if speed.precision == brain.precision {
+                        //                                Text("speed: \(speed.sqrt2Time)s \(speed.precision.useWords)")
+                        //                            }
+                        //                        }
                     }
                     Spacer()
                 }
                 .padding(.top, 40)
                 .padding(.bottom, 5)
-                Text("To mitigate error accumulation calculations are executed with a precision of \(model.bits) bits - corresponding to \(Brain.internalPrecision(model.precision)) digits").italic()
-                    .padding(.bottom, 40)
-
+                Text("Note: to mitigate error accumulation calculations are executed with a precision of \(model.bits) bits - corresponding to \(Brain.internalPrecision(model.precision)) digits").italic()
+                    .padding(.bottom, 20)
+                HStack {
+                    Text("Test the speed of sqrt(2)")
+                    Button {
+                        runButtonText = " ... "
+                            Task {
+                                speedTestResult = "\(model.speedTest(precision: model.precision))"
+                                runButtonText = "run"
+                            }
+                        }
+                        label: {
+                            Text(runButtonText)
+                                .frame(height: 10)
+                        }
+                        .buttonStyle(BuyButton())
+                        .disabled(runButtonText != "run")
+                    Text(speedTestResult)
+                }
+                .padding(.bottom, 20)
+                
                 HStack {
                     Text("Max length of display:")
                     ColoredStepper(
@@ -119,7 +138,7 @@ struct Settings: View {
                     .padding(.horizontal, 4)
                     Text("\(model.longDisplayMax.useWords) digits")
                 }
-
+                
                 if copyAndPastePurchased {
                     Text("You have purchased Copy and Paste to import and export numbers with high precision.")
                 } else {
@@ -145,18 +164,18 @@ struct Settings: View {
                         .foregroundColor(Color.green)
                         .toggleStyle(
                             ColoredToggleStyle(onColor: Color(uiColor: UIColor(white: 0.6, alpha: 1.0)),
-                                                   offColor: Color(uiColor: UIColor(white: 0.3, alpha: 1.0)),
-                                                   thumbColor: .white))
-//                        .toggleStyle(SwitchToggleStyle(tint: .blue))
-//                        .toggleStyle(SwitchToggleStyle(tint: Color.gray))
+                                               offColor: Color(uiColor: UIColor(white: 0.3, alpha: 1.0)),
+                                               thumbColor: .white))
+                    //                        .toggleStyle(SwitchToggleStyle(tint: .blue))
+                    //                        .toggleStyle(SwitchToggleStyle(tint: Color.gray))
                         .frame(width: 70)
-//                        .background(Color.yellow)
+                    //                        .background(Color.yellow)
                     Spacer()
                 }
                 .padding(.top, 20)
                 Spacer()
             }
-//                        .background(Color.yellow)
+            //                        .background(Color.yellow)
             .foregroundColor(Color.white)
         }
         .onAppear() {
@@ -206,7 +225,6 @@ struct ColoredToggleStyle: ToggleStyle {
                             .shadow(radius: 1, x: 0, y: 1)
                             .padding(1.5)
                             .offset(x: configuration.isOn ? 10 : -10))
-                    .animation(Animation.easeInOut(duration: 0.1))
             }
         }
         .font(.title)
