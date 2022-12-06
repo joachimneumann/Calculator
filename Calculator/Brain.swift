@@ -10,7 +10,7 @@ import Foundation
 class Brain {
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
-    var bits: Int
+    var bits: Int = 1000
     var last: Number { n.last }
 
     var debugLastAsDouble: Double { n.last.gmp!.toDouble() }
@@ -293,7 +293,7 @@ class Brain {
         }
     }
     
-    private(set) var precision: Int
+    private(set) var precision: Int = 100
     
     func setPrecision(_ newPrecision: Int) {
         precision = newPrecision
@@ -309,10 +309,10 @@ class Brain {
 //        }
     }
     
-    init(precision initialPrecision: Int) {
+    init() {
         //print("brain init()")
-        precision = initialPrecision
-        bits = Int(Double(Brain.internalPrecision(initialPrecision)) * 3.32192809489)
+//        precision = initialPrecision
+//        bits = Int(Double(Brain.internalPrecision(initialPrecision)) * 3.32192809489)
         Task {
             operation("AC")
         }

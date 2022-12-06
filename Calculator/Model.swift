@@ -49,22 +49,18 @@ class Model : ObservableObject {
     
     @AppStorage("precision", store: .standard) var precision: Int = 100 {
         didSet {
-            brain.setPrecision(precision)
+            print("precision -> \(precision)")
         }
     }
-    @AppStorage("longDisplayMax", store: .standard) var longDisplayMax: Int = 100 {
-        didSet {
-            brain.setPrecision(precision)
-        }
-    }
-    @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false {
-        didSet {
-            brain.setPrecision(precision)
-        }
-    }
+    @AppStorage("longDisplayMax", store: .standard) var longDisplayMax: Int = 100
+    @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
  
+    func updatePrecision() {
+        brain.setPrecision(precision)
+    }
+
     init() {
-        brain = Brain(precision: 100)
+        brain = Brain()
         oneLineP = MultipleLiner(left: "0", abbreviated: false)
         for key in C.allKeys {
             keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))

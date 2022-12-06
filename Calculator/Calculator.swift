@@ -130,6 +130,12 @@ struct Calculator: View {
                     orientation = newOrientation
                 }
                 .background(Color.black)
+                .onAppear() {
+                    model.updatePrecision()
+
+                    /// coming back from the settings screen
+                    model.haveResultCallback()
+                }
         }
     }
 }
