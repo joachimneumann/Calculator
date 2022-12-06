@@ -52,8 +52,16 @@ class Model : ObservableObject {
             brain.setPrecision(precision)
         }
     }
-    @AppStorage("longDisplayMax", store: .standard) var longDisplayMax: Int = 100
-    @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
+    @AppStorage("longDisplayMax", store: .standard) var longDisplayMax: Int = 100 {
+        didSet {
+            brain.setPrecision(precision)
+        }
+    }
+    @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false {
+        didSet {
+            brain.setPrecision(precision)
+        }
+    }
  
     init() {
         brain = Brain(precision: 100)
