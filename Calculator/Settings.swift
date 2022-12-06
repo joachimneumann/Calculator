@@ -47,6 +47,8 @@ struct Settings: View {
     }
     
     @State var outOfMemory = false
+    @State private var dummyBoolean = true
+    
     private let MIN_PRECISION = 10
     private let MAX_PRECISION = 1000000000000 /// one trillion
     var body: some View {
@@ -78,7 +80,7 @@ struct Settings: View {
                         })
                     .padding(.horizontal, 4)
                     HStack {
-                        Text("\(model.precision.useWords) digits")
+                        Text("\(model.precision.useWords) significant digits")
                         if outOfMemory {
                             Text("(memory limit reached)")
                         } else {
@@ -137,9 +139,24 @@ struct Settings: View {
                     .padding(.bottom, 5)
                     Text("Copy and Paste allows you to import and export numbers with high precision. This feature is disabled in the free version.").italic()
                 }
+                HStack(spacing: 0.0) {
+                    Text("Force scientific display")
+                    Toggle("", isOn: model.$forceScientific)
+                        .foregroundColor(Color.green)
+                        .toggleStyle(
+                            ColoredToggleStyle(onColor: Color(uiColor: UIColor(white: 0.6, alpha: 1.0)),
+                                                   offColor: Color(uiColor: UIColor(white: 0.3, alpha: 1.0)),
+                                                   thumbColor: .white))
+//                        .toggleStyle(SwitchToggleStyle(tint: .blue))
+//                        .toggleStyle(SwitchToggleStyle(tint: Color.gray))
+                        .frame(width: 70)
+//                        .background(Color.yellow)
+                    Spacer()
+                }
+                .padding(.top, 20)
                 Spacer()
             }
-            //            .background(Color.yellow)
+//                        .background(Color.yellow)
             .foregroundColor(Color.white)
         }
         .onAppear() {
@@ -165,5 +182,34 @@ struct BuyButton: ButtonStyle {
 struct ControlCenter_Previews: PreviewProvider {
     static var previews: some View {
         Settings(model: Model(), copyAndPastePurchased: .constant(false))
+    }
+}
+
+struct ColoredToggleStyle: ToggleStyle {
+    var label = ""
+    var onColor = Color(UIColor.green)
+    var offColor = Color(UIColor.systemGray5)
+    var thumbColor = Color.white
+    
+    func makeBody(configuration: Self.Configuration) -> some View {
+        HStack {
+            Text(label)
+            Spacer()
+            Button(action: { configuration.isOn.toggle() } )
+            {
+                RoundedRectangle(cornerRadius: 16, style: .circular)
+                    .fill(configuration.isOn ? onColor : offColor)
+                    .frame(width: 50, height: 29)
+                    .overlay(
+                        Circle()
+                            .fill(thumbColor)
+                            .shadow(radius: 1, x: 0, y: 1)
+                            .padding(1.5)
+                            .offset(x: configuration.isOn ? 10 : -10))
+                    .animation(Animation.easeInOut(duration: 0.1))
+            }
+        }
+        .font(.title)
+        .padding(.horizontal)
     }
 }

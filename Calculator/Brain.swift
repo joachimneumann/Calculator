@@ -55,7 +55,6 @@ class Brain {
 //        }
 //    }
     
-    
     static func internalPrecision(_ precision: Int) -> Int {
         if precision <= 500 {
             return 1000

@@ -145,20 +145,22 @@ class Number: CustomDebugStringConvertible {
 //        return ret
 //    }
 
-    func multipleLines(_ lengthMeasurementResult: LengthMeasurementResult) -> MultipleLiner {
+    func multipleLines(_ lengthMeasurementResult: LengthMeasurementResult, forceScientific: Bool = false) -> MultipleLiner {
         var ret = MultipleLiner(left: "0", abbreviated: false)
         ret.abbreviated = false
-        if let s = str {
-            if s.contains(",") {
-                if s.count <= lengthMeasurementResult.withCommaNonScientific {
-                    ret.left = s
-                    return ret
-                }
-            } else {
-                /// no comma
-                if s.count <= lengthMeasurementResult.withoutComma {
-                    ret.left = s
-                    return ret
+        if !forceScientific {
+            if let s = str {
+                if s.contains(",") {
+                    if s.count <= lengthMeasurementResult.withCommaNonScientific {
+                        ret.left = s
+                        return ret
+                    }
+                } else {
+                    /// no comma
+                    if s.count <= lengthMeasurementResult.withoutComma {
+                        ret.left = s
+                        return ret
+                    }
                 }
             }
         }
@@ -179,7 +181,7 @@ class Number: CustomDebugStringConvertible {
             return ret
         }
         
-        if displayGmp.isZero {
+        if !forceScientific && displayGmp.isZero {
             ret.left = "0"
             return ret
         }
@@ -227,7 +229,7 @@ class Number: CustomDebugStringConvertible {
         }
 
         /// Can be displayed as Integer?
-        if mantissa.count <= exponent+1 && exponent+1 <= withoutComma { /// smaller than because of possible trailing zeroes in the integer
+        if !forceScientific && mantissa.count <= exponent+1 && exponent+1 <= withoutComma { /// smaller than because of possible trailing zeroes in the integer
             
             /// restore trailing zeros that have been removed
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
@@ -239,7 +241,7 @@ class Number: CustomDebugStringConvertible {
         }
         
         /// Is floating point XXX,xxx?
-        if exponent >= 0 {
+        if !forceScientific && exponent >= 0 {
             if exponent < withCommaNonScientific - 1 { /// is the comma visible in the first line and is there at least one digit after the comma?
                 var floatString = mantissa
                 let index = floatString.index(floatString.startIndex, offsetBy: exponent+1)
@@ -257,7 +259,7 @@ class Number: CustomDebugStringConvertible {
         }
         
         /// is floating point 0,xxxx
-        if exponent < 0 {
+        if !forceScientific && exponent < 0 {
             if -1 * exponent < withCommaNonScientific - 1 {
                 var floatString = mantissa
                 for _ in 0..<(-1*exponent - 1) {

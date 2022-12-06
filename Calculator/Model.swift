@@ -40,7 +40,7 @@ class Model : ObservableObject {
         let len = min(precision, longDisplayMax)
         let lengthMeasurementResult = LengthMeasurementResult(
             withoutComma: len, withCommaNonScientific: len, withCommaScientific: len, ePadding: 0)
-        return brain.last.multipleLines(lengthMeasurementResult)
+        return brain.last.multipleLines(lengthMeasurementResult, forceScientific: forceScientific)
     }
     
     var precisionDescription = "unknown"
@@ -53,7 +53,8 @@ class Model : ObservableObject {
         }
     }
     @AppStorage("longDisplayMax", store: .standard) var longDisplayMax: Int = 100
-
+    @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
+ 
     init() {
         brain = Brain(precision: 100)
         oneLineP = MultipleLiner(left: "0", abbreviated: false)
@@ -79,7 +80,7 @@ class Model : ObservableObject {
             }
         }
         DispatchQueue.main.async {
-            self.oneLineP = self.brain.last.multipleLines(self.lengthMeasurementResult)
+            self.oneLineP = self.brain.last.multipleLines(self.lengthMeasurementResult, forceScientific: self.forceScientific)
         }
     }
 
