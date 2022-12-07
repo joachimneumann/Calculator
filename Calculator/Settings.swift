@@ -50,8 +50,9 @@ struct Settings: View {
     @State private var dummyBoolean = true
     private static let runButtonTextUnknown = "run"
     @State private var runButtonText = runButtonTextUnknown
-    private let MIN_PRECISION = 10
-    private let MAX_PRECISION = 1000000000000 /// one trillion
+    private let MIN_PRECISION      = 10
+    private let MAX_PRECISION      = 1000000000000 /// one trillion
+    private let MAX_DISPLAY_LENGTH = 10000 // too long strings in Text() crash the app
     var body: some View {
         var nextIncrement: Int = 0
         ZStack {
@@ -136,7 +137,7 @@ struct Settings: View {
                 HStack {
                     Text("Max length of display:")
                     ColoredStepper(
-                        plusEnabled: model.longDisplayMax < model.precision,
+                        plusEnabled: model.longDisplayMax < model.precision && model.longDisplayMax < MAX_DISPLAY_LENGTH,
                         minusEnabled: model.longDisplayMax > 10,
                         onIncrement: {
                             DispatchQueue.main.async {
