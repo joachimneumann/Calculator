@@ -14,13 +14,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         return true
     }
     
-    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+//    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
 //        if AppDelegate.forceLandscape {
 //            return UIInterfaceOrientationMask.landscape
 //        } else {
-            return UIInterfaceOrientationMask.all
+//            return UIInterfaceOrientationMask.all
 //        }
-    }
+//    }
 }
 
 @main

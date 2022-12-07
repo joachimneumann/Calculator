@@ -123,7 +123,7 @@ struct Calculator: View {
                         KeysView(model: model, isScientific: !isPortrait, size: keyboardSize)
                     }
                     .transition(.move(edge: .bottom))
-                    .offset(y: model.zoomed ? size.height : 0)
+                    .offset(y: (model.zoomed && !isPortrait) ? size.height : 0)
                 }
                 .onRotate { newOrientation in
                     model.haveResultCallback()
