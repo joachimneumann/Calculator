@@ -77,6 +77,7 @@ struct Calculator: View {
                             Spacer(minLength: 0.0)
                             let size = keyboardSize.height * 0.13
                             VStack(spacing: 0.0) {
+                                let _ = print("model.isCalculating \(model.isCalculating)")
                                 if model.isCalculating {
                                     AnimatedDots(color: .gray)
                                         .padding(.top, size * 0.55)

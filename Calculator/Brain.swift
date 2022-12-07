@@ -20,7 +20,6 @@ class Brain {
 
     var haveResultCallback: () -> () = { }
     var pendingOperatorCallback: (String?) -> () = { _ in }
-    var isCalculatingCallback: (Bool) -> () = { _ in }
     var pendingOperator: String? {
         willSet {
             if pendingOperator != newValue {
@@ -31,13 +30,6 @@ class Brain {
     var memory: Gmp? = nil
     var nullNumber: Number {
         return Number("0", bits: bits)
-    }
-    var isCalculating: Bool = false {
-        willSet {
-            if isCalculating != newValue {
-                isCalculatingCallback(newValue)
-            }
-        }
     }
     
     static func internalPrecision(_ precision: Int) -> Int {
@@ -160,7 +152,7 @@ class Brain {
         }
     }
     
-    private func operation(_ symbol: String) {
+    func operation(_ symbol: String) {
         /// TODO: do the switch in CalculatorModel
         if symbol == "C" {
             if last.isNull {
@@ -257,25 +249,6 @@ class Brain {
             assert(false)
         }
         haveResultCallback()
-    }
-    
-    func nonWaitingOperation(_ symbol: String) {
-//        if !isCalculating {
-//            self.isCalculating = true
-            operation(symbol)
-//        }
-//        self.isCalculating = false
-    }
-    
-    func asyncOperation(_ symbol: String) {
-        Task {
-            if !isCalculating {
-                self.isCalculating = true
-                operation(symbol)
-                
-            }
-            self.isCalculating = false
-        }
     }
     
     private(set) var precision: Int = 100

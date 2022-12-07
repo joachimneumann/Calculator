@@ -22,6 +22,27 @@ class Model : ObservableObject {
     @Published var _rad = false
     @Published var _2ndActive = false
     @Published var isCalculating = false
+//    {
+//        didSet {
+//            for key in C.allKeys {
+//                if isCalculating {
+//                    enabledDict[key] = false
+//                } else {
+//                    if brain.isValidNumber {
+//                        enabledDict[key] = true
+//                    } else {
+//                        if C.requireValidNumber.contains(key) {
+//                            enabledDict[key] = false
+//                        } else {
+//                            enabledDict[key] = true
+//                        }
+//                    }
+//                    // check mr
+//                    enabledDict["mr"] = brain.memory != nil
+//                }
+//            }
+//        }
+//    }
     @Published var zoomed = false
 
     var bits: Int {
@@ -33,9 +54,8 @@ class Model : ObservableObject {
     @Published var keyInfo: [String: KeyInfo] = [:]
     var enabledDict: [String: Bool] = [:]
     var _AC = true
-    var _hasBeenReset = false
+    @Published var _hasBeenReset = false
     @Published var oneLineP: MultipleLiner
-
     var multipleLines: MultipleLiner {
         let len = min(precision, longDisplayMax)
         let lengthMeasurementResult = LengthMeasurementResult(
@@ -61,13 +81,13 @@ class Model : ObservableObject {
         let testBrain = Brain()
         testBrain.setPrecision(precision)
 
-        testBrain.nonWaitingOperation("AC")
+        testBrain.operation("AC")
         print("testBrain.n.count \(testBrain.n.count)")
-        testBrain.nonWaitingOperation("Rand")
+        testBrain.operation("Rand")
 
         let timer = ParkBenchTimer()
-        testBrain.nonWaitingOperation("√")
-        testBrain.nonWaitingOperation("sin")
+        testBrain.operation("√")
+        testBrain.operation("sin")
         return timer.stop()
     }
 
@@ -76,12 +96,12 @@ class Model : ObservableObject {
         oneLineP = MultipleLiner(left: "0", abbreviated: false)
         for key in C.allKeys {
             keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))
+            enabledDict[key] = true
         }
         brain.haveResultCallback = haveResultCallback
         brain.pendingOperatorCallback = pendingOperatorCallback
-        brain.isCalculatingCallback = isCalculatingCallback
 
-        isCalculatingCallback(false) // sets enabledDict
+        isCalculating = false // sets enabledDict
     }
     
     func haveResultCallback() {
@@ -128,54 +148,34 @@ class Model : ObservableObject {
         previous = op
     }
 
-    
-    func isCalculatingCallback(_ calculating: Bool) {
-        DispatchQueue.main.async { self.isCalculating = calculating }
-        /// print("enabled: \(!calculating)")
-        for key in C.allKeys {
-            if calculating {
-                enabledDict[key] = false
-            } else {
-                if brain.isValidNumber {
-                    enabledDict[key] = true
-                } else {
-                    if C.requireValidNumber.contains(key) {
-                        enabledDict[key] = false
-                    } else {
-                        enabledDict[key] = true
-                    }
-                }
-                // check mr
-                enabledDict["mr"] = brain.memory != nil
-            }
-        }
-    }
-    
-    
-    func pressed(_ symbol: String) {
-        let s = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(symbol) && !_rad ? symbol+"D" : symbol
-        
-        if s == "AC" {
-            _hasBeenReset.toggle()
-        } else {
-            _hasBeenReset = false
-        }
+    func pressed(_ _symbol: String) {
+        let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(_symbol) && !_rad ? _symbol+"D" : _symbol
 
-        switch s {
+        switch symbol {
+        case "AC":
+            _hasBeenReset.toggle()
         case "2nd":
             _2ndActive.toggle()
             self.keyInfo["2nd"]!.colors = _2ndActive ? C._2ndActiveColors : C._2ndColors
         case "Rad":
+            _hasBeenReset = false
             _rad = true
         case "Deg":
+            _hasBeenReset = false
             _rad = false
         case "plusKey":
                 zoomed.toggle()
         default:
-                brain.asyncOperation(s)
+            _hasBeenReset = false
+            Task {
+                DispatchQueue.main.async { self.isCalculating = true }
+                brain.operation(symbol)
+                DispatchQueue.main.async { self.isCalculating = false }
+            }
         }
     }
 }
+
 
 class ParkBenchTimer {
     let startTime: CFAbsoluteTime
