@@ -69,7 +69,8 @@ class Model : ObservableObject {
     @AppStorage("precision", store: .standard) var precision: Int = 100
     @AppStorage("longDisplayMax", store: .standard) var longDisplayMax: Int = 100
     @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
-    
+    @AppStorage("memoryValue", store: .standard) var memoryValue: String = ""
+
     // the update of the precision in brain can be slow.
     // Therefore, I only want to do that when leaving the settings screen
     func updatePrecision() {
@@ -100,7 +101,11 @@ class Model : ObservableObject {
         brain.haveResultCallback = haveResultCallback
         brain.pendingOperatorCallback = pendingOperatorCallback
         
-        isCalculating = false // sets enabledDict
+        brain.setPrecision(precision)
+        if memoryValue != "" {
+            brain.memory = Gmp(memoryValue, bits: bits)
+        }
+        isCalculating = false // sets enabledDict (after setting memory!)
     }
     
     func haveResultCallback() {
@@ -169,6 +174,18 @@ class Model : ObservableObject {
             Task {
                 DispatchQueue.main.async { self.isCalculating = true }
                 await asyncOperation(symbol)
+                if ["mc", "m+", "m-"].contains(symbol) {
+                    if let memory = brain.memory {
+                        let lengths = LengthMeasurementResult(withoutComma: precision, withCommaNonScientific: precision, withCommaScientific: precision, ePadding: 0)
+                        DispatchQueue.main.sync {
+                            memoryValue = Number(memory).multipleLines(lengths).asOneLine
+                        }
+                    } else {
+                        DispatchQueue.main.sync {
+                            memoryValue = ""
+                        }
+                    }
+                }
             }
         }
     }

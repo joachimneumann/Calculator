@@ -10,7 +10,7 @@ import Foundation
 class Brain {
     var n = NumberStack()
     private var operatorStack = OperatorStack()
-    var bits: Int = 1000
+    var bits: Int = 10
     var last: Number { n.last }
 
     var debugLastAsDouble: Double { n.last.gmp!.toDouble() }
