@@ -46,6 +46,9 @@ class Gmp: Equatable {
         mpfr_init2 (&mpfr, bits)
         mpfr_set_str (&mpfr, s1, 10, MPFR_RNDN)
     }
+    deinit {
+        mpfr_clear(&mpfr)
+    }
 
     func isValidGmpString(_ s: String) -> Bool {
         var temp_mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
