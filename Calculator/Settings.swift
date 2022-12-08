@@ -52,152 +52,155 @@ struct Settings: View {
     private let MIN_PRECISION      = 10
     private let MAX_PRECISION      = 1000000000000 /// one trillion
     private let MAX_DISPLAY_LENGTH = 10000 // too long strings in Text() crash the app
-
+    
     @ObservedObject var stopWatch = StopWatch()
-
+    
     var body: some View {
         var nextIncrement: Int = 0
-        ZStack {
-            Color.black
-            VStack(alignment: .leading, spacing: 0.0) {
-                HStack {
-                    Text("Precision:")
-                    ColoredStepper(
-                        plusEnabled: !stopWatch.isRunning && !outOfMemory && model.precision < MAX_PRECISION,
-                        minusEnabled: !stopWatch.isRunning && model.precision > MIN_PRECISION,
-                        onIncrement: {
-                            DispatchQueue.main.async {
-                                model.precision = increase(model.precision)
-                                nextIncrement = increase(model.precision)
-                                outOfMemory = outOfMemory(for: Brain.internalPrecision(nextIncrement))
-                            }
-                        },
-                        onDecrement: {
-                            DispatchQueue.main.async {
-                                outOfMemory = false
-                                nextIncrement = 0
-                                model.precision = decrease(model.precision)
-                                if model.longDisplayMax > model.precision {
-                                    model.longDisplayMax = model.precision
+        Rectangle()
+            .background(Color.black)
+            .overlay {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 0.0) {
+                        HStack {
+                            Text("Precision:")
+                            ColoredStepper(
+                                plusEnabled: !stopWatch.isRunning && !outOfMemory && model.precision < MAX_PRECISION,
+                                minusEnabled: !stopWatch.isRunning && model.precision > MIN_PRECISION,
+                                onIncrement: {
+                                    DispatchQueue.main.async {
+                                        model.precision = increase(model.precision)
+                                        nextIncrement = increase(model.precision)
+                                        outOfMemory = outOfMemory(for: Brain.internalPrecision(nextIncrement))
+                                    }
+                                },
+                                onDecrement: {
+                                    DispatchQueue.main.async {
+                                        outOfMemory = false
+                                        nextIncrement = 0
+                                        model.precision = decrease(model.precision)
+                                        if model.longDisplayMax > model.precision {
+                                            model.longDisplayMax = model.precision
+                                        }
+                                    }
+                                })
+                            .padding(.horizontal, 4)
+                            HStack {
+                                Text("\(model.precision.useWords) significant digits")
+                                if outOfMemory {
+                                    Text("(memory limit reached)")
+                                } else {
+                                    if model.precision == MAX_PRECISION {
+                                        Text("(sorry, that all I got)")
+                                    }
                                 }
                             }
-                        })
-                    .padding(.horizontal, 4)
-                    HStack {
-                        Text("\(model.precision.useWords) significant digits")
-                        if outOfMemory {
-                            Text("(memory limit reached)")
+                            Spacer()
+                        }
+                        .padding(.top, 40)
+                        .padding(.bottom, 5)
+                        Text("Note: to mitigate error accumulation calculations are executed with a precision of \(model.bits) bits - corresponding to \(Brain.internalPrecision(model.precision)) digits").italic()
+                            .padding(.bottom, 40)
+                        HStack {
+                            Text("Time to caclulate sin(")
+                            let h = 50.0
+                            Label(keyInfo: model.keyInfo["√"]!, height: h)
+                                .frame(width: h, height: h)
+                                .offset(x: -17.0)
+                            Text("):")
+                                .padding(.leading, -37.0)
+                            
+                            Button {
+                                if !stopWatch.isRunning {
+                                    self.stopWatch.start()
+                                    Task {
+                                        let result = await model.speedTest(precision: model.precision)
+                                        self.stopWatch.stop()
+                                        DispatchQueue.main.async {
+                                            measureButtonText = result.asTime
+                                        }
+                                    }
+                                }
+                            }
+                        label: {
+                            Text(stopWatch.isRunning && stopWatch.counter > 0 ? "\(stopWatch.counter)" : measureButtonText)
+                                .frame(width: 200, height: 40, alignment: .center)
+                        }
+                        .background(.gray)
+                        .foregroundColor(.white)
+                        .clipShape(Capsule())
+                        .disabled(stopWatch.isRunning)
+                        .animation(.easeIn(duration: 0.2), value: measureButtonText)
+                            Spacer()
+                        }
+                        .frame(height: 10)
+                        .padding(.bottom, 40)
+                        
+                        HStack {
+                            Text("Max length of display:")
+                            ColoredStepper(
+                                plusEnabled: !stopWatch.isRunning && model.longDisplayMax < model.precision && model.longDisplayMax < MAX_DISPLAY_LENGTH,
+                                minusEnabled: !stopWatch.isRunning && model.longDisplayMax > 10,
+                                onIncrement: {
+                                    DispatchQueue.main.async {
+                                        model.longDisplayMax = increase(model.longDisplayMax)
+                                    }
+                                },
+                                onDecrement: {
+                                    DispatchQueue.main.async {
+                                        model.longDisplayMax = decrease(model.longDisplayMax)
+                                    }
+                                })
+                            .padding(.horizontal, 4)
+                            Text("\(model.longDisplayMax.useWords) digits")
+                        }
+                        
+                        if copyAndPastePurchased {
+                            Text("You have purchased Copy and Paste to import and export numbers with high precision.")
                         } else {
-                            if model.precision == MAX_PRECISION {
-                                Text("(sorry, that all I got)")
-                            }
-                        }
-                    }
-                    Spacer()
-                }
-                .padding(.top, 40)
-                .padding(.bottom, 5)
-                Text("Note: to mitigate error accumulation calculations are executed with a precision of \(model.bits) bits - corresponding to \(Brain.internalPrecision(model.precision)) digits").italic()
-                    .padding(.bottom, 40)
-                HStack {
-                    Text("Time to caclulate sin(")
-                    let h = 50.0
-                    Label(keyInfo: model.keyInfo["√"]!, height: h)
-                        .frame(width: h, height: h)
-                        .offset(x: -17.0)
-                    Text("):")
-                        .padding(.leading, -37.0)
-
-                    Button {
-                        if !stopWatch.isRunning {
-                            self.stopWatch.start()
-                            Task {
-                                let result = await model.speedTest(precision: model.precision)
-                                self.stopWatch.stop()
-                                DispatchQueue.main.async {
-                                    measureButtonText = result.asTime
+                            HStack {
+                                Text("Purchase Copy and Paste")
+                                    .padding(.trailing, 20)
+                                Button {
+                                    copyAndPastePurchased = true
                                 }
+                            label: {
+                                Text("$0.99")
+                                    .frame(height: 10)
                             }
+                            .buttonStyle(BuyButton())
+                            }
+                            .padding(.top, 20)
+                            .padding(.bottom, 5)
+                            Text("Copy and Paste allows you to import and export numbers with high precision. This feature is disabled in the free version.").italic()
                         }
-                    }
-                    label: {
-                        Text(stopWatch.isRunning && stopWatch.counter > 0 ? "\(stopWatch.counter)" : measureButtonText)
-                            .frame(width: 200, height: 40, alignment: .center)
-                    }
-                    .background(.gray)
-                    .foregroundColor(.white)
-                    .clipShape(Capsule())
-                    .disabled(stopWatch.isRunning)
-                    .animation(.easeIn(duration: 0.2), value: measureButtonText)
-                    Spacer()
-                }
-                .frame(height: 10)
-                .padding(.bottom, 40)
-                
-                HStack {
-                    Text("Max length of display:")
-                    ColoredStepper(
-                        plusEnabled: !stopWatch.isRunning && model.longDisplayMax < model.precision && model.longDisplayMax < MAX_DISPLAY_LENGTH,
-                        minusEnabled: !stopWatch.isRunning && model.longDisplayMax > 10,
-                        onIncrement: {
-                            DispatchQueue.main.async {
-                                model.longDisplayMax = increase(model.longDisplayMax)
-                            }
-                        },
-                        onDecrement: {
-                            DispatchQueue.main.async {
-                                model.longDisplayMax = decrease(model.longDisplayMax)
-                            }
-                        })
-                    .padding(.horizontal, 4)
-                    Text("\(model.longDisplayMax.useWords) digits")
-                }
-                
-                if copyAndPastePurchased {
-                    Text("You have purchased Copy and Paste to import and export numbers with high precision.")
-                } else {
-                    HStack {
-                        Text("Purchase Copy and Paste")
-                            .padding(.trailing, 20)
-                        Button {
-                            copyAndPastePurchased = true
+                        HStack(spacing: 0.0) {
+                            Text("Force scientific display")
+                            Toggle("", isOn: model.$forceScientific)
+                                .foregroundColor(Color.green)
+                                .toggleStyle(
+                                    ColoredToggleStyle(onColor: Color(uiColor: UIColor(white: 0.6, alpha: 1.0)),
+                                                       offColor: Color(uiColor: UIColor(white: 0.3, alpha: 1.0)),
+                                                       thumbColor: .white))
+                            //                        .toggleStyle(SwitchToggleStyle(tint: .blue))
+                            //                        .toggleStyle(SwitchToggleStyle(tint: Color.gray))
+                                .frame(width: 70)
+                            //                        .background(Color.yellow)
+                            Spacer()
                         }
-                    label: {
-                        Text("$0.99")
-                            .frame(height: 10)
+                        .padding(.top, 20)
+                        Spacer()
                     }
-                    .buttonStyle(BuyButton())
-                    }
-                    .padding(.top, 20)
-                    .padding(.bottom, 5)
-                    Text("Copy and Paste allows you to import and export numbers with high precision. This feature is disabled in the free version.").italic()
-                }
-                HStack(spacing: 0.0) {
-                    Text("Force scientific display")
-                    Toggle("", isOn: model.$forceScientific)
-                        .foregroundColor(Color.green)
-                        .toggleStyle(
-                            ColoredToggleStyle(onColor: Color(uiColor: UIColor(white: 0.6, alpha: 1.0)),
-                                               offColor: Color(uiColor: UIColor(white: 0.3, alpha: 1.0)),
-                                               thumbColor: .white))
-                    //                        .toggleStyle(SwitchToggleStyle(tint: .blue))
-                    //                        .toggleStyle(SwitchToggleStyle(tint: Color.gray))
-                        .frame(width: 70)
                     //                        .background(Color.yellow)
-                    Spacer()
+                    .foregroundColor(Color.white)
                 }
-                .padding(.top, 20)
-                Spacer()
+                .onAppear() {
+                    AppDelegate.forceLandscape = true
+                }
+                .onDisappear() {
+                    AppDelegate.forceLandscape = false
+                }
             }
-            //                        .background(Color.yellow)
-            .foregroundColor(Color.white)
-        }
-        .onAppear() {
-            AppDelegate.forceLandscape = true
-        }
-        .onDisappear() {
-            AppDelegate.forceLandscape = false
-        }
     }
 }
 
