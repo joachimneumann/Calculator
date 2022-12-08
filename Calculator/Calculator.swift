@@ -137,6 +137,7 @@ struct Calculator: View {
                     model.haveResultCallback() /// redraws the display
                 }
         }
+        .accentColor(.white) // for the navigation back button
     }
 }
 
