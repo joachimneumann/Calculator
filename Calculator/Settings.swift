@@ -48,11 +48,13 @@ struct Settings: View {
     
     @State var outOfMemory = false
     @State private var dummyBoolean = true
-    private static let runButtonTextUnknown = "run"
-    @State private var runButtonText = runButtonTextUnknown
+    @State private var measureButtonText = "measure"
     private let MIN_PRECISION      = 10
     private let MAX_PRECISION      = 1000000000000 /// one trillion
     private let MAX_DISPLAY_LENGTH = 10000 // too long strings in Text() crash the app
+
+    @ObservedObject var stopWatch = StopWatch()
+
     var body: some View {
         var nextIncrement: Int = 0
         ZStack {
@@ -61,10 +63,9 @@ struct Settings: View {
                 HStack {
                     Text("Precision:")
                     ColoredStepper(
-                        plusEnabled: !outOfMemory && model.precision < MAX_PRECISION,
-                        minusEnabled: model.precision > MIN_PRECISION,
+                        plusEnabled: !stopWatch.isRunning && !outOfMemory && model.precision < MAX_PRECISION,
+                        minusEnabled: !stopWatch.isRunning && model.precision > MIN_PRECISION,
                         onIncrement: {
-                            runButtonText = Settings.runButtonTextUnknown
                             DispatchQueue.main.async {
                                 model.precision = increase(model.precision)
                                 nextIncrement = increase(model.precision)
@@ -73,7 +74,6 @@ struct Settings: View {
                         },
                         onDecrement: {
                             DispatchQueue.main.async {
-                                runButtonText = Settings.runButtonTextUnknown
                                 outOfMemory = false
                                 nextIncrement = 0
                                 model.precision = decrease(model.precision)
@@ -107,28 +107,28 @@ struct Settings: View {
                         .offset(x: -17.0)
                     Text("):")
                         .padding(.leading, -37.0)
-//                    Button("xx", action: {  } )
-//                                        .font(.largeTitle)
-//                                        .frame(width: 36, height: 86, alignment: .center)
 
                     Button {
-                        runButtonText = " ... "
-                        Task {
-                            let result = await model.speedTest(precision: model.precision)
-                            DispatchQueue.main.async {
-                                runButtonText = result.asTime
+                        if !stopWatch.isRunning {
+                            self.stopWatch.start()
+                            Task {
+                                let result = await model.speedTest(precision: model.precision)
+                                self.stopWatch.stop()
+                                DispatchQueue.main.async {
+                                    measureButtonText = result.asTime
+                                }
                             }
                         }
                     }
                     label: {
-                        Text(runButtonText)
+                        Text(stopWatch.isRunning && stopWatch.counter > 0 ? "\(stopWatch.counter)" : measureButtonText)
                             .frame(width: 200, height: 40, alignment: .center)
                     }
                     .background(.gray)
                     .foregroundColor(.white)
                     .clipShape(Capsule())
-                    .disabled(runButtonText == " ... ")
-                    .animation(.easeIn, value: runButtonText)
+                    .disabled(stopWatch.isRunning)
+                    .animation(.easeIn(duration: 0.2), value: measureButtonText)
                     Spacer()
                 }
                 .frame(height: 10)
@@ -137,8 +137,8 @@ struct Settings: View {
                 HStack {
                     Text("Max length of display:")
                     ColoredStepper(
-                        plusEnabled: model.longDisplayMax < model.precision && model.longDisplayMax < MAX_DISPLAY_LENGTH,
-                        minusEnabled: model.longDisplayMax > 10,
+                        plusEnabled: !stopWatch.isRunning && model.longDisplayMax < model.precision && model.longDisplayMax < MAX_DISPLAY_LENGTH,
+                        minusEnabled: !stopWatch.isRunning && model.longDisplayMax > 10,
                         onIncrement: {
                             DispatchQueue.main.async {
                                 model.longDisplayMax = increase(model.longDisplayMax)
@@ -198,6 +198,31 @@ struct Settings: View {
         .onDisappear() {
             AppDelegate.forceLandscape = false
         }
+    }
+}
+
+class StopWatch: ObservableObject {
+    @Published var counter: Int = 0
+    @Published var isRunning = false
+    var timer = Timer()
+    
+    func start() {
+        counter = 0
+        timer = Timer.scheduledTimer(
+            withTimeInterval: 1.0,
+            repeats: true) { _ in
+                self.counter += 1
+            }
+        isRunning = true
+    }
+    func stop() {
+        timer.invalidate()
+        isRunning = false
+    }
+    func reset() {
+        timer.invalidate()
+        counter = 0
+        isRunning = false
     }
 }
 

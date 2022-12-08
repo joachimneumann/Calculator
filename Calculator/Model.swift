@@ -21,34 +21,33 @@ class Model : ObservableObject {
     
     @Published var _rad = false
     @Published var _2ndActive = false
-    @Published var isCalculating = false
-//    {
-//        didSet {
-//            for key in C.allKeys {
-//                if isCalculating {
-//                    enabledDict[key] = false
-//                } else {
-//                    if brain.isValidNumber {
-//                        enabledDict[key] = true
-//                    } else {
-//                        if C.requireValidNumber.contains(key) {
-//                            enabledDict[key] = false
-//                        } else {
-//                            enabledDict[key] = true
-//                        }
-//                    }
-//                    // check mr
-//                    enabledDict["mr"] = brain.memory != nil
-//                }
-//            }
-//        }
-//    }
+    @Published var isCalculating = false {
+        didSet {
+            for key in C.allKeys {
+                if isCalculating {
+                    enabledDict[key] = false
+                } else {
+                    if brain.isValidNumber {
+                        enabledDict[key] = true
+                    } else {
+                        if C.requireValidNumber.contains(key) {
+                            enabledDict[key] = false
+                        } else {
+                            enabledDict[key] = true
+                        }
+                    }
+                    // check mr
+                    enabledDict["mr"] = brain.memory != nil
+                }
+            }
+        }
+    }
     @Published var zoomed = false
-
+    
     var bits: Int {
         brain.bits
     }
-
+    
     
     private let brain: Brain
     @Published var keyInfo: [String: KeyInfo] = [:]
@@ -64,33 +63,33 @@ class Model : ObservableObject {
     }
     
     var precisionDescription = "unknown"
-
+    
     var lengthMeasurementResult = LengthMeasurementResult(withoutComma: 0, withCommaNonScientific: 0, withCommaScientific: 0, ePadding: 0)
     
     @AppStorage("precision", store: .standard) var precision: Int = 100
     @AppStorage("longDisplayMax", store: .standard) var longDisplayMax: Int = 100
     @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
- 
+    
     // the update of the precision in brain can be slow.
     // Therefore, I only want to do that when leaving the settings screen
     func updatePrecision() {
         brain.setPrecision(precision)
     }
-
+    
     func speedTest(precision: Int) async -> Double {
         let testBrain = Brain()
         testBrain.setPrecision(precision)
-
+        
         testBrain.operation("AC")
         print("testBrain.n.count \(testBrain.n.count)")
         testBrain.operation("Rand")
-
+        
         let timer = ParkBenchTimer()
         testBrain.operation("√")
         testBrain.operation("sin")
         return timer.stop()
     }
-
+    
     init() {
         brain = Brain()
         oneLineP = MultipleLiner(left: "0", abbreviated: false)
@@ -100,7 +99,7 @@ class Model : ObservableObject {
         }
         brain.haveResultCallback = haveResultCallback
         brain.pendingOperatorCallback = pendingOperatorCallback
-
+        
         isCalculating = false // sets enabledDict
     }
     
@@ -119,11 +118,11 @@ class Model : ObservableObject {
             self.oneLineP = self.brain.last.multipleLines(self.lengthMeasurementResult, forceScientific: self.forceScientific)
         }
     }
-
+    
     private var previous: String? = nil
     func pendingOperatorCallback(op: String?) {
         /// In the brain, we have already asserted that the new op is different from previous
-
+        
         /// Set the previous one back to normal?
         if let previous = previous {
             DispatchQueue.main.async {
@@ -134,7 +133,7 @@ class Model : ObservableObject {
                 }
             }
         }
-
+        
         /// Set the colors for the pending operation key
         if let op = op {
             DispatchQueue.main.async {
@@ -147,10 +146,10 @@ class Model : ObservableObject {
         }
         previous = op
     }
-
+    
     func pressed(_ _symbol: String) {
         let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(_symbol) && !_rad ? _symbol+"D" : _symbol
-
+        
         switch symbol {
         case "AC":
             _hasBeenReset.toggle()
@@ -164,17 +163,23 @@ class Model : ObservableObject {
             _hasBeenReset = false
             _rad = false
         case "plusKey":
-                zoomed.toggle()
+            zoomed.toggle()
         default:
             _hasBeenReset = false
             Task {
                 DispatchQueue.main.async { self.isCalculating = true }
-                brain.operation(symbol)
-                DispatchQueue.main.async { self.isCalculating = false }
+                await asyncOperation(symbol)
             }
         }
     }
+    
+    func asyncOperation(_ symbol: String) async {
+        brain.operation(symbol)
+        DispatchQueue.main.async { self.isCalculating = false }
+    }
+    
 }
+
 
 
 class ParkBenchTimer {
