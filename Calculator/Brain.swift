@@ -262,6 +262,61 @@ class Brain {
     
     init() {
         operation("AC")
+//        var precision = 3200*1024*1024
+//        var x = Gmp("0", bits: 100)
+//        while true {
+//            let internalPrecision = Double(Brain.internalPrecision(precision))
+//            let bits = Int(internalPrecision * 3.32192809489)
+//
+//            var used_megabytes: Int = 0
+//            var total_bytes = Float(ProcessInfo.processInfo.physicalMemory)
+//            var total_megabytes = Int(round(total_bytes / 1024.0 / 1024.0))
+//            var info = mach_task_basic_info()
+//            var count = mach_msg_type_number_t(MemoryLayout<mach_task_basic_info>.size)/4
+//            var kerr: kern_return_t = withUnsafeMutablePointer(to: &info) {
+//                $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
+//                    task_info(
+//                        mach_task_self_,
+//                        task_flavor_t(MACH_TASK_BASIC_INFO),
+//                        $0,
+//                        &count
+//                    )
+//                }
+//            }
+//            if kerr == KERN_SUCCESS {
+//                let used_bytes: Float = Float(info.resident_size)
+//                used_megabytes = Int(round(used_bytes / 1024.0 / 1024.0))
+//            }
+//        
+//            print("")
+//            print("\(total_megabytes) total_megabytes ")
+//            print("\(used_megabytes) used_megabytes ")
+//            print("\(Int(round(Double(bits) / 1024.0 / 1024.0))) Mbits")
+//            print("\(Int(Double(precision) / 1024.0 / 1024.0)) Mprecision")
+//            x = Gmp("0", bits: bits)
+//            x.rand()
+//            used_megabytes = 0
+//            total_bytes = Float(ProcessInfo.processInfo.physicalMemory)
+//            total_megabytes = Int(round(total_bytes / 1024.0 / 1024.0))
+//            info = mach_task_basic_info()
+//            count = mach_msg_type_number_t(MemoryLayout<mach_task_basic_info>.size)/4
+//            kerr = withUnsafeMutablePointer(to: &info) {
+//                $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
+//                    task_info(
+//                        mach_task_self_,
+//                        task_flavor_t(MACH_TASK_BASIC_INFO),
+//                        $0,
+//                        &count
+//                    )
+//                }
+//            }
+//            if kerr == KERN_SUCCESS {
+//                let used_bytes: Float = Float(info.resident_size)
+//                used_megabytes = Int(round(used_bytes / 1024.0 / 1024.0))
+//            }
+//            print("\(used_megabytes) used_megabytes (after)")
+//            precision += 200*1024*1024
+//        }
     }
             
 }

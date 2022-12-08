@@ -40,23 +40,20 @@ struct Settings: View {
         }
     }
     
-    func outOfMemory(for precision: Int) -> Bool {
-        let estimatedSizeOfNumberInBytes = 3*precision // TODO: improve this estimate
-        let estimatedsNumberOfNumbers = 10
-        return !testMemory(size: estimatedSizeOfNumberInBytes * estimatedsNumberOfNumbers)
-    }
+//    func outOfMemory(for precision: Int) -> Bool {
+//        let estimatedSizeOfNumberInBytes = 3*precision // TODO: improve this estimate
+//        let estimatedsNumberOfNumbers = 10
+//        return !testMemory(size: estimatedSizeOfNumberInBytes * estimatedsNumberOfNumbers)
+//    }
     
-    @State var outOfMemory = false
     @State private var dummyBoolean = true
     @State private var measureButtonText = "measure"
     private let MIN_PRECISION      = 10
-    private let MAX_PRECISION      = 1000000000000 /// one trillion
     private let MAX_DISPLAY_LENGTH = 10000 // too long strings in Text() crash the app
-    
+    private let PHYSICAL_MEMORY = Double(ProcessInfo.processInfo.physicalMemory)
     @ObservedObject var stopWatch = StopWatch()
     
     var body: some View {
-        var nextIncrement: Int = 0
         Rectangle()
             .background(Color.black)
             .overlay {
@@ -65,19 +62,15 @@ struct Settings: View {
                         HStack {
                             Text("Precision:")
                             ColoredStepper(
-                                plusEnabled: !stopWatch.isRunning && !outOfMemory && model.precision < MAX_PRECISION,
+                                plusEnabled: !stopWatch.isRunning && Double(model.precision) < PHYSICAL_MEMORY * 0.1,
                                 minusEnabled: !stopWatch.isRunning && model.precision > MIN_PRECISION,
                                 onIncrement: {
                                     DispatchQueue.main.async {
                                         model.precision = increase(model.precision)
-                                        nextIncrement = increase(model.precision)
-                                        outOfMemory = outOfMemory(for: Brain.internalPrecision(nextIncrement))
                                     }
                                 },
                                 onDecrement: {
                                     DispatchQueue.main.async {
-                                        outOfMemory = false
-                                        nextIncrement = 0
                                         model.precision = decrease(model.precision)
                                         if model.longDisplayMax > model.precision {
                                             model.longDisplayMax = model.precision
@@ -87,12 +80,8 @@ struct Settings: View {
                             .padding(.horizontal, 4)
                             HStack {
                                 Text("\(model.precision.useWords) significant digits")
-                                if outOfMemory {
+                                if Double(model.precision) >= PHYSICAL_MEMORY * 0.1 {
                                     Text("(memory limit reached)")
-                                } else {
-                                    if model.precision == MAX_PRECISION {
-                                        Text("(sorry, that all I got)")
-                                    }
                                 }
                             }
                             Spacer()
@@ -114,6 +103,9 @@ struct Settings: View {
                                 if !stopWatch.isRunning {
                                     self.stopWatch.start()
                                     Task {
+                                        DispatchQueue.main.async {
+                                            measureButtonText = ""
+                                        }
                                         let result = await model.speedTest(precision: model.precision)
                                         self.stopWatch.stop()
                                         DispatchQueue.main.async {
