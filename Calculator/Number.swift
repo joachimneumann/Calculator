@@ -184,7 +184,7 @@ class Number: CustomDebugStringConvertible {
             return ret
         }
         
-        let res = displayGmp.str(len: lengthMeasurementResult.withCommaNonScientific)
+        let res = displayGmp.mantissaExponent(len: lengthMeasurementResult.withCommaNonScientific)
 
         var mantissa = res.mantissa
         var exponent = res.exponent
