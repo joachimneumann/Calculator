@@ -27,11 +27,10 @@ struct NumberStack: CustomDebugStringConvertible {
             withCommaNonScientific: stringPrecision,
             withCommaScientific: stringPrecision,
             ePadding: 0)
-        let newBits = Brain.bits(for: Brain.internalPrecision(newPrecision))
         for index in 0..<array.count {
             let old = array[index]
             let oldString = old.multipleLines(lengths).asOneLine
-            let newGmp = Gmp(oldString, bits: newBits)
+            let newGmp = Gmp(oldString, precision: newPrecision)
             array[index] = Number(newGmp)
         }
     }

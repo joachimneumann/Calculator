@@ -18,7 +18,7 @@ struct MultipleLiner {
 }
 
 class Number: CustomDebugStringConvertible {
-    private var _bits: Int
+    private var _precision: Int = 0
     private var _str: String?
     private var _gmp: Gmp?
     
@@ -48,14 +48,14 @@ class Number: CustomDebugStringConvertible {
     }
     func copy() -> Number {
         if isStr {
-            return Number(str!, bits: _bits)
+            return Number(str!, precision: _precision)
         } else {
             return Number(gmp!.copy())
         }
     }
     func toGmp() {
         if isStr {
-            _gmp = Gmp(str!, bits: _bits)
+            _gmp = Gmp(str!, precision: _precision)
             _str = nil
         }
     }
@@ -69,23 +69,21 @@ class Number: CustomDebugStringConvertible {
         _gmp!.inPlace(op: op)
     }
     
-    init(_ str: String, bits: Int) {
+    init(_ str: String, precision: Int) {
         //print("Number init()")
         _str = str
         _gmp = nil
-        _bits = bits
+        _precision = precision
     }
     init(_ gmp: Gmp) {
         //print("Number init()")
         _str = nil
         _gmp = gmp
-        _bits = gmp.bits
     }
     fileprivate init() {
         //print("Number init()")
         _str = nil
         _gmp = nil
-        _bits = 0
     }
 
     func appendZero()  {
@@ -170,7 +168,7 @@ class Number: CustomDebugStringConvertible {
         if gmp != nil {
             displayGmp = gmp!
         } else {
-            displayGmp = Gmp(str!, bits: _bits)
+            displayGmp = Gmp(str!, precision: _precision)
         }
         if displayGmp.NaN {
             ret.left = "not a number"

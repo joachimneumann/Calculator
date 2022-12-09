@@ -36,46 +36,49 @@ class Gmp: Equatable {
     /// Swift requires me to initialize the mpfr_t struc
     /// I do this with zeros. The struct will be initialized correctly in mpfr_init2
     var mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
-
+    
     /// there is only ine initialzer that takes a string.
     /// Implementing an initializer that accepts a double which is created from a string leads to a loss of precision.
-    init(_ s: String, bits: Int) {
-        //print("Gmp init()")
+    convenience init(_ s: String, precision: Int) {
+        self.init(s, withBits: Gmp.bits(for: Gmp.internalPrecision(precision)))
+    }
+    init(_ s: String, withBits bits: Int) {
         self.bits = bits
         let s1 = s.replacingOccurrences(of: ",", with: ".")
         mpfr_init2 (&mpfr, bits)
         mpfr_set_str (&mpfr, s1, 10, MPFR_RNDN)
     }
+
     deinit {
         mpfr_clear(&mpfr)
     }
-
+    
     func isValidGmpString(_ s: String) -> Bool {
         var temp_mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
         mpfr_init2 (&temp_mpfr, self.bits)
         let s_dot = s.replacingOccurrences(of: ",", with: ".")
         return mpfr_set_str (&temp_mpfr, s_dot, 10, MPFR_RNDN) == 0
     }
-
-//    convenience init(_ s: String?) {
-//        if s == nil {
-//            assert(false)
-//        }
-//        self.init(s!)
-//    }
     
-//    convenience init() {
-//        self.init("0", bits: bits)
-//    }
+    //    convenience init(_ s: String?) {
+    //        if s == nil {
+    //            assert(false)
+    //        }
+    //        self.init(s!)
+    //    }
+    
+    //    convenience init() {
+    //        self.init("0", bits: bits)
+    //    }
     
     func copy() -> Gmp {
-        let ret = Gmp("0", bits: bits)
+        let ret = Gmp.init("0", withBits: bits)
         mpfr_set(&ret.mpfr, &mpfr, MPFR_RNDN)
         return ret
     }
     
     static var randstate: gmp_randstate_t? = nil
-
+    
     func isNull()       -> Bool { mpfr_cmp_d(&mpfr, 0.0) == 0 }
     func isNegtive()    -> Bool { mpfr_cmp_d(&mpfr, 0.0)  < 0 }
     
@@ -106,24 +109,24 @@ class Gmp: Equatable {
     func pow_e_x()    { mpfr_exp(  &mpfr, &mpfr, MPFR_RNDN) }
     func pow_10_x()   { mpfr_exp10(&mpfr, &mpfr, MPFR_RNDN) }
     func changeSign() { mpfr_neg(  &mpfr, &mpfr, MPFR_RNDN) }
-
+    
     static var deg2rad: Gmp? = nil
     static var rad2deg: Gmp? = nil
     static var rad_deg_bits: Int = 0
     
     static func assertConstants(bits: Int) {
         if bits != rad_deg_bits {
-            deg2rad = Gmp("0", bits: bits);
+            deg2rad = Gmp("0", withBits: bits);
             deg2rad!.π()
-            deg2rad!.div(other: Gmp("180", bits: bits))
-            Gmp.rad2deg = Gmp("0", bits: bits);
+            deg2rad!.div(other: Gmp("180", withBits: bits))
+            Gmp.rad2deg = Gmp("0", withBits: bits);
             Gmp.rad2deg!.π()
             Gmp.rad2deg!.rez()
-            Gmp.rad2deg!.mul(other: Gmp("180", bits: bits))
+            Gmp.rad2deg!.mul(other: Gmp("180", withBits: bits))
         }
         rad_deg_bits = bits
     }
-
+    
     func sinD()  { Gmp.assertConstants(bits: bits); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_sin(  &mpfr, &mpfr, MPFR_RNDN) }
     func cosD()  { Gmp.assertConstants(bits: bits); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_cos(  &mpfr, &mpfr, MPFR_RNDN) }
     func tanD()  { Gmp.assertConstants(bits: bits); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_tan(  &mpfr, &mpfr, MPFR_RNDN) }
@@ -135,10 +138,10 @@ class Gmp: Equatable {
         mpfr_const_pi(&mpfr, MPFR_RNDN)
     }
     func e() {
-        mpfr_exp( &mpfr, &Gmp("1.0", bits: bits).mpfr, MPFR_RNDN)
+        mpfr_exp( &mpfr, &Gmp("1.0", withBits: bits).mpfr, MPFR_RNDN)
         /// Note: mpfr_const_euler() returns 0.577..., not 2.718
     }
-
+    
     func rand() {
         if Gmp.randstate == nil {
             Gmp.randstate = gmp_randstate_t()
@@ -147,7 +150,7 @@ class Gmp: Equatable {
         }
         mpfr_urandom(&mpfr, &Gmp.randstate!, MPFR_RNDN)
     }
-
+    
     
     func pow_x_3()    { mpfr_pow_ui(&mpfr, &mpfr, 3, MPFR_RNDN) }
     func pow_2_x()    { mpfr_ui_pow(&mpfr, 2, &mpfr, MPFR_RNDN) }
@@ -169,7 +172,7 @@ class Gmp: Equatable {
     }
     func mul (other: Gmp) { mpfr_mul(&mpfr, &mpfr, &other.mpfr, MPFR_RNDN) }
     func div (other: Gmp) { mpfr_div(&mpfr, &mpfr, &other.mpfr, MPFR_RNDN) }
-
+    
     func pow_x_y(exponent: Gmp) { mpfr_pow(&mpfr, &mpfr, &exponent.mpfr, MPFR_RNDN) }
     func pow_y_x(base: Gmp)     { mpfr_pow(&mpfr, &base.mpfr, &mpfr, MPFR_RNDN) }
     func sqrty(exponent: Gmp)   { exponent.rez(); pow_x_y(exponent: exponent) }
@@ -211,46 +214,21 @@ class Gmp: Equatable {
         mpfr_zero_p(&mpfr) != 0
     }
     
-//    struct Data {
-//        let mantissa: String
-//        let exponent: Int
-//        let negative: Bool
-//    }
-//    
-//    func data(_ length: Int) -> Data {
-//        var exponent: mpfr_exp_t = 0
-//        var charArray: Array<CChar> = Array(repeating: 0, count: length+5)
-//        //print("data 11")
-//        mpfr_get_str(&charArray, &exponent, 10, length+5, &mpfr, MPFR_RNDN)
-//        //print("data 12")
-//        var negative: Bool
-//        if charArray[0] == 45 {
-//            charArray.removeFirst()
-//            negative = true
-//        } else {
-//            negative = false
-//        }
-//        
-//        var mantissa = ""
-//        for c in charArray {
-//            if c != 0 {
-//                let x1 = UInt8(c)
-//                let x2 = UnicodeScalar(x1)
-//                let x3 = String(x2)
-//                mantissa += x3.withCString { String(format: "%s", $0) }
-//            }
-//        }
-//        while mantissa.last == "0" {
-//            mantissa.removeLast()
-//        }
-//        
-//        if mantissa == "" {
-//            mantissa = "0"
-//        } else {
-//            exponent = exponent - 1
-//        }
-//        /// prefix(length-1) because of the comma. I want to return length digits
-//        return Data(mantissa: String(mantissa.prefix(length-1)), exponent: exponent, negative: negative)
-//    }
-//    
+    static func internalPrecision(_ precision: Int) -> Int {
+        if precision <= 500 {
+            return 1000
+        } else if precision <= 10000 {
+            return 2 * precision
+        } else if precision <= 100000 {
+            return Int(round(1.5*Double(precision)))
+        } else {
+            return precision + 50000
+        }
+    }
+    static func bits(for precision: Int) -> Int {
+        Int(Double(precision) * 3.32192809489)
+    }
+
+    
 }
+

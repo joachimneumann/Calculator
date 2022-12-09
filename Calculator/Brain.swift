@@ -10,7 +10,8 @@ import Foundation
 class Brain {
     var n = NumberStack()
     private var operatorStack = OperatorStack()
-    var bits: Int = 10
+    private(set) var precision: Int = 0
+    
     var last: Number { n.last }
 
     var debugLastAsDouble: Double { n.last.gmp!.toDouble() }
@@ -27,31 +28,17 @@ class Brain {
             }
         }
     }
+        
     var memory: Gmp? = nil
     var nullNumber: Number {
-        return Number("0", bits: bits)
+        return Number("0", precision: precision)
     }
-    
-    static func internalPrecision(_ precision: Int) -> Int {
-        if precision <= 500 {
-            return 1000
-        } else if precision <= 10000 {
-            return 2 * precision
-        } else if precision <= 100000 {
-            return Int(round(1.5*Double(precision)))
-        } else {
-            return precision + 50000
-        }
-    }
-    static func bits(for precision: Int) -> Int {
-        Int(Double(precision) * 3.32192809489)
-    }
-    
+        
     func number(_ s: String) -> Number {
-        return Number(s, bits: bits)
+        return Number(s, precision: precision)
     }
     func gmpNumber(_ s: String) -> Number {
-        return Number(Gmp(s, bits: bits))
+        return Number(Gmp(s, precision: precision))
     }
     let digitOperators: [String] = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     let constantOperators: Dictionary <String, Inplace> = [
@@ -253,8 +240,6 @@ class Brain {
         }
         haveResultCallback()
     }
-    
-    private(set) var precision: Int = 100
     
     func setPrecision(_ newPrecision: Int) {
         if newPrecision != precision {

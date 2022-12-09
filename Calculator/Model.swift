@@ -44,11 +44,6 @@ class Model : ObservableObject {
     }
     @Published var zoomed = false
     
-    var bits: Int {
-        brain.bits
-    }
-    
-    
     private let brain: Brain
     @Published var keyInfo: [String: KeyInfo] = [:]
     var enabledDict: [String: Bool] = [:]
@@ -103,7 +98,7 @@ class Model : ObservableObject {
         
         brain.setPrecision(precision)
         if memoryValue != "" {
-            brain.memory = Gmp(memoryValue, bits: bits)
+            brain.memory = Gmp(memoryValue, precision: precision)
         }
         isCalculating = false // sets enabledDict (after setting memory!)
     }

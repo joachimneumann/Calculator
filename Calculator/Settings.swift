@@ -88,7 +88,7 @@ struct Settings: View {
                         }
                         .padding(.top, 40)
                         .padding(.bottom, 5)
-                        Text("Note: to mitigate error accumulation calculations are executed with a precision of \(model.bits) bits - corresponding to \(Brain.internalPrecision(model.precision)) digits").italic()
+                        Text("Note: to mitigate error accumulation calculations are executed with a precision of \(Gmp.bits(for: Gmp.internalPrecision(model.precision))) bits - corresponding to \(Gmp.internalPrecision(model.precision)) digits").italic()
                             .padding(.bottom, 40)
                         HStack {
                             Text("Time to caclulate sin(")
