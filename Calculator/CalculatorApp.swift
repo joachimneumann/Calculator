@@ -9,7 +9,6 @@ import SwiftUI
 
 
 class AppDelegate: NSObject, UIApplicationDelegate {
-    static var forceLandscape = false
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         return true
     }
