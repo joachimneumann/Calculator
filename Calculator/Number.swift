@@ -184,24 +184,11 @@ class Number: CustomDebugStringConvertible {
             return ret
         }
         
-        var exponent: mpfr_exp_t = 0
-        var charArray: Array<CChar> = Array(repeating: 0, count: lengthMeasurementResult.withCommaNonScientific)
-        mpfr_get_str(&charArray, &exponent, 10, lengthMeasurementResult.withCommaNonScientific, &displayGmp.mpfr, MPFR_RNDN)
+        let res = displayGmp.str(len: lengthMeasurementResult.withCommaNonScientific)
 
-        var mantissa: String = ""
-        for c in charArray {
-            if c != 0 {
-                let x1 = UInt8(c)
-                let x2 = UnicodeScalar(x1)
-                let x3 = String(x2)
-                mantissa += x3.withCString { String(format: "%s", $0) }
-            }
-        }
-
-        while mantissa.last == "0" {
-            mantissa.removeLast()
-        }
-
+        var mantissa = res.mantissa
+        var exponent = res.exponent
+        
         if mantissa == "" {
             mantissa = "0"
         } else {
@@ -213,7 +200,7 @@ class Number: CustomDebugStringConvertible {
         let withCommaScientific: Int
         /// negative? Special treatment
         let isNegative: Bool
-        if mantissa[0] == "-" {
+        if mantissa.first == "-" {
             mantissa.removeFirst()
             isNegative = true
             withoutComma           = lengthMeasurementResult.withoutComma - 1

@@ -10,17 +10,6 @@
 
 import Foundation
 
-extension String {
-    
-    subscript (i: Int) -> Character {
-        return self[self.index(self.startIndex, offsetBy: i)]
-    }
-    
-    subscript (i: Int) -> String {
-        return String(self[i] as Character)
-    }
-}
-
 var globalUnsignedLongInt: CUnsignedLong = 0
 
 func testMemory(size: Int) -> Bool {
@@ -28,31 +17,30 @@ func testMemory(size: Int) -> Bool {
 }
 
 class Gmp: Equatable {
-    var bits: Int
-    static func == (lhs: Gmp, rhs: Gmp) -> Bool {
-        return mpfr_cmp(&lhs.mpfr, &rhs.mpfr) == 0
-    }
+    private var bits: Int
     
-    /// Swift requires me to initialize the mpfr_t struc
-    /// I do this with zeros. The struct will be initialized correctly in mpfr_init2
-    var mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
+    /// init with zeros. The struct will be initialized correctly in init() with mpfr_init2()
+    private var mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
     
     /// there is only ine initialzer that takes a string.
     /// Implementing an initializer that accepts a double which is created from a string leads to a loss of precision.
     convenience init(_ s: String, precision: Int) {
         self.init(s, withBits: Gmp.bits(for: precision))
     }
-    init(_ s: String, withBits bits: Int) {
+    private init(_ s: String, withBits bits: Int) {
         self.bits = bits
         let s1 = s.replacingOccurrences(of: ",", with: ".")
         mpfr_init2 (&mpfr, bits)
         mpfr_set_str (&mpfr, s1, 10, MPFR_RNDN)
     }
-
     deinit {
         mpfr_clear(&mpfr)
     }
     
+    static func == (lhs: Gmp, rhs: Gmp) -> Bool {
+        return mpfr_cmp(&lhs.mpfr, &rhs.mpfr) == 0
+    }
+
     func isValidGmpString(_ s: String) -> Bool {
         var temp_mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
         mpfr_init2 (&temp_mpfr, self.bits)
@@ -71,6 +59,34 @@ class Gmp: Equatable {
     //        self.init("0", bits: bits)
     //    }
     
+    struct MantissaExponent {
+        let mantissa: String
+        let exponent: Int
+    }
+    
+    func str(len: Int) -> MantissaExponent {
+        var exponent: mpfr_exp_t = 0
+
+        
+        var charArray: Array<CChar> = Array(repeating: 0, count: len)
+        mpfr_get_str(&charArray, &exponent, 10, len, &mpfr, MPFR_RNDN)
+        var mantissa: String = ""
+        for c in charArray {
+            if c != 0 {
+                let x1 = UInt8(c)
+                let x2 = UnicodeScalar(x1)
+                let x3 = String(x2)
+                mantissa += x3.withCString { String(format: "%s", $0) }
+            }
+        }
+        
+        var zeroCharacterSet = CharacterSet()
+        zeroCharacterSet.insert(charactersIn: "0")
+        mantissa = mantissa.trimmingCharacters(in: zeroCharacterSet)
+
+        return MantissaExponent(mantissa: mantissa, exponent: exponent)
+    }
+
     func copy() -> Gmp {
         let ret = Gmp.init("0", withBits: bits)
         mpfr_set(&ret.mpfr, &mpfr, MPFR_RNDN)
@@ -231,7 +247,6 @@ class Gmp: Equatable {
     static func precisionCorrespondingTo(bits: Int) -> Int {
         Int(Double(bits) / 3.32192809489)
     }
-
     
 }
 
