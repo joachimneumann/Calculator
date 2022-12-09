@@ -133,8 +133,13 @@ struct Calculator: View {
                 .background(Color.black)
                 .onAppear() {
                     /// executed when returning from the settings screen
-                    model.updatePrecision()    /// updates the precision in the NumberStack
-                    model.haveResultCallback() /// redraws the display
+                    Task {
+                        model.isCalculating = true
+                        await model.updatePrecision()    /// updates the precision in the NumberStack
+                        model.haveResultCallback() /// redraws the display
+                        model.isCalculating = false
+                        print("Calculator onAppear, updatePrecision done")
+                    }
                 }
         }
         .accentColor(.white) // for the navigation back button

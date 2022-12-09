@@ -20,10 +20,16 @@ struct NumberStack: CustomDebugStringConvertible {
         return array.last!
     }
     
-    mutating func updateTo(precision newPrecision: Int, newBits: Int) {
+    mutating func updatePrecision(from oldPrecision: Int, to newPrecision: Int) {
+        let stringPrecision = min(newPrecision, oldPrecision)
+        let lengths = LengthMeasurementResult(
+            withoutComma: stringPrecision,
+            withCommaNonScientific: stringPrecision,
+            withCommaScientific: stringPrecision,
+            ePadding: 0)
+        let newBits = Brain.bits(for: Brain.internalPrecision(newPrecision))
         for index in 0..<array.count {
             let old = array[index]
-            let lengths = LengthMeasurementResult(withoutComma: newPrecision, withCommaNonScientific: newPrecision, withCommaScientific: newPrecision, ePadding: 0)
             let oldString = old.multipleLines(lengths).asOneLine
             let newGmp = Gmp(oldString, bits: newBits)
             array[index] = Number(newGmp)

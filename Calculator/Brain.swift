@@ -43,6 +43,9 @@ class Brain {
             return precision + 50000
         }
     }
+    static func bits(for precision: Int) -> Int {
+        Int(Double(precision) * 3.32192809489)
+    }
     
     func number(_ s: String) -> Number {
         return Number(s, bits: bits)
@@ -254,10 +257,11 @@ class Brain {
     private(set) var precision: Int = 100
     
     func setPrecision(_ newPrecision: Int) {
-        precision = newPrecision
-        bits = Int(Double(Brain.internalPrecision(newPrecision)) * 3.32192809489)
-        n.updateTo(precision: precision, newBits: bits)
-        haveResultCallback()
+        if newPrecision != precision {
+            n.updatePrecision(from: precision, to: newPrecision)
+            precision = newPrecision
+            haveResultCallback()
+        }
     }
     
     init() {

@@ -73,7 +73,7 @@ class Model : ObservableObject {
 
     // the update of the precision in brain can be slow.
     // Therefore, I only want to do that when leaving the settings screen
-    func updatePrecision() {
+    func updatePrecision() async {
         brain.setPrecision(precision)
     }
     
