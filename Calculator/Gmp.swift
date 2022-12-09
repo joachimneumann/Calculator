@@ -40,7 +40,7 @@ class Gmp: Equatable {
     /// there is only ine initialzer that takes a string.
     /// Implementing an initializer that accepts a double which is created from a string leads to a loss of precision.
     convenience init(_ s: String, precision: Int) {
-        self.init(s, withBits: Gmp.bits(for: Gmp.internalPrecision(precision)))
+        self.init(s, withBits: Gmp.bits(for: precision))
     }
     init(_ s: String, withBits bits: Int) {
         self.bits = bits
@@ -214,19 +214,22 @@ class Gmp: Equatable {
         mpfr_zero_p(&mpfr) != 0
     }
     
-    static func internalPrecision(_ precision: Int) -> Int {
-        if precision <= 500 {
-            return 1000
-        } else if precision <= 10000 {
-            return 2 * precision
-        } else if precision <= 100000 {
-            return Int(round(1.5*Double(precision)))
-        } else {
-            return precision + 50000
-        }
-    }
     static func bits(for precision: Int) -> Int {
-        Int(Double(precision) * 3.32192809489)
+        let internalPrecision: Int
+        if precision <= 500 {
+            internalPrecision = 1000
+        } else if precision <= 10000 {
+            internalPrecision = 2 * precision
+        } else if precision <= 100000 {
+            internalPrecision = Int(round(1.5*Double(precision)))
+        } else {
+            internalPrecision = precision + 50000
+        }
+        return Int(Double(internalPrecision) * 3.32192809489)
+    }
+    
+    static func precisionCorrespondingTo(bits: Int) -> Int {
+        Int(Double(bits) / 3.32192809489)
     }
 
     

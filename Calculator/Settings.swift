@@ -54,6 +54,8 @@ struct Settings: View {
     @ObservedObject var stopWatch = StopWatch()
     
     var body: some View {
+        let bitsInfo = Gmp.bits(for: model.precision)
+        let internalPrecisionInfo = Gmp.precisionCorrespondingTo(bits: bitsInfo)
         Rectangle()
             .background(Color.black)
             .overlay {
@@ -88,7 +90,7 @@ struct Settings: View {
                         }
                         .padding(.top, 40)
                         .padding(.bottom, 5)
-                        Text("Note: to mitigate error accumulation calculations are executed with a precision of \(Gmp.bits(for: Gmp.internalPrecision(model.precision))) bits - corresponding to \(Gmp.internalPrecision(model.precision)) digits").italic()
+                        Text("Note: to mitigate error accumulation calculations are executed with a precision of \(bitsInfo) bits - corresponding to \(internalPrecisionInfo) digits").italic()
                             .padding(.bottom, 40)
                         HStack {
                             Text("Time to caclulate sin(")
