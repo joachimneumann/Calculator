@@ -64,9 +64,8 @@ class Gmp: Equatable {
         let exponent: Int
     }
     
-    func str(len: Int) -> MantissaExponent {
+    func mantissaExponent(len: Int) -> MantissaExponent {
         var exponent: mpfr_exp_t = 0
-
         
         var charArray: Array<CChar> = Array(repeating: 0, count: len)
         mpfr_get_str(&charArray, &exponent, 10, len, &mpfr, MPFR_RNDN)
@@ -248,5 +247,8 @@ class Gmp: Equatable {
         Int(Double(bits) / 3.32192809489)
     }
     
+    static func memorySize(bits: Int) -> Int {
+        mpfr_custom_get_size(bits)
+    }
 }
 
