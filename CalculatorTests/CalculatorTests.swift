@@ -427,8 +427,8 @@ class CalculatorTests: XCTestCase {
         /// scientific notation
 
         displayData = brain.number("1,5e12").getDisplayData(lengths, forceScientific: false)
-        XCTAssertEqual(displayData.shortLeft, "1,5e12")
-        XCTAssertNil(  displayData.shortRight)
+        XCTAssertEqual(displayData.shortLeft, "1,5")
+        XCTAssertEqual(displayData.shortRight, "e12")
         XCTAssertFalse( displayData.shortAbbreviated)
 
         displayData = brain.number("1,5e12").getDisplayData(lengths, forceScientific: false)
@@ -532,6 +532,7 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(displayData.shortLeft, "1,41421356")
 
         /// sin(pi) =? 0
+        Model.trigonometricToZero = true
         brain.operation("AC")
         brain.operation("π")
         brain.operation("sin")
@@ -539,7 +540,17 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(displayData.shortLeft, "0")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse( displayData.shortAbbreviated)
-//
+        
+        Model.trigonometricToZero = false
+        brain.operation("AC")
+        brain.operation("π")
+        brain.operation("sin")
+        displayData = brain.last.getDisplayData(lengths, forceScientific: false)
+        XCTAssertNotEqual(displayData.shortLeft, "0") // something like -4,0
+        XCTAssertNotNil(  displayData.shortRight) // something like e-1001
+        XCTAssertTrue( displayData.shortAbbreviated)
+
+        //
 //        /// 0
 //        brain.nonWaitingOperation("AC")
 //        XCTAssertEqual(brain.nonScientific, "0")

@@ -11,7 +11,6 @@ class Brain {
     var n = NumberStack()
     private var operatorStack = OperatorStack()
     private(set) var precision: Int = 0
-    var trigonometricToZero = true
     var last: Number { n.last }
 
     var debugLastAsDouble: Double { n.last.gmp!.toDouble() }
@@ -232,7 +231,7 @@ class Brain {
         } else if let op = self.inplaceOperators[symbol] {
             n.last.execute(op.operation)
             if trigonometricOperators.contains(symbol) {
-                if trigonometricToZero {
+                if Model.trigonometricToZero {
                     let mantissaExponent = n.last.gmp!.mantissaExponent(len: 50)
                     if mantissaExponent.exponent < -1 * precision {
                         n.removeLast()

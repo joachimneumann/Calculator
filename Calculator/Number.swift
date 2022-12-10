@@ -161,15 +161,44 @@ class Number: CustomDebugStringConvertible {
             longAbbreviated: false)
         if !forceScientific {
             if let s = str {
-                if s.count <= lengths.withoutComma ||
-                (s.contains(",") && s.count <= lengths.withCommaNonScientific) {
-                        ret.shortLeft = s
-                        ret.shortRight = nil
-                        ret.shortAbbreviated = false
-                        ret.longLeft = ret.shortLeft
-                        ret.longRight = nil
-                        ret.longAbbreviated = false
-                        return ret
+                if s.contains("e") {
+                    /// e.g. 1.4e7
+                    if s.count <= lengths.withCommaScientific {
+                        let separated = s.split(separator: "e")
+                        if separated.count == 2 {
+                            ret.shortLeft = String(separated[0])
+                            ret.shortRight = "e"+String(separated[1])
+                            ret.shortAbbreviated = false
+                            ret.longLeft = ret.shortLeft
+                            ret.longRight = nil
+                            ret.longAbbreviated = false
+                            return ret
+                        }
+                    }
+                } else {
+                    if s.contains(",") {
+                        /// e.g. 43.22
+                        if s.count <= lengths.withCommaNonScientific {
+                            ret.shortLeft = s
+                            ret.shortRight = nil
+                            ret.shortAbbreviated = false
+                            ret.longLeft = ret.shortLeft
+                            ret.longRight = nil
+                            ret.longAbbreviated = false
+                            return ret
+                        }
+                    } else {
+                        /// e.g. 23423
+                        if s.count <= lengths.withoutComma {
+                            ret.shortLeft = s
+                            ret.shortRight = nil
+                            ret.shortAbbreviated = false
+                            ret.longLeft = ret.shortLeft
+                            ret.longRight = nil
+                            ret.longAbbreviated = false
+                            return ret
+                        }
+                    }
                 }
             }
         }

@@ -156,14 +156,19 @@ struct Settings: View {
                     .foregroundColor(Color.white)
                 }
                 .onDisappear() {
-                    if Model.precision != settingsPrecision || Model.forceScientific != settingsForceScientific {
+                    if Model.precision != settingsPrecision ||
+                        Model.forceScientific != settingsForceScientific ||
+                        Model.trigonometricToZero != settingsTrigonometricToZero
+                    {
                         Model.precision = settingsPrecision
                         Model.forceScientific = settingsForceScientific
+                        Model.trigonometricToZero = settingsTrigonometricToZero
                         model.updatePrecision()
                         model.haveResultCallback()
                     } else {
                         Model.precision = settingsPrecision
                         Model.forceScientific = settingsForceScientific
+                        Model.trigonometricToZero = settingsTrigonometricToZero
                         /// no update with haveResultCallback()
                     }
                     print("Settings gone...")
