@@ -208,9 +208,9 @@ class Number: CustomDebugStringConvertible {
         let lrShort = process(
             mantissa: mantissaExponent.mantissa,
             exponent: mantissaExponent.exponent,
-            withoutComma_ : lengths.withoutComma,
-            withCommaNonScientific_ : lengths.withCommaNonScientific,
-            withCommaScientific_: lengths.withCommaScientific,
+            withoutComma_ : min(longDisplayLength, lengths.withoutComma),
+            withCommaNonScientific_ : min(longDisplayLength, lengths.withCommaNonScientific),
+            withCommaScientific_: min(longDisplayLength, lengths.withCommaScientific),
             forceScientific_: forceScientific)
         let lrLong = process(
             mantissa: mantissaExponent.mantissa,

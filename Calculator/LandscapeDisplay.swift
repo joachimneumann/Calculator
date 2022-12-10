@@ -1,5 +1,5 @@
 //
-//  LongDisplay.swift
+//  LandscapeDisplay.swift
 //  Calculator
 //
 //  Created by Joachim Neumann on 11/18/22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LongDisplay: View {
+struct LandscapeDisplay: View {
     let zoomed: Bool
     let displayData: DisplayData
 //    let mantissa: String

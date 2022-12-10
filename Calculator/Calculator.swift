@@ -42,7 +42,7 @@ struct Calculator: View {
                             //                        .offset(y: displayYOffset)
                         } else {
                             HStack(spacing: 0.0) {
-                                LongDisplay(
+                                LandscapeDisplay(
                                     zoomed: model.zoomed,
                                     displayData: model.displayData,
                                     ePadding: model.lengths.ePadding,
