@@ -22,6 +22,7 @@ struct Calculator: View {
     @State private var orientation = UIDeviceOrientation.unknown
     
     var body: some View {
+        let _ = print("Calculator body")
         NavigationStack {
             //        let _ = print("Calculator body displayLength \(displayLength)")
             //        let _ = model.oneLineWithCommaLength = displayLength[0]
@@ -126,7 +127,7 @@ struct Calculator: View {
                     orientation = newOrientation
                 }
                 .background(Color.black)
-                .onAppear() {
+//                .onAppear() {
                     /// executed when returning from the settings screen
 //                    Task {
 //                        model.isCalculating = true
@@ -135,7 +136,7 @@ struct Calculator: View {
 //                        model.isCalculating = false
 //                        print("Calculator onAppear, updatePrecision done")
 //                    }
-                }
+//                }
         }
         .accentColor(.white) // for the navigation back button
     }

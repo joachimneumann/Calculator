@@ -15,6 +15,7 @@ struct Lengths {
 }
 
 func lengthMeasurement(size: CGSize, fontSize: CGFloat, ePadding: CGFloat) -> Lengths {
+    print("lengthMeasurementlengthMeasurementlengthMeasurementlengthMeasurementlengthMeasurementlengthMeasurement")
     let uiFont = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: .thin)
     var s = ""
     var w = s.length(for: uiFont)

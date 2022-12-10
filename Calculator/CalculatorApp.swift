@@ -23,7 +23,6 @@ struct CalculatorApp: App {
     var body: some Scene {
         WindowGroup {
             GeometryReader { geo in
-                //let _ = print("CalculatorApp init() size=\(geo.size)")
                 let isPad: Bool = (UIDevice.current.userInterfaceIdiom == .pad)
                 let isPortrait: Bool = geo.size.height > geo.size.width
                 let padding: CGFloat = (!isPad && isPortrait) ? geo.size.width * 0.04 : geo.size.width * 0.01
@@ -51,6 +50,7 @@ struct CalculatorApp: App {
                             size: CGSize(width: model.displayWidth, height: newHeight),
                             fontSize: singleLineFontSize,
                             ePadding: round(singleLineFontSize * (isPortrait ? 0.0 : 0.3))))
+                let _ = print("CalculatorApp init() size=\(geo.size) \(geo.safeAreaInsets.trailing) \(model.lengths.withoutComma)")
 
                 Calculator(model: model,
                            isPad: isPad,
@@ -98,3 +98,20 @@ struct HostingWindowFinder: UIViewRepresentable {
     func updateUIView(_ uiView: UIView, context: Context) {
     }
 }
+
+//extension UIApplication {
+//    static var oldWidth: CGFloat = 0
+//    static var AppSafeAreaInsets: UIEdgeInsets  {
+//        let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+//        return scene?.windows.first?.safeAreaInsets ?? .zero
+//    }
+////    static var AppBounds: CGRect  {
+////        let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+////        let b = scene?.windows.first?.bounds ?? .zero
+////        if oldWidth != b.width {
+////            print("extension \(b.width)")
+////            oldWidth = b.width
+////        }
+////        return b
+////    }
+//}
