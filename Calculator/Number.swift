@@ -18,6 +18,9 @@ struct DisplayData {
     var short : String {
         shortLeft + (shortRight != nil ? shortRight! : "")
     }
+    var long : String {
+        longLeft + (longRight != nil ? longRight! : "")
+    }
 }
 
 class Number: CustomDebugStringConvertible {
@@ -54,7 +57,7 @@ class Number: CustomDebugStringConvertible {
         if isStr {
             return Number(str!, precision: _precision)
         } else {
-            return Number(gmp!.copy())
+            return Number(gmp!.copy(), precision: _precision)
         }
     }
     func toGmp() {
@@ -74,20 +77,21 @@ class Number: CustomDebugStringConvertible {
     }
     
     init(_ str: String, precision: Int) {
-        //print("Number init()")
         _str = str
         _gmp = nil
         _precision = precision
     }
-    init(_ gmp: Gmp) {
+    init(_ gmp: Gmp, precision: Int) {
         //print("Number init()")
         _str = nil
         _gmp = gmp
+        _precision = precision
     }
     fileprivate init() {
         //print("Number init()")
         _str = nil
         _gmp = nil
+        _precision = 0
     }
 
     func setValue(other number: Number) {

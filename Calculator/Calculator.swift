@@ -28,7 +28,6 @@ struct Calculator: View {
                 .overlay() {
                     VStack(spacing: 0.0) {
                         if isPortrait {
-                            let todo_exponent_with_epadding_in_portrait = 0
                             PortraitDisplay(
                                 displayData: model.displayData,
                                 fullLength: model.displayData.short.count == model.lengths.withoutComma,
@@ -77,7 +76,7 @@ struct Calculator: View {
                                     //                                    .offset(y: size * 0.25)
                                     if model.zoomed {
                                         NavigationLink {
-                                            Settings(model: model, copyAndPastePurchased: .constant(true))
+                                            Settings(model: model)
                                         } label: {
                                             Image(systemName: "switch.2")
                                                 .resizable()

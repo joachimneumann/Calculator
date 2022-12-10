@@ -36,7 +36,7 @@ class Model : ObservableObject {
                         }
                     }
                     // check mr
-                    enabledDict["mr"] = brain.memory != nil
+                    enabledDict["mr"] = Model.memoryValue == ""
                 }
             }
         }
@@ -89,6 +89,11 @@ class Model : ObservableObject {
         }
         brain.haveResultCallback = haveResultCallback
         brain.pendingOperatorCallback = pendingOperatorCallback
+        if Model.memoryValue == "" {
+            brain.memory = nil
+        } else {
+            brain.memory = Gmp(Model.memoryValue, precision: Model.precision)
+        }
     }
     
     func haveResultCallback() {
@@ -165,9 +170,9 @@ class Model : ObservableObject {
                 if ["mc", "m+", "m-"].contains(symbol) {
                     if let memory = brain.memory {
                         let lengths = Lengths(withoutComma: Model.precision, withCommaNonScientific: Model.precision, withCommaScientific: Model.precision, ePadding: 0)
-//                        DispatchQueue.main.sync {
-//                            memoryValue = Number(memory).multipleLines(lengths).asOneLine
-//                        }
+                        DispatchQueue.main.sync {
+                            Model.memoryValue = Number(memory, precision: Model.precision).getDisplayData(lengths, forceScientific: false).long
+                        }
                     } else {
                         DispatchQueue.main.sync {
                             Model.memoryValue = ""
@@ -182,7 +187,6 @@ class Model : ObservableObject {
         brain.operation(symbol)
         DispatchQueue.main.async { self.isCalculating = false }
     }
-    
 }
 
 

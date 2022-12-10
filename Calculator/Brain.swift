@@ -11,12 +11,7 @@ class Brain {
     var n = NumberStack()
     private var operatorStack = OperatorStack()
     private(set) var precision: Int = 0
-    var last: Number { n.last }
-
-    var debugLastAsDouble: Double { n.last.gmp!.toDouble() }
-    var debugLastAsGmp: Gmp { n.last.gmp! }
     
-    var isValidNumber: Bool { n.last.isValid }
 
     var haveResultCallback: () -> () = { }
     var pendingOperatorCallback: (String?) -> () = { _ in }
@@ -27,18 +22,16 @@ class Brain {
             }
         }
     }
-        
     var memory: Gmp? = nil
+
+    var isValidNumber: Bool { n.last.isValid }
+    var debugLastAsDouble: Double { n.last.gmp!.toDouble() }
+    var debugLastAsGmp: Gmp { n.last.gmp! }
+    var last: Number { n.last }
     var nullNumber: Number {
         return Number("0", precision: precision)
     }
         
-    func number(_ s: String) -> Number {
-        return Number(s, precision: precision)
-    }
-    func gmpNumber(_ s: String) -> Number {
-        return Number(Gmp(s, precision: precision))
-    }
     let digitOperators: [String] = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     let trigonometricOperators = ["sin", "sinD", "cos", "cosD", "tan", "tanD"]
     let constantOperators: Dictionary <String, Inplace> = [
@@ -133,10 +126,10 @@ class Brain {
     
     func percentage() {
         if operatorStack.count == 0 {
-            n.last.execute(Gmp.mul, with: number("0.01"))
+            n.last.execute(Gmp.mul, with: Number("0.01", precision: precision))
         } else if operatorStack.count >= 1 && n.count >= 2 {
             if let secondLast = n.secondLast {
-                n.last.execute(Gmp.mul, with: number("0.01"))
+                n.last.execute(Gmp.mul, with: Number("0.01", precision: precision))
                 n.last.execute(Gmp.mul, with: secondLast)
             }
         }
@@ -180,10 +173,10 @@ class Brain {
         } else if symbol == "mr" {
             if memory != nil {
                 if pendingOperator != nil {
-                    n.append(Number(memory!.copy()))
+                    n.append(Number(memory!.copy(), precision: precision))
                     pendingOperator = nil
                 } else {
-                    n.replaceLast(with: Number(memory!.copy()))
+                    n.replaceLast(with: Number(memory!.copy(), precision: precision))
                 }
             }
         } else if symbol == "( " {

@@ -9,7 +9,6 @@ import SwiftUI
 
 struct Settings: View {
     var model: Model
-    @Binding var copyAndPastePurchased: Bool
     
     func decrease(_ current: Int) -> Int {
         let asString = "\(current)"
@@ -215,7 +214,7 @@ struct BuyButton: ButtonStyle {
 
 struct ControlCenter_Previews: PreviewProvider {
     static var previews: some View {
-        Settings(model: Model(), copyAndPastePurchased: .constant(false))
+        Settings(model: Model())
     }
 }
 
