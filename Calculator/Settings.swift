@@ -33,10 +33,9 @@ struct Settings: View {
     }
     
     @State var settingsPrecision = Model.precision
-    @State var settingsLongDisplayMax = Model.longDisplayMax
+    @State var settingsForceScientific = Model.forceScientific
     @State private var measureButtonText = "measure"
     private let MIN_PRECISION      = 10
-    private let MAX_DISPLAY_LENGTH = 10000 // too long strings in Text() crash the app
     private let PHYSICAL_MEMORY = Double(ProcessInfo.processInfo.physicalMemory)
     @ObservedObject var stopWatch = StopWatch()
     
@@ -51,49 +50,56 @@ struct Settings: View {
                         HStack {
                             Text("Precision:")
                             ColoredStepper(
-                                plusEnabled: !stopWatch.isRunning && Double(settingsPrecision) < PHYSICAL_MEMORY * 0.1,
+                                plusEnabled: !stopWatch.isRunning && Gmp.memorySize(bits: bitsInfo) < Int(PHYSICAL_MEMORY * 0.1),
                                 minusEnabled: !stopWatch.isRunning && settingsPrecision > MIN_PRECISION,
                                 onIncrement: {
                                     DispatchQueue.main.async {
                                         settingsPrecision = increase(settingsPrecision)
+                                        measureButtonText = "measure"
                                     }
                                 },
                                 onDecrement: {
                                     DispatchQueue.main.async {
                                         settingsPrecision = decrease(settingsPrecision)
-                                        if settingsLongDisplayMax > settingsPrecision {
-                                            settingsLongDisplayMax = settingsPrecision
-                                        }
+                                        measureButtonText = "measure"
                                     }
                                 })
                             .padding(.horizontal, 4)
                             HStack {
                                 Text("\(settingsPrecision.useWords) significant digits")
-                                if Double(settingsPrecision) >= PHYSICAL_MEMORY * 0.1 {
+                                if Gmp.memorySize(bits: bitsInfo) >= Int(PHYSICAL_MEMORY * 0.1) {
                                     Text("(memory limit reached)")
                                 }
                             }
                             Spacer()
                         }
                         .padding(.top, 40)
-                        .padding(.bottom, 5)
-                        Text("Note: to mitigate error accumulation calculations are executed with a precision of \(bitsInfo) bits - corresponding to \(internalPrecisionInfo) digits").italic()
-                            .padding(.bottom, 40)
+                        .padding(.bottom, 15)
+                            Text("Internal precision to mitigate error accumulation: \(internalPrecisionInfo)")
+                            .padding(.bottom, 5)
+                            .foregroundColor(.gray)
+                            Text("Bits used in the gmp and mpfr libraries: \(bitsInfo)")
+                            .padding(.bottom, 5)
+                            .foregroundColor(.gray)
+                            Text("Memory size of one Number: \(Gmp.memorySize(bits: bitsInfo).asMemorySize)")
+                            .foregroundColor(.gray)
+                            .padding(.bottom, -4)
                         HStack {
-                            Text("Time to caclulate sin(")
-                            let h = 50.0
-                            Label(keyInfo: model.keyInfo["√"]!, height: h)
+                            Text("Time to calculate sin(")
+                                .foregroundColor(.gray)
+                            let h = 40.0
+                            Label(keyInfo: model.keyInfo["√"]!, height: h, color: .gray)
                                 .frame(width: h, height: h)
                                 .offset(x: -17.0)
                             Text("):")
+                                .foregroundColor(.gray)
                                 .padding(.leading, -37.0)
-                            
                             Button {
                                 if !stopWatch.isRunning {
                                     self.stopWatch.start()
                                     Task {
                                         DispatchQueue.main.async {
-                                            measureButtonText = ""
+                                            measureButtonText = "..."
                                         }
                                         let result = await model.speedTest(precision: settingsPrecision)
                                         self.stopWatch.stop()
@@ -103,83 +109,47 @@ struct Settings: View {
                                     }
                                 }
                             }
-                        label: {
-                            Text(stopWatch.isRunning && stopWatch.counter > 0 ? "\(stopWatch.counter)" : measureButtonText)
-                                .frame(width: 200, height: 40, alignment: .center)
-                        }
-                        .background(.gray)
-                        .foregroundColor(.white)
-                        .clipShape(Capsule())
-                        .disabled(stopWatch.isRunning)
-                        .animation(.easeIn(duration: 0.2), value: measureButtonText)
-                            Spacer()
-                        }
-                        .frame(height: 10)
-                        .padding(.bottom, 40)
-                        
-                        HStack {
-                            Text("Max length of display:")
-                            ColoredStepper(
-                                plusEnabled: !stopWatch.isRunning && settingsLongDisplayMax < settingsPrecision && settingsLongDisplayMax < MAX_DISPLAY_LENGTH,
-                                minusEnabled: !stopWatch.isRunning && settingsLongDisplayMax > 10,
-                                onIncrement: {
-                                    DispatchQueue.main.async {
-                                        settingsLongDisplayMax = increase(settingsLongDisplayMax)
-                                    }
-                                },
-                                onDecrement: {
-                                    DispatchQueue.main.async {
-                                        settingsLongDisplayMax = decrease(settingsLongDisplayMax)
-                                    }
-                                })
-                            .padding(.horizontal, 4)
-                            Text("\(settingsLongDisplayMax.useWords) digits")
-                        }
-                        
-                        if copyAndPastePurchased {
-                            Text("You have purchased Copy and Paste to import and export numbers with high precision.")
-                        } else {
-                            HStack {
-                                Text("Purchase Copy and Paste")
-                                    .padding(.trailing, 20)
-                                Button {
-                                    copyAndPastePurchased = true
-                                }
                             label: {
-                                Text("$0.99")
-                                    .frame(height: 10)
+                                Text(stopWatch.isRunning && stopWatch.counter > 0 ? "\(stopWatch.counter)" : measureButtonText)
+                                    .foregroundColor(.gray)
                             }
-                            .buttonStyle(BuyButton())
-                            }
-                            .padding(.top, 20)
-                            .padding(.bottom, 5)
-                            Text("Copy and Paste allows you to import and export numbers with high precision. This feature is disabled in the free version.").italic()
                         }
+                        if (settingsPrecision > Number.MAX_DISPLAY_LENGTH) {
+                            Text("Note: \(Number.MAX_DISPLAY_LENGTH) will be displayed, use copy to get all \(settingsPrecision.useWords) digits").italic()
+                            .foregroundColor(.gray)
+                        }
+
                         HStack(spacing: 0.0) {
                             Text("Force scientific display")
-                            Toggle("", isOn: Model.$forceScientific)
+                            Toggle("", isOn: $settingsForceScientific)
                                 .foregroundColor(Color.green)
                                 .toggleStyle(
                                     ColoredToggleStyle(onColor: Color(uiColor: UIColor(white: 0.6, alpha: 1.0)),
                                                        offColor: Color(uiColor: UIColor(white: 0.3, alpha: 1.0)),
                                                        thumbColor: .white))
-                            //                        .toggleStyle(SwitchToggleStyle(tint: .blue))
-                            //                        .toggleStyle(SwitchToggleStyle(tint: Color.gray))
                                 .frame(width: 70)
-                            //                        .background(Color.yellow)
+                            Text(settingsForceScientific ? "e.g. 3,1415926 e0" : "e.g. 3,141592653")
+                                .foregroundColor(.gray)
+                                .padding(.leading, 20)
                             Spacer()
                         }
-                        .padding(.top, 20)
+                        .padding(.top, 10)
                         Spacer()
                     }
-                    //                        .background(Color.yellow)
                     .foregroundColor(Color.white)
                 }
                 .onDisappear() {
-                    Model.precision = settingsPrecision
-                    Model.longDisplayMax = settingsLongDisplayMax
+                    if Model.precision != settingsPrecision || Model.forceScientific != settingsForceScientific {
+                        Model.precision = settingsPrecision
+                        Model.forceScientific = settingsForceScientific
+                        model.updatePrecision()
+                        model.haveResultCallback()
+                    } else {
+                        Model.precision = settingsPrecision
+                        Model.forceScientific = settingsForceScientific
+                        /// no update with haveResultCallback()
+                    }
                     print("Settings gone...")
-                    model.haveResultCallback()
                 }
             }
     }

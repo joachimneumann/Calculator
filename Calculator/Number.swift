@@ -24,7 +24,8 @@ class Number: CustomDebugStringConvertible {
     private var _precision: Int = 0
     private var _str: String?
     private var _gmp: Gmp?
-    
+    static let MAX_DISPLAY_LENGTH = 10000 // too long strings in Text() crash the app
+
     var isStr: Bool { _str != nil }
     var str: String? { return _str }
     var gmp: Gmp? { return _gmp }
@@ -89,6 +90,12 @@ class Number: CustomDebugStringConvertible {
         _gmp = nil
     }
 
+    func setValue(other number: Number) {
+        number.toGmp()
+        toGmp()
+        _gmp!.setValue(other: number._gmp!)
+    }
+
     func appendZero()  {
         if isStr {
             if _str != "0" {
@@ -129,11 +136,12 @@ class Number: CustomDebugStringConvertible {
             _gmp!.changeSign()
         }
     }
+    
     var debugDescription: String {
         if isStr {
-            return "\(_str!) s "
+            return "\(_str!) precision \(_precision) string"
         } else {
-            return "\(_gmp!.toDouble()) g "
+            return "\(_gmp!.toDouble())  precision \(_precision) gmp "
         }
     }
     
@@ -143,7 +151,7 @@ class Number: CustomDebugStringConvertible {
         var abbreviated: Bool
     }
     
-    func getDisplayData(_ lengths: Lengths, forceScientific: Bool, longDisplayLength: Int) -> DisplayData {
+    func getDisplayData(_ lengths: Lengths, forceScientific: Bool) -> DisplayData {
         var ret = DisplayData(
             shortLeft: "0",
             shortRight: nil,
@@ -203,21 +211,21 @@ class Number: CustomDebugStringConvertible {
             return ret
         }
         
-        let mantissaExponent = displayGmp.mantissaExponent(len: Model.longDisplayMax)
+        let mantissaExponent = displayGmp.mantissaExponent(len: min(_precision, Number.MAX_DISPLAY_LENGTH))
 
         let lrShort = process(
             mantissa: mantissaExponent.mantissa,
             exponent: mantissaExponent.exponent,
-            withoutComma_ : min(longDisplayLength, lengths.withoutComma),
-            withCommaNonScientific_ : min(longDisplayLength, lengths.withCommaNonScientific),
-            withCommaScientific_: min(longDisplayLength, lengths.withCommaScientific),
+            withoutComma_ : min(_precision, lengths.withoutComma),
+            withCommaNonScientific_ : min(_precision, lengths.withCommaNonScientific),
+            withCommaScientific_: min(_precision, lengths.withCommaScientific),
             forceScientific_: forceScientific)
         let lrLong = process(
             mantissa: mantissaExponent.mantissa,
             exponent: mantissaExponent.exponent,
-            withoutComma_ : min(_precision, longDisplayLength),
-            withCommaNonScientific_ : min(_precision, longDisplayLength),
-            withCommaScientific_: min(_precision, longDisplayLength),
+            withoutComma_ : min(_precision, Number.MAX_DISPLAY_LENGTH),
+            withCommaNonScientific_ : min(_precision, Number.MAX_DISPLAY_LENGTH),
+            withCommaScientific_: min(_precision, Number.MAX_DISPLAY_LENGTH),
             forceScientific_: forceScientific)
         return DisplayData(
             shortLeft: lrShort.left,

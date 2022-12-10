@@ -200,6 +200,11 @@ class Gmp: Equatable {
         other.pow_10_x()
         self.mul(other: other)
     }
+    
+    func setValue(other: Gmp) {
+        mpfr_set(&mpfr, &other.mpfr, MPFR_RNDN)
+    }
+    
     func x_double_up_arrow_y(other: Gmp) {
         var temp: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
         mpfr_init2 (&temp, mpfr_get_prec(&mpfr))
@@ -244,7 +249,7 @@ class Gmp: Equatable {
     }
     
     static func precisionCorrespondingTo(bits: Int) -> Int {
-        Int(Double(bits) / 3.32192809489)
+        Int(ceil(Double(bits) / 3.32192809489))
     }
     
     static func memorySize(bits: Int) -> Int {

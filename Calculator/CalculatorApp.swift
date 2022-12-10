@@ -100,7 +100,7 @@ struct CalculatorApp: App {
                     .padding(.trailing, trailingPadding)
                     .padding(.top, topPadding)
                     .padding(.bottom, bottomPadding)
-                    .background(Color.green)
+                    .background(Color.black)
             }
             .withHostingWindow { window in
                 /// this stops white background from showing *during* a device rotation

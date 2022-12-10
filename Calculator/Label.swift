@@ -10,8 +10,13 @@ import SwiftUI
 struct Label: View {
     let keyInfo: Model.KeyInfo
     let height: CGFloat
+    let color: Color
+    init(keyInfo: Model.KeyInfo, height: CGFloat, color: Color = Color.white) {
+        self.keyInfo = keyInfo
+        self.height = height
+        self.color = color
+    }
     var body: some View {
-        let color = Color(uiColor: keyInfo.colors.textColor)
         let symbol = keyInfo.symbol
         //let _ = print("Label \(symbol)")
         switch symbol {

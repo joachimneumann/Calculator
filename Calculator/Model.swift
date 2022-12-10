@@ -55,13 +55,13 @@ class Model : ObservableObject {
     
     var lengths = Lengths(withoutComma: 0, withCommaNonScientific: 0, withCommaScientific: 0, ePadding: 0)
     @AppStorage("precision", store: .standard) static var precision: Int = 100
-    @AppStorage("longDisplayMax", store: .standard) static var longDisplayMax: Int = 100
     @AppStorage("forceScientific", store: .standard) static var forceScientific: Bool = false
     @AppStorage("memoryValue", store: .standard) static var memoryValue: String = ""
+    static let MAX_DISPLAY_LEN = 10000 // too long strings in Text() crash the app
 
     // the update of the precision in brain can be slow.
     // Therefore, I only want to do that when leaving the settings screen
-    func updatePrecision() async {
+    func updatePrecision() {
         brain.setPrecision(Model.precision)
     }
     
@@ -88,12 +88,6 @@ class Model : ObservableObject {
         }
         brain.haveResultCallback = haveResultCallback
         brain.pendingOperatorCallback = pendingOperatorCallback
-        
-//        brain.setPrecision(precision)
-//        if memoryValue != "" {
-//            brain.memory = Gmp(memoryValue, precision: precision)
-//        }
-//        isCalculating = false // sets enabledDict (after setting memory!)
     }
     
     func haveResultCallback() {
@@ -108,7 +102,10 @@ class Model : ObservableObject {
                 self._AC = false
             }
         }
-        let temp = self.brain.last.getDisplayData(self.lengths, forceScientific: Model.forceScientific, longDisplayLength: Model.longDisplayMax)
+        DispatchQueue.main.async {
+            self.displayData = DisplayData(shortLeft: "0", shortAbbreviated: false, longLeft: "0", longAbbreviated: false)
+        }
+        let temp = self.brain.last.getDisplayData(self.lengths, forceScientific: Model.forceScientific)
         DispatchQueue.main.async {
             self.displayData = temp
         }
