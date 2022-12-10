@@ -106,13 +106,15 @@ struct Calculator: View {
                 }
             
                 .overlay() { /// keyboard
-                    let info = "\(model._hasBeenReset ? "Precision: "+model.precisionDescription+" digits" : "\(model._rad ? "Rad" : "")")"
+                    let info = "\(model._hasBeenReset ? "Precision: "+model.precisionDescription+" digits" : "\(Model._rad ? "Rad" : "")")"
                     VStack(spacing: 0.0) {
                         Spacer()
-                        HStack(spacing: 0.0) {
-                            Text(info).foregroundColor(.white)
-                                .offset(x: keyHeight * 0.3, y: keyHeight * -0.05)
-                            Spacer()
+                        if !isPortrait {
+                            HStack(spacing: 0.0) {
+                                Text(info).foregroundColor(.white)
+                                    .offset(x: keyHeight * 0.3, y: keyHeight * -0.05)
+                                Spacer()
+                            }
                         }
                         KeysView(model: model, isScientific: !isPortrait, size: keyboardSize)
                     }

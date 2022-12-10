@@ -35,7 +35,7 @@ struct CalculatorApp: App {
                 
                 let spaceBetweenKeys: CGFloat = C.spaceBetweenkeysFraction(withScientificKeys: !isPortrait) * newWidth
                 let oneKeyWidth: CGFloat = (newWidth - (isPortrait ? 3.0 : 9.0) * spaceBetweenKeys) * (isPortrait ? 0.25 : 0.1)
-                let oneKeyheight: CGFloat = isPortrait ? oneKeyWidth : (newHeight - 5.0 * spaceBetweenKeys) / 6.0
+                let oneKeyheight: CGFloat = isPortrait ? oneKeyWidth : (newHeight - 5.0 * spaceBetweenKeys) / 6.17
                 let allKeysheight: CGFloat = 5 * oneKeyheight + 4 * spaceBetweenKeys
                 let keyboardSize: CGSize = CGSize(width: newWidth, height: allKeysheight)
                 /// make space for "rad" info

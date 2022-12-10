@@ -19,7 +19,6 @@ class Model : ObservableObject {
         }
     }
     
-    @Published var _rad = false
     @Published var _2ndActive = false
     @Published var isCalculating = false {
         didSet {
@@ -58,6 +57,7 @@ class Model : ObservableObject {
     @AppStorage("forceScientific", store: .standard) static var forceScientific: Bool = false
     @AppStorage("trigonometricToZero", store: .standard) static var trigonometricToZero: Bool = true
     @AppStorage("memoryValue", store: .standard) static var memoryValue: String = ""
+    @AppStorage("_rad", store: .standard) static var _rad: Bool = false
     static let MAX_DISPLAY_LEN = 10000 // too long strings in Text() crash the app
 
     // the update of the precision in brain can be slow.
@@ -141,7 +141,7 @@ class Model : ObservableObject {
     }
     
     func pressed(_ _symbol: String) {
-        let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(_symbol) && !_rad ? _symbol+"D" : _symbol
+        let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(_symbol) && !Model._rad ? _symbol+"D" : _symbol
         
         switch symbol {
         case "AC":
@@ -151,10 +151,10 @@ class Model : ObservableObject {
             self.keyInfo["2nd"]!.colors = _2ndActive ? C._2ndActiveColors : C._2ndColors
         case "Rad":
             _hasBeenReset = false
-            _rad = true
+            Model._rad = true
         case "Deg":
             _hasBeenReset = false
-            _rad = false
+            Model._rad = false
         case "plusKey":
             zoomed.toggle()
         default:
