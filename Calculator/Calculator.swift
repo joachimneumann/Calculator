@@ -20,6 +20,7 @@ struct Calculator: View {
     let displayBottomOffset: CGFloat
     let keyboardPaddingBottom: CGFloat
     @State private var orientation = UIDeviceOrientation.unknown
+    @State var zzz: Bool = false
     
     var body: some View {
         let _ = print("Calculator body")
@@ -27,7 +28,7 @@ struct Calculator: View {
             Rectangle()
                 .overlay() {
                     Display(isPortrait: isPortrait,
-                            isZoomed: model.zoomed,
+                            isZoomed: zzz,
                             displayData: model.displayData,
                             lengths: model.lengths,
                             singleLineFontSize: singleLineFontSize,
@@ -41,7 +42,7 @@ struct Calculator: View {
                     Icons(isPortrait: isPortrait,
                           height: keyboardSize.height,
                           isCalculating: model.isCalculating,
-                          isZoomed: model.zoomed,
+                          isZoomed: $zzz,
                           model: model,
                           keyInfo: model.keyInfo["plusKey"]!)
                 }
@@ -54,7 +55,7 @@ struct Calculator: View {
                                     keyHeight: keyHeight,
                                     model: model,
                                     keyboardSize: keyboardSize,
-                                    zoomed: model.zoomed,
+                                    zoomed: zzz,
                                     size: size)
                 }
                 .onRotate { newOrientation in /// this magically reduces the number of haveResultCallback() calls to one per rotation
@@ -115,7 +116,7 @@ struct Icons : View {
     let isPortrait: Bool
     let height: CGFloat
     let isCalculating: Bool
-    let isZoomed: Bool
+    @Binding var isZoomed: Bool
     let model: Model
     let keyInfo: Model.KeyInfo
     var body: some View {
@@ -130,10 +131,10 @@ struct Icons : View {
                             .padding(.top, size * 0.55)
                             .animation(Animation.easeInOut(duration: 0.4), value: isZoomed)
                     } else {
-                        PlusKey(keyInfo: keyInfo, model: model, size: CGSize(width: size, height: size))
+                        PlusKey(keyInfo: keyInfo, zoomed: $isZoomed, size: CGSize(width: size, height: size))
                             .padding(.top, size * 0.25)
                         //                                    .offset(y: size * 0.25)
-                        if model.zoomed {
+                        if isZoomed {
                             NavigationLink {
                                 Settings(model: model)
                             } label: {
@@ -188,7 +189,7 @@ struct KeysViewAndText: View {
             KeysView(model: model, isScientific: !isPortrait, size: keyboardSize)
         }
         .transition(.move(edge: .bottom))
-        .offset(y: (model.zoomed && !isPortrait) ? size.height : 0)
+        .offset(y: (zoomed && !isPortrait) ? size.height : 0)
     }
 }
 extension View {

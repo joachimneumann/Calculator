@@ -21,7 +21,6 @@ class Model : ObservableObject {
     
     @Published var _2ndActive = false
     @Published var isCalculating = false
-    @Published var zoomed = false
     
     private let brain: Brain
     @Published var keyInfo: [String: KeyInfo] = [:]
@@ -164,7 +163,7 @@ class Model : ObservableObject {
             _hasBeenReset = false
             Model._rad = false
         case "plusKey":
-            zoomed.toggle()
+            break
         default:
             _hasBeenReset = false
             Task {
