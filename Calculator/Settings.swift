@@ -34,6 +34,7 @@ struct Settings: View {
     
     @State var settingsPrecision = Model.precision
     @State var settingsForceScientific = Model.forceScientific
+    @State var settingsTrigonometricToZero = Model.trigonometricToZero
     @State private var measureButtonText = "measure"
     private let MIN_PRECISION      = 10
     private let PHYSICAL_MEMORY = Double(ProcessInfo.processInfo.physicalMemory)
@@ -129,6 +130,22 @@ struct Settings: View {
                                                        thumbColor: .white))
                                 .frame(width: 70)
                             Text(settingsForceScientific ? "e.g. 3,1415926 e0" : "e.g. 3,141592653")
+                                .foregroundColor(.gray)
+                                .padding(.leading, 20)
+                            Spacer()
+                        }
+                        .padding(.top, 20)
+
+                        HStack(spacing: 0.0) {
+                            Text("Force trigonometric results to zero")
+                            Toggle("", isOn: $settingsTrigonometricToZero)
+                                .foregroundColor(Color.green)
+                                .toggleStyle(
+                                    ColoredToggleStyle(onColor: Color(uiColor: UIColor(white: 0.6, alpha: 1.0)),
+                                                       offColor: Color(uiColor: UIColor(white: 0.3, alpha: 1.0)),
+                                                       thumbColor: .white))
+                                .frame(width: 70)
+                            Text(settingsTrigonometricToZero ? "sin(π) = 0" : "sin(π) = 1e-\(settingsPrecision)")
                                 .foregroundColor(.gray)
                                 .padding(.leading, 20)
                             Spacer()
