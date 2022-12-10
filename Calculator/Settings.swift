@@ -7,17 +7,9 @@
 
 import SwiftUI
 
-extension String {
-    func replacingFirstOccurrence(of target: String, with replacement: String) -> String {
-        guard let range = self.range(of: target) else { return self }
-        return self.replacingCharacters(in: range, with: replacement)
-    }
-}
-
 struct Settings: View {
     var model: Model
     @Binding var copyAndPastePurchased: Bool
-    @State var warning: String?
     
     func decrease(_ current: Int) -> Int {
         let asString = "\(current)"
@@ -40,13 +32,8 @@ struct Settings: View {
         }
     }
     
-//    func outOfMemory(for precision: Int) -> Bool {
-//        let estimatedSizeOfNumberInBytes = 3*precision // TODO: improve this estimate
-//        let estimatedsNumberOfNumbers = 10
-//        return !testMemory(size: estimatedSizeOfNumberInBytes * estimatedsNumberOfNumbers)
-//    }
-    
-    @State private var dummyBoolean = true
+    @State var settingsPrecision = Model.precision
+    @State var settingsLongDisplayMax = Model.longDisplayMax
     @State private var measureButtonText = "measure"
     private let MIN_PRECISION      = 10
     private let MAX_DISPLAY_LENGTH = 10000 // too long strings in Text() crash the app
@@ -54,7 +41,7 @@ struct Settings: View {
     @ObservedObject var stopWatch = StopWatch()
     
     var body: some View {
-        let bitsInfo = Gmp.bits(for: Model.precision)
+        let bitsInfo = Gmp.bits(for: settingsPrecision)
         let internalPrecisionInfo = Gmp.precisionCorrespondingTo(bits: bitsInfo)
         Rectangle()
             .background(Color.black)
@@ -64,25 +51,25 @@ struct Settings: View {
                         HStack {
                             Text("Precision:")
                             ColoredStepper(
-                                plusEnabled: !stopWatch.isRunning && Double(Model.precision) < PHYSICAL_MEMORY * 0.1,
-                                minusEnabled: !stopWatch.isRunning && Model.precision > MIN_PRECISION,
+                                plusEnabled: !stopWatch.isRunning && Double(settingsPrecision) < PHYSICAL_MEMORY * 0.1,
+                                minusEnabled: !stopWatch.isRunning && settingsPrecision > MIN_PRECISION,
                                 onIncrement: {
                                     DispatchQueue.main.async {
-                                        Model.precision = increase(Model.precision)
+                                        settingsPrecision = increase(settingsPrecision)
                                     }
                                 },
                                 onDecrement: {
                                     DispatchQueue.main.async {
-                                        Model.precision = decrease(Model.precision)
-                                        if Model.longDisplayMax > Model.precision {
-                                            Model.longDisplayMax = Model.precision
+                                        settingsPrecision = decrease(settingsPrecision)
+                                        if settingsLongDisplayMax > settingsPrecision {
+                                            settingsLongDisplayMax = settingsPrecision
                                         }
                                     }
                                 })
                             .padding(.horizontal, 4)
                             HStack {
-                                Text("\(Model.precision.useWords) significant digits")
-                                if Double(Model.precision) >= PHYSICAL_MEMORY * 0.1 {
+                                Text("\(settingsPrecision.useWords) significant digits")
+                                if Double(settingsPrecision) >= PHYSICAL_MEMORY * 0.1 {
                                     Text("(memory limit reached)")
                                 }
                             }
@@ -108,7 +95,7 @@ struct Settings: View {
                                         DispatchQueue.main.async {
                                             measureButtonText = ""
                                         }
-                                        let result = await model.speedTest(precision: Model.precision)
+                                        let result = await model.speedTest(precision: settingsPrecision)
                                         self.stopWatch.stop()
                                         DispatchQueue.main.async {
                                             measureButtonText = result.asTime
@@ -133,20 +120,20 @@ struct Settings: View {
                         HStack {
                             Text("Max length of display:")
                             ColoredStepper(
-                                plusEnabled: !stopWatch.isRunning && Model.longDisplayMax < Model.precision && Model.longDisplayMax < MAX_DISPLAY_LENGTH,
-                                minusEnabled: !stopWatch.isRunning && Model.longDisplayMax > 10,
+                                plusEnabled: !stopWatch.isRunning && settingsLongDisplayMax < settingsPrecision && settingsLongDisplayMax < MAX_DISPLAY_LENGTH,
+                                minusEnabled: !stopWatch.isRunning && settingsLongDisplayMax > 10,
                                 onIncrement: {
                                     DispatchQueue.main.async {
-                                        Model.longDisplayMax = increase(Model.longDisplayMax)
+                                        settingsLongDisplayMax = increase(settingsLongDisplayMax)
                                     }
                                 },
                                 onDecrement: {
                                     DispatchQueue.main.async {
-                                        Model.longDisplayMax = decrease(Model.longDisplayMax)
+                                        settingsLongDisplayMax = decrease(settingsLongDisplayMax)
                                     }
                                 })
                             .padding(.horizontal, 4)
-                            Text("\(Model.longDisplayMax.useWords) digits")
+                            Text("\(settingsLongDisplayMax.useWords) digits")
                         }
                         
                         if copyAndPastePurchased {
@@ -187,6 +174,12 @@ struct Settings: View {
                     }
                     //                        .background(Color.yellow)
                     .foregroundColor(Color.white)
+                }
+                .onDisappear() {
+                    Model.precision = settingsPrecision
+                    Model.longDisplayMax = settingsLongDisplayMax
+                    print("Settings gone...")
+                    model.haveResultCallback()
                 }
             }
     }

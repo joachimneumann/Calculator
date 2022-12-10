@@ -24,10 +24,6 @@ struct Calculator: View {
     var body: some View {
         let _ = print("Calculator body")
         NavigationStack {
-            //        let _ = print("Calculator body displayLength \(displayLength)")
-            //        let _ = model.oneLineWithCommaLength = displayLength[0]
-            //        let _ = model.oneLineWithoutCommaLength = displayLength[1]
-            //        let _ = print("displayLength \(displayLength)")
             Rectangle()
                 .overlay() {
                     VStack(spacing: 0.0) {
@@ -65,8 +61,6 @@ struct Calculator: View {
                 }
             
                 .overlay() { /// Icons
-//                    AnimatedDots(color: .gray)
-
                     if !isPortrait {
                         HStack(spacing: 0.0) {
                             Spacer(minLength: 0.0)
@@ -121,21 +115,10 @@ struct Calculator: View {
                     .transition(.move(edge: .bottom))
                     .offset(y: (model.zoomed && !isPortrait) ? size.height : 0)
                 }
-                .onRotate { newOrientation in
-//                    model.haveResultCallback()
+                .onRotate { newOrientation in /// this magically reduces the number of haveResultCallback() calls to one per rotation
                     orientation = newOrientation
                 }
                 .background(Color.black)
-//                .onAppear() {
-                    /// executed when returning from the settings screen
-//                    Task {
-//                        model.isCalculating = true
-//                        await model.updatePrecision()    /// updates the precision in the NumberStack
-//                        model.haveResultCallback() /// redraws the display
-//                        model.isCalculating = false
-//                        print("Calculator onAppear, updatePrecision done")
-//                    }
-//                }
         }
         .accentColor(.white) // for the navigation back button
     }

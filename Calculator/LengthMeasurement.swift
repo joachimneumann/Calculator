@@ -46,8 +46,7 @@ func lengthMeasurement(size: CGSize, fontSize: CGFloat, ePadding: CGFloat) -> Le
         withCommaNonScientific: withCommaNonScientific,
         withCommaScientific: withCommaScientific,
         ePadding: ePadding)
-    //print("length measurement \(result)")
-    print("lengthMeasurement \(withoutComma)")
+    //print("lengthMeasurement \(withoutComma)")
     return result
 }
 

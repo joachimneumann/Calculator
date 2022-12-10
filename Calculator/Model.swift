@@ -97,7 +97,7 @@ class Model : ObservableObject {
     }
     
     func haveResultCallback() {
-        print("haveResultCallback \(lengths)")
+        print("haveResultCallback \(lengths.withoutComma)")
         if brain.last.isNull {
             DispatchQueue.main.async {
                 self._AC = true
