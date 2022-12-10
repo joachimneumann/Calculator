@@ -7,6 +7,20 @@
 
 import SwiftUI
 
+struct KeyPrep: View {
+    let symbol: String
+    var model: Model
+    let keySize: CGSize
+    var body: some View {
+        Key(keyInfo: model.keyInfo[symbol]!, callback: keyCallback, size: keySize)
+    }
+    func keyCallback() {
+        if model.keyInfo[symbol]!.enabled {
+            model.pressed(symbol)
+        }
+    }
+}
+
 struct NonScientificKeys: View {
     @ObservedObject var model: Model
     let spaceBetweenKeys: CGFloat
@@ -20,33 +34,33 @@ struct NonScientificKeys: View {
 
         VStack(spacing: spaceBetweenKeys) {
             HStack(spacing: spaceBetweenKeys) {
-                Key(keyInfo: model.keyInfo[model._AC ? "AC" : "C"]!, model: model, size: keySize)
-                Key(keyInfo: model.keyInfo["±"]!, model: model, size: keySize)
-                Key(keyInfo: model.keyInfo["%"]!, model: model, size: keySize)
-                Key(keyInfo: model.keyInfo["/"]!, model: model, size: keySize)
+                KeyPrep(symbol: model._AC ? "AC" : "C", model: model, keySize: keySize)
+                KeyPrep(symbol: "±", model: model, keySize: keySize)
+                KeyPrep(symbol: "%", model: model, keySize: keySize)
+                KeyPrep(symbol: "/", model: model, keySize: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key(keyInfo: model.keyInfo["7"]!, model: model, size: keySize)
-                Key(keyInfo: model.keyInfo["8"]!, model: model, size: keySize)
-                Key(keyInfo: model.keyInfo["9"]!, model: model, size: keySize)
-                Key(keyInfo: model.keyInfo["x"]!, model: model, size: keySize)
+                KeyPrep(symbol: "7", model: model, keySize: keySize)
+                KeyPrep(symbol: "8", model: model, keySize: keySize)
+                KeyPrep(symbol: "9", model: model, keySize: keySize)
+                KeyPrep(symbol: "x", model: model, keySize: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key(keyInfo: model.keyInfo["4"]!, model: model, size: keySize)
-                Key(keyInfo: model.keyInfo["5"]!, model: model, size: keySize)
-                Key(keyInfo: model.keyInfo["6"]!, model: model, size: keySize)
-                Key(keyInfo: model.keyInfo["-"]!, model: model, size: keySize)
+                KeyPrep(symbol: "4", model: model, keySize: keySize)
+                KeyPrep(symbol: "5", model: model, keySize: keySize)
+                KeyPrep(symbol: "6", model: model, keySize: keySize)
+                KeyPrep(symbol: "-", model: model, keySize: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key(keyInfo: model.keyInfo["1"]!, model: model, size: keySize)
-                Key(keyInfo: model.keyInfo["2"]!, model: model, size: keySize)
-                Key(keyInfo: model.keyInfo["3"]!, model: model, size: keySize)
-                Key(keyInfo: model.keyInfo["+"]!, model: model, size: keySize)
+                KeyPrep(symbol: "1", model: model, keySize: keySize)
+                KeyPrep(symbol: "2", model: model, keySize: keySize)
+                KeyPrep(symbol: "3", model: model, keySize: keySize)
+                KeyPrep(symbol: "+", model: model, keySize: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                Key(keyInfo: model.keyInfo["0"]!, model: model, size: doubleKeySize)
-                Key(keyInfo: model.keyInfo[","]!, model: model, size: keySize)
-                Key(keyInfo: model.keyInfo["="]!, model: model, size: keySize)
+                KeyPrep(symbol: "0", model: model, keySize: doubleKeySize)
+                KeyPrep(symbol: ",", model: model, keySize: keySize)
+                KeyPrep(symbol: "=", model: model, keySize: keySize)
             }
         }
     }

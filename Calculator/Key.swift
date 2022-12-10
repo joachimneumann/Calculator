@@ -9,13 +9,13 @@ import SwiftUI
 
 struct Key: View {
     @ObservedObject var keyInfo: Model.KeyInfo
-    var model: Model
+    var callback: () -> ()
     let size: CGSize
 
     @State var tapped: Bool = false
 
     var body: some View {
-        // let _ = print("Key body \(keyInfo.symbol) with color \(tapped ? keyInfo.colors.downColor : keyInfo.colors.upColor)")
+        let _ = print("Key body \(keyInfo.symbol) enabled \(keyInfo.enabled)")
         ZStack {
             Label(keyInfo: keyInfo, height: size.height)
                 .font(.largeTitle)
@@ -23,21 +23,21 @@ struct Key: View {
                 .foregroundColor(Color(uiColor: keyInfo.colors.textColor))
                 .background(Color(uiColor: tapped ? (keyInfo.enabled ? keyInfo.colors.downColor : C.disabledColor) : keyInfo.colors.upColor))
                 .clipShape(Capsule())
-                .onTouchGesture(tapped: $tapped, keyInfo: keyInfo, model: model)
+                .onTouchGesture(tapped: $tapped, symbol: keyInfo.symbol, callback: callback)
         }
     }
 }
 
 extension View {
-    func onTouchGesture(tapped: Binding<Bool>, keyInfo: Model.KeyInfo, model: Model) -> some View {
-        modifier(OnTouchGestureModifier(tapped: tapped, keyInfo: keyInfo, model: model))
+    func onTouchGesture(tapped: Binding<Bool>, symbol: String, callback: @escaping () -> ()) -> some View {
+        modifier(OnTouchGestureModifier(tapped: tapped, symbol: symbol, callback: callback))
     }
 }
 
 private struct OnTouchGestureModifier: ViewModifier {
     @Binding var tapped: Bool
-    let keyInfo: Model.KeyInfo
-    let model: Model
+    let symbol: String
+    let callback: () -> ()
 
     @State var downAnimationFinished = false
     @State var upHasHappended = false
@@ -51,16 +51,14 @@ private struct OnTouchGestureModifier: ViewModifier {
             .simultaneousGesture(DragGesture(minimumDistance: 0)
                 .onChanged { _ in
                     if !self.tapped {
-                        keyInfo.enabled = model.enabledDict[keyInfo.symbol]! /// this activated the red button background for disabled button
-                        if keyInfo.enabled {
-                            if keyInfo.symbol == "plusKey" {
-                                withAnimation(.easeIn(duration: upTime)) {
-                                    model.pressed(keyInfo.symbol)
-                                }
-                            } else {
-                                model.pressed(keyInfo.symbol)
+                        if symbol == "plusKey" {
+                            withAnimation(.easeIn(duration: upTime)) {
+                                callback()
                             }
-                        } /// disabled buttons do not work (but their background color is animated)
+                        } else {
+                            callback()
+                        }
+                        /// disabled buttons do not work (but their background color is animated)
 
                         upHasHappended = false
                         //print("self.tapped \(self.tapped)")

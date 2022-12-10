@@ -25,7 +25,7 @@ struct PlusKey: View {
             .foregroundColor(Color(uiColor: tapped ? (enabled ? keyInfo.colors.downColor : C.disabledColor) : keyInfo.colors.upColor))
             .background(Color(uiColor: keyInfo.colors.textColor))
             .clipShape(Capsule())
-            .onTouchGesture(tapped: $tapped, keyInfo: keyInfo, model: model)
+            .onTouchGesture(tapped: $tapped, symbol: keyInfo.symbol, callback: {})
     }
 }
 

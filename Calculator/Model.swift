@@ -12,7 +12,7 @@ class Model : ObservableObject {
     class KeyInfo: ObservableObject {
         let symbol: String
         @Published var colors: ColorsOf
-        @Published var enabled = true
+        var enabled = true
         init(symbol: String, colors: ColorsOf) {
             self.symbol = symbol
             self.colors = colors
@@ -20,32 +20,11 @@ class Model : ObservableObject {
     }
     
     @Published var _2ndActive = false
-    @Published var isCalculating = false {
-        didSet {
-            for key in C.allKeys {
-                if isCalculating {
-                    enabledDict[key] = false
-                } else {
-                    if brain.isValidNumber {
-                        enabledDict[key] = true
-                    } else {
-                        if C.requireValidNumber.contains(key) {
-                            enabledDict[key] = false
-                        } else {
-                            enabledDict[key] = true
-                        }
-                    }
-                    // check mr
-                    enabledDict["mr"] = Model.memoryValue == ""
-                }
-            }
-        }
-    }
+    @Published var isCalculating = false
     @Published var zoomed = false
     
     private let brain: Brain
     @Published var keyInfo: [String: KeyInfo] = [:]
-    var enabledDict: [String: Bool] = [:]
     var _AC = true
     @Published var _hasBeenReset = false
     @Published var displayData: DisplayData
@@ -85,7 +64,6 @@ class Model : ObservableObject {
         displayData = DisplayData(shortLeft: "0", shortRight: nil, shortAbbreviated: false, longLeft: "0", longRight: nil, longAbbreviated: false)
         for key in C.allKeys {
             keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))
-            enabledDict[key] = true
         }
         brain.haveResultCallback = haveResultCallback
         brain.pendingOperatorCallback = pendingOperatorCallback
@@ -115,6 +93,21 @@ class Model : ObservableObject {
         DispatchQueue.main.async {
             self.displayData = temp
         }
+        
+        for key in C.allKeys {
+            if brain.isValidNumber {
+                keyInfo[key]!.enabled = true
+            } else {
+                if C.requireValidNumber.contains(key) {
+                    keyInfo[key]!.enabled = false
+                } else {
+                    keyInfo[key]!.enabled = true
+                }
+            }
+        }
+
+        // check mr
+        keyInfo["mr"]!.enabled = Model.memoryValue == ""
     }
     
     private var previous: String? = nil
@@ -143,9 +136,19 @@ class Model : ObservableObject {
             }
         }
         previous = op
+//        DispatchQueue.main.async {
+//            print("p color / \(self.keyInfo["/"]!.colors.upColor)")
+//            print("p color x \(self.keyInfo["x"]!.colors.upColor)")
+//            print("p color - \(self.keyInfo["-"]!.colors.upColor)")
+//            print("p color + \(self.keyInfo["+"]!.colors.upColor)")
+//        }
     }
     
     func pressed(_ _symbol: String) {
+//        print("color / \(keyInfo["/"]!.colors.upColor)")
+//        print("color x \(keyInfo["x"]!.colors.upColor)")
+//        print("color - \(keyInfo["-"]!.colors.upColor)")
+//        print("color + \(keyInfo["+"]!.colors.upColor)")
         let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(_symbol) && !Model._rad ? _symbol+"D" : _symbol
         
         switch symbol {
