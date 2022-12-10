@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct PortraitDisplay: View {
-    let text: String
-    let isAbbreviated: Bool
+    let displayData: DisplayData
+    let fullLength: Bool
     let smallFont: Font
     let largeFont: Font
     let fontScaleFactor: CGFloat
@@ -20,10 +20,10 @@ struct PortraitDisplay: View {
             HStack(alignment: .top, spacing: 0.0) {
                 HStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    Text(text)
+                    Text(displayData.short)
                 }
-                .font(isAbbreviated ? smallFont : largeFont)
-                .minimumScaleFactor(1.0 / (isAbbreviated ? 1.0 : fontScaleFactor))
+                .font(fullLength ? smallFont : largeFont)
+                .minimumScaleFactor(1.0 / (fullLength ? 1.0 : fontScaleFactor))
                 .foregroundColor(.white)
                 .lineLimit(1)
                 .frame(maxHeight: .infinity, alignment: .bottomTrailing)

@@ -54,7 +54,7 @@ struct Settings: View {
     @ObservedObject var stopWatch = StopWatch()
     
     var body: some View {
-        let bitsInfo = Gmp.bits(for: model.precision)
+        let bitsInfo = Gmp.bits(for: Model.precision)
         let internalPrecisionInfo = Gmp.precisionCorrespondingTo(bits: bitsInfo)
         Rectangle()
             .background(Color.black)
@@ -64,25 +64,25 @@ struct Settings: View {
                         HStack {
                             Text("Precision:")
                             ColoredStepper(
-                                plusEnabled: !stopWatch.isRunning && Double(model.precision) < PHYSICAL_MEMORY * 0.1,
-                                minusEnabled: !stopWatch.isRunning && model.precision > MIN_PRECISION,
+                                plusEnabled: !stopWatch.isRunning && Double(Model.precision) < PHYSICAL_MEMORY * 0.1,
+                                minusEnabled: !stopWatch.isRunning && Model.precision > MIN_PRECISION,
                                 onIncrement: {
                                     DispatchQueue.main.async {
-                                        model.precision = increase(model.precision)
+                                        Model.precision = increase(Model.precision)
                                     }
                                 },
                                 onDecrement: {
                                     DispatchQueue.main.async {
-                                        model.precision = decrease(model.precision)
-                                        if model.longDisplayMax > model.precision {
-                                            model.longDisplayMax = model.precision
+                                        Model.precision = decrease(Model.precision)
+                                        if Model.longDisplayMax > Model.precision {
+                                            Model.longDisplayMax = Model.precision
                                         }
                                     }
                                 })
                             .padding(.horizontal, 4)
                             HStack {
-                                Text("\(model.precision.useWords) significant digits")
-                                if Double(model.precision) >= PHYSICAL_MEMORY * 0.1 {
+                                Text("\(Model.precision.useWords) significant digits")
+                                if Double(Model.precision) >= PHYSICAL_MEMORY * 0.1 {
                                     Text("(memory limit reached)")
                                 }
                             }
@@ -108,7 +108,7 @@ struct Settings: View {
                                         DispatchQueue.main.async {
                                             measureButtonText = ""
                                         }
-                                        let result = await model.speedTest(precision: model.precision)
+                                        let result = await model.speedTest(precision: Model.precision)
                                         self.stopWatch.stop()
                                         DispatchQueue.main.async {
                                             measureButtonText = result.asTime
@@ -133,20 +133,20 @@ struct Settings: View {
                         HStack {
                             Text("Max length of display:")
                             ColoredStepper(
-                                plusEnabled: !stopWatch.isRunning && model.longDisplayMax < model.precision && model.longDisplayMax < MAX_DISPLAY_LENGTH,
-                                minusEnabled: !stopWatch.isRunning && model.longDisplayMax > 10,
+                                plusEnabled: !stopWatch.isRunning && Model.longDisplayMax < Model.precision && Model.longDisplayMax < MAX_DISPLAY_LENGTH,
+                                minusEnabled: !stopWatch.isRunning && Model.longDisplayMax > 10,
                                 onIncrement: {
                                     DispatchQueue.main.async {
-                                        model.longDisplayMax = increase(model.longDisplayMax)
+                                        Model.longDisplayMax = increase(Model.longDisplayMax)
                                     }
                                 },
                                 onDecrement: {
                                     DispatchQueue.main.async {
-                                        model.longDisplayMax = decrease(model.longDisplayMax)
+                                        Model.longDisplayMax = decrease(Model.longDisplayMax)
                                     }
                                 })
                             .padding(.horizontal, 4)
-                            Text("\(model.longDisplayMax.useWords) digits")
+                            Text("\(Model.longDisplayMax.useWords) digits")
                         }
                         
                         if copyAndPastePurchased {
@@ -170,7 +170,7 @@ struct Settings: View {
                         }
                         HStack(spacing: 0.0) {
                             Text("Force scientific display")
-                            Toggle("", isOn: model.$forceScientific)
+                            Toggle("", isOn: Model.$forceScientific)
                                 .foregroundColor(Color.green)
                                 .toggleStyle(
                                     ColoredToggleStyle(onColor: Color(uiColor: UIColor(white: 0.6, alpha: 1.0)),
@@ -187,12 +187,6 @@ struct Settings: View {
                     }
                     //                        .background(Color.yellow)
                     .foregroundColor(Color.white)
-                }
-                .onAppear() {
-                    AppDelegate.forceLandscape = true
-                }
-                .onDisappear() {
-                    AppDelegate.forceLandscape = false
                 }
             }
     }

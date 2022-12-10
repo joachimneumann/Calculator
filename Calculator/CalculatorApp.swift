@@ -46,7 +46,7 @@ struct CalculatorApp: App {
                 let displayTrailingOffset = isPortrait ? 0.0 : oneKeyWidth * 0.7
                 let displayBottomOffset = isPortrait ? newHeight - keyboardSize.height - keyboardPaddingBottom - oneKeyheight * 1.2 : 0.00
                 let _ = (model.displayWidth = newWidth - displayTrailingOffset)
-                let _ = (model.lengthMeasurementResult =
+                let _ = (model.lengths =
                          lengthMeasurement(
                             size: CGSize(width: model.displayWidth, height: newHeight),
                             fontSize: singleLineFontSize,

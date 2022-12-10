@@ -8,12 +8,15 @@
 import Foundation
 
 
-struct MultipleLiner {
-    var left: String
-    var right: String? = nil
-    var abbreviated: Bool // show a message that there is more?
-    var asOneLine: String {
-        left + (right != nil ? right! : "")
+struct DisplayData {
+    var shortLeft: String
+    var shortRight: String?
+    var shortAbbreviated: Bool // show a message that there is more?
+    var longLeft: String
+    var longRight: String?
+    var longAbbreviated: Bool // show a message that there is more?
+    var short : String {
+        shortLeft + (shortRight != nil ? shortRight! : "")
     }
 }
 
@@ -25,7 +28,7 @@ class Number: CustomDebugStringConvertible {
     var isStr: Bool { _str != nil }
     var str: String? { return _str }
     var gmp: Gmp? { return _gmp }
-    var multipleLines: MultipleLiner?
+    var displayData: DisplayData?
     
     var isNull: Bool {
         if isStr {
@@ -134,31 +137,31 @@ class Number: CustomDebugStringConvertible {
         }
     }
     
-//    func multipleLiner(length: Int) -> MultipleLiner {
-//        var ret = MultipleLiner(left: "0", abreviated: false)
-//        guard let multipleLinerStr = str, multipleLinerStr.count <= length else {
-//            return ret
-//        }
-//        ret.left = multipleLinerStr
-//        return ret
-//    }
-
-    func multipleLines(_ lengthMeasurementResult: LengthMeasurementResult, forceScientific: Bool = false) -> MultipleLiner {
-        var ret = MultipleLiner(left: "0", abbreviated: false)
-        ret.abbreviated = false
+    struct LR {
+        var left: String
+        var right: String?
+        var abbreviated: Bool
+    }
+    
+    func getDisplayData(_ lengths: Lengths, forceScientific: Bool, longDisplayLength: Int) -> DisplayData {
+        var ret = DisplayData(
+            shortLeft: "0",
+            shortRight: nil,
+            shortAbbreviated: false,
+            longLeft: "0",
+            longRight: nil,
+            longAbbreviated: false)
         if !forceScientific {
             if let s = str {
-                if s.contains(",") {
-                    if s.count <= lengthMeasurementResult.withCommaNonScientific {
-                        ret.left = s
+                if s.count <= lengths.withoutComma ||
+                (s.contains(",") && s.count <= lengths.withCommaNonScientific) {
+                        ret.shortLeft = s
+                        ret.shortRight = nil
+                        ret.shortAbbreviated = false
+                        ret.longLeft = ret.shortLeft
+                        ret.longRight = nil
+                        ret.longAbbreviated = false
                         return ret
-                    }
-                } else {
-                    /// no comma
-                    if s.count <= lengthMeasurementResult.withoutComma {
-                        ret.left = s
-                        return ret
-                    }
                 }
             }
         }
@@ -170,25 +173,73 @@ class Number: CustomDebugStringConvertible {
         } else {
             displayGmp = Gmp(str!, precision: _precision)
         }
+        
         if displayGmp.NaN {
-            ret.left = "not a number"
+            ret.shortLeft = "not a number"
+            ret.shortRight = nil
+            ret.shortAbbreviated = false
+            ret.longLeft = ret.shortLeft
+            ret.longRight = nil
+            ret.longAbbreviated = false
             return ret
         }
         if displayGmp.inf {
-            ret.left = "too large"
+            ret.shortLeft = "too large"
+            ret.shortRight = nil
+            ret.shortAbbreviated = false
+            ret.longLeft = ret.shortLeft
+            ret.longRight = nil
+            ret.longAbbreviated = false
             return ret
         }
         
         if !forceScientific && displayGmp.isZero {
-            ret.left = "0"
+            ret.shortLeft = "0"
+            ret.shortRight = nil
+            ret.shortAbbreviated = false
+            ret.longLeft = ret.shortLeft
+            ret.longRight = nil
+            ret.longAbbreviated = false
             return ret
         }
         
-        let res = displayGmp.mantissaExponent(len: lengthMeasurementResult.withCommaNonScientific)
+        let mantissaExponent = displayGmp.mantissaExponent(len: lengths.withCommaNonScientific)
 
-        var mantissa = res.mantissa
-        var exponent = res.exponent
-        
+        let lrShort = process(
+            mantissa: mantissaExponent.mantissa,
+            exponent: mantissaExponent.exponent,
+            withoutComma_ : lengths.withoutComma,
+            withCommaNonScientific_ : lengths.withCommaNonScientific,
+            withCommaScientific_: lengths.withCommaScientific,
+            forceScientific_: forceScientific)
+        let lrLong = process(
+            mantissa: mantissaExponent.mantissa,
+            exponent: mantissaExponent.exponent,
+            withoutComma_ : min(_precision, longDisplayLength),
+            withCommaNonScientific_ : min(_precision, longDisplayLength),
+            withCommaScientific_: min(_precision, longDisplayLength),
+            forceScientific_: forceScientific)
+        return DisplayData(
+            shortLeft: lrShort.left,
+            shortRight: lrShort.right,
+            shortAbbreviated: lrShort.abbreviated,
+            longLeft: lrLong.left,
+            longRight: lrLong.right,
+            longAbbreviated: lrLong.abbreviated)
+    }
+    
+    func process(
+        mantissa: String,
+        exponent: Int,
+        withoutComma_: Int,
+        withCommaNonScientific_: Int,
+        withCommaScientific_: Int,
+        forceScientific_ : Bool
+    ) -> LR {
+        var mantissa = mantissa
+        var exponent = exponent
+        var lr = LR(left: "0", right: nil, abbreviated: false)
+        let forceScientific = forceScientific_
         if mantissa == "" {
             mantissa = "0"
         } else {
@@ -203,14 +254,14 @@ class Number: CustomDebugStringConvertible {
         if mantissa.first == "-" {
             mantissa.removeFirst()
             isNegative = true
-            withoutComma           = lengthMeasurementResult.withoutComma - 1
-            withCommaNonScientific = lengthMeasurementResult.withCommaNonScientific - 1
-            withCommaScientific    = lengthMeasurementResult.withCommaScientific - 1
+            withoutComma           = withoutComma_ - 1
+            withCommaNonScientific = withCommaNonScientific_ - 1
+            withCommaScientific    = withCommaScientific_ - 1
         } else {
             isNegative = false
-            withoutComma = lengthMeasurementResult.withoutComma
-            withCommaNonScientific = lengthMeasurementResult.withCommaNonScientific
-            withCommaScientific    = lengthMeasurementResult.withCommaScientific
+            withoutComma           = withoutComma_
+            withCommaNonScientific = withCommaNonScientific_
+            withCommaScientific    = withCommaScientific_
         }
 
         /// Can be displayed as Integer?
@@ -220,8 +271,8 @@ class Number: CustomDebugStringConvertible {
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
             // print(mantissa)
             if mantissa.count <= withoutComma {
-                ret.left = (isNegative ? "-" : "") + mantissa
-                return ret
+                lr.left = (isNegative ? "-" : "") + mantissa
+                return lr
             }
         }
         
@@ -231,15 +282,15 @@ class Number: CustomDebugStringConvertible {
                 var floatString = mantissa
                 let index = floatString.index(floatString.startIndex, offsetBy: exponent+1)
                 floatString.insert(",", at: index)
-                ret.left = floatString
+                lr.left = floatString
                 if floatString.count <= withCommaNonScientific {
-                    ret.left = floatString
+                    lr.left = floatString
                 } else {
-                    ret.left = String(floatString.prefix(withCommaNonScientific))
-                    ret.abbreviated = true
+                    lr.left = String(floatString.prefix(withCommaNonScientific))
+                    lr.abbreviated = true
                 }
-                if isNegative { ret.left = "-" + ret.left }
-                return ret
+                if isNegative { lr.left = "-" + lr.left }
+                return lr
             }
         }
         
@@ -252,36 +303,37 @@ class Number: CustomDebugStringConvertible {
                 }
                 floatString = "0," + floatString
                 if floatString.count <= withCommaNonScientific {
-                    ret.left = floatString
+                    lr.left = floatString
                 } else {
-                    ret.left = String(floatString.prefix(withCommaNonScientific))
-                    ret.abbreviated = true
+                    lr.left = String(floatString.prefix(withCommaNonScientific))
+                    lr.abbreviated = true
                 }
-                if isNegative { ret.left = "-" + ret.left }
-                return ret
+                if isNegative { lr.left = "-" + lr.left }
+                return lr
             }
         }
 
         /// needs to be displayed in scientific notation
-        ret.right = "e\(exponent)"
+        lr.right = "e\(exponent)"
         let indexOne = mantissa.index(mantissa.startIndex, offsetBy: 1)
         mantissa.insert(",", at: indexOne)
         if mantissa.count <= 2 { mantissa += "0" } /// e.g. 1e16 -> 1,e16 -> 1,0e16
-        if mantissa.count + ret.right!.count > withCommaScientific {
+        if mantissa.count + lr.right!.count > withCommaScientific {
             /// Do I need to shorten the mantissa to fit into the display?
-            let remainingMantissaLength = withCommaScientific - ret.right!.count
+            let remainingMantissaLength = withCommaScientific - lr.right!.count
             if remainingMantissaLength < 3 {
-                ret.left = "too large"
-                ret.right = nil
-                return ret
+                lr.left = "too large"
+                lr.right = nil
+                lr.abbreviated = false
+                return lr
             } else {
                 /// shorten...
-                mantissa = String(mantissa.prefix(withCommaScientific - ret.right!.count))
-                ret.abbreviated = true
+                mantissa = String(mantissa.prefix(withCommaScientific - lr.right!.count))
+                lr.abbreviated = true
             }
         }
-        ret.left = mantissa
-        if isNegative { ret.left = "-" + ret.left }
-        return ret
+        lr.left = mantissa
+        if isNegative { lr.left = "-" + lr.left }
+        return lr
     }
 }

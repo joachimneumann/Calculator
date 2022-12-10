@@ -31,10 +31,12 @@ struct Calculator: View {
                 .overlay() {
                     VStack(spacing: 0.0) {
                         if isPortrait {
-                            let text = model.oneLineP.asOneLine
+                            let todo_exponent_in_portrait = 0
+                            let ePadding_in_portrait = 0
                             PortraitDisplay(
-                                text: text,
-                                isAbbreviated: false,
+                                displayData: model.displayData,
+                                fullLength: model.displayData.short.count == model.lengths.withoutComma,
+                                //ePadding: model.lengths.ePadding,
                                 smallFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
                                 largeFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * 1.5, weight: .thin)),
                                 fontScaleFactor: 1.5,
@@ -44,17 +46,10 @@ struct Calculator: View {
                             //                        .offset(y: displayYOffset)
                         } else {
                             HStack(spacing: 0.0) {
-                                let multipleLines: MultipleLiner? = model.zoomed ? model.multipleLines : nil
-                                let left = model.zoomed ? multipleLines!.left : model.oneLineP.left
-                                let right: String? = model.zoomed ? multipleLines!.right : model.oneLineP.right
-                                let abbreviated = model.zoomed ? multipleLines!.abbreviated : model.oneLineP.abbreviated
-                                let ePadding = model.lengthMeasurementResult.ePadding
                                 LongDisplay(
                                     zoomed: model.zoomed,
-                                    mantissa: left,
-                                    exponent: right,
-                                    ePadding: ePadding,
-                                    abbreviated: abbreviated,
+                                    displayData: model.displayData,
+                                    ePadding: model.lengths.ePadding,
                                     font: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
                                     isCopyingOrPasting: false,
                                     precisionString: "model.precision.useWords",
@@ -77,7 +72,7 @@ struct Calculator: View {
                             Spacer(minLength: 0.0)
                             let size = keyboardSize.height * 0.13
                             VStack(spacing: 0.0) {
-                                let _ = print("model.isCalculating \(model.isCalculating)")
+                                //let _ = print("model.isCalculating \(model.isCalculating)")
                                 if model.isCalculating {
                                     AnimatedDots(color: .gray)
                                         .padding(.top, size * 0.55)
@@ -133,13 +128,13 @@ struct Calculator: View {
                 .background(Color.black)
                 .onAppear() {
                     /// executed when returning from the settings screen
-                    Task {
-                        model.isCalculating = true
-                        await model.updatePrecision()    /// updates the precision in the NumberStack
-                        model.haveResultCallback() /// redraws the display
-                        model.isCalculating = false
-                        print("Calculator onAppear, updatePrecision done")
-                    }
+//                    Task {
+//                        model.isCalculating = true
+//                        await model.updatePrecision()    /// updates the precision in the NumberStack
+//                        model.haveResultCallback() /// redraws the display
+//                        model.isCalculating = false
+//                        print("Calculator onAppear, updatePrecision done")
+//                    }
                 }
         }
         .accentColor(.white) // for the navigation back button

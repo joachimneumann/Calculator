@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct LengthMeasurementResult {
+struct Lengths {
     let withoutComma: Int
     let withCommaNonScientific: Int
     let withCommaScientific: Int
     let ePadding: CGFloat
 }
 
-func lengthMeasurement(size: CGSize, fontSize: CGFloat, ePadding: CGFloat) -> LengthMeasurementResult {
+func lengthMeasurement(size: CGSize, fontSize: CGFloat, ePadding: CGFloat) -> Lengths {
     let uiFont = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: .thin)
     var s = ""
     var w = s.length(for: uiFont)
@@ -41,7 +41,7 @@ func lengthMeasurement(size: CGSize, fontSize: CGFloat, ePadding: CGFloat) -> Le
     }
     let withCommaScientific = s.count - 1
     
-    let result = LengthMeasurementResult(
+    let result = Lengths(
         withoutComma: withoutComma,
         withCommaNonScientific: withCommaNonScientific,
         withCommaScientific: withCommaScientific,

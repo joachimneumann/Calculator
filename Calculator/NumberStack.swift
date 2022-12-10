@@ -22,17 +22,17 @@ struct NumberStack: CustomDebugStringConvertible {
     
     mutating func updatePrecision(from oldPrecision: Int, to newPrecision: Int) {
         let stringPrecision = min(newPrecision, oldPrecision)
-        let lengths = LengthMeasurementResult(
+        let lengths = Lengths(
             withoutComma: stringPrecision,
             withCommaNonScientific: stringPrecision,
             withCommaScientific: stringPrecision,
             ePadding: 0)
-        for index in 0..<array.count {
-            let old = array[index]
-            let oldString = old.multipleLines(lengths).asOneLine
-            let newGmp = Gmp(oldString, precision: newPrecision)
-            array[index] = Number(newGmp)
-        }
+//        for index in 0..<array.count {
+//            let old = array[index]
+//            let oldString = old.multipleLines(lengths, forceScientific: true, longDisplayLength: 100).asOneLine
+//            let newGmp = Gmp(oldString, precision: newPrecision)
+//            array[index] = Number(newGmp)
+//        }
     }
 
     mutating func replaceLast(with number: Number) {

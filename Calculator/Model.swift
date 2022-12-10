@@ -49,31 +49,24 @@ class Model : ObservableObject {
     var enabledDict: [String: Bool] = [:]
     var _AC = true
     @Published var _hasBeenReset = false
-    @Published var oneLineP: MultipleLiner
-    var multipleLines: MultipleLiner {
-        let len = min(precision, longDisplayMax)
-        let lengthMeasurementResult = LengthMeasurementResult(
-            withoutComma: len, withCommaNonScientific: len, withCommaScientific: len, ePadding: 0)
-        return brain.last.multipleLines(lengthMeasurementResult, forceScientific: forceScientific)
-    }
+    @Published var displayData: DisplayData = DisplayData(shortLeft: "0", shortRight: nil, shortAbbreviated: false, longLeft: "0", longRight: nil, longAbbreviated: false)
     
     var precisionDescription = "unknown"
     
-    var lengthMeasurementResult = LengthMeasurementResult(withoutComma: 0, withCommaNonScientific: 0, withCommaScientific: 0, ePadding: 0)
-    
-    @AppStorage("precision", store: .standard) var precision: Int = 100
-    @AppStorage("longDisplayMax", store: .standard) var longDisplayMax: Int = 100
-    @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
-    @AppStorage("memoryValue", store: .standard) var memoryValue: String = ""
+    var lengths = Lengths(withoutComma: 0, withCommaNonScientific: 0, withCommaScientific: 0, ePadding: 0)
+    @AppStorage("precision", store: .standard) static var precision: Int = 100
+    @AppStorage("longDisplayMax", store: .standard) static var longDisplayMax: Int = 100
+    @AppStorage("forceScientific", store: .standard) static var forceScientific: Bool = false
+    @AppStorage("memoryValue", store: .standard) static var memoryValue: String = ""
 
     // the update of the precision in brain can be slow.
     // Therefore, I only want to do that when leaving the settings screen
     func updatePrecision() async {
-        brain.setPrecision(precision)
+        brain.setPrecision(Model.precision)
     }
     
     func speedTest(precision: Int) async -> Double {
-        let testBrain = Brain()
+        let testBrain = Brain(precision: precision)
         testBrain.setPrecision(precision)
         
         testBrain.operation("AC")
@@ -87,8 +80,8 @@ class Model : ObservableObject {
     }
     
     init() {
-        brain = Brain()
-        oneLineP = MultipleLiner(left: "0", abbreviated: false)
+        brain = Brain(precision: Model.precision)
+        displayData = DisplayData(shortLeft: "0", shortRight: nil, shortAbbreviated: false, longLeft: "0", longRight: nil, longAbbreviated: false)
         for key in C.allKeys {
             keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))
             enabledDict[key] = true
@@ -96,26 +89,27 @@ class Model : ObservableObject {
         brain.haveResultCallback = haveResultCallback
         brain.pendingOperatorCallback = pendingOperatorCallback
         
-        brain.setPrecision(precision)
-        if memoryValue != "" {
-            brain.memory = Gmp(memoryValue, precision: precision)
-        }
-        isCalculating = false // sets enabledDict (after setting memory!)
+//        brain.setPrecision(precision)
+//        if memoryValue != "" {
+//            brain.memory = Gmp(memoryValue, precision: precision)
+//        }
+//        isCalculating = false // sets enabledDict (after setting memory!)
     }
     
     func haveResultCallback() {
         if brain.last.isNull {
             DispatchQueue.main.async {
                 self._AC = true
-                self.precisionDescription = self.precision.useWords
+                self.precisionDescription = Model.precision.useWords
             }
         } else {
             DispatchQueue.main.async {
                 self._AC = false
             }
         }
+        let temp = self.brain.last.getDisplayData(self.lengths, forceScientific: Model.forceScientific, longDisplayLength: Model.longDisplayMax)
         DispatchQueue.main.async {
-            self.oneLineP = self.brain.last.multipleLines(self.lengthMeasurementResult, forceScientific: self.forceScientific)
+            self.displayData = temp
         }
     }
     
@@ -171,13 +165,13 @@ class Model : ObservableObject {
                 await asyncOperation(symbol)
                 if ["mc", "m+", "m-"].contains(symbol) {
                     if let memory = brain.memory {
-                        let lengths = LengthMeasurementResult(withoutComma: precision, withCommaNonScientific: precision, withCommaScientific: precision, ePadding: 0)
-                        DispatchQueue.main.sync {
-                            memoryValue = Number(memory).multipleLines(lengths).asOneLine
-                        }
+                        let lengths = Lengths(withoutComma: Model.precision, withCommaNonScientific: Model.precision, withCommaScientific: Model.precision, ePadding: 0)
+//                        DispatchQueue.main.sync {
+//                            memoryValue = Number(memory).multipleLines(lengths).asOneLine
+//                        }
                     } else {
                         DispatchQueue.main.sync {
-                            memoryValue = ""
+                            Model.memoryValue = ""
                         }
                     }
                 }

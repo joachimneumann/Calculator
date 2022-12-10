@@ -9,10 +9,11 @@ import SwiftUI
 
 struct LongDisplay: View {
     let zoomed: Bool
-    let mantissa: String
-    let exponent: String?
+    let displayData: DisplayData
+//    let mantissa: String
+//    let exponent: String?
     let ePadding: CGFloat
-    let abbreviated: Bool
+//    let abbreviated: Bool
     let font: Font
     let isCopyingOrPasting: Bool
     let precisionString: String
@@ -30,11 +31,11 @@ struct LongDisplay: View {
                     HStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
                         ScrollView(.vertical) {
-                            Text(mantissa)
+                            Text(displayData.longLeft)
                         }
-                        if exponent != nil {
+                        if displayData.longRight != nil {
                             VStack(spacing: 0.0) {
-                                Text(exponent!)
+                                Text(displayData.longRight!)
                                     .padding(.leading, ePadding)
                                     .padding(.trailing, 0.0)
                                 Spacer(minLength: 0.0)
@@ -51,7 +52,8 @@ struct LongDisplay: View {
                 } else {
                     HStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
-                        Text(mantissa)
+                        Text(zoomed ? displayData.shortLeft : displayData.longLeft)
+                        let exponent = zoomed ? displayData.shortRight : displayData.longRight
                         if exponent != nil {
                             Text(exponent!)
                                 .padding(.leading, ePadding)

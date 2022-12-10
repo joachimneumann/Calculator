@@ -249,7 +249,8 @@ class Brain {
         }
     }
     
-    init() {
+    init(precision: Int) {
+        self.precision = precision
         operation("AC")
 //        var precision = 3200*1024*1024
 //        var x = Gmp("0", bits: 100)
