@@ -11,7 +11,7 @@ class Brain {
     var n = NumberStack()
     private var operatorStack = OperatorStack()
     private(set) var precision: Int = 0
-    
+    var trigonometricToZero = true
     var last: Number { n.last }
 
     var debugLastAsDouble: Double { n.last.gmp!.toDouble() }
@@ -41,6 +41,7 @@ class Brain {
         return Number(Gmp(s, precision: precision))
     }
     let digitOperators: [String] = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    let trigonometricOperators = ["sin", "sinD", "cos", "cosD", "tan", "tanD"]
     let constantOperators: Dictionary <String, Inplace> = [
         "π":    Inplace(Gmp.π, 0),
         "e":    Inplace(Gmp.e, 0),
@@ -229,7 +230,16 @@ class Brain {
             }
             self.n.last.execute(op.operation)
         } else if let op = self.inplaceOperators[symbol] {
-            self.n.last.execute(op.operation)
+            n.last.execute(op.operation)
+            if trigonometricOperators.contains(symbol) {
+                if trigonometricToZero {
+                    let mantissaExponent = n.last.gmp!.mantissaExponent(len: 50)
+                    if mantissaExponent.exponent < -1 * precision {
+                        n.removeLast()
+                        n.append(nullNumber)
+                    }
+                }
+            }
         } else if let op = self.twoOperandOperators[symbol] {
             if twoOperandOperators.keys.contains(symbol) { self.pendingOperator = symbol }
             self.execute(priority: op.priority)

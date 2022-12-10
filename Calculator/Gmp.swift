@@ -16,7 +16,7 @@ func testMemory(size: Int) -> Bool {
     return testmalloc(size) == 1
 }
 
-class Gmp: Equatable {
+class Gmp: Equatable, CustomDebugStringConvertible {
     private var bits: Int
     
     /// init with zeros. The struct will be initialized correctly in init() with mpfr_init2()
@@ -39,6 +39,11 @@ class Gmp: Equatable {
     
     static func == (lhs: Gmp, rhs: Gmp) -> Bool {
         return mpfr_cmp(&lhs.mpfr, &rhs.mpfr) == 0
+    }
+
+    var debugDescription: String {
+        let mantissaExponent = mantissaExponent(len: 100)
+        return "\(mantissaExponent.mantissa) \(mantissaExponent.exponent)"
     }
 
     func isValidGmpString(_ s: String) -> Bool {
@@ -230,22 +235,20 @@ class Gmp: Equatable {
         mpfr_zero_p(&mpfr) != 0
     }
     
-    static func bits(for precision: Int) -> Int {
-        let internalPrecision: Int
+    static func internalPrecision(for precision: Int) -> Int {
         if precision <= 500 {
-            internalPrecision = 1000
+            return 1000
         } else if precision <= 10000 {
-            internalPrecision = 2 * precision
+            return 2 * precision
         } else if precision <= 100000 {
-            internalPrecision = Int(round(1.5*Double(precision)))
+            return Int(round(1.5*Double(precision)))
         } else {
-            internalPrecision = precision + 50000
+            return precision + 50000
         }
-        return Int(Double(internalPrecision) * 3.32192809489)
     }
     
-    static func precisionCorrespondingTo(bits: Int) -> Int {
-        Int(ceil(Double(bits) / 3.32192809489))
+    static func bits(for precision: Int) -> Int {
+        return Int(Double(internalPrecision(for: precision)) * 3.32192809489)
     }
     
     static func memorySize(bits: Int) -> Int {

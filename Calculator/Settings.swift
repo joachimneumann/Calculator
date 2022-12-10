@@ -41,7 +41,7 @@ struct Settings: View {
     
     var body: some View {
         let bitsInfo = Gmp.bits(for: settingsPrecision)
-        let internalPrecisionInfo = Gmp.precisionCorrespondingTo(bits: bitsInfo)
+        let internalPrecisionInfo = Gmp.internalPrecision(for: settingsPrecision)
         Rectangle()
             .background(Color.black)
             .overlay {
