@@ -52,8 +52,8 @@ struct LongDisplay: View {
                 } else {
                     HStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
-                        Text(zoomed ? displayData.shortLeft : displayData.longLeft)
-                        let exponent = zoomed ? displayData.shortRight : displayData.longRight
+                        Text(displayData.shortLeft)
+                        let exponent = displayData.shortRight
                         if exponent != nil {
                             Text(exponent!)
                                 .padding(.leading, ePadding)

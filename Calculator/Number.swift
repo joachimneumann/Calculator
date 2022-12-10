@@ -203,7 +203,7 @@ class Number: CustomDebugStringConvertible {
             return ret
         }
         
-        let mantissaExponent = displayGmp.mantissaExponent(len: lengths.withCommaNonScientific)
+        let mantissaExponent = displayGmp.mantissaExponent(len: Model.longDisplayMax)
 
         let lrShort = process(
             mantissa: mantissaExponent.mantissa,

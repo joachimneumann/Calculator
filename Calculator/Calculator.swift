@@ -52,7 +52,7 @@ struct Calculator: View {
                                     ePadding: model.lengths.ePadding,
                                     font: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
                                     isCopyingOrPasting: false,
-                                    precisionString: "model.precision.useWords",
+                                    precisionString: "Model.precision.useWords",
                                     displayWidth: model.displayWidth)
                                 .offset(x: -displayTrailingOffset, y: displayBottomOffset)
                                 //                        .background(Color.green).opacity(0.4)

@@ -49,7 +49,7 @@ class Model : ObservableObject {
     var enabledDict: [String: Bool] = [:]
     var _AC = true
     @Published var _hasBeenReset = false
-    @Published var displayData: DisplayData = DisplayData(shortLeft: "0", shortRight: nil, shortAbbreviated: false, longLeft: "0", longRight: nil, longAbbreviated: false)
+    @Published var displayData: DisplayData
     
     var precisionDescription = "unknown"
     
