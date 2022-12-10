@@ -90,9 +90,13 @@ struct Calculator: View {
                                         Text("copy")
                                             .foregroundColor(.white)
                                             .padding(.top, size * 0.5)
+                                            .frame(width: size, height: size)
+                                            .minimumScaleFactor(0.01)
                                         Text("paste")
                                             .foregroundColor(.white)
                                             .padding(.top, size * 0.5)
+                                            .frame(width: size, height: size)
+                                            .minimumScaleFactor(0.01)
                                     }
                                 }
                                 Spacer(minLength: 0.0)
