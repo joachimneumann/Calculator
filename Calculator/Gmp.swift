@@ -70,15 +70,11 @@ class Gmp: Equatable {
         var charArray: Array<CChar> = Array(repeating: 0, count: len)
         mpfr_get_str(&charArray, &exponent, 10, len, &mpfr, MPFR_RNDN)
         var mantissa: String = ""
-        for c in charArray {
-            if c != 0 {
-                let x1 = UInt8(c)
-                let x2 = UnicodeScalar(x1)
-                let x3 = String(x2)
-                mantissa += x3.withCString { String(format: "%s", $0) }
-            }
-        }
         
+        charArray.withUnsafeBufferPointer { ptr in
+            mantissa = String(cString: ptr.baseAddress!)
+        }
+
         var zeroCharacterSet = CharacterSet()
         zeroCharacterSet.insert(charactersIn: "0")
         mantissa = mantissa.trimmingCharacters(in: zeroCharacterSet)

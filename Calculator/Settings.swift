@@ -115,7 +115,7 @@ struct Settings: View {
                             }
                         }
                         if (settingsPrecision > Number.MAX_DISPLAY_LENGTH) {
-                            Text("Note: \(Number.MAX_DISPLAY_LENGTH) will be displayed, use copy to get all \(settingsPrecision.useWords) digits").italic()
+                            Text("Note: \(Number.MAX_DISPLAY_LENGTH) digits will be displayed, use copy to get all \(settingsPrecision.useWords) digits").italic()
                             .foregroundColor(.gray)
                         }
 
@@ -133,7 +133,7 @@ struct Settings: View {
                                 .padding(.leading, 20)
                             Spacer()
                         }
-                        .padding(.top, 10)
+                        .padding(.top, 20)
                         Spacer()
                     }
                     .foregroundColor(Color.white)
