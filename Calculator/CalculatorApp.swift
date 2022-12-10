@@ -51,6 +51,7 @@ struct CalculatorApp: App {
                             fontSize: singleLineFontSize,
                             ePadding: round(singleLineFontSize * (isPortrait ? 0.0 : 0.3))))
                 let _ = print("CalculatorApp init() size=\(geo.size) \(geo.safeAreaInsets.trailing) \(model.lengths.withoutComma)")
+                let _ = model.haveResultCallback()
 
                 Calculator(model: model,
                            isPad: isPad,

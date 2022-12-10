@@ -32,8 +32,7 @@ struct Calculator: View {
                 .overlay() {
                     VStack(spacing: 0.0) {
                         if isPortrait {
-                            let todo_exponent_in_portrait = 0
-                            let ePadding_in_portrait = 0
+                            let todo_exponent_with_epadding_in_portrait = 0
                             PortraitDisplay(
                                 displayData: model.displayData,
                                 fullLength: model.displayData.short.count == model.lengths.withoutComma,
@@ -123,7 +122,7 @@ struct Calculator: View {
                     .offset(y: (model.zoomed && !isPortrait) ? size.height : 0)
                 }
                 .onRotate { newOrientation in
-                    model.haveResultCallback()
+//                    model.haveResultCallback()
                     orientation = newOrientation
                 }
                 .background(Color.black)
