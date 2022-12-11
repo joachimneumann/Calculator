@@ -36,12 +36,14 @@ struct Settings: View {
     @State var settingsTrigonometricToZero = Model.trigonometricToZero
     @State private var measureButtonText = "measure"
     private let MIN_PRECISION      = 10
-    private let PHYSICAL_MEMORY = Double(ProcessInfo.processInfo.physicalMemory)
+    private let PHYSICAL_MEMORY = ProcessInfo.processInfo.physicalMemory
     @ObservedObject var stopWatch = StopWatch()
     
     var body: some View {
         let bitsInfo = Gmp.bits(for: settingsPrecision)
         let internalPrecisionInfo = Gmp.internalPrecision(for: settingsPrecision)
+        let sizeOfOneNumber = Gmp.memorySize(bits: bitsInfo)
+        let memoryNeeded = sizeOfOneNumber * 40
         Rectangle()
             .background(Color.black)
             .overlay {
@@ -50,7 +52,7 @@ struct Settings: View {
                         HStack {
                             Text("Precision:")
                             ColoredStepper(
-                                plusEnabled: !stopWatch.isRunning && Gmp.memorySize(bits: bitsInfo) < Int(PHYSICAL_MEMORY * 0.1),
+                                plusEnabled: !stopWatch.isRunning && memoryNeeded < PHYSICAL_MEMORY,
                                 minusEnabled: !stopWatch.isRunning && settingsPrecision > MIN_PRECISION,
                                 onIncrement: {
                                     DispatchQueue.main.async {
@@ -67,7 +69,7 @@ struct Settings: View {
                             .padding(.horizontal, 4)
                             HStack {
                                 Text("\(settingsPrecision.useWords) significant digits")
-                                if Gmp.memorySize(bits: bitsInfo) >= Int(PHYSICAL_MEMORY * 0.1) {
+                                if memoryNeeded >= PHYSICAL_MEMORY {
                                     Text("(memory limit reached)")
                                 }
                             }
@@ -81,7 +83,7 @@ struct Settings: View {
                             Text("Bits used in the gmp and mpfr libraries: \(bitsInfo)")
                             .padding(.bottom, 5)
                             .foregroundColor(.gray)
-                            Text("Memory size of one Number: \(Gmp.memorySize(bits: bitsInfo).asMemorySize)")
+                            Text("Memory size of one Number: \(sizeOfOneNumber.asMemorySize)")
                             .foregroundColor(.gray)
                             .padding(.bottom, -4)
                         HStack {
