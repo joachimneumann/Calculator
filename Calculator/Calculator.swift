@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct Calculator: View {
+    @StateObject var store = Store()
     @StateObject var model: Model
     let isPad: Bool
     var isPortrait: Bool
@@ -39,7 +40,8 @@ struct Calculator: View {
                 }
             
                 .overlay() { /// Icons
-                    Icons(model: model,
+                    Icons(store: store,
+                          model: model,
                           isPortrait: isPortrait,
                           height: keyboardSize.height,
                           isCalculating: model.isCalculating,
@@ -64,6 +66,9 @@ struct Calculator: View {
                 .background(Color.black)
         }
         .accentColor(.white) // for the navigation back button
+        .onAppear() {
+            store.fetchProducts()
+        }
     }
 }
 
@@ -114,11 +119,13 @@ struct Display: View {
 
 struct Icons : View {
     @Environment(\.scenePhase) var scenePhase
+    @ObservedObject var store: Store
     @ObservedObject var model: Model
     let isPortrait: Bool
     let height: CGFloat
     let isCalculating: Bool
     @State var pasteAllowedState: Bool = true
+    @State private var isShowingDetailView = false
     @Binding var isZoomed: Bool
     let keyInfo: Model.KeyInfo
     var body: some View {
@@ -127,7 +134,6 @@ struct Icons : View {
                 Spacer(minLength: 0.0)
                 let size = height * 0.13
                 VStack(spacing: 0.0) {
-                    //let _ = print("model.isCalculating \(model.isCalculating)")
                     if isCalculating {
                         AnimatedDots(color: .gray)
                             .padding(.top, size * 0.55)
@@ -149,30 +155,51 @@ struct Icons : View {
                             }
                             .padding(.top, size * 0.5)
                             Group {
-                                Button {
-                                    model.toPastBin()
-                                    DispatchQueue.main.async {
-                                        pasteAllowedState = true
-                                        print("1 \(pasteAllowedState)")
+                                if store.purchasedIDs.isEmpty {
+                                    NavigationLink {
+                                        PurchaseView(store: store)
+                                    } label: {
+                                        Text("copy")
+                                            .foregroundColor(.white)
                                     }
-                                } label: {
-                                    Text("copy")
-                                        .foregroundColor(.white)
+                                } else {
+                                    Button {
+                                        model.toPastBin()
+                                        DispatchQueue.main.async {
+                                            pasteAllowedState = true
+                                        }
+                                    } label: {
+                                        Text("copy")
+                                            .foregroundColor(.white)
+                                    }
                                 }
-                                Button {
-                                    DispatchQueue.main.async {
-                                        pasteAllowedState = model.checkIfPasteBinIsValidNumber()
-                                        print("2 \(pasteAllowedState)")
+
+                                if store.purchasedIDs.isEmpty {
+                                    NavigationLink {
+                                        PurchaseView(store: store)
+                                    } label: {
+                                        Text("copy")
+                                            .foregroundColor(.white)
                                     }
-                                    /// this logic postpones the diplay of the "allow paste" to the user until the user actually presses paste
-                                    if pasteAllowedState {
-                                        model.fromPastBin()
+                                } else {
+                                    Button {
+                                        if store.purchasedIDs.isEmpty {
+                                            
+                                        } else {
+                                            DispatchQueue.main.async {
+                                                pasteAllowedState = model.checkIfPasteBinIsValidNumber()
+                                            }
+                                            /// this logic postpones the diplay of the "allow paste" to the user until the user actually presses paste
+                                            if pasteAllowedState {
+                                                model.fromPastBin()
+                                            }
+                                        }
+                                    } label: {
+                                        Text("paste")
+                                            .foregroundColor(pasteAllowedState ? .white : .gray)
                                     }
-                                } label: {
-                                    Text("paste")
-                                        .foregroundColor(pasteAllowedState ? .white : .gray)
+                                    .disabled(!pasteAllowedState)
                                 }
-                                .disabled(!pasteAllowedState)
                             }
                             .padding(.top, size * 0.5)
                             .frame(width: size, height: size)

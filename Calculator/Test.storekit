@@ -1,0 +1,33 @@
+{
+  "identifier" : "0E73AC36",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "5.99",
+      "familyShareable" : false,
+      "internalID" : "2FB8047D",
+      "localizations" : [
+        {
+          "description" : "With copy you can access all digits",
+          "displayName" : "Copy & Paste",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "Calculator.copyPaste.test",
+      "referenceName" : null,
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 2,
+    "minor" : 0
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "identifier" : "4BD087E3",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "6445050484",
+      "localizations" : [
+        {
+          "description" : "With copy you can access all digits",
+          "displayName" : "Copy & Paste",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "Calculator.copyPaste",
+      "referenceName" : "Calculator.copyPaste",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "1118056690",
+    "_developerTeamID" : "8A4DL788W9",
+    "_lastSynchronizedDate" : 692440051.485654
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 2,
+    "minor" : 0
+  }
+}
