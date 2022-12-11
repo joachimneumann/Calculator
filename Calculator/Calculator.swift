@@ -83,7 +83,7 @@ struct Display: View {
                 PortraitDisplay(
                     displayData: displayData,
                     fullLength: displayData.short.count == lengths.withoutComma,
-                    //ePadding: model.lengths.ePadding,
+                    ePadding: lengths.ePadding,
                     smallFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
                     largeFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * 1.5, weight: .thin)),
                     fontScaleFactor: 1.5,

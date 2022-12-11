@@ -10,6 +10,7 @@ import SwiftUI
 struct PortraitDisplay: View {
     let displayData: DisplayData
     let fullLength: Bool
+    let ePadding: CGFloat
     let smallFont: Font
     let largeFont: Font
     let fontScaleFactor: CGFloat
@@ -17,18 +18,25 @@ struct PortraitDisplay: View {
     
     var body: some View {
         VStack(spacing: 0.0) {
-            HStack(alignment: .top, spacing: 0.0) {
-                HStack(spacing: 0.0) {
-                    Spacer(minLength: 0.0)
-                    Text(displayData.short)
+            HStack(spacing: 0.0) {
+                Spacer(minLength: 0.0)
+                //let _ = print("displayData.shortLeft \(displayData.shortLeft)")
+                if displayData.shortRight == nil {
+                    Text(displayData.shortLeft)
+                        .font(fullLength ? smallFont : largeFont)
+                        .minimumScaleFactor(1.0 / (fullLength ? 1.0 : fontScaleFactor))
+                } else {
+                    Text(displayData.shortLeft)
+                        .font(smallFont)
+                    Text(displayData.shortRight!)
+                        .font(smallFont)
+                        .padding(.leading, ePadding)
                 }
-                .font(fullLength ? smallFont : largeFont)
-                .minimumScaleFactor(1.0 / (fullLength ? 1.0 : fontScaleFactor))
-                .foregroundColor(.white)
-                .lineLimit(1)
-                .frame(maxHeight: .infinity, alignment: .bottomTrailing)
-                .multilineTextAlignment(.trailing)
             }
+            .foregroundColor(.white)
+            .lineLimit(1)
+            .frame(maxHeight: .infinity, alignment: .bottomTrailing)
+            .multilineTextAlignment(.trailing)
             Spacer()
         }
     }

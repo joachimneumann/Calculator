@@ -49,7 +49,7 @@ struct CalculatorApp: App {
                          lengthMeasurement(
                             size: CGSize(width: model.displayWidth, height: newHeight),
                             fontSize: singleLineFontSize,
-                            ePadding: round(singleLineFontSize * (isPortrait ? 0.0 : 0.3))))
+                            ePadding: round(singleLineFontSize * (isPortrait ? 0.1 : 0.3))))
                 let _ = print("CalculatorApp init() size=\(geo.size) \(geo.safeAreaInsets.trailing) \(model.lengths.withoutComma)")
                 let _ = model.haveResultCallback()
 
