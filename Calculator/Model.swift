@@ -86,7 +86,7 @@ class Model : ObservableObject {
             }
         }
         DispatchQueue.main.async {
-            self.displayData = DisplayData(shortLeft: "0", shortAbbreviated: false, longLeft: "0", longAbbreviated: false)
+            self.displayData = DisplayData(shortLeft: "", shortAbbreviated: false, longLeft: "", longAbbreviated: false)
         }
         let temp = self.brain.last.getDisplayData(self.lengths, forceScientific: Model.forceScientific)
         DispatchQueue.main.async {
