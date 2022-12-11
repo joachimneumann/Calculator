@@ -39,11 +39,11 @@ struct Calculator: View {
                 }
             
                 .overlay() { /// Icons
-                    Icons(isPortrait: isPortrait,
+                    Icons(model: model,
+                          isPortrait: isPortrait,
                           height: keyboardSize.height,
                           isCalculating: model.isCalculating,
                           isZoomed: $zzz,
-                          model: model,
                           keyInfo: model.keyInfo["plusKey"]!)
                 }
             
@@ -113,11 +113,13 @@ struct Display: View {
 }
 
 struct Icons : View {
+    @Environment(\.scenePhase) var scenePhase
+    @ObservedObject var model: Model
     let isPortrait: Bool
     let height: CGFloat
     let isCalculating: Bool
+    @State var pasteAllowedState: Bool = true
     @Binding var isZoomed: Bool
-    @ObservedObject var model: Model
     let keyInfo: Model.KeyInfo
     var body: some View {
         if !isPortrait {
@@ -149,18 +151,29 @@ struct Icons : View {
                             Group {
                                 Button {
                                     model.toPastBin()
+                                    DispatchQueue.main.async {
+                                        pasteAllowedState = true
+                                        print("1 \(pasteAllowedState)")
+                                    }
                                 } label: {
                                     Text("copy")
                                         .foregroundColor(model.isValidNumber ? .white : .gray)
                                 }
                                 .disabled(!model.isValidNumber)
                                 Button {
-                                    model.fromPastBin()
+                                    DispatchQueue.main.async {
+                                        pasteAllowedState = model.checkIfPasteBinIsValidNumber()
+                                        print("2 \(pasteAllowedState)")
+                                    }
+                                    /// this logic postpones the diplay of the "allow paste" to the user until the user actually presses paste
+                                    if pasteAllowedState {
+                                        model.fromPastBin()
+                                    }
                                 } label: {
                                     Text("paste")
-                                        .foregroundColor(model.pasteBinIsValidNumber ? .white : .gray)
+                                        .foregroundColor(pasteAllowedState ? .white : .gray)
                                 }
-                                .disabled(!model.pasteBinIsValidNumber)
+                                .disabled(!pasteAllowedState)
                             }
                             .padding(.top, size * 0.5)
                             .frame(width: size, height: size)
@@ -170,8 +183,15 @@ struct Icons : View {
                     Spacer(minLength: 0.0)
                 }
             }
-            .onAppear() {
-                model.checkIfPasteBinIsValidNumber()
+            .onChange(of: scenePhase) { newPhase in
+                if newPhase == .active {
+                    DispatchQueue.main.async {
+                        if pasteAllowedState == false {
+                            /// this can only happen after the popup
+                            pasteAllowedState = model.checkIfPasteBinIsValidNumber()
+                        }
+                    }
+                }
             }
         }
     }

@@ -49,24 +49,20 @@ class Model : ObservableObject {
     }
     
     func toPastBin() {
-        UIPasteboard.general.string = brain.last.getDisplayData(Lengths(Model.precision), forceScientific: false, maxDisplayLength: Model.precision).long
-        checkIfPasteBinIsValidNumber()
+            UIPasteboard.general.string = brain.last.getDisplayData(Lengths(Model.precision), forceScientific: false, maxDisplayLength: Model.precision).long
     }
     
-    @Published var pasteBinIsValidNumber: Bool  = false
-    
-    func checkIfPasteBinIsValidNumber() {
+    func checkIfPasteBinIsValidNumber() -> Bool {
         if UIPasteboard.general.hasStrings {
             if let pasteString = UIPasteboard.general.string {
                 if pasteString.count > 0 {
                     if Gmp.isValidGmpString(pasteString, bits: 1000) {
-                        pasteBinIsValidNumber = true
-                        return
+                        return true
                     }
                 }
             }
         }
-        pasteBinIsValidNumber = false
+        return false
     }
     
     func fromPastBin() {
