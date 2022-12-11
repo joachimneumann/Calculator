@@ -155,7 +155,7 @@ class Number: CustomDebugStringConvertible {
         var abbreviated: Bool
     }
     
-    func getDisplayData(_ lengths: Lengths, forceScientific: Bool) -> DisplayData {
+    func getDisplayData(_ lengths: Lengths, forceScientific: Bool, maxDisplayLength: Int = Number.MAX_DISPLAY_LENGTH) -> DisplayData {
         var ret = DisplayData(
             shortLeft: "0",
             shortRight: nil,
@@ -244,7 +244,7 @@ class Number: CustomDebugStringConvertible {
             return ret
         }
         
-        let mantissaExponent = displayGmp.mantissaExponent(len: min(_precision, Number.MAX_DISPLAY_LENGTH))
+        let mantissaExponent = displayGmp.mantissaExponent(len: min(_precision, maxDisplayLength))
 
         let lrShort = process(
             mantissa: mantissaExponent.mantissa,
@@ -256,9 +256,9 @@ class Number: CustomDebugStringConvertible {
         let lrLong = process(
             mantissa: mantissaExponent.mantissa,
             exponent: mantissaExponent.exponent,
-            withoutComma_ : min(_precision, Number.MAX_DISPLAY_LENGTH),
-            withCommaNonScientific_ : min(_precision, Number.MAX_DISPLAY_LENGTH),
-            withCommaScientific_: min(_precision, Number.MAX_DISPLAY_LENGTH),
+            withoutComma_ : min(_precision, maxDisplayLength),
+            withCommaNonScientific_ : min(_precision, maxDisplayLength),
+            withCommaScientific_: min(_precision, maxDisplayLength),
             forceScientific_: forceScientific)
         return DisplayData(
             shortLeft: lrShort.left,

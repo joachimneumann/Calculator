@@ -69,7 +69,7 @@ class Model : ObservableObject {
         if Model.memoryValue == "" {
             brain.memory = nil
         } else {
-            brain.memory = Gmp(Model.memoryValue, precision: Model.precision)
+            brain.memory = Number(Model.memoryValue, precision: Model.precision)
         }
     }
     
@@ -106,7 +106,7 @@ class Model : ObservableObject {
         }
 
         // check mr
-        keyInfo["mr"]!.enabled = Model.memoryValue == ""
+        keyInfo["mr"]!.enabled = Model.memoryValue != ""
     }
     
     private var previous: String? = nil
@@ -173,7 +173,7 @@ class Model : ObservableObject {
                     if let memory = brain.memory {
                         let lengths = Lengths(withoutComma: Model.precision, withCommaNonScientific: Model.precision, withCommaScientific: Model.precision, ePadding: 0)
                         DispatchQueue.main.sync {
-                            Model.memoryValue = Number(memory, precision: Model.precision).getDisplayData(lengths, forceScientific: false).long
+                            Model.memoryValue = memory.getDisplayData(lengths, forceScientific: false, maxDisplayLength: Model.precision).long
                         }
                     } else {
                         DispatchQueue.main.sync {

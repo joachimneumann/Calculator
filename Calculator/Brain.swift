@@ -22,7 +22,7 @@ class Brain {
             }
         }
     }
-    var memory: Gmp? = nil
+    var memory: Number? = nil
 
     var isValidNumber: Bool { n.last.isValid }
     var debugLastAsDouble: Double { n.last.gmp!.toDouble() }
@@ -157,26 +157,24 @@ class Brain {
         } else if symbol == "m+" {
             n.last.toGmp()
             if memory == nil {
-                memory = n.last.copy().gmp
+                memory = n.last.copy()
             } else {
-                memory!.execute(Gmp.add, with: n.last.gmp!)
+                memory!.execute(Gmp.add, with: n.last)
             }
         } else if symbol == "m-" {
             if memory == nil {
-                n.last.toGmp()
-                let temp = n.last.copy()
-                temp.execute(Gmp.changeSign)
-                memory = temp.gmp!
+                memory = n.last.copy()
+                memory!.execute(Gmp.changeSign)
             } else {
-                memory!.execute(Gmp.sub, with: n.last.copy().gmp!)
+                memory!.execute(Gmp.sub, with: n.last.copy())
             }
         } else if symbol == "mr" {
             if memory != nil {
                 if pendingOperator != nil {
-                    n.append(Number(memory!.copy(), precision: precision))
+                    n.append(memory!)
                     pendingOperator = nil
                 } else {
-                    n.replaceLast(with: Number(memory!.copy(), precision: precision))
+                    n.replaceLast(with: memory!)
                 }
             }
         } else if symbol == "( " {
