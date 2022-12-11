@@ -183,14 +183,6 @@ class Brain {
             self.execute(priority: Operator.closedParenthesesPriority)
         } else if symbol == "%" {
             self.percentage()
-        } else if symbol == "fromPasteboard" {
-//            if let s = UIPasteboard.general.string {
-//                if pendingOperator != nil {
-//                    n.append(nullNumber)
-//                    pendingOperator = nil
-//                }
-//                n.replaceLast(with: gmpNumber(s))
-//            }
         } else if symbol == "," {
             if pendingOperator != nil {
                 n.append(nullNumber)

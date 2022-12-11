@@ -20,488 +20,489 @@ class CalculatorTests: XCTestCase {
     }
     
     func testmultipleLiner() {
-        let brain = Brain(precision: 100)
+        let precision = 100
+        let brain = Brain(precision: precision)
         var displayData = DisplayData(shortLeft: "0", shortAbbreviated: false, longLeft: "0", longAbbreviated: false)
         let lengths = Lengths(withoutComma: 8, withCommaNonScientific: 9, withCommaScientific: 9, ePadding: 0)
 
         /// integers
-        displayData = brain.number("123").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("123", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "123")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("1234").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1234", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1234")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("12345").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("12345", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "12345")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("12345").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("12345", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "12345")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("12300").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("12300", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "12300")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("12300").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("12300", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "12300")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("123456").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("123456", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "123456")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("123456").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("123456", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "123456")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("1234567").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1234567", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1234567")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("12345678").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("12345678", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "12345678")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("123456789").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("123456789", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,23456")
         XCTAssertEqual(displayData.shortRight, "e8")
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("-123").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-123", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-123")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("-12345").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-12345", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-12345")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("-123456").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-123456", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-123456")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("-1234567").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-1234567", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-1234567")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("-12345678").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-12345678", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-1,2345")
         XCTAssertEqual(displayData.shortRight, "e7")
         XCTAssertTrue( displayData.shortAbbreviated)
         
         
-        displayData = brain.number("1234567").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1234567", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1234567")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("-1234567").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-1234567", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-1234567")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
 
         /// floating point numbers
-        displayData = brain.number("1,234").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1,234", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,234")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("1,2345").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1,2345", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,2345")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("1,23456").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1,23456", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,23456")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("1,234567").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1,234567", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,234567")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("1,2345678").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1,2345678", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,2345678")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("1,23456789").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1,23456789", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,2345678")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue(displayData.shortAbbreviated)
 
-        displayData = brain.number("-1,234").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-1,234", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-1,234")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("-1,2345").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-1,2345", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-1,2345")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("-1,23456").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-1,23456", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-1,23456")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("-1,234567").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-1,234567", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-1,234567")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("-1,2345678").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-1,2345678", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-1,234567")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue(displayData.shortAbbreviated)
 
 
-        displayData = brain.number("1,234").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1,234", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,234")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("1,234").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1,234", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,234")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("1,234").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1,234", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,234")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("1,234").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1,234", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,234")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("1,234").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1,234", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,234")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("1,234567").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1,234567", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,234567")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse( displayData.shortAbbreviated)
 
-        displayData = brain.number("1,2345678").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1,2345678", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,2345678")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse( displayData.shortAbbreviated)
 
-        displayData = brain.number("1,23456789").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1,23456789", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,2345678")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("-1,234").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-1,234", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-1,234")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse( displayData.shortAbbreviated)
 
-        displayData = brain.number("-1,2345").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-1,2345", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-1,2345")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse( displayData.shortAbbreviated)
 
-        displayData = brain.number("-1,23456").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-1,23456", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-1,23456")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse( displayData.shortAbbreviated)
 
-        displayData = brain.number("-1,23456789").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-1,23456789", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-1,234567")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("-144,23456789").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-144,23456789", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-144,2345")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("1445,23456789").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1445,23456789", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1445,2345")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("14456,23456789").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("14456,23456789", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "14456,234")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("144567,23456789").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("144567,23456789", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "144567,23")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("1445678,23456789").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1445678,23456789", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1445678,2")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("14456785,23456789").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("14456785,23456789", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "14456785,")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("0,123").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,123", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "0,123")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("0,1234").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,1234", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "0,1234")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("0,12345").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,12345", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "0,12345")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("0,123456").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,123456", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "0,123456")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("0,1234567").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,1234567", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "0,1234567")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse( displayData.shortAbbreviated)
 
-        displayData = brain.number("0,12345678").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,12345678", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "0,1234567")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("0,000012").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,000012", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "0,000012")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse( displayData.shortAbbreviated)
 
-        displayData = brain.number("0,000004").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,000004", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "0,000004")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse( displayData.shortAbbreviated)
 
-        displayData = brain.number("0,0000123456").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,0000123456", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "0,0000123")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("-0,000012").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-0,000012", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-0,000012")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse( displayData.shortAbbreviated)
 
-        displayData = brain.number("-0,0000123").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-0,0000123", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-0,000012")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("-0,0000123456").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-0,0000123456", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-0,000012")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("-0,123").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-0,123", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-0,123")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("-0,1234").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-0,1234", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-0,1234")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("-0,12345").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-0,12345", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-0,12345")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("-0,123456").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-0,123456", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-0,123456")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("-0,1234567").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-0,1234567", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-0,123456")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue(displayData.shortAbbreviated)
 
-        displayData = brain.number("14456789,23456789").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("14456789,23456789", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "14456789,")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("-144567,23456789").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-144567,23456789", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-144567,2")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("-1445678,23456789").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-1445678,23456789", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-1445678,")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("1445678,23456789").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1445678,23456789", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1445678,2")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("0,0123").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,0123", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "0,0123")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse( displayData.shortAbbreviated)
 
-        displayData = brain.number("0,01234567").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,01234567", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "0,0123456")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("0,0012").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,0012", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "0,0012")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse( displayData.shortAbbreviated)
 
-        displayData = brain.number("-0,0012").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-0,0012", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-0,0012")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse( displayData.shortAbbreviated)
 
-        displayData = brain.number("0,001234567").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,001234567", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "0,0012345")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("-0,001234567").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-0,001234567", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-0,001234")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("0,0001234567").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,0001234567", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "0,0001234")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("-0,0001234567").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-0,0001234567", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-0,000123")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("0,00001234567").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,00001234567", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "0,0000123")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("-0,00001234567").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-0,00001234567", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-0,000012")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("0,12345678").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,12345678", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "0,1234567")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
         
         /// scientific notation
 
-        displayData = brain.number("1,5e12").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1,5e12", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,5")
         XCTAssertEqual(displayData.shortRight, "e12")
         XCTAssertFalse( displayData.shortAbbreviated)
 
-        displayData = brain.number("1,5e12").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1,5e12", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,5")
         XCTAssertEqual(displayData.shortRight, "e12")
         XCTAssertFalse( displayData.shortAbbreviated)
 
-        displayData = brain.number("0,00000004").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,00000004", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "4,0")
         XCTAssertEqual(displayData.shortRight, "e-8")
         XCTAssertFalse( displayData.shortAbbreviated)
 
-        displayData = brain.number("0,0000004").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,0000004", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "0,0000004")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse( displayData.shortAbbreviated)
 
-        displayData = brain.number("12345678349875349873").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("12345678349875349873", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,2345")
         XCTAssertEqual(displayData.shortRight, "e19")
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("123456783498753498731").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("123456783498753498731", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,2345")
         XCTAssertEqual(displayData.shortRight, "e20")
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("0,012345678").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,012345678", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "0,0123456")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("0,0012345678").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,0012345678", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "0,0012345")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("-1445,23456789").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("-1445,23456789", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "-1445,234")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("921387491237419283092340238420398423098423049874129837649128364519234875").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("921387491237419283092340238420398423098423049874129837649128364519234875", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "9,2138")
         XCTAssertEqual(displayData.shortRight, "e71")
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("1,23").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1,23", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,23")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("1,23").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("1,23", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "1,23")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("0,0023").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,0023", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "0,0023")
         XCTAssertNil(  displayData.shortRight)
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("0,000000000023").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,000000000023", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "2,3")
         XCTAssertEqual(displayData.shortRight, "e-11")
         XCTAssertFalse(displayData.shortAbbreviated)
 
-        displayData = brain.number("0,0000000000232837642876").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,0000000000232837642876", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "2,328")
         XCTAssertEqual(displayData.shortRight, "e-11")
         XCTAssertTrue( displayData.shortAbbreviated)
 
-        displayData = brain.number("0,0000000000232837642876239827342").getDisplayData(lengths, forceScientific: false)
+        displayData = Number("0,0000000000232837642876239827342", precision: precision).getDisplayData(lengths, forceScientific: false)
         XCTAssertEqual(displayData.shortLeft, "2,328")
         XCTAssertEqual(displayData.shortRight, "e-11")
         XCTAssertTrue( displayData.shortAbbreviated)
@@ -517,7 +518,7 @@ class CalculatorTests: XCTestCase {
 //        
         let brain = Brain(precision: 100)
         var displayData = DisplayData(shortLeft: "0", shortAbbreviated: false, longLeft: "0", longAbbreviated: false)
-        let lengths = Lengths(withoutComma: 10, withCommaNonScientific: 10, withCommaScientific: 10, ePadding: 0)
+        let lengths = Lengths(10)
 //
 //        /// 1
 //        
@@ -595,7 +596,7 @@ class CalculatorTests: XCTestCase {
 //        XCTAssertEqual(brain.scientific, nil)
 //        brain.press(0)
 //        XCTAssertEqual(brain.nonScientific, nil)
-//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("1,234567890123456789", "e19").getDisplayData(lengths, forceScientific: false)
+//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("1,234567890123456789", "e19", precision: precision).getDisplayData(lengths, forceScientific: false)
 //        
 //        
 //        /// -12345678901234
@@ -634,7 +635,7 @@ class CalculatorTests: XCTestCase {
 //        brain.press(7)
 //        brain.press(7)
 //        XCTAssertEqual(brain.nonScientific, nil)
-//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("7,7777777777777777777777", "e22").getDisplayData(lengths, forceScientific: false)
+//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("7,7777777777777777777777", "e22", precision: precision).getDisplayData(lengths, forceScientific: false)
 //        
 //        
 //        
@@ -723,7 +724,7 @@ class CalculatorTests: XCTestCase {
 //        brain.press(7)
 //        brain.nonWaitingOperation("=")
 //        XCTAssertEqual(brain.nonScientific, nil)
-//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("3,0", "e77").getDisplayData(lengths, forceScientific: false)
+//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("3,0", "e77", precision: precision).getDisplayData(lengths, forceScientific: false)
 //        
 //        /// 3 e-77
 //        brain.nonWaitingOperation("AC")
@@ -734,7 +735,7 @@ class CalculatorTests: XCTestCase {
 //        brain.nonWaitingOperation("±")
 //        brain.nonWaitingOperation("=")
 //        XCTAssertEqual(brain.nonScientific, nil)
-//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("3,0", "e-77").getDisplayData(lengths, forceScientific: false)
+//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("3,0", "e-77", precision: precision).getDisplayData(lengths, forceScientific: false)
 //        
 //        /// -3 e-77
 //        brain.nonWaitingOperation("AC")
@@ -746,7 +747,7 @@ class CalculatorTests: XCTestCase {
 //        brain.nonWaitingOperation("=")
 //        brain.nonWaitingOperation("±")
 //        XCTAssertEqual(brain.nonScientific, nil)
-//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("-3,0", "e-77").getDisplayData(lengths, forceScientific: false)
+//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("-3,0", "e-77", precision: precision).getDisplayData(lengths, forceScientific: false)
 //        
 //        /// -3 e-77
 //        brain.nonWaitingOperation("AC")
@@ -758,7 +759,7 @@ class CalculatorTests: XCTestCase {
 //        brain.nonWaitingOperation("±")
 //        brain.nonWaitingOperation("=")
 //        XCTAssertEqual(brain.nonScientific, nil)
-//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("-3,0", "e-77").getDisplayData(lengths, forceScientific: false)
+//        XCTAssertEqual(brain.scientific, DisplayData.Scientific("-3,0", "e-77", precision: precision).getDisplayData(lengths, forceScientific: false)
 //        
 //        
 //        /// 8888888
@@ -1046,7 +1047,7 @@ class CalculatorTests: XCTestCase {
 //        brain.press(1)
 //        brain.press(0)
 //        brain.nonWaitingOperation("=")
-//        XCTAssertEqual(brain.debugLastGmp, Gmp("1024").getDisplayData(lengths, forceScientific: false)
+//        XCTAssertEqual(brain.debugLastGmp, Gmp("1024", precision: precision).getDisplayData(lengths, forceScientific: false)
 //        XCTAssertEqual(brain.nonScientific, "1024")
 //        XCTAssertEqual(brain.scientific, nil)
 //        
@@ -1056,7 +1057,7 @@ class CalculatorTests: XCTestCase {
 //        brain.nonWaitingOperation("y^x")
 //        brain.press(2)
 //        brain.nonWaitingOperation("=")
-//        XCTAssertEqual(brain.debugLastGmp, Gmp("1024").getDisplayData(lengths, forceScientific: false)
+//        XCTAssertEqual(brain.debugLastGmp, Gmp("1024", precision: precision).getDisplayData(lengths, forceScientific: false)
 //        
 //        /// 2x(6+4)
 //        brain.nonWaitingOperation("AC")
@@ -1077,9 +1078,9 @@ class CalculatorTests: XCTestCase {
 //        brain.nonWaitingOperation(")")
 //        XCTAssertEqual(brain.no, 1)
 //        XCTAssertEqual(brain.nn, 2)
-//        XCTAssertEqual(brain.debugLastGmp, Gmp("10").getDisplayData(lengths, forceScientific: false)
+//        XCTAssertEqual(brain.debugLastGmp, Gmp("10", precision: precision).getDisplayData(lengths, forceScientific: false)
 //        brain.nonWaitingOperation("=")
-//        XCTAssertEqual(brain.debugLastGmp, Gmp("20").getDisplayData(lengths, forceScientific: false)
+//        XCTAssertEqual(brain.debugLastGmp, Gmp("20", precision: precision).getDisplayData(lengths, forceScientific: false)
 //        XCTAssertEqual(brain.nonScientific, "20")
 //        XCTAssertEqual(brain.scientific, nil)
 //        
@@ -1099,7 +1100,7 @@ class CalculatorTests: XCTestCase {
 //        brain.nonWaitingOperation(")")
 //        brain.nonWaitingOperation(")")
 //        brain.nonWaitingOperation("=")
-//        XCTAssertEqual(brain.debugLastGmp, Gmp("124").getDisplayData(lengths, forceScientific: false)
+//        XCTAssertEqual(brain.debugLastGmp, Gmp("124", precision: precision).getDisplayData(lengths, forceScientific: false)
 //        
 //        /// 1+2=3
 //        brain.nonWaitingOperation("AC")

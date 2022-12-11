@@ -12,6 +12,15 @@ struct Lengths {
     let withCommaNonScientific: Int
     let withCommaScientific: Int
     let ePadding: CGFloat
+    init(withoutComma: Int, withCommaNonScientific: Int, withCommaScientific: Int, ePadding: CGFloat) {
+        self.withoutComma = withoutComma
+        self.withCommaNonScientific = withCommaNonScientific
+        self.withCommaScientific = withCommaNonScientific
+        self.ePadding = ePadding
+    }
+    init(_ len: Int) {
+        self.init(withoutComma: len, withCommaNonScientific: len, withCommaScientific: len, ePadding: 0)
+    }
 }
 
 func lengthMeasurement(size: CGSize, fontSize: CGFloat, ePadding: CGFloat) -> Lengths {

@@ -15,7 +15,7 @@ struct Key: View {
     @State var tapped: Bool = false
 
     var body: some View {
-        let _ = print("Key body \(keyInfo.symbol) enabled \(keyInfo.enabled)")
+        //let _ = print("Key body \(keyInfo.symbol) enabled \(keyInfo.enabled)")
         ZStack {
             Label(keyInfo: keyInfo, height: size.height)
                 .font(.largeTitle)

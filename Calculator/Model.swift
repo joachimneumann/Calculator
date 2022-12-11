@@ -30,18 +30,54 @@ class Model : ObservableObject {
     
     var precisionDescription = "unknown"
     
-    var lengths = Lengths(withoutComma: 0, withCommaNonScientific: 0, withCommaScientific: 0, ePadding: 0)
+    var lengths = Lengths(0)
     @AppStorage("precision", store: .standard) static var precision: Int = 100
     @AppStorage("forceScientific", store: .standard) static var forceScientific: Bool = false
     @AppStorage("trigonometricToZero", store: .standard) static var trigonometricToZero: Bool = true
     @AppStorage("memoryValue", store: .standard) static var memoryValue: String = ""
     @AppStorage("_rad", store: .standard) static var _rad: Bool = false
     static let MAX_DISPLAY_LEN = 10000 // too long strings in Text() crash the app
-
+    
+    var isValidNumber: Bool {
+        brain.isValidNumber
+    }
+    
     // the update of the precision in brain can be slow.
     // Therefore, I only want to do that when leaving the settings screen
     func updatePrecision() {
         brain.setPrecision(Model.precision)
+    }
+    
+    func toPastBin() {
+        UIPasteboard.general.string = brain.last.getDisplayData(Lengths(Model.precision), forceScientific: false, maxDisplayLength: Model.precision).long
+        checkIfPasteBinIsValidNumber()
+    }
+    
+    @Published var pasteBinIsValidNumber: Bool  = false
+    
+    func checkIfPasteBinIsValidNumber() {
+        if UIPasteboard.general.hasStrings {
+            if let pasteString = UIPasteboard.general.string {
+                if pasteString.count > 0 {
+                    if Gmp.isValidGmpString(pasteString, bits: 1000) {
+                        pasteBinIsValidNumber = true
+                        return
+                    }
+                }
+            }
+        }
+        pasteBinIsValidNumber = false
+    }
+    
+    func fromPastBin() {
+        if UIPasteboard.general.hasStrings {
+            if let pasteString = UIPasteboard.general.string {
+                if pasteString.count > 0 {
+                    brain.n.replaceLast(with: Number(pasteString, precision: brain.precision))
+                    haveResultCallback()
+                }
+            }
+        }
     }
     
     func speedTest(precision: Int) async -> Double {
@@ -49,7 +85,7 @@ class Model : ObservableObject {
         testBrain.setPrecision(precision)
         
         testBrain.operation("AC")
-        print("testBrain.n.count \(testBrain.n.count)")
+        //print("testBrain.n.count \(testBrain.n.count)")
         testBrain.operation("Rand")
         
         let timer = ParkBenchTimer()
@@ -74,7 +110,7 @@ class Model : ObservableObject {
     }
     
     func haveResultCallback() {
-        print("haveResultCallback \(lengths.withoutComma)")
+        //print("haveResultCallback \(lengths.withoutComma)")
         if brain.last.isNull {
             DispatchQueue.main.async {
                 self._AC = true
@@ -104,7 +140,7 @@ class Model : ObservableObject {
                 }
             }
         }
-
+        
         // check mr
         keyInfo["mr"]!.enabled = Model.memoryValue != ""
     }
@@ -135,19 +171,19 @@ class Model : ObservableObject {
             }
         }
         previous = op
-//        DispatchQueue.main.async {
-//            print("p color / \(self.keyInfo["/"]!.colors.upColor)")
-//            print("p color x \(self.keyInfo["x"]!.colors.upColor)")
-//            print("p color - \(self.keyInfo["-"]!.colors.upColor)")
-//            print("p color + \(self.keyInfo["+"]!.colors.upColor)")
-//        }
+        //        DispatchQueue.main.async {
+        //            print("p color / \(self.keyInfo["/"]!.colors.upColor)")
+        //            print("p color x \(self.keyInfo["x"]!.colors.upColor)")
+        //            print("p color - \(self.keyInfo["-"]!.colors.upColor)")
+        //            print("p color + \(self.keyInfo["+"]!.colors.upColor)")
+        //        }
     }
     
     func pressed(_ _symbol: String) {
-//        print("color / \(keyInfo["/"]!.colors.upColor)")
-//        print("color x \(keyInfo["x"]!.colors.upColor)")
-//        print("color - \(keyInfo["-"]!.colors.upColor)")
-//        print("color + \(keyInfo["+"]!.colors.upColor)")
+        //        print("color / \(keyInfo["/"]!.colors.upColor)")
+        //        print("color x \(keyInfo["x"]!.colors.upColor)")
+        //        print("color - \(keyInfo["-"]!.colors.upColor)")
+        //        print("color + \(keyInfo["+"]!.colors.upColor)")
         let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(_symbol) && !Model._rad ? _symbol+"D" : _symbol
         
         switch symbol {
@@ -171,7 +207,7 @@ class Model : ObservableObject {
                 await asyncOperation(symbol)
                 if ["mc", "m+", "m-"].contains(symbol) {
                     if let memory = brain.memory {
-                        let lengths = Lengths(withoutComma: Model.precision, withCommaNonScientific: Model.precision, withCommaScientific: Model.precision, ePadding: 0)
+                        let lengths = Lengths(Model.precision)
                         DispatchQueue.main.sync {
                             Model.memoryValue = memory.getDisplayData(lengths, forceScientific: false, maxDisplayLength: Model.precision).long
                         }
@@ -196,12 +232,12 @@ class Model : ObservableObject {
 class ParkBenchTimer {
     let startTime: CFAbsoluteTime
     var endTime: CFAbsoluteTime?
-
+    
     init() {
-        print("ParkBenchTimer init()")
+        //print("ParkBenchTimer init()")
         startTime = CFAbsoluteTimeGetCurrent()
     }
-
+    
     func stop() -> Double {
         endTime = CFAbsoluteTimeGetCurrent()
         return duration!

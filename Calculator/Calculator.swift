@@ -23,7 +23,7 @@ struct Calculator: View {
     @State var zzz: Bool = false
     
     var body: some View {
-        let _ = print("Calculator body")
+        //let _ = print("Calculator body")
         NavigationStack {
             Rectangle()
                 .overlay() {
@@ -117,7 +117,7 @@ struct Icons : View {
     let height: CGFloat
     let isCalculating: Bool
     @Binding var isZoomed: Bool
-    let model: Model
+    @ObservedObject var model: Model
     let keyInfo: Model.KeyInfo
     var body: some View {
         if !isPortrait {
@@ -146,20 +146,32 @@ struct Icons : View {
                                     .foregroundColor(Color(uiColor: UIColor(white: 0.9, alpha: 1.0)))
                             }
                             .padding(.top, size * 0.5)
-                            Text("copy")
-                                .foregroundColor(.white)
-                                .padding(.top, size * 0.5)
-                                .frame(width: size, height: size)
-                                .minimumScaleFactor(0.01)
-                            Text("paste")
-                                .foregroundColor(.white)
-                                .padding(.top, size * 0.5)
-                                .frame(width: size, height: size)
-                                .minimumScaleFactor(0.01)
+                            Group {
+                                Button {
+                                    model.toPastBin()
+                                } label: {
+                                    Text("copy")
+                                        .foregroundColor(model.isValidNumber ? .white : .gray)
+                                }
+                                .disabled(!model.isValidNumber)
+                                Button {
+                                    model.fromPastBin()
+                                } label: {
+                                    Text("paste")
+                                        .foregroundColor(model.pasteBinIsValidNumber ? .white : .gray)
+                                }
+                                .disabled(!model.pasteBinIsValidNumber)
+                            }
+                            .padding(.top, size * 0.5)
+                            .frame(width: size, height: size)
+                            .minimumScaleFactor(0.01)
                         }
                     }
                     Spacer(minLength: 0.0)
                 }
+            }
+            .onAppear() {
+                model.checkIfPasteBinIsValidNumber()
             }
         }
     }

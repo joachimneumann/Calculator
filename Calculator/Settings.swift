@@ -170,7 +170,7 @@ struct Settings: View {
                         Model.trigonometricToZero = settingsTrigonometricToZero
                         /// no update with haveResultCallback()
                     }
-                    print("Settings gone...")
+                    ///print("Settings gone...")
                 }
             }
     }
