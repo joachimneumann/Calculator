@@ -157,9 +157,8 @@ struct Icons : View {
                                     }
                                 } label: {
                                     Text("copy")
-                                        .foregroundColor(model.isValidNumber ? .white : .gray)
+                                        .foregroundColor(.white)
                                 }
-                                .disabled(!model.isValidNumber)
                                 Button {
                                     DispatchQueue.main.async {
                                         pasteAllowedState = model.checkIfPasteBinIsValidNumber()

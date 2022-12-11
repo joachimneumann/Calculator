@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-class ColorsOf: ObservableObject {
-    @Published var textColor: UIColor
-    @Published var upColor: UIColor
-    @Published var downColor: UIColor
+class ColorsOf {
+    var textColor: UIColor
+    var upColor: UIColor
+    var downColor: UIColor
     init(textColor: UIColor, upColor: UIColor, downColor: UIColor) {
         self.textColor = textColor
         self.upColor = upColor
