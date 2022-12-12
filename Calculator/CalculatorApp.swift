@@ -57,10 +57,11 @@ struct CalculatorApp: App {
                         insets: UIApplication.shared.keyWindow?.safeAreaInsets ?? UIEdgeInsets(),
                         appOrientation: appOrientation,
                         model: model))
-            }
-            .withHostingWindow { window in
-                /// this stops white background from showing *during* a device rotation
-                window?.rootViewController?.view.backgroundColor = C.appBackgroundUI
+                .background(Rectangle()
+                    /// this stops white background from showing *during* a device rotation
+                    .frame(width: max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height) * 2.0,
+                           height: max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height) * 2.0)
+                        .foregroundColor(C.appBackground))
             }
             .onRotate { newOrientation in
                 appOrientation = newOrientation
@@ -123,26 +124,5 @@ extension EnvironmentValues {
 private extension UIEdgeInsets {
     var swiftUiInsets: EdgeInsets {
         EdgeInsets(top: top, leading: left, bottom: bottom, trailing: right)
-    }
-}
-
-extension View {
-    func withHostingWindow(_ callback: @escaping (UIWindow?) -> Void) -> some View {
-        self.background(HostingWindowFinder(callback: callback))
-    }
-}
-
-struct HostingWindowFinder: UIViewRepresentable {
-    var callback: (UIWindow?) -> ()
-    
-    func makeUIView(context: Context) -> UIView {
-        let view = UIView()
-        DispatchQueue.main.async { [weak view] in
-            self.callback(view?.window)
-        }
-        return view
-    }
-    
-    func updateUIView(_ uiView: UIView, context: Context) {
     }
 }
