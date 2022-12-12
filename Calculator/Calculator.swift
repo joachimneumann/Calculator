@@ -22,9 +22,10 @@ struct Calculator: View {
                     Display(isPortrait: screenInfo.isPortrait,
                             isZoomed: isZoomed,
                             displayData: model.displayData,
-                            lengths: screenInfo.lengths,
+                            lengths: model.lengths,
                             singleLineFontSize: screenInfo.singleLineFontSize,
                             height: screenInfo.keyboardSize.height,
+                            width: screenInfo.displayWidth,
                             displayTrailingOffset: screenInfo.displayTrailingOffset,
                             displayBottomOffset: screenInfo.displayBottomOffset)
                     .onChange(of: model.lengths.withoutComma) { newValue in
@@ -74,31 +75,36 @@ struct Display: View {
     let lengths: Lengths
     let singleLineFontSize: CGFloat
     let height: CGFloat
+    let width: CGFloat
     let displayTrailingOffset: CGFloat
     let displayBottomOffset: CGFloat
     var body: some View {
         VStack(spacing: 0.0) {
+            //let _ = print("displayData l.left \(displayData.longLeft)")
             if isPortrait {
                 PortraitDisplay(
                     displayData: displayData,
-                    fullLength: displayData.short.count == lengths.withoutComma,
+                    forceSmallFont: displayData.short.count == lengths.withoutComma,
                     ePadding: lengths.ePadding,
                     smallFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
                     largeFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * 1.5, weight: .thin)),
                     fontScaleFactor: 1.5)
                 //.background(Color.yellow)
                 .padding(.bottom, height)
+//                .background(Color.blue)
                 //                        .offset(y: displayYOffset)
             } else {
                 HStack(spacing: 0.0) {
                     LandscapeDisplay(
                         zoomed: isZoomed,
                         displayData: displayData,
+                        width: width,
                         ePadding: lengths.ePadding,
                         font: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
                         isCopyingOrPasting: false,
                         precisionString: "Model.precision.useWords")
-                    .offset(x: -displayTrailingOffset, y: displayBottomOffset)
+                    .padding(.trailing, displayTrailingOffset)
+                    .offset(y: displayBottomOffset)
                     //                        .background(Color.green).opacity(0.4)
                     .animation(Animation.easeInOut(duration: 0.4), value: isZoomed)
                 }
@@ -170,7 +176,7 @@ struct Icons : View {
                                     NavigationLink {
                                         PurchaseView(store: store)
                                     } label: {
-                                        Text("copy")
+                                        Text("paste")
                                             .foregroundColor(.white)
                                     }
                                 } else {

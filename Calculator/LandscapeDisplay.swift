@@ -10,10 +10,8 @@ import SwiftUI
 struct LandscapeDisplay: View {
     let zoomed: Bool
     let displayData: DisplayData
-//    let mantissa: String
-//    let exponent: String?
+    let width: CGFloat
     let ePadding: CGFloat
-//    let abbreviated: Bool
     let font: Font
     let isCopyingOrPasting: Bool
     let precisionString: String
@@ -43,7 +41,6 @@ struct LandscapeDisplay: View {
                     }
                     .font(font)
                     .foregroundColor(isCopyingOrPasting ? isCopyingOrPastingColor : .white)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                     .multilineTextAlignment(.trailing)
                 } else {
                     HStack(spacing: 0.0) {

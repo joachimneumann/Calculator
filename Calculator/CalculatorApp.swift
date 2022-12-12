@@ -16,8 +16,9 @@ struct ScreenInfo {
     let singleLineFontSize: CGFloat
     let keyboardPaddingBottom: CGFloat
     let displayTrailingOffset: CGFloat
+    let displayWidth: CGFloat
     let displayBottomOffset: CGFloat
-    let lengths: Lengths
+
     init(hardwareSize: CGSize, insets: UIEdgeInsets, appOrientation: UIDeviceOrientation, model: Model) {
         
         /// appOrientation is used here to trigger a redraw when the orientation changes ???????
@@ -31,13 +32,15 @@ struct ScreenInfo {
         let allKeysheight = 5 * keyHeight + 4 * spaceBetweenKeys
         keyboardSize = CGSize(width: calculatorSize.width, height: allKeysheight)
         singleLineFontSize = ((isPortrait ? 0.14 : 0.16) * keyboardSize.height).rounded()
-        keyboardPaddingBottom = 0.0//isPortrait ? keyHeight * 0.1 : 0.0
-        displayTrailingOffset = isPortrait ? 0.0 :keyWidth * 0.7
+        keyboardPaddingBottom = isPortrait ? keyHeight * 0.1 : 0.0
+        displayTrailingOffset = isPortrait ? 0.0 : keyWidth * 0.9
         displayBottomOffset = isPortrait ? calculatorSize.height - keyboardSize.height - keyboardPaddingBottom - keyHeight * 1.2 : 0.0
-        let displayWidth = calculatorSize.width - displayTrailingOffset
-        lengths = lengthMeasurement(width: displayWidth, fontSize: singleLineFontSize, ePadding: 0.0)
-        print("display length \(lengths.withoutComma)")
-        model.lengths = lengths // lengths is used in Model.haveResultCallback()
+        displayWidth = calculatorSize.width - displayTrailingOffset
+        
+        // lengths is used in Model.haveResultCallback()
+        let temp = lengthMeasurement(width: displayWidth, fontSize: singleLineFontSize, ePadding: keyWidth * 0.2)
+        model.lengths = temp
+        //print("display length \(model.lengths.withCommaScientific)")
     }
 }
 
@@ -46,17 +49,18 @@ struct CalculatorApp: App {
     let model: Model = Model()
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     @State private var appOrientation = UIDeviceOrientation.landscapeLeft
-    
+    let ppp = 40.0
     var body: some Scene {
         WindowGroup {
             ZStack {
                 Calculator(
                     model: model,
                     screenInfo: ScreenInfo (
-                        hardwareSize: UIScreen.main.bounds.size,
+                        hardwareSize: CGSize(width: UIScreen.main.bounds.size.width - 2*ppp, height: UIScreen.main.bounds.size.height),
                         insets: UIApplication.shared.keyWindow?.safeAreaInsets ?? UIEdgeInsets(),
                         appOrientation: appOrientation,
                         model: model))
+                .padding(.horizontal, ppp)
                 .background(Rectangle()
                     /// this stops white background from showing *during* a device rotation
                     .frame(width: max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height) * 2.0,
