@@ -120,8 +120,8 @@ struct Settings: View {
                 
                 HStack(spacing: 0.0) {
                     Text("Force scientific display")
+                        .foregroundColor(.gray)
                     Toggle("", isOn: $settingsForceScientific)
-                        .foregroundColor(Color.green)
                         .toggleStyle(
                             ColoredToggleStyle(onColor: Color(UIColor(white: 0.6, alpha: 1.0)),
                                                offColor: Color(UIColor(white: 0.3, alpha: 1.0)),
@@ -132,12 +132,12 @@ struct Settings: View {
                         .padding(.leading, 20)
                     Spacer()
                 }
-                .padding(.top, 20)
+                .padding(.top, 0)
                 
                 HStack(spacing: 0.0) {
                     Text("Force trigonometric results to zero")
+                        .foregroundColor(.gray)
                     Toggle("", isOn: $settingsTrigonometricToZero)
-                        .foregroundColor(Color.green)
                         .toggleStyle(
                             ColoredToggleStyle(onColor: Color(UIColor(white: 0.6, alpha: 1.0)),
                                                offColor: Color(UIColor(white: 0.3, alpha: 1.0)),
@@ -148,28 +148,29 @@ struct Settings: View {
                         .padding(.leading, 20)
                     Spacer()
                 }
-                .padding(.top, 20)
+                .padding(.top, 10)
                 Spacer()
             }
             .foregroundColor(Color.white)
         }
         .onDisappear() {
+            var update = false
             if Model.precision != settingsPrecision ||
                 Model.forceScientific != settingsForceScientific ||
-                Model.trigonometricToZero != settingsTrigonometricToZero
-            {
-                Model.precision = settingsPrecision
-                Model.forceScientific = settingsForceScientific
-                Model.trigonometricToZero = settingsTrigonometricToZero
-                model.updatePrecision()
-                model.haveResultCallback()
-            } else {
-                Model.precision = settingsPrecision
-                Model.forceScientific = settingsForceScientific
-                Model.trigonometricToZero = settingsTrigonometricToZero
-                /// no update with haveResultCallback()
+                Model.trigonometricToZero != settingsTrigonometricToZero {
+                update = true
             }
-            ///print("Settings gone...")
+
+            Model.forceScientific = settingsForceScientific
+            Model.trigonometricToZero = settingsTrigonometricToZero
+            if Model.precision != settingsPrecision {
+                model.updatePrecision(to: settingsPrecision)
+            }
+            
+            if update {
+                model.haveResultCallback()
+            }
+
         }
     }
     
