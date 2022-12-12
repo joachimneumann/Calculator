@@ -81,6 +81,10 @@ struct Settings: View {
                 Text("Bits used in the gmp and mpfr libraries: \(bitsInfo)")
                     .padding(.bottom, 5)
                     .foregroundColor(.gray)
+                let more = (settingsPrecision > Number.MAX_DISPLAY_LENGTH)
+                Text("\(more ? "Maximal n" : "N")umber of digits in the display: \(min(settingsPrecision, Number.MAX_DISPLAY_LENGTH)) \(more ? "(copy & paste use all \(settingsPrecision.useWords) digits)" : " ")")
+                    .padding(.bottom, 5)
+                    .foregroundColor(.gray)
                 Text("Memory size of one Number: \(sizeOfOneNumber.asMemorySize)")
                     .foregroundColor(.gray)
                     .padding(.bottom, -4)
@@ -108,15 +112,10 @@ struct Settings: View {
                                 }
                             }
                         }
+                    } label: {
+                        Text(stopWatch.isRunning && stopWatch.counter > 0 ? "\(stopWatch.counter)" : measureButtonText)
+                            .foregroundColor(.gray)
                     }
-                label: {
-                    Text(stopWatch.isRunning && stopWatch.counter > 0 ? "\(stopWatch.counter)" : measureButtonText)
-                        .foregroundColor(.gray)
-                }
-                }
-                if (settingsPrecision > Number.MAX_DISPLAY_LENGTH) {
-                    Text("Note: \(Number.MAX_DISPLAY_LENGTH) digits will be displayed, use copy to get all \(settingsPrecision.useWords) digits").italic()
-                        .foregroundColor(.gray)
                 }
                 
                 HStack(spacing: 0.0) {

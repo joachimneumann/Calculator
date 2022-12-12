@@ -10,17 +10,15 @@ import SwiftUI
 struct PurchaseView: View {
     @ObservedObject var store: Store
     var body: some View {
-        Rectangle()
-            .foregroundColor(.black)
-            .background(.black)
-            .overlay() {
-                VStack {
-//                    Spacer()
-                    if let product = store.products.first {
-                        Text("In the free version you can select any presicion for the calculations and the correct result will be displayed. The limitations are: the number of displayed digits is limited to 10,000 and you can not copy or paste the results.")
-                            .padding(.top, 20)
-                        Text("If you purchase Copy & Paste, you can access all digits - set with precision in the configuration.")
-                            .padding(.top, 10)
+        Group {
+            if let product = store.products.first {
+                VStack(spacing: 0.0) {
+                    VStack(alignment: .leading, spacing: 0.0) {
+                        Text("Copy & Paste is disabled in the free version.")
+                        Text("Purchase this feature to copy results with all digits into other iOS applications. You can then also paste numbers into the calculator.")
+                            .padding(.top, 5)
+                    }
+                    VStack(alignment: .center, spacing: 0.0) {
                         Button {
                             if store.purchasedIDs.isEmpty {
                                 store.purchase(store.products.first!)
@@ -46,25 +44,31 @@ struct PurchaseView: View {
                                     .background(.blue)
                                     .cornerRadius(10)
                             }
+                            .padding(.top, 30)
                         }
-                    } else {
-                        Text("...loading products")
-                            .padding(.top, 60)
-                            .padding(.bottom, 10)
-                        Text("(check your Internet connection)").italic()
                     }
                     Spacer()
                 }
-                .foregroundColor(.white)
-                .padding()
-                .onAppear() {
-                    Task {
-                        await store.requestProducts()
-                    }
+            } else {
+                VStack(alignment: .leading, spacing: 0.0) {
+                    Text("...loading products")
+                        .padding(.top, 60)
+                        .padding(.bottom, 10)
+                    Text("(check your Internet connection)").italic()
+                    Spacer()
                 }
             }
+        }
+        .foregroundColor(.white)
+        .padding()
+        .onAppear() {
+            Task {
+                await store.requestProducts()
+            }
+        }
     }
 }
+
 
 struct PurchaseView_Previews: PreviewProvider {
     static var previews: some View {
