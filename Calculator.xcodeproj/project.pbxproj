@@ -71,14 +71,14 @@
 		AA08C7D2272EDA4A001B8575 /* CalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorTests.swift; sourceTree = "<group>"; };
 		AA08C7EB272F1241001B8575 /* Calculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Calculator.entitlements; sourceTree = "<group>"; };
 		AA08C7EC272F1572001B8575 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		AA1B007C294777180054C851 /* gmp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gmp.h; path = dist/include/gmp.h; sourceTree = SOURCE_ROOT; };
+		AA1B007D294777180054C851 /* bridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bridge.h; path = dist/include/bridge.h; sourceTree = SOURCE_ROOT; };
+		AA1B007E294777190054C851 /* mpfr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mpfr.h; path = dist/include/mpfr.h; sourceTree = SOURCE_ROOT; };
+		AA1B007F294777190054C851 /* mpf2mpfr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mpf2mpfr.h; path = dist/include/mpf2mpfr.h; sourceTree = SOURCE_ROOT; };
 		AA29F589293CD608001ADF5A /* PortraitDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortraitDisplay.swift; sourceTree = "<group>"; };
 		AA2FABEA272F2135006DE4C8 /* mpfr.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = mpfr.xcframework; path = dist/mpfr.xcframework; sourceTree = "<group>"; };
 		AA2FABEE272F2141006DE4C8 /* gmp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = gmp.xcframework; path = dist/gmp.xcframework; sourceTree = "<group>"; };
 		AA2FABF1272F217F006DE4C8 /* Gmp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gmp.swift; sourceTree = "<group>"; };
-		AA2FABF3272F22AC006DE4C8 /* mpf2mpfr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mpf2mpfr.h; path = Calculator/mpf2mpfr.h; sourceTree = SOURCE_ROOT; };
-		AA2FABF4272F22AC006DE4C8 /* bridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bridge.h; path = Calculator/bridge.h; sourceTree = SOURCE_ROOT; };
-		AA2FABF5272F22AC006DE4C8 /* mpfr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mpfr.h; path = Calculator/mpfr.h; sourceTree = SOURCE_ROOT; };
-		AA2FABF6272F22AC006DE4C8 /* gmp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gmp.h; path = Calculator/gmp.h; sourceTree = SOURCE_ROOT; };
 		AA2FABF8272F2348006DE4C8 /* Number.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Number.swift; sourceTree = "<group>"; };
 		AA2FABFB272F2348006DE4C8 /* NumberStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberStack.swift; sourceTree = "<group>"; };
 		AA2FABFC272F2348006DE4C8 /* Calculator.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Calculator.entitlements; sourceTree = "<group>"; };
@@ -151,7 +151,6 @@
 		AA08C7C0272EDA48001B8575 /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
-				AA2FABF4272F22AC006DE4C8 /* bridge.h */,
 				AA1B007B294772980054C851 /* Brain */,
 				AA2FABFF272F2348006DE4C8 /* CalculatorApp.swift */,
 				AA3FB8262920E0E5002ECCEB /* Settings.swift */,
@@ -201,9 +200,10 @@
 		AA1B007B294772980054C851 /* Brain */ = {
 			isa = PBXGroup;
 			children = (
-				AA2FABF6272F22AC006DE4C8 /* gmp.h */,
-				AA2FABF3272F22AC006DE4C8 /* mpf2mpfr.h */,
-				AA2FABF5272F22AC006DE4C8 /* mpfr.h */,
+				AA1B007D294777180054C851 /* bridge.h */,
+				AA1B007C294777180054C851 /* gmp.h */,
+				AA1B007F294777190054C851 /* mpf2mpfr.h */,
+				AA1B007E294777190054C851 /* mpfr.h */,
 				AA2FAC01272F2348006DE4C8 /* Brain.swift */,
 				AA2FABF1272F217F006DE4C8 /* Gmp.swift */,
 				AA2FABF8272F2348006DE4C8 /* Number.swift */,
@@ -521,7 +521,7 @@
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = off;
-				SWIFT_OBJC_BRIDGING_HEADER = /Users/joachim/projects/Calculator/Calculator/bridge.h;
+				SWIFT_OBJC_BRIDGING_HEADER = /Users/joachim/projects/Calculator/dist/include/bridge.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -561,7 +561,7 @@
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = off;
-				SWIFT_OBJC_BRIDGING_HEADER = /Users/joachim/projects/Calculator/Calculator/bridge.h;
+				SWIFT_OBJC_BRIDGING_HEADER = /Users/joachim/projects/Calculator/dist/include/bridge.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
