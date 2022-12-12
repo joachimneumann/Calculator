@@ -12,7 +12,6 @@ class Brain {
     private var operatorStack = OperatorStack()
     private(set) var precision: Int = 0
     
-
     var haveResultCallback: () -> () = { }
     var pendingOperatorCallback: (String?) -> () = { _ in }
     var pendingOperator: String? {
@@ -227,8 +226,7 @@ class Brain {
             self.execute(priority: op.priority)
             self.self.operatorStack.push(op)
         } else {
-            //            print("### non-existing operation \(symbol)")
-            assert(false)
+            assert(false, "### non-existing operation \(symbol)")
         }
         haveResultCallback()
     }
