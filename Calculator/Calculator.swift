@@ -20,11 +20,11 @@ struct Calculator: View {
     let displayTrailingOffset: CGFloat
     let displayBottomOffset: CGFloat
     let keyboardPaddingBottom: CGFloat
-    @State private var orientation = UIDeviceOrientation.unknown
+//    @State private var orientation = UIDeviceOrientation.unknown
     @State var zzz: Bool = false
     
     var body: some View {
-        //let _ = print("Calculator body")
+        let _ = print("Calculator body")
         NavigationStack {
             Rectangle()
                 .overlay() {
@@ -60,14 +60,18 @@ struct Calculator: View {
                                     zoomed: zzz,
                                     size: size)
                 }
-                .onRotate { newOrientation in /// this magically reduces the number of haveResultCallback() calls to one per rotation
-                    orientation = newOrientation
-                }
-                .background(Color.black)
+//                .onRotate { newOrientation in /// this magically reduces the number of haveResultCallback() calls to one per rotation
+//                    orientation = newOrientation
+//                }
+                .background(Color.yellow)
         }
         .accentColor(.white) // for the navigation back button
         .onAppear() {
-            store.fetchProducts()
+            Task {
+                // print("Calculator requestProducts()")
+                await store.requestProducts()
+                // print("Calculator done")
+            }
         }
     }
 }
@@ -250,23 +254,23 @@ struct KeysViewAndText: View {
         .offset(y: (zoomed && !isPortrait) ? size.height : 0)
     }
 }
-extension View {
-    func onRotate(perform action: @escaping (UIDeviceOrientation) -> Void) -> some View {
-        self.modifier(DeviceRotationViewModifier(action: action))
-    }
-}
-
-struct DeviceRotationViewModifier: ViewModifier {
-    let action: (UIDeviceOrientation) -> Void
-    
-    func body(content: Content) -> some View {
-        content
-            .onAppear()
-            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-                action(UIDevice.current.orientation)
-            }
-    }
-}
+//extension View {
+//    func onRotate(perform action: @escaping (UIDeviceOrientation) -> Void) -> some View {
+//        self.modifier(DeviceRotationViewModifier(action: action))
+//    }
+//}
+//
+//struct DeviceRotationViewModifier: ViewModifier {
+//    let action: (UIDeviceOrientation) -> Void
+//    
+//    func body(content: Content) -> some View {
+//        content
+//            .onAppear()
+//            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+//                action(UIDevice.current.orientation)
+//            }
+//    }
+//}
 
 //struct Calculator_Previews: PreviewProvider {
 //    static var previews: some View {

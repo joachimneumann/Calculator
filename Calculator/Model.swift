@@ -71,6 +71,7 @@ class Model : ObservableObject {
                 if pasteString.count > 0 {
                     brain.n.replaceLast(with: Number(pasteString, precision: brain.precision))
                     haveResultCallback()
+                    _hasBeenReset = false
                 }
             }
         }

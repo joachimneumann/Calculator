@@ -7,28 +7,64 @@
 
 import StoreKit
 
-class Store: ObservableObject {
+class Store: NSObject, ObservableObject, SKProductsRequestDelegate {
+    final let PRODUCT_ID = "Calculator.copyPaste"
+//    final let PRODUCT_ID = "Calculator.copyPaste.test2"
+
     @Published var products: [Product] = []
     @Published var purchasedIDs: [String] = []
-    func fetchProducts() {
-        Task {
-            do {
-                let products = try await Product.products(for: ["Calculator.copyPaste.test"])
-                DispatchQueue.main.async {
-                    self.products = products
-                    print("fetchProducts \(products)")
-                }
-                if let product = products.first {
-                    await isPurchased(product)
-                }
-            } catch {
-                print(error)
-            }
+    
+    func sync() async {
+        do {
+            try await AppStore.sync()
+        } catch {
+            print(error)
         }
     }
     
-    func isPurchased(_ product: Product) async {
-        guard let state = await product.currentEntitlement else { return }
+    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+        //print("SKReceiptRefreshRequest returned with products n = \(response.products.count)")
+        if response.products.count >= 1 {
+            //print("restorePurchases products.first = \(response.products.first!)")
+        }
+        request.cancel()
+        Task {
+            await requestProducts()
+        }
+    }
+    
+    func request(_ request: SKRequest, didFailWithError error: Error) {
+        print("SKReceiptRefreshRequest failed with error \(error)")
+        request.cancel()
+    }
+    
+    func restorePurchases() {
+        let refresh = SKReceiptRefreshRequest()
+        refresh.delegate = self
+        refresh.start()
+    }
+    
+    func requestProducts() async {
+        do {
+            let products = try await Product.products(for: [PRODUCT_ID])
+            DispatchQueue.main.async {
+                self.products = products
+                //print("requestProducts n = \(products.count)")
+            }
+            if let product = products.first {
+                //print("checking \(products.debugDescription)")
+                await checkIfHasBeenPurchased(product)
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    func checkIfHasBeenPurchased(_ product: Product) async {
+        guard let state = await product.currentEntitlement else {
+            //print("not purchased")
+            return
+        }
         switch state {
         case .verified(let transaction):
             DispatchQueue.main.async {
@@ -40,38 +76,41 @@ class Store: ObservableObject {
         }
     }
     
-    func purchade() {
+    func purchase(_ product: Product) {
         Task {
-            guard let product = products.first else { return }
-            do {
-                Task {
-                    for await result in Transaction.updates {
-                        print("Transaction update")
-                        if case .verified(let transaction) = result {
-                            await transaction.finish()
-                        }
+            for await transaction in Transaction.updates {
+                print("Transaction update")
+                switch transaction {
+                case .unverified(_, _):
+                    break
+                case .verified(let verifiedFransaction):
+                    DispatchQueue.main.async {
+                        self.purchasedIDs = [verifiedFransaction.productID]
                     }
+                    await verifiedFransaction.finish()
                 }
-                let result = try await product.purchase()
-                switch result {
-                case .success(let verification):
-                    switch verification {
-                    case .verified(let transaction):
-                        DispatchQueue.main.async {
-                            self.purchasedIDs = [transaction.productID]
-                        }
-                    case .unverified(_, _):
-                        break
+            }
+        }
+
+        Task {
+            let result = try await product.purchase()
+            switch result {
+            case .success(let verification):
+                switch verification {
+                case .unverified(_, _):
+                    break
+                case .verified(let verifiedFransaction):
+                    DispatchQueue.main.async {
+                        self.purchasedIDs = [verifiedFransaction.productID]
                     }
-                case .userCancelled:
-                    break
-                case .pending:
-                    break
-                @unknown default:
-                    break
+                    await verifiedFransaction.finish()
                 }
-            } catch {
-                print(error)
+            case .userCancelled:
+                break
+            case .pending:
+                break
+            @unknown default:
+                break
             }
         }
     }

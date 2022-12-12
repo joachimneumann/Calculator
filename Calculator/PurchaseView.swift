@@ -23,7 +23,7 @@ struct PurchaseView: View {
                             .padding(.top, 10)
                         Button {
                             if store.purchasedIDs.isEmpty {
-                                store.purchade()
+                                store.purchase(store.products.first!)
                             }
                         } label: {
                             Text(store.purchasedIDs.isEmpty ? "Purchase Copy & Paste (\(product.displayPrice))" : "Purchased")
@@ -35,6 +35,18 @@ struct PurchaseView: View {
                         }
                         .disabled(!store.purchasedIDs.isEmpty)
                         .padding(.top, 30)
+                        if store.purchasedIDs.isEmpty {
+                            Button {
+                                store.restorePurchases()
+                            } label: {
+                                Text("restore")
+                                    .bold()
+                                    .foregroundColor(.white)
+                                    .frame(width: 80, height: 50)
+                                    .background(.blue)
+                                    .cornerRadius(10)
+                            }
+                        }
                     } else {
                         Text("...loading products")
                             .padding(.top, 60)
@@ -46,7 +58,9 @@ struct PurchaseView: View {
                 .foregroundColor(.white)
                 .padding()
                 .onAppear() {
-                    store.fetchProducts()
+                    Task {
+                        await store.requestProducts()
+                    }
                 }
             }
     }

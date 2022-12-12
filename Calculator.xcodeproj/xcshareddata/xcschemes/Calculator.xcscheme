@@ -61,7 +61,7 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <StoreKitConfigurationFileReference
-         identifier = "../../Calculator/Test.storekit">
+         identifier = "../../Calculator/Calculator.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
