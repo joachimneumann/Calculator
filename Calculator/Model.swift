@@ -30,7 +30,7 @@ class Model : ObservableObject {
     var precisionDescription = "unknown"
     
     var lengths = Lengths(0)
-    @AppStorage("precision", store: .standard) static var precision: Int = 100
+    @AppStorage("precision", store: .standard) static private (set) var precision: Int = 100
     @AppStorage("forceScientific", store: .standard) static var forceScientific: Bool = false
     @AppStorage("trigonometricToZero", store: .standard) static var trigonometricToZero: Bool = true
     @AppStorage("memoryValue", store: .standard) static var memoryValue: String = ""
@@ -43,8 +43,9 @@ class Model : ObservableObject {
     
     // the update of the precision in brain can be slow.
     // Therefore, I only want to do that when leaving the settings screen
-    func updatePrecision() {
-        brain.setPrecision(Model.precision)
+    func updatePrecision(to newPecision: Int) {
+        Model.precision = newPecision
+        brain.setPrecision(newPecision)
     }
     
     func toPastBin() {
@@ -144,7 +145,7 @@ class Model : ObservableObject {
         }
 
         // check mr
-        keyInfo["mr"]!.enabled = Model.memoryValue != ""
+        keyInfo["mr"]!.enabled = brain.memory != nil
     }
     
     private var previous: String? = nil
@@ -189,8 +190,6 @@ class Model : ObservableObject {
         let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(_symbol) && !Model._rad ? _symbol+"D" : _symbol
         
         switch symbol {
-        case "AC":
-            hasBeenReset.toggle()
         case "2nd":
             secondActive.toggle()
             self.keyInfo["2nd"]!.colors = secondActive ? C.secondActiveColors : C.secondColors
@@ -203,7 +202,11 @@ class Model : ObservableObject {
         case "plusKey":
             break
         default:
-            hasBeenReset = false
+            if symbol == "AC" {
+                hasBeenReset.toggle()
+            } else {
+                hasBeenReset = false
+            }
             Task {
                 DispatchQueue.main.async { self.isCalculating = true }
                 await asyncOperation(symbol)
