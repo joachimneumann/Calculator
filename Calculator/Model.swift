@@ -24,7 +24,7 @@ class Model : ObservableObject {
     
     private let brain: Brain
     @Published var keyInfo: [String: KeyInfo] = [:]
-    var _AC = true
+    @Published var showAC = true
     @Published var _hasBeenReset = false
     @Published var displayData: DisplayData
     
@@ -110,12 +110,12 @@ class Model : ObservableObject {
         //print("haveResultCallback \(lengths.withoutComma)")
         if brain.last.isNull {
             DispatchQueue.main.async {
-                self._AC = true
+                self.showAC = true
                 self.precisionDescription = Model.precision.useWords
             }
         } else {
             DispatchQueue.main.async {
-                self._AC = false
+                self.showAC = false
             }
         }
         DispatchQueue.main.async {

@@ -34,7 +34,7 @@ struct NonScientificKeys: View {
 
         VStack(spacing: spaceBetweenKeys) {
             HStack(spacing: spaceBetweenKeys) {
-                KeyPrep(symbol: model._AC ? "AC" : "C", model: model, keySize: keySize)
+                KeyPrep(symbol: model.showAC ? "AC" : "C", model: model, keySize: keySize)
                 KeyPrep(symbol: "±", model: model, keySize: keySize)
                 KeyPrep(symbol: "%", model: model, keySize: keySize)
                 KeyPrep(symbol: "/", model: model, keySize: keySize)
