@@ -36,8 +36,6 @@ class Number: CustomDebugStringConvertible {
     var isNull: Bool {
         if isStr {
             if str == "0" { return true }
-            if str == "0," { return true }
-            if str == "0,0" { return true }
             return false
         } else {
             if let g = gmp {
