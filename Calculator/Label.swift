@@ -14,63 +14,60 @@ struct Label: View {
     var sizeFactor: CGFloat
     init(keyInfo: Model.KeyInfo, size: CGFloat, color: Color = Color.white) {
         self.keyInfo = keyInfo
-        self.size = size
         self.color = color
-        sizeFactor = Label.sizeFactorText
+        
+        let sizeFactorDigits = 1.333
+        let sizeFactorSpecialOperator = 0.9333
+        let sizeFactorOperator = 0.8666
+        
+        sizeFactor = 1.0
         if C.digitOperators.contains(keyInfo.symbol) ||  keyInfo.symbol == "C" || keyInfo.symbol == "AC" {
-            sizeFactor = Label.sizeFactorDigits
+            sizeFactor = sizeFactorDigits
         } else if C.sfImageNames.keys.contains(keyInfo.symbol) {
             if keyInfo.symbol == "±" || keyInfo.symbol == "%" {
-                sizeFactor = Label.sizeFactorSpecialOperator
+                sizeFactor = sizeFactorSpecialOperator
             } else {
-                sizeFactor = Label.sizeFactorOperator
+                sizeFactor = sizeFactorOperator
             }
         }
+        self.size = size * sizeFactor /// here I can reduce all labels * 0.5
     }
-
-    static let debugFactor = 1.0
-    static let sizeFactorText = 0.3 * debugFactor
-    static let sizeFactorDigits = 0.4 * debugFactor
-    static let sizeFactorSpecialOperator = 0.28 * debugFactor
-    static let sizeFactorOperator = 0.26 * debugFactor
-    static let sizeFactorSmallText = 0.22 * debugFactor
-    static let sizeFactorLargeText = 0.4 * debugFactor
 
     var body: some View {
         let symbol = keyInfo.symbol
         //let _ = print("Label \(symbol)")
         switch symbol {
-        case "√" :    RootShapeView(rootDigit: "2", color: color, size: size * Label.debugFactor)
-        case "3√":    RootShapeView(rootDigit: "3", color: color, size: size * Label.debugFactor)
-        case "y√":    RootShapeView(rootDigit: "y", color: color, size: size * Label.debugFactor)
-        case "log10": Logx(base: "10", size: size * Label.debugFactor)
-        case "log2":  Logx(base: "2", size: size * Label.debugFactor)
-        case "logy":  Logx(base: "y", size: size * Label.debugFactor)
-        case "One_x": One_x(color: color, size: size * Label.debugFactor)
-        case "x^2":   Pow(base:  "x",   exponent: "2", size: size * Label.debugFactor)
-        case "x^3":   Pow(base:  "x",   exponent: "3", size: size * Label.debugFactor)
-        case "x^y":   Pow(base:  "x",   exponent: "y", size: size * Label.debugFactor)
-        case "e^x":   Pow(base:  "e",   exponent: "x", size: size * Label.debugFactor)
-        case "y^x":   Pow(base:  "y",   exponent: "x", size: size * Label.debugFactor)
-        case "2^x":   Pow(base:  "2",   exponent: "x", size: size * Label.debugFactor)
-        case "10^x":  Pow(base: "10",   exponent: "x", size: size * Label.debugFactor)
-        case "2nd":   Pow(base: "2",    exponent: "nd", size: size * Label.debugFactor)
-        case "asin":  Pow(base: "sin",  exponent: "-1", size: size * Label.debugFactor)
-        case "acos":  Pow(base: "cos",  exponent: "-1", size: size * Label.debugFactor)
-        case "atan":  Pow(base: "tan",  exponent: "-1", size: size * Label.debugFactor)
-        case "asinh": Pow(base: "sinh", exponent: "-1", size: size * Label.debugFactor)
-        case "acosh": Pow(base: "cosh", exponent: "-1", size: size * Label.debugFactor)
-        case "atanh": Pow(base: "tanh", exponent: "-1", size: size * Label.debugFactor)
+        case "√" :    RootShapeView(rootDigit: "2", color: color, size: size)
+        case "3√":    RootShapeView(rootDigit: "3", color: color, size: size)
+        case "y√":    RootShapeView(rootDigit: "y", color: color, size: size)
+        case "log10": Logx(base: "10", size: size)
+        case "log2":  Logx(base: "2", size: size)
+        case "logy":  Logx(base: "y", size: size)
+        case "One_x": One_x(color: color, size: size)
+        case "x^2":   Pow(base:  "x",   exponent: "2", size: size)
+        case "x^3":   Pow(base:  "x",   exponent: "3", size: size)
+        case "x^y":   Pow(base:  "x",   exponent: "y", size: size)
+        case "e^x":   Pow(base:  "e",   exponent: "x", size: size)
+        case "y^x":   Pow(base:  "y",   exponent: "x", size: size)
+        case "2^x":   Pow(base:  "2",   exponent: "x", size: size)
+        case "10^x":  Pow(base: "10",   exponent: "x", size: size)
+        case "2nd":   Pow(base: "2",    exponent: "nd", size: size)
+        case "asin":  Pow(base: "sin",  exponent: "-1", size: size)
+        case "acos":  Pow(base: "cos",  exponent: "-1", size: size)
+        case "atan":  Pow(base: "tan",  exponent: "-1", size: size)
+        case "asinh": Pow(base: "sinh", exponent: "-1", size: size)
+        case "acosh": Pow(base: "cosh", exponent: "-1", size: size)
+        case "atanh": Pow(base: "tanh", exponent: "-1", size: size)
         default:
             if let sfImage = C.sfImageNames[symbol] {
                 Image(systemName: sfImage)
                     .resizable()
                     .font(Font.title.weight(.semibold))
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: size * sizeFactor)
+                    .frame(width: size * 0.3)
             } else {
                 Text(symbol)
-                    .font(.system(size: size*sizeFactor, weight: .none))
+                    .font(.system(size: size * 0.3, weight: .none))
             }
         }
     }
