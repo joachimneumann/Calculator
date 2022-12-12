@@ -49,7 +49,7 @@ struct Calculator: View {
                 }
             
                 .overlay() { /// keyboard
-                    KeysViewAndText(hasBeenReset: model._hasBeenReset,
+                    KeysViewAndText(hasBeenReset: model.hasBeenReset,
                                     precisionDescription: model.precisionDescription,
                                     rad: Model._rad,
                                     isPortrait: isPortrait,

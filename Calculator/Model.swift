@@ -25,7 +25,7 @@ class Model : ObservableObject {
     private let brain: Brain
     @Published var keyInfo: [String: KeyInfo] = [:]
     @Published var showAC = true
-    @Published var _hasBeenReset = false
+    @Published var hasBeenReset = false
     @Published var displayData: DisplayData
     
     var precisionDescription = "unknown"
@@ -71,7 +71,7 @@ class Model : ObservableObject {
                 if pasteString.count > 0 {
                     brain.n.replaceLast(with: Number(pasteString, precision: brain.precision))
                     haveResultCallback()
-                    _hasBeenReset = false
+                    hasBeenReset = false
                 }
             }
         }
@@ -185,20 +185,20 @@ class Model : ObservableObject {
         
         switch symbol {
         case "AC":
-            _hasBeenReset.toggle()
+            hasBeenReset.toggle()
         case "2nd":
             secondActive.toggle()
             self.keyInfo["2nd"]!.colors = secondActive ? C.secondActiveColors : C.secondColors
         case "Rad":
-            _hasBeenReset = false
+            hasBeenReset = false
             Model._rad = true
         case "Deg":
-            _hasBeenReset = false
+            hasBeenReset = false
             Model._rad = false
         case "plusKey":
             break
         default:
-            _hasBeenReset = false
+            hasBeenReset = false
             Task {
                 DispatchQueue.main.async { self.isCalculating = true }
                 await asyncOperation(symbol)
