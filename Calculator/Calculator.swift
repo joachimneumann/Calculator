@@ -20,8 +20,7 @@ struct Calculator: View {
     let displayTrailingOffset: CGFloat
     let displayBottomOffset: CGFloat
     let keyboardPaddingBottom: CGFloat
-//    @State private var orientation = UIDeviceOrientation.unknown
-    @State var zzz: Bool = false
+    @State var isZoomed: Bool = false
     
     var body: some View {
         let _ = print("Calculator body")
@@ -29,7 +28,7 @@ struct Calculator: View {
             Rectangle()
                 .overlay() {
                     Display(isPortrait: isPortrait,
-                            isZoomed: zzz,
+                            isZoomed: isZoomed,
                             displayData: model.displayData,
                             lengths: model.lengths,
                             singleLineFontSize: singleLineFontSize,
@@ -45,7 +44,7 @@ struct Calculator: View {
                           isPortrait: isPortrait,
                           height: keyboardSize.height,
                           isCalculating: model.isCalculating,
-                          isZoomed: $zzz,
+                          isZoomed: $isZoomed,
                           keyInfo: model.keyInfo["plusKey"]!)
                 }
             
@@ -57,13 +56,10 @@ struct Calculator: View {
                                     keyHeight: keyHeight,
                                     model: model,
                                     keyboardSize: keyboardSize,
-                                    zoomed: zzz,
+                                    isZoomed: isZoomed,
                                     size: size)
                 }
-//                .onRotate { newOrientation in /// this magically reduces the number of haveResultCallback() calls to one per rotation
-//                    orientation = newOrientation
-//                }
-                .background(Color.yellow)
+                .background(Color.black)
         }
         .accentColor(.white) // for the navigation back button
         .onAppear() {
@@ -235,7 +231,7 @@ struct KeysViewAndText: View {
     let keyHeight: CGFloat
     let model: Model
     let keyboardSize: CGSize
-    let zoomed: Bool
+    let isZoomed: Bool
     let size: CGSize
     var body: some View {
         let info = "\(hasBeenReset ? "Precision: "+precisionDescription+" digits" : "\(rad ? "Rad" : "")")"
@@ -251,26 +247,9 @@ struct KeysViewAndText: View {
             KeysView(model: model, isScientific: !isPortrait, size: keyboardSize)
         }
         .transition(.move(edge: .bottom))
-        .offset(y: (zoomed && !isPortrait) ? size.height : 0)
+        .offset(y: (isZoomed && !isPortrait) ? size.height : 0)
     }
 }
-//extension View {
-//    func onRotate(perform action: @escaping (UIDeviceOrientation) -> Void) -> some View {
-//        self.modifier(DeviceRotationViewModifier(action: action))
-//    }
-//}
-//
-//struct DeviceRotationViewModifier: ViewModifier {
-//    let action: (UIDeviceOrientation) -> Void
-//    
-//    func body(content: Content) -> some View {
-//        content
-//            .onAppear()
-//            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-//                action(UIDevice.current.orientation)
-//            }
-//    }
-//}
 
 //struct Calculator_Previews: PreviewProvider {
 //    static var previews: some View {

@@ -30,11 +30,6 @@ struct CalculatorApp: App {
         let keyboardPaddingBottom = 0.0//isPortrait ? keyboardSize.height * 0.1 : 0.0
         let displayBottomOffset = isPortrait ? size.height - keyboardSize.height - keyboardPaddingBottom - oneKeyheight * 1.2 : 0.00
         WindowGroup {
-            ZStack {
-                Rectangle()
-                    .foregroundColor(.blue)
-                    .background(Color.green)
-                    .frame(width: UIScreen.main.bounds.size.width*1.3, height: UIScreen.main.bounds.size.height*1.3)
                 Calculator(model: Model(),
                            isPad: isPad,
                            isPortrait: isPortrait,
@@ -45,7 +40,10 @@ struct CalculatorApp: App {
                            displayTrailingOffset: displayTrailingOffset,
                            displayBottomOffset: displayBottomOffset,
                            keyboardPaddingBottom: keyboardPaddingBottom)
-            }
+//            .withHostingWindow { window in
+//                /// this stops white background from showing *during* a device rotation
+//                window?.rootViewController?.view.backgroundColor = UIColor.black
+//            }
             .onRotate { newOrientation in
                 appOrientation = newOrientation
             }
@@ -107,6 +105,28 @@ private extension UIEdgeInsets {
         EdgeInsets(top: top, leading: left, bottom: bottom, trailing: right)
     }
 }
+
+extension View {
+    func withHostingWindow(_ callback: @escaping (UIWindow?) -> Void) -> some View {
+        self.background(HostingWindowFinder(callback: callback))
+    }
+}
+
+struct HostingWindowFinder: UIViewRepresentable {
+    var callback: (UIWindow?) -> ()
+
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView()
+        DispatchQueue.main.async { [weak view] in
+            self.callback(view?.window)
+        }
+        return view
+    }
+
+    func updateUIView(_ uiView: UIView, context: Context) {
+    }
+}
+
 /*
  
  class AppDelegate: NSObject, UIApplicationDelegate {
