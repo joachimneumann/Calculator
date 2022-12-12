@@ -25,7 +25,7 @@ struct Lengths {
 }
 
 func lengthMeasurement(width: CGFloat, fontSize: CGFloat, ePadding: CGFloat) -> Lengths {
-    let uiFont = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: .thin)
+    let uiFont = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: C.fontWeight)
     var s = ""
     var w = s.length(for: uiFont)
     while w < width {
@@ -56,15 +56,21 @@ func lengthMeasurement(width: CGFloat, fontSize: CGFloat, ePadding: CGFloat) -> 
         withCommaNonScientific: withCommaNonScientific,
         withCommaScientific: withCommaScientific,
         ePadding: ePadding)
-    // print("lengthMeasurement \(result)")
+     print("lengthMeasurement \(result)")
     return result
 }
 
     
 fileprivate extension String {
     func length(for uiFont: UIFont) -> CGFloat {
-        let fontAttribute = [NSAttributedString.Key.font: uiFont]
-        let size = self.size(withAttributes: fontAttribute)  // for Single Line
+        //  attrString.addAttribute(NSAttributedStringKey.kern, value: 2, range: NSMakeRange(0, attrString.length))
+
+        var attributes: [NSAttributedString.Key : Any] = [:]
+        attributes[.kern] = C.kerning
+        attributes[.strokeWidth] = 300
+        attributes[.font] = uiFont
+//        let fontAttribute = [NSAttributedString.Key.font: uiFont]
+        let size = self.size(withAttributes: attributes)  // for Single Line
         return size.width;
     }
 }

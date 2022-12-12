@@ -29,10 +29,14 @@ struct LandscapeDisplay: View {
                         Spacer(minLength: 0.0)
                         ScrollView(.vertical) {
                             Text(displayData.longLeft)
+                                .fontWidth(C.fontWidth)
+                                .kerning(C.kerning)
                         }
                         if displayData.longRight != nil {
                             VStack(spacing: 0.0) {
                                 Text(displayData.longRight!)
+                                    .fontWidth(C.fontWidth)
+                                    .kerning(C.kerning)
                                     .padding(.leading, ePadding)
                                     .padding(.trailing, 0.0)
                                 Spacer(minLength: 0.0)
@@ -46,9 +50,13 @@ struct LandscapeDisplay: View {
                     HStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
                         Text(displayData.shortLeft).foregroundColor(Color.white)
+                            .fontWidth(C.fontWidth)
+                            .kerning(C.kerning)
                         let exponent = displayData.shortRight
                         if exponent != nil {
                             Text(exponent!)
+                                .fontWidth(C.fontWidth)
+                                .kerning(C.kerning)
                                 .padding(.leading, ePadding)
                                 .padding(.trailing, 0.0)
                         }

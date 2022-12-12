@@ -86,8 +86,8 @@ struct Display: View {
                     displayData: displayData,
                     forceSmallFont: displayData.short.count == lengths.withoutComma,
                     ePadding: lengths.ePadding,
-                    smallFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
-                    largeFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * 1.5, weight: .thin)),
+                    smallFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: C.fontWeight)),
+                    largeFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * 1.5, weight: C.fontWeight)),
                     fontScaleFactor: 1.5)
                 //.background(Color.yellow)
                 .padding(.bottom, height)
@@ -100,7 +100,7 @@ struct Display: View {
                         displayData: displayData,
                         width: width,
                         ePadding: lengths.ePadding,
-                        font: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
+                        font: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: C.fontWeight)),
                         isCopyingOrPasting: false,
                         precisionString: "Model.precision.useWords")
                     .padding(.trailing, displayTrailingOffset)

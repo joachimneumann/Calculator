@@ -22,14 +22,20 @@ struct PortraitDisplay: View {
                 //let _ = print("displayData.shortLeft \(displayData.shortLeft)")
                 if displayData.shortRight == nil {
                     Text(displayData.shortLeft)
+                        .fontWidth(C.fontWidth)
+                        .kerning(C.kerning)
                         .font(forceSmallFont ? smallFont : largeFont)
                         .minimumScaleFactor(1.0 / (forceSmallFont ? 1.0 : fontScaleFactor))
                 } else {
                     /// exponential is always displayed with the small font
                     Text(displayData.shortLeft)
+                        .fontWidth(C.fontWidth)
+                        .kerning(C.kerning)
                         .font(smallFont)
                         .minimumScaleFactor(0.1)
                     Text(displayData.shortRight!)
+                        .fontWidth(C.fontWidth)
+                        .kerning(C.kerning)
                         .font(smallFont)
                         .padding(.leading, ePadding)
                         .minimumScaleFactor(0.1)
