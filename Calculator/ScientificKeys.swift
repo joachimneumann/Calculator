@@ -38,30 +38,30 @@ struct ScientificKeys: View {
                 KeyPrep(symbol: "x^2", model: model, keySize: keySize)
                 KeyPrep(symbol: "x^3", model: model, keySize: keySize)
                 KeyPrep(symbol: "x^y", model: model, keySize: keySize)
-                KeyPrep(symbol: model._2ndActive ? "y^x" : "e^x", model: model, keySize: keySize)
-                KeyPrep(symbol: model._2ndActive ? "2^x" : "10^x", model: model, keySize: keySize)
+                KeyPrep(symbol: model.secondActive ? "y^x" : "e^x", model: model, keySize: keySize)
+                KeyPrep(symbol: model.secondActive ? "2^x" : "10^x", model: model, keySize: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
                 KeyPrep(symbol: "One_x", model: model, keySize: keySize)
                 KeyPrep(symbol: "√", model: model, keySize: keySize)
                 KeyPrep(symbol: "3√", model: model, keySize: keySize)
                 KeyPrep(symbol: "y√", model: model, keySize: keySize)
-                KeyPrep(symbol: model._2ndActive ? "logy" : "ln", model: model, keySize: keySize)
-                KeyPrep(symbol: model._2ndActive ? "log2" : "log10", model: model, keySize: keySize)
+                KeyPrep(symbol: model.secondActive ? "logy" : "ln", model: model, keySize: keySize)
+                KeyPrep(symbol: model.secondActive ? "log2" : "log10", model: model, keySize: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
                 KeyPrep(symbol: "x!", model: model, keySize: keySize)
-                KeyPrep(symbol: model._2ndActive ? "asin" : "sin", model: model, keySize: keySize)
-                KeyPrep(symbol: model._2ndActive ? "acos" : "cos", model: model, keySize: keySize)
-                KeyPrep(symbol: model._2ndActive ? "atan" : "tan", model: model, keySize: keySize)
+                KeyPrep(symbol: model.secondActive ? "asin" : "sin", model: model, keySize: keySize)
+                KeyPrep(symbol: model.secondActive ? "acos" : "cos", model: model, keySize: keySize)
+                KeyPrep(symbol: model.secondActive ? "atan" : "tan", model: model, keySize: keySize)
                 KeyPrep(symbol: "e", model: model, keySize: keySize)
                 KeyPrep(symbol: "EE", model: model, keySize: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
                 KeyPrep(symbol: Model._rad ? "Deg" : "Rad", model: model, keySize: keySize)
-                KeyPrep(symbol: model._2ndActive ? "asinh" : "sinh", model: model, keySize: keySize)
-                KeyPrep(symbol: model._2ndActive ? "acosh" : "cosh", model: model, keySize: keySize)
-                KeyPrep(symbol: model._2ndActive ? "atanh" : "tanh", model: model, keySize: keySize)
+                KeyPrep(symbol: model.secondActive ? "asinh" : "sinh", model: model, keySize: keySize)
+                KeyPrep(symbol: model.secondActive ? "acosh" : "cosh", model: model, keySize: keySize)
+                KeyPrep(symbol: model.secondActive ? "atanh" : "tanh", model: model, keySize: keySize)
                 KeyPrep(symbol: "π", model: model, keySize: keySize)
                 KeyPrep(symbol: "Rand", model: model, keySize: keySize)
             }

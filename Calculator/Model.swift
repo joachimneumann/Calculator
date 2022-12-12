@@ -19,7 +19,7 @@ class Model : ObservableObject {
         }
     }
     
-    @Published var _2ndActive = false
+    @Published var secondActive = false
     @Published var isCalculating = false
     
     private let brain: Brain
@@ -187,8 +187,8 @@ class Model : ObservableObject {
         case "AC":
             _hasBeenReset.toggle()
         case "2nd":
-            _2ndActive.toggle()
-            self.keyInfo["2nd"]!.colors = _2ndActive ? C._2ndActiveColors : C._2ndColors
+            secondActive.toggle()
+            self.keyInfo["2nd"]!.colors = secondActive ? C.secondActiveColors : C.secondColors
         case "Rad":
             _hasBeenReset = false
             Model._rad = true

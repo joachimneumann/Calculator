@@ -43,11 +43,11 @@ struct C {
         textColor: UIColor(white: 0.3, alpha: 1.0),
         upColor:   UIColor(white: 0.7, alpha: 1.0),
         downColor: UIColor(white: 0.6, alpha: 1.0))
-    static let _2ndColors = ColorsOf(
+    static let secondColors = ColorsOf(
         textColor: UIColor(.white),
         upColor:   UIColor(white: 0.12, alpha: 1.0),
         downColor: UIColor(white: 0.12, alpha: 1.0))
-    static let _2ndActiveColors = ColorsOf(
+    static let secondActiveColors = ColorsOf(
         textColor: UIColor(white: 0.2, alpha: 1.0),
         upColor:   UIColor(white: 0.6, alpha: 1.0),
         downColor: UIColor(white: 0.6, alpha: 1.0))
@@ -63,7 +63,7 @@ struct C {
         if digitKeys.contains(symbol) {
             return digitColors
         } else if symbol == "2nd" {
-            return _2ndColors
+            return secondColors
         } else if symbol == "plusKey" {
             return operatorColors
         } else if operatorKeys.contains(symbol) {
