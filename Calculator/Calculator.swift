@@ -58,8 +58,9 @@ struct Calculator: View {
                                     keyboardSize: keyboardSize,
                                     isZoomed: isZoomed,
                                     size: size)
+                    .background(C.appBackground)
                 }
-                .background(Color.black)
+                .background(C.appBackground)
         }
         .accentColor(.white) // for the navigation back button
         .onAppear() {
@@ -151,7 +152,7 @@ struct Icons : View {
                                     .scaledToFit()
                                     .font(.system(size: height, weight: .thin))
                                     .frame(width: size, height: size)
-                                    .foregroundColor(Color(uiColor: UIColor(white: 0.9, alpha: 1.0)))
+                                    .foregroundColor(Color(UIColor(white: 0.9, alpha: 1.0)))
                             }
                             .padding(.top, size * 0.5)
                             Group {

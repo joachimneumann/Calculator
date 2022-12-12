@@ -30,6 +30,7 @@ struct CalculatorApp: App {
         let keyboardPaddingBottom = 0.0//isPortrait ? keyboardSize.height * 0.1 : 0.0
         let displayBottomOffset = isPortrait ? size.height - keyboardSize.height - keyboardPaddingBottom - oneKeyheight * 1.2 : 0.00
         WindowGroup {
+            ZStack {
                 Calculator(model: Model(),
                            isPad: isPad,
                            isPortrait: isPortrait,
@@ -40,16 +41,19 @@ struct CalculatorApp: App {
                            displayTrailingOffset: displayTrailingOffset,
                            displayBottomOffset: displayBottomOffset,
                            keyboardPaddingBottom: keyboardPaddingBottom)
-//            .withHostingWindow { window in
-//                /// this stops white background from showing *during* a device rotation
-//                window?.rootViewController?.view.backgroundColor = UIColor.black
-//            }
+            }
+
+            .withHostingWindow { window in
+                /// this stops white background from showing *during* a device rotation
+                window?.rootViewController?.view.backgroundColor = C.appBackgroundUI
+            }
             .onRotate { newOrientation in
                 appOrientation = newOrientation
             }
             .onAppear() {
                 appOrientation = UIDevice.current.orientation
             }
+            .preferredColorScheme(.dark)
         }
     }
 }

@@ -126,8 +126,8 @@ struct Settings: View {
                             Toggle("", isOn: $settingsForceScientific)
                                 .foregroundColor(Color.green)
                                 .toggleStyle(
-                                    ColoredToggleStyle(onColor: Color(uiColor: UIColor(white: 0.6, alpha: 1.0)),
-                                                       offColor: Color(uiColor: UIColor(white: 0.3, alpha: 1.0)),
+                                    ColoredToggleStyle(onColor: Color(UIColor(white: 0.6, alpha: 1.0)),
+                                                       offColor: Color(UIColor(white: 0.3, alpha: 1.0)),
                                                        thumbColor: .white))
                                 .frame(width: 70)
                             Text(settingsForceScientific ? "e.g. 3,1415926 e0" : "e.g. 3,141592653")
@@ -142,8 +142,8 @@ struct Settings: View {
                             Toggle("", isOn: $settingsTrigonometricToZero)
                                 .foregroundColor(Color.green)
                                 .toggleStyle(
-                                    ColoredToggleStyle(onColor: Color(uiColor: UIColor(white: 0.6, alpha: 1.0)),
-                                                       offColor: Color(uiColor: UIColor(white: 0.3, alpha: 1.0)),
+                                    ColoredToggleStyle(onColor: Color(UIColor(white: 0.6, alpha: 1.0)),
+                                                       offColor: Color(UIColor(white: 0.3, alpha: 1.0)),
                                                        thumbColor: .white))
                                 .frame(width: 70)
                             Text(settingsTrigonometricToZero ? "sin(π) = 0" : "sin(π) = 1e-\(settingsPrecision)")

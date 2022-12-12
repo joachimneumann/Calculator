@@ -19,6 +19,8 @@ class ColorsOf {
 }
 
 struct C {    
+    static let appBackgroundUI: UIColor = UIColor.black
+    static let appBackground = Color(appBackgroundUI)
     private static let disabled = UIColor.red
     static let digitColors = ColorsOf(
         textColor: UIColor(.white),

@@ -22,8 +22,8 @@ struct PlusKey: View {
             .rotationEffect(zoomed ? .degrees(-45.0) : .degrees(0.0))
             .animation(.linear(duration: 0.2).delay(0), value: zoomed)
             .frame(width: size.width, height: size.height)
-            .foregroundColor(Color(uiColor: keyInfo.colors.upColor))
-            .background(Color(uiColor: keyInfo.colors.textColor))
+            .foregroundColor(Color(keyInfo.colors.upColor))
+            .background(Color(keyInfo.colors.textColor))
             .clipShape(Capsule())
             .onTouchGesture(tapped: $tapped, symbol: keyInfo.symbol, callback: { zoomed.toggle() })
     }
@@ -32,6 +32,6 @@ struct PlusKey: View {
 //struct Plus_Previews: PreviewProvider {
 //    static var previews: some View {
 //        let model = KeyModel()
-//        PlusKey(model: model, textColor: Color(uiColor: model.colorsOf["plusKey"]!.textColor), upColor: Color(uiColor: model.colorsOf["plusKey"]!.upColor), downColor: Color(uiColor: model.colorsOf["plusKey"]!.downColor), size: CGSize(width: 100, height: 100))
+//        PlusKey(model: model, textColor: Color(model.colorsOf["plusKey"]!.textColor), upColor: Color(model.colorsOf["plusKey"]!.upColor), downColor: Color(model.colorsOf["plusKey"]!.downColor), size: CGSize(width: 100, height: 100))
 //    }
 //}

@@ -30,7 +30,7 @@ struct KeysView: View {
         } else {
             let space = C.spaceBetweenkeysFraction(withScientificKeys: false) * size.width
             NonScientificKeys(model: model, spaceBetweenKeys: space, size: size)
-//                .background(Color.black)
+//                .background(Color.green)
         }
     }
 }

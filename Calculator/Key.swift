@@ -20,8 +20,8 @@ struct Key: View {
             Label(keyInfo: keyInfo, height: size.height)
                 .font(.largeTitle)
                 .frame(width: size.width, height: size.height)
-                .foregroundColor(Color(uiColor: keyInfo.colors.textColor))
-                .background(Color(uiColor: tapped ? (keyInfo.enabled ? keyInfo.colors.downColor : C.disabledColor) : keyInfo.colors.upColor))
+                .foregroundColor(Color(keyInfo.colors.textColor))
+                .background(Color(tapped ? (keyInfo.enabled ? keyInfo.colors.downColor : C.disabledColor) : keyInfo.colors.upColor))
                 .clipShape(Capsule())
                 .onTouchGesture(tapped: $tapped, symbol: keyInfo.symbol, callback: callback)
         }
