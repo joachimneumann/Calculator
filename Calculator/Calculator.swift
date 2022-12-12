@@ -27,6 +27,9 @@ struct Calculator: View {
                             height: screenInfo.keyboardSize.height,
                             displayTrailingOffset: screenInfo.displayTrailingOffset,
                             displayBottomOffset: screenInfo.displayBottomOffset)
+                    .onChange(of: model.lengths.withoutComma) { newValue in
+                        model.updateDisplayData()
+                    }
                     .background(C.appBackground)
                 }
             
