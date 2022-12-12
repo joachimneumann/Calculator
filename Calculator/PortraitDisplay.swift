@@ -14,7 +14,6 @@ struct PortraitDisplay: View {
     let smallFont: Font
     let largeFont: Font
     let fontScaleFactor: CGFloat
-    let displayWidth: CGFloat
     
     var body: some View {
         VStack(spacing: 0.0) {

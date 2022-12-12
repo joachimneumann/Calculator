@@ -7,48 +7,67 @@
 
 import SwiftUI
 
+struct ScreenInfo {
+    let isPad: Bool
+    let isPortrait: Bool
+    let calculatorSize: CGSize
+    let keyboardSize: CGSize
+    let keyHeight: CGFloat
+    let singleLineFontSize: CGFloat
+    let keyboardPaddingBottom: CGFloat
+    let displayTrailingOffset: CGFloat
+    let displayBottomOffset: CGFloat
+    let lengths: Lengths
+    init(hardwareSize: CGSize, insets: UIEdgeInsets, appOrientation: UIDeviceOrientation, model: Model) {
+        
+        /// appOrientation is used here to trigger a redraw when the orientation changes ???????
+        
+        isPad = UIDevice.current.userInterfaceIdiom == .pad
+        isPortrait = UIScreen.main.bounds.size.height > UIScreen.main.bounds.size.width
+        calculatorSize = CGSize(width: hardwareSize.width - insets.left - insets.right, height: hardwareSize.height - insets.top - insets.bottom)
+        let spaceBetweenKeys: CGFloat = C.spaceBetweenkeysFraction(withScientificKeys: !isPortrait) * calculatorSize.width
+        let keyWidth: CGFloat = (calculatorSize.width - (isPortrait ? 3.0 : 9.0) * spaceBetweenKeys) * (isPortrait ? 0.25 : 0.1)
+        keyHeight = isPortrait ? keyWidth : (calculatorSize.height - 5.0 * spaceBetweenKeys) / 6.17
+        let allKeysheight = 5 * keyHeight + 4 * spaceBetweenKeys
+        keyboardSize = CGSize(width: calculatorSize.width, height: allKeysheight)
+        singleLineFontSize = ((isPortrait ? 0.14 : 0.16) * keyboardSize.height).rounded()
+        keyboardPaddingBottom = 0.0//isPortrait ? keyHeight * 0.1 : 0.0
+        displayTrailingOffset = isPortrait ? 0.0 :keyWidth * 0.7
+        displayBottomOffset = isPortrait ? calculatorSize.height - keyboardSize.height - keyboardPaddingBottom - keyHeight * 1.2 : 0.0
+        let displayWidth = calculatorSize.width - displayTrailingOffset
+        lengths = lengthMeasurement(width: displayWidth, fontSize: singleLineFontSize, ePadding: 0.0)
+        print("withoutComma \(lengths.withoutComma)")
+        model.lengths = lengths // lengths is used in Model.haveResultCallback()
+    }
+}
+
 @main
 struct CalculatorApp: App {
+    @StateObject var model: Model = Model()
     @Environment(\.safeAreaInsets) private var safeAreaInsets
-    @State private var appOrientation = UIDeviceOrientation.unknown
+    @State private var appOrientation = UIDeviceOrientation.landscapeLeft
+    
     var body: some Scene {
-        let insets = UIApplication.shared.keyWindow?.safeAreaInsets ?? UIEdgeInsets()//.swiftUiInsets ?? EdgeInsets()
-        let screenSize = UIScreen.main.bounds.size
-        let size = CGSize(width: screenSize.width - insets.left - insets.right, height: screenSize.height - insets.top - insets.bottom)
-        let isPad = UIDevice.current.userInterfaceIdiom == .pad
-        /// appOrientation is used here to trigger a redraw when the orientation changes
-        let isPortrait = appOrientation == UIDeviceOrientation.unknown || (UIScreen.main.bounds.size.height > UIScreen.main.bounds.size.width)
-        let spaceBetweenKeys: CGFloat = C.spaceBetweenkeysFraction(withScientificKeys: !isPortrait) * size.width
-        let oneKeyWidth: CGFloat = (size.width - (isPortrait ? 3.0 : 9.0) * spaceBetweenKeys) * (isPortrait ? 0.25 : 0.1)
-        let oneKeyheight: CGFloat = isPortrait ? oneKeyWidth : (size.height - 5.0 * spaceBetweenKeys) / 6.17
-        let allKeysheight: CGFloat = 5 * oneKeyheight + 4 * spaceBetweenKeys
-        let keyboardSize: CGSize = CGSize(width: size.width, height: allKeysheight)
-        let singleLineFontSize = ((isPortrait ? 0.14 : 0.16) * keyboardSize.height).rounded()
-        let displayTrailingOffset = isPortrait ? 0.0 : oneKeyWidth * 0.7
-        let keyboardPaddingBottom = 0.0//isPortrait ? keyboardSize.height * 0.1 : 0.0
-        let displayBottomOffset = isPortrait ? size.height - keyboardSize.height - keyboardPaddingBottom - oneKeyheight * 1.2 : 0.0
         WindowGroup {
             ZStack {
-                Calculator(model: Model(),
-                           isPad: isPad,
-                           isPortrait: isPortrait,
-                           size: size,
-                           keyboardSize: keyboardSize,
-                           keyHeight: oneKeyheight,
-                           singleLineFontSize: singleLineFontSize,
-                           displayTrailingOffset: displayTrailingOffset,
-                           displayBottomOffset: displayBottomOffset,
-                           keyboardPaddingBottom: keyboardPaddingBottom)
+                Calculator(
+                    model: model,
+                    screenInfo: ScreenInfo (
+                        hardwareSize: UIScreen.main.bounds.size,
+                        insets: UIApplication.shared.keyWindow?.safeAreaInsets ?? UIEdgeInsets(),
+                        appOrientation: appOrientation,
+                        model: model))
             }
-
             .withHostingWindow { window in
                 /// this stops white background from showing *during* a device rotation
                 window?.rootViewController?.view.backgroundColor = C.appBackgroundUI
             }
             .onRotate { newOrientation in
                 appOrientation = newOrientation
+                print("newOrientation \(newOrientation.rawValue)")
             }
             .onAppear() {
+                print("onAppear")
                 appOrientation = UIDevice.current.orientation
             }
             .preferredColorScheme(.dark)
@@ -116,7 +135,7 @@ extension View {
 
 struct HostingWindowFinder: UIViewRepresentable {
     var callback: (UIWindow?) -> ()
-
+    
     func makeUIView(context: Context) -> UIView {
         let view = UIView()
         DispatchQueue.main.async { [weak view] in
@@ -124,7 +143,7 @@ struct HostingWindowFinder: UIViewRepresentable {
         }
         return view
     }
-
+    
     func updateUIView(_ uiView: UIView, context: Context) {
     }
 }

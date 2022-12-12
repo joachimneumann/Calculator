@@ -17,7 +17,6 @@ struct LandscapeDisplay: View {
     let font: Font
     let isCopyingOrPasting: Bool
     let precisionString: String
-    let displayWidth: CGFloat
     
     private let isCopyingOrPastingColor = Color(
         red:    118.0/255.0,
@@ -42,17 +41,14 @@ struct LandscapeDisplay: View {
                             }
                         }
                     }
-                    .frame(width: displayWidth, alignment: .trailing)
-                    //.background(Color.blue)
                     .font(font)
-                    //                        .minimumScaleFactor(scaleFont ? 1.0/1.5 : 1.0)
                     .foregroundColor(isCopyingOrPasting ? isCopyingOrPastingColor : .white)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                     .multilineTextAlignment(.trailing)
                 } else {
                     HStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
-                        Text(displayData.shortLeft)
+                        Text(displayData.shortLeft).foregroundColor(Color.white)
                         let exponent = displayData.shortRight
                         if exponent != nil {
                             Text(exponent!)
@@ -60,14 +56,8 @@ struct LandscapeDisplay: View {
                                 .padding(.trailing, 0.0)
                         }
                     }
-                    .frame(width: displayWidth, alignment: .trailing)
-                    //.background(Color.blue)
                     .font(font)
-                    //                        .minimumScaleFactor(scaleFont ? 1.0/1.5 : 1.0)
                     .foregroundColor(isCopyingOrPasting ? isCopyingOrPastingColor : .white)
-                    .lineLimit(1)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                    .multilineTextAlignment(.trailing)
                 }
             }
             Spacer()

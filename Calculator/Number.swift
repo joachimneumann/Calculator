@@ -32,7 +32,6 @@ class Number: CustomDebugStringConvertible {
     var isStr: Bool { _str != nil }
     var str: String? { return _str }
     var gmp: Gmp? { return _gmp }
-    var displayData: DisplayData?
     
     var isNull: Bool {
         if isStr {

@@ -23,11 +23,11 @@ struct Lengths {
     }
 }
 
-func lengthMeasurement(size: CGSize, fontSize: CGFloat, ePadding: CGFloat) -> Lengths {
+func lengthMeasurement(width: CGFloat, fontSize: CGFloat, ePadding: CGFloat) -> Lengths {
     let uiFont = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: .thin)
     var s = ""
     var w = s.length(for: uiFont)
-    while w < size.width {
+    while w < width {
         s.append("0")
         w = s.length(for: uiFont)
     }
@@ -35,7 +35,7 @@ func lengthMeasurement(size: CGSize, fontSize: CGFloat, ePadding: CGFloat) -> Le
     
     s = ","
     w = s.length(for: uiFont)
-    while w < size.width {
+    while w < width {
         s.append("0")
         w = s.length(for: uiFont)
     }
@@ -44,7 +44,7 @@ func lengthMeasurement(size: CGSize, fontSize: CGFloat, ePadding: CGFloat) -> Le
     //print("ePadding set to \(ePadding)")
     s = ",e"
     w = s.length(for: uiFont)
-    while w < (size.width - ePadding) {
+    while w < (width - ePadding) {
         s.append("0")
         w = s.length(for: uiFont)
     }

@@ -8,7 +8,6 @@
 import SwiftUI
 
 class Model : ObservableObject {
-    var displayWidth: CGFloat = 0
     class KeyInfo: ObservableObject {
         let symbol: String
         @Published var colors: ColorsOf
@@ -106,6 +105,16 @@ class Model : ObservableObject {
         }
     }
     
+    func updateDisplayData() {
+        DispatchQueue.main.async {
+            self.displayData = DisplayData(shortLeft: "", shortAbbreviated: false, longLeft: "", longAbbreviated: false)
+        }
+        let temp = self.brain.last.getDisplayData(self.lengths, forceScientific: Model.forceScientific)
+        DispatchQueue.main.async {
+            self.displayData = temp
+        }
+    }
+    
     func haveResultCallback() {
         //print("haveResultCallback \(lengths.withoutComma)")
         if brain.last.isNull {
@@ -118,13 +127,8 @@ class Model : ObservableObject {
                 self.showAC = false
             }
         }
-        DispatchQueue.main.async {
-            self.displayData = DisplayData(shortLeft: "", shortAbbreviated: false, longLeft: "", longAbbreviated: false)
-        }
-        let temp = self.brain.last.getDisplayData(self.lengths, forceScientific: Model.forceScientific)
-        DispatchQueue.main.async {
-            self.displayData = temp
-        }
+        
+        updateDisplayData()
         
         for key in C.allKeys {
             if brain.isValidNumber {
@@ -137,7 +141,7 @@ class Model : ObservableObject {
                 }
             }
         }
-        
+
         // check mr
         keyInfo["mr"]!.enabled = Model.memoryValue != ""
     }
@@ -204,9 +208,8 @@ class Model : ObservableObject {
                 await asyncOperation(symbol)
                 if ["mc", "m+", "m-"].contains(symbol) {
                     if let memory = brain.memory {
-                        let lengths = Lengths(Model.precision)
                         DispatchQueue.main.sync {
-                            Model.memoryValue = memory.getDisplayData(lengths, forceScientific: false, maxDisplayLength: Model.precision).long
+                            Model.memoryValue = memory.getDisplayData(Lengths(Model.precision), forceScientific: false, maxDisplayLength: Model.precision).long
                         }
                     } else {
                         DispatchQueue.main.sync {

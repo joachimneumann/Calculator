@@ -8,59 +8,50 @@
 import SwiftUI
 
 struct Calculator: View {
-    @StateObject var store = Store()
     @StateObject var model: Model
-    let isPad: Bool
-    var isPortrait: Bool
-    let size: CGSize
-    
-    var keyboardSize: CGSize
-    var keyHeight: CGFloat
-    var singleLineFontSize: CGFloat
-    let displayTrailingOffset: CGFloat
-    let displayBottomOffset: CGFloat
-    let keyboardPaddingBottom: CGFloat
+    let screenInfo: ScreenInfo
+
+    @StateObject var store = Store()
     @State var isZoomed: Bool = false
-    
+
     var body: some View {
-        let _ = print("Calculator body")
+        //let _ = print("Calculator body")
         NavigationStack {
             Rectangle()
                 .overlay() {
-                    Display(isPortrait: isPortrait,
+                    Display(isPortrait: screenInfo.isPortrait,
                             isZoomed: isZoomed,
                             displayData: model.displayData,
-                            lengths: model.lengths,
-                            singleLineFontSize: singleLineFontSize,
-                            displayWidth: model.displayWidth,
-                            height: keyboardSize.height,
-                            displayTrailingOffset: displayTrailingOffset,
-                            displayBottomOffset: displayBottomOffset)
+                            lengths: screenInfo.lengths,
+                            singleLineFontSize: screenInfo.singleLineFontSize,
+                            height: screenInfo.keyboardSize.height,
+                            displayTrailingOffset: screenInfo.displayTrailingOffset,
+                            displayBottomOffset: screenInfo.displayBottomOffset)
+                    .background(C.appBackground)
                 }
             
                 .overlay() { /// Icons
                     Icons(store: store,
                           model: model,
-                          isPortrait: isPortrait,
-                          height: keyboardSize.height,
+                          isPortrait: screenInfo.isPortrait,
+                          height: screenInfo.keyboardSize.height,
                           isCalculating: model.isCalculating,
                           isZoomed: $isZoomed,
                           keyInfo: model.keyInfo["plusKey"]!)
                 }
             
                 .overlay() { /// keyboard
-                    KeysViewAndText(hasBeenReset: model.hasBeenReset,
+                    KeysViewAndInfo(hasBeenReset: model.hasBeenReset,
                                     precisionDescription: model.precisionDescription,
                                     rad: Model._rad,
-                                    isPortrait: isPortrait,
-                                    keyHeight: keyHeight,
+                                    isPortrait: screenInfo.isPortrait,
+                                    keyHeight: screenInfo.keyHeight,
                                     model: model,
-                                    keyboardSize: keyboardSize,
+                                    keyboardSize: screenInfo.keyboardSize,
                                     isZoomed: isZoomed,
-                                    size: size)
-                    .background(C.appBackground)
+                                    size: screenInfo.calculatorSize)
+//                    .background(C.appBackground)
                 }
-                .background(C.appBackground)
         }
         .accentColor(.white) // for the navigation back button
         .onAppear() {
@@ -79,7 +70,6 @@ struct Display: View {
     let displayData: DisplayData
     let lengths: Lengths
     let singleLineFontSize: CGFloat
-    let displayWidth: CGFloat
     let height: CGFloat
     let displayTrailingOffset: CGFloat
     let displayBottomOffset: CGFloat
@@ -92,8 +82,7 @@ struct Display: View {
                     ePadding: lengths.ePadding,
                     smallFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
                     largeFont: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * 1.5, weight: .thin)),
-                    fontScaleFactor: 1.5,
-                    displayWidth: displayWidth)
+                    fontScaleFactor: 1.5)
                 //.background(Color.yellow)
                 .padding(.bottom, height)
                 //                        .offset(y: displayYOffset)
@@ -105,8 +94,7 @@ struct Display: View {
                         ePadding: lengths.ePadding,
                         font: Font(UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: .thin)),
                         isCopyingOrPasting: false,
-                        precisionString: "Model.precision.useWords",
-                        displayWidth: displayWidth)
+                        precisionString: "Model.precision.useWords")
                     .offset(x: -displayTrailingOffset, y: displayBottomOffset)
                     //                        .background(Color.green).opacity(0.4)
                     .animation(Animation.easeInOut(duration: 0.4), value: isZoomed)
@@ -224,7 +212,7 @@ struct Icons : View {
     }
 }
 
-struct KeysViewAndText: View {
+struct KeysViewAndInfo: View {
     let hasBeenReset: Bool
     let precisionDescription: String
     let rad: Bool
