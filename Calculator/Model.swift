@@ -48,7 +48,7 @@ class Model : ObservableObject {
     }
     
     func toPastBin() {
-            UIPasteboard.general.string = brain.last.getDisplayData(Lengths(Model.precision), forceScientific: false, maxDisplayLength: Model.precision).long
+        UIPasteboard.general.string = brain.last.getDisplayData(Lengths(Model.precision), forceScientific: false, maxDisplayLength: Model.precision).long
     }
     
     func checkIfPasteBinIsValidNumber() -> Bool {
@@ -106,6 +106,7 @@ class Model : ObservableObject {
     }
     
     func updateDisplayData() {
+        print("updateDisplayData()")
         DispatchQueue.main.async {
             self.displayData = DisplayData(shortLeft: "", shortAbbreviated: false, longLeft: "", longAbbreviated: false)
         }
