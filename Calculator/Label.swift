@@ -28,44 +28,39 @@ struct Label: View {
         }
     }
 
-    static let factor = 1.0
-    static let sizeFactorText = 0.3 * factor
-    static let sizeFactorDigits = 0.4 * factor
-    static let sizeFactorSpecialOperator = 0.28 * factor
-    static let sizeFactorOperator = 0.26 * factor
-    static let sizeFactorSmallText = 0.22 * factor
-    static let sizeFactorLargeText = 0.4 * factor
-//    static let sizeFactorText = 0.35
-//    static let sizeFactorSpecialOperator = 0.25
-//    static let sizeFactorOperator = 0.23
-//    static let sizeFactorSmallText = 0.22
-//    static let sizeFactorLargeText = 0.4
+    static let debugFactor = 1.0
+    static let sizeFactorText = 0.3 * debugFactor
+    static let sizeFactorDigits = 0.4 * debugFactor
+    static let sizeFactorSpecialOperator = 0.28 * debugFactor
+    static let sizeFactorOperator = 0.26 * debugFactor
+    static let sizeFactorSmallText = 0.22 * debugFactor
+    static let sizeFactorLargeText = 0.4 * debugFactor
 
     var body: some View {
         let symbol = keyInfo.symbol
         //let _ = print("Label \(symbol)")
         switch symbol {
-        case "√" :    RootShapeView(rootDigit: "2", color: color, size: size, factor: Label.factor)
-        case "3√":    RootShapeView(rootDigit: "3", color: color, size: size, factor: Label.factor)
-        case "y√":    RootShapeView(rootDigit: "y", color: color, size: size, factor: Label.factor)
-        case "log10": Logx(base: "10", size: size * Label.factor)
-        case "log2":  Logx(base: "2", size: size * Label.factor)
-        case "logy":  Logx(base: "y", size: size * Label.factor)
-        case "One_x": One_x(color: color, size: size, factor: Label.factor)
-        case "x^2":   Pow(base:  "x",   exponent: "2", size: size * Label.factor)
-        case "x^3":   Pow(base:  "x",   exponent: "3", size: size * Label.factor)
-        case "x^y":   Pow(base:  "x",   exponent: "y", size: size * Label.factor)
-        case "e^x":   Pow(base:  "e",   exponent: "x", size: size * Label.factor)
-        case "y^x":   Pow(base:  "y",   exponent: "x", size: size * Label.factor)
-        case "2^x":   Pow(base:  "2",   exponent: "x", size: size * Label.factor)
-        case "10^x":  Pow(base: "10",   exponent: "x", size: size * Label.factor)
-        case "2nd":   Pow(base: "2",    exponent: "nd", size: size * Label.factor)
-        case "asin":  Pow(base: "sin",  exponent: "-1", size: size * Label.factor)
-        case "acos":  Pow(base: "cos",  exponent: "-1", size: size * Label.factor)
-        case "atan":  Pow(base: "tan",  exponent: "-1", size: size * Label.factor)
-        case "asinh": Pow(base: "sinh", exponent: "-1", size: size * Label.factor)
-        case "acosh": Pow(base: "cosh", exponent: "-1", size: size * Label.factor)
-        case "atanh": Pow(base: "tanh", exponent: "-1", size: size * Label.factor)
+        case "√" :    RootShapeView(rootDigit: "2", color: color, size: size * Label.debugFactor)
+        case "3√":    RootShapeView(rootDigit: "3", color: color, size: size * Label.debugFactor)
+        case "y√":    RootShapeView(rootDigit: "y", color: color, size: size * Label.debugFactor)
+        case "log10": Logx(base: "10", size: size * Label.debugFactor)
+        case "log2":  Logx(base: "2", size: size * Label.debugFactor)
+        case "logy":  Logx(base: "y", size: size * Label.debugFactor)
+        case "One_x": One_x(color: color, size: size * Label.debugFactor)
+        case "x^2":   Pow(base:  "x",   exponent: "2", size: size * Label.debugFactor)
+        case "x^3":   Pow(base:  "x",   exponent: "3", size: size * Label.debugFactor)
+        case "x^y":   Pow(base:  "x",   exponent: "y", size: size * Label.debugFactor)
+        case "e^x":   Pow(base:  "e",   exponent: "x", size: size * Label.debugFactor)
+        case "y^x":   Pow(base:  "y",   exponent: "x", size: size * Label.debugFactor)
+        case "2^x":   Pow(base:  "2",   exponent: "x", size: size * Label.debugFactor)
+        case "10^x":  Pow(base: "10",   exponent: "x", size: size * Label.debugFactor)
+        case "2nd":   Pow(base: "2",    exponent: "nd", size: size * Label.debugFactor)
+        case "asin":  Pow(base: "sin",  exponent: "-1", size: size * Label.debugFactor)
+        case "acos":  Pow(base: "cos",  exponent: "-1", size: size * Label.debugFactor)
+        case "atan":  Pow(base: "tan",  exponent: "-1", size: size * Label.debugFactor)
+        case "asinh": Pow(base: "sinh", exponent: "-1", size: size * Label.debugFactor)
+        case "acosh": Pow(base: "cosh", exponent: "-1", size: size * Label.debugFactor)
+        case "atanh": Pow(base: "tanh", exponent: "-1", size: size * Label.debugFactor)
         default:
             if let sfImage = C.sfImageNames[symbol] {
                 Image(systemName: sfImage)
@@ -80,19 +75,47 @@ struct Label: View {
         }
     }
     
+    private struct Root: View {
+        let color: Color
+        let size: CGFloat
+        var body: some View {
+            let lineWidth = size * 0.03
+            Path { path in
+                // print("Root")
+                let steepness: CGFloat = 2.8
+                let f: CGFloat = 0.6
+                let startX: CGFloat = 0.5 * size - 0.17 * size
+                let startY: CGFloat = 0.5 * size + 0.07 * size
+                let downX: CGFloat = startX + f * 0.08 * size
+                let downY: CGFloat = startY + f * 0.08 * size * steepness
+                let upX: CGFloat = downX + f * 0.2 * size
+                let upY: CGFloat = downY - f * 0.2 * size * steepness
+                let endX: CGFloat = upX + f * 0.35 * size
+                let endY: CGFloat = upY
+                
+                path.move(to: CGPoint(x: startX, y: startY))
+                path.addLine(to: CGPoint(x: downX, y: downY))
+                path.addLine(to: CGPoint(x: upX,   y: upY))
+                path.addLine(to: CGPoint(x: endX,  y: endY))
+            }
+            .stroke(color, style: StrokeStyle(lineWidth: lineWidth, lineCap: CGLineCap.round, lineJoin: CGLineJoin.round))
+            .aspectRatio(contentMode: .fit)
+        }
+    }
+
     private struct RootShapeView: View {
         let rootDigit: String
         let color: Color
         let size: CGFloat
-        let factor: CGFloat
         var body: some View {
-            let rootSize = size * factor * 0.8
-            let rootFontSize = rootSize * 0.2
+            let rootSize = size * 0.8
+            let fontSize = rootSize * 0.2
             let xFontSize = rootSize * 0.3
-            Root(color: color, keySize: size, rootSize: rootSize)
+            Root(color: color, size: rootSize)
+                .frame(width: rootSize, height: rootSize)
             .overlay() {
                 Text(rootDigit)
-                    .font(.system(size: rootFontSize, weight: .semibold))
+                    .font(.system(size: fontSize, weight: .semibold))
                     .foregroundColor(color)
                     .padding(.leading, rootSize * -0.27)
                     .padding(.top, rootSize * -0.14)
@@ -107,49 +130,18 @@ struct Label: View {
         }
     }
 
-    private struct Root: View {
-        let color: Color
-        let keySize: CGFloat
-        let rootSize: CGFloat
-        var body: some View {
-            let lineWidth = rootSize * 0.03
-            Path { path in
-                // print("Root")
-                let steepness: CGFloat = 2.8
-                let f: CGFloat = 0.6
-                let startX: CGFloat = 0.5 * keySize - 0.17 * rootSize
-                let startY: CGFloat = 0.5 * keySize + 0.07 * rootSize
-                let downX: CGFloat = startX + f * 0.08 * rootSize
-                let downY: CGFloat = startY + f * 0.08 * rootSize * steepness
-                let upX: CGFloat = downX + f * 0.2 * rootSize
-                let upY: CGFloat = downY - f * 0.2 * rootSize * steepness
-                let endX: CGFloat = upX + f * 0.35 * rootSize
-                let endY: CGFloat = upY
-                
-                path.move(to: CGPoint(x: startX, y: startY))
-                path.addLine(to: CGPoint(x: downX, y: downY))
-                path.addLine(to: CGPoint(x: upX,   y: upY))
-                path.addLine(to: CGPoint(x: endX,  y: endY))
-            }
-            .stroke(color, style: StrokeStyle(lineWidth: lineWidth, lineCap: CGLineCap.round, lineJoin: CGLineJoin.round))
-            .aspectRatio(contentMode: .fit)
-        }
-    }
-
     private struct SlashShape: View {
         let color: Color
-        let keySize: CGFloat
-        let factor: CGFloat
+        let size: CGFloat
         var body: some View {
-            let slashSize = keySize * 0.2 * factor
-            let lineWidth = slashSize * 0.17
+            let lineWidth = size * 0.17
             Path { path in
                 ///print("SlashShape \(height)")
                 let steepness: CGFloat = 1.3
-                let startX: CGFloat = 0.5 * keySize - 0.5 * slashSize
-                let startY: CGFloat = 0.5 * keySize + 0.5 * slashSize * steepness
-                let upX: CGFloat = startX + slashSize
-                let upY: CGFloat = startY - slashSize * steepness
+                let startX: CGFloat = 0.5 * size - 0.5 * size
+                let startY: CGFloat = 0.5 * size + 0.5 * size * steepness
+                let upX: CGFloat = startX + size
+                let upY: CGFloat = startY - size * steepness
                 
                 path.move(to: CGPoint(x: startX, y: startY))
                 path.addLine(to: CGPoint(x: upX,   y: upY))
@@ -162,20 +154,20 @@ struct Label: View {
     private struct One_x: View {
         let color: Color
         let size: CGFloat
-        let factor: CGFloat
         var body: some View {
-            let slashSize = size * factor * 0.8
-            let fontSize = slashSize * 0.3
-            SlashShape(color: color, keySize: size, factor: factor * 0.8)
+            let slashSize = size * 0.16
+            let fontSize = slashSize * 1.5
+            SlashShape(color: color, size: slashSize)
+                .frame(width: slashSize, height: slashSize)
                 .overlay() {
                     Text("1")
                         .font(.system(size: fontSize))
-                        .offset(x: -0.14 * slashSize, y: -0.10 * slashSize)
+                        .offset(x: -0.7 * slashSize, y: -0.4 * slashSize)
                 }
                 .overlay() {
                     Text("x")
                         .font(.system(size: fontSize))
-                        .offset(x: 0.13 * slashSize, y: 0.07 * slashSize)
+                        .offset(x: 0.6 * slashSize, y: 0.3 * slashSize)
                 }
         }
     }
