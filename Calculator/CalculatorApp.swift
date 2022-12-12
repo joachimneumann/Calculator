@@ -28,7 +28,7 @@ struct ScreenInfo {
         calculatorSize = CGSize(width: hardwareSize.width - insets.left - insets.right, height: hardwareSize.height - insets.top - insets.bottom)
         let spaceBetweenKeys: CGFloat = C.spaceBetweenkeysFraction(withScientificKeys: !isPortrait) * calculatorSize.width
         let keyWidth: CGFloat = (calculatorSize.width - (isPortrait ? 3.0 : 9.0) * spaceBetweenKeys) * (isPortrait ? 0.25 : 0.1)
-        keyHeight = isPortrait ? keyWidth : (calculatorSize.height - 5.0 * spaceBetweenKeys) / 6.17
+        keyHeight = isPortrait ? keyWidth : (calculatorSize.height - 5.0 * spaceBetweenKeys) / 6.3
         let allKeysheight = 5 * keyHeight + 4 * spaceBetweenKeys
         keyboardSize = CGSize(width: calculatorSize.width, height: allKeysheight)
         singleLineFontSize = ((isPortrait ? 0.14 : 0.16) * keyboardSize.height).rounded()
@@ -49,18 +49,16 @@ struct CalculatorApp: App {
     let model: Model = Model()
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     @State private var appOrientation = UIDeviceOrientation.landscapeLeft
-    let ppp = 40.0
     var body: some Scene {
         WindowGroup {
             ZStack {
                 Calculator(
                     model: model,
                     screenInfo: ScreenInfo (
-                        hardwareSize: CGSize(width: UIScreen.main.bounds.size.width - 2*ppp, height: UIScreen.main.bounds.size.height),
+                        hardwareSize: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height),
                         insets: UIApplication.shared.keyWindow?.safeAreaInsets ?? UIEdgeInsets(),
                         appOrientation: appOrientation,
                         model: model))
-                .padding(.horizontal, ppp)
                 .background(Rectangle()
                     /// this stops white background from showing *during* a device rotation
                     .frame(width: max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height) * 2.0,
