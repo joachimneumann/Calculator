@@ -92,7 +92,7 @@ struct Settings: View {
                     Text("Time to calculate sin(")
                         .foregroundColor(.gray)
                     let h = 40.0
-                    Label(keyInfo: model.keyInfo["√"]!, height: h, color: .gray)
+                    Label(keyInfo: model.keyInfo["√"]!, size: h, color: .gray)
                         .frame(width: h, height: h)
                         .offset(x: -17.0)
                     Text("):")

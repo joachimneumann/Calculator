@@ -31,7 +31,6 @@ class Brain {
         return Number("0", precision: precision)
     }
         
-    let digitOperators: [String] = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     let trigonometricOperators = ["sin", "sinD", "cos", "cosD", "tan", "tanD"]
     let constantOperators: Dictionary <String, Inplace> = [
         "π":    Inplace(Gmp.π, 0),
@@ -198,7 +197,7 @@ class Brain {
             n.last.changeSign()
         } else if symbol == "=" {
             execute(priority: Operator.equalPriority)
-        } else if self.digitOperators.contains(symbol) {
+        } else if C.digitOperators.contains(symbol) {
             if pendingOperator != nil {
                 n.append(nullNumber)
                 pendingOperator = nil

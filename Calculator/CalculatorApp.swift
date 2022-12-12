@@ -12,7 +12,7 @@ struct ScreenInfo {
     let isPortrait: Bool
     let calculatorSize: CGSize
     let keyboardSize: CGSize
-    let keyHeight: CGFloat
+    var keyHeight: CGFloat
     let singleLineFontSize: CGFloat
     let keyboardPaddingBottom: CGFloat
     let displayTrailingOffset: CGFloat
@@ -29,6 +29,7 @@ struct ScreenInfo {
         let spaceBetweenKeys: CGFloat = C.spaceBetweenkeysFraction(withScientificKeys: !isPortrait) * calculatorSize.width
         let keyWidth: CGFloat = (calculatorSize.width - (isPortrait ? 3.0 : 9.0) * spaceBetweenKeys) * (isPortrait ? 0.25 : 0.1)
         keyHeight = isPortrait ? keyWidth : (calculatorSize.height - 5.0 * spaceBetweenKeys) / 6.3
+        if keyHeight > keyWidth { keyHeight = keyWidth }
         let allKeysheight = 5 * keyHeight + 4 * spaceBetweenKeys
         keyboardSize = CGSize(width: calculatorSize.width, height: allKeysheight)
         singleLineFontSize = ((isPortrait ? 0.14 : 0.16) * keyboardSize.height).rounded()

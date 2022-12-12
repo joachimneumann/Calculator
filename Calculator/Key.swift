@@ -17,7 +17,7 @@ struct Key: View {
     var body: some View {
         //let _ = print("Key body \(keyInfo.symbol) enabled \(keyInfo.enabled)")
         ZStack {
-            Label(keyInfo: keyInfo, height: size.height)
+            Label(keyInfo: keyInfo, size: size.height)
                 .font(.largeTitle)
                 .frame(width: size.width, height: size.height)
                 .foregroundColor(Color(keyInfo.colors.textColor))
