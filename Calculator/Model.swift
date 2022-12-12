@@ -106,7 +106,7 @@ class Model : ObservableObject {
     }
     
     func updateDisplayData() {
-        print("updateDisplayData()")
+        //print("updateDisplayData()")
         DispatchQueue.main.async {
             self.displayData = DisplayData(shortLeft: "", shortAbbreviated: false, longLeft: "", longAbbreviated: false)
         }

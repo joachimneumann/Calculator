@@ -43,7 +43,7 @@ struct ScreenInfo {
 
 @main
 struct CalculatorApp: App {
-    var model: Model = Model()
+    let model: Model = Model()
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     @State private var appOrientation = UIDeviceOrientation.landscapeLeft
     
@@ -67,7 +67,6 @@ struct CalculatorApp: App {
                 //print("newOrientation \(newOrientation.rawValue)")
             }
             .onAppear() {
-                print("onAppear")
                 appOrientation = UIDevice.current.orientation
             }
             .preferredColorScheme(.dark)
