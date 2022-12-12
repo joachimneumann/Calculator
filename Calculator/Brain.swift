@@ -197,7 +197,7 @@ class Brain {
             n.last.changeSign()
         } else if symbol == "=" {
             execute(priority: Operator.equalPriority)
-        } else if C.digitOperators.contains(symbol) {
+        } else if C.digitOperators.contains(symbol) { // "0" already managed above
             if pendingOperator != nil {
                 n.append(nullNumber)
                 pendingOperator = nil

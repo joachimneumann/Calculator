@@ -91,7 +91,7 @@ struct C {
     static let fontWeight: UIFont.Weight = .thin
     static let fontWidth: Font.Width = .standard // not supported in leangthmeasurement
     static var kerning: CGFloat = 0.0
-    static let digitOperators: [String] = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    static let digitOperators: [String] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
     static let sfImageNames: [String: String] = [
         "+":   "plus",
         "-":   "minus",

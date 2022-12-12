@@ -11,8 +11,15 @@ struct KeyPrep: View {
     let symbol: String
     var model: Model
     let keySize: CGSize
+    let doubleSize: CGSize?
+    init(symbol: String, model: Model, keySize: CGSize, doubleSize: CGSize? = nil) {
+        self.symbol = symbol
+        self.model = model
+        self.keySize = keySize
+        self.doubleSize = doubleSize
+    }
     var body: some View {
-        Key(keyInfo: model.keyInfo[symbol]!, callback: keyCallback, size: keySize)
+        Key(keyInfo: model.keyInfo[symbol]!, callback: keyCallback, size: keySize, doubleSize: doubleSize)
     }
     func keyCallback() {
         if model.keyInfo[symbol]!.enabled {
@@ -58,7 +65,7 @@ struct NonScientificKeys: View {
                 KeyPrep(symbol: "+", model: model, keySize: keySize)
             }
             HStack(spacing: spaceBetweenKeys) {
-                KeyPrep(symbol: "0", model: model, keySize: doubleKeySize)
+                KeyPrep(symbol: "0", model: model, keySize: keySize, doubleSize: doubleKeySize)
                 KeyPrep(symbol: ",", model: model, keySize: keySize)
                 KeyPrep(symbol: "=", model: model, keySize: keySize)
             }
