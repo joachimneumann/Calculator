@@ -36,14 +36,14 @@ struct ScreenInfo {
         displayBottomOffset = isPortrait ? calculatorSize.height - keyboardSize.height - keyboardPaddingBottom - keyHeight * 1.2 : 0.0
         let displayWidth = calculatorSize.width - displayTrailingOffset
         lengths = lengthMeasurement(width: displayWidth, fontSize: singleLineFontSize, ePadding: 0.0)
-        print("withoutComma \(lengths.withoutComma)")
+        print("display length \(lengths.withoutComma)")
         model.lengths = lengths // lengths is used in Model.haveResultCallback()
     }
 }
 
 @main
 struct CalculatorApp: App {
-    @StateObject var model: Model = Model()
+    var model: Model = Model()
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     @State private var appOrientation = UIDeviceOrientation.landscapeLeft
     
@@ -64,7 +64,7 @@ struct CalculatorApp: App {
             }
             .onRotate { newOrientation in
                 appOrientation = newOrientation
-                print("newOrientation \(newOrientation.rawValue)")
+                //print("newOrientation \(newOrientation.rawValue)")
             }
             .onAppear() {
                 print("onAppear")
