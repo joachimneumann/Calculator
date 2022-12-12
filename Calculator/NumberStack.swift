@@ -15,6 +15,7 @@ struct NumberStack: CustomDebugStringConvertible {
         assert(array.count > 0)
         return array.count
     }
+    
     var last: Number {
         assert(array.count > 0)
         return array.last!
