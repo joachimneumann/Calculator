@@ -32,7 +32,6 @@ class Model : ObservableObject {
     var lengths = Lengths(0)
     @AppStorage("precision", store: .standard) static private (set) var precision: Int = 100
     @AppStorage("forceScientific", store: .standard) static var forceScientific: Bool = false
-    @AppStorage("trigonometricToZero", store: .standard) static var trigonometricToZero: Bool = true
     @AppStorage("memoryValue", store: .standard) static var memoryValue: String = ""
     @AppStorage("_rad", store: .standard) static var _rad: Bool = false
     static let MAX_DISPLAY_LEN = 10000 // too long strings in Text() crash the app

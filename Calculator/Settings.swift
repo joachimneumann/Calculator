@@ -33,7 +33,6 @@ struct Settings: View {
     
     @State var settingsPrecision = Model.precision
     @State var settingsForceScientific = Model.forceScientific
-    @State var settingsTrigonometricToZero = Model.trigonometricToZero
     static let measureButtonDefault = "click to measure"
     @State private var measureButtonText = Settings.measureButtonDefault
     private let MIN_PRECISION      = 10
@@ -134,21 +133,6 @@ struct Settings: View {
                 }
                 .padding(.top, 0)
                 
-                HStack(spacing: 0.0) {
-                    Text("Force trigonometric results to zero")
-                        .foregroundColor(.gray)
-                    Toggle("", isOn: $settingsTrigonometricToZero)
-                        .toggleStyle(
-                            ColoredToggleStyle(onColor: Color(UIColor(white: 0.6, alpha: 1.0)),
-                                               offColor: Color(UIColor(white: 0.3, alpha: 1.0)),
-                                               thumbColor: .white))
-                        .frame(width: 70)
-                    Text(settingsTrigonometricToZero ? "sin(π) = 0" : "sin(π) = 1e-\(settingsPrecision)")
-                        .foregroundColor(.gray)
-                        .padding(.leading, 20)
-                    Spacer()
-                }
-                .padding(.top, 10)
                 Spacer()
             }
             .foregroundColor(Color.white)
@@ -156,13 +140,11 @@ struct Settings: View {
         .onDisappear() {
             var update = false
             if Model.precision != settingsPrecision ||
-                Model.forceScientific != settingsForceScientific ||
-                Model.trigonometricToZero != settingsTrigonometricToZero {
+                Model.forceScientific != settingsForceScientific {
                 update = true
             }
 
             Model.forceScientific = settingsForceScientific
-            Model.trigonometricToZero = settingsTrigonometricToZero
             if Model.precision != settingsPrecision {
                 model.updatePrecision(to: settingsPrecision)
             }

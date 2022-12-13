@@ -211,15 +211,6 @@ class Brain {
             self.n.last.execute(op.operation)
         } else if let op = self.inplaceOperators[symbol] {
             n.last.execute(op.operation)
-            if trigonometricOperators.contains(symbol) {
-                if Model.trigonometricToZero {
-                    let mantissaExponent = n.last.gmp!.mantissaExponent(len: 50)
-                    if mantissaExponent.exponent < -1 * precision {
-                        n.removeLast()
-                        n.append(nullNumber)
-                    }
-                }
-            }
         } else if let op = self.twoOperandOperators[symbol] {
             if twoOperandOperators.keys.contains(symbol) { self.pendingOperator = symbol }
             self.execute(priority: op.priority)
