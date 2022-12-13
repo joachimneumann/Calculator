@@ -97,7 +97,7 @@ struct Display: View {
             } else {
                 HStack(spacing: 0.0) {
                     LandscapeDisplay(
-                        zoomed: isZoomed,
+                        zoomed: false,//isZoomed,
                         displayData: displayData,
                         width: width,
                         ePadding: lengths.ePadding,
@@ -141,7 +141,7 @@ struct Icons : View {
                         PlusKey(keyInfo: keyInfo, zoomed: $isZoomed, size: CGSize(width: size, height: size))
                             .padding(.top, size * 0.25)
                         //                                    .offset(y: size * 0.25)
-                        if isZoomed {
+                        Group {
                             NavigationLink {
                                 Settings(model: model)
                             } label: {
@@ -151,59 +151,59 @@ struct Icons : View {
                                     .font(.system(size: height, weight: .thin))
                                     .frame(width: size, height: size)
                                     .foregroundColor(Color(UIColor(white: 0.9, alpha: 1.0)))
+                                    .hidden(!isZoomed)
                             }
                             .padding(.top, size * 0.5)
-                            Group {
-                                if store.purchasedIDs.isEmpty {
-                                    NavigationLink {
-                                        PurchaseView(store: store)
-                                    } label: {
-                                        Text("copy")
-                                            .foregroundColor(.white)
-                                    }
-                                } else {
-                                    Button {
-                                        model.toPastBin()
-                                        DispatchQueue.main.async {
-                                            pasteAllowedState = true
-                                        }
-                                    } label: {
-                                        Text("copy")
-                                            .foregroundColor(.white)
-                                    }
+                            if store.purchasedIDs.isEmpty {
+                                NavigationLink {
+                                    PurchaseView(store: store)
+                                } label: {
+                                    Text("copy")
+                                        .foregroundColor(.white)
                                 }
+                            } else {
+                                Button {
+                                    model.toPastBin()
+                                    DispatchQueue.main.async {
+                                        pasteAllowedState = true
+                                    }
+                                } label: {
+                                    Text("copy")
+                                        .foregroundColor(.white)
+                                }
+                            }
 
-                                if store.purchasedIDs.isEmpty {
-                                    NavigationLink {
-                                        PurchaseView(store: store)
-                                    } label: {
-                                        Text("paste")
-                                            .foregroundColor(.white)
-                                    }
-                                } else {
-                                    Button {
-                                        if store.purchasedIDs.isEmpty {
-                                            
-                                        } else {
-                                            DispatchQueue.main.async {
-                                                pasteAllowedState = model.checkIfPasteBinIsValidNumber()
-                                            }
-                                            /// this logic postpones the diplay of the "allow paste" to the user until the user actually presses paste
-                                            if pasteAllowedState {
-                                                model.fromPastBin()
-                                            }
-                                        }
-                                    } label: {
-                                        Text("paste")
-                                            .foregroundColor(pasteAllowedState ? .white : .gray)
-                                    }
-                                    .disabled(!pasteAllowedState)
+                            if store.purchasedIDs.isEmpty {
+                                NavigationLink {
+                                    PurchaseView(store: store)
+                                } label: {
+                                    Text("paste")
+                                        .foregroundColor(.white)
                                 }
+                            } else {
+                                Button {
+                                    if store.purchasedIDs.isEmpty {
+                                        
+                                    } else {
+                                        DispatchQueue.main.async {
+                                            pasteAllowedState = model.checkIfPasteBinIsValidNumber()
+                                        }
+                                        /// this logic postpones the diplay of the "allow paste" to the user until the user actually presses paste
+                                        if pasteAllowedState {
+                                            model.fromPastBin()
+                                        }
+                                    }
+                                } label: {
+                                    Text("paste")
+                                        .foregroundColor(pasteAllowedState ? .white : .gray)
+                                }
+                                .disabled(!pasteAllowedState)
                             }
-                            .padding(.top, size * 0.5)
-                            .frame(width: size, height: size)
-                            .minimumScaleFactor(0.01)
                         }
+                        .hidden(!isZoomed)
+                        .padding(.top, size * 0.5)
+                        .frame(width: size, height: size)
+                        .minimumScaleFactor(0.01)
                     }
                     Spacer(minLength: 0.0)
                 }
@@ -257,5 +257,11 @@ struct Calculator_Previews: PreviewProvider {
             model: model,
             screenInfo: ScreenInfo(hardwareSize: UIScreen.main.bounds.size, insets: UIEdgeInsets(), appOrientation: .portrait, model: model))
             .background(Color.black)
+    }
+}
+
+extension View {
+    func hidden(_ shouldHide: Bool) -> some View {
+        opacity(shouldHide ? 0 : 1)
     }
 }
