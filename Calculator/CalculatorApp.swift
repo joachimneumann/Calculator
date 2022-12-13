@@ -17,7 +17,7 @@ struct ScreenInfo {
     let keyboardPaddingBottom: CGFloat
     let displayTrailingOffset: CGFloat
     let displayWidth: CGFloat
-    let displayBottomOffset: CGFloat
+    let displayOffset: CGFloat
 
     init(hardwareSize: CGSize, insets: UIEdgeInsets, appOrientation: UIDeviceOrientation, model: Model) {
         
@@ -46,7 +46,7 @@ struct ScreenInfo {
             singleLineFontSize = (0.16 * keyboardSize.height).rounded()
             C.kerning = -0.055555555555556 * singleLineFontSize
             keyboardPaddingBottom = 0.0
-            displayBottomOffset = 0.0
+            displayOffset = calculatorSize.height - keyboardSize.height - keyHeight * 1.2
             displayWidth = calculatorSize.width - displayTrailingOffset
         } else {
             isPortrait = UIScreen.main.bounds.size.height > UIScreen.main.bounds.size.width
@@ -60,7 +60,7 @@ struct ScreenInfo {
             singleLineFontSize = ((isPortrait ? 0.14 : 0.16) * keyboardSize.height).rounded()
             C.kerning = -0.055555555555556 * singleLineFontSize
             keyboardPaddingBottom = isPortrait ? keyHeight * 0.1 : 0.0
-            displayBottomOffset = isPortrait ? calculatorSize.height - keyboardSize.height - keyboardPaddingBottom - keyHeight * 1.2 : 0.0
+            displayOffset = isPortrait ? calculatorSize.height - keyboardSize.height - keyboardPaddingBottom - keyHeight * 1.2 : 0.0
             displayWidth = calculatorSize.width - displayTrailingOffset
         }
         

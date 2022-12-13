@@ -27,8 +27,8 @@ struct Calculator: View {
                             height: screenInfo.keyboardSize.height,
                             width: screenInfo.displayWidth,
                             displayTrailingOffset: screenInfo.displayTrailingOffset,
-                            displayBottomOffset: screenInfo.displayBottomOffset)
-                    .onChange(of: model.lengths.withoutComma) { newValue in
+                            displayOffset: screenInfo.displayOffset)
+                    .onChange(of: model.lengths.withoutComma) { _ in
                         model.updateDisplayData()
                     }
                     .background(C.appBackground)
@@ -42,6 +42,7 @@ struct Calculator: View {
                           isCalculating: model.isCalculating,
                           isZoomed: $isZoomed,
                           keyInfo: model.keyInfo["plusKey"]!)
+                    .offset(y: isZoomed ? 0.0 : screenInfo.displayOffset)
                 }
             
                 .overlay() { /// keyboard
@@ -77,7 +78,7 @@ struct Display: View {
     let height: CGFloat
     let width: CGFloat
     let displayTrailingOffset: CGFloat
-    let displayBottomOffset: CGFloat
+    let displayOffset: CGFloat
     var body: some View {
         VStack(spacing: 0.0) {
             //let _ = print("displayData l.left \(displayData.longLeft)")
@@ -104,7 +105,7 @@ struct Display: View {
                         isCopyingOrPasting: false,
                         precisionString: "Model.precision.useWords")
                     .padding(.trailing, displayTrailingOffset)
-                    .offset(y: displayBottomOffset)
+                    .offset(y: isZoomed ? 0.0 : displayOffset)
                     //                        .background(Color.green).opacity(0.4)
                     .animation(Animation.easeInOut(duration: 0.4), value: isZoomed)
                 }
@@ -249,9 +250,12 @@ struct KeysViewAndInfo: View {
     }
 }
 
-//struct Calculator_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Calculator(isPad: false, isPortrait: true, size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
-//            .background(Color.black)
-//    }
-//}
+struct Calculator_Previews: PreviewProvider {
+    static var previews: some View {
+        let model = Model()
+        Calculator(
+            model: model,
+            screenInfo: ScreenInfo(hardwareSize: UIScreen.main.bounds.size, insets: UIEdgeInsets(), appOrientation: .portrait, model: model))
+            .background(Color.black)
+    }
+}
