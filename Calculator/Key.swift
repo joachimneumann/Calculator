@@ -18,10 +18,9 @@ struct Key: View {
     var body: some View {
         ZStack {
             Label(keyInfo: keyInfo, size: size.height)
+                /// offset for "0"
                 .offset(x: doubleSize != nil ? doubleSize!.width * -0.5 + size.width * 0.5 : 0.0)
-                .font(.largeTitle)
                 .frame(width: doubleSize != nil ? doubleSize!.width : size.width, height: size.height)
-                .foregroundColor(Color(keyInfo.colors.textColor))
                 .background(Color(tapped ? (keyInfo.enabled ? keyInfo.colors.downColor : C.disabledColor) : keyInfo.colors.upColor))
                 .clipShape(Capsule())
                 .onTouchGesture(tapped: $tapped, symbol: keyInfo.symbol, callback: callback)
@@ -52,14 +51,7 @@ private struct OnTouchGestureModifier: ViewModifier {
             .simultaneousGesture(DragGesture(minimumDistance: 0)
                 .onChanged { _ in
                     if !self.tapped {
-                        if symbol == "plusKey" {
-                            withAnimation(.easeIn(duration: upTime)) {
-                                callback()
-                            }
-                        } else {
-                            callback()
-                        }
-                        /// disabled buttons do not work (but their background color is animated)
+                        callback()
 
                         upHasHappended = false
                         //print("self.tapped \(self.tapped)")

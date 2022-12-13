@@ -245,7 +245,7 @@ struct KeysViewAndInfo: View {
             }
             KeysView(model: model, isScientific: !isPortrait, size: keyboardSize)
         }
-        .transition(.move(edge: .bottom))
+//        .transition(.move(edge: .bottom))
         .offset(y: (isZoomed && !isPortrait) ? size.height : 0)
     }
 }

@@ -20,12 +20,15 @@ struct PlusKey: View {
             .resizable()
             .font(Font.title.weight(.thin))
             .rotationEffect(zoomed ? .degrees(-45.0) : .degrees(0.0))
-            .animation(.linear(duration: 0.2).delay(0), value: zoomed)
             .frame(width: size.width, height: size.height)
-            .foregroundColor(Color(keyInfo.colors.upColor))
             .background(Color(keyInfo.colors.textColor))
+            .foregroundColor(Color(keyInfo.colors.upColor))
             .clipShape(Capsule())
-            .onTouchGesture(tapped: $tapped, symbol: keyInfo.symbol, callback: { zoomed.toggle() })
+            .onTouchGesture(tapped: $tapped, symbol: keyInfo.symbol, callback: {
+                withAnimation() {
+                    zoomed.toggle()
+                }
+            })
     }
 }
 
