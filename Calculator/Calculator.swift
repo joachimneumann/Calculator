@@ -16,7 +16,7 @@ struct Calculator: View {
     @State private var isZoomed = false
     var body: some View {
         let iconSize = screenInfo.keyboardHeight * 0.13
-        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: screenInfo.singleLineFontSize, weight: .regular)
+        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: screenInfo.singleLineFontSize, weight: C.fontWeight)
         let font = Font(uiFont)
         let offsetToVerticallyAlignTextWithIcon = -uiFont.descender + uiFont.capHeight * 0.5 - iconSize * 0.5
         VStack(spacing: 0.0) {
@@ -318,7 +318,7 @@ struct KeyboardAndInfo: View {
             Keyboard(model: model, isScientific: !isPortrait, keySize: keySize, spacing: spacing)
                 .overlay() {
                     if !isPortrait && info.count > 0 {
-                        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: infoFontSize, weight: .regular)
+                        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: infoFontSize, weight: C.fontWeight)
                         HStack(spacing: 0.0) {
                             Text(info)
                                 .foregroundColor(.white)

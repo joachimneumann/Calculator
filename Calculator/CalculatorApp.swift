@@ -41,7 +41,7 @@ struct ScreenInfo {
 
         if isPortraitPhone || iPadPortrait {
             /// Round keys
-            tempKeyWidth = isPad ? (calculatorSize.width - 9.0 * keySpacing) * 0.1 : (calculatorSize.width - 9.0 * keySpacing) * 0.1
+            tempKeyWidth = isPad ? (calculatorSize.width - 9.0 * keySpacing) * 0.1 : (calculatorSize.width - 3.0 * keySpacing) * 0.25
             tempKeyheight = tempKeyWidth
             keyboardHeight = 5 * tempKeyheight + 4 * keySpacing
         } else {
