@@ -11,7 +11,7 @@ struct ScreenInfo {
     let isPad: Bool
     let isPortrait: Bool
     let calculatorSize: CGSize
-    let keyboardSize: CGSize
+    let keyboardHeight: CGFloat
     var keyHeight: CGFloat
     let singleLineFontSize: CGFloat
     let keyboardPaddingBottom: CGFloat
@@ -35,18 +35,16 @@ struct ScreenInfo {
             if iPadPortrait {
                 /// square keys at the bottom of the screen
                 keyHeight = keyWidth
-                let allKeysheight = 5 * keyHeight + 4 * spaceBetweenKeys
-                keyboardSize = CGSize(width: calculatorSize.width, height: allKeysheight)
+                keyboardHeight = 5 * keyHeight + 4 * spaceBetweenKeys
             } else {
                 /// landscape iPad: half of the screen is the keyboard
-                let allKeysheight = iPadPortrait ? calculatorSize.height * 0.4 : calculatorSize.height * 0.5
-                keyHeight = (allKeysheight - 4.0 * spaceBetweenKeys) / 5.0
-                keyboardSize = CGSize(width: calculatorSize.width, height: allKeysheight)
+                keyboardHeight = iPadPortrait ? calculatorSize.height * 0.4 : calculatorSize.height * 0.5
+                keyHeight = (keyboardHeight - 4.0 * spaceBetweenKeys) / 5.0
             }
-            singleLineFontSize = (0.16 * keyboardSize.height).rounded()
+            singleLineFontSize = (0.16 * keyboardHeight).rounded()
             C.kerning = -0.055555555555556 * singleLineFontSize
             keyboardPaddingBottom = 0.0
-            displayOffset = calculatorSize.height - keyboardSize.height - keyHeight * 1.2
+            displayOffset = calculatorSize.height - keyboardHeight - keyHeight * 1.2
             displayWidth = calculatorSize.width - displayTrailingOffset
         } else {
             isPortrait = UIScreen.main.bounds.size.height > UIScreen.main.bounds.size.width
@@ -55,12 +53,11 @@ struct ScreenInfo {
             keyWidth = (calculatorSize.width - (isPortrait ? 3.0 : 9.0) * spaceBetweenKeys) * (isPortrait ? 0.25 : 0.1)
             displayTrailingOffset = isPortrait ? 0.0 : keyWidth * 0.9
             keyHeight = isPortrait ? keyWidth : (calculatorSize.height - 5.0 * spaceBetweenKeys) / 6.3
-            let allKeysheight = 5 * keyHeight + 4 * spaceBetweenKeys
-            keyboardSize = CGSize(width: calculatorSize.width, height: allKeysheight)
-            singleLineFontSize = ((isPortrait ? 0.14 : 0.16) * keyboardSize.height).rounded()
+            keyboardHeight = 5 * keyHeight + 4 * spaceBetweenKeys
+            singleLineFontSize = ((isPortrait ? 0.14 : 0.16) * keyboardHeight).rounded()
             C.kerning = -0.055555555555556 * singleLineFontSize
             keyboardPaddingBottom = isPortrait ? keyHeight * 0.1 : 0.0
-            displayOffset = isPortrait ? calculatorSize.height - keyboardSize.height - keyboardPaddingBottom - keyHeight * 1.2 : 0.0
+            displayOffset = isPortrait ? calculatorSize.height - keyboardHeight - keyboardPaddingBottom - keyHeight * 1.2 : 0.0
             displayWidth = calculatorSize.width - displayTrailingOffset
         }
         

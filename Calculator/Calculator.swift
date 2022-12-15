@@ -7,6 +7,81 @@
 
 import SwiftUI
 
+let testColors = false
+
+struct Calculator: View {
+    @StateObject var model: Model
+    let screenInfo: ScreenInfo
+
+    @State private var isZoomed = false
+    var body: some View {
+        let iconSize = screenInfo.keyboardHeight * 0.13
+        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: screenInfo.singleLineFontSize, weight: .regular)
+        let font = Font(uiFont)
+        let offsetToVerticallyAlignTextWithIcon = -uiFont.descender + uiFont.capHeight * 0.5 - iconSize * 0.5
+        VStack(spacing: 0.0) {
+            Spacer()
+            HStack(alignment: .bottom) {
+                Spacer(minLength: 0.0)
+                ZStack(alignment: .top) {
+                    VStack(alignment: .trailing, spacing: 0.0) {
+                        Text(model.displayData.shortLeft)
+                            .font(font)
+                            .foregroundColor(.white)
+                            .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
+                        /// since I am only showing characters above the baseline, I push the font down by the decender
+                            .offset(y: offsetToVerticallyAlignTextWithIcon)
+                            .lineLimit(1)
+                            .hidden(isZoomed)
+                    }
+//                    Text(displaydata.longLeft)//5926wkhjefksadjhfksjdhfkjshd fkzsjhd fkzsdhjf ksdjhfszkhj")
+//                        .font(Font.monospaced(Font.system(size: 20))())
+//                        .foregroundColor(.white)
+//                        .padding(.top, 10)
+//                        .frame(width: 290)
+//                        .multilineTextAlignment(.trailing)
+//                        .hidden(!zoomed)
+                }
+//                .background(Color.blue)
+                Image(systemName: "plus.circle.fill")
+                    .resizable()
+                    .font(Font.title.weight(.thin))
+                    .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
+                    .frame(width: iconSize, height: iconSize)
+                    .background(.white)
+                    .foregroundColor(.gray)
+                    .clipShape(Capsule())
+                    .onTapGesture {
+                        withAnimation(.linear(duration: 0.4)) {
+                            isZoomed.toggle()
+                        }
+                    }
+            }
+            
+            KeysViewAndInfo(hasBeenReset: model.hasBeenReset,
+                            precisionDescription: model.precisionDescription,
+                            rad: Model._rad,
+                            isPortrait: screenInfo.isPortrait,
+                            model: model,
+                            keyboardHeight: screenInfo.keyboardHeight,
+                            infoFontSize: screenInfo.singleLineFontSize * 0.35,
+                            isZoomed: isZoomed,
+                            size: screenInfo.calculatorSize)
+            .background(testColors ? .red : .black)
+            /// optional rectangle to cover the first line of the long text
+//                .overlay() {
+//                    Rectangle()
+//                        .frame(width: size.width, height: iconSize)
+//                        .background(Color.brown).opacity(0.5)
+//                        .offset(y: -keyBoardHeight / 2 + iconSize / 2)
+//                }
+        }
+        .frame(width: screenInfo.calculatorSize.width, height: screenInfo.calculatorSize.height)
+    }
+}
+
+/*
+ 
 struct Calculator: View {
     @StateObject var model: Model
     let screenInfo: ScreenInfo
@@ -222,41 +297,56 @@ struct Icons : View {
     }
 }
 
+
+ */
+
 struct KeysViewAndInfo: View {
     let hasBeenReset: Bool
     let precisionDescription: String
     let rad: Bool
     let isPortrait: Bool
-    let keyHeight: CGFloat
     let model: Model
-    let keyboardSize: CGSize
+    let keyboardHeight: CGFloat
+    let infoFontSize: CGFloat
     let isZoomed: Bool
     let size: CGSize
     var body: some View {
         let info = "\(hasBeenReset ? "Precision: "+precisionDescription+" digits" : "\(rad ? "Rad" : "")")"
         VStack(spacing: 0.0) {
-            Spacer()
-            if !isPortrait {
-                HStack(spacing: 0.0) {
-                    Text(info).foregroundColor(.white)
-                        .offset(x: keyHeight * 0.3, y: keyHeight * -0.05)
-                    Spacer()
+            Spacer(minLength: 0.0)
+            KeysView(model: model, isScientific: !isPortrait, size: CGSize(width: size.width, height: keyboardHeight))
+                .overlay() {
+                    if !isPortrait && info.count > 0 {
+                        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: infoFontSize, weight: .regular)
+                        HStack(spacing: 0.0) {
+                            Text(info)
+                                .foregroundColor(.white)
+                                .font(Font(uiFont))
+                            Spacer()
+                        }
+                        .offset(x: size.width * 0.02, y: infoFontSize * -0.2 + keyboardHeight * -0.5 - uiFont.capHeight - uiFont.descender)
+                    }
                 }
-            }
-            KeysView(model: model, isScientific: !isPortrait, size: keyboardSize)
         }
-//        .transition(.move(edge: .bottom))
-        .offset(y: (isZoomed && !isPortrait) ? size.height : 0)
+        .frame(width: size.width, height: keyboardHeight)
+        //        .transition(.move(edge: .bottom))
     }
 }
 
 struct Calculator_Previews: PreviewProvider {
     static var previews: some View {
         let model = Model()
+        let _ = model.pressed("π")
         Calculator(
             model: model,
             screenInfo: ScreenInfo(hardwareSize: UIScreen.main.bounds.size, insets: UIEdgeInsets(), appOrientation: .portrait, model: model))
             .background(Color.black)
+        .previewDevice(PreviewDevice(rawValue: "iPad Pro (12.9-inch) (3rd generation)"))
+        Calculator(
+            model: model,
+            screenInfo: ScreenInfo(hardwareSize: UIScreen.main.bounds.size, insets: UIEdgeInsets(), appOrientation: .portrait, model: model))
+            .background(Color.black)
+        .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro Max"))
     }
 }
 

@@ -9,22 +9,25 @@ import SwiftUI
 
 struct Key: View {
     @ObservedObject var keyInfo: Model.KeyInfo
-    var callback: () -> ()
+    var modelCallback: (String) -> ()
     let size: CGSize
-    let doubleSize: CGSize?
 
     @State var tapped: Bool = false
 
     var body: some View {
         ZStack {
+            let isZero = keyInfo.symbol == "0"
             Label(keyInfo: keyInfo, size: size.height)
                 /// offset for "0"
-                .offset(x: doubleSize != nil ? doubleSize!.width * -0.5 + size.width * 0.5 : 0.0)
-                .frame(width: doubleSize != nil ? doubleSize!.width : size.width, height: size.height)
+                .offset(x: isZero ? C.doubleKeyWidth(keyWidth: size.width) * -0.5 + size.width * 0.5 : 0.0)
+                .frame(width: isZero ? C.doubleKeyWidth(keyWidth: size.width) : size.width, height: size.height)
                 .background(Color(tapped ? (keyInfo.enabled ? keyInfo.colors.downColor : C.disabledColor) : keyInfo.colors.upColor))
                 .clipShape(Capsule())
                 .onTouchGesture(tapped: $tapped, symbol: keyInfo.symbol, callback: callback)
        }
+    }
+    func callback() {
+        modelCallback(keyInfo.symbol)
     }
 }
 

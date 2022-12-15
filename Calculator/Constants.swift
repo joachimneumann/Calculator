@@ -59,6 +59,15 @@ struct C {
             return 0.02
         }
     }
+
+    static func spaceBetween(keyWidth: CGFloat) -> CGFloat {
+        0.1 * keyWidth
+    }
+
+    static func doubleKeyWidth(keyWidth : CGFloat) -> CGFloat {
+        2 * keyWidth + spaceBetween(keyWidth: keyWidth)
+    }
+    
     static func getKeyColors(for symbol: String) -> ColorsOf {
         if digitKeys.contains(symbol) {
             return digitColors
