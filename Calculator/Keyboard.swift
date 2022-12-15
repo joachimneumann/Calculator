@@ -10,29 +10,29 @@ import SwiftUI
 struct Keyboard: View {
     let model : Model
     let isScientific: Bool
-    let size: CGSize
+    let keyboardSize: CGSize
     
     var body: some View {
         if isScientific {
             HStack(spacing: 0.0) {
-                let keyPadding = C.spaceBetweenkeysFraction(withScientificKeys: true) * size.width
-                let keyWidth = (size.width - 9.0 * keyPadding) / 10.0
-                let keyHeight = (size.height - 4.0 * keyPadding) / 5.0
+                let spacing = C.spacingFraction(withScientificKeys: true) * keyboardSize.width
+                let keyWidth = (keyboardSize.width - 9.0 * spacing) / 10.0
+                let keyHeight = (keyboardSize.height - 4.0 * spacing) / 5.0
                 let keySize = CGSize(width: keyWidth, height: keyHeight)
-                ScientificKeys(model: model, spaceBetweenKeys: keyPadding, keySize: keySize)
-                    .padding(.trailing, keyPadding)
+                ScientificBoard(model: model, spacing: spacing, keySize: keySize)
+                    .padding(.trailing, spacing)
 //                    .background(Color.black)
-                NonScientificKeys(model: model, spaceBetweenKeys: keyPadding, keySize: keySize)
+                NonScientificKeyboard(model: model, spacing: spacing, keySize: keySize)
 //                    .background(Color.black)
             }
             .background(testColors ? Color.cyan : Color.clear)
         } else {
-            let keyPadding = C.spaceBetweenkeysFraction(withScientificKeys: false) * size.width
-            let keyWidth = (size.width - 3.0 * keyPadding) / 4.0
-            let keyHeight = (size.height - 4.0 * keyPadding) / 5.0
+            let keyPadding = C.spacingFraction(withScientificKeys: false) * keyboardSize.width
+            let keyWidth = (keyboardSize.width - 3.0 * keyPadding) / 4.0
+            let keyHeight = (keyboardSize.height - 4.0 * keyPadding) / 5.0
             let keySize = CGSize(width: keyWidth, height: keyHeight)
-            NonScientificKeys(model: model, spaceBetweenKeys: keyPadding, keySize: keySize)
-                .background(Color.cyan)
+            NonScientificKeyboard(model: model, spacing: keyPadding, keySize: keySize)
+                .background(testColors ? Color.cyan : Color.clear)
         }
     }
 }

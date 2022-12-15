@@ -52,7 +52,7 @@ struct C {
         upColor:   UIColor(white: 0.6, alpha: 1.0),
         downColor: UIColor(white: 0.6, alpha: 1.0))
     
-    static func spaceBetweenkeysFraction(withScientificKeys: Bool) -> CGFloat {
+    static func spacingFraction(withScientificKeys: Bool) -> CGFloat {
         if withScientificKeys {
             return 0.012
         } else {

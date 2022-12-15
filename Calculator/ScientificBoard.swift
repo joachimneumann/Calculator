@@ -9,12 +9,12 @@ import SwiftUI
 
 struct ScientificBoard: View {
     @ObservedObject var model: Model
-    let spaceBetweenKeys: CGFloat
+    let spacing: CGFloat
     let keySize: CGSize
 
     var body: some View {
-        VStack(spacing: spaceBetweenKeys) {
-            HStack(spacing: spaceBetweenKeys) {
+        VStack(spacing: spacing) {
+            HStack(spacing: spacing) {
                 Key(keyInfo: model.keyInfo["( "]!, modelCallback: model.pressed, size: keySize)
                 Key(keyInfo: model.keyInfo[" )"]!, modelCallback: model.pressed, size: keySize)
                 Key(keyInfo: model.keyInfo["mc"]!, modelCallback: model.pressed, size: keySize)
@@ -22,7 +22,7 @@ struct ScientificBoard: View {
                 Key(keyInfo: model.keyInfo["m-"]!, modelCallback: model.pressed, size: keySize)
                 Key(keyInfo: model.keyInfo["mr"]!, modelCallback: model.pressed, size: keySize)
             }
-            HStack(spacing: spaceBetweenKeys) {
+            HStack(spacing: spacing) {
                 Key(keyInfo: model.keyInfo["2nd"]!, modelCallback: model.pressed, size: keySize)
                 Key(keyInfo: model.keyInfo["x^2"]!, modelCallback: model.pressed, size: keySize)
                 Key(keyInfo: model.keyInfo["x^3"]!, modelCallback: model.pressed, size: keySize)
@@ -30,7 +30,7 @@ struct ScientificBoard: View {
                 Key(keyInfo: model.keyInfo[model.secondActive ? "y^x" : "e^x"]!, modelCallback: model.pressed, size: keySize)
                 Key(keyInfo: model.keyInfo[model.secondActive ? "2^x" : "10^x"]!, modelCallback: model.pressed, size: keySize)
             }
-            HStack(spacing: spaceBetweenKeys) {
+            HStack(spacing: spacing) {
                 Key(keyInfo: model.keyInfo["One_x"]!, modelCallback: model.pressed, size: keySize)
                 Key(keyInfo: model.keyInfo["√"]!, modelCallback: model.pressed, size: keySize)
                 Key(keyInfo: model.keyInfo["3√"]!, modelCallback: model.pressed, size: keySize)
@@ -38,7 +38,7 @@ struct ScientificBoard: View {
                 Key(keyInfo: model.keyInfo[model.secondActive ? "logy" : "ln"]!, modelCallback: model.pressed, size: keySize)
                 Key(keyInfo: model.keyInfo[model.secondActive ? "log2" : "log10"]!, modelCallback: model.pressed, size: keySize)
             }
-            HStack(spacing: spaceBetweenKeys) {
+            HStack(spacing: spacing) {
                 Key(keyInfo: model.keyInfo["x!"]!, modelCallback: model.pressed, size: keySize)
                 Key(keyInfo: model.keyInfo[model.secondActive ? "asin" : "sin"]!, modelCallback: model.pressed, size: keySize)
                 Key(keyInfo: model.keyInfo[model.secondActive ? "acos" : "cos"]!, modelCallback: model.pressed, size: keySize)
@@ -46,7 +46,7 @@ struct ScientificBoard: View {
                 Key(keyInfo: model.keyInfo["e"]!, modelCallback: model.pressed, size: keySize)
                 Key(keyInfo: model.keyInfo["EE"]!, modelCallback: model.pressed, size: keySize)
             }
-            HStack(spacing: spaceBetweenKeys) {
+            HStack(spacing: spacing) {
                 Key(keyInfo: model.keyInfo[Model._rad ? "Deg" : "Rad"]!, modelCallback: model.pressed, size: keySize)
                 Key(keyInfo: model.keyInfo[model.secondActive ? "asinh" : "sinh"]!, modelCallback: model.pressed, size: keySize)
                 Key(keyInfo: model.keyInfo[model.secondActive ? "acosh" : "cosh"]!, modelCallback: model.pressed, size: keySize)
@@ -61,7 +61,7 @@ struct ScientificBoard: View {
 
 struct ScientificKeys_Previews: PreviewProvider {
     static var previews: some View {
-        ScientificBoard(model: Model(), spaceBetweenKeys: 10, keySize: CGSize(width: 400, height: 300))
+        ScientificBoard(model: Model(), spacing: 10, keySize: CGSize(width: 400, height: 300))
     }
 }
 

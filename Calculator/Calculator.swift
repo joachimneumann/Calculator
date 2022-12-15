@@ -58,7 +58,7 @@ struct Calculator: View {
                     }
             }
             
-            KeysViewAndInfo(hasBeenReset: model.hasBeenReset,
+            KeyboardAndInfo(hasBeenReset: model.hasBeenReset,
                             precisionDescription: model.precisionDescription,
                             rad: Model._rad,
                             isPortrait: screenInfo.isPortrait,
@@ -300,7 +300,7 @@ struct Icons : View {
 
  */
 
-struct KeysViewAndInfo: View {
+struct KeyboardAndInfo: View {
     let hasBeenReset: Bool
     let precisionDescription: String
     let rad: Bool
@@ -314,7 +314,7 @@ struct KeysViewAndInfo: View {
         let info = "\(hasBeenReset ? "Precision: "+precisionDescription+" digits" : "\(rad ? "Rad" : "")")"
         VStack(spacing: 0.0) {
             Spacer(minLength: 0.0)
-            KeysView(model: model, isScientific: !isPortrait, size: CGSize(width: size.width, height: keyboardHeight))
+            Keyboard(model: model, isScientific: !isPortrait, keyboardSize: CGSize(width: size.width, height: keyboardHeight))
                 .overlay() {
                     if !isPortrait && info.count > 0 {
                         let uiFont = UIFont.monospacedDigitSystemFont(ofSize: infoFontSize, weight: .regular)

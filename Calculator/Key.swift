@@ -15,6 +15,7 @@ struct Key: View {
     @State var tapped: Bool = false
 
     var body: some View {
+        /// let _ = print("Key \(keyInfo.symbol)")
         ZStack {
             let isZero = keyInfo.symbol == "0"
             Label(keyInfo: keyInfo, size: size.height)
