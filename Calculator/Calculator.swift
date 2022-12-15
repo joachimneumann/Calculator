@@ -61,12 +61,12 @@ struct Calculator: View {
             KeyboardAndInfo(hasBeenReset: model.hasBeenReset,
                             precisionDescription: model.precisionDescription,
                             rad: Model._rad,
-                            isPortrait: screenInfo.isPortrait,
+                            isPortrait: screenInfo.isPortraitPhone,
                             model: model,
-                            keyboardHeight: screenInfo.keyboardHeight,
                             infoFontSize: screenInfo.singleLineFontSize * 0.35,
                             isZoomed: isZoomed,
-                            size: screenInfo.calculatorSize)
+                            keySize: screenInfo.keySize,
+                            spacing: screenInfo.keySpacing)
             .background(testColors ? .red : .black)
             /// optional rectangle to cover the first line of the long text
 //                .overlay() {
@@ -306,15 +306,16 @@ struct KeyboardAndInfo: View {
     let rad: Bool
     let isPortrait: Bool
     let model: Model
-    let keyboardHeight: CGFloat
     let infoFontSize: CGFloat
     let isZoomed: Bool
-    let size: CGSize
+    let keySize: CGSize
+    let spacing: CGFloat
+
     var body: some View {
         let info = "\(hasBeenReset ? "Precision: "+precisionDescription+" digits" : "\(rad ? "Rad" : "")")"
         VStack(spacing: 0.0) {
             Spacer(minLength: 0.0)
-            Keyboard(model: model, isScientific: !isPortrait, keyboardSize: CGSize(width: size.width, height: keyboardHeight))
+            Keyboard(model: model, isScientific: !isPortrait, keySize: keySize, spacing: spacing)
                 .overlay() {
                     if !isPortrait && info.count > 0 {
                         let uiFont = UIFont.monospacedDigitSystemFont(ofSize: infoFontSize, weight: .regular)
@@ -324,11 +325,11 @@ struct KeyboardAndInfo: View {
                                 .font(Font(uiFont))
                             Spacer()
                         }
-                        .offset(x: size.width * 0.02, y: infoFontSize * -0.2 + keyboardHeight * -0.5 - uiFont.capHeight - uiFont.descender)
+//                        .offset(x: keySize * 0.02, y: infoFontSize * -0.2 + size.height * -0.5 - uiFont.capHeight - uiFont.descender)
                     }
                 }
         }
-        .frame(width: size.width, height: keyboardHeight)
+//        .frame(width: size.width, height: size.height)
         //        .transition(.move(edge: .bottom))
     }
 }

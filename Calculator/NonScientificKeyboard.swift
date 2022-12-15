@@ -39,7 +39,7 @@ struct NonScientificKeyboard: View {
                 Key(keyInfo: model.keyInfo["+"]!, modelCallback: model.pressed, size: keySize)
             }
             HStack(spacing: spacing) {
-                Key(keyInfo: model.keyInfo["0"]!, modelCallback: model.pressed, size: keySize)
+                Key(keyInfo: model.keyInfo["0"]!, modelCallback: model.pressed, size: keySize, doubleWidth: 2.0 * keySize.width + spacing)
                 Key(keyInfo: model.keyInfo[","]!, modelCallback: model.pressed, size: keySize)
                 Key(keyInfo: model.keyInfo["="]!, modelCallback: model.pressed, size: keySize)
             }

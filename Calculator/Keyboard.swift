@@ -10,15 +10,12 @@ import SwiftUI
 struct Keyboard: View {
     let model : Model
     let isScientific: Bool
-    let keyboardSize: CGSize
+    let keySize: CGSize
+    let spacing: CGFloat
     
     var body: some View {
         if isScientific {
             HStack(spacing: 0.0) {
-                let spacing = C.spacingFraction(withScientificKeys: true) * keyboardSize.width
-                let keyWidth = (keyboardSize.width - 9.0 * spacing) / 10.0
-                let keyHeight = (keyboardSize.height - 4.0 * spacing) / 5.0
-                let keySize = CGSize(width: keyWidth, height: keyHeight)
                 ScientificBoard(model: model, spacing: spacing, keySize: keySize)
                     .padding(.trailing, spacing)
 //                    .background(Color.black)
@@ -27,11 +24,7 @@ struct Keyboard: View {
             }
             .background(testColors ? Color.cyan : Color.clear)
         } else {
-            let keyPadding = C.spacingFraction(withScientificKeys: false) * keyboardSize.width
-            let keyWidth = (keyboardSize.width - 3.0 * keyPadding) / 4.0
-            let keyHeight = (keyboardSize.height - 4.0 * keyPadding) / 5.0
-            let keySize = CGSize(width: keyWidth, height: keyHeight)
-            NonScientificKeyboard(model: model, spacing: keyPadding, keySize: keySize)
+            NonScientificKeyboard(model: model, spacing: spacing, keySize: keySize)
                 .background(testColors ? Color.cyan : Color.clear)
         }
     }

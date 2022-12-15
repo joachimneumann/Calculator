@@ -9,24 +9,40 @@ import SwiftUI
 
 struct Key: View {
     @ObservedObject var keyInfo: Model.KeyInfo
-    var modelCallback: (String) -> ()
+    let modelCallback: (String) -> ()
     let size: CGSize
+    let doubleWidth: CGFloat
 
+    init(keyInfo: Model.KeyInfo,
+         modelCallback: @escaping (String) -> (),
+         size: CGSize,
+         doubleWidth: CGFloat = 0.0) {
+        self.keyInfo = keyInfo
+        self.modelCallback = modelCallback
+        self.size = size
+        self.doubleWidth = doubleWidth
+    }
+    
     @State var tapped: Bool = false
 
     var body: some View {
-        /// let _ = print("Key \(keyInfo.symbol)")
+        // use this to print to make sure that keys are not redrawn too often
+        // let _ = print("Key \(keyInfo.symbol)")
         ZStack {
-            let isZero = keyInfo.symbol == "0"
-            Label(keyInfo: keyInfo, size: size.height)
-                /// offset for "0"
-                .offset(x: isZero ? C.doubleKeyWidth(keyWidth: size.width) * -0.5 + size.width * 0.5 : 0.0)
-                .frame(width: isZero ? C.doubleKeyWidth(keyWidth: size.width) : size.width, height: size.height)
-                .background(Color(tapped ? (keyInfo.enabled ? keyInfo.colors.downColor : C.disabledColor) : keyInfo.colors.upColor))
-                .clipShape(Capsule())
-                .onTouchGesture(tapped: $tapped, symbol: keyInfo.symbol, callback: callback)
+            if keyInfo.symbol == "0" {
+                Label(keyInfo: keyInfo, size: size.height)
+                    .offset(x: doubleWidth * -0.5 + size.width * 0.5)
+                    .frame(width: doubleWidth, height: size.height)
+            } else {
+                Label(keyInfo: keyInfo, size: size.height)
+                    .frame(width: size.width, height: size.height)
+            }
        }
+        .background(Color(tapped ? (keyInfo.enabled ? keyInfo.colors.downColor : C.disabledColor) : keyInfo.colors.upColor))
+        .clipShape(Capsule())
+        .onTouchGesture(tapped: $tapped, symbol: keyInfo.symbol, callback: callback)
     }
+
     func callback() {
         modelCallback(keyInfo.symbol)
     }
