@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ScientificKeys: View {
+struct ScientificBoard: View {
     @ObservedObject var model: Model
     let spaceBetweenKeys: CGFloat
     let keySize: CGSize
@@ -61,7 +61,7 @@ struct ScientificKeys: View {
 
 struct ScientificKeys_Previews: PreviewProvider {
     static var previews: some View {
-        ScientificKeys(model: Model(), spaceBetweenKeys: 10, keySize: CGSize(width: 400, height: 300))
+        ScientificBoard(model: Model(), spaceBetweenKeys: 10, keySize: CGSize(width: 400, height: 300))
     }
 }
 

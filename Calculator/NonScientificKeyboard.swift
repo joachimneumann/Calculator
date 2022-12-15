@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NonScientificKeys: View {
+struct NonScientificKeyboard: View {
     @ObservedObject var model: Model
     let spaceBetweenKeys: CGFloat
     let keySize: CGSize
