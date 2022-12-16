@@ -49,6 +49,9 @@ struct Calculator: View {
                 Spacer(minLength: 0.0)
             }
         }
+        .onChange(of: model.lengths.withoutComma) { _ in
+            model.updateDisplayData()
+        }
         .overlay() {
             VStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
