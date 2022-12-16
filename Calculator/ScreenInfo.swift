@@ -57,7 +57,7 @@ struct ScreenInfo {
                 keyboardHeight = iPadPortrait ? calculatorSize.height * 0.4 : calculatorSize.height * 0.5
             } else {
                 /// iPhone landscape
-                keyboardHeight = 0.7 * calculatorSize.height
+                keyboardHeight = 0.84 * calculatorSize.height
             }
             tempKeyheight = (keyboardHeight - 4.0 * keySpacing) * 0.2
         }

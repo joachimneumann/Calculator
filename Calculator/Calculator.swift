@@ -24,7 +24,11 @@ struct Calculator: View {
 //                    .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding, height: 40)
 //                    .offset(y: offsetToVerticallyAlignTextWithkeyboard)
                 // let _ = print("Calculator w = \(screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding)")
-                LandscapeDisplay(isZoomed: isZoomed, displayData: model.displayData, screenInfo: screenInfo)
+                LandscapeDisplay(
+                    isZoomed: isZoomed,
+                    displayData: model.displayData,
+                    displayHeight: model.lengths.height,
+                    screenInfo: screenInfo)
                     .offset(y: screenInfo.offsetToVerticallyAlignTextWithkeyboard)
                 Spacer(minLength: 0.0)
             }

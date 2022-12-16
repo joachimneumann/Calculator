@@ -10,10 +10,12 @@ import SwiftUI
 struct LandscapeDisplay: View {
     let isZoomed: Bool
     let displayData: DisplayData
+    let displayHeight: CGFloat
     let screenInfo: ScreenInfo
     var body: some View {
         ZStack(alignment: .topTrailing) {
             HStack(alignment: .top, spacing: 0.0) {
+                Spacer(minLength: 0.0)
                 Text(displayData.longLeft)
                     .kerning(C.kerning)
                     .font(Font(screenInfo.uiFont))
@@ -30,11 +32,11 @@ struct LandscapeDisplay: View {
                         .padding(.leading, screenInfo.ePadding)
                 }
             }
-//            Rectangle()
-//                .foregroundColor(.black)
-//                .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding, height: screenInfo.uiFont.capHeight - screenInfo.uiFont.descender)
-//                .opacity(isZoomed ? 0.0 : 1.0)
-//                .animation(nil, value: isZoomed)
+            Rectangle()
+                .foregroundColor(.black)
+                .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding, height: displayHeight)
+                .opacity(isZoomed ? 0.0 : 1.0)
+                .animation(nil, value: isZoomed)
             HStack(alignment: .top, spacing: 0.0) {
                 Text(displayData.shortLeft)
                     .kerning(C.kerning)
