@@ -16,32 +16,33 @@ struct Calculator: View {
     @State private var isZoomed = false
     var body: some View {
         // let _ = print("Calculator() model.lengths \(model.lengths)")
-        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: screenInfo.singleLineFontSize, weight: C.fontWeight)
-        let font = Font(uiFont)
         
         /// since I am only showing characters above the baseline, I push the font down by the decender
-        let offsetToVerticallyAlignTextWithIcon = -uiFont.descender - screenInfo.plusIconSize * 0.5 + uiFont.capHeight * 0.5
+        let offsetToVerticallyAlignTextWithkeyboard = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.uiFont.capHeight + screenInfo.uiFont.descender
+//        let offsetToVerticallyAlignTextWithIcon = 0.0//-uiFont.descender - screenInfo.plusIconSize * 0.5 + uiFont.capHeight * 0.5
         HStack(spacing: 0.0) {
             VStack(spacing: 0.0) {
+                // let _ = print("Calculator w = \(screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding)")
                 ZStack(alignment: .topTrailing) {
                     Text(model.displayData.longLeft)
-                        .kerning(C.kerning)
-                        .font(font)
+//                        .kerning(C.kerning)
+                        .font(Font(screenInfo.uiFont))
                         .foregroundColor(.white)
-                    //                     .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding, height: .infinity)
+                        .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding)
                         .multilineTextAlignment(.trailing)
                         .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
-                        .offset(y: offsetToVerticallyAlignTextWithIcon)
-                        .lineLimit(nil)
-                    Text(model.displayData.shortLeft)
-                        .kerning(C.kerning)
-                        .font(font)
-                        .foregroundColor(.white)
-                    // .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding)
-                        .background(testColors ? .orange : .black).opacity(testColors ? 0.9 : 1.0)
-                        .offset(y: offsetToVerticallyAlignTextWithIcon)
                         .lineLimit(1)
+
+                    Text(model.displayData.shortLeft)
+//                        .kerning(C.kerning)
+                        .font(Font(screenInfo.uiFont))
+                        .foregroundColor(.white)
+                        .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding)
+                        .background(testColors ? .orange : .black).opacity(testColors ? 0.5 : 0.5)
+                        .lineLimit(1)
+                        .offset(y: -40)
                 }
+                .offset(y: offsetToVerticallyAlignTextWithkeyboard)
                 Spacer(minLength: 0.0)
             }
             VStack(spacing: 0.0) {
@@ -54,7 +55,7 @@ struct Calculator: View {
                         .background(.white)
                         .foregroundColor(.gray)
                         .clipShape(Circle())
-                        .padding(.leading, screenInfo.plusIconLeftPadding)
+                        .padding(.leading, screenInfo.plusIconLeftPadding - 1) // the "- 1" stops the app from drawing into the safearea ?!?
                         .onTapGesture {
                             withAnimation(.linear(duration: 0.4)) {
                                 isZoomed.toggle()
@@ -73,7 +74,7 @@ struct Calculator: View {
                                     rad: Model._rad,
                                     isPortrait: screenInfo.isPortraitPhone,
                                     model: model,
-                                    infoFontSize: screenInfo.singleLineFontSize * 0.35,
+                                    infoUiFont: screenInfo.infoUiFont,
                                     isZoomed: isZoomed,
                                     keySize: screenInfo.keySize,
                                     spacing: screenInfo.keySpacing)
@@ -381,7 +382,7 @@ struct KeyboardAndInfo: View {
     let rad: Bool
     let isPortrait: Bool
     let model: Model
-    let infoFontSize: CGFloat
+    let infoUiFont: UIFont
     let isZoomed: Bool
     let keySize: CGSize
     let spacing: CGFloat
@@ -393,11 +394,10 @@ struct KeyboardAndInfo: View {
             Keyboard(model: model, isScientific: !isPortrait, keySize: keySize, spacing: spacing)
                 .overlay() {
                     if !isPortrait && info.count > 0 {
-                        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: infoFontSize, weight: C.fontWeight)
                         HStack(spacing: 0.0) {
                             Text(info)
                                 .foregroundColor(.white)
-                                .font(Font(uiFont))
+                                .font(Font(infoUiFont))
                             Spacer()
                         }
                         //                        .offset(x: keySize * 0.02, y: infoFontSize * -0.2 + size.height * -0.5 - uiFont.capHeight - uiFont.descender)

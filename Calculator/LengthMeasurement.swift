@@ -25,14 +25,14 @@ struct Lengths {
 }
 
 // To debug length errors add this in Calculator:
-// let fontAttribute = [NSAttributedString.Key.font: uiFont]
-// let xxx = model.displayData.shortLeft.size(withAttributes: fontAttribute)  // for Single Line
-// let _ = print("Calculator display \(model.displayData.shortLeft) \(xxx.width)")
+//let fontAttribute = [NSAttributedString.Key.font: screenInfo.uiFont]
+//let xxx = model.displayData.longLeft.size(withAttributes: fontAttribute)  // for Single Line
+//let xxx = "0".size(withAttributes: fontAttribute)  // for Single Line
+//let _ = print("Calculator len \(model.displayData.longLeft) \(xxx.width)")
 
 
-func lengthMeasurement(width: CGFloat, fontSize: CGFloat, ePadding: CGFloat) -> Lengths {
-    // print("XX lengthMeasurement")
-    let uiFont = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: .regular)//, weight: C.fontWeight)
+func lengthMeasurement(width: CGFloat, uiFont: UIFont, ePadding: CGFloat) -> Lengths {
+    // print("lengthMeasurement w =\(width)")
     var s = ""
     var w = s.length(for: uiFont)
     while w < width {

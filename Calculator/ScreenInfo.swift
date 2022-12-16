@@ -19,7 +19,8 @@ struct ScreenInfo {
     let ePadding: CGFloat
     
     /// needed to correcty calculate the lengths in init()
-    let singleLineFontSize: CGFloat
+    let uiFont: UIFont
+    let infoUiFont: UIFont
 
     init(hardwareSize: CGSize, insets: UIEdgeInsets, appOrientation: UIDeviceOrientation, model: Model) {
         // print("XX ScreenInfo init() \(hardwareSize)")
@@ -64,15 +65,17 @@ struct ScreenInfo {
         plusIconSize = keyboardHeight * 0.13
         plusIconLeftPadding = plusIconSize * 0.3
         ePadding = 0.0
-        singleLineFontSize = ((isPortraitPhone ? 0.14 : 0.16) * keyboardHeight).rounded()
-        C.kerning = -0.05 * singleLineFontSize
+        let singleLineFontSize = ((isPortraitPhone ? 0.14 : 0.16) * keyboardHeight).rounded()
+        uiFont = UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: C.fontWeight)
+        infoUiFont = UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * 0.35, weight: C.fontWeight)
+        C.kerning = 0.0//-0.05 * singleLineFontSize
 
         let displayWidth = calculatorSize.width - plusIconSize - plusIconLeftPadding
         
-        let temp = lengthMeasurement(width: displayWidth, fontSize: singleLineFontSize, ePadding: ePadding)
+        let temp = lengthMeasurement(width: displayWidth, uiFont: uiFont, ePadding: ePadding)
         model.lengths = temp
         // lengths is used in Model.haveResultCallback()
 
-         print("ScreenInfo: length = \(model.lengths)")
+        // print("ScreenInfo: length = \(model.lengths)")
     }
 }
