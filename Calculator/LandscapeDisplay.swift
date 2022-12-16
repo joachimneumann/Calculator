@@ -32,7 +32,7 @@ struct LandscapeDisplay: View {
                         .padding(.leading, screenInfo.ePadding)
                 }
             }
-            Rectangle()
+            Rectangle() // the rectangle is needed, because the background dows not cover the ePadding
                 .foregroundColor(.black)
                 .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding, height: displayHeight)
                 .opacity(isZoomed ? 0.0 : 1.0)

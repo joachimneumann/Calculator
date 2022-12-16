@@ -248,6 +248,7 @@ class Number: CustomDebugStringConvertible {
             exponent: mantissaExponent.exponent,
             withoutComma_ : min(_precision, lengths.withoutComma),
             withCommaNonScientific_ : min(_precision, lengths.withCommaNonScientific),
+            withCommaFirstLine : min(_precision, lengths.withCommaNonScientific),
             withCommaScientific_: min(_precision, lengths.withCommaScientific),
             forceScientific_: forceScientific)
         let lrLong = process(
@@ -255,6 +256,7 @@ class Number: CustomDebugStringConvertible {
             exponent: mantissaExponent.exponent,
             withoutComma_ : min(_precision, maxDisplayLength),
             withCommaNonScientific_ : min(_precision, maxDisplayLength),
+            withCommaFirstLine: min(_precision, lengths.withCommaScientific),
             withCommaScientific_: min(_precision, maxDisplayLength),
             forceScientific_: forceScientific)
         return DisplayData(
@@ -271,6 +273,7 @@ class Number: CustomDebugStringConvertible {
         exponent: Int,
         withoutComma_: Int,
         withCommaNonScientific_: Int,
+        withCommaFirstLine: Int,
         withCommaScientific_: Int,
         forceScientific_ : Bool
     ) -> LR {
@@ -315,8 +318,9 @@ class Number: CustomDebugStringConvertible {
         }
         
         /// Is floating point XXX,xxx?
+        /// additional requirement: comma in first line. If not, it is not easy to see the comma
         if !forceScientific && exponent >= 0 {
-            if exponent < withCommaNonScientific - 1 { /// is the comma visible in the first line and is there at least one digit after the comma?
+            if exponent + 1 < withCommaFirstLine && exponent < withCommaNonScientific - 1 { /// is the comma visible in the first line and is there at least one digit after the comma?
                 var floatString = mantissa
                 let index = floatString.index(floatString.startIndex, offsetBy: exponent+1)
                 floatString.insert(",", at: index)
