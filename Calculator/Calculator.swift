@@ -44,7 +44,7 @@ struct Calculator: View {
                         .clipShape(Circle())
                         .padding(.leading, screenInfo.plusIconLeftPadding - 1) // the "- 1" stops the app from drawing into the safearea ?!?
                         .onTapGesture {
-                            withAnimation(.linear(duration: 0.4)) {
+                            withAnimation(.linear(duration: 0.3)) {
                                 isZoomed.toggle()
                             }
                         }

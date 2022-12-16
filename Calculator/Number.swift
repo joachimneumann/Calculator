@@ -337,8 +337,9 @@ class Number: CustomDebugStringConvertible {
         }
         
         /// is floating point 0,xxxx
+        /// additional requirement: first non-zero digit in first line. If not -> Scientific
         if !forceScientific && exponent < 0 {
-            if -1 * exponent < withCommaNonScientific - 1 {
+            if -1 * exponent + 1 < withCommaFirstLine && -1 * exponent < withCommaNonScientific - 1 {
                 var floatString = mantissa
                 for _ in 0..<(-1*exponent - 1) {
                     floatString = "0" + floatString

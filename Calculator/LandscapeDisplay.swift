@@ -36,7 +36,7 @@ struct LandscapeDisplay: View {
                 .foregroundColor(.black)
                 .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding, height: displayHeight)
                 .opacity(isZoomed ? 0.0 : 1.0)
-                .animation(nil, value: isZoomed)
+//                .animation(nil, value: isZoomed)
             HStack(alignment: .top, spacing: 0.0) {
                 Text(displayData.shortLeft)
                     .kerning(C.kerning)
