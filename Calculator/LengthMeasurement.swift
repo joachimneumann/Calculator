@@ -24,13 +24,21 @@ struct Lengths {
     }
 }
 
+// To debug length errors add this in Calculator:
+// let fontAttribute = [NSAttributedString.Key.font: uiFont]
+// let xxx = model.displayData.shortLeft.size(withAttributes: fontAttribute)  // for Single Line
+// let _ = print("Calculator display \(model.displayData.shortLeft) \(xxx.width)")
+
+
 func lengthMeasurement(width: CGFloat, fontSize: CGFloat, ePadding: CGFloat) -> Lengths {
-    let uiFont = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: C.fontWeight)
+    // print("lengthMeasurement len \(width) fontSize \(fontSize) w \(C.fontWeight.rawValue)")
+    let uiFont = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: .regular)//, weight: C.fontWeight)
     var s = ""
     var w = s.length(for: uiFont)
     while w < width {
         s.append("0")
         w = s.length(for: uiFont)
+        // print("measure \(s) \(w)")
     }
     let withoutComma = s.count - 1
     
@@ -67,7 +75,7 @@ fileprivate extension String {
 
         var attributes: [NSAttributedString.Key : Any] = [:]
         attributes[.kern] = C.kerning
-        attributes[.strokeWidth] = 300
+//        attributes[.strokeWidth] = 300
         attributes[.font] = uiFont
 //        let fontAttribute = [NSAttributedString.Key.font: uiFont]
         let size = self.size(withAttributes: attributes)  // for Single Line

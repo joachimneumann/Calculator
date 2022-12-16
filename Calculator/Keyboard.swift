@@ -22,10 +22,10 @@ struct Keyboard: View {
                 NonScientificKeyboard(model: model, spacing: spacing, keySize: keySize)
 //                    .background(Color.black)
             }
-            .background(testColors ? Color.cyan : Color.clear)
+            .background(testColors ? Color.clear : Color.clear)
         } else {
             NonScientificKeyboard(model: model, spacing: spacing, keySize: keySize)
-                .background(testColors ? Color.cyan : Color.clear)
+                .background(testColors ? Color.clear : Color.clear)
         }
     }
 }
