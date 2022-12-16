@@ -222,7 +222,7 @@ class Number: CustomDebugStringConvertible {
             return ret
         }
         if displayGmp.inf {
-            ret.shortLeft = "too large"
+            ret.shortLeft = "infinity"
             ret.shortRight = nil
             ret.shortAbbreviated = false
             ret.longLeft = ret.shortLeft

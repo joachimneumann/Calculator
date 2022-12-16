@@ -22,7 +22,7 @@ struct ScreenInfo {
     let singleLineFontSize: CGFloat
 
     init(hardwareSize: CGSize, insets: UIEdgeInsets, appOrientation: UIDeviceOrientation, model: Model) {
-        // print("ScreenInfo init() \(hardwareSize)")
+        // print("XX ScreenInfo init() \(hardwareSize)")
         /// appOrientation is used here to trigger a redraw when the orientation changes ???????
         isPad = UIDevice.current.userInterfaceIdiom == .pad
         isPortraitPhone = isPad ? false : UIScreen.main.bounds.size.height > UIScreen.main.bounds.size.width
@@ -73,6 +73,6 @@ struct ScreenInfo {
         model.lengths = temp
         // lengths is used in Model.haveResultCallback()
 
-        // print("display length \(model.lengths)")
+         print("ScreenInfo: length = \(model.lengths)")
     }
 }

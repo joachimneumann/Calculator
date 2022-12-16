@@ -25,7 +25,7 @@ class Model : ObservableObject {
     @Published var keyInfo: [String: KeyInfo] = [:]
     @Published var showAC = true
     @Published var hasBeenReset = false
-    @Published var displayData = DisplayData(shortLeft: "0", shortRight: nil, shortAbbreviated: false, longLeft: "0", longRight: nil, longAbbreviated: false)
+    @Published var displayData = DisplayData(shortLeft: "x", shortRight: nil, shortAbbreviated: false, longLeft: "x", longRight: nil, longAbbreviated: false)
     
     var precisionDescription = "unknown"
     
@@ -102,7 +102,6 @@ class Model : ObservableObject {
         } else {
             brain.memory = Number(Model.memoryValue, precision: Model.precision)
         }
-        haveResultCallback()
     }
     
     func updateDisplayData() {

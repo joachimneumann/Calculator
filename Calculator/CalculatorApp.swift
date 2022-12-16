@@ -36,6 +36,9 @@ struct CalculatorApp: App {
                 appOrientation = newOrientation
                 //print("newOrientation \(newOrientation.rawValue)")
             }
+            .onAppear() {
+                model.haveResultCallback()
+            }
             .preferredColorScheme(.dark)
         }
     }
