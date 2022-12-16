@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-let testColors = true
+let testColors = false
 
 struct Calculator: View {
     @StateObject var model: Model
@@ -23,25 +23,7 @@ struct Calculator: View {
         HStack(spacing: 0.0) {
             VStack(spacing: 0.0) {
                 // let _ = print("Calculator w = \(screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding)")
-                ZStack(alignment: .topTrailing) {
-                    Text(model.displayData.longLeft)
-//                        .kerning(C.kerning)
-                        .font(Font(screenInfo.uiFont))
-                        .foregroundColor(.white)
-                        .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding)
-                        .multilineTextAlignment(.trailing)
-                        .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
-                        .lineLimit(1)
-
-                    Text(model.displayData.shortLeft)
-//                        .kerning(C.kerning)
-                        .font(Font(screenInfo.uiFont))
-                        .foregroundColor(.white)
-                        .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding)
-                        .background(testColors ? .orange : .black).opacity(testColors ? 0.5 : 0.5)
-                        .lineLimit(1)
-                        .offset(y: -40)
-                }
+                BothDisplays(isZoomed: isZoomed, displayData: model.displayData, screenInfo: screenInfo)
                 .offset(y: offsetToVerticallyAlignTextWithkeyboard)
                 Spacer(minLength: 0.0)
             }
@@ -156,6 +138,33 @@ struct Calculator: View {
     }
 }
 
+struct BothDisplays: View {
+    let isZoomed: Bool
+    let displayData: DisplayData
+    let screenInfo: ScreenInfo
+    var body: some View {
+        ZStack(alignment: .topTrailing) {
+            Text(displayData.longLeft)
+//                        .kerning(C.kerning)
+                .font(Font(screenInfo.uiFont))
+                .foregroundColor(.white)
+                .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding)
+                .multilineTextAlignment(.trailing)
+                .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
+                .lineLimit(nil)
+
+            Text(displayData.shortLeft)
+//                        .kerning(C.kerning)
+                .font(Font(screenInfo.uiFont))
+                .foregroundColor(.white)
+                .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding)
+//                        .background(testColors ? .orange : .black).opacity(testColors ? 0.5 : 0.5)
+                .background(Color.black)
+                .lineLimit(1)
+                .opacity(isZoomed ? 0.0 : 1.0)
+        }
+    }
+}
 /*
  
  struct Calculator: View {
