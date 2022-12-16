@@ -18,12 +18,16 @@ struct Calculator: View {
         // let _ = print("Calculator() model.lengths \(model.lengths)")
         
         /// since I am only showing characters above the baseline, I push the font down by the decender
-        let offsetToVerticallyAlignTextWithkeyboard = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.uiFont.capHeight + screenInfo.uiFont.descender
-//        let offsetToVerticallyAlignTextWithIcon = 0.0//-uiFont.descender - screenInfo.plusIconSize * 0.5 + uiFont.capHeight * 0.5
+        let offsetToVerticallyAlignTextWithkeyboard = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - model.lengths.height
+        let offsetToVerticallyIconWithText = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.plusIconSize + screenInfo.uiFont.descender - 0.5 * screenInfo.uiFont.capHeight + screenInfo.plusIconSize * 0.5
         HStack(spacing: 0.0) {
             VStack(spacing: 0.0) {
+//                Rectangle()
+//                    .foregroundColor(.cyan)
+//                    .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding, height: 40)
+//                    .offset(y: offsetToVerticallyAlignTextWithkeyboard)
                 // let _ = print("Calculator w = \(screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding)")
-                BothDisplays(isZoomed: isZoomed, displayData: model.displayData, screenInfo: screenInfo)
+                LandscapeDisplay(isZoomed: isZoomed, displayData: model.displayData, screenInfo: screenInfo)
                 .offset(y: offsetToVerticallyAlignTextWithkeyboard)
                 Spacer(minLength: 0.0)
             }
@@ -43,6 +47,7 @@ struct Calculator: View {
                                 isZoomed.toggle()
                             }
                         }
+                        .offset(y: offsetToVerticallyIconWithText)
                 }
                 Spacer(minLength: 0.0)
             }
@@ -61,7 +66,7 @@ struct Calculator: View {
                                     keySize: screenInfo.keySize,
                                     spacing: screenInfo.keySpacing)
                     .frame(width: screenInfo.calculatorSize.width, height: screenInfo.keyboardHeight)
-                    .background(testColors ? .clear : .clear)
+                    .background(.blue)//.opacity(0.1)//testColors ? .clear : .clear)
                 }
             }
         }
@@ -138,33 +143,6 @@ struct Calculator: View {
     }
 }
 
-struct BothDisplays: View {
-    let isZoomed: Bool
-    let displayData: DisplayData
-    let screenInfo: ScreenInfo
-    var body: some View {
-        ZStack(alignment: .topTrailing) {
-            Text(displayData.longLeft)
-//                        .kerning(C.kerning)
-                .font(Font(screenInfo.uiFont))
-                .foregroundColor(.white)
-                .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding)
-                .multilineTextAlignment(.trailing)
-                .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
-                .lineLimit(nil)
-
-            Text(displayData.shortLeft)
-//                        .kerning(C.kerning)
-                .font(Font(screenInfo.uiFont))
-                .foregroundColor(.white)
-                .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding)
-//                        .background(testColors ? .orange : .black).opacity(testColors ? 0.5 : 0.5)
-                .background(Color.black)
-                .lineLimit(1)
-                .opacity(isZoomed ? 0.0 : 1.0)
-        }
-    }
-}
 /*
  
  struct Calculator: View {

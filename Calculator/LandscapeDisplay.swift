@@ -8,6 +8,56 @@
 import SwiftUI
 
 struct LandscapeDisplay: View {
+    let isZoomed: Bool
+    let displayData: DisplayData
+    let screenInfo: ScreenInfo
+    var body: some View {
+        ZStack(alignment: .topTrailing) {
+            HStack(alignment: .top, spacing: 0.0) {
+                Text(displayData.longLeft)
+                    .kerning(C.kerning)
+                    .font(Font(screenInfo.uiFont))
+                    .foregroundColor(.white)
+//                    .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding)
+                    .multilineTextAlignment(.trailing)
+                    .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
+                    .lineLimit(nil)
+                if displayData.longRight != nil {
+                    Text(displayData.longRight!)
+                        .kerning(C.kerning)
+                        .font(Font(screenInfo.uiFont))
+                        .foregroundColor(.white)
+                        .padding(.leading, screenInfo.ePadding)
+                }
+            }
+//            Rectangle()
+//                .foregroundColor(.black)
+//                .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding, height: screenInfo.uiFont.capHeight - screenInfo.uiFont.descender)
+//                .opacity(isZoomed ? 0.0 : 1.0)
+//                .animation(nil, value: isZoomed)
+            HStack(alignment: .top, spacing: 0.0) {
+                Text(displayData.shortLeft)
+                    .kerning(C.kerning)
+                    .font(Font(screenInfo.uiFont))
+                    .foregroundColor(.white)
+                //                        .background(testColors ? .orange : .black).opacity(testColors ? 0.5 : 0.5)
+//                    .background(Color.black)
+                    .lineLimit(1)
+                    .opacity(isZoomed ? 0.0 : 1.0)
+//                    .animation(nil, value: isZoomed)
+                if displayData.shortRight != nil {
+                    Text(displayData.shortRight!)
+                        .kerning(C.kerning)
+                        .font(Font(screenInfo.uiFont))
+                        .foregroundColor(.white)
+                        .padding(.leading, screenInfo.ePadding)
+                        .opacity(isZoomed ? 0.0 : 1.0)
+//                        .animation(nil, value: isZoomed)
+                }
+            }
+        }
+    }
+    /*
     let zoomed: Bool
     let displayData: DisplayData
     let width: CGFloat
@@ -68,4 +118,5 @@ struct LandscapeDisplay: View {
             Spacer()
         }
     }
+     */
 }

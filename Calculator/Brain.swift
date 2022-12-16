@@ -233,12 +233,12 @@ class Brain {
         self.precision = precision
         operation("AC")
         operation("π")
-        operation("x^3")
-        operation("x^3")
-        operation("x^3")
-        operation("x^3")
-        operation("x^3")
-        operation("x^3")
+//        operation("x^3")
+//        operation("x^3")
+//        operation("x^3")
+//        operation("x^3")
+//        operation("x^3")
+//        operation("x^3")
 
 //        operation("1")
 //        operation("2")
@@ -267,6 +267,12 @@ class Brain {
 //        operation("5")
 //        operation("6")
 //        operation("7")
+//        operation("1")
+//        operation("1")
+//        operation("1")
+//        operation("1")
+//        operation("1")
+//        operation("1")
     }
             
 }
