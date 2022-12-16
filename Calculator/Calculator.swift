@@ -21,76 +21,137 @@ struct Calculator: View {
         
         /// since I am only showing characters above the baseline, I push the font down by the decender
         let offsetToVerticallyAlignTextWithIcon = -uiFont.descender - screenInfo.plusIconSize * 0.5 + uiFont.capHeight * 0.5
-        
-        VStack(spacing: 0.0) {
-            Spacer()
-            HStack(alignment: .bottom, spacing: 0.0) {
-                Spacer(minLength: 0.0)
-                ZStack(alignment: .top) {
-                    //                    VStack(alignment: .trailing, spacing: 0.0) {
-//                    Text(model.displayData.shortLeft)
-//                        .kerning(C.kerning)
-//                        .font(font)
-//                        .foregroundColor(.white)
-//                    // .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding)
-//                        .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
-//                        .offset(y: offsetToVerticallyAlignTextWithIcon)
-//                        .lineLimit(1)
-//                        .hidden(isZoomed)
+        HStack(spacing: 0.0) {
+            VStack(spacing: 0.0) {
+                ZStack(alignment: .topTrailing) {
                     Text(model.displayData.longLeft)
                         .kerning(C.kerning)
                         .font(font)
                         .foregroundColor(.white)
-//                     .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding, height: .infinity)
+                    //                     .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding, height: .infinity)
                         .multilineTextAlignment(.trailing)
                         .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
                         .offset(y: offsetToVerticallyAlignTextWithIcon)
                         .lineLimit(nil)
-                    //                    }
+                    Text(model.displayData.shortLeft)
+                        .kerning(C.kerning)
+                        .font(font)
+                        .foregroundColor(.white)
+                    // .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding)
+                        .background(testColors ? .orange : .black).opacity(testColors ? 0.9 : 1.0)
+                        .offset(y: offsetToVerticallyAlignTextWithIcon)
+                        .lineLimit(1)
                 }
-                //                .background(Color.blue)
-                Image(systemName: "plus.circle.fill")
-                    .resizable()
-                    .font(Font.title.weight(.thin))
-                    .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
-                    .frame(width: screenInfo.plusIconSize, height: screenInfo.plusIconSize)
-                    .background(.white)
-                    .foregroundColor(.gray)
-                    .clipShape(Circle())
-                    .padding(.leading, screenInfo.plusIconLeftPadding)
-                    .onTapGesture {
-                        withAnimation(.linear(duration: 0.4)) {
-                            isZoomed.toggle()
+                Spacer(minLength: 0.0)
+            }
+            VStack(spacing: 0.0) {
+                ZStack(alignment: .topTrailing) {
+                    Image(systemName: "plus.circle.fill")
+                        .resizable()
+                        .font(Font.title.weight(.thin))
+                        .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
+                        .frame(width: screenInfo.plusIconSize, height: screenInfo.plusIconSize)
+                        .background(.white)
+                        .foregroundColor(.gray)
+                        .clipShape(Circle())
+                        .padding(.leading, screenInfo.plusIconLeftPadding)
+                        .onTapGesture {
+                            withAnimation(.linear(duration: 0.4)) {
+                                isZoomed.toggle()
+                            }
                         }
-                    }
+                }
+                Spacer(minLength: 0.0)
             }
-            
-            if !isZoomed {
-                KeyboardAndInfo(hasBeenReset: model.hasBeenReset,
-                                precisionDescription: model.precisionDescription,
-                                rad: Model._rad,
-                                isPortrait: screenInfo.isPortraitPhone,
-                                model: model,
-                                infoFontSize: screenInfo.singleLineFontSize * 0.35,
-                                isZoomed: isZoomed,
-                                keySize: screenInfo.keySize,
-                                spacing: screenInfo.keySpacing)
-                .frame(width: screenInfo.calculatorSize.width, height: screenInfo.keyboardHeight)
-                .background(testColors ? .clear : .clear)
-            }
-            //            .hidden(isZoomed)
-            /// optional rectangle to cover the first line of the long text
-            //                .overlay() {
-            //                    Rectangle()
-            //                        .frame(width: size.width, height: iconSize)
-            //                        .background(Color.brown).opacity(0.5)
-            //                        .offset(y: -keyBoardHeight / 2 + iconSize / 2)
-            //                }
         }
-        //        .frame(width: screenInfo.calculatorSize.width, height: screenInfo.calculatorSize.height)
-        //        .onChange(of: model.lengths.withoutComma) { _ in
-        //            model.updateDisplayData()
+        .overlay() {
+            VStack(spacing: 0.0) {
+                Spacer(minLength: 0.0)
+                if !isZoomed {
+                    KeyboardAndInfo(hasBeenReset: model.hasBeenReset,
+                                    precisionDescription: model.precisionDescription,
+                                    rad: Model._rad,
+                                    isPortrait: screenInfo.isPortraitPhone,
+                                    model: model,
+                                    infoFontSize: screenInfo.singleLineFontSize * 0.35,
+                                    isZoomed: isZoomed,
+                                    keySize: screenInfo.keySize,
+                                    spacing: screenInfo.keySpacing)
+                    .frame(width: screenInfo.calculatorSize.width, height: screenInfo.keyboardHeight)
+                    .background(testColors ? .clear : .clear)
+                }
+            }
+        }
+        
+        //        VStack(spacing: 0.0) {
+        //            Spacer()
+        //            HStack(alignment: .bottom, spacing: 0.0) {
+        //                Spacer(minLength: 0.0)
+        //                ZStack(alignment: .top) {
+        //                    //                    VStack(alignment: .trailing, spacing: 0.0) {
+        ////                    Text(model.displayData.shortLeft)
+        ////                        .kerning(C.kerning)
+        ////                        .font(font)
+        ////                        .foregroundColor(.white)
+        ////                    // .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding)
+        ////                        .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
+        ////                        .offset(y: offsetToVerticallyAlignTextWithIcon)
+        ////                        .lineLimit(1)
+        ////                        .hidden(isZoomed)
+        //                    Text(model.displayData.longLeft)
+        //                        .kerning(C.kerning)
+        //                        .font(font)
+        //                        .foregroundColor(.white)
+        ////                     .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding, height: .infinity)
+        //                        .multilineTextAlignment(.trailing)
+        //                        .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
+        //                        .offset(y: offsetToVerticallyAlignTextWithIcon)
+        //                        .lineLimit(nil)
+        //                    //                    }
+        //                }
+        //                //                .background(Color.blue)
+        //                Image(systemName: "plus.circle.fill")
+        //                    .resizable()
+        //                    .font(Font.title.weight(.thin))
+        //                    .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
+        //                    .frame(width: screenInfo.plusIconSize, height: screenInfo.plusIconSize)
+        //                    .background(.white)
+        //                    .foregroundColor(.gray)
+        //                    .clipShape(Circle())
+        //                    .padding(.leading, screenInfo.plusIconLeftPadding)
+        //                    .onTapGesture {
+        //                        withAnimation(.linear(duration: 0.4)) {
+        //                            isZoomed.toggle()
+        //                        }
+        //                    }
+        //            }
+        //
+        //            if !isZoomed {
+        //                KeyboardAndInfo(hasBeenReset: model.hasBeenReset,
+        //                                precisionDescription: model.precisionDescription,
+        //                                rad: Model._rad,
+        //                                isPortrait: screenInfo.isPortraitPhone,
+        //                                model: model,
+        //                                infoFontSize: screenInfo.singleLineFontSize * 0.35,
+        //                                isZoomed: isZoomed,
+        //                                keySize: screenInfo.keySize,
+        //                                spacing: screenInfo.keySpacing)
+        //                .frame(width: screenInfo.calculatorSize.width, height: screenInfo.keyboardHeight)
+        //                .background(testColors ? .clear : .clear)
+        //            }
+        //            //            .hidden(isZoomed)
+        //            /// optional rectangle to cover the first line of the long text
+        //            //                .overlay() {
+        //            //                    Rectangle()
+        //            //                        .frame(width: size.width, height: iconSize)
+        //            //                        .background(Color.brown).opacity(0.5)
+        //            //                        .offset(y: -keyBoardHeight / 2 + iconSize / 2)
+        //            //                }
         //        }
+        //        //        .frame(width: screenInfo.calculatorSize.width, height: screenInfo.calculatorSize.height)
+        //        //        .onChange(of: model.lengths.withoutComma) { _ in
+        //        //            model.updateDisplayData()
+        //        //        }
     }
 }
 
@@ -360,17 +421,17 @@ struct Calculator_Previews: PreviewProvider {
                 model: model))
         .previewDevice(PreviewDevice(rawValue: "iPad Pro (12.9-inch) (3rd generation)"))
         .previewDisplayName("iPad")
-//        .preferredColorScheme(.dark)
+        //        .preferredColorScheme(.dark)
         Calculator(
             model: model,
             screenInfo:ScreenInfo(
-            hardwareSize: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height),
-            insets: UIEdgeInsets(),
-            appOrientation: .landscapeLeft,
-            model: model))
+                hardwareSize: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height),
+                insets: UIEdgeInsets(),
+                appOrientation: .landscapeLeft,
+                model: model))
         .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro Max"))
         .previewDisplayName("iPhone")
-//        .preferredColorScheme(.dark)
+        //        .preferredColorScheme(.dark)
     }
 }
 

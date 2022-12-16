@@ -25,7 +25,7 @@ class Model : ObservableObject {
     @Published var keyInfo: [String: KeyInfo] = [:]
     @Published var showAC = true
     @Published var hasBeenReset = false
-    @Published var displayData: DisplayData
+    @Published var displayData = DisplayData(shortLeft: "0", shortRight: nil, shortAbbreviated: false, longLeft: "0", longRight: nil, longAbbreviated: false)
     
     var precisionDescription = "unknown"
     
@@ -92,7 +92,6 @@ class Model : ObservableObject {
     
     init() {
         brain = Brain(precision: Model.precision)
-        displayData = DisplayData(shortLeft: "0", shortRight: nil, shortAbbreviated: false, longLeft: "0", longRight: nil, longAbbreviated: false)
         for key in C.allKeys {
             keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))
         }
@@ -103,6 +102,7 @@ class Model : ObservableObject {
         } else {
             brain.memory = Number(Model.memoryValue, precision: Model.precision)
         }
+        haveResultCallback()
     }
     
     func updateDisplayData() {

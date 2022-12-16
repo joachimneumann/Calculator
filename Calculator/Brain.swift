@@ -232,6 +232,7 @@ class Brain {
     init(precision: Int) {
         self.precision = precision
         operation("AC")
+        operation("π")
     }
             
 }

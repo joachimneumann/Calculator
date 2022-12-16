@@ -11,29 +11,30 @@ import SwiftUI
 struct CalculatorApp: App {
     let model: Model = Model()
     @Environment(\.safeAreaInsets) private var safeAreaInsets
-    @State private var appOrientation = UIDeviceOrientation.landscapeLeft
+    @State private var appOrientation = UIDeviceOrientation.unknown
     var body: some Scene {
         WindowGroup {
             ZStack {
-                Calculator(
-                    model: model,
-                    screenInfo: ScreenInfo (
-                        hardwareSize: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height),
-                        insets: UIApplication.shared.keyWindow?.safeAreaInsets ?? UIEdgeInsets(),
-                        appOrientation: appOrientation,
-                        model: model))
-                .background(Rectangle()
-                    /// this stops white background from showing *during* a device rotation
-                    .frame(width: max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height) * 2.0,
-                           height: max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height) * 2.0)
-                        .foregroundColor(C.appBackground))
+                if safeAreaInsets.top == -1 {
+                    EmptyView()
+                } else {
+                    Calculator(
+                        model: model,
+                        screenInfo: ScreenInfo(
+                            hardwareSize: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height),
+                            insets: UIApplication.shared.keyWindow?.safeAreaInsets ?? UIEdgeInsets(),
+                            appOrientation: appOrientation,
+                            model: model))
+                    .background(Rectangle()
+                                /// this stops white background from showing *during* a device rotation
+                        .frame(width: max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height) * 2.0,
+                               height: max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height) * 2.0)
+                            .foregroundColor(C.appBackground))
+                }
             }
             .onRotate { newOrientation in
                 appOrientation = newOrientation
                 //print("newOrientation \(newOrientation.rawValue)")
-            }
-            .onAppear() {
-                appOrientation = UIDevice.current.orientation
             }
             .preferredColorScheme(.dark)
         }
@@ -76,7 +77,7 @@ extension UIApplication {
 
 private struct SafeAreaInsetsKey: EnvironmentKey {
     static var defaultValue: EdgeInsets {
-        UIApplication.shared.keyWindow?.safeAreaInsets.swiftUiInsets ?? EdgeInsets()
+        UIApplication.shared.keyWindow?.safeAreaInsets.swiftUiInsets ?? EdgeInsets(top: -1, leading: -1, bottom: -1, trailing: -1)
     }
 }
 
