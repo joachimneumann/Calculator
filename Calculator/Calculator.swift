@@ -17,9 +17,6 @@ struct Calculator: View {
     var body: some View {
         // let _ = print("Calculator() model.lengths \(model.lengths)")
         
-        /// since I am only showing characters above the baseline, I push the font down by the decender
-        let offsetToVerticallyAlignTextWithkeyboard = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - model.lengths.height
-        let offsetToVerticallyIconWithText = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.plusIconSize + screenInfo.uiFont.descender - 0.5 * screenInfo.uiFont.capHeight + screenInfo.plusIconSize * 0.5
         HStack(spacing: 0.0) {
             VStack(spacing: 0.0) {
 //                Rectangle()
@@ -28,7 +25,7 @@ struct Calculator: View {
 //                    .offset(y: offsetToVerticallyAlignTextWithkeyboard)
                 // let _ = print("Calculator w = \(screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding)")
                 LandscapeDisplay(isZoomed: isZoomed, displayData: model.displayData, screenInfo: screenInfo)
-                .offset(y: offsetToVerticallyAlignTextWithkeyboard)
+                    .offset(y: screenInfo.offsetToVerticallyAlignTextWithkeyboard)
                 Spacer(minLength: 0.0)
             }
             VStack(spacing: 0.0) {
@@ -47,7 +44,7 @@ struct Calculator: View {
                                 isZoomed.toggle()
                             }
                         }
-                        .offset(y: offsetToVerticallyIconWithText)
+                        .offset(y: screenInfo.offsetToVerticallyIconWithText)
                 }
                 Spacer(minLength: 0.0)
             }

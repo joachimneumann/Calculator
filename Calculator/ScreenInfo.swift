@@ -17,6 +17,8 @@ struct ScreenInfo {
     let plusIconSize: CGFloat
     let plusIconLeftPadding: CGFloat
     let ePadding: CGFloat
+    let offsetToVerticallyAlignTextWithkeyboard: CGFloat
+    let offsetToVerticallyIconWithText: CGFloat
     
     /// needed to correcty calculate the lengths in init()
     let uiFont: UIFont
@@ -75,6 +77,9 @@ struct ScreenInfo {
         let temp = lengthMeasurement(width: displayWidth, uiFont: uiFont, ePadding: ePadding)
         model.lengths = temp
         // lengths is used in Model.haveResultCallback()
+
+        offsetToVerticallyAlignTextWithkeyboard = calculatorSize.height - keyboardHeight - model.lengths.height
+        offsetToVerticallyIconWithText = calculatorSize.height - keyboardHeight - plusIconSize + uiFont.descender - 0.5 * uiFont.capHeight + plusIconSize * 0.5
 
         // print("ScreenInfo: length = \(model.lengths)")
     }
