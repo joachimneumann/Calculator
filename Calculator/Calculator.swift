@@ -43,6 +43,8 @@ struct Calculator: View {
                         screenInfo: screenInfo,
                         isCalculating: model.isCalculating,
                         isZoomed: $isZoomed)
+                    .padding(.leading, screenInfo.plusIconLeftPadding)
+                    .offset(y: screenInfo.offsetToVerticallyIconWithText)
                 }
             }
         }

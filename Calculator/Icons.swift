@@ -17,7 +17,7 @@ struct Icons : View {
     @Binding var isZoomed: Bool
 
     var body: some View {
-        VStack(alignment: .trailing, spacing: 0.0) {
+        VStack(alignment: .center, spacing: 0.0) {
             if isCalculating {
                 AnimatedDots(color: .gray)
                     .padding(.top, screenInfo.plusIconSize * 0.55)
@@ -31,13 +31,11 @@ struct Icons : View {
                     .background(.white)
                     .foregroundColor(.gray)
                     .clipShape(Circle())
-                    .padding(.leading, screenInfo.plusIconLeftPadding - 1) // the "- 1" stops the app from drawing into the safearea ?!?
                     .onTapGesture {
                         withAnimation(.linear(duration: 0.3)) {
                             isZoomed.toggle()
                         }
                     }
-                    .offset(y: screenInfo.offsetToVerticallyIconWithText)
                 Group {
                     NavigationLink {
                         Settings(model: model)
@@ -49,7 +47,6 @@ struct Icons : View {
                             .frame(width: screenInfo.plusIconSize, height: screenInfo.plusIconSize)
                             .foregroundColor(Color(UIColor(white: 0.9, alpha: 1.0)))
                     }
-                    .padding(.top, screenInfo.plusIconSize * 0.5)
                     if store.purchasedIDs.isEmpty {
                         NavigationLink {
                             PurchaseView(store: store)
@@ -95,9 +92,16 @@ struct Icons : View {
                         }
                         .disabled(!pasteAllowedState)
                     }
+
+                    Button {
+                        Model.forceScientific = !Model.forceScientific
+                        model.haveResultCallback()
+                    } label: {
+                        Text(Model.forceScientific ? "EE!" : "EE?")
+                    }
                 }
                 .padding(.top, screenInfo.plusIconSize * 0.5)
-                .frame(width: screenInfo.plusIconSize, height: screenInfo.plusIconSize)
+//                .frame(width: screenInfo.plusIconSize, height: screenInfo.plusIconSize)
                 .minimumScaleFactor(0.01)
             }
             Spacer(minLength: 0.0)
