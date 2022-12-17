@@ -11,6 +11,7 @@ let testColors = false
 
 struct Calculator: View {
     @StateObject var model: Model
+    @StateObject var store = Store()
     var screenInfo: ScreenInfo
     
     @State private var isZoomed = false
@@ -36,26 +37,12 @@ struct Calculator: View {
                         displayHeight: model.lengths.height,
                         screenInfo: screenInfo)
                     .offset(y: screenInfo.offsetToVerticallyAlignTextWithkeyboard)
-                    VStack(spacing: 0.0) {
-                        Image(systemName: "plus.circle.fill")
-                            .resizable()
-                            .font(Font.title.weight(.thin))
-                            .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
-                            .frame(width: screenInfo.plusIconSize, height: screenInfo.plusIconSize)
-                            .background(.white)
-                            .foregroundColor(.gray)
-                            .clipShape(Circle())
-                            .padding(.leading, screenInfo.plusIconLeftPadding - 1) // the "- 1" stops the app from drawing into the safearea ?!?
-                            .onTapGesture {
-                                withAnimation(.linear(duration: 0.3)) {
-                                    isZoomed.toggle()
-                                }
-                            }
-                            .offset(y: screenInfo.offsetToVerticallyIconWithText)
-                            //.background(Color.orange)
-                        Spacer(minLength: 0.0)
-                    }
-                    //.background(Color.yellow)
+                    Icons(
+                        store: store,
+                        model: model,
+                        screenInfo: screenInfo,
+                        isCalculating: model.isCalculating,
+                        isZoomed: $isZoomed)
                 }
             }
         }
@@ -272,7 +259,6 @@ struct Calculator: View {
  let height: CGFloat
  let isCalculating: Bool
  @State var pasteAllowedState: Bool = true
- @State private var isShowingDetailView = false
  @Binding var isZoomed: Bool
  let keyInfo: Model.KeyInfo
  var body: some View {
