@@ -12,22 +12,19 @@ let testColors = false
 struct Calculator: View {
     @StateObject var model: Model
     @StateObject var store = Store()
-    var screenInfo: ScreenInfo
-    
-    @State private var isZoomed = false
-    
+        
     var body: some View {
-        if screenInfo.isPortraitPhone {
+        if model.screenInfo.isPortraitPhone {
             VStack(spacing: 0.0) {
                 Spacer()
                 PortraitDisplay(
                     displayData: model.displayData,
-                    screenInfo: screenInfo,
+                    screenInfo: model.screenInfo,
                     lengths: model.lengths)
                 NonScientificKeyboard(
                     model: model,
-                    spacing: screenInfo.keySpacing,
-                    keySize: screenInfo.keySize)
+                    spacing: model.screenInfo.keySpacing,
+                    keySize: model.screenInfo.keySize)
             }
         } else {
             NavigationStack {
@@ -39,32 +36,32 @@ struct Calculator: View {
                 HStack(alignment: .top, spacing: 0.0) {
                     Spacer(minLength: 0.0)
                     ScrollView(.vertical) {
-                        Text(model.displayData.longLeft)
+                        Text(model.displayData.left)
                             .kerning(C.kerning)
-                            .font(Font(screenInfo.uiFont))
+                            .font(Font(model.screenInfo.uiFont))
                             .foregroundColor(.white)
                             .multilineTextAlignment(.trailing)
                             .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
                             .lineLimit(nil)
                     }
-                    if model.displayData.longRight != nil {
-                        Text(model.displayData.longRight!)
+                    if model.displayData.right != nil {
+                        Text(model.displayData.right!)
                             .kerning(C.kerning)
-                            .font(Font(screenInfo.uiFont))
+                            .font(Font(model.screenInfo.uiFont))
                             .foregroundColor(.white)
-                            .padding(.leading, screenInfo.ePadding)
+                            .padding(.leading, model.screenInfo.ePadding)
                     }
                     Icons(
                         store: store,
                         model: model,
-                        screenInfo: screenInfo,
+                        screenInfo: model.screenInfo,
                         isCalculating: model.isCalculating,
-                        isZoomed: $isZoomed)
-                    .padding(.leading, screenInfo.plusIconLeftPadding)
-                    .offset(y: screenInfo.offsetToVerticallyIconWithText)
+                        isZoomed: $model.isZoomed)
+                    .padding(.leading, model.screenInfo.plusIconLeftPadding)
+                    .offset(y: model.screenInfo.offsetToVerticallyIconWithText)
                 }
                 .overlay() {
-                    if !isZoomed {
+                    if !model.isZoomed {
                         VStack(spacing: 0.0) {
                             Spacer(minLength: 0.0)
                             Rectangle()
@@ -76,16 +73,16 @@ struct Calculator: View {
                                         HStack(spacing: 0.0) {
                                             Text(info)
                                                 .foregroundColor(.white)
-                                                .font(Font(screenInfo.infoUiFont))
+                                                .font(Font(model.screenInfo.infoUiFont))
                                             Spacer()
                                         }
                                         //                                .offset(x: screenInfo.keySpacing, y: -screenInfo.keyboardHeight)
                                     }
                                 }
                             HStack(spacing: 0.0) {
-                                ScientificBoard(model: model, spacing: screenInfo.keySpacing, keySize: screenInfo.keySize)
-                                    .padding(.trailing, screenInfo.keySpacing)
-                                NonScientificKeyboard(model: model, spacing: screenInfo.keySpacing, keySize: screenInfo.keySize)
+                                ScientificBoard(model: model, spacing: model.screenInfo.keySpacing, keySize: model.screenInfo.keySize)
+                                    .padding(.trailing, model.screenInfo.keySpacing)
+                                NonScientificKeyboard(model: model, spacing: model.screenInfo.keySpacing, keySize: model.screenInfo.keySize)
                             }
                             .background(Color.black)
                         }
@@ -155,32 +152,32 @@ struct Calculator: View {
  .accentColor(.white) // for the navigation back button
 }
  */
-struct Calculator_Previews: PreviewProvider {
-    static var previews: some View {
-        let model = Model()
-        let _ = model.pressed("π")
-        Calculator(
-            model: model,
-            screenInfo:ScreenInfo (
-                hardwareSize: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height),
-                insets: UIEdgeInsets(),
-                appOrientation: .landscapeLeft,
-                model: model))
-        .previewDevice(PreviewDevice(rawValue: "iPad Pro (12.9-inch) (3rd generation)"))
-        .previewDisplayName("iPad")
+//struct Calculator_Previews: PreviewProvider {
+//    static var previews: some View {
+//        let model = Model()
+//        let _ = model.pressed("π")
+//        Calculator(
+//            model: model,
+//            screenInfo:ScreenInfo (
+//                hardwareSize: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height),
+//                insets: UIEdgeInsets(),
+//                appOrientation: .landscapeLeft,
+//                model: model))
+//        .previewDevice(PreviewDevice(rawValue: "iPad Pro (12.9-inch) (3rd generation)"))
+//        .previewDisplayName("iPad")
+//        //        .preferredColorScheme(.dark)
+//        Calculator(
+//            model: model,
+//            screenInfo:ScreenInfo(
+//                hardwareSize: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height),
+//                insets: UIEdgeInsets(),
+//                appOrientation: .landscapeLeft,
+//                model: model))
+//        .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro Max"))
+//        .previewDisplayName("iPhone")
         //        .preferredColorScheme(.dark)
-        Calculator(
-            model: model,
-            screenInfo:ScreenInfo(
-                hardwareSize: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height),
-                insets: UIEdgeInsets(),
-                appOrientation: .landscapeLeft,
-                model: model))
-        .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro Max"))
-        .previewDisplayName("iPhone")
-        //        .preferredColorScheme(.dark)
-    }
-}
+//    }
+//}
 
 extension View {
     func hidden(_ shouldHide: Bool) -> some View {

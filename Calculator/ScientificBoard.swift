@@ -59,9 +59,9 @@ struct ScientificBoard: View {
     }
 }
 
-struct ScientificKeys_Previews: PreviewProvider {
-    static var previews: some View {
-        ScientificBoard(model: Model(), spacing: 10, keySize: CGSize(width: 400, height: 300))
-    }
-}
+//struct ScientificKeys_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ScientificBoard(model: Model(), spacing: 10, keySize: CGSize(width: 400, height: 300))
+//    }
+//}
 

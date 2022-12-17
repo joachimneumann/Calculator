@@ -170,11 +170,11 @@ struct Settings: View {
         }
     }
     
-    struct ControlCenter_Previews: PreviewProvider {
-        static var previews: some View {
-            Settings(model: Model(), font: Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
-        }
-    }
+//    struct ControlCenter_Previews: PreviewProvider {
+//        static var previews: some View {
+//            Settings(model: Model(), font: Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
+//        }
+//    }
     
     struct ColoredToggleStyle: ToggleStyle {
         var label = ""

@@ -18,6 +18,8 @@ class Model : ObservableObject {
         }
     }
     
+    @Published var isZoomed: Bool
+    var screenInfo: ScreenInfo
     @Published var secondActive = false
     @Published var isCalculating = false
     var hideKeyboard = false
@@ -26,7 +28,7 @@ class Model : ObservableObject {
     @Published var keyInfo: [String: KeyInfo] = [:]
     @Published var showAC = true
     @Published var hasBeenReset = false
-    @Published var displayData = DisplayData(shortLeft: "x", shortRight: nil, shortAbbreviated: false, longLeft: "x", longRight: nil, longAbbreviated: false)
+    @Published var displayData = DisplayData()
     
     var precisionDescription = "unknown"
     
@@ -42,6 +44,27 @@ class Model : ObservableObject {
         brain.isValidNumber
     }
     
+    
+    init(isZoomed: Bool, screenInfo: ScreenInfo) {
+        self.isZoomed = isZoomed
+        self.screenInfo = screenInfo
+        let displayWidth = screenInfo.calculatorSize.width - (screenInfo.isPortraitPhone ? 0.0 : screenInfo.plusIconSize + screenInfo.plusIconLeftPadding)
+        lengths = lengthMeasurement(width: displayWidth, uiFont: screenInfo.uiFont, infoUiFont: screenInfo.infoUiFont, ePadding: screenInfo.ePadding)
+
+        
+        brain = Brain(precision: Model.precision)
+        for key in C.allKeys {
+            keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))
+        }
+        brain.haveResultCallback = haveResultCallback
+        brain.pendingOperatorCallback = pendingOperatorCallback
+        if Model.memoryValue == "" {
+            brain.memory = nil
+        } else {
+            brain.memory = Number(Model.memoryValue, precision: Model.precision)
+        }
+    }
+    
     // the update of the precision in brain can be slow.
     // Therefore, I only want to do that when leaving the settings screen
     func updatePrecision(to newPecision: Int) {
@@ -50,7 +73,8 @@ class Model : ObservableObject {
     }
     
     func toPastBin() {
-        UIPasteboard.general.string = brain.last.getDisplayData(Lengths(Model.precision), forceScientific: false, maxDisplayLength: Model.precision).long
+        let displayData = brain.last.getDisplayData(forLong: true, lengths: Lengths(Model.precision), forceScientific: false, maxDisplayLength: Model.precision)
+        UIPasteboard.general.string = displayData.left + (displayData.right ?? "")
     }
     
     func checkIfPasteBinIsValidNumber() -> Bool {
@@ -71,7 +95,7 @@ class Model : ObservableObject {
             if let pasteString = UIPasteboard.general.string {
                 if pasteString.count > 0 {
                     brain.n.replaceLast(with: Number(pasteString, precision: brain.precision))
-                    haveResultCallback()
+                    haveResultCallback() // TODO: make sure that forLong is true here!!!!
                     hasBeenReset = false
                 }
             }
@@ -92,26 +116,12 @@ class Model : ObservableObject {
         return timer.stop()
     }
     
-    init() {
-        brain = Brain(precision: Model.precision)
-        for key in C.allKeys {
-            keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))
-        }
-        brain.haveResultCallback = haveResultCallback
-        brain.pendingOperatorCallback = pendingOperatorCallback
-        if Model.memoryValue == "" {
-            brain.memory = nil
-        } else {
-            brain.memory = Number(Model.memoryValue, precision: Model.precision)
-        }
-    }
-    
-    func updateDisplayData() {
+    func updateDisplayData(isZoomed: Bool) {
         //print("updateDisplayData()")
         DispatchQueue.main.async {
-            self.displayData = DisplayData(shortLeft: "", shortAbbreviated: false, longLeft: "", longAbbreviated: false)
+            self.displayData = DisplayData(left: "")
         }
-        let temp = self.brain.last.getDisplayData(self.lengths, forceScientific: Model.forceScientific)
+        let temp = self.brain.last.getDisplayData(forLong: isZoomed, lengths: lengths, forceScientific: Model.forceScientific)
         DispatchQueue.main.async {
             self.displayData = temp
         }
@@ -130,7 +140,7 @@ class Model : ObservableObject {
             }
         }
         
-        updateDisplayData()
+        updateDisplayData(isZoomed: isZoomed)
         
         for key in C.allKeys {
             if brain.isValidNumber {
@@ -212,8 +222,9 @@ class Model : ObservableObject {
                 await asyncOperation(symbol)
                 if ["mc", "m+", "m-"].contains(symbol) {
                     if let memory = brain.memory {
+                        let temp = memory.getDisplayData(forLong: true, lengths: Lengths(Model.precision), forceScientific: false, maxDisplayLength: Model.precision)
                         DispatchQueue.main.sync {
-                            Model.memoryValue = memory.getDisplayData(Lengths(Model.precision), forceScientific: false, maxDisplayLength: Model.precision).long
+                            Model.memoryValue = temp.left + (temp.right ?? "")
                         }
                     } else {
                         DispatchQueue.main.sync {

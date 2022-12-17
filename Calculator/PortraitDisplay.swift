@@ -15,8 +15,8 @@ struct PortraitDisplay: View {
     var body: some View {
         HStack(spacing: 0.0) {
             Spacer(minLength: 0.0)
-            if displayData.shortRight == nil {
-                Text(displayData.shortLeft)
+            if displayData.right == nil {
+                Text(displayData.left)
                     .kerning(C.kerning)
                     .font(Font(screenInfo.uiFontLarge))
                     .minimumScaleFactor(screenInfo.largeFontScaleFactor)
@@ -26,14 +26,14 @@ struct PortraitDisplay: View {
                     .lineLimit(1)
                     .frame(maxHeight: 300, alignment: .bottomTrailing)
             } else {
-                Text(displayData.shortLeft)
+                Text(displayData.left)
                     .kerning(C.kerning)
                     .font(Font(screenInfo.uiFont))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.trailing)
                     .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
                     .lineLimit(1)
-                Text(displayData.shortRight!)
+                Text(displayData.right!)
                     .kerning(C.kerning)
                     .font(Font(screenInfo.uiFont))
                     .foregroundColor(.white)

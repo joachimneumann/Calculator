@@ -19,7 +19,7 @@ struct LandscapeDisplay: View {
             HStack(alignment: .top, spacing: 0.0) {
                 Spacer(minLength: 0.0)
                 ScrollView(.vertical) {
-                    Text(displayData.longLeft)
+                    Text(displayData.left)
                         .kerning(C.kerning)
                         .font(Font(screenInfo.uiFont))
                         .foregroundColor(.white)
@@ -27,8 +27,8 @@ struct LandscapeDisplay: View {
                         .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
                         .lineLimit(nil)
                 }
-                if displayData.longRight != nil {
-                    Text(displayData.longRight!)
+                if displayData.right != nil {
+                    Text(displayData.right!)
                         .kerning(C.kerning)
                         .font(Font(screenInfo.uiFont))
                         .foregroundColor(.white)
@@ -47,14 +47,14 @@ struct LandscapeDisplay: View {
             
             /// the single line display
             HStack(alignment: .top, spacing: 0.0) {
-                Text(displayData.shortLeft)
+                Text(displayData.left)
                     .kerning(C.kerning)
                     .font(Font(screenInfo.uiFont))
                     .foregroundColor(.white)
                     .lineLimit(1)
                     .opacity(isZoomed ? 0.0 : 1.0)
-                if displayData.shortRight != nil {
-                    Text(displayData.shortRight!)
+                if displayData.right != nil {
+                    Text(displayData.right!)
                         .kerning(C.kerning)
                         .font(Font(screenInfo.uiFont))
                         .foregroundColor(.white)

@@ -79,8 +79,8 @@ struct PurchaseView: View {
 }
 
 
-struct PurchaseView_Previews: PreviewProvider {
-    static var previews: some View {
-        PurchaseView(store: Store(), model: Model(), font: Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
-    }
-}
+//struct PurchaseView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PurchaseView(store: Store(), model: Model(), font: Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
+//    }
+//}

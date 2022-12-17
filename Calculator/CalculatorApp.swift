@@ -9,22 +9,26 @@ import SwiftUI
 
 @main
 struct CalculatorApp: App {
-    let model: Model = Model()
-    @Environment(\.safeAreaInsets) private var safeAreaInsets
+    @State private var isZoomed = false
     @State private var appOrientation = UIDeviceOrientation.unknown
+    @Environment(\.safeAreaInsets) private var safeAreaInsets
+
+    let model: Model
+               
+    init() {
+        model = Model(isZoomed: false, screenInfo: ScreenInfo(
+        hardwareSize: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height),
+        insets: UIApplication.shared.keyWindow?.safeAreaInsets ?? UIEdgeInsets(),
+        appOrientation: UIDeviceOrientation.unknown))
+    }
+    
     var body: some Scene {
         WindowGroup {
             ZStack {
                 if safeAreaInsets.top == -1 {
                     EmptyView()
                 } else {
-                    Calculator(
-                        model: model,
-                        screenInfo: ScreenInfo(
-                            hardwareSize: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height),
-                            insets: UIApplication.shared.keyWindow?.safeAreaInsets ?? UIEdgeInsets(),
-                            appOrientation: appOrientation,
-                            model: model))
+                    Calculator(model: model)
                     .background(Rectangle()
                                 /// this stops white background from showing *during* a device rotation
                         .frame(width: max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height) * 2.0,
