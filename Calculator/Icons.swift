@@ -37,16 +37,6 @@ struct Icons : View {
                         }
                     }
                 Group {
-                    NavigationLink {
-                        Settings(model: model)
-                    } label: {
-                        Image(systemName: "switch.2")
-                            .resizable()
-                            .scaledToFit()
-                            .font(.system(size: screenInfo.plusIconSize, weight: .thin))
-                            .frame(width: screenInfo.plusIconSize, height: screenInfo.plusIconSize)
-                            .foregroundColor(Color(UIColor(white: 0.9, alpha: 1.0)))
-                    }
                     if store.purchasedIDs.isEmpty {
                         NavigationLink {
                             PurchaseView(store: store)
@@ -93,12 +83,24 @@ struct Icons : View {
                         .disabled(!pasteAllowedState)
                     }
 
+                    NavigationLink {
+                        Settings(model: model)
+                    } label: {
+                        Text("0.00…")
+                            .foregroundColor(.white)
+                    }
+
                     Button {
                         Model.forceScientific = !Model.forceScientific
                         model.haveResultCallback()
                     } label: {
-                        Text(Model.forceScientific ? "EE!" : "EE?")
-                            .foregroundColor(.white)
+                        HStack(spacing: 0.0) {
+                            Text("EE ")
+                                .foregroundColor(.white)
+                            Text(Model.forceScientific ? "!" : "?")
+                                .monospaced()
+                                .foregroundColor(.white)
+                        }
                     }
                 }
                 .padding(.top, screenInfo.plusIconSize * 0.5)
