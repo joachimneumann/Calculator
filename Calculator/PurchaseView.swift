@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PurchaseView: View {
     @ObservedObject var store: Store
+    let model: Model
     var body: some View {
         Group {
             if let product = store.products.first {
@@ -65,6 +66,11 @@ struct PurchaseView: View {
             Task {
                 await store.requestProducts()
             }
+            model.hideKeyboard = true
+        }
+        .onDisappear() {
+            model.hideKeyboard = false
+            model.haveResultCallback()
         }
     }
 }
@@ -72,6 +78,6 @@ struct PurchaseView: View {
 
 struct PurchaseView_Previews: PreviewProvider {
     static var previews: some View {
-        PurchaseView(store: Store())
+        PurchaseView(store: Store(), model: Model())
     }
 }

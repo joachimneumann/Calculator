@@ -53,9 +53,9 @@ struct Calculator: View {
         .onChange(of: model.lengths.withoutComma) { _ in
             model.updateDisplayData() // redraw with or without keyboard
         }
-        .defersSystemGestures(on: .all)
+//        .defersSystemGestures(on: .all)
         .overlay() {
-            if !model.hideKeyboardInSubScreens && (screenInfo.isPortraitPhone || !isZoomed) {
+            if !model.hideKeyboard && (screenInfo.isPortraitPhone || !isZoomed) {
                 VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
                     KeyboardAndInfo(hasBeenReset: model.hasBeenReset,

@@ -39,7 +39,7 @@ struct Icons : View {
                 Group {
                     if store.purchasedIDs.isEmpty {
                         NavigationLink {
-                            PurchaseView(store: store)
+                            PurchaseView(store: store, model: model)
                         } label: {
                             Text("copy")
                                 .foregroundColor(.white)
@@ -58,7 +58,7 @@ struct Icons : View {
                     
                     if store.purchasedIDs.isEmpty {
                         NavigationLink {
-                            PurchaseView(store: store)
+                            PurchaseView(store: store, model: model)
                         } label: {
                             Text("paste")
                                 .foregroundColor(.white)

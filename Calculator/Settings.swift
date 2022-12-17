@@ -121,10 +121,10 @@ struct Settings: View {
             .foregroundColor(Color.white)
         }
         .onAppear() {
-            model.hideKeyboardInSubScreens = true
+            model.hideKeyboard = true
         }
         .onDisappear() {
-            model.hideKeyboardInSubScreens = false
+            model.hideKeyboard = false
             if Model.precision != settingsPrecision {
                 model.updatePrecision(to: settingsPrecision)
             }
