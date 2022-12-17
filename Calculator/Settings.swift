@@ -9,6 +9,7 @@ import SwiftUI
 
 struct Settings: View {
     var model: Model
+    let font: Font
     
     func decrease(_ current: Int) -> Int {
         let asString = "\(current)"
@@ -118,6 +119,7 @@ struct Settings: View {
                 
                 Spacer()
             }
+            .font(font)
             .foregroundColor(Color.white)
         }
         .onAppear() {
@@ -170,7 +172,7 @@ struct Settings: View {
     
     struct ControlCenter_Previews: PreviewProvider {
         static var previews: some View {
-            Settings(model: Model())
+            Settings(model: Model(), font: Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
         }
     }
     

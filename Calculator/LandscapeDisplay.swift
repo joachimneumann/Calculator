@@ -13,6 +13,7 @@ struct LandscapeDisplay: View {
     let displayHeight: CGFloat
     let screenInfo: ScreenInfo
     var body: some View {
+        let _ = print("LandscapeView")
         ZStack(alignment: .topTrailing) {
             /// the zoomed display
             HStack(alignment: .top, spacing: 0.0) {
@@ -40,8 +41,9 @@ struct LandscapeDisplay: View {
             // the rectangle is needed for integers that are too large for a single line, but small enough to be displayed as Integer when zoomed
             // Text().background does not cover the ePadding
                 .foregroundColor(.black)
-                .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding, height: displayHeight)
+                .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding, height: 2.0 * displayHeight)
                 .opacity(isZoomed ? 0.0 : 1.0)
+                .animation(nil, value: isZoomed)
             
             /// the single line display
             HStack(alignment: .top, spacing: 0.0) {
@@ -60,6 +62,7 @@ struct LandscapeDisplay: View {
                         .opacity(isZoomed ? 0.0 : 1.0)
                 }
             }
+            .animation(nil, value: isZoomed)
         }
     }
     /*

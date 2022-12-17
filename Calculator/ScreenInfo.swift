@@ -59,7 +59,7 @@ struct ScreenInfo {
                 keyboardHeight = iPadPortrait ? calculatorSize.height * 0.4 : calculatorSize.height * 0.5
             } else {
                 /// iPhone landscape
-                keyboardHeight = 0.84 * calculatorSize.height
+                keyboardHeight = 0.8 * calculatorSize.height
             }
             tempKeyheight = (keyboardHeight - 4.0 * keySpacing) * 0.2
         }
@@ -71,7 +71,8 @@ struct ScreenInfo {
         ePadding = plusIconSize * 0.3
         let singleLineFontSize = ((isPortraitPhone ? 0.14 : 0.16) * keyboardHeight).rounded()
         uiFont = UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: C.fontWeight)
-        infoUiFont = UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize * 0.35, weight: C.fontWeight)
+        let infoUiFontSize = singleLineFontSize * 0.35
+        infoUiFont = UIFont.monospacedDigitSystemFont(ofSize: infoUiFontSize, weight: .light)
         uiFontLarge = UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize / largeFontScaleFactor, weight: C.fontWeight)
         C.kerning = 0.0//-0.05 * singleLineFontSize
 
@@ -81,8 +82,8 @@ struct ScreenInfo {
         model.lengths = temp
         // lengths is used in Model.haveResultCallback()
 
-        offsetToVerticallyAlignTextWithkeyboard = calculatorSize.height - keyboardHeight - model.lengths.height
-        offsetToVerticallyIconWithText = calculatorSize.height - keyboardHeight - plusIconSize + uiFont.descender - 0.5 * uiFont.capHeight + plusIconSize * 0.5
+        offsetToVerticallyAlignTextWithkeyboard = calculatorSize.height - keyboardHeight - infoUiFontSize - model.lengths.height
+        offsetToVerticallyIconWithText          = calculatorSize.height - keyboardHeight - infoUiFontSize - plusIconSize + uiFont.descender - 0.5 * uiFont.capHeight + plusIconSize * 0.5
 
         // print("ScreenInfo: length = \(model.lengths)")
     }

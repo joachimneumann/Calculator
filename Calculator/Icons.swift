@@ -42,6 +42,7 @@ struct Icons : View {
                             PurchaseView(store: store, model: model)
                         } label: {
                             Text("copy")
+                                .font(Font(screenInfo.infoUiFont))
                                 .foregroundColor(.white)
                         }
                     } else {
@@ -52,6 +53,7 @@ struct Icons : View {
                             }
                         } label: {
                             Text("copy")
+                                .font(Font(screenInfo.infoUiFont))
                                 .foregroundColor(.white)
                         }
                     }
@@ -61,6 +63,7 @@ struct Icons : View {
                             PurchaseView(store: store, model: model)
                         } label: {
                             Text("paste")
+                                .font(Font(screenInfo.infoUiFont))
                                 .foregroundColor(.white)
                         }
                     } else {
@@ -78,15 +81,17 @@ struct Icons : View {
                             }
                         } label: {
                             Text("paste")
+                                .font(Font(screenInfo.infoUiFont))
                                 .foregroundColor(pasteAllowedState ? .white : .gray)
                         }
                         .disabled(!pasteAllowedState)
                     }
 
                     NavigationLink {
-                        Settings(model: model)
+                        Settings(model: model, font: Font(screenInfo.infoUiFont))
                     } label: {
                         Text("0.00…")
+                            .font(Font(screenInfo.infoUiFont))
                             .foregroundColor(.white)
                     }
 
@@ -96,9 +101,10 @@ struct Icons : View {
                     } label: {
                         HStack(spacing: 0.0) {
                             Text("EE ")
+                                .font(Font(screenInfo.infoUiFont))
                                 .foregroundColor(.white)
                             Text(Model.forceScientific ? "!" : "?")
-                                .monospaced()
+                                .font(Font(screenInfo.infoUiFont)).monospaced()
                                 .foregroundColor(.white)
                         }
                     }

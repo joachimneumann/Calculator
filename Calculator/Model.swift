@@ -35,7 +35,7 @@ class Model : ObservableObject {
     @AppStorage("precision", store: .standard) static private (set) var precision: Int = 1000
     @AppStorage("forceScientific", store: .standard) static var forceScientific: Bool = false
     @AppStorage("memoryValue", store: .standard) static var memoryValue: String = ""
-    @AppStorage("_rad", store: .standard) static var _rad: Bool = false
+    @AppStorage("rad", store: .standard) static var rad: Bool = false
     static let MAX_DISPLAY_LEN = 10000 // too long strings in Text() crash the app
     
     var isValidNumber: Bool {
@@ -187,7 +187,7 @@ class Model : ObservableObject {
         //        print("color x \(keyInfo["x"]!.colors.upColor)")
         //        print("color - \(keyInfo["-"]!.colors.upColor)")
         //        print("color + \(keyInfo["+"]!.colors.upColor)")
-        let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(_symbol) && !Model._rad ? _symbol+"D" : _symbol
+        let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(_symbol) && !Model.rad ? _symbol+"D" : _symbol
         
         switch symbol {
         case "2nd":
@@ -195,10 +195,10 @@ class Model : ObservableObject {
             self.keyInfo["2nd"]!.colors = secondActive ? C.secondActiveColors : C.secondColors
         case "Rad":
             hasBeenReset = false
-            Model._rad = true
+            Model.rad = true
         case "Deg":
             hasBeenReset = false
-            Model._rad = false
+            Model.rad = false
         case "plusKey":
             break
         default:
