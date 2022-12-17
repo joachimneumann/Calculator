@@ -21,9 +21,8 @@ class CalculatorTests: XCTestCase {
     
     func testmultipleLiner() {
         let precision = 100
-        let brain = Brain(precision: precision)
         var displayData = DisplayData(shortLeft: "0", shortAbbreviated: false, longLeft: "0", longAbbreviated: false)
-        let lengths = Lengths(withoutComma: 8, withCommaNonScientific: 9, withCommaScientific: 9, ePadding: 0)
+        let lengths = Lengths(withoutComma: 8, withCommaNonScientific: 9, withCommaScientific: 9, height: 0, ePadding: 0)
 
         /// integers
         displayData = Number("123", precision: precision).getDisplayData(lengths, forceScientific: false)

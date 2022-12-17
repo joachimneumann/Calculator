@@ -16,33 +16,27 @@ struct Calculator: View {
     @State private var isZoomed = false
     var body: some View {
         // let _ = print("Calculator() model.lengths \(model.lengths)")
-        
-        HStack(spacing: 0.0) {
+        Group {
             if screenInfo.isPortraitPhone {
-                VStack(spacing: 0.0) {
+                VStack(alignment: .trailing, spacing: 0.0) {
+                    Spacer()
                     PortraitDisplay(
                         displayData: model.displayData,
                         screenInfo: screenInfo,
                         lengths: model.lengths)
-                    .background(Color.yellow)
-                        .offset(y: screenInfo.offsetToVerticallyAlignTextWithkeyboard)
-                    Spacer(minLength: 0.0)
+                    //.background(Color.yellow)
+                    .offset(y: -screenInfo.keyboardHeight)
                 }
             } else {
-                /// landscape or iPad
-                VStack(spacing: 0.0) {
+                /// Landscape phone or iPad
+                HStack(alignment: .top, spacing: 0.0) {
                     LandscapeDisplay(
                         isZoomed: isZoomed,
                         displayData: model.displayData,
                         displayHeight: model.lengths.height,
                         screenInfo: screenInfo)
                     .offset(y: screenInfo.offsetToVerticallyAlignTextWithkeyboard)
-                    Spacer(minLength: 0.0)
-                }
-            }
-            if !screenInfo.isPortraitPhone {
-                VStack(spacing: 0.0) {
-                    VStack {
+                    VStack(spacing: 0.0) {
                         Image(systemName: "plus.circle.fill")
                             .resizable()
                             .font(Font.title.weight(.thin))
@@ -58,8 +52,10 @@ struct Calculator: View {
                                 }
                             }
                             .offset(y: screenInfo.offsetToVerticallyIconWithText)
+                            //.background(Color.orange)
+                        Spacer(minLength: 0.0)
                     }
-                    Spacer(minLength: 0.0)
+                    //.background(Color.yellow)
                 }
             }
         }
@@ -80,7 +76,7 @@ struct Calculator: View {
                                     keySize: screenInfo.keySize,
                                     spacing: screenInfo.keySpacing)
                     .frame(width: screenInfo.calculatorSize.width, height: screenInfo.keyboardHeight)
-                    .background(.clear)//.opacity(0.1)//testColors ? .clear : .clear)
+                    .background(.black)//.opacity(0.1)//testColors ? .clear : .clear)
                 }
             }
         }

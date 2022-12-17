@@ -31,7 +31,7 @@ class Model : ObservableObject {
     
     var lengths = Lengths(0)
 
-    @AppStorage("precision", store: .standard) static private (set) var precision: Int = 100
+    @AppStorage("precision", store: .standard) static private (set) var precision: Int = 1000
     @AppStorage("forceScientific", store: .standard) static var forceScientific: Bool = false
     @AppStorage("memoryValue", store: .standard) static var memoryValue: String = ""
     @AppStorage("_rad", store: .standard) static var _rad: Bool = false

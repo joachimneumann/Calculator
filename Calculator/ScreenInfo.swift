@@ -66,7 +66,7 @@ struct ScreenInfo {
         
         keySize = CGSize(width: tempKeyWidth, height: tempKeyheight)
 
-        plusIconSize = keyboardHeight * 0.0513
+        plusIconSize = keyboardHeight * 0.13
         plusIconLeftPadding = plusIconSize * 0.3
         ePadding = plusIconLeftPadding
         let singleLineFontSize = ((isPortraitPhone ? 0.14 : 0.16) * keyboardHeight).rounded()

@@ -20,7 +20,6 @@ struct LandscapeDisplay: View {
                     .kerning(C.kerning)
                     .font(Font(screenInfo.uiFont))
                     .foregroundColor(.white)
-//                    .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding)
                     .multilineTextAlignment(.trailing)
                     .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
                     .lineLimit(nil)
@@ -32,21 +31,19 @@ struct LandscapeDisplay: View {
                         .padding(.leading, screenInfo.ePadding)
                 }
             }
-            Rectangle() // the rectangle is needed, because the background dows not cover the ePadding
+            Rectangle()
+            // the rectangle is needed for integers that are too large for a single line, but small enough to be displayed as Integer when zoomed
+            // Text().background does not cover the ePadding
                 .foregroundColor(.black)
                 .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding, height: displayHeight)
                 .opacity(isZoomed ? 0.0 : 1.0)
-//                .animation(nil, value: isZoomed)
             HStack(alignment: .top, spacing: 0.0) {
                 Text(displayData.shortLeft)
                     .kerning(C.kerning)
                     .font(Font(screenInfo.uiFont))
                     .foregroundColor(.white)
-                //                        .background(testColors ? .orange : .black).opacity(testColors ? 0.5 : 0.5)
-//                    .background(Color.black)
                     .lineLimit(1)
                     .opacity(isZoomed ? 0.0 : 1.0)
-//                    .animation(nil, value: isZoomed)
                 if displayData.shortRight != nil {
                     Text(displayData.shortRight!)
                         .kerning(C.kerning)
@@ -54,7 +51,6 @@ struct LandscapeDisplay: View {
                         .foregroundColor(.white)
                         .padding(.leading, screenInfo.ePadding)
                         .opacity(isZoomed ? 0.0 : 1.0)
-//                        .animation(nil, value: isZoomed)
                 }
             }
         }
