@@ -98,11 +98,11 @@ struct Icons : View {
                         model.haveResultCallback()
                     } label: {
                         Text(Model.forceScientific ? "EE!" : "EE?")
+                            .foregroundColor(.white)
                     }
                 }
                 .padding(.top, screenInfo.plusIconSize * 0.5)
-//                .frame(width: screenInfo.plusIconSize, height: screenInfo.plusIconSize)
-                .minimumScaleFactor(0.01)
+                .minimumScaleFactor(0.01) // in case "paste" is too wide on small phones
             }
             Spacer(minLength: 0.0)
         }

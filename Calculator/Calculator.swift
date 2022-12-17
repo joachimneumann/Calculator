@@ -15,9 +15,10 @@ struct Calculator: View {
     var screenInfo: ScreenInfo
     
     @State private var isZoomed = false
+    
     var body: some View {
         // let _ = print("Calculator() model.lengths \(model.lengths)")
-        Group {
+        NavigationStack {
             if screenInfo.isPortraitPhone {
                 VStack(alignment: .trailing, spacing: 0.0) {
                     Spacer()
@@ -48,13 +49,14 @@ struct Calculator: View {
                 }
             }
         }
+        .accentColor(.white) // for the navigation back button
         .onChange(of: model.lengths.withoutComma) { _ in
-            model.updateDisplayData()
+            model.updateDisplayData() // redraw with or without keyboard
         }
         .overlay() {
-            VStack(spacing: 0.0) {
-                Spacer(minLength: 0.0)
-                if !isZoomed {
+            if !model.hideKeyboardInSubScreens && (screenInfo.isPortraitPhone || !isZoomed) {
+                VStack(spacing: 0.0) {
+                    Spacer(minLength: 0.0)
                     KeyboardAndInfo(hasBeenReset: model.hasBeenReset,
                                     precisionDescription: model.precisionDescription,
                                     rad: Model._rad,

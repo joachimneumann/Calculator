@@ -32,7 +32,6 @@ struct Settings: View {
     }
     
     @State var settingsPrecision = Model.precision
-    @State var settingsForceScientific = Model.forceScientific
     static let measureButtonDefault = "click to measure"
     @State private var measureButtonText = Settings.measureButtonDefault
     private let MIN_PRECISION      = 10
@@ -81,7 +80,7 @@ struct Settings: View {
                     .padding(.bottom, 5)
                     .foregroundColor(.gray)
                 let more = (settingsPrecision > Number.MAX_DISPLAY_LENGTH)
-                Text("\(more ? "Maximal n" : "N")umber of digits in the display: \(min(settingsPrecision, Number.MAX_DISPLAY_LENGTH)) \(more ? "(copy & paste use all \(settingsPrecision.useWords) digits)" : " ")")
+                Text("\(more ? "Maximal n" : "N")umber of digits in the display: \(min(settingsPrecision, Number.MAX_DISPLAY_LENGTH)) \(more ? "(copy fetches all \(settingsPrecision.useWords) digits)" : " ")")
                     .padding(.bottom, 5)
                     .foregroundColor(.gray)
                 Text("Memory size of one Number: \(sizeOfOneNumber.asMemorySize)")
@@ -117,42 +116,19 @@ struct Settings: View {
                     }
                 }
                 
-                HStack(spacing: 0.0) {
-                    Text("Force scientific display")
-                        .foregroundColor(.gray)
-                    Toggle("", isOn: $settingsForceScientific)
-                        .toggleStyle(
-                            ColoredToggleStyle(onColor: Color(UIColor(white: 0.6, alpha: 1.0)),
-                                               offColor: Color(UIColor(white: 0.3, alpha: 1.0)),
-                                               thumbColor: .white))
-                        .frame(width: 70)
-                    Text(settingsForceScientific ? "e.g. 3,1415926 e0" : "e.g. 3,141592653")
-                        .foregroundColor(.gray)
-                        .padding(.leading, 20)
-                    Spacer()
-                }
-                .padding(.top, 0)
-                
                 Spacer()
             }
             .foregroundColor(Color.white)
         }
+        .onAppear() {
+            model.hideKeyboardInSubScreens = true
+        }
         .onDisappear() {
-            var update = false
-            if Model.precision != settingsPrecision ||
-                Model.forceScientific != settingsForceScientific {
-                update = true
-            }
-
-            Model.forceScientific = settingsForceScientific
+            model.hideKeyboardInSubScreens = false
             if Model.precision != settingsPrecision {
                 model.updatePrecision(to: settingsPrecision)
             }
-            
-            if update {
-                model.haveResultCallback()
-            }
-
+            model.haveResultCallback()
         }
     }
     

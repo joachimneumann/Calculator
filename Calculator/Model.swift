@@ -20,7 +20,8 @@ class Model : ObservableObject {
     
     @Published var secondActive = false
     @Published var isCalculating = false
-    
+    var hideKeyboardInSubScreens = false
+
     private let brain: Brain
     @Published var keyInfo: [String: KeyInfo] = [:]
     @Published var showAC = true
