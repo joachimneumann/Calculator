@@ -18,39 +18,49 @@ struct Calculator: View {
         // let _ = print("Calculator() model.lengths \(model.lengths)")
         
         HStack(spacing: 0.0) {
-            VStack(spacing: 0.0) {
-//                Rectangle()
-//                    .foregroundColor(.cyan)
-//                    .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding, height: 40)
-//                    .offset(y: offsetToVerticallyAlignTextWithkeyboard)
-                // let _ = print("Calculator w = \(screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding)")
-                LandscapeDisplay(
-                    isZoomed: isZoomed,
-                    displayData: model.displayData,
-                    displayHeight: model.lengths.height,
-                    screenInfo: screenInfo)
-                    .offset(y: screenInfo.offsetToVerticallyAlignTextWithkeyboard)
-                Spacer(minLength: 0.0)
-            }
-            VStack(spacing: 0.0) {
-                ZStack(alignment: .topTrailing) {
-                    Image(systemName: "plus.circle.fill")
-                        .resizable()
-                        .font(Font.title.weight(.thin))
-                        .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
-                        .frame(width: screenInfo.plusIconSize, height: screenInfo.plusIconSize)
-                        .background(.white)
-                        .foregroundColor(.gray)
-                        .clipShape(Circle())
-                        .padding(.leading, screenInfo.plusIconLeftPadding - 1) // the "- 1" stops the app from drawing into the safearea ?!?
-                        .onTapGesture {
-                            withAnimation(.linear(duration: 0.3)) {
-                                isZoomed.toggle()
-                            }
-                        }
-                        .offset(y: screenInfo.offsetToVerticallyIconWithText)
+            if screenInfo.isPortraitPhone {
+                VStack(spacing: 0.0) {
+                    PortraitDisplay(
+                        displayData: model.displayData,
+                        screenInfo: screenInfo,
+                        lengths: model.lengths)
+                    .background(Color.yellow)
+                        .offset(y: screenInfo.offsetToVerticallyAlignTextWithkeyboard)
+                    Spacer(minLength: 0.0)
                 }
-                Spacer(minLength: 0.0)
+            } else {
+                /// landscape or iPad
+                VStack(spacing: 0.0) {
+                    LandscapeDisplay(
+                        isZoomed: isZoomed,
+                        displayData: model.displayData,
+                        displayHeight: model.lengths.height,
+                        screenInfo: screenInfo)
+                    .offset(y: screenInfo.offsetToVerticallyAlignTextWithkeyboard)
+                    Spacer(minLength: 0.0)
+                }
+            }
+            if !screenInfo.isPortraitPhone {
+                VStack(spacing: 0.0) {
+                    VStack {
+                        Image(systemName: "plus.circle.fill")
+                            .resizable()
+                            .font(Font.title.weight(.thin))
+                            .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
+                            .frame(width: screenInfo.plusIconSize, height: screenInfo.plusIconSize)
+                            .background(.white)
+                            .foregroundColor(.gray)
+                            .clipShape(Circle())
+                            .padding(.leading, screenInfo.plusIconLeftPadding - 1) // the "- 1" stops the app from drawing into the safearea ?!?
+                            .onTapGesture {
+                                withAnimation(.linear(duration: 0.3)) {
+                                    isZoomed.toggle()
+                                }
+                            }
+                            .offset(y: screenInfo.offsetToVerticallyIconWithText)
+                    }
+                    Spacer(minLength: 0.0)
+                }
             }
         }
         .onChange(of: model.lengths.withoutComma) { _ in
@@ -70,7 +80,7 @@ struct Calculator: View {
                                     keySize: screenInfo.keySize,
                                     spacing: screenInfo.keySpacing)
                     .frame(width: screenInfo.calculatorSize.width, height: screenInfo.keyboardHeight)
-                    .background(.blue)//.opacity(0.1)//testColors ? .clear : .clear)
+                    .background(.clear)//.opacity(0.1)//testColors ? .clear : .clear)
                 }
             }
         }
