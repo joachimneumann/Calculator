@@ -10,6 +10,8 @@ import SwiftUI
 struct PurchaseView: View {
     @ObservedObject var store: Store
     let model: Model
+    let font: Font
+
     var body: some View {
         Group {
             if let product = store.products.first {
@@ -60,6 +62,7 @@ struct PurchaseView: View {
                 }
             }
         }
+        .font(font)
         .foregroundColor(.white)
         .padding()
         .onAppear() {
@@ -78,6 +81,6 @@ struct PurchaseView: View {
 
 struct PurchaseView_Previews: PreviewProvider {
     static var previews: some View {
-        PurchaseView(store: Store(), model: Model())
+        PurchaseView(store: Store(), model: Model(), font: Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
     }
 }

@@ -39,7 +39,7 @@ struct Icons : View {
                 Group {
                     if store.purchasedIDs.isEmpty {
                         NavigationLink {
-                            PurchaseView(store: store, model: model)
+                            PurchaseView(store: store, model: model, font: Font(screenInfo.infoUiFont))
                         } label: {
                             Text("copy")
                                 .font(Font(screenInfo.infoUiFont))
@@ -60,7 +60,7 @@ struct Icons : View {
                     
                     if store.purchasedIDs.isEmpty {
                         NavigationLink {
-                            PurchaseView(store: store, model: model)
+                            PurchaseView(store: store, model: model, font: Font(screenInfo.infoUiFont))
                         } label: {
                             Text("paste")
                                 .font(Font(screenInfo.infoUiFont))
