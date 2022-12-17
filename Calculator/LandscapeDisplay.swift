@@ -14,15 +14,18 @@ struct LandscapeDisplay: View {
     let screenInfo: ScreenInfo
     var body: some View {
         ZStack(alignment: .topTrailing) {
+            /// the zoomed display
             HStack(alignment: .top, spacing: 0.0) {
                 Spacer(minLength: 0.0)
-                Text(displayData.longLeft)
-                    .kerning(C.kerning)
-                    .font(Font(screenInfo.uiFont))
-                    .foregroundColor(.white)
-                    .multilineTextAlignment(.trailing)
-                    .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
-                    .lineLimit(nil)
+                ScrollView(.vertical) {
+                    Text(displayData.longLeft)
+                        .kerning(C.kerning)
+                        .font(Font(screenInfo.uiFont))
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.trailing)
+                        .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
+                        .lineLimit(nil)
+                }
                 if displayData.longRight != nil {
                     Text(displayData.longRight!)
                         .kerning(C.kerning)
@@ -31,12 +34,16 @@ struct LandscapeDisplay: View {
                         .padding(.leading, screenInfo.ePadding)
                 }
             }
+
+            /// covering the background
             Rectangle()
             // the rectangle is needed for integers that are too large for a single line, but small enough to be displayed as Integer when zoomed
             // Text().background does not cover the ePadding
                 .foregroundColor(.black)
                 .frame(width: screenInfo.calculatorSize.width - screenInfo.plusIconSize - screenInfo.plusIconLeftPadding, height: displayHeight)
                 .opacity(isZoomed ? 0.0 : 1.0)
+            
+            /// the single line display
             HStack(alignment: .top, spacing: 0.0) {
                 Text(displayData.shortLeft)
                     .kerning(C.kerning)
