@@ -17,74 +17,144 @@ struct Calculator: View {
     @State private var isZoomed = false
     
     var body: some View {
-        // let _ = print("Calculator() model.lengths \(model.lengths)")
-        NavigationStack {
-            Group() {
-                if screenInfo.isPortraitPhone {
-                    VStack(alignment: .trailing, spacing: 0.0) {
-                        Spacer()
-                        PortraitDisplay(
-                            displayData: model.displayData,
-                            screenInfo: screenInfo,
-                            lengths: model.lengths)
-                        //.background(Color.yellow)
-                        .offset(y: -screenInfo.keyboardHeight)
+        if screenInfo.isPortraitPhone {
+            VStack(spacing: 0.0) {
+                Spacer()
+                PortraitDisplay(
+                    displayData: model.displayData,
+                    screenInfo: screenInfo,
+                    lengths: model.lengths)
+                NonScientificKeyboard(
+                    model: model,
+                    spacing: screenInfo.keySpacing,
+                    keySize: screenInfo.keySize)
+            }
+        } else {
+            NavigationStack {
+                /*
+                 lowest level: longDisplay and Icons
+                 mid level: Keyboard with info and rectangle on top
+                 top level: single line
+                 */
+                HStack(alignment: .top, spacing: 0.0) {
+                    Spacer(minLength: 0.0)
+                    ScrollView(.vertical) {
+                        Text(model.displayData.longLeft)
+                            .kerning(C.kerning)
+                            .font(Font(screenInfo.uiFont))
+                            .foregroundColor(.white)
+                            .multilineTextAlignment(.trailing)
+                            .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
+                            .lineLimit(nil)
                     }
-                } else {
-                    /// Landscape phone or iPad
-                    HStack(alignment: .top, spacing: 0.0) {
-                        LandscapeDisplay(
-                            isZoomed: isZoomed,
-                            displayData: model.displayData,
-                            displayHeight: model.lengths.height,
-                            screenInfo: screenInfo)
-                        .offset(y: screenInfo.offsetToVerticallyAlignTextWithkeyboard)
-                        Icons(
-                            store: store,
-                            model: model,
-                            screenInfo: screenInfo,
-                            isCalculating: model.isCalculating,
-                            isZoomed: $isZoomed)
-                        .padding(.leading, screenInfo.plusIconLeftPadding)
-                        .offset(y: screenInfo.offsetToVerticallyIconWithText)
+                    if model.displayData.longRight != nil {
+                        Text(model.displayData.longRight!)
+                            .kerning(C.kerning)
+                            .font(Font(screenInfo.uiFont))
+                            .foregroundColor(.white)
+                            .padding(.leading, screenInfo.ePadding)
                     }
+                    Icons(
+                        store: store,
+                        model: model,
+                        screenInfo: screenInfo,
+                        isCalculating: model.isCalculating,
+                        isZoomed: $isZoomed)
+                    .padding(.leading, screenInfo.plusIconLeftPadding)
+                    .offset(y: screenInfo.offsetToVerticallyIconWithText)
                 }
-            }
-            .onChange(of: model.lengths.withoutComma) { _ in
-                model.updateDisplayData() // redraw with or without keyboard
-            }
-            .defersSystemGestures(on: .all)
-            .overlay() {
-                if !model.hideKeyboard && (screenInfo.isPortraitPhone || !isZoomed) {
-                    VStack(spacing: 0.0) {
-                        Spacer(minLength: 0.0)
-                        Keyboard(model: model, isScientific: !screenInfo.isPortraitPhone, keySize: screenInfo.keySize, spacing: screenInfo.keySpacing)
-                        .background(.black)//.opacity(0.1)//testColors ? .clear : .clear)
-                        .overlay() {
-                            VStack(spacing: 0.0) {
-                                Spacer(minLength: 0.0)
-                                let info = "\(model.hasBeenReset ? "Precision: "+model.precisionDescription+" digits" : "\(Model.rad ? "Rad" : "")")"
-                                if !screenInfo.isPortraitPhone && info.count > 0 {
-                                    HStack(spacing: 0.0) {
-                                        Text(info)
-                                            .foregroundColor(.white)
-                                            .font(Font(screenInfo.infoUiFont))
-                                        Spacer()
+                .overlay() {
+                    if !isZoomed {
+                        VStack(spacing: 0.0) {
+                            Spacer(minLength: 0.0)
+                            Rectangle()
+                                .foregroundColor(.cyan)
+                                .frame(height: model.lengths.infoHeight)
+                                .overlay() {
+                                    let info = "\(model.hasBeenReset ? "Precision: "+model.precisionDescription+" digits" : "\(Model.rad ? "Rad" : "")")"
+                                    if info.count > 0 {
+                                        HStack(spacing: 0.0) {
+                                            Text(info)
+                                                .foregroundColor(.white)
+                                                .font(Font(screenInfo.infoUiFont))
+                                            Spacer()
+                                        }
+                                        //                                .offset(x: screenInfo.keySpacing, y: -screenInfo.keyboardHeight)
                                     }
-                                    .offset(x: screenInfo.keySpacing, y: -screenInfo.keyboardHeight)
-                                    //                        .offset(x: keySize * 0.02, y: infoFontSize * -0.2 + size.height * -0.5 - uiFont.capHeight - uiFont.descender)
                                 }
+                            HStack(spacing: 0.0) {
+                                ScientificBoard(model: model, spacing: screenInfo.keySpacing, keySize: screenInfo.keySize)
+                                    .padding(.trailing, screenInfo.keySpacing)
+                                NonScientificKeyboard(model: model, spacing: screenInfo.keySpacing, keySize: screenInfo.keySize)
                             }
+                            .background(Color.black)
                         }
+                        .transition(.move(edge: .bottom))
                     }
-                    .transition(.move(edge: .bottom))
                 }
             }
+            .accentColor(.white) // for the navigation back button
         }
-        .accentColor(.white) // for the navigation back button
     }
 }
 
+/*
+ NavigationStack {
+     Group() {
+         } else {
+             /// Landscape phone or iPad
+             HStack(alignment: .top, spacing: 0.0) {
+                 LandscapeDisplay(
+                     isZoomed: isZoomed,
+                     displayData: model.displayData,
+                     displayHeight: model.lengths.height,
+                     screenInfo: screenInfo)
+                 .offset(y: screenInfo.offsetToVerticallyAlignTextWithkeyboard)
+                 Icons(
+                     store: store,
+                     model: model,
+                     screenInfo: screenInfo,
+                     isCalculating: model.isCalculating,
+                     isZoomed: $isZoomed)
+                 .padding(.leading, screenInfo.plusIconLeftPadding)
+                 .offset(y: screenInfo.offsetToVerticallyIconWithText)
+             }
+         }
+     }
+     .onChange(of: model.lengths.withoutComma) { _ in
+         model.updateDisplayData() // redraw with or without keyboard
+     }
+     .defersSystemGestures(on: .all)
+     .overlay() {
+         if !model.hideKeyboard && (screenInfo.isPortraitPhone || !isZoomed) {
+             VStack(spacing: 0.0) {
+                 Spacer(minLength: 0.0)
+                 Keyboard(model: model, isScientific: !screenInfo.isPortraitPhone, keySize: screenInfo.keySize, spacing: screenInfo.keySpacing)
+                 .background(.black)//.opacity(0.1)//testColors ? .clear : .clear)
+                 .overlay() {
+                     VStack(spacing: 0.0) {
+                         Spacer(minLength: 0.0)
+                         let info = "\(model.hasBeenReset ? "Precision: "+model.precisionDescription+" digits" : "\(Model.rad ? "Rad" : "")")"
+                         if !screenInfo.isPortraitPhone && info.count > 0 {
+                             HStack(spacing: 0.0) {
+                                 Text(info)
+                                     .foregroundColor(.white)
+                                     .font(Font(screenInfo.infoUiFont))
+                                 Spacer()
+                             }
+                             .offset(x: screenInfo.keySpacing, y: -screenInfo.keyboardHeight)
+                             //                        .offset(x: keySize * 0.02, y: infoFontSize * -0.2 + size.height * -0.5 - uiFont.capHeight - uiFont.descender)
+                         }
+                     }
+                 }
+             }
+             .transition(.move(edge: .bottom))
+         }
+     }
+ }
+ .accentColor(.white) // for the navigation back button
+}
+ */
 struct Calculator_Previews: PreviewProvider {
     static var previews: some View {
         let model = Model()

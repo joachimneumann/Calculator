@@ -78,7 +78,7 @@ struct ScreenInfo {
 
         let displayWidth = calculatorSize.width - (isPortraitPhone ? 0.0 : plusIconSize + plusIconLeftPadding)
         
-        let temp = lengthMeasurement(width: displayWidth, uiFont: uiFont, ePadding: ePadding)
+        let temp = lengthMeasurement(width: displayWidth, uiFont: uiFont, infoUiFont: infoUiFont, ePadding: ePadding)
         model.lengths = temp
         // lengths is used in Model.haveResultCallback()
 

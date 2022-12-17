@@ -12,17 +12,19 @@ struct Lengths {
     let withCommaNonScientific: Int
     let withCommaScientific: Int
     let height: CGFloat
+    let infoHeight: CGFloat
     let ePadding: CGFloat
     
-    init(withoutComma: Int, withCommaNonScientific: Int, withCommaScientific: Int, height: CGFloat, ePadding: CGFloat) {
+    init(withoutComma: Int, withCommaNonScientific: Int, withCommaScientific: Int, height: CGFloat, infoHeight: CGFloat, ePadding: CGFloat) {
         self.withoutComma = withoutComma
         self.withCommaNonScientific = withCommaNonScientific
         self.withCommaScientific = withCommaScientific
         self.height = height
+        self.infoHeight = infoHeight
         self.ePadding = ePadding
     }
     init(_ len: Int) {
-        self.init(withoutComma: len, withCommaNonScientific: len, withCommaScientific: len, height: 0, ePadding: 0)
+        self.init(withoutComma: len, withCommaNonScientific: len, withCommaScientific: len, height: 0, infoHeight: 0, ePadding: 0)
     }
 }
 
@@ -33,33 +35,33 @@ struct Lengths {
 //let _ = print("Calculator len \(model.displayData.longLeft) \(xxx.width)")
 
 
-func lengthMeasurement(width: CGFloat, uiFont: UIFont, ePadding: CGFloat) -> Lengths {
+func lengthMeasurement(width: CGFloat, uiFont: UIFont, infoUiFont: UIFont, ePadding: CGFloat) -> Lengths {
 //     print("lengthMeasurement w =\(width)")
     var s = ""
-    var w = s.length(for: uiFont).width
+    var w = s.textSize(for: uiFont).width
     while w < width {
         s.append("0")
-        w = s.length(for: uiFont).width
+        w = s.textSize(for: uiFont).width
 //        print("measure \(s) \(s.count) \(w)")
     }
     let withoutComma = s.count - 1
     
     s = ","
-    w = s.length(for: uiFont).width
+    w = s.textSize(for: uiFont).width
     while w < width {
         s.append("0")
-        w = s.length(for: uiFont).width
+        w = s.textSize(for: uiFont).width
 //        print("measure , \(s) \(s.count) \(w)")
     }
-    let height = s.length(for: uiFont).height
+    let height = s.textSize(for: uiFont).height
     let withCommaNonScientific = s.count - 1
     
     //print("ePadding set to \(ePadding)")
     s = ",e"
-    w = s.length(for: uiFont).width
+    w = s.textSize(for: uiFont).width
     while w < (width - ePadding) {
         s.append("0")
-        w = s.length(for: uiFont).width
+        w = s.textSize(for: uiFont).width
 //        print("measure e \(s) \(s.count) \(w)")
     }
     let withCommaScientific = s.count - 1
@@ -69,6 +71,7 @@ func lengthMeasurement(width: CGFloat, uiFont: UIFont, ePadding: CGFloat) -> Len
         withCommaNonScientific: withCommaNonScientific,
         withCommaScientific: withCommaScientific,
         height: height,
+        infoHeight: "info".textSize(for: infoUiFont).height,
         ePadding: ePadding)
     // print("lengthMeasurement \(result)")
     return result
@@ -76,7 +79,7 @@ func lengthMeasurement(width: CGFloat, uiFont: UIFont, ePadding: CGFloat) -> Len
 
     
 fileprivate extension String {
-    func length(for uiFont: UIFont) -> CGSize {
+    func textSize(for uiFont: UIFont) -> CGSize {
         //  attrString.addAttribute(NSAttributedStringKey.kern, value: 2, range: NSMakeRange(0, attrString.length))
 
         var attributes: [NSAttributedString.Key : Any] = [:]
