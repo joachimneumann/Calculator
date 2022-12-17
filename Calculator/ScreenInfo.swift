@@ -75,7 +75,7 @@ struct ScreenInfo {
         uiFontLarge = UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize / largeFontScaleFactor, weight: C.fontWeight)
         C.kerning = 0.0//-0.05 * singleLineFontSize
 
-        let displayWidth = calculatorSize.width// - plusIconSize - plusIconLeftPadding
+        let displayWidth = calculatorSize.width - (isPortraitPhone ? 0.0 : plusIconSize + plusIconLeftPadding)
         
         let temp = lengthMeasurement(width: displayWidth, uiFont: uiFont, ePadding: ePadding)
         model.lengths = temp

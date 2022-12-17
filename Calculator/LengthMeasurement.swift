@@ -34,13 +34,13 @@ struct Lengths {
 
 
 func lengthMeasurement(width: CGFloat, uiFont: UIFont, ePadding: CGFloat) -> Lengths {
-    // print("lengthMeasurement w =\(width)")
+//     print("lengthMeasurement w =\(width)")
     var s = ""
     var w = s.length(for: uiFont).width
     while w < width {
         s.append("0")
         w = s.length(for: uiFont).width
-        // print("measure \(s) \(w)")
+//        print("measure \(s) \(s.count) \(w)")
     }
     let withoutComma = s.count - 1
     
@@ -49,6 +49,7 @@ func lengthMeasurement(width: CGFloat, uiFont: UIFont, ePadding: CGFloat) -> Len
     while w < width {
         s.append("0")
         w = s.length(for: uiFont).width
+//        print("measure , \(s) \(s.count) \(w)")
     }
     let height = s.length(for: uiFont).height
     let withCommaNonScientific = s.count - 1
@@ -59,6 +60,7 @@ func lengthMeasurement(width: CGFloat, uiFont: UIFont, ePadding: CGFloat) -> Len
     while w < (width - ePadding) {
         s.append("0")
         w = s.length(for: uiFont).width
+//        print("measure e \(s) \(s.count) \(w)")
     }
     let withCommaScientific = s.count - 1
 
