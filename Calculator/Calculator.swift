@@ -42,7 +42,7 @@ struct Calculator: View {
                         Text(model.displayData.left)
                             .kerning(C.kerning)
                             .font(Font(model.screenInfo.uiFont))
-                            .foregroundColor(model.isCopyingOrPasting ? .orange : .white)
+                            .foregroundColor(model.isCopying || model.isPasting || !model.copyDone || !model.pasteDone ? .orange : .white)
                             .multilineTextAlignment(.trailing)
                             .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
                             .lineLimit(nil)
@@ -54,7 +54,7 @@ struct Calculator: View {
                         Text(model.displayData.right!)
                             .kerning(C.kerning)
                             .font(Font(model.screenInfo.uiFont))
-                            .foregroundColor(model.isCopyingOrPasting ? .orange : .white)
+                            .foregroundColor(model.isCopying || model.isPasting || !model.copyDone || !model.pasteDone ? .orange : .white)
                             .padding(.leading, model.screenInfo.ePadding)
                         .offset(y: model.offsetToVerticallyAlignTextWithkeyboard)
                     }

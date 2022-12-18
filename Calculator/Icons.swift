@@ -16,7 +16,7 @@ struct Icons : View {
     let isCalculating: Bool
     @State var pasteAllowedState: Bool = true
     @Binding var isZoomed: Bool
-
+    
     var body: some View {
         VStack(alignment: .center, spacing: 0.0) {
             if isCalculating {
@@ -47,18 +47,31 @@ struct Icons : View {
                                 .foregroundColor(.white)
                         }
                     } else {
-                        Button {
-                            model.toPastBin()
-                            DispatchQueue.main.async {
-                                pasteAllowedState = true
+                        Text("copy")
+                            .font(Font(screenInfo.infoUiFont))
+                            .foregroundColor(model.isCopying || !model.copyDone ? Color.orange : Color.white)
+                            .onTapGesture {
+                                if model.copyDone && model.pasteDone {
+                                    DispatchQueue.main.async {
+                                        model.isCopying = true
+                                    }
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                        model.isCopying = false
+                                    }
+                                    Task {
+                                        DispatchQueue.main.async {
+                                            model.copyDone = false
+                                            print("model.copyDone \(model.copyDone)")
+                                        }
+                                        await model.g()
+                                        DispatchQueue.main.async {
+                                            model.copyDone = true
+                                            print("model.copyDone \(model.copyDone)")
+                                        }
+                                    }
+                                }
                             }
-                        } label: {
-                            Text("copy")
-                                .font(Font(screenInfo.infoUiFont))
-                                .foregroundColor(.white)
-                        }
                     }
-//
                     if !simulatePurchased && store.purchasedIDs.isEmpty {
                         NavigationLink {
                             PurchaseView(store: store, model: model, font: Font(screenInfo.infoUiFont))
@@ -68,22 +81,36 @@ struct Icons : View {
                                 .foregroundColor(.white)
                         }
                     } else {
-                        Button {
-                            DispatchQueue.main.async {
-                                pasteAllowedState = model.checkIfPasteBinIsValidNumber()
+                        Text("paste")
+                            .font(Font(screenInfo.infoUiFont))
+                            .foregroundColor((model.isPasting || !model.pasteDone) ? Color.orange : Color.white)
+                            .onTapGesture {
+                                if model.copyDone && model.pasteDone {
+                                    DispatchQueue.main.async {
+                                        model.isPasting = true
+                                    }
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                        model.isPasting = false
+                                    }
+                                    Task {
+                                        DispatchQueue.main.async {
+                                            model.pasteDone = false
+                                            print("model.pasteDone \(model.pasteDone)")
+                                        }
+                                        model.fromPastBin()
+                                        DispatchQueue.main.async {
+                                            model.pasteDone = true
+                                            print("model.pasteDone \(model.pasteDone)")
+                                        }
+                                    }
+                                }
                             }
-                            /// this logic postpones the diplay of the "allow paste" to the user until the user actually presses paste
-                            if pasteAllowedState {
-                                model.fromPastBin()
-                            }
-                        } label: {
-                            Text("paste")
-                                .font(Font(screenInfo.infoUiFont))
-                                .foregroundColor(pasteAllowedState ? .white : .gray)
-                        }
-                        .disabled(!pasteAllowedState)
+                        //                            DispatchQueue.main.async {
+                        //                                pasteAllowedState = model.checkIfPasteBinIsValidNumber()
+                        //                            }
+                        //                          .disabled(!pasteAllowedState)
                     }
-
+                    
                     NavigationLink {
                         Settings(model: model, font: Font(screenInfo.infoUiFont))
                     } label: {
@@ -92,9 +119,9 @@ struct Icons : View {
                             .minimumScaleFactor(0.01)
                             .foregroundColor(.white)
                     }
-
+                    
                     let integerLabel = model.displayData.isInteger ? (model.showAsInteger ? "→ sci" : "→ int") : ""
-//                    (model.displayData.isFloat ? "→ float" : "")
+                    //                    (model.displayData.isFloat ? "→ float" : "")
                     if integerLabel.count > 0 {
                         Button {
                             model.showAsInteger.toggle()
@@ -117,7 +144,7 @@ struct Icons : View {
                                 .foregroundColor(.white)
                         }
                     }
-
+                    
                 }
                 .padding(.top, screenInfo.plusIconSize * 0.5)
                 .lineLimit(1)

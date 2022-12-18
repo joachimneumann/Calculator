@@ -53,17 +53,6 @@ class Gmp: Equatable, CustomDebugStringConvertible {
         return mpfr_set_str (&temp_mpfr, s_dot, 10, MPFR_RNDN) == 0
     }
     
-    //    convenience init(_ s: String?) {
-    //        if s == nil {
-    //            assert(false)
-    //        }
-    //        self.init(s!)
-    //    }
-    
-    //    convenience init() {
-    //        self.init("0", bits: bits)
-    //    }
-    
     struct MantissaExponent {
         let mantissa: String
         let exponent: Int

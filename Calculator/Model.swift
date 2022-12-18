@@ -33,7 +33,11 @@ class Model : ObservableObject {
     @Published var secondActive = false
     @Published var isCalculating = false
     var hideKeyboard = false
-    @Published var isCopyingOrPasting: Bool = false
+    @Published var isCopying: Bool = false
+    @Published var isPasting: Bool = false
+    @Published var copyDone = true
+    @Published var pasteDone = true
+    var copyAnimationDone = false
 
     private let brain: Brain
     @Published var keyInfo: [String: KeyInfo] = [:]
@@ -97,16 +101,37 @@ class Model : ObservableObject {
     }
     
     func toPastBin() {
-        DispatchQueue.main.async {
-            withAnimation(.easeIn(duration: 0.1)) {
-                self.isCopyingOrPasting = true
-            }
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            withAnimation(.easeIn(duration: 0.3)) {
-                self.isCopyingOrPasting = false
-            }
-        }
+//        DispatchQueue.main.async {
+//            withAnimation(.easeIn(duration: 0.1)) {
+//                self.isCopyingOrPasting = true
+//                print("isCopyingOrPasting \(self.isCopyingOrPasting)")
+//            }
+//        }
+//        Task {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+//                withAnimation(.easeIn(duration: 0.3)) {
+//                    self.isCopyingOrPasting = false
+//                }
+//            }
+        let displayData = brain.last.getDisplayData(
+            forLong: true,
+            lengths: Lengths(Model.precision),
+            forceScientific: false,
+            showAsInteger: showAsInteger,
+            showAsFloat: showAsFloat,
+            maxDisplayLength: Model.precision)
+        UIPasteboard.general.string = displayData.left + (displayData.right ?? "")
+//            await g()
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+//                withAnimation(.easeIn(duration: 0.3)) {
+//                    self.isCopyingOrPasting = false
+//                    print("isCopyingOrPasting \(self.isCopyingOrPasting)")
+//                }
+//            }
+//        }
+    }
+    
+    func g() async {
         let displayData = brain.last.getDisplayData(
             forLong: true,
             lengths: Lengths(Model.precision),
@@ -131,19 +156,15 @@ class Model : ObservableObject {
     }
     
     func fromPastBin() {
-        DispatchQueue.main.async {
-            withAnimation(.easeIn(duration: 0.1)) {
-                self.isCopyingOrPasting = true
-            }
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            withAnimation(.easeIn(duration: 0.3)) {
-                self.isCopyingOrPasting = false
-            }
-        }
         if UIPasteboard.general.hasStrings {
             if let pasteString = UIPasteboard.general.string {
+                var ok = false
                 if pasteString.count > 0 {
+                    if Gmp.isValidGmpString(pasteString, bits: 1000) {
+                        ok = true
+                    }
+                }
+                if ok {
                     brain.n.replaceLast(with: Number(pasteString, precision: brain.precision))
                     haveResultCallback() // TODO: make sure that forLong is true here!!!!
                     hasBeenReset = false
@@ -168,9 +189,9 @@ class Model : ObservableObject {
     
     func updateDisplayData() {
         // print("updateDisplayData()")
-        DispatchQueue.main.async {
-            self.displayData = DisplayData(left: "")
-        }
+//        DispatchQueue.main.async {
+//            self.displayData = DisplayData(left: "")
+//        }
         let temp = brain.last.getDisplayData(
             forLong: !screenInfo.isPortraitPhone,
             lengths: lengths,
