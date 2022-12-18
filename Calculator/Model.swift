@@ -65,6 +65,14 @@ class Model : ObservableObject {
         }
     }
     
+    
+    func afterRotation(with screenInfo: ScreenInfo) {
+        self.screenInfo = screenInfo
+        let displayWidth = screenInfo.calculatorSize.width - (screenInfo.isPortraitPhone ? 0.0 : screenInfo.plusIconSize + screenInfo.plusIconLeftPadding)
+        lengths = lengthMeasurement(width: displayWidth, uiFont: screenInfo.uiFont, infoUiFont: screenInfo.infoUiFont, ePadding: screenInfo.ePadding)
+    }
+
+    
     // the update of the precision in brain can be slow.
     // Therefore, I only want to do that when leaving the settings screen
     func updatePrecision(to newPecision: Int) {
@@ -116,7 +124,7 @@ class Model : ObservableObject {
         return timer.stop()
     }
     
-    func updateDisplayData(isZoomed: Bool) {
+    func updateDisplayData() {
         //print("updateDisplayData()")
         DispatchQueue.main.async {
             self.displayData = DisplayData(left: "")
@@ -140,7 +148,7 @@ class Model : ObservableObject {
             }
         }
         
-        updateDisplayData(isZoomed: isZoomed)
+        updateDisplayData()
         
         for key in C.allKeys {
             if brain.isValidNumber {

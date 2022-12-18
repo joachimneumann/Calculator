@@ -242,12 +242,17 @@ class Number: CustomDebugStringConvertible {
         /// Can be displayed as Integer?
         ///
         ///
-        if forLong && !forceScientific && mantissa.count <= exponent+1 && exponent+1 <= withoutComma { /// smaller than because of possible trailing zeroes in the integer
+        if !forceScientific && mantissa.count <= exponent+1 && exponent+1 <= withoutComma { /// smaller than because of possible trailing zeroes in the integer
             /// restore trailing zeros that have been removed
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
             // print(mantissa)
             if mantissa.count <= withoutComma {
-                ret.asInteger = (isNegative ? "-" : "") + mantissa
+                ret.left = (isNegative ? "-" : "") + mantissa
+                return ret
+            } else {
+                if forLong {
+                    ret.asInteger = (isNegative ? "-" : "") + mantissa
+                }
             }
         }
         

@@ -38,7 +38,11 @@ struct CalculatorApp: App {
             }
             .onRotate { newOrientation in
                 appOrientation = newOrientation
-                //print("newOrientation \(newOrientation.rawValue)")
+                print("newOrientation \(newOrientation.rawValue)")
+                model.afterRotation(with: ScreenInfo(
+                    hardwareSize: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height),
+                    insets: UIApplication.shared.keyWindow?.safeAreaInsets ?? UIEdgeInsets(),
+                    appOrientation: UIDeviceOrientation.unknown))
             }
             .onAppear() {
                 model.haveResultCallback()

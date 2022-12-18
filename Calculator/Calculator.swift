@@ -14,6 +14,7 @@ struct Calculator: View {
     @StateObject var store = Store()
         
     var body: some View {
+        let _ = print("model.screenInfo.isPortraitPhone \(model.screenInfo.isPortraitPhone)")
         if model.screenInfo.isPortraitPhone {
             VStack(spacing: 0.0) {
                 Spacer()
@@ -91,6 +92,9 @@ struct Calculator: View {
                 }
             }
             .accentColor(.white) // for the navigation back button
+            .onChange(of: model.lengths.withoutComma) { _ in
+                model.updateDisplayData() // redraw with or without keyboard
+            }
         }
     }
 }
