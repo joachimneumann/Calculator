@@ -61,12 +61,12 @@ struct Icons : View {
                                     Task {
                                         DispatchQueue.main.async {
                                             model.copyDone = false
-                                            print("model.copyDone \(model.copyDone)")
+                                            //print("model.copyDone \(model.copyDone)")
                                         }
                                         await model.g()
                                         DispatchQueue.main.async {
                                             model.copyDone = true
-                                            print("model.copyDone \(model.copyDone)")
+                                            //print("model.copyDone \(model.copyDone)")
                                         }
                                     }
                                 }
@@ -95,12 +95,12 @@ struct Icons : View {
                                     Task {
                                         DispatchQueue.main.async {
                                             model.pasteDone = false
-                                            print("model.pasteDone \(model.pasteDone)")
+                                            //print("model.pasteDone \(model.pasteDone)")
                                         }
                                         model.fromPastBin()
                                         DispatchQueue.main.async {
                                             model.pasteDone = true
-                                            print("model.pasteDone \(model.pasteDone)")
+                                            //print("model.pasteDone \(model.pasteDone)")
                                         }
                                     }
                                 }
