@@ -18,6 +18,14 @@ class Model : ObservableObject {
         }
     }
     
+    var showAsInteger = false {
+        didSet { updateDisplayData() }
+    }
+
+    var showAsFloat = false {
+        didSet { updateDisplayData() }
+    }
+
     @Published var isZoomed: Bool
     @Published var screenInfo: ScreenInfo = ScreenInfo(hardwareSize: CGSize(), insets: UIEdgeInsets(), appOrientation: .unknown)
     var offsetToVerticallyAlignTextWithkeyboard: CGFloat = 0.0
@@ -61,13 +69,14 @@ class Model : ObservableObject {
         }
     }
     func updateScreenInfo(screenInfo: ScreenInfo) {
-        self.screenInfo = screenInfo
-        let displayWidth = screenInfo.calculatorSize.width - (screenInfo.isPortraitPhone ? 0.0 : screenInfo.plusIconSize + screenInfo.plusIconLeftPadding)
-        lengths = lengthMeasurement(width: displayWidth, uiFont: screenInfo.uiFont, infoUiFont: screenInfo.infoUiFont, ePadding: screenInfo.ePadding)
+        DispatchQueue.main.async {
+            self.screenInfo = screenInfo
+            let displayWidth = screenInfo.calculatorSize.width - (screenInfo.isPortraitPhone ? 0.0 : screenInfo.plusIconSize + screenInfo.plusIconLeftPadding)
+            self.lengths = lengthMeasurement(width: displayWidth, uiFont: screenInfo.uiFont, infoUiFont: screenInfo.infoUiFont, ePadding: screenInfo.ePadding)
 
-        offsetToVerticallyAlignTextWithkeyboard = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - lengths.height
-        offsetToVerticallyIconWithText          = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - screenInfo.plusIconSize + screenInfo.uiFont.descender - 0.5 * screenInfo.uiFont.capHeight + screenInfo.plusIconSize * 0.5
-
+            self.offsetToVerticallyAlignTextWithkeyboard = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - self.lengths.height
+            self.offsetToVerticallyIconWithText          = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - screenInfo.plusIconSize + screenInfo.uiFont.descender - 0.5 * screenInfo.uiFont.capHeight + screenInfo.plusIconSize * 0.5
+        }
     }
     
     
@@ -86,7 +95,13 @@ class Model : ObservableObject {
     }
     
     func toPastBin() {
-        let displayData = brain.last.getDisplayData(forLong: true, lengths: Lengths(Model.precision), forceScientific: false, maxDisplayLength: Model.precision)
+        let displayData = brain.last.getDisplayData(
+            forLong: true,
+            lengths: Lengths(Model.precision),
+            forceScientific: false,
+            showAsInteger: showAsInteger,
+            showAsFloat: showAsFloat,
+            maxDisplayLength: Model.precision)
         UIPasteboard.general.string = displayData.left + (displayData.right ?? "")
     }
     
@@ -130,18 +145,23 @@ class Model : ObservableObject {
     }
     
     func updateDisplayData() {
-        print("updateDisplayData()")
+        // print("updateDisplayData()")
         DispatchQueue.main.async {
             self.displayData = DisplayData(left: "")
         }
-        let temp = brain.last.getDisplayData(forLong: !screenInfo.isPortraitPhone, lengths: lengths, forceScientific: Model.forceScientific)
+        let temp = brain.last.getDisplayData(
+            forLong: !screenInfo.isPortraitPhone,
+            lengths: lengths,
+            forceScientific: Model.forceScientific,
+            showAsInteger: showAsInteger,
+            showAsFloat: showAsFloat)
         DispatchQueue.main.async {
             self.displayData = temp
         }
     }
     
     func haveResultCallback() {
-        print("haveResultCallback \(lengths.withoutComma) \(brain.last) isPortraitPhone \(screenInfo.isPortraitPhone)")
+        //print("haveResultCallback \(lengths.withoutComma) \(brain.last) isPortraitPhone \(screenInfo.isPortraitPhone)")
         if brain.last.isNull {
             DispatchQueue.main.async {
                 self.showAC = true
@@ -235,7 +255,13 @@ class Model : ObservableObject {
                 await asyncOperation(symbol)
                 if ["mc", "m+", "m-"].contains(symbol) {
                     if let memory = brain.memory {
-                        let temp = memory.getDisplayData(forLong: true, lengths: Lengths(Model.precision), forceScientific: false, maxDisplayLength: Model.precision)
+                        let temp = memory.getDisplayData(
+                            forLong: true,
+                            lengths: Lengths(Model.precision),
+                            forceScientific: false,
+                            showAsInteger: showAsInteger,
+                            showAsFloat: showAsFloat,
+                            maxDisplayLength: Model.precision)
                         DispatchQueue.main.sync {
                             Model.memoryValue = temp.left + (temp.right ?? "")
                         }

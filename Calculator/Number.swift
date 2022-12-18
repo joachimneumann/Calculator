@@ -11,8 +11,8 @@ import Foundation
 struct DisplayData {
     var left: String = "0"
     var right: String?
-    var asInteger: String?
-    var asFloat: String?
+    var isInteger: Bool = false
+    var isFloat: Bool = false
     var isAbbreviated: Bool = false // show a message that there is more?
 }
 
@@ -139,7 +139,13 @@ class Number: CustomDebugStringConvertible {
         }
     }
     
-    func getDisplayData(forLong: Bool, lengths: Lengths, forceScientific: Bool, maxDisplayLength: Int = Number.MAX_DISPLAY_LENGTH) -> DisplayData {
+    func getDisplayData(
+        forLong: Bool,
+        lengths: Lengths,
+        forceScientific: Bool,
+        showAsInteger: Bool,
+        showAsFloat: Bool,
+        maxDisplayLength: Int = Number.MAX_DISPLAY_LENGTH) -> DisplayData {
         var ret = DisplayData()
         if !forceScientific {
             if let s = str {
@@ -248,13 +254,12 @@ class Number: CustomDebugStringConvertible {
             /// restore trailing zeros that have been removed
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
             // print(mantissa)
-            if mantissa.count <= firstLineWithoutComma {
+            if mantissa.count <= firstLineWithoutComma ||
+                (forLong && showAsInteger) {
                 ret.left = (isNegative ? "-" : "") + mantissa
                 return ret
             } else {
-                if forLong {
-                    ret.asInteger = (isNegative ? "-" : "") + mantissa
-                }
+                ret.isInteger = true
             }
         }
         
@@ -266,7 +271,9 @@ class Number: CustomDebugStringConvertible {
                 let index = floatString.index(floatString.startIndex, offsetBy: exponent+1)
                 floatString.insert(",", at: index)
 
-                if exponent + 1 < firstLineWithCommaNonScientific { /// is the comma visible in the first line and is there at least one digit after the comma?
+                /// is the comma visible in the first line and is there at least one digit after the comma?
+                if exponent + 1 < firstLineWithCommaNonScientific ||
+                    (forLong && showAsFloat) {
                     if floatString.count <= withCommaNonScientific {
                         ret.left = floatString
                     } else {
@@ -277,12 +284,7 @@ class Number: CustomDebugStringConvertible {
                     return ret
                 } else {
                     /// can be displayed as float, but the comma is not in the first line
-                    if floatString.count <= withCommaNonScientific {
-                        ret.asFloat = floatString
-                    } else {
-                        ret.asFloat = String(floatString.prefix(withCommaNonScientific))
-                    }
-                    if isNegative { ret.asFloat = "-" + ret.asFloat! }
+                    if !ret.isInteger { ret.isFloat = true }
                 }
             }
         }
@@ -290,20 +292,26 @@ class Number: CustomDebugStringConvertible {
         /// is floating point 0,xxxx
         /// additional requirement: first non-zero digit in first line. If not -> Scientific
         if !forceScientific && exponent < 0 {
-            if -1 * exponent + 1 < firstLineWithCommaNonScientific && -1 * exponent < withCommaNonScientific - 1 {
-                var floatString = mantissa
-                for _ in 0..<(-1*exponent - 1) {
-                    floatString = "0" + floatString
-                }
-                floatString = "0," + floatString
-                if floatString.count <= withCommaNonScientific {
-                    ret.left = floatString
+            if -1 * exponent < withCommaNonScientific - 1 {
+                if -1 * exponent + 1 < firstLineWithCommaNonScientific ||
+                        (forLong && showAsFloat) {
+                    var floatString = mantissa
+                    for _ in 0..<(-1*exponent - 1) {
+                        floatString = "0" + floatString
+                    }
+                    floatString = "0," + floatString
+                    if floatString.count <= withCommaNonScientific {
+                        ret.left = floatString
+                    } else {
+                        ret.left = String(floatString.prefix(withCommaNonScientific))
+                        ret.isAbbreviated = true
+                    }
+                    if isNegative { ret.left = "-" + ret.left }
+                    return ret
                 } else {
-                    ret.left = String(floatString.prefix(withCommaNonScientific))
-                    ret.isAbbreviated = true
+                    /// can be displayed as float, but the comma is not in the first line
+                    if !ret.isInteger { ret.isFloat = true }
                 }
-                if isNegative { ret.left = "-" + ret.left }
-                return ret
             }
         }
 

@@ -28,17 +28,11 @@ struct LandscapeDisplay: View {
                         .lineLimit(nil)
                 }
                 if displayData.right != nil {
-                    VStack(spacing: 0.0) {
-                        Text(displayData.right!)
-                            .kerning(C.kerning)
-                            .font(Font(screenInfo.uiFont))
-                            .foregroundColor(.white)
-                            .padding(.leading, screenInfo.ePadding)
-                        if displayData.asInteger != nil {
-                            Text("Int")
-                                .foregroundColor(.white)
-                        }
-                    }
+                    Text(displayData.right!)
+                        .kerning(C.kerning)
+                        .font(Font(screenInfo.uiFont))
+                        .foregroundColor(.white)
+                        .padding(.leading, screenInfo.ePadding)
                 }
             }
             

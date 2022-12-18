@@ -43,7 +43,7 @@ struct CalculatorApp: App {
             }
             .onAppear() {
                 // print("App onAppear size \(UIScreen.main.bounds.size)")
-                model.haveResultCallback()
+//                model.haveResultCallback()
             }
             .preferredColorScheme(.dark)
         }
