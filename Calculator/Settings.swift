@@ -32,6 +32,7 @@ struct Settings: View {
         }
     }
     
+    @Environment(\.presentationMode) var presentation
     @State var settingsPrecision = Model.precision
     static let measureButtonDefault = "click to measure"
     @State private var measureButtonText = Settings.measureButtonDefault
@@ -45,114 +46,135 @@ struct Settings: View {
         let internalPrecisionInfo = Gmp.internalPrecision(for: settingsPrecision)
         let sizeOfOneNumber = Gmp.memorySize(bits: bitsInfo)
         let memoryNeeded = sizeOfOneNumber * 40
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0.0) {
-                HStack {
-                    Text("Precision:")
-                    ColoredStepper(
-                        plusEnabled: true,//!stopWatch.isRunning && memoryNeeded < PHYSICAL_MEMORY,
-                        minusEnabled: true,//!stopWatch.isRunning && settingsPrecision > MIN_PRECISION,
-                        onIncrement: {
-                            DispatchQueue.main.async {
-                                settingsPrecision = increase(settingsPrecision)
-                                measureButtonText = Settings.measureButtonDefault
-                            }
-                        },
-                        onDecrement: {
-                            DispatchQueue.main.async {
-                                settingsPrecision = decrease(settingsPrecision)
-                                measureButtonText = Settings.measureButtonDefault
-                            }
-                        })
-                    .padding(.horizontal, 4)
-                    HStack {
-                        Text("\(settingsPrecision.useWords) significant digits")
-                        if memoryNeeded >= PHYSICAL_MEMORY {
-                            Text("(memory limit reached)")
-                        }
-                    }
-                    Spacer()
+        VStack {
+            HStack {
+                Button {
+                    self.presentation.wrappedValue.dismiss()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: model.screenInfo.infoUiFontSize * 0.7)
+                        .padding(.trailing, model.screenInfo.infoUiFontSize * 0.1)
+                    Text("Back")
                 }
-                .padding(.top, 40)
-                .padding(.bottom, 15)
-                Text("Internal precision to mitigate error accumulation: \(internalPrecisionInfo)")
-                    .padding(.bottom, 5)
-                    .foregroundColor(.gray)
-                Text("Bits used in the gmp and mpfr libraries: \(bitsInfo)")
-                    .padding(.bottom, 5)
-                    .foregroundColor(.gray)
-                let more = (settingsPrecision > Number.MAX_DISPLAY_LENGTH)
-                Text("\(more ? "Maximal n" : "N")umber of digits in the display: \(min(settingsPrecision, Number.MAX_DISPLAY_LENGTH)) \(more ? "(copy fetches all \(settingsPrecision.useWords) digits)" : " ")")
-                    .padding(.bottom, 5)
-                    .foregroundColor(.gray)
-                Text("Memory size of one Number: \(sizeOfOneNumber.asMemorySize)")
-                    .foregroundColor(.gray)
-                    .padding(.bottom, -4)
-                HStack {
-                    Text("Time to calculate sin(")
-                        .foregroundColor(.gray)
-                    let h = 40.0
-                    Label(keyInfo: model.keyInfo["√"]!, size: h, color: .gray)
-                        .frame(width: h, height: h)
-                        .offset(x: -17.0)
-                    Text("):")
-                        .foregroundColor(.gray)
-                        .padding(.leading, -37.0)
-                    Button {
-                        //                        if !stopWatch.isRunning {
-                        //                            self.stopWatch.start()
-                        //                            Task {
-                        //                                DispatchQueue.main.async {
-                        //                                    measureButtonText = "..."
-                        //                                }
-                        //                                let result = await model.speedTest(precision: settingsPrecision)
-                        //                                self.stopWatch.stop()
-                        //                                DispatchQueue.main.async {
-                        //                                    measureButtonText = result.asTime
-                        //                                }
-                        //                            }
-                        //                        }
-                    } label: {
-                        //                        Text(stopWatch.isRunning && stopWatch.counter > 0 ? "\(stopWatch.counter)" : measureButtonText)
-                        Text(measureButtonText)
-                            .foregroundColor(.gray)
-                    }
-                }
-                
-                HStack(spacing: 0.0) {
-                    Text("Force scientific display")
-                    Toggle("", isOn: $settingsForceScientific)
-                        .foregroundColor(Color.green)
-                        .toggleStyle(
-                            ColoredToggleStyle(onColor: Color(UIColor(white: 0.6, alpha: 1.0)),
-                                               offColor: Color(UIColor(white: 0.3, alpha: 1.0)),
-                                               thumbColor: .white))
-                        .frame(width: 70)
-                    Text(settingsForceScientific ? "e.g. 3,1415926 e0" : "e.g. 3,141592653")
-                        .foregroundColor(.gray)
-                        .padding(.leading, 20)
-                    Spacer()
-                }
-                .padding(.top, 20)
-                
+                .padding(.bottom, 40)
                 Spacer()
             }
             .font(font)
-            .foregroundColor(Color.white)
-        }
-        .onAppear() {
-            model.hideKeyboard = true
-        }
-        .onDisappear() {
-            model.hideKeyboard = false
-            if Model.forceScientific != settingsForceScientific {
-                Model.forceScientific = settingsForceScientific
+            .foregroundColor(.white)
+            .padding()
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0.0) {
+                    HStack {
+                        Text("Precision:")
+                        ColoredStepper(
+                            plusEnabled: true,//!stopWatch.isRunning && memoryNeeded < PHYSICAL_MEMORY,
+                            minusEnabled: true,//!stopWatch.isRunning && settingsPrecision > MIN_PRECISION,
+                            onIncrement: {
+                                DispatchQueue.main.async {
+                                    settingsPrecision = increase(settingsPrecision)
+                                    measureButtonText = Settings.measureButtonDefault
+                                }
+                            },
+                            onDecrement: {
+                                DispatchQueue.main.async {
+                                    settingsPrecision = decrease(settingsPrecision)
+                                    measureButtonText = Settings.measureButtonDefault
+                                }
+                            })
+                        .padding(.horizontal, 4)
+                        HStack {
+                            Text("\(settingsPrecision.useWords) significant digits")
+                            if memoryNeeded >= PHYSICAL_MEMORY {
+                                Text("(memory limit reached)")
+                            }
+                        }
+                        Spacer()
+                    }
+                    .padding(.top, 10)
+                    .padding(.bottom, 15)
+                    Text("Internal precision to mitigate error accumulation: \(internalPrecisionInfo)")
+                        .padding(.bottom, 5)
+                        .foregroundColor(.gray)
+                    Text("Bits used in the gmp and mpfr libraries: \(bitsInfo)")
+                        .padding(.bottom, 5)
+                        .foregroundColor(.gray)
+                    let more = (settingsPrecision > Number.MAX_DISPLAY_LENGTH)
+                    Text("\(more ? "Maximal n" : "N")umber of digits in the display: \(min(settingsPrecision, Number.MAX_DISPLAY_LENGTH)) \(more ? "(copy fetches all \(settingsPrecision.useWords) digits)" : " ")")
+                        .padding(.bottom, 5)
+                        .foregroundColor(.gray)
+                    Text("Memory size of one Number: \(sizeOfOneNumber.asMemorySize)")
+                        .foregroundColor(.gray)
+                        .padding(.bottom, -4)
+                    HStack {
+                        Text("Time to calculate sin(")
+                            .foregroundColor(.gray)
+                        let h = 40.0
+                        Label(keyInfo: model.keyInfo["√"]!, size: h, color: .gray)
+                            .frame(width: h, height: h)
+                            .offset(x: -17.0)
+                        Text("):")
+                            .foregroundColor(.gray)
+                            .padding(.leading, -37.0)
+                        Button {
+                            //                        if !stopWatch.isRunning {
+                            //                            self.stopWatch.start()
+                            //                            Task {
+                            //                                DispatchQueue.main.async {
+                            //                                    measureButtonText = "..."
+                            //                                }
+                            //                                let result = await model.speedTest(precision: settingsPrecision)
+                            //                                self.stopWatch.stop()
+                            //                                DispatchQueue.main.async {
+                            //                                    measureButtonText = result.asTime
+                            //                                }
+                            //                            }
+                            //                        }
+                        } label: {
+                            //                        Text(stopWatch.isRunning && stopWatch.counter > 0 ? "\(stopWatch.counter)" : measureButtonText)
+                            Text(measureButtonText)
+                                .foregroundColor(.gray)
+                        }
+                    }
+                    
+                    HStack(spacing: 0.0) {
+                        Text("Force scientific display")
+                        Toggle("", isOn: $settingsForceScientific)
+                            .foregroundColor(Color.green)
+                            .toggleStyle(
+                                ColoredToggleStyle(onColor: Color(UIColor(white: 0.6, alpha: 1.0)),
+                                                   offColor: Color(UIColor(white: 0.3, alpha: 1.0)),
+                                                   thumbColor: .white))
+                            .frame(width: 70)
+                        Text(settingsForceScientific ? "e.g. 3,1415926 e0" : "e.g. 3,141592653")
+                            .foregroundColor(.gray)
+                            .padding(.leading, 20)
+                        Spacer()
+                    }
+                    .padding(.top, 20)
+                    
+                    Spacer()
+                }
+                .font(font)
+                .foregroundColor(Color.white)
             }
-            if Model.precision != settingsPrecision {
-                model.updatePrecision(to: settingsPrecision)
+            .padding()
+            .onAppear() {
+                model.hideKeyboard = true
             }
-            model.haveResultCallback()
+            .onDisappear() {
+                model.hideKeyboard = false
+                if Model.forceScientific != settingsForceScientific {
+                    Model.forceScientific = settingsForceScientific
+                }
+                if Model.precision != settingsPrecision {
+                    model.updatePrecision(to: settingsPrecision)
+                }
+                model.haveResultCallback()
+            }
         }
+        .navigationBarBackButtonHidden(true)
     }
     
     class StopWatch: ObservableObject {

@@ -8,14 +8,29 @@
 import SwiftUI
 
 struct PurchaseView: View {
+    @Environment(\.presentationMode) var presentation
     @ObservedObject var store: Store
     let model: Model
     let font: Font
-
+    
     var body: some View {
         Group {
             if let product = store.products.first {
                 VStack(spacing: 0.0) {
+                    HStack {
+                        Button {
+                            self.presentation.wrappedValue.dismiss()
+                        } label: {
+                            Image(systemName: "chevron.left")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(height: model.screenInfo.infoUiFontSize * 0.7)
+                                .padding(.trailing, model.screenInfo.infoUiFontSize * 0.1)
+                            Text("Back")
+                        }
+                        .padding(.bottom, 40)
+                        Spacer()
+                    }
                     VStack(alignment: .leading, spacing: 0.0) {
                         Text("Copy & Paste is disabled in the free version.")
                         Text("Purchase this feature to copy results with all digits into other iOS applications. You can then also paste numbers into the calculator.")
@@ -62,6 +77,7 @@ struct PurchaseView: View {
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
         .font(font)
         .foregroundColor(.white)
         .padding()
