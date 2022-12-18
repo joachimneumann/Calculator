@@ -12,6 +12,7 @@ let testColors = false
 struct Calculator: View {
     @ObservedObject var model: Model
     @StateObject var store = Store()
+    @State private var scrollViewID = UUID()
 
     var body: some View {
         // let _ = print("Calculator: isPortraitPhone \(model.screenInfo.isPortraitPhone) size \(model.screenInfo.calculatorSize)")
@@ -46,7 +47,7 @@ struct Calculator: View {
                             .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
                             .lineLimit(nil)
                             .offset(y: model.offsetToVerticallyAlignTextWithkeyboard)
-                    }
+                    }.id(self.scrollViewID)
                     if model.displayData.right != nil {
                         VStack(spacing: 0.0) {
                             Text(model.displayData.right!)
@@ -56,6 +57,7 @@ struct Calculator: View {
                                 .padding(.leading, model.screenInfo.ePadding)
                             if model.displayData.isInteger {
                                 Button {
+                                    scrollViewID = UUID()
                                     model.showAsInteger.toggle()
                                 } label: {
                                     Text("→ int")
@@ -64,6 +66,7 @@ struct Calculator: View {
                                 }
                             } else if model.displayData.isFloat {
                                 Button {
+                                    scrollViewID = UUID()
                                     model.showAsFloat.toggle()
                                 } label: {
                                     Text("→ float")
@@ -120,6 +123,9 @@ struct Calculator: View {
                 // print("Calculator: isZoomed: \(model.isZoomed)")
                 model.showAsInteger = false
                 model.showAsFloat = false
+                withAnimation() {
+                    scrollViewID = UUID()
+                }
             }
         }
     }
