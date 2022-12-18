@@ -18,13 +18,8 @@ class Model : ObservableObject {
         }
     }
     
-    var showAsInteger = false {
-        didSet { updateDisplayData() }
-    }
-
-    var showAsFloat = false {
-        didSet { updateDisplayData() }
-    }
+    var showAsInteger = false
+    var showAsFloat = false
 
     @Published var isZoomed: Bool
     @Published var screenInfo: ScreenInfo = ScreenInfo(hardwareSize: CGSize(), insets: UIEdgeInsets(), appOrientation: .unknown)
