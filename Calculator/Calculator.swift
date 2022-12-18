@@ -42,7 +42,8 @@ struct Calculator: View {
                     (model.displayData.asFloat != nil ? model.displayData.asFloat : nil)
                     Spacer(minLength: 0.0)
                     ScrollView(.vertical) {
-                        Text(showSpecial != nil ? showSpecial! : model.displayData.left)
+                        let _ = print("model.displayData.left \(model.displayData.left.prefix(20))")
+                        Text(showSpecial != nil && (showAsInteger || showAsFloat) ? showSpecial! : model.displayData.left)
                             .kerning(C.kerning)
                             .font(Font(model.screenInfo.uiFont))
                             .foregroundColor(.white)
