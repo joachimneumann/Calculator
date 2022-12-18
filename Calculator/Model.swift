@@ -33,6 +33,7 @@ class Model : ObservableObject {
     @Published var secondActive = false
     @Published var isCalculating = false
     var hideKeyboard = false
+    @Published var isCopyingOrPasting: Bool = false
 
     private let brain: Brain
     @Published var keyInfo: [String: KeyInfo] = [:]
@@ -96,6 +97,16 @@ class Model : ObservableObject {
     }
     
     func toPastBin() {
+        DispatchQueue.main.async {
+            withAnimation(.easeIn(duration: 0.1)) {
+                self.isCopyingOrPasting = true
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            withAnimation(.easeIn(duration: 0.3)) {
+                self.isCopyingOrPasting = false
+            }
+        }
         let displayData = brain.last.getDisplayData(
             forLong: true,
             lengths: Lengths(Model.precision),
@@ -120,6 +131,16 @@ class Model : ObservableObject {
     }
     
     func fromPastBin() {
+        DispatchQueue.main.async {
+            withAnimation(.easeIn(duration: 0.1)) {
+                self.isCopyingOrPasting = true
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            withAnimation(.easeIn(duration: 0.3)) {
+                self.isCopyingOrPasting = false
+            }
+        }
         if UIPasteboard.general.hasStrings {
             if let pasteString = UIPasteboard.general.string {
                 if pasteString.count > 0 {
