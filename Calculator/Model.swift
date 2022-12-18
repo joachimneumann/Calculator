@@ -19,7 +19,7 @@ class Model : ObservableObject {
     }
     
     @Published var isZoomed: Bool
-    var screenInfo: ScreenInfo
+    @Published var screenInfo: ScreenInfo
     @Published var secondActive = false
     @Published var isCalculating = false
     var hideKeyboard = false
@@ -33,7 +33,6 @@ class Model : ObservableObject {
     var precisionDescription = "unknown"
     
     var lengths = Lengths(0)
-
     @AppStorage("precision", store: .standard) static private (set) var precision: Int = 1000
     @AppStorage("forceScientific", store: .standard) static var forceScientific: Bool = false
     @AppStorage("memoryValue", store: .standard) static var memoryValue: String = ""
@@ -44,8 +43,8 @@ class Model : ObservableObject {
         brain.isValidNumber
     }
     
-    
     init(isZoomed: Bool, screenInfo: ScreenInfo) {
+        print("Model init isPortraitPhone \(screenInfo.isPortraitPhone)")
         self.isZoomed = isZoomed
         self.screenInfo = screenInfo
         let displayWidth = screenInfo.calculatorSize.width - (screenInfo.isPortraitPhone ? 0.0 : screenInfo.plusIconSize + screenInfo.plusIconLeftPadding)

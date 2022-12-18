@@ -27,7 +27,7 @@ struct ScreenInfo {
     let largeFontScaleFactor: CGFloat = 1.0 / 1.5
 
     init(hardwareSize: CGSize, insets: UIEdgeInsets, appOrientation: UIDeviceOrientation) {
-        // print("ScreenInfo init() \(hardwareSize)")
+        print("ScreenInfo init() \(hardwareSize)")
         /// appOrientation is used here to trigger a redraw when the orientation changes ???????
         isPad = UIDevice.current.userInterfaceIdiom == .pad
         isPortraitPhone = isPad ? false : UIScreen.main.bounds.size.height > UIScreen.main.bounds.size.width

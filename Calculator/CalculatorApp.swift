@@ -13,22 +13,23 @@ struct CalculatorApp: App {
     @State private var appOrientation = UIDeviceOrientation.unknown
     @Environment(\.safeAreaInsets) private var safeAreaInsets
 
-    let model: Model
+    let model = Model(isZoomed: false, screenInfo: ScreenInfo(hardwareSize: CGSize(), insets: UIEdgeInsets(), appOrientation: .unknown))
                
-    init() {
-        model = Model(isZoomed: false, screenInfo: ScreenInfo(
-        hardwareSize: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height),
-        insets: UIApplication.shared.keyWindow?.safeAreaInsets ?? UIEdgeInsets(),
-        appOrientation: UIDeviceOrientation.unknown))
-    }
-    
     var body: some Scene {
         WindowGroup {
             ZStack {
                 if safeAreaInsets.top == -1 {
                     EmptyView()
                 } else {
-                    Calculator(model: model)
+                    let s = ScreenInfo(
+                        hardwareSize: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height),
+                        insets: UIApplication.shared.keyWindow?.safeAreaInsets ?? UIEdgeInsets(),
+                        appOrientation: appOrientation)
+                    let m = Model(
+                        isZoomed: isZoomed,
+                        screenInfo: s)
+                    Calculator(
+                        model: m)
                     .background(Rectangle()
                                 /// this stops white background from showing *during* a device rotation
                         .frame(width: max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height) * 2.0,
@@ -39,10 +40,6 @@ struct CalculatorApp: App {
             .onRotate { newOrientation in
                 appOrientation = newOrientation
                 print("newOrientation \(newOrientation.rawValue)")
-                model.afterRotation(with: ScreenInfo(
-                    hardwareSize: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height),
-                    insets: UIApplication.shared.keyWindow?.safeAreaInsets ?? UIEdgeInsets(),
-                    appOrientation: UIDeviceOrientation.unknown))
             }
             .onAppear() {
                 model.haveResultCallback()

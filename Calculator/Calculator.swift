@@ -10,11 +10,11 @@ import SwiftUI
 let testColors = false
 
 struct Calculator: View {
-    @StateObject var model: Model
+    @ObservedObject var model: Model
     @StateObject var store = Store()
-        
+
     var body: some View {
-        let _ = print("model.screenInfo.isPortraitPhone \(model.screenInfo.isPortraitPhone)")
+        let _ = print("Calculator: isPortraitPhone \(model.screenInfo.isPortraitPhone) size \(model.screenInfo.calculatorSize)")
         if model.screenInfo.isPortraitPhone {
             VStack(spacing: 0.0) {
                 Spacer()
