@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct Icons : View {
+    let simulatePurchased = true
     @Environment(\.scenePhase) var scenePhase
     @ObservedObject var store: Store
     @ObservedObject var model: Model
@@ -37,7 +38,7 @@ struct Icons : View {
                         }
                     }
                 Group {
-                    if store.purchasedIDs.isEmpty {
+                    if !simulatePurchased && store.purchasedIDs.isEmpty {
                         NavigationLink {
                             PurchaseView(store: store, model: model, font: Font(screenInfo.infoUiFont))
                         } label: {
@@ -58,7 +59,7 @@ struct Icons : View {
                         }
                     }
 //
-                    if store.purchasedIDs.isEmpty {
+                    if !simulatePurchased && store.purchasedIDs.isEmpty {
                         NavigationLink {
                             PurchaseView(store: store, model: model, font: Font(screenInfo.infoUiFont))
                         } label: {
