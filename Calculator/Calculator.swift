@@ -47,7 +47,9 @@ struct Calculator: View {
                             .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
                             .lineLimit(nil)
                             .offset(y: model.offsetToVerticallyAlignTextWithkeyboard)
-                    }.id(self.scrollViewID)
+                    }
+                    .id(self.scrollViewID)
+                    .disabled(!model.screenInfo.isPad && model.screenInfo.isPortraitPhone && !model.isZoomed)
                     if model.displayData.right != nil {
                         Text(model.displayData.right!)
                             .kerning(C.kerning)
