@@ -69,16 +69,12 @@ struct Icons : View {
                         }
                     } else {
                         Button {
-                            if store.purchasedIDs.isEmpty {
-
-                            } else {
-                                DispatchQueue.main.async {
-                                    pasteAllowedState = model.checkIfPasteBinIsValidNumber()
-                                }
-                                /// this logic postpones the diplay of the "allow paste" to the user until the user actually presses paste
-                                if pasteAllowedState {
-                                    model.fromPastBin()
-                                }
+                            DispatchQueue.main.async {
+                                pasteAllowedState = model.checkIfPasteBinIsValidNumber()
+                            }
+                            /// this logic postpones the diplay of the "allow paste" to the user until the user actually presses paste
+                            if pasteAllowedState {
+                                model.fromPastBin()
                             }
                         } label: {
                             Text("paste")
