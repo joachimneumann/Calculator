@@ -35,9 +35,10 @@ struct Settings: View {
     @State var settingsPrecision = Model.precision
     static let measureButtonDefault = "click to measure"
     @State private var measureButtonText = Settings.measureButtonDefault
+    @State var settingsForceScientific = Model.forceScientific
     private let MIN_PRECISION      = 10
     private let PHYSICAL_MEMORY = ProcessInfo.processInfo.physicalMemory
-//    @ObservedObject var stopWatch = StopWatch()
+    //    @ObservedObject var stopWatch = StopWatch()
     
     var body: some View {
         Text("settings")
@@ -99,26 +100,42 @@ struct Settings: View {
                         .foregroundColor(.gray)
                         .padding(.leading, -37.0)
                     Button {
-//                        if !stopWatch.isRunning {
-//                            self.stopWatch.start()
-//                            Task {
-//                                DispatchQueue.main.async {
-//                                    measureButtonText = "..."
-//                                }
-//                                let result = await model.speedTest(precision: settingsPrecision)
-//                                self.stopWatch.stop()
-//                                DispatchQueue.main.async {
-//                                    measureButtonText = result.asTime
-//                                }
-//                            }
-//                        }
+                        //                        if !stopWatch.isRunning {
+                        //                            self.stopWatch.start()
+                        //                            Task {
+                        //                                DispatchQueue.main.async {
+                        //                                    measureButtonText = "..."
+                        //                                }
+                        //                                let result = await model.speedTest(precision: settingsPrecision)
+                        //                                self.stopWatch.stop()
+                        //                                DispatchQueue.main.async {
+                        //                                    measureButtonText = result.asTime
+                        //                                }
+                        //                            }
+                        //                        }
                     } label: {
-//                        Text(stopWatch.isRunning && stopWatch.counter > 0 ? "\(stopWatch.counter)" : measureButtonText)
+                        //                        Text(stopWatch.isRunning && stopWatch.counter > 0 ? "\(stopWatch.counter)" : measureButtonText)
                         Text(measureButtonText)
                             .foregroundColor(.gray)
                     }
                 }
-
+                
+                HStack(spacing: 0.0) {
+                    Text("Force scientific display")
+                    Toggle("", isOn: $settingsForceScientific)
+                        .foregroundColor(Color.green)
+                        .toggleStyle(
+                            ColoredToggleStyle(onColor: Color(UIColor(white: 0.6, alpha: 1.0)),
+                                               offColor: Color(UIColor(white: 0.3, alpha: 1.0)),
+                                               thumbColor: .white))
+                        .frame(width: 70)
+                    Text(settingsForceScientific ? "e.g. 3,1415926 e0" : "e.g. 3,141592653")
+                        .foregroundColor(.gray)
+                        .padding(.leading, 20)
+                    Spacer()
+                }
+                .padding(.top, 20)
+                
                 Spacer()
             }
             .font(font)
@@ -129,6 +146,9 @@ struct Settings: View {
         }
         .onDisappear() {
             model.hideKeyboard = false
+            if Model.forceScientific != settingsForceScientific {
+                Model.forceScientific = settingsForceScientific
+            }
             if Model.precision != settingsPrecision {
                 model.updatePrecision(to: settingsPrecision)
             }
@@ -172,11 +192,11 @@ struct Settings: View {
         }
     }
     
-//    struct ControlCenter_Previews: PreviewProvider {
-//        static var previews: some View {
-//            Settings(model: Model(), font: Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
-//        }
-//    }
+    //    struct ControlCenter_Previews: PreviewProvider {
+    //        static var previews: some View {
+    //            Settings(model: Model(), font: Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
+    //        }
+    //    }
     
     struct ColoredToggleStyle: ToggleStyle {
         var label = ""

@@ -95,19 +95,6 @@ struct Icons : View {
                             .foregroundColor(.white)
                     }
 
-                    Button {
-                        Model.forceScientific = !Model.forceScientific
-                        model.haveResultCallback()
-                    } label: {
-                        HStack(spacing: 0.0) {
-                            Text("EE ")
-                                .font(Font(screenInfo.infoUiFont))
-                                .foregroundColor(.white)
-                            Text(Model.forceScientific ? "!" : "?")
-                                .font(Font(screenInfo.infoUiFont)).monospaced()
-                                .foregroundColor(.white)
-                        }
-                    }
                 }
                 .padding(.top, screenInfo.plusIconSize * 0.5)
                 .minimumScaleFactor(0.01) // in case "paste" is too wide on small phones
