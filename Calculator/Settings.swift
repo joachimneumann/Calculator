@@ -37,9 +37,10 @@ struct Settings: View {
     @State private var measureButtonText = Settings.measureButtonDefault
     private let MIN_PRECISION      = 10
     private let PHYSICAL_MEMORY = ProcessInfo.processInfo.physicalMemory
-    @ObservedObject var stopWatch = StopWatch()
+//    @ObservedObject var stopWatch = StopWatch()
     
     var body: some View {
+        Text("settings")
         let bitsInfo = Gmp.bits(for: settingsPrecision)
         let internalPrecisionInfo = Gmp.internalPrecision(for: settingsPrecision)
         let sizeOfOneNumber = Gmp.memorySize(bits: bitsInfo)
@@ -49,8 +50,8 @@ struct Settings: View {
                 HStack {
                     Text("Precision:")
                     ColoredStepper(
-                        plusEnabled: !stopWatch.isRunning && memoryNeeded < PHYSICAL_MEMORY,
-                        minusEnabled: !stopWatch.isRunning && settingsPrecision > MIN_PRECISION,
+                        plusEnabled: true,//!stopWatch.isRunning && memoryNeeded < PHYSICAL_MEMORY,
+                        minusEnabled: true,//!stopWatch.isRunning && settingsPrecision > MIN_PRECISION,
                         onIncrement: {
                             DispatchQueue.main.async {
                                 settingsPrecision = increase(settingsPrecision)
@@ -98,25 +99,26 @@ struct Settings: View {
                         .foregroundColor(.gray)
                         .padding(.leading, -37.0)
                     Button {
-                        if !stopWatch.isRunning {
-                            self.stopWatch.start()
-                            Task {
-                                DispatchQueue.main.async {
-                                    measureButtonText = "..."
-                                }
-                                let result = await model.speedTest(precision: settingsPrecision)
-                                self.stopWatch.stop()
-                                DispatchQueue.main.async {
-                                    measureButtonText = result.asTime
-                                }
-                            }
-                        }
+//                        if !stopWatch.isRunning {
+//                            self.stopWatch.start()
+//                            Task {
+//                                DispatchQueue.main.async {
+//                                    measureButtonText = "..."
+//                                }
+//                                let result = await model.speedTest(precision: settingsPrecision)
+//                                self.stopWatch.stop()
+//                                DispatchQueue.main.async {
+//                                    measureButtonText = result.asTime
+//                                }
+//                            }
+//                        }
                     } label: {
-                        Text(stopWatch.isRunning && stopWatch.counter > 0 ? "\(stopWatch.counter)" : measureButtonText)
+//                        Text(stopWatch.isRunning && stopWatch.counter > 0 ? "\(stopWatch.counter)" : measureButtonText)
+                        Text(measureButtonText)
                             .foregroundColor(.gray)
                     }
                 }
-                
+
                 Spacer()
             }
             .font(font)

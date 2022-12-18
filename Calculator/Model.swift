@@ -20,6 +20,8 @@ class Model : ObservableObject {
     
     @Published var isZoomed: Bool
     @Published var screenInfo: ScreenInfo
+    let offsetToVerticallyAlignTextWithkeyboard: CGFloat
+    let offsetToVerticallyIconWithText: CGFloat
     @Published var secondActive = false
     @Published var isCalculating = false
     var hideKeyboard = false
@@ -50,7 +52,9 @@ class Model : ObservableObject {
         let displayWidth = screenInfo.calculatorSize.width - (screenInfo.isPortraitPhone ? 0.0 : screenInfo.plusIconSize + screenInfo.plusIconLeftPadding)
         lengths = lengthMeasurement(width: displayWidth, uiFont: screenInfo.uiFont, infoUiFont: screenInfo.infoUiFont, ePadding: screenInfo.ePadding)
 
-        
+        offsetToVerticallyAlignTextWithkeyboard = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - lengths.height
+        offsetToVerticallyIconWithText          = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - screenInfo.plusIconSize + screenInfo.uiFont.descender - 0.5 * screenInfo.uiFont.capHeight + screenInfo.plusIconSize * 0.5
+
         brain = Brain(precision: Model.precision)
         for key in C.allKeys {
             keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))

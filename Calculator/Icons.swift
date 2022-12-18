@@ -57,7 +57,7 @@ struct Icons : View {
                                 .foregroundColor(.white)
                         }
                     }
-                    
+//
                     if store.purchasedIDs.isEmpty {
                         NavigationLink {
                             PurchaseView(store: store, model: model, font: Font(screenInfo.infoUiFont))
@@ -69,7 +69,7 @@ struct Icons : View {
                     } else {
                         Button {
                             if store.purchasedIDs.isEmpty {
-                                
+
                             } else {
                                 DispatchQueue.main.async {
                                     pasteAllowedState = model.checkIfPasteBinIsValidNumber()

@@ -17,15 +17,14 @@ struct ScreenInfo {
     let plusIconSize: CGFloat
     let plusIconLeftPadding: CGFloat
     let ePadding: CGFloat
-    let offsetToVerticallyAlignTextWithkeyboard: CGFloat
-    let offsetToVerticallyIconWithText: CGFloat
     
     /// needed to correcty calculate the lengths in init()
     let uiFont: UIFont
     let uiFontLarge: UIFont
     let infoUiFont: UIFont
     let largeFontScaleFactor: CGFloat = 1.0 / 1.5
-
+    let infoUiFontSize: CGFloat
+    
     init(hardwareSize: CGSize, insets: UIEdgeInsets, appOrientation: UIDeviceOrientation) {
         print("ScreenInfo init() \(hardwareSize)")
         /// appOrientation is used here to trigger a redraw when the orientation changes ???????
@@ -71,14 +70,10 @@ struct ScreenInfo {
         ePadding = plusIconSize * 0.3
         let singleLineFontSize = ((isPortraitPhone ? 0.14 : 0.16) * keyboardHeight).rounded()
         uiFont = UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: C.fontWeight)
-        let infoUiFontSize = singleLineFontSize * 0.35
+        infoUiFontSize = singleLineFontSize * 0.35
         infoUiFont = UIFont.monospacedDigitSystemFont(ofSize: infoUiFontSize, weight: .light)
         uiFontLarge = UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize / largeFontScaleFactor, weight: C.fontWeight)
         C.kerning = 0.0//-0.05 * singleLineFontSize
-
-        offsetToVerticallyAlignTextWithkeyboard = 0.0//calculatorSize.height - keyboardHeight - infoUiFontSize - model.lengths.height
-        offsetToVerticallyIconWithText          = 0.0//calculatorSize.height - keyboardHeight - infoUiFontSize - plusIconSize + uiFont.descender - 0.5 * uiFont.capHeight + plusIconSize * 0.5
-
         // print("ScreenInfo: length = \(model.lengths)")
     }
 }

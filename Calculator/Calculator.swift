@@ -44,6 +44,7 @@ struct Calculator: View {
                             .multilineTextAlignment(.trailing)
                             .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
                             .lineLimit(nil)
+                            .offset(y: model.offsetToVerticallyAlignTextWithkeyboard)
                     }
                     if model.displayData.right != nil {
                         Text(model.displayData.right!)
@@ -59,7 +60,7 @@ struct Calculator: View {
                         isCalculating: model.isCalculating,
                         isZoomed: $model.isZoomed)
                     .padding(.leading, model.screenInfo.plusIconLeftPadding)
-                    .offset(y: model.screenInfo.offsetToVerticallyIconWithText)
+                    .offset(y: model.offsetToVerticallyIconWithText)
                 }
                 .overlay() {
                     if !model.isZoomed {
