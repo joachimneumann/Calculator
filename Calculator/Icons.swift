@@ -91,14 +91,42 @@ struct Icons : View {
                     NavigationLink {
                         Settings(model: model, font: Font(screenInfo.infoUiFont))
                     } label: {
-                        Text("0.00…")
+                        Text("0.0…")
                             .font(Font(screenInfo.infoUiFont))
+                            .minimumScaleFactor(0.01)
                             .foregroundColor(.white)
+                    }
+
+                    let integerLabel = model.displayData.isInteger ? (model.showAsInteger ? "→ sci" : "→ int") : ""
+//                    (model.displayData.isFloat ? "→ float" : "")
+                    if integerLabel.count > 0 {
+                        Button {
+                            model.showAsInteger.toggle()
+                        } label: {
+                            Text(integerLabel)
+                                .minimumScaleFactor(0.01)
+                                .font(Font(screenInfo.infoUiFont))
+                                .foregroundColor(.white)
+                        }
+                    }
+                    
+                    let floatLabel = model.displayData.isFloat ? (model.showAsFloat ? "→ sci" : "→ float") : ""
+                    if integerLabel.count == 0 && floatLabel.count > 0 {
+                        Button {
+                            model.showAsFloat.toggle()
+                        } label: {
+                            Text(floatLabel)
+                                .minimumScaleFactor(0.01)
+                                .font(Font(screenInfo.infoUiFont))
+                                .foregroundColor(.white)
+                        }
                     }
 
                 }
                 .padding(.top, screenInfo.plusIconSize * 0.5)
+                .lineLimit(1)
                 .minimumScaleFactor(0.01) // in case "paste" is too wide on small phones
+                .frame(width: model.screenInfo.plusIconSize + model.screenInfo.plusIconLeftPadding)
             }
             Spacer(minLength: 0.0)
         }

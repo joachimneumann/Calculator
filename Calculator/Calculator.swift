@@ -49,32 +49,11 @@ struct Calculator: View {
                             .offset(y: model.offsetToVerticallyAlignTextWithkeyboard)
                     }.id(self.scrollViewID)
                     if model.displayData.right != nil {
-                        VStack(spacing: 0.0) {
-                            Text(model.displayData.right!)
-                                .kerning(C.kerning)
-                                .font(Font(model.screenInfo.uiFont))
-                                .foregroundColor(.white)
-                                .padding(.leading, model.screenInfo.ePadding)
-                            if model.displayData.isInteger {
-                                Button {
-                                    scrollViewID = UUID()
-                                    model.showAsInteger.toggle()
-                                } label: {
-                                    Text("→ int")
-                                        .font(Font(model.screenInfo.infoUiFont))
-                                        .foregroundColor(.white)
-                                }
-                            } else if model.displayData.isFloat {
-                                Button {
-                                    scrollViewID = UUID()
-                                    model.showAsFloat.toggle()
-                                } label: {
-                                    Text("→ float")
-                                        .font(Font(model.screenInfo.infoUiFont))
-                                        .foregroundColor(.white)
-                                }
-                            }
-                        }
+                        Text(model.displayData.right!)
+                            .kerning(C.kerning)
+                            .font(Font(model.screenInfo.uiFont))
+                            .foregroundColor(.white)
+                            .padding(.leading, model.screenInfo.ePadding)
                         .offset(y: model.offsetToVerticallyAlignTextWithkeyboard)
                     }
                     Icons(

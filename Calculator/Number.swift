@@ -254,12 +254,11 @@ class Number: CustomDebugStringConvertible {
             /// restore trailing zeros that have been removed
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
             // print(mantissa)
+            if mantissa.count > firstLineWithoutComma { ret.isInteger = true }
             if mantissa.count <= firstLineWithoutComma ||
                 (forLong && showAsInteger) {
                 ret.left = (isNegative ? "-" : "") + mantissa
                 return ret
-            } else {
-                ret.isInteger = true
             }
         }
         
@@ -272,6 +271,8 @@ class Number: CustomDebugStringConvertible {
                 floatString.insert(",", at: index)
 
                 /// is the comma visible in the first line and is there at least one digit after the comma?
+                if exponent + 1 >= firstLineWithCommaNonScientific { if !ret.isInteger { ret.isFloat = true } }
+
                 if exponent + 1 < firstLineWithCommaNonScientific ||
                     (forLong && showAsFloat) {
                     if floatString.count <= withCommaNonScientific {
@@ -282,9 +283,6 @@ class Number: CustomDebugStringConvertible {
                     }
                     if isNegative { ret.left = "-" + ret.left }
                     return ret
-                } else {
-                    /// can be displayed as float, but the comma is not in the first line
-                    if !ret.isInteger { ret.isFloat = true }
                 }
             }
         }
@@ -293,6 +291,7 @@ class Number: CustomDebugStringConvertible {
         /// additional requirement: first non-zero digit in first line. If not -> Scientific
         if !forceScientific && exponent < 0 {
             if -1 * exponent < withCommaNonScientific - 1 {
+                if -1 * exponent + 1 >= firstLineWithCommaNonScientific { if !ret.isInteger { ret.isFloat = true } }
                 if -1 * exponent + 1 < firstLineWithCommaNonScientific ||
                         (forLong && showAsFloat) {
                     var floatString = mantissa
@@ -308,9 +307,6 @@ class Number: CustomDebugStringConvertible {
                     }
                     if isNegative { ret.left = "-" + ret.left }
                     return ret
-                } else {
-                    /// can be displayed as float, but the comma is not in the first line
-                    if !ret.isInteger { ret.isFloat = true }
                 }
             }
         }
