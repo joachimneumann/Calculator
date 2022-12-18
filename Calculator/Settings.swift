@@ -58,7 +58,6 @@ struct Settings: View {
                         .padding(.trailing, model.screenInfo.infoUiFontSize * 0.1)
                     Text("Back")
                 }
-                .padding(.bottom, 40)
                 Spacer()
             }
             .font(font)
@@ -92,7 +91,6 @@ struct Settings: View {
                         }
                         Spacer()
                     }
-                    .padding(.top, 10)
                     .padding(.bottom, 15)
                     Text("Internal precision to mitigate error accumulation: \(internalPrecisionInfo)")
                         .padding(.bottom, 5)
