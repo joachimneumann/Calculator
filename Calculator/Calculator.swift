@@ -14,7 +14,7 @@ struct Calculator: View {
     @StateObject var store = Store()
 
     var body: some View {
-        let _ = print("Calculator: isPortraitPhone \(model.screenInfo.isPortraitPhone) size \(model.screenInfo.calculatorSize)")
+        // let _ = print("Calculator: isPortraitPhone \(model.screenInfo.isPortraitPhone) size \(model.screenInfo.calculatorSize)")
         if model.screenInfo.isPortraitPhone {
             VStack(spacing: 0.0) {
                 Spacer()

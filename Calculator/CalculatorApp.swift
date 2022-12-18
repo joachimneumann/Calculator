@@ -39,7 +39,7 @@ struct CalculatorApp: App {
             }
             .onRotate { newOrientation in
                 appOrientation = newOrientation
-                print("newOrientation \(newOrientation.rawValue)")
+                //print("newOrientation \(newOrientation.rawValue)")
             }
             .onAppear() {
                 model.haveResultCallback()

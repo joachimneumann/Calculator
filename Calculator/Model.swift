@@ -46,7 +46,7 @@ class Model : ObservableObject {
     }
     
     init(isZoomed: Bool, screenInfo: ScreenInfo) {
-        print("Model init isPortraitPhone \(screenInfo.isPortraitPhone)")
+        // print("Model init isPortraitPhone \(screenInfo.isPortraitPhone)")
         self.isZoomed = isZoomed
         self.screenInfo = screenInfo
         let displayWidth = screenInfo.calculatorSize.width - (screenInfo.isPortraitPhone ? 0.0 : screenInfo.plusIconSize + screenInfo.plusIconLeftPadding)
