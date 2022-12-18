@@ -132,7 +132,7 @@ class Model : ObservableObject {
         DispatchQueue.main.async {
             self.displayData = DisplayData(left: "")
         }
-        let temp = self.brain.last.getDisplayData(forLong: isZoomed, lengths: lengths, forceScientific: Model.forceScientific)
+        let temp = self.brain.last.getDisplayData(forLong: !screenInfo.isPortraitPhone, lengths: lengths, forceScientific: Model.forceScientific)
         DispatchQueue.main.async {
             self.displayData = temp
         }

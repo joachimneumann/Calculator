@@ -201,21 +201,24 @@ class Number: CustomDebugStringConvertible {
         let mantissaLength: Int
         var withoutComma: Int
         var withCommaNonScientific: Int
-        var withCommaFirstLine: Int
         var withCommaScientific: Int
+        var firstLineWithCommaNonScientific: Int
+        var firstLineWithoutComma: Int
 
         if forLong {
-            mantissaLength = min(_precision, maxDisplayLength)
-            withoutComma = min(_precision, maxDisplayLength)
-            withCommaNonScientific = min(_precision, maxDisplayLength)
-            withCommaFirstLine = min(_precision, lengths.withCommaScientific)
-            withCommaScientific = min(_precision, maxDisplayLength)
+            mantissaLength                  = min(_precision, maxDisplayLength)
+            withoutComma                    = min(_precision, maxDisplayLength)
+            withCommaNonScientific          = min(_precision, maxDisplayLength)
+            withCommaScientific             = min(_precision, maxDisplayLength)
+            firstLineWithoutComma           = min(_precision, lengths.withoutComma)
+            firstLineWithCommaNonScientific = min(_precision, lengths.withCommaNonScientific)
         } else {
-            mantissaLength = lengths.withCommaScientific
-            withoutComma = min(_precision, lengths.withoutComma)
-            withCommaNonScientific = min(_precision, lengths.withCommaNonScientific)
-            withCommaFirstLine = min(_precision, lengths.withCommaNonScientific)
-            withCommaScientific = min(_precision, lengths.withCommaScientific)
+            mantissaLength                  = lengths.withCommaScientific
+            withoutComma                    = min(_precision, lengths.withoutComma)
+            withCommaNonScientific          = min(_precision, lengths.withCommaNonScientific)
+            withCommaScientific             = min(_precision, lengths.withCommaScientific)
+            firstLineWithoutComma           = withoutComma
+            firstLineWithCommaNonScientific = withCommaNonScientific
         }
         
         let mantissaExponent = displayGmp.mantissaExponent(len: mantissaLength)
@@ -233,20 +236,19 @@ class Number: CustomDebugStringConvertible {
         let isNegative = mantissa.first == "-"
         if isNegative {
             mantissa.removeFirst()
-            withoutComma           -= 1
-            withCommaNonScientific -= 1
-            withCommaFirstLine     -= 1
-            withCommaScientific    -= 1
+            withoutComma                    -= 1
+            withCommaNonScientific          -= 1
+            withCommaScientific             -= 1
+            firstLineWithoutComma           -= 1
+            firstLineWithCommaNonScientific -= 1
         }
 
         /// Can be displayed as Integer?
-        ///
-        ///
         if !forceScientific && mantissa.count <= exponent+1 && exponent+1 <= withoutComma { /// smaller than because of possible trailing zeroes in the integer
             /// restore trailing zeros that have been removed
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
             // print(mantissa)
-            if mantissa.count <= withoutComma {
+            if mantissa.count <= firstLineWithoutComma {
                 ret.left = (isNegative ? "-" : "") + mantissa
                 return ret
             } else {
@@ -259,7 +261,7 @@ class Number: CustomDebugStringConvertible {
         /// Is floating point XXX,xxx?
         /// additional requirement: comma in first line. If not, it is not easy to see the comma
         if !forceScientific && exponent >= 0 {
-            if exponent + 1 < withCommaFirstLine && exponent < withCommaNonScientific - 1 { /// is the comma visible in the first line and is there at least one digit after the comma?
+            if exponent + 1 < firstLineWithCommaNonScientific && exponent < withCommaNonScientific - 1 { /// is the comma visible in the first line and is there at least one digit after the comma?
                 var floatString = mantissa
                 let index = floatString.index(floatString.startIndex, offsetBy: exponent+1)
                 floatString.insert(",", at: index)
@@ -278,7 +280,7 @@ class Number: CustomDebugStringConvertible {
         /// is floating point 0,xxxx
         /// additional requirement: first non-zero digit in first line. If not -> Scientific
         if !forceScientific && exponent < 0 {
-            if -1 * exponent + 1 < withCommaFirstLine && -1 * exponent < withCommaNonScientific - 1 {
+            if -1 * exponent + 1 < firstLineWithCommaNonScientific && -1 * exponent < withCommaNonScientific - 1 {
                 var floatString = mantissa
                 for _ in 0..<(-1*exponent - 1) {
                     floatString = "0" + floatString
