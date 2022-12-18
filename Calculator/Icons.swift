@@ -20,8 +20,9 @@ struct Icons : View {
     var body: some View {
         VStack(alignment: .center, spacing: 0.0) {
             if isCalculating {
-                AnimatedDots(color: .gray)
-                    .padding(.top, screenInfo.plusIconSize * 0.55)
+                AnimatedDots(color: .gray, dotDiamater: model.screenInfo.plusIconSize * 0.35)
+                    .padding(.top, screenInfo.plusIconSize * 0.3)
+                    .frame(width: model.screenInfo.plusIconSize + model.screenInfo.plusIconLeftPadding)
                     .animation(Animation.easeInOut(duration: 0.4), value: isZoomed)
             } else {
                 Image(systemName: "plus.circle.fill")

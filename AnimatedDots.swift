@@ -9,10 +9,10 @@ import SwiftUI
 
 struct AnimatedDots: View {
     let color: Color
+    let dotDiamater: CGFloat
 
     let small = 0.6
     let large = 0.8
-    let size = 15.0
     let duration = 0.4
 
     @State private var shouldAnimate = false
@@ -23,19 +23,19 @@ struct AnimatedDots: View {
         HStack(spacing: 0.0) {
             Circle()
                 .fill(color)
-                .frame(width: size, height: size)
+                .frame(width: dotDiamater, height: dotDiamater)
                 .scaleEffect(shouldAnimate ? large : small)
                 .animation(Animation.easeInOut(duration: duration).repeatForever(), value: shouldAnimate)
                 .scaleEffect(shouldAnimate ? large : small)
             Circle()
                 .fill(color)
-                .frame(width: size, height: size)
+                .frame(width: dotDiamater, height: dotDiamater)
                 .scaleEffect(shouldAnimate ? large : small)
                 .animation(Animation.easeInOut(duration: duration).repeatForever().delay(duration/2), value: shouldAnimate)
                 .scaleEffect(shouldAnimate ? large : small)
             Circle()
                 .fill(color)
-                .frame(width: size, height: size)
+                .frame(width: dotDiamater, height: dotDiamater)
                 .scaleEffect(shouldAnimate ? large : small)
                 .animation(Animation.easeInOut(duration: duration).repeatForever().delay(duration), value: shouldAnimate)
                 .scaleEffect(shouldAnimate ? large : small)
@@ -51,7 +51,7 @@ struct AnimatedDots: View {
 
 struct Dots_Previews: PreviewProvider {
     static var previews: some View {
-        AnimatedDots(color: Color.gray)
+        AnimatedDots(color: Color.gray, dotDiamater: 15)
             .background(Color.black)
     }
 }
