@@ -76,6 +76,7 @@ class Model : ObservableObject {
 
             self.offsetToVerticallyAlignTextWithkeyboard = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - self.lengths.height
             self.offsetToVerticallyIconWithText          = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - screenInfo.plusIconSize + screenInfo.uiFont.descender - 0.5 * screenInfo.uiFont.capHeight + screenInfo.plusIconSize * 0.5
+            self.updateDisplayData()
         }
     }
     

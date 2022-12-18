@@ -41,7 +41,6 @@ struct Settings: View {
     //    @ObservedObject var stopWatch = StopWatch()
     
     var body: some View {
-        Text("settings")
         let bitsInfo = Gmp.bits(for: settingsPrecision)
         let internalPrecisionInfo = Gmp.internalPrecision(for: settingsPrecision)
         let sizeOfOneNumber = Gmp.memorySize(bits: bitsInfo)
