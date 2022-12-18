@@ -75,6 +75,7 @@ struct Calculator: View {
                                 }
                             }
                         }
+                        .offset(y: model.offsetToVerticallyAlignTextWithkeyboard)
                     }
                     Icons(
                         store: store,
