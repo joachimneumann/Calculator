@@ -134,7 +134,7 @@ class Brain {
     }
     
     func operation(_ symbol: String) {
-        /// TODO: do the switch in CalculatorModel
+        /// TODO: implement this switch on symbol in the Model
         if symbol == "C" {
             if last.isNull {
                 operatorStack.removeAll()
@@ -233,9 +233,10 @@ class Brain {
         self.precision = precision
         operation("AC")
 //        operation("π")
-//        operation("x^3")
-//        operation("x^3")
-//        operation("x^3")
+        operation("8")
+        operation("x^3")
+        operation("x^3")
+        operation("x^3")
 //        operation("x^3")
 //        operation("x^3")
 //        operation("x^3")

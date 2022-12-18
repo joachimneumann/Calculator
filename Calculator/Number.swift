@@ -12,6 +12,7 @@ struct DisplayData {
     var left: String = "0"
     var right: String?
     var asInteger: String?
+    var asFloat: String?
     var isAbbreviated: Bool = false // show a message that there is more?
 }
 
@@ -168,7 +169,6 @@ class Number: CustomDebugStringConvertible {
                             ret.left = s
                             ret.right = nil
                             ret.isAbbreviated = false
-                            ret.asInteger = s
                             return ret
                         }
                     }
@@ -261,19 +261,29 @@ class Number: CustomDebugStringConvertible {
         /// Is floating point XXX,xxx?
         /// additional requirement: comma in first line. If not, it is not easy to see the comma
         if !forceScientific && exponent >= 0 {
-            if exponent + 1 < firstLineWithCommaNonScientific && exponent < withCommaNonScientific - 1 { /// is the comma visible in the first line and is there at least one digit after the comma?
+            if exponent < withCommaNonScientific - 1 {
                 var floatString = mantissa
                 let index = floatString.index(floatString.startIndex, offsetBy: exponent+1)
                 floatString.insert(",", at: index)
-                ret.left = floatString
-                if floatString.count <= withCommaNonScientific {
-                    ret.left = floatString
+
+                if exponent + 1 < firstLineWithCommaNonScientific { /// is the comma visible in the first line and is there at least one digit after the comma?
+                    if floatString.count <= withCommaNonScientific {
+                        ret.left = floatString
+                    } else {
+                        ret.left = String(floatString.prefix(withCommaNonScientific))
+                        ret.isAbbreviated = true
+                    }
+                    if isNegative { ret.left = "-" + ret.left }
+                    return ret
                 } else {
-                    ret.left = String(floatString.prefix(withCommaNonScientific))
-                    ret.isAbbreviated = true
+                    /// can be displayed as float, but the comma is not in the first line
+                    if floatString.count <= withCommaNonScientific {
+                        ret.asFloat = floatString
+                    } else {
+                        ret.asFloat = String(floatString.prefix(withCommaNonScientific))
+                    }
+                    if isNegative { ret.asFloat = "-" + ret.asFloat! }
                 }
-                if isNegative { ret.left = "-" + ret.left }
-                return ret
             }
         }
         

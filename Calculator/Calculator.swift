@@ -13,6 +13,8 @@ struct Calculator: View {
     @ObservedObject var model: Model
     @StateObject var store = Store()
 
+    @State var showAsInteger = false
+    @State var showAsFloat   = false
     var body: some View {
         // let _ = print("Calculator: isPortraitPhone \(model.screenInfo.isPortraitPhone) size \(model.screenInfo.calculatorSize)")
         if model.screenInfo.isPortraitPhone {
@@ -35,9 +37,12 @@ struct Calculator: View {
                  top level: single line
                  */
                 HStack(alignment: .top, spacing: 0.0) {
+                    let showSpecial: String? = model.displayData.asInteger != nil ?
+                    model.displayData.asInteger :
+                    (model.displayData.asFloat != nil ? model.displayData.asFloat : nil)
                     Spacer(minLength: 0.0)
                     ScrollView(.vertical) {
-                        Text(model.displayData.left)
+                        Text(showSpecial != nil ? showSpecial! : model.displayData.left)
                             .kerning(C.kerning)
                             .font(Font(model.screenInfo.uiFont))
                             .foregroundColor(.white)
@@ -46,12 +51,31 @@ struct Calculator: View {
                             .lineLimit(nil)
                             .offset(y: model.offsetToVerticallyAlignTextWithkeyboard)
                     }
-                    if model.displayData.right != nil {
-                        Text(model.displayData.right!)
-                            .kerning(C.kerning)
-                            .font(Font(model.screenInfo.uiFont))
-                            .foregroundColor(.white)
-                            .padding(.leading, model.screenInfo.ePadding)
+                    if !showAsInteger && !showAsFloat && model.displayData.right != nil {
+                        VStack(spacing: 0.0) {
+                            Text(model.displayData.right!)
+                                .kerning(C.kerning)
+                                .font(Font(model.screenInfo.uiFont))
+                                .foregroundColor(.white)
+                                .padding(.leading, model.screenInfo.ePadding)
+                            if model.displayData.asInteger != nil {
+                                Button {
+                                    showAsInteger.toggle()
+                                } label: {
+                                    Text("→ int")
+                                        .font(Font(model.screenInfo.infoUiFont))
+                                        .foregroundColor(.white)
+                                }
+                            } else if model.displayData.asFloat != nil {
+                                Button {
+                                    showAsFloat.toggle()
+                                } label: {
+                                    Text("→ float")
+                                        .font(Font(model.screenInfo.infoUiFont))
+                                        .foregroundColor(.white)
+                                }
+                            }
+                        }
                     }
                     Icons(
                         store: store,
@@ -95,6 +119,11 @@ struct Calculator: View {
             .accentColor(.white) // for the navigation back button
             .onChange(of: model.lengths.withoutComma) { _ in
                 model.updateDisplayData() // redraw with or without keyboard
+            }
+            .onChange(of: model.isZoomed) { _ in
+                // print("Calculator: isZoomed: \(model.isZoomed)")
+                showAsInteger = false
+                showAsFloat = false
             }
         }
     }

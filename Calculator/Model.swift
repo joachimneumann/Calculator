@@ -19,9 +19,9 @@ class Model : ObservableObject {
     }
     
     @Published var isZoomed: Bool
-    @Published var screenInfo: ScreenInfo
-    let offsetToVerticallyAlignTextWithkeyboard: CGFloat
-    let offsetToVerticallyIconWithText: CGFloat
+    @Published var screenInfo: ScreenInfo = ScreenInfo(hardwareSize: CGSize(), insets: UIEdgeInsets(), appOrientation: .unknown)
+    var offsetToVerticallyAlignTextWithkeyboard: CGFloat = 0.0
+    var offsetToVerticallyIconWithText: CGFloat = 0.0
     @Published var secondActive = false
     @Published var isCalculating = false
     var hideKeyboard = false
@@ -45,16 +45,9 @@ class Model : ObservableObject {
         brain.isValidNumber
     }
     
-    init(isZoomed: Bool, screenInfo: ScreenInfo) {
+    init(isZoomed: Bool) {
         // print("Model init isPortraitPhone \(screenInfo.isPortraitPhone)")
         self.isZoomed = isZoomed
-        self.screenInfo = screenInfo
-        let displayWidth = screenInfo.calculatorSize.width - (screenInfo.isPortraitPhone ? 0.0 : screenInfo.plusIconSize + screenInfo.plusIconLeftPadding)
-        lengths = lengthMeasurement(width: displayWidth, uiFont: screenInfo.uiFont, infoUiFont: screenInfo.infoUiFont, ePadding: screenInfo.ePadding)
-
-        offsetToVerticallyAlignTextWithkeyboard = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - lengths.height
-        offsetToVerticallyIconWithText          = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - screenInfo.plusIconSize + screenInfo.uiFont.descender - 0.5 * screenInfo.uiFont.capHeight + screenInfo.plusIconSize * 0.5
-
         brain = Brain(precision: Model.precision)
         for key in C.allKeys {
             keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))
@@ -66,6 +59,15 @@ class Model : ObservableObject {
         } else {
             brain.memory = Number(Model.memoryValue, precision: Model.precision)
         }
+    }
+    func updateScreenInfo(screenInfo: ScreenInfo) {
+        self.screenInfo = screenInfo
+        let displayWidth = screenInfo.calculatorSize.width - (screenInfo.isPortraitPhone ? 0.0 : screenInfo.plusIconSize + screenInfo.plusIconLeftPadding)
+        lengths = lengthMeasurement(width: displayWidth, uiFont: screenInfo.uiFont, infoUiFont: screenInfo.infoUiFont, ePadding: screenInfo.ePadding)
+
+        offsetToVerticallyAlignTextWithkeyboard = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - lengths.height
+        offsetToVerticallyIconWithText          = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - screenInfo.plusIconSize + screenInfo.uiFont.descender - 0.5 * screenInfo.uiFont.capHeight + screenInfo.plusIconSize * 0.5
+
     }
     
     
@@ -128,18 +130,18 @@ class Model : ObservableObject {
     }
     
     func updateDisplayData() {
-        //print("updateDisplayData()")
+        print("updateDisplayData()")
         DispatchQueue.main.async {
             self.displayData = DisplayData(left: "")
         }
-        let temp = self.brain.last.getDisplayData(forLong: !screenInfo.isPortraitPhone, lengths: lengths, forceScientific: Model.forceScientific)
+        let temp = brain.last.getDisplayData(forLong: !screenInfo.isPortraitPhone, lengths: lengths, forceScientific: Model.forceScientific)
         DispatchQueue.main.async {
             self.displayData = temp
         }
     }
     
     func haveResultCallback() {
-        //print("haveResultCallback \(lengths.withoutComma)")
+        print("haveResultCallback \(lengths.withoutComma) \(brain.last) isPortraitPhone \(screenInfo.isPortraitPhone)")
         if brain.last.isNull {
             DispatchQueue.main.async {
                 self.showAC = true
