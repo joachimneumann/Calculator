@@ -10,7 +10,7 @@ import Foundation
 class Brain {
     var n = NumberStack()
     private var operatorStack = OperatorStack()
-    private(set) var precision: Int = 0
+    var precision: Int = 0
     
     var haveResultCallback: () -> () = { }
     var pendingOperatorCallback: (String?) -> () = { _ in }

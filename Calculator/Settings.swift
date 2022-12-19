@@ -33,9 +33,9 @@ struct Settings: View {
     }
     
     @Environment(\.presentationMode) var presentation
-    @State var settingsPrecision = Model.precision
     static let measureButtonDefault = "click to measure"
     @State private var measureButtonText = Settings.measureButtonDefault
+    @State var settingsPrecision: Int = 0
     @State var settingsForceScientific: Bool = false
     private let MIN_PRECISION      = 10
     private let PHYSICAL_MEMORY = ProcessInfo.processInfo.physicalMemory
@@ -166,7 +166,7 @@ struct Settings: View {
                 if model.forceScientific != settingsForceScientific {
                     model.forceScientific = settingsForceScientific
                 }
-                if Model.precision != settingsPrecision {
+                if model.precision != settingsPrecision {
                     model.updatePrecision(to: settingsPrecision)
                 }
                 model.haveResultCallback()
@@ -174,6 +174,7 @@ struct Settings: View {
         }
         .onAppear() {
             settingsForceScientific = model.forceScientific
+            settingsPrecision       = model.precision
         }
         .navigationBarBackButtonHidden(true)
     }

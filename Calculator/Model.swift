@@ -43,7 +43,7 @@ class Model : ObservableObject {
     var precisionDescription = "unknown"
     
     var lengths = Lengths(0)
-    @AppStorage("precision", store: .standard) static private (set) var precision: Int = 1000
+    @AppStorage("precision", store: .standard) private (set) var precision: Int = 1000
     @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
     @AppStorage("memoryValue", store: .standard) var memoryValue: String = ""
     @AppStorage("rad", store: .standard) var rad: Bool = false
@@ -56,7 +56,8 @@ class Model : ObservableObject {
     init(isZoomed: Bool) {
         // print("Model init isPortraitPhone \(screenInfo.isPortraitPhone)")
         self.isZoomed = isZoomed
-        brain = Brain(precision: Model.precision)
+        brain = Brain(precision: 1000)
+        brain.precision = precision
         for key in C.allKeys {
             keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))
         }
@@ -65,7 +66,7 @@ class Model : ObservableObject {
         if memoryValue == "" {
             brain.memory = nil
         } else {
-            brain.memory = Number(memoryValue, precision: Model.precision)
+            brain.memory = Number(memoryValue, precision: precision)
         }
     }
     func updateScreenInfo(screenInfo: ScreenInfo) {
@@ -91,7 +92,7 @@ class Model : ObservableObject {
     // the update of the precision in brain can be slow.
     // Therefore, I only want to do that when leaving the settings screen
     func updatePrecision(to newPecision: Int) {
-        Model.precision = newPecision
+        precision = newPecision
         brain.setPrecision(newPecision)
     }
     
@@ -110,11 +111,11 @@ class Model : ObservableObject {
 //            }
         let displayData = brain.last.getDisplayData(
             forLong: true,
-            lengths: Lengths(Model.precision),
+            lengths: Lengths(precision),
             forceScientific: false,
             showAsInteger: showAsInteger,
             showAsFloat: showAsFloat,
-            maxDisplayLength: Model.precision)
+            maxDisplayLength: precision)
         UIPasteboard.general.string = displayData.left + (displayData.right ?? "")
 //            await g()
 //            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -129,11 +130,11 @@ class Model : ObservableObject {
     func g() async {
         let displayData = brain.last.getDisplayData(
             forLong: true,
-            lengths: Lengths(Model.precision),
+            lengths: Lengths(precision),
             forceScientific: false,
             showAsInteger: showAsInteger,
             showAsFloat: showAsFloat,
-            maxDisplayLength: Model.precision)
+            maxDisplayLength: precision)
         UIPasteboard.general.string = displayData.left + (displayData.right ?? "")
     }
     
@@ -203,7 +204,7 @@ class Model : ObservableObject {
         if brain.last.isNull {
             DispatchQueue.main.async {
                 self.showAC = true
-                self.precisionDescription = Model.precision.useWords
+                self.precisionDescription = self.precision.useWords
             }
         } else {
             DispatchQueue.main.async {
@@ -295,11 +296,11 @@ class Model : ObservableObject {
                     if let memory = brain.memory {
                         let temp = memory.getDisplayData(
                             forLong: true,
-                            lengths: Lengths(Model.precision),
+                            lengths: Lengths(precision),
                             forceScientific: false,
                             showAsInteger: showAsInteger,
                             showAsFloat: showAsFloat,
-                            maxDisplayLength: Model.precision)
+                            maxDisplayLength: precision)
                         DispatchQueue.main.sync {
                             memoryValue = temp.left + (temp.right ?? "")
                         }
