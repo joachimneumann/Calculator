@@ -38,6 +38,8 @@ struct Label: View {
             sizeFactor = sizeFactorOperator
         case ",":
             sizeFactor = sizeFactorComma
+        case "One_x":
+            sizeFactor = 0.9
         default:
             sizeFactor = 1.0
         }
@@ -125,7 +127,7 @@ struct Label: View {
                 Text(rootDigit)
                     .font(.system(size: fontSize, weight: .semibold))
                     .foregroundColor(color)
-                    .padding(.leading, rootSize * -0.27)
+                    .padding(.leading, rootSize * -0.23)
                     .padding(.top, rootSize * -0.14)
             }
             .overlay() {
@@ -193,7 +195,7 @@ struct Label: View {
                         Text("log")
                             .font(.system(size: size * 0.3))
                         Text(base)
-                            .font(.system(size: size * 0.22))
+                            .font(.system(size: size * 0.18))
                             .offset(x: 0.0, y: 0.13 * size)
                         Spacer(minLength: 0.0)
                     }
@@ -216,8 +218,8 @@ struct Label: View {
                         Text(base)
                             .font(.system(size: size * 0.3))
                         Text(exponent)
-                            .font(.system(size: size * 0.22))
-                            .offset(x: 0.0, y: -0.1 * size)
+                            .font(.system(size: size * 0.18))
+                            .offset(x: 0.0, y: -0.08 * size)
                         Spacer(minLength: 0.0)
                     }
                     Spacer(minLength: 0.0)
