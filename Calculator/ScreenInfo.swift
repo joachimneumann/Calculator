@@ -88,8 +88,8 @@ struct ScreenInfo {
 
         let singleLineFontSize = ((isPortraitPhone ? 0.125 : 0.16) * keyboardHeight).rounded()
         uiFont = UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: C.fontWeight)
-        infoUiFontSize = singleLineFontSize * 0.35
-        infoUiFont = UIFont.monospacedDigitSystemFont(ofSize: infoUiFontSize, weight: .light)
+        infoUiFontSize = singleLineFontSize * 0.3
+        infoUiFont = UIFont.monospacedDigitSystemFont(ofSize: infoUiFontSize, weight: .regular)
         uiFontLarge = UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize / largeFontScaleFactor, weight: C.fontWeight)
         C.kerning = 0.0//-0.05 * singleLineFontSize
     }

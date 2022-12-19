@@ -86,6 +86,7 @@ struct Calculator: View {
                                                 .font(Font(model.screenInfo.infoUiFont))
                                             Spacer()
                                         }
+                                        .padding(.leading, model.screenInfo.keySize.width * 0.3)
                                         //                                .offset(x: screenInfo.keySpacing, y: -screenInfo.keyboardHeight)
                                     }
                                 }
