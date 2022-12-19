@@ -7,7 +7,13 @@
 
 import SwiftUI
 
+func ~=<T: Equatable>(pattern: [T], value: T) -> Bool {
+    return pattern.contains(value)
+}
+
 struct Label: View {
+    
+    
     let keyInfo: Model.KeyInfo
     let size: CGFloat
     let color: Color
@@ -16,21 +22,24 @@ struct Label: View {
         self.keyInfo = keyInfo
         self.color = color
         
-        let sizeFactorDigits = 1.333
+        let sizeFactorDigits          = 1.5
         let sizeFactorSpecialOperator = 0.9333
-        let sizeFactorOperator = 0.8666
-        
-        sizeFactor = 1.0
-        if C.digitOperators.contains(keyInfo.symbol) ||  keyInfo.symbol == "C" || keyInfo.symbol == "AC" {
+        let sizeFactorOperator        = 0.8666
+        let sizeFactorComma           = 1.5
+
+        switch keyInfo.symbol {
+        case C.digitOperators, "C", "AC":
             sizeFactor = sizeFactorDigits
-        } else if C.sfImageNames.keys.contains(keyInfo.symbol) {
-            if keyInfo.symbol == "±" || keyInfo.symbol == "%" {
-                sizeFactor = sizeFactorSpecialOperator
-            } else {
-                sizeFactor = sizeFactorOperator
-            }
+        case "±", "%":
+            sizeFactor = sizeFactorSpecialOperator
+        case _ where C.sfImageNames.keys.contains(keyInfo.symbol):
+            sizeFactor = sizeFactorSpecialOperator
+        case ",":
+            sizeFactor = sizeFactorComma
+        default:
+            sizeFactor = 1.0
         }
-        self.size = size * sizeFactor /// here I can reduce all labels * 0.5
+        self.size = size * sizeFactor /// here I can reduce all labels, e.g.  * 0.5
     }
 
     var body: some View {

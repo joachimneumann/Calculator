@@ -23,11 +23,15 @@ struct Calculator: View {
                     displayData: model.displayData,
                     screenInfo: model.screenInfo,
                     lengths: model.lengths)
+                .padding(.horizontal, model.screenInfo.portraitIPhoneDisplayHorizontalPadding)
+                .padding(.bottom, model.screenInfo.portraitIPhoneDisplayBottomPadding)
                 NonScientificKeyboard(
                     model: model,
                     spacing: model.screenInfo.keySpacing,
                     keySize: model.screenInfo.keySize)
             }
+            .padding(.horizontal, model.screenInfo.portraitIPhoneHorizontalPadding)
+            .padding(.bottom, model.screenInfo.portraitIPhoneBottomPadding)
         } else {
             NavigationStack {
                 /*

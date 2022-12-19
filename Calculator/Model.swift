@@ -84,8 +84,7 @@ class Model : ObservableObject {
     func updateScreenInfo(screenInfo: ScreenInfo) {
         DispatchQueue.main.async {
             self.screenInfo = screenInfo
-            let displayWidth = screenInfo.calculatorSize.width - (screenInfo.isPortraitPhone ? 0.0 : screenInfo.plusIconSize + screenInfo.plusIconLeftPadding)
-            self.lengths = lengthMeasurement(width: displayWidth, uiFont: screenInfo.uiFont, infoUiFont: screenInfo.infoUiFont, ePadding: screenInfo.ePadding)
+            self.lengths = lengthMeasurement(width: screenInfo.displayWidth, uiFont: screenInfo.uiFont, infoUiFont: screenInfo.infoUiFont, ePadding: screenInfo.ePadding)
 
             self.offsetToVerticallyAlignTextWithkeyboard = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - self.lengths.height
             self.offsetToVerticallyIconWithText          = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - screenInfo.plusIconSize + screenInfo.uiFont.descender - 0.5 * screenInfo.uiFont.capHeight + screenInfo.plusIconSize * 0.5
@@ -96,8 +95,7 @@ class Model : ObservableObject {
     
     func afterRotation(with screenInfo: ScreenInfo) {
         self.screenInfo = screenInfo
-        let displayWidth = screenInfo.calculatorSize.width - (screenInfo.isPortraitPhone ? 0.0 : screenInfo.plusIconSize + screenInfo.plusIconLeftPadding)
-        lengths = lengthMeasurement(width: displayWidth, uiFont: screenInfo.uiFont, infoUiFont: screenInfo.infoUiFont, ePadding: screenInfo.ePadding)
+        lengths = lengthMeasurement(width: screenInfo.displayWidth, uiFont: screenInfo.uiFont, infoUiFont: screenInfo.infoUiFont, ePadding: screenInfo.ePadding)
     }
 
     

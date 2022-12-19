@@ -197,7 +197,7 @@ class Brain {
             n.last.changeSign()
         } else if symbol == "=" {
             execute(priority: Operator.equalPriority)
-        } else if C.digitOperators.contains(symbol) { // "0" already managed above
+        } else if C.digitOperators.contains(symbol) { // "0" is already managed above
             if pendingOperator != nil {
                 n.append(nullNumber)
                 pendingOperator = nil
@@ -233,7 +233,9 @@ class Brain {
         self.precision = precision
         operation("AC")
 //        operation("π")
-//        operation("8")
+        operation("8")
+        operation("8")
+        operation("8")
 //        operation("x^3")
 //        operation("x^3")
 //        operation("x^3")

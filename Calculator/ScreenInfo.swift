@@ -24,7 +24,12 @@ struct ScreenInfo {
     let infoUiFont: UIFont
     let largeFontScaleFactor: CGFloat = 1.0 / 1.5
     let infoUiFontSize: CGFloat
-    
+    let portraitIPhoneBottomPadding: CGFloat
+    let portraitIPhoneHorizontalPadding: CGFloat
+    let portraitIPhoneDisplayHorizontalPadding: CGFloat
+    let portraitIPhoneDisplayBottomPadding: CGFloat
+    let displayWidth: CGFloat
+
     init(hardwareSize: CGSize, insets: UIEdgeInsets, appOrientation: UIDeviceOrientation) {
         // print("ScreenInfo init() \(hardwareSize)")
         /// appOrientation is used here to trigger a redraw when the orientation changes ???????
@@ -32,12 +37,19 @@ struct ScreenInfo {
         isPortraitPhone = isPad ? false : UIScreen.main.bounds.size.height > UIScreen.main.bounds.size.width
         //print("ScreenInfo isPortraitPhone \(isPortraitPhone)")
 
-        calculatorSize = CGSize(width: hardwareSize.width - insets.left - insets.right, height: hardwareSize.height - insets.top - insets.bottom)
+        portraitIPhoneDisplayHorizontalPadding = hardwareSize.width * 0.04
+        portraitIPhoneDisplayBottomPadding = hardwareSize.height * 0.012
+        portraitIPhoneBottomPadding = hardwareSize.height * 0.044
+        portraitIPhoneHorizontalPadding = hardwareSize.width * 0.08
+
+        calculatorSize = CGSize(
+            width:  hardwareSize.width  - insets.left - insets.right  - (isPortraitPhone ? portraitIPhoneHorizontalPadding : 0.0),
+            height: hardwareSize.height - insets.top  - insets.bottom - (isPortraitPhone ? portraitIPhoneBottomPadding : 0.0))
 
         let iPadPortrait = UIScreen.main.bounds.size.height > UIScreen.main.bounds.size.width
 
         if isPortraitPhone {
-            keySpacing = 0.02 * calculatorSize.width
+            keySpacing = 0.034 * calculatorSize.width
         } else {
             // with scientific keyboard: narrower spacing
             keySpacing = 0.012 * calculatorSize.width
@@ -69,12 +81,16 @@ struct ScreenInfo {
         plusIconSize = keyboardHeight * 0.13
         plusIconLeftPadding = plusIconSize * 0.3
         ePadding = plusIconSize * 0.3
-        let singleLineFontSize = ((isPortraitPhone ? 0.14 : 0.16) * keyboardHeight).rounded()
+
+        displayWidth = calculatorSize.width - (isPortraitPhone ?
+            portraitIPhoneHorizontalPadding + portraitIPhoneDisplayBottomPadding :
+            plusIconSize + plusIconLeftPadding)
+
+        let singleLineFontSize = ((isPortraitPhone ? 0.125 : 0.16) * keyboardHeight).rounded()
         uiFont = UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: C.fontWeight)
         infoUiFontSize = singleLineFontSize * 0.35
         infoUiFont = UIFont.monospacedDigitSystemFont(ofSize: infoUiFontSize, weight: .light)
         uiFontLarge = UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize / largeFontScaleFactor, weight: C.fontWeight)
         C.kerning = 0.0//-0.05 * singleLineFontSize
-        // print("ScreenInfo: length = \(model.lengths)")
     }
 }
