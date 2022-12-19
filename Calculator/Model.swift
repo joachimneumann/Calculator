@@ -44,9 +44,9 @@ class Model : ObservableObject {
     
     var lengths = Lengths(0)
     @AppStorage("precision", store: .standard) static private (set) var precision: Int = 1000
-    @AppStorage("forceScientific", store: .standard) static var forceScientific: Bool = false
-    @AppStorage("memoryValue", store: .standard) static var memoryValue: String = ""
-    @AppStorage("rad", store: .standard) static var rad: Bool = false
+    @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
+    @AppStorage("memoryValue", store: .standard) var memoryValue: String = ""
+    @AppStorage("rad", store: .standard) var rad: Bool = false
     static let MAX_DISPLAY_LEN = 10000 // too long strings in Text() crash the app
     
     var isValidNumber: Bool {
@@ -62,10 +62,10 @@ class Model : ObservableObject {
         }
         brain.haveResultCallback = haveResultCallback
         brain.pendingOperatorCallback = pendingOperatorCallback
-        if Model.memoryValue == "" {
+        if memoryValue == "" {
             brain.memory = nil
         } else {
-            brain.memory = Number(Model.memoryValue, precision: Model.precision)
+            brain.memory = Number(memoryValue, precision: Model.precision)
         }
     }
     func updateScreenInfo(screenInfo: ScreenInfo) {
@@ -190,7 +190,7 @@ class Model : ObservableObject {
         let temp = brain.last.getDisplayData(
             forLong: !screenInfo.isPortraitPhone,
             lengths: lengths,
-            forceScientific: Model.forceScientific,
+            forceScientific: forceScientific,
             showAsInteger: showAsInteger,
             showAsFloat: showAsFloat)
         DispatchQueue.main.async {
@@ -268,7 +268,7 @@ class Model : ObservableObject {
         //        print("color x \(keyInfo["x"]!.colors.upColor)")
         //        print("color - \(keyInfo["-"]!.colors.upColor)")
         //        print("color + \(keyInfo["+"]!.colors.upColor)")
-        let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(_symbol) && !Model.rad ? _symbol+"D" : _symbol
+        let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(_symbol) && !rad ? _symbol+"D" : _symbol
         
         switch symbol {
         case "2nd":
@@ -276,10 +276,10 @@ class Model : ObservableObject {
             self.keyInfo["2nd"]!.colors = secondActive ? C.secondActiveColors : C.secondColors
         case "Rad":
             hasBeenReset = false
-            Model.rad = true
+            rad = true
         case "Deg":
             hasBeenReset = false
-            Model.rad = false
+            rad = false
         case "plusKey":
             break
         default:
@@ -301,11 +301,11 @@ class Model : ObservableObject {
                             showAsFloat: showAsFloat,
                             maxDisplayLength: Model.precision)
                         DispatchQueue.main.sync {
-                            Model.memoryValue = temp.left + (temp.right ?? "")
+                            memoryValue = temp.left + (temp.right ?? "")
                         }
                     } else {
                         DispatchQueue.main.sync {
-                            Model.memoryValue = ""
+                            memoryValue = ""
                         }
                     }
                 }

@@ -75,7 +75,7 @@ struct Calculator: View {
                                 .foregroundColor(.black)
                                 .frame(height: model.lengths.infoHeight)
                                 .overlay() {
-                                    let info = "\(model.hasBeenReset ? "Precision: "+model.precisionDescription+" digits" : "\(Model.rad ? "Rad" : "")")"
+                                    let info = "\(model.hasBeenReset ? "Precision: "+model.precisionDescription+" digits" : "\(model.rad ? "Rad" : "")")"
                                     if info.count > 0 {
                                         HStack(spacing: 0.0) {
                                             Text(info)

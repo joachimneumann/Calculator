@@ -47,7 +47,7 @@ struct ScientificBoard: View {
                 Key(keyInfo: model.keyInfo["EE"]!, modelCallback: model.pressed, size: keySize)
             }
             HStack(spacing: spacing) {
-                Key(keyInfo: model.keyInfo[Model.rad ? "Deg" : "Rad"]!, modelCallback: model.pressed, size: keySize)
+                Key(keyInfo: model.keyInfo[model.rad ? "Deg" : "Rad"]!, modelCallback: model.pressed, size: keySize)
                 Key(keyInfo: model.keyInfo[model.secondActive ? "asinh" : "sinh"]!, modelCallback: model.pressed, size: keySize)
                 Key(keyInfo: model.keyInfo[model.secondActive ? "acosh" : "cosh"]!, modelCallback: model.pressed, size: keySize)
                 Key(keyInfo: model.keyInfo[model.secondActive ? "atanh" : "tanh"]!, modelCallback: model.pressed, size: keySize)

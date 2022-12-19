@@ -36,7 +36,7 @@ struct Settings: View {
     @State var settingsPrecision = Model.precision
     static let measureButtonDefault = "click to measure"
     @State private var measureButtonText = Settings.measureButtonDefault
-    @State var settingsForceScientific = Model.forceScientific
+    @State var settingsForceScientific: Bool = false
     private let MIN_PRECISION      = 10
     private let PHYSICAL_MEMORY = ProcessInfo.processInfo.physicalMemory
     //    @ObservedObject var stopWatch = StopWatch()
@@ -163,14 +163,17 @@ struct Settings: View {
             }
             .onDisappear() {
                 model.hideKeyboard = false
-                if Model.forceScientific != settingsForceScientific {
-                    Model.forceScientific = settingsForceScientific
+                if model.forceScientific != settingsForceScientific {
+                    model.forceScientific = settingsForceScientific
                 }
                 if Model.precision != settingsPrecision {
                     model.updatePrecision(to: settingsPrecision)
                 }
                 model.haveResultCallback()
             }
+        }
+        .onAppear() {
+            settingsForceScientific = model.forceScientific
         }
         .navigationBarBackButtonHidden(true)
     }
