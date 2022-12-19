@@ -37,7 +37,7 @@ struct ScreenInfo {
         isPortraitPhone = isPad ? false : UIScreen.main.bounds.size.height > UIScreen.main.bounds.size.width
         //print("ScreenInfo isPortraitPhone \(isPortraitPhone)")
 
-        portraitIPhoneDisplayHorizontalPadding = hardwareSize.width * 0.04
+        portraitIPhoneDisplayHorizontalPadding = hardwareSize.width * 0.035
         portraitIPhoneDisplayBottomPadding = hardwareSize.height * 0.012
         portraitIPhoneBottomPadding = hardwareSize.height * 0.044
         portraitIPhoneHorizontalPadding = hardwareSize.width * 0.08
@@ -80,7 +80,7 @@ struct ScreenInfo {
 
         plusIconSize = keyboardHeight * 0.13
         plusIconLeftPadding = plusIconSize * 0.3
-        ePadding = plusIconSize * 0.3
+        ePadding = isPortraitPhone ? plusIconSize * 0.1 : plusIconSize * 0.3
 
         displayWidth = calculatorSize.width - (isPortraitPhone ?
             portraitIPhoneHorizontalPadding + portraitIPhoneDisplayBottomPadding :
