@@ -32,8 +32,10 @@ struct Label: View {
             sizeFactor = sizeFactorDigits
         case "±", "%":
             sizeFactor = sizeFactorSpecialOperator
+        case "x":
+            sizeFactor = 0.8 /// the sfImage multiply is a bit large
         case _ where C.sfImageNames.keys.contains(keyInfo.symbol):
-            sizeFactor = sizeFactorSpecialOperator
+            sizeFactor = sizeFactorOperator
         case ",":
             sizeFactor = sizeFactorComma
         default:
