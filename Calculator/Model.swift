@@ -18,10 +18,17 @@ class Model : ObservableObject {
         }
     }
     
-    var showAsInteger = false
-    var showAsFloat = false
-
-    @Published var isZoomed: Bool
+    @Published var showAsInteger = false
+    @Published var showAsFloat = false
+    @Published var scrollViewID = UUID()
+    @Published var isZoomed: Bool {
+        didSet {
+            if !isZoomed {
+                /// scrool back to top
+                scrollViewID = UUID()
+            }
+        }
+    }
     @Published var screenInfo: ScreenInfo = ScreenInfo(hardwareSize: CGSize(), insets: UIEdgeInsets(), appOrientation: .unknown)
     var offsetToVerticallyAlignTextWithkeyboard: CGFloat = 0.0
     var offsetToVerticallyIconWithText: CGFloat = 0.0
