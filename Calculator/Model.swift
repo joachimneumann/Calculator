@@ -56,8 +56,13 @@ class Model : ObservableObject {
     init(isZoomed: Bool) {
         // print("Model init isPortraitPhone \(screenInfo.isPortraitPhone)")
         self.isZoomed = isZoomed
-        brain = Brain(precision: 1000)
-        brain.precision = precision
+        
+        // the later assignment of precision is a a bit strange, but a work-around for the error
+        // "'self' used in property access 'precision' before all stored properties are initialized"
+        // At init, not much is happening in the brain
+        brain = Brain(precision: 0)
+        brain.setPrecision(precision)
+        
         for key in C.allKeys {
             keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))
         }
