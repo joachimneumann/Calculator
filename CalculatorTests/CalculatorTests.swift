@@ -841,7 +841,6 @@ class CalculatorTests: XCTestCase {
 
 
         var res: String
-        var sci: String
         let digits = 5
 
         /// 1 e -15
@@ -873,7 +872,6 @@ class CalculatorTests: XCTestCase {
         brain.debugPress(2)
         brain.debugPress(4)
         res = "32456,224"
-        sci = "3,2456224"
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, res)
         XCTAssertEqual(displayData.right, nil)
