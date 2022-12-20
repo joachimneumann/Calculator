@@ -136,8 +136,13 @@ class Brain {
     }
     
     func operation(_ symbol: String) {
-        if symbol != "C" && symbol != "AC" { print("nn \(nn) no \(no)") }
+        // debugging
+        // if symbol != "C" && symbol != "AC" { print("nn \(nn) no \(no)") }
+        
+        
         /// TODO: implement this switch on symbol in the Model
+        
+        
         switch symbol {
         case "C":
             if last.isNull {
