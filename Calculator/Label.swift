@@ -48,7 +48,7 @@ struct Label: View {
 
     var body: some View {
         let symbol = keyInfo.symbol
-        let _ = print("Label \(symbol)")
+        // let _ = print("Label \(symbol)")
         switch symbol {
         case "√" :    RootShapeView(rootDigit: "2", color: color, size: size)
         case "3√":    RootShapeView(rootDigit: "3", color: color, size: size)

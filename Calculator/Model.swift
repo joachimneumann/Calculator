@@ -36,7 +36,7 @@ class Model : ObservableObject {
     @Published var secondActive = false
     @Published var isCalculating = false {
         didSet {
-            print("isCalculating -> \(isCalculating)")
+            //print("isCalculating -> \(isCalculating)")
             DispatchQueue.main.async {
                 for key in C.keysAll {
                     if !C.keysThatDoNotNeedToBeDisabled.contains(key) {
@@ -306,29 +306,31 @@ class Model : ObservableObject {
         case "plusKey":
             break
         default:
-            if symbol == "AC" {
-                hasBeenReset.toggle()
-            } else {
-                hasBeenReset = false
-            }
-            Task {
-                DispatchQueue.main.async { self.isCalculating = true }
-                await asyncOperation(symbol)
-                if ["mc", "m+", "m-"].contains(symbol) {
-                    if let memory = brain.memory {
-                        let temp = memory.getDisplayData(
-                            forLong: true,
-                            lengths: Lengths(precision),
-                            forceScientific: false,
-                            showAsInteger: showAsInteger,
-                            showAsFloat: showAsFloat,
-                            maxDisplayLength: precision)
-                        DispatchQueue.main.sync {
-                            memoryValue = temp.left + (temp.right ?? "")
-                        }
-                    } else {
-                        DispatchQueue.main.sync {
-                            memoryValue = ""
+            if !isCalculating {
+                if symbol == "AC" {
+                    hasBeenReset.toggle()
+                } else {
+                    hasBeenReset = false
+                }
+                Task {
+                    DispatchQueue.main.async { self.isCalculating = true }
+                    await asyncOperation(symbol)
+                    if ["mc", "m+", "m-"].contains(symbol) {
+                        if let memory = brain.memory {
+                            let temp = memory.getDisplayData(
+                                forLong: true,
+                                lengths: Lengths(precision),
+                                forceScientific: false,
+                                showAsInteger: showAsInteger,
+                                showAsFloat: showAsFloat,
+                                maxDisplayLength: precision)
+                            DispatchQueue.main.sync {
+                                memoryValue = temp.left + (temp.right ?? "")
+                            }
+                        } else {
+                            DispatchQueue.main.sync {
+                                memoryValue = ""
+                            }
                         }
                     }
                 }
