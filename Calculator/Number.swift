@@ -146,7 +146,7 @@ class Number: CustomDebugStringConvertible {
         showAsInteger: Bool,
         showAsFloat: Bool,
         maxDisplayLength: Int = Number.MAX_DISPLAY_LENGTH) -> DisplayData {
-            print("getDisplayData")
+        // print("getDisplayData")
         var ret = DisplayData()
         if !forceScientific {
             if let s = str {

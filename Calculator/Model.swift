@@ -35,8 +35,11 @@ class Model : ObservableObject {
     @Published var secondActive = false
     @Published var isCalculating = false {
         didSet {
-            for key in C.keysAll {
-                keyInfo[key]!.enabled = !isCalculating
+            print("isCalculating -> \(isCalculating)")
+            DispatchQueue.main.async {
+                for key in C.keysAll {
+                    self.keyInfo[key]!.enabled = !self.isCalculating
+                }
             }
         }
     }
