@@ -71,48 +71,39 @@ struct Calculator: View {
                     .offset(y: model.offsetToVerticallyIconWithText)
                 }
                 .overlay() {
-                    if !model.isZoomed {
-                        VStack(spacing: 0.0) {
-                            Spacer(minLength: 0.0)
-                            Rectangle()
-                                .foregroundColor(.black)
-                                .frame(height: model.lengths.infoHeight)
-                                .overlay() {
-                                    let info = "\(model.hasBeenReset ? "Precision: "+model.precisionDescription+" digits" : "\(model.rad ? "Rad" : "")")"
-                                    if info.count > 0 {
-                                        HStack(spacing: 0.0) {
-                                            Text(info)
-                                                .foregroundColor(.white)
-                                                .font(Font(model.screenInfo.infoUiFont))
-                                            Spacer()
-                                        }
-                                        .padding(.leading, model.screenInfo.keySize.width * 0.3)
-                                        //                                .offset(x: screenInfo.keySpacing, y: -screenInfo.keyboardHeight)
+                    VStack(spacing: 0.0) {
+                        Spacer(minLength: 0.0)
+                        Rectangle()
+                            .foregroundColor(.black)
+                            .frame(height: model.lengths.infoHeight)
+                            .overlay() {
+                                let info = "\(model.hasBeenReset ? "Precision: "+model.precisionDescription+" digits" : "\(model.rad ? "Rad" : "")")"
+                                if info.count > 0 {
+                                    HStack(spacing: 0.0) {
+                                        Text(info)
+                                            .foregroundColor(.white)
+                                            .font(Font(model.screenInfo.infoUiFont))
+                                        Spacer()
                                     }
+                                    .padding(.leading, model.screenInfo.keySize.width * 0.3)
+                                    //                                .offset(x: screenInfo.keySpacing, y: -screenInfo.keyboardHeight)
                                 }
-                            HStack(spacing: 0.0) {
-                                ScientificBoard(model: model, spacing: model.screenInfo.keySpacing, keySize: model.screenInfo.keySize)
-                                    .padding(.trailing, model.screenInfo.keySpacing)
-                                NonScientificKeyboard(model: model, spacing: model.screenInfo.keySpacing, keySize: model.screenInfo.keySize)
                             }
-                            .background(Color.black)
+                        HStack(spacing: 0.0) {
+                            ScientificBoard(model: model, spacing: model.screenInfo.keySpacing, keySize: model.screenInfo.keySize)
+                                .padding(.trailing, model.screenInfo.keySpacing)
+                            NonScientificKeyboard(model: model, spacing: model.screenInfo.keySpacing, keySize: model.screenInfo.keySize)
                         }
-                        .transition(.move(edge: .bottom))
+                        .background(Color.black)
                     }
+                    .offset(y: model.isZoomed ? model.screenInfo.calculatorSize.height : 0.0)
+                    .transition(.move(edge: .bottom))
                 }
             }
             .accentColor(.white) // for the navigation back button
             .onChange(of: model.lengths.withoutComma) { _ in
                 model.updateDisplayData() // redraw with or without keyboard
             }
-//            .onChange(of: model.isZoomed) { _ in
-//                // print("Calculator: isZoomed: \(model.isZoomed)")
-//                model.showAsInteger = false
-//                model.showAsFloat = false
-//                withAnimation() {
-//                    scrollViewID = UUID()
-//                }
-//            }
         }
     }
 }

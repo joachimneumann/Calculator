@@ -21,7 +21,8 @@ class Model : ObservableObject {
     @Published var showAsInteger = false
     @Published var showAsFloat = false
     @Published var scrollViewID = UUID()
-    @Published var isZoomed: Bool {
+    @Published var isZoomed: Bool
+    {
         didSet {
             if !isZoomed {
                 /// scrool back to top
@@ -39,7 +40,6 @@ class Model : ObservableObject {
             DispatchQueue.main.async {
                 for key in C.keysAll {
                     if !C.keysThatDoNotNeedToBeDisabled.contains(key) {
-                        print("key \(key)")
                         self.keyInfo[key]!.enabled = !self.isCalculating
                     }
                 }
