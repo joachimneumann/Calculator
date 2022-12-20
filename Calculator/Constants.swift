@@ -65,8 +65,6 @@ struct C {
             return digitColors
         } else if symbol == "2nd" {
             return secondColors
-        } else if symbol == "plusKey" {
-            return operatorColors
         } else if operatorKeys.contains(symbol) {
             return operatorColors
         } else if scientificKeys.contains(symbol) {
@@ -84,8 +82,7 @@ struct C {
         "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10",
         "x!", "sin", "cos", "tan", "asin", "acos", "atan", "e", "EE",
         "Deg", "Rad", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh", "π", "Rand"]
-    static let iconKeys = ["plusKey"]
-    static let allKeys = [digitKeys, operatorKeys, scientificKeys, iconKeys].joined()
+    static let allKeys = [digitKeys, operatorKeys, scientificKeys].joined()
     static let requireValidNumber = ["±", "%", "/", "x", "-", "+", "=", "( ", " )", "m+", "m-", "mr", "x^2", "x^3", "x^y", "e^x", "y^x", "2^x", "10^x", "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10", "x!", "sin", "cos", "tan", "asin", "acos", "atan", "EE", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh", "plusKey"]
     static let scientificPendingOperations = ["y√", "x^y", "y^x", "logy", "x↑↑y", "EE"]
     
