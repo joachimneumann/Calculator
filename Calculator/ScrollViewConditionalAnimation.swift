@@ -14,6 +14,8 @@ struct ScrollViewConditionalAnimation: View {
     let backgroundColor: Color
     let offsetY: CGFloat
     let disabled: Bool
+    @Binding var scrollViewHasScolled: Bool
+    var scrollViewID: UUID
     
     private struct OffsetKey: PreferenceKey {
         static var defaultValue: CGFloat = 0
@@ -24,7 +26,7 @@ struct ScrollViewConditionalAnimation: View {
     
     @State var onTop = true
     
-    var scrollView: some View {
+    private var scrollView: some View {
         GeometryReader { g in
             ScrollView(.vertical) {
                 HStack(alignment: .top, spacing: 0.0) {
@@ -42,14 +44,18 @@ struct ScrollViewConditionalAnimation: View {
                         }
                 }
             }
+            .id(scrollViewID)
             .disabled(disabled)
         }
     }
     
     var body: some View {
         scrollView
-            .onPreferenceChange(OffsetKey.self) {
-                if $0 < -10 {
+            .onPreferenceChange(OffsetKey.self) { verticalScrollPosition in
+                if verticalScrollPosition != 0.0 {
+                    scrollViewHasScolled = true
+                } else {
+                    scrollViewHasScolled = false
                 }
             }
     }

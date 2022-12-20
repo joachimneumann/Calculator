@@ -47,19 +47,9 @@ struct Calculator: View {
                         foregroundColor: model.isCopying || model.isPasting || !model.copyDone || !model.pasteDone ? .orange : .white,
                         backgroundColor: testColors ? .yellow : .black,
                         offsetY: model.offsetToVerticallyAlignTextWithkeyboard,
-                        disabled: !model.isZoomed)
-                    ScrollView(.vertical) {
-                        Text(model.displayData.left)
-                            .kerning(C.kerning)
-                            .font(Font(model.screenInfo.uiFont))
-                            .foregroundColor(model.isCopying || model.isPasting || !model.copyDone || !model.pasteDone ? .orange : .white)
-                            .multilineTextAlignment(.trailing)
-                            .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
-                            .lineLimit(nil)
-                            .offset(y: model.offsetToVerticallyAlignTextWithkeyboard)
-                    }
-                    .id(model.scrollViewID)
-                    .disabled(!model.isZoomed)
+                        disabled: !model.isZoomed,
+                        scrollViewHasScolled: $model.scrollViewHasScrolled,
+                        scrollViewID: model.scrollViewID)
                     if model.displayData.right != nil {
                         Text(model.displayData.right!)
                             .kerning(C.kerning)

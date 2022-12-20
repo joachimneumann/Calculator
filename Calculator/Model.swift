@@ -21,11 +21,10 @@ class Model : ObservableObject {
     @Published var showAsInteger = false
     @Published var showAsFloat = false
     @Published var scrollViewID = UUID()
-    @Published var isZoomed: Bool
-    {
+    var scrollViewHasScrolled = false
+    @Published var isZoomed: Bool {
         didSet {
-            if !isZoomed {
-                /// scroll back to top
+            if scrollViewHasScrolled {
                 scrollViewID = UUID()
             }
         }

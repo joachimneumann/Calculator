@@ -34,7 +34,7 @@ struct Icons : View {
                     .foregroundColor(.gray)
                     .clipShape(Circle())
                     .onTapGesture {
-                        withAnimation(.linear(duration: 0.3)) {
+                        withAnimation(.linear(duration: 0.4)) {
                             isZoomed.toggle()
                         }
                     }
