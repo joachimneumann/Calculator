@@ -182,7 +182,7 @@ class Model : ObservableObject {
                     }
                 }
                 if ok {
-                    brain.n.replaceLast(with: Number(pasteString, precision: brain.precision))
+                    brain.replaceLast(with: Number(pasteString, precision: brain.precision))
                     haveResultCallback() // TODO: make sure that forLong is true here!!!!
                     hasBeenReset = false
                 }

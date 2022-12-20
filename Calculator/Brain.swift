@@ -8,10 +8,11 @@
 import Foundation
 
 class Brain {
-    var n = NumberStack()
+    private var n = NumberStack()
     private var operatorStack = OperatorStack()
     private (set) var precision: Int = 0
-    
+    var no: Int { operatorStack.count }
+    var nn: Int { n.count }
     var haveResultCallback: () -> () = { }
     var pendingOperatorCallback: (String?) -> () = { _ in }
     var pendingOperator: String? {
@@ -86,18 +87,21 @@ class Brain {
     let closedParenthesis = Operator(Operator.openParenthesesPriority)
     let equalOperator = Operator(Operator.equalPriority)
 
+    func replaceLast(with number: Number) {
+        n.replaceLast(with: number)
+    }
 
-    func press(_ digits: String) {
+    func debugPress(_ digits: String) {
         for digit in digits {
             if let intValue = digit.wholeNumberValue {
-                press(intValue)
+                debugPress(intValue)
             } else {
                 assert(false)
             }
         }
     }
     
-    func press(_ digit: Int) {
+    func debugPress(_ digit: Int) {
         if digit >= 0 && digit <= 9 {
             Task {
                 operation(String(digit))

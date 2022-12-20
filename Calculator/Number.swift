@@ -139,6 +139,10 @@ class Number: CustomDebugStringConvertible {
         }
     }
     
+    func getDisplayData(_ lengths: Lengths) -> DisplayData {
+        getDisplayData(forLong: false, lengths: lengths, forceScientific: false, showAsInteger: false, showAsFloat: false)
+    }
+
     func getDisplayData(
         forLong: Bool,
         lengths: Lengths,
