@@ -61,36 +61,35 @@ struct C {
     }
     
     static func getKeyColors(for symbol: String) -> ColorsOf {
-        if digitKeys.contains(symbol) {
+        if keysForDigits.contains(symbol) {
             return digitColors
         } else if symbol == "2nd" {
             return secondColors
-        } else if operatorKeys.contains(symbol) {
+        } else if keysOfOperator.contains(symbol) {
             return operatorColors
-        } else if scientificKeys.contains(symbol) {
+        } else if keysOfScientificOperators.contains(symbol) {
             return scientificColors
         }
         return digitColors
     }
 
     
-    static let digitKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ","]
-    static let operatorKeys = ["C", "AC", "±", "%", "/", "x", "-", "+", "="]
-    static let scientificKeys = [
+    static let keysForDigits: [String] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    static let keysOfOperator = ["C", "AC", "±", "%", "/", "x", "-", "+", "="]
+    static let keysOfScientificOperators = [
         "( ", " )", "mc", "m+", "m-", "mr",
         "2nd", "x^2", "x^3", "x^y", "e^x", "y^x", "2^x", "10^x",
         "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10",
         "x!", "sin", "cos", "tan", "asin", "acos", "atan", "e", "EE",
         "Deg", "Rad", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh", "π", "Rand"]
-    static let allKeys = [digitKeys, operatorKeys, scientificKeys].joined()
-    static let requireValidNumber = ["±", "%", "/", "x", "-", "+", "=", "( ", " )", "m+", "m-", "mr", "x^2", "x^3", "x^y", "e^x", "y^x", "2^x", "10^x", "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10", "x!", "sin", "cos", "tan", "asin", "acos", "atan", "EE", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh", "plusKey"]
-    static let scientificPendingOperations = ["y√", "x^y", "y^x", "logy", "x↑↑y", "EE"]
+    static let keysAll = [keysForDigits, [","], keysOfOperator, keysOfScientificOperators].joined()
+    static let keysThatRequireValidNumber = ["±", "%", "/", "x", "-", "+", "=", "( ", " )", "m+", "m-", "mr", "x^2", "x^3", "x^y", "e^x", "y^x", "2^x", "10^x", "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10", "x!", "sin", "cos", "tan", "asin", "acos", "atan", "EE", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh", "plusKey"]
+    static let keysWithPendingOperations = ["y√", "x^y", "y^x", "logy", "x↑↑y", "EE"]
     
     static let fontWeight: UIFont.Weight = .thin // UIFont.Weight(rawValue: -4.02) is not continuous
     static let fontWidth: Font.Width = .standard // not supported in leangthmeasurement
     static var kerning: CGFloat = 0.0
-    static let digitOperators: [String] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-    static let sfImageNames: [String: String] = [
+    static let sfImageforKey: [String: String] = [
         "+":   "plus",
         "-":   "minus",
         "x":   "multiply",

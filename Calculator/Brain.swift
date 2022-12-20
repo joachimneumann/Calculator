@@ -135,7 +135,8 @@ class Brain {
     
     func operation(_ symbol: String) {
         /// TODO: implement this switch on symbol in the Model
-        if symbol == "C" {
+        switch symbol {
+        case "C":
             if last.isNull {
                 operatorStack.removeAll()
                 n.removeAll()
@@ -145,28 +146,28 @@ class Brain {
                 n.removeLast()
                 n.append(nullNumber)
             }
-        } else if symbol == "AC" {
+        case "AC":
             operatorStack.removeAll()
             n.removeAll()
             pendingOperator = nil
             n.append(nullNumber)
-        } else if symbol == "mc" {
+        case "mc":
             memory = nil
-        } else if symbol == "m+" {
+        case "m+":
             n.last.toGmp()
             if memory == nil {
                 memory = n.last.copy()
             } else {
                 memory!.execute(Gmp.add, with: n.last)
             }
-        } else if symbol == "m-" {
+        case "m-":
             if memory == nil {
                 memory = n.last.copy()
                 memory!.execute(Gmp.changeSign)
             } else {
                 memory!.execute(Gmp.sub, with: n.last.copy())
             }
-        } else if symbol == "mr" {
+        case "mr":
             if memory != nil {
                 if pendingOperator != nil {
                     n.append(memory!)
@@ -175,47 +176,47 @@ class Brain {
                     n.replaceLast(with: memory!)
                 }
             }
-        } else if symbol == "( " {
+        case "( ":
             self.operatorStack.push(self.openParenthesis)
-        } else if symbol == " )" {
+        case " )":
             self.execute(priority: Operator.closedParenthesesPriority)
-        } else if symbol == "%" {
+        case "%":
             self.percentage()
-        } else if symbol == "," {
+        case ",":
             if pendingOperator != nil {
                 n.append(nullNumber)
                 pendingOperator = nil
             }
             n.last.appendComma()
-        } else if symbol == "0" {
+        case "0":
             if pendingOperator != nil {
                 n.append(nullNumber)
                 pendingOperator = nil
             }
             n.last.appendZero()
-        } else if symbol == "±" {
+        case "±":
             n.last.changeSign()
-        } else if symbol == "=" {
+        case "=":
             execute(priority: Operator.equalPriority)
-        } else if C.digitOperators.contains(symbol) { // "0" is already managed above
+        case C.keysForDigits:
             if pendingOperator != nil {
                 n.append(nullNumber)
                 pendingOperator = nil
             }
             n.last.appendDigit(symbol)
-        } else if let op = self.constantOperators[symbol] {
-            if self.pendingOperator != nil {
+        case _ where constantOperators.keys.contains(symbol):
+           if self.pendingOperator != nil {
                 self.n.append(nullNumber)
                 self.pendingOperator = nil
             }
-            self.n.last.execute(op.operation)
-        } else if let op = self.inplaceOperators[symbol] {
-            n.last.execute(op.operation)
-        } else if let op = self.twoOperandOperators[symbol] {
-            if twoOperandOperators.keys.contains(symbol) { self.pendingOperator = symbol }
-            self.execute(priority: op.priority)
-            self.self.operatorStack.push(op)
-        } else {
+            self.n.last.execute(constantOperators[symbol]!.operation)
+        case _ where inplaceOperators.keys.contains(symbol):
+            n.last.execute(inplaceOperators[symbol]!.operation)
+        case _ where twoOperandOperators.keys.contains(symbol):
+            pendingOperator = symbol
+            execute(priority: twoOperandOperators[symbol]!.priority)
+            operatorStack.push(twoOperandOperators[symbol]!)
+        default:
             assert(false, "### non-existing operation \(symbol)")
         }
         haveResultCallback()

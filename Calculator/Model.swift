@@ -33,7 +33,13 @@ class Model : ObservableObject {
     var offsetToVerticallyAlignTextWithkeyboard: CGFloat = 0.0
     var offsetToVerticallyIconWithText: CGFloat = 0.0
     @Published var secondActive = false
-    @Published var isCalculating = false
+    @Published var isCalculating = false {
+        didSet {
+            for key in C.keysAll {
+                keyInfo[key]!.enabled = !isCalculating
+            }
+        }
+    }
     var hideKeyboard = false
     @Published var isCopying: Bool = false
     @Published var isPasting: Bool = false
@@ -70,7 +76,7 @@ class Model : ObservableObject {
         brain = Brain(precision: 0)
         brain.setPrecision(precision)
         
-        for key in C.allKeys {
+        for key in C.keysAll {
             keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))
         }
         brain.haveResultCallback = haveResultCallback
@@ -224,11 +230,11 @@ class Model : ObservableObject {
         
         updateDisplayData()
         
-        for key in C.allKeys {
+        for key in C.keysAll {
             if brain.isValidNumber {
                 keyInfo[key]!.enabled = true
             } else {
-                if C.requireValidNumber.contains(key) {
+                if C.keysThatRequireValidNumber.contains(key) {
                     keyInfo[key]!.enabled = false
                 } else {
                     keyInfo[key]!.enabled = true
@@ -247,7 +253,7 @@ class Model : ObservableObject {
         /// Set the previous one back to normal?
         if let previous = previous {
             DispatchQueue.main.async {
-                if C.scientificPendingOperations.contains(previous) {
+                if C.keysWithPendingOperations.contains(previous) {
                     self.keyInfo[previous]!.colors = C.scientificColors
                 } else {
                     self.keyInfo[previous]!.colors = C.operatorColors
@@ -258,7 +264,7 @@ class Model : ObservableObject {
         /// Set the colors for the pending operation key
         if let op = op {
             DispatchQueue.main.async {
-                if C.scientificPendingOperations.contains(op) {
+                if C.keysWithPendingOperations.contains(op) {
                     self.keyInfo[op]!.colors = C.pendingScientificColors
                 } else {
                     self.keyInfo[op]!.colors = C.pendingOperatorColors

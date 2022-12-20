@@ -28,13 +28,13 @@ struct Label: View {
         let sizeFactorComma           = 1.5
 
         switch keyInfo.symbol {
-        case C.digitOperators, "C", "AC":
+        case C.keysForDigits, "C", "AC":
             sizeFactor = sizeFactorDigits
         case "±", "%":
             sizeFactor = sizeFactorSpecialOperator
         case "x":
             sizeFactor = 0.8 /// the sfImage multiply is a bit large
-        case _ where C.sfImageNames.keys.contains(keyInfo.symbol):
+        case _ where C.sfImageforKey.keys.contains(keyInfo.symbol):
             sizeFactor = sizeFactorOperator
         case ",":
             sizeFactor = sizeFactorComma
@@ -72,7 +72,7 @@ struct Label: View {
         case "acosh": Pow(base: "cosh", exponent: "-1", size: size)
         case "atanh": Pow(base: "tanh", exponent: "-1", size: size)
         default:
-            if let sfImage = C.sfImageNames[symbol] {
+            if let sfImage = C.sfImageforKey[symbol] {
                 Image(systemName: sfImage)
                     .resizable()
                     .font(Font.title.weight(.semibold))
