@@ -41,6 +41,13 @@ struct Calculator: View {
                  */
                 HStack(alignment: .top, spacing: 0.0) {
                     Spacer(minLength: 0.0)
+                    ScrollViewConditionalAnimation(
+                        text: model.displayData.left,
+                        font: Font(model.screenInfo.uiFont),
+                        foregroundColor: model.isCopying || model.isPasting || !model.copyDone || !model.pasteDone ? .orange : .white,
+                        backgroundColor: testColors ? .yellow : .black,
+                        offsetY: model.offsetToVerticallyAlignTextWithkeyboard,
+                        disabled: !model.isZoomed)
                     ScrollView(.vertical) {
                         Text(model.displayData.left)
                             .kerning(C.kerning)
@@ -52,7 +59,7 @@ struct Calculator: View {
                             .offset(y: model.offsetToVerticallyAlignTextWithkeyboard)
                     }
                     .id(model.scrollViewID)
-                    .disabled(!model.screenInfo.isPad && model.screenInfo.isPortraitPhone && !model.isZoomed)
+                    .disabled(!model.isZoomed)
                     if model.displayData.right != nil {
                         Text(model.displayData.right!)
                             .kerning(C.kerning)

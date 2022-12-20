@@ -25,7 +25,7 @@ class Model : ObservableObject {
     {
         didSet {
             if !isZoomed {
-                /// scrool back to top
+                /// scroll back to top
                 scrollViewID = UUID()
             }
         }
