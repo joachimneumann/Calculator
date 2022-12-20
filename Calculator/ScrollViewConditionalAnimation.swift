@@ -24,8 +24,6 @@ struct ScrollViewConditionalAnimation: View {
         }
     }
     
-    @State var onTop = true
-    
     private var scrollView: some View {
         GeometryReader { g in
             ScrollView(.vertical) {
@@ -52,7 +50,8 @@ struct ScrollViewConditionalAnimation: View {
     var body: some View {
         scrollView
             .onPreferenceChange(OffsetKey.self) { verticalScrollPosition in
-                if verticalScrollPosition != 0.0 {
+                // print("verticalScrollPosition \(verticalScrollPosition)")
+                if abs(verticalScrollPosition) > 0.01 {
                     scrollViewHasScolled = true
                 } else {
                     scrollViewHasScolled = false
