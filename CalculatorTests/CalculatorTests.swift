@@ -563,32 +563,38 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(displayData.left, "1")
         XCTAssertEqual(displayData.right, nil)
         
+        /// 1234567890
+        brain.operation("AC")
+        brain.debugPress("1234567890")
+        displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual(displayData.left, "1234567890")
+        XCTAssertEqual(displayData.right, nil)
+
+        /// 1234567891
+        brain.operation("AC")
+        brain.debugPress("12345678901")
+        displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual(displayData.left, "1,23456")
+        XCTAssertEqual(displayData.right, "e10")
+
         /// 123456789012345678
         brain.operation("AC")
         brain.debugPress("12345678901234567")
         displayData = brain.last.getDisplayData(lengths)
-        XCTAssertEqual(displayData.left, "12345678901234567")
-        XCTAssertEqual(displayData.right, nil)
+        XCTAssertEqual(displayData.left, "1,23456")
+        XCTAssertEqual(displayData.right, "e16")
         brain.debugPress(8)
         displayData = brain.last.getDisplayData(lengths)
-        XCTAssertEqual(displayData.left, "123456789012345678")
-        XCTAssertEqual(displayData.right, nil)
-        brain.debugPress(9)
-        displayData = brain.last.getDisplayData(lengths)
-        XCTAssertEqual(displayData.left, "1234567890123456789")
-        XCTAssertEqual(displayData.right, nil)
-        brain.debugPress(0)
-        displayData = brain.last.getDisplayData(lengths)
-        XCTAssertEqual(displayData.left, nil)
-//        XCTAssertEqual(displayData.right, DisplayData.Scientific("1,234567890123456789", "e19", precision: precision).getDisplayData(lengths)
+        XCTAssertEqual(displayData.left, "1,23456")
+        XCTAssertEqual(displayData.right, "e17")
         
         
         /// -12345678901234
         brain.operation("AC")
-        brain.debugPress("12345678901234")
+        brain.debugPress("123456789")
         brain.operation("±")
         displayData = brain.last.getDisplayData(lengths)
-        XCTAssertEqual(displayData.left, "-12345678901234")
+        XCTAssertEqual(displayData.left, "-123456789")
         XCTAssertEqual(displayData.right, nil)
         
         
@@ -603,6 +609,7 @@ class CalculatorTests: XCTestCase {
         brain.debugPress(7)
         brain.debugPress(7)
         brain.debugPress(7)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "777777777")
         XCTAssertEqual(displayData.right, nil)
         brain.debugPress(7)
@@ -619,8 +626,9 @@ class CalculatorTests: XCTestCase {
         brain.debugPress(7)
         brain.debugPress(7)
         brain.debugPress(7)
-        XCTAssertEqual(displayData.left, nil)
-//        XCTAssertEqual(displayData.right, DisplayData.Scientific("7,7777777777777777777777", "e22", precision: precision).getDisplayData(lengths)
+        displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual(displayData.left, "7,77777")
+        XCTAssertEqual(displayData.right, "e22")
         
         
         
@@ -635,44 +643,46 @@ class CalculatorTests: XCTestCase {
         brain.debugPress(7)
         brain.debugPress(8)
         brain.debugPress(9)
-        brain.debugPress(0)
-        brain.debugPress(1)
-        brain.debugPress(2)
-        brain.debugPress(3)
-        brain.debugPress(4)
-        brain.debugPress(5)
         brain.operation("±")
-        XCTAssertEqual(displayData.left, "-123456789012345")
+        displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual(displayData.left, "-123456789")
         XCTAssertEqual(displayData.right, nil)
         
         
         /// ±
         brain.operation("AC")
         brain.debugPress(7)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "7")
         XCTAssertEqual(displayData.right, nil)
         brain.operation("±")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-7")
         XCTAssertEqual(displayData.right, nil)
         
         /// 0,
         brain.operation("AC")
         brain.operation(",")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,")
         XCTAssertEqual(displayData.right, nil)
         brain.operation(",")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,")
         XCTAssertEqual(displayData.right, nil)
         
         /// -0,7
         brain.operation("AC")
         brain.operation(",")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,")
         XCTAssertEqual(displayData.right, nil)
         brain.debugPress(7)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,7")
         XCTAssertEqual(displayData.right, nil)
         brain.operation("±")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-0,7")
         XCTAssertEqual(displayData.right, nil)
         
@@ -682,6 +692,7 @@ class CalculatorTests: XCTestCase {
         brain.operation("EE")
         brain.debugPress(6)
         brain.operation("=")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "3000000")
         XCTAssertEqual(displayData.right, nil)
         
@@ -689,7 +700,7 @@ class CalculatorTests: XCTestCase {
         brain.operation("AC")
         brain.debugPress(3)
         brain.operation("EE")
-        brain.debugPress(6)
+        brain.debugPress(5)
         brain.operation("=")
         brain.operation("+")
         brain.operation(",")
@@ -697,10 +708,11 @@ class CalculatorTests: XCTestCase {
         brain.debugPress(0)
         brain.debugPress(1)
         brain.operation("=")
-        XCTAssertEqual(displayData.left, "3000000,001")
+        displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual(displayData.left, "300000,001")
         XCTAssertEqual(displayData.right, nil)
-        
-        
+
+
         /// 3 e77
         brain.operation("AC")
         brain.debugPress(3)
@@ -708,9 +720,10 @@ class CalculatorTests: XCTestCase {
         brain.debugPress(7)
         brain.debugPress(7)
         brain.operation("=")
-        XCTAssertEqual(displayData.left, nil)
-//        XCTAssertEqual(displayData.right, DisplayData.Scientific("3,0", "e77", precision: precision).getDisplayData(lengths)
-        
+        displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual(displayData.left, "3,0")
+        XCTAssertEqual(displayData.right, "e77")
+
         /// 3 e-77
         brain.operation("AC")
         brain.debugPress(3)
@@ -719,9 +732,10 @@ class CalculatorTests: XCTestCase {
         brain.debugPress(7)
         brain.operation("±")
         brain.operation("=")
-        XCTAssertEqual(displayData.left, nil)
-//        XCTAssertEqual(displayData.right, DisplayData.Scientific("3,0", "e-77", precision: precision).getDisplayData(lengths)
-        
+        displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual(displayData.left, "3,0")
+        XCTAssertEqual(displayData.right, "e-77")
+
         /// -3 e-77
         brain.operation("AC")
         brain.debugPress(3)
@@ -731,9 +745,10 @@ class CalculatorTests: XCTestCase {
         brain.operation("±")
         brain.operation("=")
         brain.operation("±")
-        XCTAssertEqual(displayData.left, nil)
-//        XCTAssertEqual(displayData.right, DisplayData.Scientific("-3,0", "e-77", precision: precision).getDisplayData(lengths)
-        
+        displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual(displayData.left, "-3,0")
+        XCTAssertEqual(displayData.right, "e-77")
+
         /// -3 e-77
         brain.operation("AC")
         brain.debugPress(3)
@@ -743,10 +758,11 @@ class CalculatorTests: XCTestCase {
         brain.debugPress(7)
         brain.operation("±")
         brain.operation("=")
-        XCTAssertEqual(displayData.left, nil)
-//        XCTAssertEqual(displayData.right, DisplayData.Scientific("-3,0", "e-77", precision: precision).getDisplayData(lengths)
-        
-        
+        displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual(displayData.left, "-3,0")
+        XCTAssertEqual(displayData.right, "e-77")
+
+
         /// 8888888
         brain.operation("AC")
         brain.debugPress(8)
@@ -756,64 +772,78 @@ class CalculatorTests: XCTestCase {
         brain.debugPress(8)
         brain.debugPress(8)
         brain.debugPress(8)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "8888888")
         XCTAssertEqual(displayData.right, nil)
-        
-        
+
+
         /// memory
         brain.operation("AC")
         brain.debugPress(1)
         brain.debugPress(2)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "12")
         XCTAssertEqual(displayData.right, nil)
         brain.operation("mc")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "12")
         XCTAssertEqual(displayData.right, nil)
         brain.operation("m+")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "12")
         XCTAssertEqual(displayData.right, nil)
         brain.operation("m+")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "12")
         XCTAssertEqual(displayData.right, nil)
         brain.operation("mr")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "24")
         XCTAssertEqual(displayData.right, nil)
         brain.operation("m-")
-        XCTAssertEqual(displayData.left, "24")
-        XCTAssertEqual(displayData.right, nil)
-        brain.operation("mr")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0")
         XCTAssertEqual(displayData.right, nil)
-        
+        brain.operation("mr")
+        displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual(displayData.left, "0")
+        XCTAssertEqual(displayData.right, nil)
+
         /// 0,0000010
         brain.operation("AC")
         brain.debugPress(0)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0")
         XCTAssertEqual(displayData.right, nil)
         brain.operation(",")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,")
         XCTAssertEqual(displayData.right, nil)
         brain.debugPress(0)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,0")
         XCTAssertEqual(displayData.right, nil)
         brain.debugPress(0)
         brain.debugPress(0)
         brain.debugPress(0)
         brain.debugPress(0)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,00000")
         XCTAssertEqual(displayData.right, nil)
         brain.debugPress(1)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,000001")
         XCTAssertEqual(displayData.right, nil)
         brain.debugPress(0)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,0000010")
         XCTAssertEqual(displayData.right, nil)
-        
-        
+
+
         var res: String
         var sci: String
-        let digits = 10
-        
+        let digits = 5
+
         /// 1 e -15
         brain.operation("AC")
         brain.operation(",")
@@ -821,14 +851,16 @@ class CalculatorTests: XCTestCase {
         for _ in 1..<digits-1 {
             res += "0"
             brain.debugPress(0)
+            displayData = brain.last.getDisplayData(lengths)
             XCTAssertEqual(displayData.left, res)
             XCTAssertEqual(displayData.right, nil)
         }
         brain.debugPress(1)
-        XCTAssertEqual(displayData.left, "0,000000000000001")
+        displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual(displayData.left, "0,0001")
         XCTAssertEqual(displayData.left, res+"1")
         XCTAssertEqual(displayData.right, nil)
-        
+
         /// 32456.2244
         brain.operation("AC")
         brain.debugPress(3)
@@ -840,22 +872,24 @@ class CalculatorTests: XCTestCase {
         brain.debugPress(2)
         brain.debugPress(2)
         brain.debugPress(4)
-        brain.debugPress(4)
-        res = "32456,2244"
-        sci = "3,24562244"
+        res = "32456,224"
+        sci = "3,2456224"
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, res)
         XCTAssertEqual(displayData.right, nil)
-        
-        
-        /// 32456.224433333333333333333333333
-        for _ in res.count..<digits+20 {
-            brain.debugPress(3)
-            res += "3"
-            sci += "3"
-            XCTAssertEqual(displayData.left, res)
-            XCTAssertEqual(displayData.right, nil)
-        }
-        
+
+
+        /// 32456.224433
+        brain.debugPress(3)
+        res += "3"
+        displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual(displayData.left, res)
+        XCTAssertEqual(displayData.right, nil)
+        brain.debugPress(3)
+        displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual(displayData.left, res)
+        XCTAssertEqual(displayData.right, nil)
+
         /// 1/7*7 --> has more digits?
         brain.operation("AC")
         brain.debugPress(7)
@@ -863,6 +897,7 @@ class CalculatorTests: XCTestCase {
         brain.operation("x")
         brain.debugPress(7)
         brain.operation("=")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1")
         XCTAssertEqual(displayData.right, nil)
 
@@ -870,94 +905,110 @@ class CalculatorTests: XCTestCase {
         brain.operation("AC")
         brain.debugPress(3)
         brain.operation("One_x")
-        var correct = "0,3333333333333333"
-        res = displayData.left
-        var resTruncated = String(res.prefix(correct.count))
-        XCTAssertEqual (resTruncated, correct)
+        var correct = "0,33333333"
+        displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual (displayData.left, correct)
         brain.operation("±")
-        correct = "-0,3333333333333333"
-        res = displayData.left
-        resTruncated = String(res.prefix(correct.count))
-        XCTAssertEqual (resTruncated, correct)
+        correct = "-0,3333333"
+        displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual (displayData.left, correct)
 
         /// 9 %%%% ^2 ^2 ^2
         brain.operation("AC")
         brain.operation("9")
         brain.operation("%")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,09")
         XCTAssertEqual(displayData.right, nil)
         brain.operation("%")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,0009")
         XCTAssertEqual(displayData.right, nil)
         brain.operation("%")
         brain.operation("%")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,00000009")
         XCTAssertEqual(displayData.right, nil)
         brain.operation("x^2")
-        XCTAssertEqual(displayData.left, "0,0000000000000081")
-        XCTAssertEqual(displayData.right, nil)
-        
-        
+        displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual(displayData.left, "8,1")
+        XCTAssertEqual(displayData.right, "e-15")
+
+
         /// 1/10 and 1/16
         brain.operation("AC")
         brain.debugPress(1)
         brain.debugPress(0)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "10")
         XCTAssertEqual(displayData.right, nil)
         brain.operation("One_x")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,1")
         XCTAssertEqual(displayData.right, nil)
         brain.debugPress(1)
         brain.debugPress(6)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "16")
         XCTAssertEqual(displayData.right, nil)
         brain.operation("One_x")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,0625")
         XCTAssertEqual(displayData.right, nil)
-        
+
         /// 1+2+5+2= + 1/4 =
         brain.debugPress(1)
         brain.operation("+")
         brain.debugPress(2)
         brain.operation("+")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "3")
         XCTAssertEqual(displayData.right, nil)
         brain.debugPress(5)
         brain.operation("+")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "8")
         XCTAssertEqual(displayData.right, nil)
         brain.debugPress(2)
         brain.operation("=")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "10")
         XCTAssertEqual(displayData.right, nil)
         brain.operation("+")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "10")
         XCTAssertEqual(displayData.right, nil)
         brain.debugPress(4)
         brain.operation("One_x")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,25")
         XCTAssertEqual(displayData.right, nil)
         brain.operation("=")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "10,25")
         XCTAssertEqual(displayData.right, nil)
-        
+
         /// 1+2*4=
         brain.operation("AC")
         brain.debugPress(1)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1")
         XCTAssertEqual(displayData.right, nil)
         brain.operation("+")
         brain.debugPress(2)
         brain.operation("x")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "2")
         XCTAssertEqual(displayData.right, nil)
         brain.debugPress(4)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "4")
         XCTAssertEqual(displayData.right, nil)
         brain.operation("=")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "9")
         XCTAssertEqual(displayData.right, nil)
-        
+
         /// 2*3*4*5=
         brain.operation("AC")
         brain.debugPress(2)
@@ -966,80 +1017,82 @@ class CalculatorTests: XCTestCase {
         brain.operation("x")
         brain.debugPress(4)
         brain.operation("x")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "24")
         XCTAssertEqual(displayData.right, nil)
         brain.debugPress(5)
         brain.operation("=")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "120")
         XCTAssertEqual(displayData.right, nil)
-        
+
         /// 1+2*4
         brain.operation("AC")
         brain.debugPress(1)
         brain.operation("+")
         brain.debugPress(2)
         brain.operation("x")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "2")
         XCTAssertEqual(displayData.right, nil)
         brain.debugPress(4)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "4")
         XCTAssertEqual(displayData.right, nil)
         brain.operation("+")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "9")
         XCTAssertEqual(displayData.right, nil)
         brain.debugPress(1)
         brain.debugPress(0)
         brain.debugPress(0)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "100")
         XCTAssertEqual(displayData.right, nil)
         brain.operation("=")
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "109")
         XCTAssertEqual(displayData.right, nil)
-        
+
         /// pi
         brain.operation("AC")
         brain.operation("π")
-        correct = "3,1415926535897932384626433832795028841971"
-//        XCTAssertEqual(brain.debugLastDouble, Double.pi)
-        res = displayData.left
-        resTruncated = String(res.prefix(correct.count))
-        XCTAssertEqual (resTruncated, correct)
-        
+        correct = "3,14159265"
+        displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual(displayData.left, correct)
+        XCTAssertEqual(displayData.right, nil)
+
         /// 1+pi
         brain.operation("AC")
         brain.debugPress(1)
         brain.operation("+")
         brain.operation("π")
         brain.operation("=")
-        correct = "4,1415926535897932384626433832795028841971"
-//        XCTAssertEqual(brain.debugLastDouble, 1.0+Double.pi)
-        res = displayData.left
-        resTruncated = String(res.prefix(correct.count))
-        XCTAssertEqual (resTruncated, correct)
-        
+        correct = "4,14159265"
+        displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual(displayData.left, correct)
+        XCTAssertEqual(displayData.right, nil)
+
         brain.operation("AC")
         brain.operation("π")
         brain.operation("x")
         brain.debugPress(2)
         brain.operation("=")
-        
-        
-        correct = String("6,28318530717958647692528676655900576839433879875021164194988918461563281257241799725606965068423413596429617302656461329418768921910116446345".prefix(100))
-//        XCTAssertEqual(brain.debugLastDouble, 2.0*Double.pi)
-        res = displayData.left
-        resTruncated = String(res.prefix(100))
-        XCTAssertEqual (resTruncated, correct)
-        
+        correct = "6,28318530"
+        displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual(displayData.left, correct)
+        XCTAssertEqual(displayData.right, nil)
+
         brain.operation("AC")
         brain.debugPress(2)
         brain.operation("x^y")
         brain.debugPress(1)
         brain.debugPress(0)
         brain.operation("=")
-//        XCTAssertEqual(brain.debugLastGmp, Gmp("1024", precision: precision).getDisplayData(lengths)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1024")
         XCTAssertEqual(displayData.right, nil)
-        
+
         brain.operation("AC")
         brain.debugPress(1)
         brain.debugPress(0)
@@ -1047,7 +1100,7 @@ class CalculatorTests: XCTestCase {
         brain.debugPress(2)
         brain.operation("=")
 //        XCTAssertEqual(brain.debugLastGmp, Gmp("1024", precision: precision).getDisplayData(lengths)
-        
+
         /// 2x(6+4)
         brain.operation("AC")
         brain.debugPress(2)
@@ -1057,11 +1110,13 @@ class CalculatorTests: XCTestCase {
         brain.operation("( ")
         XCTAssertEqual(brain.no, 2)
         brain.debugPress(6)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "6")
         XCTAssertEqual(brain.nn, 2)
         brain.operation("+")
         XCTAssertEqual(brain.no, 3)
         brain.debugPress(4)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "4")
         XCTAssertEqual(brain.nn, 3)
         brain.operation(" )")
@@ -1070,9 +1125,10 @@ class CalculatorTests: XCTestCase {
 //        XCTAssertEqual(brain.debugLastGmp, Gmp("10", precision: precision).getDisplayData(lengths)
         brain.operation("=")
 //        XCTAssertEqual(brain.debugLastGmp, Gmp("20", precision: precision).getDisplayData(lengths)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "20")
         XCTAssertEqual(displayData.right, nil)
-        
+
         /// 2x(6+4*(5+9))
         brain.operation("AC")
         brain.debugPress(2)
@@ -1090,7 +1146,7 @@ class CalculatorTests: XCTestCase {
         brain.operation(" )")
         brain.operation("=")
 //        XCTAssertEqual(brain.debugLastGmp, Gmp("124", precision: precision).getDisplayData(lengths)
-        
+
         /// 1+2=3
         brain.operation("AC")
         brain.debugPress(1)
@@ -1099,11 +1155,11 @@ class CalculatorTests: XCTestCase {
         brain.operation("=")
         brain.debugPress(2)
         XCTAssertEqual(brain.nn, 1)
-        
+
         brain.operation("AC")
         brain.operation("π")
 //        XCTAssertEqual(brain.debugLastDouble, 3.14159265358979, accuracy: 0.00000001)
-        
+
         brain.operation("AC")
         brain.debugPress(0)
         brain.operation(",")
@@ -1115,13 +1171,13 @@ class CalculatorTests: XCTestCase {
         brain.debugPress(4)
         brain.operation("=")
 //        XCTAssertEqual(brain.debugLastDouble, 0.000001)
-        
+
         brain.operation("AC")
         brain.debugPress(8)
         brain.debugPress(8)
         brain.operation("%")
 //        XCTAssertEqual(brain.debugLastDouble, 0.88)
-        
+
         brain.operation("AC")
         brain.debugPress(4)
         brain.debugPress(0)

@@ -103,9 +103,7 @@ class Brain {
     
     func debugPress(_ digit: Int) {
         if digit >= 0 && digit <= 9 {
-            Task {
-                operation(String(digit))
-            }
+            operation(String(digit))
         }
     }
     
@@ -138,6 +136,7 @@ class Brain {
     }
     
     func operation(_ symbol: String) {
+        if symbol != "C" && symbol != "AC" { print("nn \(nn) no \(no)") }
         /// TODO: implement this switch on symbol in the Model
         switch symbol {
         case "C":
