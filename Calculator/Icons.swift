@@ -115,9 +115,11 @@ struct Icons : View {
                     NavigationLink {
                         Settings(model: model, font: Font(screenInfo.infoUiFont))
                     } label: {
-                        Text("0.0…")
-                            .font(Font(screenInfo.infoUiFont))
-                            .minimumScaleFactor(0.01)
+                        Image(systemName: "gearshape")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .font(Font.title.weight(.thin))
+                            .frame(height: screenInfo.plusIconSize * 0.6)
                             .foregroundColor(.white)
                     }
                     
