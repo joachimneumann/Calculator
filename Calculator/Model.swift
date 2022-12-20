@@ -38,7 +38,10 @@ class Model : ObservableObject {
             print("isCalculating -> \(isCalculating)")
             DispatchQueue.main.async {
                 for key in C.keysAll {
-                    self.keyInfo[key]!.enabled = !self.isCalculating
+                    if !C.keysThatDoNotNeedToBeDisabled.contains(key) {
+                        print("key \(key)")
+                        self.keyInfo[key]!.enabled = !self.isCalculating
+                    }
                 }
             }
         }

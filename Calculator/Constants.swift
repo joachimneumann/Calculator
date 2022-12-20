@@ -73,7 +73,6 @@ struct C {
         return digitColors
     }
 
-    
     static let keysForDigits: [String] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
     static let keysOfOperator = ["C", "AC", "±", "%", "/", "x", "-", "+", "="]
     static let keysOfScientificOperators = [
@@ -83,9 +82,11 @@ struct C {
         "x!", "sin", "cos", "tan", "asin", "acos", "atan", "e", "EE",
         "Deg", "Rad", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh", "π", "Rand"]
     static let keysAll = [keysForDigits, [","], keysOfOperator, keysOfScientificOperators].joined()
+    
     static let keysThatRequireValidNumber = ["±", "%", "/", "x", "-", "+", "=", "( ", " )", "m+", "m-", "mr", "x^2", "x^3", "x^y", "e^x", "y^x", "2^x", "10^x", "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10", "x!", "sin", "cos", "tan", "asin", "acos", "atan", "EE", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh", "plusKey"]
     static let keysWithPendingOperations = ["y√", "x^y", "y^x", "logy", "x↑↑y", "EE"]
-    
+    static let keysThatDoNotNeedToBeDisabled = ["2nd", "Rad", "Deg"]
+
     static let fontWeight: UIFont.Weight = .thin // UIFont.Weight(rawValue: -4.02) is not continuous
     static let fontWidth: Font.Width = .standard // not supported in leangthmeasurement
     static var kerning: CGFloat = 0.0
