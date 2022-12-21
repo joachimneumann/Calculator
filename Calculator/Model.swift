@@ -59,6 +59,8 @@ class Model : ObservableObject {
     var copyAnimationDone = false
 
     private let brain: Brain
+    private let stupidBrain: Brain
+    private let stupidBrainPrecision = 100
     @Published var keyInfo: [String: KeyInfo] = [:]
     @Published var showAC = true
     @Published var hasBeenReset = false
@@ -85,18 +87,27 @@ class Model : ObservableObject {
         // the later assignment of precision is a a bit strange, but a work-around for the error
         // "'self' used in property access 'precision' before all stored properties are initialized"
         // At init, not much is happening in the brain
-        brain = Brain(precision: 0)
+        brain = Brain()
+        stupidBrain = Brain()
+
         brain.setPrecision(precision)
-        
-        for key in C.keysAll {
-            keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))
-        }
         brain.haveResultCallback = haveResultCallback
         brain.pendingOperatorCallback = pendingOperatorCallback
+
+        stupidBrain.setPrecision(stupidBrainPrecision)
+        stupidBrain.haveResultCallback = haveStupidBrainResultCallback
+        /// no pendingOperatorCallback
+
         if memoryValue == "" {
             brain.memory = nil
+            stupidBrain.memory = nil
         } else {
             brain.memory = Number(memoryValue, precision: precision)
+            stupidBrain.memory = Number(memoryValue, precision: stupidBrainPrecision)
+        }
+
+        for key in C.keysAll {
+            keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))
         }
     }
     
@@ -140,17 +151,10 @@ class Model : ObservableObject {
 
             self.offsetToVerticallyAlignTextWithkeyboard = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - self.lengths.height
             self.offsetToVerticallyIconWithText          = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - screenInfo.plusIconSize + screenInfo.uiFont.descender - 0.5 * screenInfo.uiFont.capHeight + screenInfo.plusIconSize * 0.5
-            self.updateDisplayData(overwritePreliminary: false)
+            self.updateDisplayData()
         }
     }
-    
-    
-    func afterRotation(with screenInfo: ScreenInfo) {
-        self.screenInfo = screenInfo
-        lengths = lengthMeasurement(width: screenInfo.displayWidth, uiFont: screenInfo.uiFont, infoUiFont: screenInfo.infoUiFont, ePadding: screenInfo.ePadding)
-    }
-
-    
+        
     // the update of the precision in brain can be slow.
     // Therefore, I only want to do that when leaving the settings screen
     func updatePrecision(to newPecision: Int) {
@@ -201,7 +205,7 @@ class Model : ObservableObject {
     }
     
     func speedTest(precision: Int) async -> Double {
-        let testBrain = Brain(precision: precision)
+        let testBrain = Brain()
         testBrain.setPrecision(precision)
         
         testBrain.operation("AC")
@@ -216,8 +220,20 @@ class Model : ObservableObject {
         return result
     }
     
-    func updateDisplayData(overwritePreliminary: Bool) {
-        if !displayData.preliminary || overwritePreliminary {
+    func updateDisplayData(forceNonPreliminary: Bool = false) {
+        if displayData.preliminary && !forceNonPreliminary {
+            var temp = stupidBrain.last.getDisplayData(
+                forLong: !screenInfo.isPortraitPhone,
+                lengths: lengths,
+                forceScientific: forceScientific,
+                showAsInteger: showAsInteger,
+                showAsFloat: showAsFloat)
+            temp.preliminary = true
+            DispatchQueue.main.async {
+                self.displayData = temp
+            }
+        } else {
+            /// not preliminary
             let temp = brain.last.getDisplayData(
                 forLong: !screenInfo.isPortraitPhone,
                 lengths: lengths,
@@ -227,6 +243,19 @@ class Model : ObservableObject {
             DispatchQueue.main.async {
                 self.displayData = temp
             }
+        }
+    }
+    
+    func haveStupidBrainResultCallback() {
+        var temp = stupidBrain.last.getDisplayData(
+            forLong: !screenInfo.isPortraitPhone,
+            lengths: lengths,
+            forceScientific: forceScientific,
+            showAsInteger: false,
+            showAsFloat: false)
+        temp.preliminary = true
+        DispatchQueue.main.async {
+            self.displayData = temp
         }
     }
     
@@ -243,7 +272,7 @@ class Model : ObservableObject {
             }
         }
         
-        updateDisplayData(overwritePreliminary: true)
+        updateDisplayData(forceNonPreliminary: true)
         
         for key in C.keysAll {
             if brain.isValidNumber {
@@ -306,7 +335,6 @@ class Model : ObservableObject {
             break
         default:
             if !isCalculating {
-                displayData = DisplayData(left: "waiting", preliminary: true)
                 if symbol == "AC" {
                     hasBeenReset.toggle()
                 } else {
@@ -314,6 +342,9 @@ class Model : ObservableObject {
                 }
                 Task {
                     DispatchQueue.main.async { self.isCalculating = true }
+
+                    stupidBrain.operation(symbol)
+
                     await asyncOperation(symbol)
                     if ["mc", "m+", "m-"].contains(symbol) {
                         if let memory = brain.memory {

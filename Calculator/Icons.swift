@@ -128,7 +128,7 @@ struct Icons : View {
                     if integerLabel.count > 0 {
                         Button {
                             model.showAsInteger.toggle()
-                            model.updateDisplayData(overwritePreliminary: true)
+                            model.updateDisplayData()
                         } label: {
                             Text(integerLabel)
                                 .minimumScaleFactor(0.01)
@@ -141,7 +141,7 @@ struct Icons : View {
                     if integerLabel.count == 0 && floatLabel.count > 0 {
                         Button {
                             model.showAsFloat.toggle()
-                            model.updateDisplayData(overwritePreliminary: true)
+                            model.updateDisplayData()
                         } label: {
                             Text(floatLabel)
                                 .minimumScaleFactor(0.01)

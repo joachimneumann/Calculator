@@ -100,7 +100,7 @@ struct Calculator: View {
             }
             .accentColor(.white) // for the navigation back button
             .onChange(of: model.lengths.withoutComma) { _ in
-                model.updateDisplayData(overwritePreliminary: false) // redraw with or without keyboard
+                model.updateDisplayData() // redraw with or without keyboard
             }
         }
     }
