@@ -39,12 +39,13 @@ struct Calculator: View {
                  mid level: Keyboard with info and rectangle on top
                  top level: single line
                  */
+                let color: Color = (model.isCopying || model.isPasting || !model.copyDone || !model.pasteDone) ? .orange : (model.displayData.preliminary ? .gray : .white)
                 HStack(alignment: .top, spacing: 0.0) {
                     Spacer(minLength: 0.0)
                     ScrollViewConditionalAnimation(
                         text: model.displayData.left,
                         font: Font(model.screenInfo.uiFont),
-                        foregroundColor: model.isCopying || model.isPasting || !model.copyDone || !model.pasteDone ? .orange : .white,
+                        foregroundColor: color,
                         backgroundColor: testColors ? .yellow : .black,
                         offsetY: model.offsetToVerticallyAlignTextWithkeyboard,
                         disabled: !model.isZoomed,
@@ -54,7 +55,7 @@ struct Calculator: View {
                         Text(model.displayData.right!)
                             .kerning(C.kerning)
                             .font(Font(model.screenInfo.uiFont))
-                            .foregroundColor(model.isCopying || model.isPasting || !model.copyDone || !model.pasteDone ? .orange : .white)
+                            .foregroundColor(color)
                             .padding(.leading, model.screenInfo.ePadding)
                         .offset(y: model.offsetToVerticallyAlignTextWithkeyboard)
                     }
@@ -99,7 +100,7 @@ struct Calculator: View {
             }
             .accentColor(.white) // for the navigation back button
             .onChange(of: model.lengths.withoutComma) { _ in
-                model.updateDisplayData() // redraw with or without keyboard
+                model.updateDisplayData(overwritePreliminary: false) // redraw with or without keyboard
             }
         }
     }

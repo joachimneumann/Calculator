@@ -140,7 +140,7 @@ class Model : ObservableObject {
 
             self.offsetToVerticallyAlignTextWithkeyboard = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - self.lengths.height
             self.offsetToVerticallyIconWithText          = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - screenInfo.plusIconSize + screenInfo.uiFont.descender - 0.5 * screenInfo.uiFont.capHeight + screenInfo.plusIconSize * 0.5
-            self.updateDisplayData()
+            self.updateDisplayData(overwritePreliminary: false)
         }
     }
     
@@ -216,19 +216,17 @@ class Model : ObservableObject {
         return result
     }
     
-    func updateDisplayData() {
-        // print("updateDisplayData()")
-//        DispatchQueue.main.async {
-//            self.displayData = DisplayData(left: "")
-//        }
-        let temp = brain.last.getDisplayData(
-            forLong: !screenInfo.isPortraitPhone,
-            lengths: lengths,
-            forceScientific: forceScientific,
-            showAsInteger: showAsInteger,
-            showAsFloat: showAsFloat)
-        DispatchQueue.main.async {
-            self.displayData = temp
+    func updateDisplayData(overwritePreliminary: Bool) {
+        if !displayData.preliminary || overwritePreliminary {
+            let temp = brain.last.getDisplayData(
+                forLong: !screenInfo.isPortraitPhone,
+                lengths: lengths,
+                forceScientific: forceScientific,
+                showAsInteger: showAsInteger,
+                showAsFloat: showAsFloat)
+            DispatchQueue.main.async {
+                self.displayData = temp
+            }
         }
     }
     
@@ -245,7 +243,7 @@ class Model : ObservableObject {
             }
         }
         
-        updateDisplayData()
+        updateDisplayData(overwritePreliminary: true)
         
         for key in C.keysAll {
             if brain.isValidNumber {
@@ -308,6 +306,7 @@ class Model : ObservableObject {
             break
         default:
             if !isCalculating {
+                displayData = DisplayData(left: "waiting", preliminary: true)
                 if symbol == "AC" {
                     hasBeenReset.toggle()
                 } else {

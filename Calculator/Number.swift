@@ -14,6 +14,7 @@ struct DisplayData {
     var isInteger: Bool = false
     var isFloat: Bool = false
     var isAbbreviated: Bool = false // show a message that there is more?
+    var preliminary: Bool = false
 }
 
 class Number: CustomDebugStringConvertible {
@@ -325,7 +326,7 @@ class Number: CustomDebugStringConvertible {
             /// Do I need to shorten the mantissa to fit into the display?
             let remainingMantissaLength = withCommaScientific - ret.right!.count
             if remainingMantissaLength < 3 {
-                ret.left = "too large"
+                ret.left = "Can't Show"
                 ret.right = nil
                 ret.isAbbreviated = false
                 return ret
