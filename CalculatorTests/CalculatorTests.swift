@@ -510,7 +510,8 @@ class CalculatorTests: XCTestCase {
     }
     
     func test() {
-        let brain = Brain(precision: 100)
+        let brain = Brain()
+        brain.setPrecision(100)
         let lengths = Lengths(10)
         var displayData: DisplayData
 
