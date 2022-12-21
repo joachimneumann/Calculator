@@ -29,6 +29,12 @@ class Model : ObservableObject {
             }
         }
     }
+    
+    private let timerDefaultText = "click to measure"
+    private var timer: Timer?
+    private var timerCounter = 0
+    @Published var timerInfo: String
+
     @Published var screenInfo: ScreenInfo = ScreenInfo(hardwareSize: CGSize(), insets: UIEdgeInsets(), appOrientation: .unknown)
     var offsetToVerticallyAlignTextWithkeyboard: CGFloat = 0.0
     var offsetToVerticallyIconWithText: CGFloat = 0.0
@@ -72,6 +78,7 @@ class Model : ObservableObject {
     }
     
     init(isZoomed: Bool) {
+        timerInfo = timerDefaultText
         // print("Model init isPortraitPhone \(screenInfo.isPortraitPhone)")
         self.isZoomed = isZoomed
         
@@ -92,6 +99,40 @@ class Model : ObservableObject {
             brain.memory = Number(memoryValue, precision: precision)
         }
     }
+    
+    var timerIsRunning: Bool { timer != nil }
+    
+    func timerStart() {
+        timerCounter = 0
+        DispatchQueue.main.async {
+            self.timerInfo = "0"
+        }
+        timer = Timer.scheduledTimer(withTimeInterval:1.0, repeats: true) { _ in
+            self.timerCounter += 1
+            DispatchQueue.main.async {
+                self.timerInfo = "\(self.timerCounter)"
+            }
+        }
+    }
+    
+    func timerStop(with executionTime: Double) {
+        timerCounter = 0
+        timer?.invalidate()
+        timer = nil
+        DispatchQueue.main.async {
+            self.timerInfo = executionTime.asTime
+        }
+    }
+
+    func timerReset() {
+        timerCounter = 0
+        timer?.invalidate()
+        timer = nil
+        DispatchQueue.main.async {
+            self.timerInfo = self.timerDefaultText
+        }
+    }
+
     func updateScreenInfo(screenInfo: ScreenInfo) {
         DispatchQueue.main.async {
             self.screenInfo = screenInfo
@@ -191,6 +232,7 @@ class Model : ObservableObject {
     }
     
     func speedTest(precision: Int) async -> Double {
+        print("speedTest start")
         let testBrain = Brain(precision: precision)
         testBrain.setPrecision(precision)
         
@@ -198,10 +240,12 @@ class Model : ObservableObject {
         //print("testBrain.n.count \(testBrain.n.count)")
         testBrain.operation("Rand")
         
-        let timer = ParkBenchTimer()
+        let parkBenchTimer = ParkBenchTimer()
         testBrain.operation("√")
         testBrain.operation("sin")
-        return timer.stop()
+        let result = parkBenchTimer.stop()
+        print("speedTest done \(result.asTime)")
+        return result
     }
     
     func updateDisplayData() {

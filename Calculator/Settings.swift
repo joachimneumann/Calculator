@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Settings: View {
-    var model: Model
+    @ObservedObject var model: Model
     let font: Font
     
     func decrease(_ current: Int) -> Int {
@@ -33,19 +33,16 @@ struct Settings: View {
     }
     
     @Environment(\.presentationMode) var presentation
-    static let measureButtonDefault = "click to measure"
-    @State private var measureButtonText = Settings.measureButtonDefault
     @State var settingsPrecision: Int = 0
     @State var settingsForceScientific: Bool = false
     private let MIN_PRECISION      = 10
     private let PHYSICAL_MEMORY = ProcessInfo.processInfo.physicalMemory
-    //    @ObservedObject var stopWatch = StopWatch()
     
     var body: some View {
         let bitsInfo = Gmp.bits(for: settingsPrecision)
         let internalPrecisionInfo = Gmp.internalPrecision(for: settingsPrecision)
         let sizeOfOneNumber = Gmp.memorySize(bits: bitsInfo)
-        let memoryNeeded = sizeOfOneNumber * 40
+        let memoryNeeded = sizeOfOneNumber * 100
         VStack {
             HStack {
                 Button {
@@ -68,18 +65,18 @@ struct Settings: View {
                     HStack {
                         Text("Precision:")
                         ColoredStepper(
-                            plusEnabled: true,//!stopWatch.isRunning && memoryNeeded < PHYSICAL_MEMORY,
-                            minusEnabled: true,//!stopWatch.isRunning && settingsPrecision > MIN_PRECISION,
+                            plusEnabled: !model.timerIsRunning && memoryNeeded < PHYSICAL_MEMORY,
+                            minusEnabled: !model.timerIsRunning && settingsPrecision > MIN_PRECISION,
                             onIncrement: {
                                 DispatchQueue.main.async {
                                     settingsPrecision = increase(settingsPrecision)
-                                    measureButtonText = Settings.measureButtonDefault
+                                    model.timerReset()
                                 }
                             },
                             onDecrement: {
                                 DispatchQueue.main.async {
                                     settingsPrecision = decrease(settingsPrecision)
-                                    measureButtonText = Settings.measureButtonDefault
+                                    model.timerReset()
                                 }
                             })
                         .padding(.horizontal, 4)
@@ -108,34 +105,28 @@ struct Settings: View {
                     HStack {
                         Text("Time to calculate sin(")
                             .foregroundColor(.gray)
-                        let h = 40.0
+                        let h = 3 * model.screenInfo.infoUiFontSize
                         Label(keyInfo: model.keyInfo["√"]!, size: h, color: .gray)
                             .frame(width: h, height: h)
-                            .offset(x: -17.0)
+                            .offset(x: -1.2 * model.screenInfo.infoUiFontSize)
                         Text("):")
                             .foregroundColor(.gray)
-                            .padding(.leading, -37.0)
+                            .offset(x: -2.4 * model.screenInfo.infoUiFontSize)
                         Button {
-                            //                        if !stopWatch.isRunning {
-                            //                            self.stopWatch.start()
-                            //                            Task {
-                            //                                DispatchQueue.main.async {
-                            //                                    measureButtonText = "..."
-                            //                                }
-                            //                                let result = await model.speedTest(precision: settingsPrecision)
-                            //                                self.stopWatch.stop()
-                            //                                DispatchQueue.main.async {
-                            //                                    measureButtonText = result.asTime
-                            //                                }
-                            //                            }
-                            //                        }
+                                model.timerStart()
+                            Task {
+                                let result = await model.speedTest(precision: settingsPrecision)
+                                model.timerStop(with: result)
+                            }
                         } label: {
-                            //                        Text(stopWatch.isRunning && stopWatch.counter > 0 ? "\(stopWatch.counter)" : measureButtonText)
-                            Text(measureButtonText)
+                            Text(model.timerInfo)
                                 .foregroundColor(.gray)
                         }
+                        .disabled(model.timerIsRunning)
+                        .offset(x: -2.0 * model.screenInfo.infoUiFontSize)
                     }
-                    
+                    .offset(y: -0.15 * model.screenInfo.infoUiFontSize)
+
                     HStack(spacing: 0.0) {
                         Text("Force scientific display")
                         Toggle("", isOn: $settingsForceScientific)
@@ -177,31 +168,6 @@ struct Settings: View {
             settingsPrecision       = model.precision
         }
         .navigationBarBackButtonHidden(true)
-    }
-    
-    class StopWatch: ObservableObject {
-        @Published var counter: Int = 0
-        @Published var isRunning = false
-        var timer = Timer()
-        
-        func start() {
-            counter = 0
-            timer = Timer.scheduledTimer(
-                withTimeInterval: 1.0,
-                repeats: true) { _ in
-                    self.counter += 1
-                }
-            isRunning = true
-        }
-        func stop() {
-            timer.invalidate()
-            isRunning = false
-        }
-        func reset() {
-            timer.invalidate()
-            counter = 0
-            isRunning = false
-        }
     }
     
     struct BuyButton: ButtonStyle {
