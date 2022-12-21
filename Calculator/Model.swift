@@ -158,38 +158,7 @@ class Model : ObservableObject {
         brain.setPrecision(newPecision)
     }
     
-    func toPastBin() {
-//        DispatchQueue.main.async {
-//            withAnimation(.easeIn(duration: 0.1)) {
-//                self.isCopyingOrPasting = true
-//                print("isCopyingOrPasting \(self.isCopyingOrPasting)")
-//            }
-//        }
-//        Task {
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-//                withAnimation(.easeIn(duration: 0.3)) {
-//                    self.isCopyingOrPasting = false
-//                }
-//            }
-        let displayData = brain.last.getDisplayData(
-            forLong: true,
-            lengths: Lengths(precision),
-            forceScientific: false,
-            showAsInteger: showAsInteger,
-            showAsFloat: showAsFloat,
-            maxDisplayLength: precision)
-        UIPasteboard.general.string = displayData.left + (displayData.right ?? "")
-//            await g()
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-//                withAnimation(.easeIn(duration: 0.3)) {
-//                    self.isCopyingOrPasting = false
-//                    print("isCopyingOrPasting \(self.isCopyingOrPasting)")
-//                }
-//            }
-//        }
-    }
-    
-    func g() async {
+    func copyToPastBin() async {
         let displayData = brain.last.getDisplayData(
             forLong: true,
             lengths: Lengths(precision),

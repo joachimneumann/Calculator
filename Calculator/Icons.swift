@@ -64,7 +64,7 @@ struct Icons : View {
                                             model.copyDone = false
                                             //print("model.copyDone \(model.copyDone)")
                                         }
-                                        await model.g()
+                                        await model.copyToPastBin()
                                         DispatchQueue.main.async {
                                             model.copyDone = true
                                             //print("model.copyDone \(model.copyDone)")
