@@ -86,9 +86,13 @@ class Number: CustomDebugStringConvertible {
     }
 
     func setValue(other number: Number) {
-        number.toGmp()
-        toGmp()
-        _gmp!.setValue(other: number._gmp!)
+        if number.isStr {
+            _str = number.str
+            _gmp = nil
+        } else {
+            toGmp()
+            _gmp!.setValue(other: number._gmp!)
+        }
     }
 
     func appendZero()  {
