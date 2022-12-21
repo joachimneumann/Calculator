@@ -24,7 +24,6 @@ struct PortraitDisplay: View {
                     .multilineTextAlignment(.trailing)
                     .background(testColors ? .black : .black).opacity(testColors ? 0.9 : 1.0)
                     .lineLimit(1)
-                    .frame(maxHeight: 300, alignment: .bottomTrailing)
             } else {
                 Text(displayData.left)
                     .kerning(C.kerning)

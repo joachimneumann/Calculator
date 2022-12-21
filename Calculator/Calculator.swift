@@ -18,7 +18,15 @@ struct Calculator: View {
         // let _ = print("model.displayData.left \(model.displayData.left)")
         if model.screenInfo.isPortraitPhone {
             VStack(spacing: 0.0) {
-                Spacer()
+                Spacer(minLength: 0.0)
+                if model.displayData.preliminary {
+                    let dotDiamater = model.screenInfo.calculatorSize.width * 0.05
+                    HStack(spacing: 0.0) {
+                        Spacer()
+                        AnimatedDots(dotDiamater: dotDiamater)
+                    }
+                    .padding(.bottom, dotDiamater)
+                }
                 PortraitDisplay(
                     displayData: model.displayData,
                     screenInfo: model.screenInfo,
