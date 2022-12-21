@@ -16,3 +16,4 @@ dist/catalyst
 dist/signed
 dist/gmp.xcframework
 dist/mpfr.xcframework
+~$*
