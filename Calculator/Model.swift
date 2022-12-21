@@ -133,7 +133,7 @@ class Model : ObservableObject {
         }
     }
 
-    func updateScreenInfo(screenInfo: ScreenInfo) {
+    func updateScreenInfo(to screenInfo: ScreenInfo) {
         DispatchQueue.main.async {
             self.screenInfo = screenInfo
             self.lengths = lengthMeasurement(width: screenInfo.displayWidth, uiFont: screenInfo.uiFont, infoUiFont: screenInfo.infoUiFont, ePadding: screenInfo.ePadding)
@@ -289,19 +289,9 @@ class Model : ObservableObject {
             }
         }
         previous = op
-        //        DispatchQueue.main.async {
-        //            print("p color / \(self.keyInfo["/"]!.colors.upColor)")
-        //            print("p color x \(self.keyInfo["x"]!.colors.upColor)")
-        //            print("p color - \(self.keyInfo["-"]!.colors.upColor)")
-        //            print("p color + \(self.keyInfo["+"]!.colors.upColor)")
-        //        }
     }
-    
+
     func pressed(_ _symbol: String) {
-        //        print("color / \(keyInfo["/"]!.colors.upColor)")
-        //        print("color x \(keyInfo["x"]!.colors.upColor)")
-        //        print("color - \(keyInfo["-"]!.colors.upColor)")
-        //        print("color + \(keyInfo["+"]!.colors.upColor)")
         let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(_symbol) && !rad ? _symbol+"D" : _symbol
         
         switch symbol {
@@ -348,7 +338,7 @@ class Model : ObservableObject {
             }
         }
     }
-    
+
     func asyncOperation(_ symbol: String) async {
         brain.operation(symbol)
         DispatchQueue.main.async { self.isCalculating = false }
