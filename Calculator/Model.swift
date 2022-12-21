@@ -232,7 +232,6 @@ class Model : ObservableObject {
     }
     
     func speedTest(precision: Int) async -> Double {
-        print("speedTest start")
         let testBrain = Brain(precision: precision)
         testBrain.setPrecision(precision)
         
@@ -244,7 +243,7 @@ class Model : ObservableObject {
         testBrain.operation("√")
         testBrain.operation("sin")
         let result = parkBenchTimer.stop()
-        print("speedTest done \(result.asTime)")
+        // print("speedTest done \(result.asTime)")
         return result
     }
     
