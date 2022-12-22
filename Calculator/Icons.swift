@@ -16,7 +16,9 @@ struct Icons : View {
     let isCalculating: Bool
     @State var pasteAllowedState: Bool = true
     @Binding var isZoomed: Bool
-    
+    @State var copyDone = true
+    @State var pasteDone = true
+
     var body: some View {
         VStack(alignment: .center, spacing: 0.0) {
             if isCalculating {
@@ -50,9 +52,9 @@ struct Icons : View {
                     } else {
                         Text("copy")
                             .font(Font(screenInfo.infoUiFont))
-                            .foregroundColor(model.isCopying || !model.copyDone ? Color.orange : Color.white)
+                            .foregroundColor(model.isCopying || !copyDone ? Color.orange : Color.white)
                             .onTapGesture {
-                                if model.copyDone && model.pasteDone {
+                                if copyDone && pasteDone {
                                     DispatchQueue.main.async {
                                         model.isCopying = true
                                     }
@@ -61,13 +63,13 @@ struct Icons : View {
                                     }
                                     Task {
                                         DispatchQueue.main.async {
-                                            model.copyDone = false
-                                            //print("model.copyDone \(model.copyDone)")
+                                            copyDone = false
+                                            //print("copyDone \(copyDone)")
                                         }
                                         await model.copyToPastBin()
                                         DispatchQueue.main.async {
-                                            model.copyDone = true
-                                            //print("model.copyDone \(model.copyDone)")
+                                            copyDone = true
+                                            //print("copyDone \(copyDone)")
                                         }
                                     }
                                 }
@@ -84,9 +86,9 @@ struct Icons : View {
                     } else {
                         Text("paste")
                             .font(Font(screenInfo.infoUiFont))
-                            .foregroundColor((model.isPasting || !model.pasteDone) ? Color.orange : Color.white)
+                            .foregroundColor((model.isPasting || !pasteDone) ? Color.orange : Color.white)
                             .onTapGesture {
-                                if model.copyDone && model.pasteDone {
+                                if copyDone && pasteDone {
                                     DispatchQueue.main.async {
                                         model.isPasting = true
                                     }
@@ -95,13 +97,13 @@ struct Icons : View {
                                     }
                                     Task {
                                         DispatchQueue.main.async {
-                                            model.pasteDone = false
-                                            //print("model.pasteDone \(model.pasteDone)")
+                                            pasteDone = false
+                                            //print("pasteDone \(pasteDone)")
                                         }
                                         model.fromPastBin()
                                         DispatchQueue.main.async {
-                                            model.pasteDone = true
-                                            //print("model.pasteDone \(model.pasteDone)")
+                                            pasteDone = true
+                                            //print("pasteDone \(pasteDone)")
                                         }
                                     }
                                 }

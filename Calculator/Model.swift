@@ -54,8 +54,6 @@ class Model : ObservableObject {
     var hideKeyboard = false
     @Published var isCopying: Bool = false
     @Published var isPasting: Bool = false
-    @Published var copyDone = true
-    @Published var pasteDone = true
     var copyAnimationDone = false
 
     private let brain: Brain
@@ -151,7 +149,7 @@ class Model : ObservableObject {
 
             self.offsetToVerticallyAlignTextWithkeyboard = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - self.lengths.height
             self.offsetToVerticallyIconWithText          = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - screenInfo.plusIconSize + screenInfo.uiFont.descender - 0.5 * screenInfo.uiFont.capHeight + screenInfo.plusIconSize * 0.5
-            self.updateDisplayData()
+            self.updateDisplayData(forceNonPreliminary: false)
         }
     }
         
