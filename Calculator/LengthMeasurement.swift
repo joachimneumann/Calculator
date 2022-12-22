@@ -56,7 +56,7 @@ func lengthMeasurement(width: CGFloat, uiFont: UIFont, infoUiFont: UIFont, ePadd
         digitWidth: digitWidth,
         infoHeight: "info".textSize(for: infoUiFont).height,
         ePadding: ePadding)
-    // print("lengthMeasurement \(result)")
+     print("lengthMeasurement \(result)")
     return result
 }
 

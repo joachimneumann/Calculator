@@ -16,6 +16,8 @@ struct ScrollViewConditionalAnimation: View {
     let disabled: Bool
     @Binding var scrollViewHasScolled: Bool
     var scrollViewID: UUID
+    let preliminary: Bool
+    let digitWidth: CGFloat
     
     private struct OffsetKey: PreferenceKey {
         static var defaultValue: CGFloat = 0
@@ -28,18 +30,36 @@ struct ScrollViewConditionalAnimation: View {
         GeometryReader { g in
             ScrollView(.vertical) {
                 HStack(alignment: .top, spacing: 0.0) {
+//                    let _ = print("MANTISSA \(text.count)")
+                    let toShow = preliminary && text.count > 1 ? String(text.dropLast().dropLast()) : text
                     Spacer(minLength: 0.0)
-                    Text(text)
-                        .kerning(C.kerning)
-                        .font(font)
-                        .foregroundColor(foregroundColor)
-                        .multilineTextAlignment(.trailing)
-                        .background(backgroundColor)
-                        .lineLimit(nil)
-                        .offset(y: offsetY)
-                        .anchorPreference(key: OffsetKey.self, value: .top) {
-                            g[$0].y
+                    HStack(alignment: .bottom, spacing: 0.0) {
+                        Text(toShow)// preliminary \(preliminary.description)")
+                            .kerning(C.kerning)
+                            .font(font)
+                            .foregroundColor(foregroundColor)
+                            .multilineTextAlignment(.trailing)
+                            .background(backgroundColor)
+                            .lineLimit(nil)
+                            .offset(y: offsetY)
+                            .anchorPreference(key: OffsetKey.self, value: .top) {
+                                g[$0].y
+                            }
+                        if preliminary {
+                            Text("X")// preliminary \(preliminary.description)")
+                                .kerning(C.kerning)
+                                .font(font)
+                                .foregroundColor(foregroundColor)
+                                .multilineTextAlignment(.trailing)
+                                .background(backgroundColor)
+                                .lineLimit(nil)
+                                .offset(y: offsetY)
+//                            let _ = print("show dots")
+//                            AnimatedDots().frame(width: digitWidth, height: digitWidth / 3)
+//                                .background(Color.yellow)
+//                                .offset(y: -digitWidth / 6)
                         }
+                    }
                 }
             }
             .id(scrollViewID)

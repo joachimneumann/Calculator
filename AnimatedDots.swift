@@ -8,34 +8,35 @@
 import SwiftUI
 
 struct AnimatedDots: View {
-    let dotDiamater: CGFloat
-
-    let small = 0.6
-    let large = 0.8
-    let duration = 0.4
+    private let small = 0.6
+    private let large = 0.8
+    private let duration = 0.4
 
     @State private var shouldAnimate = false
 
     var body: some View {
-        HStack(spacing: 0.0) {
-            Circle()
-                .fill(Color.gray)
-                .frame(width: dotDiamater, height: dotDiamater)
-                .scaleEffect(shouldAnimate ? large : small)
-                .animation(Animation.easeInOut(duration: duration).repeatForever(), value: shouldAnimate)
-                .scaleEffect(shouldAnimate ? large : small)
-            Circle()
-                .fill(.gray)
-                .frame(width: dotDiamater, height: dotDiamater)
-                .scaleEffect(shouldAnimate ? large : small)
-                .animation(Animation.easeInOut(duration: duration).repeatForever().delay(duration/2), value: shouldAnimate)
-                .scaleEffect(shouldAnimate ? large : small)
-            Circle()
-                .fill(.gray)
-                .frame(width: dotDiamater, height: dotDiamater)
-                .scaleEffect(shouldAnimate ? large : small)
-                .animation(Animation.easeInOut(duration: duration).repeatForever().delay(duration), value: shouldAnimate)
-                .scaleEffect(shouldAnimate ? large : small)
+        GeometryReader { (geo) in
+            let dotDiameter = geo.size.width / 3
+            HStack(spacing: 0.0) {
+                Circle()
+                    .fill(Color.gray)
+                    .frame(width: dotDiameter, height: dotDiameter)
+                    .scaleEffect(shouldAnimate ? large : small)
+                    .animation(Animation.easeInOut(duration: duration).repeatForever(), value: shouldAnimate)
+                    .scaleEffect(shouldAnimate ? large : small)
+                Circle()
+                    .fill(.gray)
+                    .frame(width: dotDiameter, height: dotDiameter)
+                    .scaleEffect(shouldAnimate ? large : small)
+                    .animation(Animation.easeInOut(duration: duration).repeatForever().delay(duration/2), value: shouldAnimate)
+                    .scaleEffect(shouldAnimate ? large : small)
+                Circle()
+                    .fill(.gray)
+                    .frame(width: dotDiameter, height: dotDiameter)
+                    .scaleEffect(shouldAnimate ? large : small)
+                    .animation(Animation.easeInOut(duration: duration).repeatForever().delay(duration), value: shouldAnimate)
+                    .scaleEffect(shouldAnimate ? large : small)
+            }
         }
         .onAppear {
             self.shouldAnimate = true
@@ -45,7 +46,7 @@ struct AnimatedDots: View {
 
 struct Dots_Previews: PreviewProvider {
     static var previews: some View {
-        AnimatedDots(dotDiamater: 15)
+        AnimatedDots()
             .background(Color.black)
     }
 }

@@ -18,146 +18,139 @@ struct Icons : View {
     @Binding var isZoomed: Bool
     @State var copyDone = true
     @State var pasteDone = true
-
+    
     var body: some View {
         VStack(alignment: .center, spacing: 0.0) {
-            if isCalculating {
-                AnimatedDots(dotDiamater: model.screenInfo.plusIconSize * 0.35)
-                    .padding(.top, screenInfo.plusIconSize * 0.3)
-                    .frame(width: model.screenInfo.plusIconSize + model.screenInfo.plusIconLeftPadding)
-                    .animation(Animation.easeInOut(duration: 0.4), value: isZoomed)
-            } else {
-                Image(systemName: "plus.circle.fill")
-                    .resizable()
-                    .font(Font.title.weight(.thin))
-                    .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
-                    .frame(width: screenInfo.plusIconSize, height: screenInfo.plusIconSize)
-                    .background(.white)
-                    .foregroundColor(.gray)
-                    .clipShape(Circle())
-                    .onTapGesture {
-                        withAnimation(.linear(duration: 0.4)) {
-                            isZoomed.toggle()
-                        }
+            Image(systemName: "plus.circle.fill")
+                .resizable()
+                .font(Font.title.weight(.thin))
+                .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
+                .frame(width: screenInfo.plusIconSize, height: screenInfo.plusIconSize)
+                .background(.white)
+                .foregroundColor(.gray)
+                .clipShape(Circle())
+                .onTapGesture {
+                    withAnimation(.linear(duration: 0.4)) {
+                        isZoomed.toggle()
                     }
-                Group {
-                    if !simulatePurchased && store.purchasedIDs.isEmpty {
-                        NavigationLink {
-                            PurchaseView(store: store, model: model, font: Font(screenInfo.infoUiFont))
-                        } label: {
-                            Text("copy")
-                                .font(Font(screenInfo.infoUiFont))
-                                .foregroundColor(.white)
-                        }
-                    } else {
+                }
+            Group {
+                if !simulatePurchased && store.purchasedIDs.isEmpty {
+                    NavigationLink {
+                        PurchaseView(store: store, model: model, font: Font(screenInfo.infoUiFont))
+                    } label: {
                         Text("copy")
                             .font(Font(screenInfo.infoUiFont))
-                            .foregroundColor(model.isCopying || !copyDone ? Color.orange : Color.white)
-                            .onTapGesture {
-                                if copyDone && pasteDone {
-                                    DispatchQueue.main.async {
-                                        model.isCopying = true
-                                    }
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                        model.isCopying = false
-                                    }
-                                    Task {
-                                        DispatchQueue.main.async {
-                                            copyDone = false
-                                            //print("copyDone \(copyDone)")
-                                        }
-                                        await model.copyToPastBin()
-                                        DispatchQueue.main.async {
-                                            copyDone = true
-                                            //print("copyDone \(copyDone)")
-                                        }
-                                    }
-                                }
-                            }
-                    }
-                    if !simulatePurchased && store.purchasedIDs.isEmpty {
-                        NavigationLink {
-                            PurchaseView(store: store, model: model, font: Font(screenInfo.infoUiFont))
-                        } label: {
-                            Text("paste")
-                                .font(Font(screenInfo.infoUiFont))
-                                .foregroundColor(.white)
-                        }
-                    } else {
-                        Text("paste")
-                            .font(Font(screenInfo.infoUiFont))
-                            .foregroundColor((model.isPasting || !pasteDone) ? Color.orange : Color.white)
-                            .onTapGesture {
-                                if copyDone && pasteDone {
-                                    DispatchQueue.main.async {
-                                        model.isPasting = true
-                                    }
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                        model.isPasting = false
-                                    }
-                                    Task {
-                                        DispatchQueue.main.async {
-                                            pasteDone = false
-                                            //print("pasteDone \(pasteDone)")
-                                        }
-                                        model.fromPastBin()
-                                        DispatchQueue.main.async {
-                                            pasteDone = true
-                                            //print("pasteDone \(pasteDone)")
-                                        }
-                                    }
-                                }
-                            }
-                        //                            DispatchQueue.main.async {
-                        //                                pasteAllowedState = model.checkIfPasteBinIsValidNumber()
-                        //                            }
-                        //                          .disabled(!pasteAllowedState)
-                    }
-                    
-                    NavigationLink {
-                        Settings(model: model, font: Font(screenInfo.infoUiFont))
-                    } label: {
-                        Image(systemName: "gearshape")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .font(Font.title.weight(.thin))
-                            .frame(height: screenInfo.plusIconSize * 0.6)
                             .foregroundColor(.white)
                     }
-                    
-                    let integerLabel = model.displayData.isInteger ? (model.showAsInteger ? "→ sci" : "→ int") : ""
-                    //                    (model.displayData.isFloat ? "→ float" : "")
-                    if integerLabel.count > 0 {
-                        Button {
-                            model.showAsInteger.toggle()
-                            model.updateDisplayData()
-                        } label: {
-                            Text(integerLabel)
-                                .minimumScaleFactor(0.01)
-                                .font(Font(screenInfo.infoUiFont))
-                                .foregroundColor(.white)
+                } else {
+                    Text("copy")
+                        .font(Font(screenInfo.infoUiFont))
+                        .foregroundColor(model.isCopying || !copyDone ? Color.orange : Color.white)
+                        .onTapGesture {
+                            if copyDone && pasteDone {
+                                DispatchQueue.main.async {
+                                    model.isCopying = true
+                                }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                    model.isCopying = false
+                                }
+                                Task {
+                                    DispatchQueue.main.async {
+                                        copyDone = false
+                                        //print("copyDone \(copyDone)")
+                                    }
+                                    await model.copyToPastBin()
+                                    DispatchQueue.main.async {
+                                        copyDone = true
+                                        //print("copyDone \(copyDone)")
+                                    }
+                                }
+                            }
                         }
-                    }
-                    
-                    let floatLabel = model.displayData.isFloat ? (model.showAsFloat ? "→ sci" : "→ float") : ""
-                    if integerLabel.count == 0 && floatLabel.count > 0 {
-                        Button {
-                            model.showAsFloat.toggle()
-                            model.updateDisplayData()
-                        } label: {
-                            Text(floatLabel)
-                                .minimumScaleFactor(0.01)
-                                .font(Font(screenInfo.infoUiFont))
-                                .foregroundColor(.white)
-                        }
-                    }
-                    
                 }
-                .padding(.top, screenInfo.plusIconSize * 0.5)
-                .lineLimit(1)
-                .minimumScaleFactor(0.01) // in case "paste" is too wide on small phones
-                .frame(width: model.screenInfo.plusIconSize + model.screenInfo.plusIconLeftPadding)
+                if !simulatePurchased && store.purchasedIDs.isEmpty {
+                    NavigationLink {
+                        PurchaseView(store: store, model: model, font: Font(screenInfo.infoUiFont))
+                    } label: {
+                        Text("paste")
+                            .font(Font(screenInfo.infoUiFont))
+                            .foregroundColor(.white)
+                    }
+                } else {
+                    Text("paste")
+                        .font(Font(screenInfo.infoUiFont))
+                        .foregroundColor((model.isPasting || !pasteDone) ? Color.orange : Color.white)
+                        .onTapGesture {
+                            if copyDone && pasteDone {
+                                DispatchQueue.main.async {
+                                    model.isPasting = true
+                                }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                    model.isPasting = false
+                                }
+                                Task {
+                                    DispatchQueue.main.async {
+                                        pasteDone = false
+                                        //print("pasteDone \(pasteDone)")
+                                    }
+                                    model.fromPastBin()
+                                    DispatchQueue.main.async {
+                                        pasteDone = true
+                                        //print("pasteDone \(pasteDone)")
+                                    }
+                                }
+                            }
+                        }
+                    //                            DispatchQueue.main.async {
+                    //                                pasteAllowedState = model.checkIfPasteBinIsValidNumber()
+                    //                            }
+                    //                          .disabled(!pasteAllowedState)
+                }
+                
+                NavigationLink {
+                    Settings(model: model, font: Font(screenInfo.infoUiFont))
+                } label: {
+                    Image(systemName: "gearshape")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .font(Font.title.weight(.thin))
+                        .frame(height: screenInfo.plusIconSize * 0.6)
+                        .foregroundColor(.white)
+                }
+                
+                let integerLabel = model.displayData.isInteger ? (model.showAsInteger ? "→ sci" : "→ int") : ""
+                //                    (model.displayData.isFloat ? "→ float" : "")
+                if integerLabel.count > 0 {
+                    Button {
+                        model.showAsInteger.toggle()
+                        model.updateDisplayData()
+                    } label: {
+                        Text(integerLabel)
+                            .minimumScaleFactor(0.01)
+                            .font(Font(screenInfo.infoUiFont))
+                            .foregroundColor(.white)
+                    }
+                }
+                
+                let floatLabel = model.displayData.isFloat ? (model.showAsFloat ? "→ sci" : "→ float") : ""
+                if integerLabel.count == 0 && floatLabel.count > 0 {
+                    Button {
+                        model.showAsFloat.toggle()
+                        model.updateDisplayData()
+                    } label: {
+                        Text(floatLabel)
+                            .minimumScaleFactor(0.01)
+                            .font(Font(screenInfo.infoUiFont))
+                            .foregroundColor(.white)
+                    }
+                }
+                
             }
+            .padding(.top, screenInfo.plusIconSize * 0.5)
+            .lineLimit(1)
+            .minimumScaleFactor(0.01) // in case "paste" is too wide on small phones
+            .frame(width: model.screenInfo.plusIconSize + model.screenInfo.plusIconLeftPadding)
             Spacer(minLength: 0.0)
         }
         .onChange(of: scenePhase) { newPhase in

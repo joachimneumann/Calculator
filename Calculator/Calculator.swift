@@ -23,7 +23,7 @@ struct Calculator: View {
                     let dotDiamater = model.screenInfo.calculatorSize.width * 0.05
                     HStack(spacing: 0.0) {
                         Spacer()
-                        AnimatedDots(dotDiamater: dotDiamater)
+                        AnimatedDots()
                     }
                     .padding(.bottom, dotDiamater)
                 }
@@ -50,6 +50,7 @@ struct Calculator: View {
                 let color: Color = (model.isCopying || model.isPasting) ? .orange : (model.displayData.preliminary ? .gray : .white)
                 HStack(alignment: .top, spacing: 0.0) {
                     Spacer(minLength: 0.0)
+                    let _ = print("xx \(model.displayData.left.count) \(model.displayData.right != nil ? model.displayData.right?.count : 0)")
                     ScrollViewConditionalAnimation(
                         text: model.displayData.left,
                         font: Font(model.screenInfo.uiFont),
@@ -58,7 +59,9 @@ struct Calculator: View {
                         offsetY: model.offsetToVerticallyAlignTextWithkeyboard,
                         disabled: !model.isZoomed,
                         scrollViewHasScolled: $model.scrollViewHasScrolled,
-                        scrollViewID: model.scrollViewID)
+                        scrollViewID: model.scrollViewID,
+                        preliminary: model.displayData.preliminary,
+                        digitWidth: model.lengths.digitWidth)
                     if model.displayData.right != nil {
                         Text(model.displayData.right!)
                             .kerning(C.kerning)

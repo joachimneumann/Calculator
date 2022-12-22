@@ -219,9 +219,10 @@ class Model : ObservableObject {
     }
     
     func updateDisplayData(forceNonPreliminary: Bool = false) {
+        /// called after rotating the device and when I have a result
         if displayData.preliminary && !forceNonPreliminary {
             var temp = stupidBrain.last.getDisplayData(
-                forLong: !screenInfo.isPortraitPhone,
+                forLong: false,
                 lengths: lengths,
                 forceScientific: forceScientific,
                 showAsInteger: showAsInteger,
@@ -246,7 +247,7 @@ class Model : ObservableObject {
     
     func haveStupidBrainResultCallback() {
         var temp = stupidBrain.last.getDisplayData(
-            forLong: !screenInfo.isPortraitPhone,
+            forLong: false,
             lengths: lengths,
             forceScientific: forceScientific,
             showAsInteger: false,
