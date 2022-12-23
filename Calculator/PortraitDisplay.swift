@@ -28,16 +28,18 @@ struct PortraitDisplay: View {
                     .background(testColors ? .black : .black).opacity(testColors ? 0.9 : 1.0)
                     .lineLimit(1)
                 if preliminary {
-//                    Text("X")
-//                        .kerning(C.kerning)
-//                        .font(Font(screenInfo.uiFontLarge))
-//                        .minimumScaleFactor(screenInfo.largeFontScaleFactor)
-//                        .foregroundColor(displayData.preliminary ? .gray : .white)
-//                        .multilineTextAlignment(.trailing)
-//                        .background(testColors ? .black : .black).opacity(testColors ? 0.9 : 1.0)
-//                        .lineLimit(1)
-                    AnimatedDots().frame(width: digitWidth, height: digitWidth / 3)
-                        .offset(y: -digitWidth / 6)
+                    /// no animated Dots in this case,
+                    /// because the text might be larger
+                    /// due to minimumScaleFactor and
+                    /// I don't know how to get its size
+                    Text("…")
+                        .kerning(C.kerning)
+                        .font(Font(screenInfo.uiFontLarge))
+                        .minimumScaleFactor(screenInfo.largeFontScaleFactor)
+                        .foregroundColor(displayData.preliminary ? .gray : .white)
+                        .multilineTextAlignment(.trailing)
+                        .background(testColors ? .black : .black).opacity(testColors ? 0.9 : 1.0)
+                        .lineLimit(1)
                 }
            } else {
                 Text(toShow)

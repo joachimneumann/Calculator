@@ -25,7 +25,7 @@ struct Calculator: View {
                     lengths: model.lengths,
                     preliminary: model.displayData.preliminary,
                     digitWidth: model.lengths.digitWidth)
-                .background(Color.yellow)
+                //.background(Color.yellow)
                 .padding(.horizontal, model.screenInfo.portraitIPhoneDisplayHorizontalPadding)
                 .padding(.bottom, model.screenInfo.portraitIPhoneDisplayBottomPadding)
                 NonScientificKeyboard(
@@ -33,7 +33,7 @@ struct Calculator: View {
                     spacing: model.screenInfo.keySpacing,
                     keySize: model.screenInfo.keySize)
             }
-            .background(Color.blue)
+            //.background(Color.blue)
             .padding(.horizontal, model.screenInfo.portraitIPhoneHorizontalPadding)
             .padding(.bottom, model.screenInfo.portraitIPhoneBottomPadding)
         } else {
