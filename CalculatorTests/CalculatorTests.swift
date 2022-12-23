@@ -22,8 +22,8 @@ class CalculatorTests: XCTestCase {
     func testmultipleLiner() {
         let precision = 100
         var displayData = DisplayData()
-        let lengths = Lengths(withoutComma: 8, withCommaNonScientific: 9, withCommaScientific: 9, height: 0, infoHeight: 0, ePadding: 0)
-
+        let lengths = Lengths(withoutComma: 8, withCommaNonScientific: 9, withCommaScientific: 9, height: 0, digitWidth: 0, infoHeight: 0, ePadding: 0)
+        
         /// integers
         displayData = Number("123", precision: precision).getDisplayData(lengths)
         
@@ -31,478 +31,478 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(displayData.left, "123")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("1234", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1234")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("12345", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "12345")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("12345", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "12345")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("12300", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "12300")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("12300", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "12300")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("123456", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "123456")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("123456", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "123456")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("1234567", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1234567")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("12345678", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "12345678")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("123456789", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,23456")
         XCTAssertEqual(displayData.right, "e8")
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("-123", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-123")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("-12345", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-12345")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("-123456", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-123456")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("-1234567", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-1234567")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("-12345678", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-1,2345")
         XCTAssertEqual(displayData.right, "e7")
         XCTAssertTrue( displayData.isAbbreviated)
-
-
+        
+        
         displayData = Number("1234567", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1234567")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("-1234567", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-1234567")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
-
+        
+        
         /// floating point numbers
         displayData = Number("1,234", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,234")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("1,2345", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,2345")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("1,23456", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,23456")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("1,234567", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,234567")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("1,2345678", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,2345678")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("1,23456789", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,2345678")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue(displayData.isAbbreviated)
-
+        
         displayData = Number("-1,234", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-1,234")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("-1,2345", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-1,2345")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("-1,23456", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-1,23456")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("-1,234567", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-1,234567")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("-1,2345678", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-1,234567")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue(displayData.isAbbreviated)
-
-
+        
+        
         displayData = Number("1,234", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,234")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("1,234", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,234")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("1,234", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,234")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("1,234", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,234")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("1,234", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,234")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("1,234567", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,234567")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse( displayData.isAbbreviated)
-
+        
         displayData = Number("1,2345678", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,2345678")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse( displayData.isAbbreviated)
-
+        
         displayData = Number("1,23456789", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,2345678")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("-1,234", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-1,234")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse( displayData.isAbbreviated)
-
+        
         displayData = Number("-1,2345", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-1,2345")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse( displayData.isAbbreviated)
-
+        
         displayData = Number("-1,23456", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-1,23456")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse( displayData.isAbbreviated)
-
+        
         displayData = Number("-1,23456789", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-1,234567")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("-144,23456789", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-144,2345")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("1445,23456789", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1445,2345")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("14456,23456789", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "14456,234")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("144567,23456789", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "144567,23")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("1445678,23456789", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1445678,2")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("14456785,23456789", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "14456785,")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("0,123", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,123")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("0,1234", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,1234")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("0,12345", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,12345")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("0,123456", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,123456")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("0,1234567", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,1234567")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse( displayData.isAbbreviated)
-
+        
         displayData = Number("0,12345678", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,1234567")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("0,000012", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,000012")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse( displayData.isAbbreviated)
-
+        
         displayData = Number("0,000004", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,000004")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse( displayData.isAbbreviated)
-
+        
         displayData = Number("0,0000123456", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,0000123")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("-0,000012", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-0,000012")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse( displayData.isAbbreviated)
-
+        
         displayData = Number("-0,0000123", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-0,000012")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("-0,0000123456", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-0,000012")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("-0,123", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-0,123")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("-0,1234", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-0,1234")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("-0,12345", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-0,12345")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("-0,123456", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-0,123456")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("-0,1234567", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-0,123456")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue(displayData.isAbbreviated)
-
+        
         displayData = Number("14456789,23456789", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "14456789,")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("-144567,23456789", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-144567,2")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("-1445678,23456789", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-1445678,")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("1445678,23456789", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1445678,2")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("0,0123", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,0123")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse( displayData.isAbbreviated)
-
+        
         displayData = Number("0,01234567", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,0123456")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("0,0012", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,0012")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse( displayData.isAbbreviated)
-
+        
         displayData = Number("-0,0012", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-0,0012")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse( displayData.isAbbreviated)
-
+        
         displayData = Number("0,001234567", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,0012345")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("-0,001234567", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-0,001234")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("0,0001234567", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,0001234")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("-0,0001234567", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-0,000123")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("0,00001234567", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,0000123")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("-0,00001234567", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-0,000012")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("0,12345678", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,1234567")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         /// scientific notation
-
+        
         displayData = Number("1,5e12", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,5")
         XCTAssertEqual(displayData.right, "e12")
         XCTAssertFalse( displayData.isAbbreviated)
-
+        
         displayData = Number("1,5e12", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,5")
         XCTAssertEqual(displayData.right, "e12")
         XCTAssertFalse( displayData.isAbbreviated)
-
+        
         displayData = Number("0,00000004", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "4,0")
         XCTAssertEqual(displayData.right, "e-8")
         XCTAssertFalse( displayData.isAbbreviated)
-
+        
         displayData = Number("0,0000004", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,0000004")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse( displayData.isAbbreviated)
-
+        
         displayData = Number("12345678349875349873", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,2345")
         XCTAssertEqual(displayData.right, "e19")
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("123456783498753498731", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,2345")
         XCTAssertEqual(displayData.right, "e20")
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("0,012345678", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,0123456")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("0,0012345678", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,0012345")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("-1445,23456789", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-1445,234")
         XCTAssertNil(  displayData.right)
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("921387491237419283092340238420398423098423049874129837649128364519234875", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "9,2138")
         XCTAssertEqual(displayData.right, "e71")
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("1,23", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,23")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("1,23", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,23")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("0,0023", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,0023")
         XCTAssertNil(  displayData.right)
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("0,000000000023", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "2,3")
         XCTAssertEqual(displayData.right, "e-11")
         XCTAssertFalse(displayData.isAbbreviated)
-
+        
         displayData = Number("0,0000000000232837642876", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "2,328")
         XCTAssertEqual(displayData.right, "e-11")
         XCTAssertTrue( displayData.isAbbreviated)
-
+        
         displayData = Number("0,0000000000232837642876239827342", precision: precision).getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "2,328")
         XCTAssertEqual(displayData.right, "e-11")
@@ -514,7 +514,7 @@ class CalculatorTests: XCTestCase {
         brain.setPrecision(100)
         let lengths = Lengths(10)
         var displayData: DisplayData
-
+        
         /// 1
         brain.operation("AC")
         brain.operation("2")
@@ -526,7 +526,7 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,41421356")
         
-
+        
         /// 0
         brain.operation("AC")
         displayData = brain.last.getDisplayData(lengths)
@@ -570,14 +570,14 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1234567890")
         XCTAssertEqual(displayData.right, nil)
-
+        
         /// 1234567891
         brain.operation("AC")
         brain.debugPress("12345678901")
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1,23456")
         XCTAssertEqual(displayData.right, "e10")
-
+        
         /// 123456789012345678
         brain.operation("AC")
         brain.debugPress("12345678901234567")
@@ -712,8 +712,8 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "300000,001")
         XCTAssertEqual(displayData.right, nil)
-
-
+        
+        
         /// 3 e77
         brain.operation("AC")
         brain.debugPress(3)
@@ -724,7 +724,7 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "3,0")
         XCTAssertEqual(displayData.right, "e77")
-
+        
         /// 3 e-77
         brain.operation("AC")
         brain.debugPress(3)
@@ -736,7 +736,7 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "3,0")
         XCTAssertEqual(displayData.right, "e-77")
-
+        
         /// -3 e-77
         brain.operation("AC")
         brain.debugPress(3)
@@ -749,7 +749,7 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-3,0")
         XCTAssertEqual(displayData.right, "e-77")
-
+        
         /// -3 e-77
         brain.operation("AC")
         brain.debugPress(3)
@@ -762,8 +762,8 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "-3,0")
         XCTAssertEqual(displayData.right, "e-77")
-
-
+        
+        
         /// 8888888
         brain.operation("AC")
         brain.debugPress(8)
@@ -776,8 +776,8 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "8888888")
         XCTAssertEqual(displayData.right, nil)
-
-
+        
+        
         /// memory
         brain.operation("AC")
         brain.debugPress(1)
@@ -809,7 +809,7 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0")
         XCTAssertEqual(displayData.right, nil)
-
+        
         /// 0,0000010
         brain.operation("AC")
         brain.debugPress(0)
@@ -839,11 +839,11 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,0000010")
         XCTAssertEqual(displayData.right, nil)
-
-
+        
+        
         var res: String
         let digits = 5
-
+        
         /// 1 e -15
         brain.operation("AC")
         brain.operation(",")
@@ -860,7 +860,7 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(displayData.left, "0,0001")
         XCTAssertEqual(displayData.left, res+"1")
         XCTAssertEqual(displayData.right, nil)
-
+        
         /// 32456.2244
         brain.operation("AC")
         brain.debugPress(3)
@@ -876,8 +876,8 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, res)
         XCTAssertEqual(displayData.right, nil)
-
-
+        
+        
         /// 32456.224433
         brain.debugPress(3)
         res += "3"
@@ -888,7 +888,7 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, res)
         XCTAssertEqual(displayData.right, nil)
-
+        
         /// 1/7*7 --> has more digits?
         brain.operation("AC")
         brain.debugPress(7)
@@ -899,7 +899,7 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1")
         XCTAssertEqual(displayData.right, nil)
-
+        
         /// -1/3
         brain.operation("AC")
         brain.debugPress(3)
@@ -911,7 +911,7 @@ class CalculatorTests: XCTestCase {
         correct = "-0,3333333"
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual (displayData.left, correct)
-
+        
         /// 9 %%%% ^2 ^2 ^2
         brain.operation("AC")
         brain.operation("9")
@@ -932,8 +932,8 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "8,1")
         XCTAssertEqual(displayData.right, "e-15")
-
-
+        
+        
         /// 1/10 and 1/16
         brain.operation("AC")
         brain.debugPress(1)
@@ -954,7 +954,7 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "0,0625")
         XCTAssertEqual(displayData.right, nil)
-
+        
         /// 1+2+5+2= + 1/4 =
         brain.debugPress(1)
         brain.operation("+")
@@ -986,7 +986,7 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "10,25")
         XCTAssertEqual(displayData.right, nil)
-
+        
         /// 1+2*4=
         brain.operation("AC")
         brain.debugPress(1)
@@ -1007,7 +1007,7 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "9")
         XCTAssertEqual(displayData.right, nil)
-
+        
         /// 2*3*4*5=
         brain.operation("AC")
         brain.debugPress(2)
@@ -1024,7 +1024,7 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "120")
         XCTAssertEqual(displayData.right, nil)
-
+        
         /// 1+2*4
         brain.operation("AC")
         brain.debugPress(1)
@@ -1052,7 +1052,7 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "109")
         XCTAssertEqual(displayData.right, nil)
-
+        
         /// pi
         brain.operation("AC")
         brain.operation("π")
@@ -1060,7 +1060,7 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, correct)
         XCTAssertEqual(displayData.right, nil)
-
+        
         /// 1+pi
         brain.operation("AC")
         brain.debugPress(1)
@@ -1071,7 +1071,7 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, correct)
         XCTAssertEqual(displayData.right, nil)
-
+        
         brain.operation("AC")
         brain.operation("π")
         brain.operation("x")
@@ -1081,7 +1081,7 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, correct)
         XCTAssertEqual(displayData.right, nil)
-
+        
         brain.operation("AC")
         brain.debugPress(2)
         brain.operation("x^y")
@@ -1091,15 +1091,15 @@ class CalculatorTests: XCTestCase {
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "1024")
         XCTAssertEqual(displayData.right, nil)
-
+        
         brain.operation("AC")
         brain.debugPress(1)
         brain.debugPress(0)
         brain.operation("y^x")
         brain.debugPress(2)
         brain.operation("=")
-//        XCTAssertEqual(brain.debugLastGmp, Gmp("1024", precision: precision).getDisplayData(lengths)
-
+        //        XCTAssertEqual(brain.debugLastGmp, Gmp("1024", precision: precision).getDisplayData(lengths)
+        
         /// 2x(6+4)
         brain.operation("AC")
         brain.debugPress(2)
@@ -1121,13 +1121,13 @@ class CalculatorTests: XCTestCase {
         brain.operation(" )")
         XCTAssertEqual(brain.no, 1)
         XCTAssertEqual(brain.nn, 2)
-//        XCTAssertEqual(brain.debugLastGmp, Gmp("10", precision: precision).getDisplayData(lengths)
+        //        XCTAssertEqual(brain.debugLastGmp, Gmp("10", precision: precision).getDisplayData(lengths)
         brain.operation("=")
-//        XCTAssertEqual(brain.debugLastGmp, Gmp("20", precision: precision).getDisplayData(lengths)
+        //        XCTAssertEqual(brain.debugLastGmp, Gmp("20", precision: precision).getDisplayData(lengths)
         displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "20")
         XCTAssertEqual(displayData.right, nil)
-
+        
         /// 2x(6+4*(5+9))
         brain.operation("AC")
         brain.debugPress(2)
@@ -1144,8 +1144,8 @@ class CalculatorTests: XCTestCase {
         brain.operation(" )")
         brain.operation(" )")
         brain.operation("=")
-//        XCTAssertEqual(brain.debugLastGmp, Gmp("124", precision: precision).getDisplayData(lengths)
-
+        //        XCTAssertEqual(brain.debugLastGmp, Gmp("124", precision: precision).getDisplayData(lengths)
+        
         /// 1+2=3
         brain.operation("AC")
         brain.debugPress(1)
@@ -1154,11 +1154,11 @@ class CalculatorTests: XCTestCase {
         brain.operation("=")
         brain.debugPress(2)
         XCTAssertEqual(brain.nn, 1)
-
+        
         brain.operation("AC")
         brain.operation("π")
-//        XCTAssertEqual(brain.debugLastDouble, 3.14159265358979, accuracy: 0.00000001)
-
+        //        XCTAssertEqual(brain.debugLastDouble, 3.14159265358979, accuracy: 0.00000001)
+        
         brain.operation("AC")
         brain.debugPress(0)
         brain.operation(",")
@@ -1169,14 +1169,14 @@ class CalculatorTests: XCTestCase {
         brain.operation("EE")
         brain.debugPress(4)
         brain.operation("=")
-//        XCTAssertEqual(brain.debugLastDouble, 0.000001)
-
+        //        XCTAssertEqual(brain.debugLastDouble, 0.000001)
+        
         brain.operation("AC")
         brain.debugPress(8)
         brain.debugPress(8)
         brain.operation("%")
-//        XCTAssertEqual(brain.debugLastDouble, 0.88)
-
+        //        XCTAssertEqual(brain.debugLastDouble, 0.88)
+        
         brain.operation("AC")
         brain.debugPress(4)
         brain.debugPress(0)
@@ -1185,13 +1185,32 @@ class CalculatorTests: XCTestCase {
         brain.debugPress(0)
         brain.operation("%")
         brain.operation("=")
-//        XCTAssertEqual(brain.debugLastDouble, 44.0)
+        //        XCTAssertEqual(brain.debugLastDouble, 44.0)
     }
     
-    func XXtestPerformanceExample() throws {
+    func testToGmp1() throws {
         // This is an example of a performance test case.
+        let brain = Brain()
+        let precision = 10000000
+        brain.setPrecision(precision)
         self.measure {
-            // Put the code you want to measure the time of here.
+            let x = Number("88888888", precision: precision)
+            x.toGmp()
+        }
+    }
+    
+    func testToGmp2() throws {
+        // This is an example of a performance test case.
+        let brain = Brain()
+        let precision = 10000000
+        brain.setPrecision(precision)
+        self.measure {
+            let x = Number("88888888", precision: 20)
+            let f = Number("10", precision: 20)
+            f.toGmp()
+            f.gmp?.setValue(other: f.gmp!)
+            x.execute(Gmp.mul, with: f)
+            x.toGmp()
         }
     }
 }
