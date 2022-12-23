@@ -13,16 +13,29 @@ class CalculatorTests: XCTestCase {
     
     func testTODOs() throws {
         let brain = Brain()
+        let lengths = Lengths(5000) /// also failing: 10000
         brain.setPrecision(20000000)
+        var displayData: DisplayData
+        
         brain.operation("7")
         brain.operation(",")
         brain.operation("7")
         brain.operation("One_x")
         brain.operation("One_x")
-        let lengths = Lengths(5000) /// also failing: 10000
-        let displayData = brain.last.getDisplayData(lengths)
+        displayData = brain.last.getDisplayData(lengths)
         XCTAssertEqual(displayData.left, "7,7")
-        
+
+        brain.operation("AC")
+        brain.operation("0")
+        brain.operation(",")
+        brain.operation("3")
+        brain.operation("+")
+        brain.operation("0")
+        brain.operation(",")
+        brain.operation("4")
+        brain.operation("=")
+        displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual(displayData.left, "0,7")
     }
     
     func testmultipleLiner() {
