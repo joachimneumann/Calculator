@@ -19,18 +19,13 @@ struct Calculator: View {
         if model.screenInfo.isPortraitPhone {
             VStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
-                if model.displayData.preliminary {
-                    let dotDiamater = model.screenInfo.calculatorSize.width * 0.05
-                    HStack(spacing: 0.0) {
-                        Spacer()
-                        AnimatedDots()
-                    }
-                    .padding(.bottom, dotDiamater)
-                }
                 PortraitDisplay(
                     displayData: model.displayData,
                     screenInfo: model.screenInfo,
-                    lengths: model.lengths)
+                    lengths: model.lengths,
+                    preliminary: model.displayData.preliminary,
+                    digitWidth: model.lengths.digitWidth)
+                .background(Color.yellow)
                 .padding(.horizontal, model.screenInfo.portraitIPhoneDisplayHorizontalPadding)
                 .padding(.bottom, model.screenInfo.portraitIPhoneDisplayBottomPadding)
                 NonScientificKeyboard(
@@ -38,6 +33,7 @@ struct Calculator: View {
                     spacing: model.screenInfo.keySpacing,
                     keySize: model.screenInfo.keySize)
             }
+            .background(Color.blue)
             .padding(.horizontal, model.screenInfo.portraitIPhoneHorizontalPadding)
             .padding(.bottom, model.screenInfo.portraitIPhoneBottomPadding)
         } else {
@@ -50,7 +46,6 @@ struct Calculator: View {
                 let color: Color = (model.isCopying || model.isPasting) ? .orange : (model.displayData.preliminary ? .gray : .white)
                 HStack(alignment: .top, spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    let _ = print("xx \(model.displayData.left.count) \(model.displayData.right != nil ? model.displayData.right?.count : 0)")
                     ScrollViewConditionalAnimation(
                         text: model.displayData.left,
                         font: Font(model.screenInfo.uiFont),
@@ -76,7 +71,6 @@ struct Calculator: View {
                         screenInfo: model.screenInfo,
                         isCalculating: model.isCalculating,
                         isZoomed: $model.isZoomed)
-                    .padding(.leading, model.screenInfo.plusIconLeftPadding)
                     .offset(y: model.offsetToVerticallyIconWithText)
                 }
                 .overlay() {

@@ -79,7 +79,7 @@ struct ScreenInfo {
         keySize = CGSize(width: tempKeyWidth, height: tempKeyheight)
 
         plusIconSize = keyboardHeight * 0.13
-        plusIconLeftPadding = plusIconSize * 0.3
+        plusIconLeftPadding = plusIconSize * 0.4
         ePadding = isPortraitPhone ? plusIconSize * 0.1 : plusIconSize * 0.3
 
         displayWidth = calculatorSize.width - (isPortraitPhone ?

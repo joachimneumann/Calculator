@@ -11,12 +11,15 @@ struct PortraitDisplay: View {
     let displayData: DisplayData
     let screenInfo: ScreenInfo
     let lengths: Lengths
-    
+    let preliminary: Bool
+    let digitWidth: CGFloat
+
     var body: some View {
-        HStack(spacing: 0.0) {
+        HStack(alignment: .bottom, spacing: 0.0) {
             Spacer(minLength: 0.0)
+            let toShow = preliminary && displayData.left.count > 1 ? String(displayData.left.dropLast()) : displayData.left
             if displayData.right == nil {
-                Text(displayData.left)
+                Text(toShow)
                     .kerning(C.kerning)
                     .font(Font(screenInfo.uiFontLarge))
                     .minimumScaleFactor(screenInfo.largeFontScaleFactor)
@@ -24,14 +27,30 @@ struct PortraitDisplay: View {
                     .multilineTextAlignment(.trailing)
                     .background(testColors ? .black : .black).opacity(testColors ? 0.9 : 1.0)
                     .lineLimit(1)
-            } else {
-                Text(displayData.left)
+                if preliminary {
+//                    Text("X")
+//                        .kerning(C.kerning)
+//                        .font(Font(screenInfo.uiFontLarge))
+//                        .minimumScaleFactor(screenInfo.largeFontScaleFactor)
+//                        .foregroundColor(displayData.preliminary ? .gray : .white)
+//                        .multilineTextAlignment(.trailing)
+//                        .background(testColors ? .black : .black).opacity(testColors ? 0.9 : 1.0)
+//                        .lineLimit(1)
+                    AnimatedDots().frame(width: digitWidth, height: digitWidth / 3)
+                        .offset(y: -digitWidth / 6)
+                }
+           } else {
+                Text(toShow)
                     .kerning(C.kerning)
                     .font(Font(screenInfo.uiFont))
                     .foregroundColor(displayData.preliminary ? .gray : .white)
                     .multilineTextAlignment(.trailing)
                     .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
                     .lineLimit(1)
+               if preliminary {
+                    AnimatedDots().frame(width: digitWidth, height: digitWidth / 3)
+                        .offset(y: -digitWidth / 6)
+               }
                 Text(displayData.right!)
                     .kerning(C.kerning)
                     .font(Font(screenInfo.uiFont))

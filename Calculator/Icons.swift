@@ -150,9 +150,9 @@ struct Icons : View {
             .padding(.top, screenInfo.plusIconSize * 0.5)
             .lineLimit(1)
             .minimumScaleFactor(0.01) // in case "paste" is too wide on small phones
-            .frame(width: model.screenInfo.plusIconSize + model.screenInfo.plusIconLeftPadding)
-            Spacer(minLength: 0.0)
         }
+        .frame(width: model.screenInfo.plusIconSize)
+        .padding(.leading, model.screenInfo.plusIconLeftPadding)
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .active {
                 DispatchQueue.main.async {

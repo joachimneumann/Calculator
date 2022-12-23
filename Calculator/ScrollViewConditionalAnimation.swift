@@ -29,36 +29,23 @@ struct ScrollViewConditionalAnimation: View {
     private var scrollView: some View {
         GeometryReader { g in
             ScrollView(.vertical) {
-                HStack(alignment: .top, spacing: 0.0) {
-//                    let _ = print("MANTISSA \(text.count)")
-                    let toShow = preliminary && text.count > 1 ? String(text.dropLast().dropLast()) : text
+                HStack(alignment: .bottom, spacing: 0.0) {
+                    let toShow = preliminary && text.count > 1 ? String(text.dropLast()) : text
                     Spacer(minLength: 0.0)
-                    HStack(alignment: .bottom, spacing: 0.0) {
-                        Text(toShow)// preliminary \(preliminary.description)")
-                            .kerning(C.kerning)
-                            .font(font)
-                            .foregroundColor(foregroundColor)
-                            .multilineTextAlignment(.trailing)
-                            .background(backgroundColor)
-                            .lineLimit(nil)
-                            .offset(y: offsetY)
-                            .anchorPreference(key: OffsetKey.self, value: .top) {
-                                g[$0].y
-                            }
-                        if preliminary {
-                            Text("X")// preliminary \(preliminary.description)")
-                                .kerning(C.kerning)
-                                .font(font)
-                                .foregroundColor(foregroundColor)
-                                .multilineTextAlignment(.trailing)
-                                .background(backgroundColor)
-                                .lineLimit(nil)
-                                .offset(y: offsetY)
-//                            let _ = print("show dots")
-//                            AnimatedDots().frame(width: digitWidth, height: digitWidth / 3)
-//                                .background(Color.yellow)
-//                                .offset(y: -digitWidth / 6)
+                    Text(toShow)
+                        .kerning(C.kerning)
+                        .font(font)
+                        .foregroundColor(foregroundColor)
+                        .multilineTextAlignment(.trailing)
+                        .background(backgroundColor)
+                        .lineLimit(nil)
+                        .offset(y: offsetY)
+                        .anchorPreference(key: OffsetKey.self, value: .top) {
+                            g[$0].y
                         }
+                    if preliminary {
+                        AnimatedDots().frame(width: digitWidth, height: digitWidth / 3)
+                            .offset(y: -digitWidth / 6)
                     }
                 }
             }
