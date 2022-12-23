@@ -171,14 +171,25 @@ class Number: CustomDebugStringConvertible {
         if !forceScientific {
             if let s = str {
                 if !s.contains("e") { // no shortcut for scientific strings
-                    if s.contains(",") {
-                        /// e.g. 43.22
-                        if s.count <= lengths.withCommaNonScientific {
-                            ret.left = s
+                    if let pos = s.indexInt(of: ",") {
+                        if pos < lengths.withCommaNonScientific {
+                            if forLong {
+                                ret.left = s
+                            } else {
+                                ret.left = String(s.prefix(lengths.withCommaNonScientific))
+                            }
                             ret.right = nil
                             ret.isAbbreviated = false
                             return ret
                         }
+//                    if s.contains(",") {
+//                        /// e.g. 43.22
+//                        if s.count <= lengths.withCommaNonScientific {
+//                            ret.left = s
+//                            ret.right = nil
+//                            ret.isAbbreviated = false
+//                            return ret
+//                        }
                     } else {
                         /// e.g. 23423
                         if s.count <= lengths.withoutComma {
@@ -344,5 +355,11 @@ class Number: CustomDebugStringConvertible {
         ret.left = mantissa
         if isNegative { ret.left = "-" + ret.left }
         return ret
+    }
+}
+
+public extension String {
+    func indexInt(of char: Character) -> Int? {
+        return firstIndex(of: char)?.utf16Offset(in: self)
     }
 }
