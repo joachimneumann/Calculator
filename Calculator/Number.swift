@@ -194,12 +194,15 @@ class Number: CustomDebugStringConvertible {
 
         /// not a short enough str, use gmp
         let displayGmp: Gmp
+        print("convert start")
         if gmp != nil {
             displayGmp = gmp!
         } else {
-            displayGmp = Gmp(str!, precision: _precision)
+            let p = forLong ? _precision : min(_precision, lengths.withCommaNonScientific)
+            displayGmp = Gmp(str!, precision: p)
         }
-        
+            print("convert end")
+
         if displayGmp.NaN {
             ret.left = "not a number"
             return ret
