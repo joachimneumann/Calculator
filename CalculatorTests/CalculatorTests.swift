@@ -11,7 +11,7 @@ import XCTest
 
 class CalculatorTests: XCTestCase {
     
-    func testTODOs() throws {
+    func testBits() throws {
         let brain = Brain()
         let lengths = Lengths(5000) /// also failing: 10000
         brain.setPrecision(20000000)

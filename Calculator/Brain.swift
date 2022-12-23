@@ -223,7 +223,10 @@ class Brain {
         default:
             assert(false, "### non-existing operation \(symbol)")
         }
-        haveResultCallback()
+        if n.last.valueHasChanged {
+            haveResultCallback()
+            n.last.valueHasChanged = false
+        }
     }
     
     func setPrecision(_ newPrecision: Int) {
@@ -289,15 +292,16 @@ class Brain {
     }
     
     static func internalPrecision(for precision: Int) -> Int {
-        if precision <= 500 {
-            return 1000
-        } else if precision <= 10000 {
-            return 2 * precision
-        } else if precision <= 100000 {
-            return Int(round(1.5*Double(precision)))
-        } else {
-            return precision + 50000
-        }
+        return precision
+//        if precision <= 500 {
+//            return 1000
+//        } else if precision <= 10000 {
+//            return 2 * precision
+//        } else if precision <= 100000 {
+//            return Int(round(1.5*Double(precision)))
+//        } else {
+//            return precision + 50000
+//        }
     }
     static func bits(for precision: Int) -> Int {
         Int(Double(internalPrecision(for: precision)) * 3.32192809489)
