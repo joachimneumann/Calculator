@@ -126,24 +126,7 @@ class Brain {
     
     func percentage() {
         if operatorStack.count == 0 {
-            print("... \(precision)")
-            var x = Number("0.01", precision: precision)
-            print("... \(precision)")
-            x = Number("0.01", precision: precision)
-            print("... \(precision)")
-            x = Number("0.01", precision: precision)
-            print("... \(precision)")
-            x = Number("0.01", precision: precision)
-            print("... \(precision)")
-            x = Number("0.01", precision: precision)
-            print("... \(precision)")
-            x = Number("0.01", precision: precision)
-            print("... \(precision)")
-            x = Number("0.01", precision: precision)
-            print("... \(precision)")
-            x = Number("0.01", precision: precision)
-            n.last.execute(Gmp.mul, with: x)
-            print("........")
+            n.last.execute(Gmp.mul, with: Number("0.01", precision: precision))
         } else if operatorStack.count >= 1 && n.count >= 2 {
             if let secondLast = n.secondLast {
                 n.last.execute(Gmp.mul, with: Number("0.01", precision: precision))
@@ -155,10 +138,6 @@ class Brain {
     func operation(_ symbol: String) {
         // debugging
         // if symbol != "C" && symbol != "AC" { print("nn \(nn) no \(no)") }
-        
-        
-        /// TODO: implement this switch on symbol in the Model
-        
         
         switch symbol {
         case "C":
@@ -274,31 +253,31 @@ class Brain {
         //        operation("x^3")
         //        operation("x^3")
         
-        operation("1")
-        operation("2")
-        operation("3")
-        operation("4")
-        operation("5")
-        operation("6")
-        operation("7")
-        operation("8")
-        operation("9")
-        operation("0")
-        operation("1")
-        operation("2")
-        operation("3")
-        operation("4")
-        operation("5")
-        operation("6")
-        operation("7")
-        operation("8")
-        operation("9")
-        operation("0")
-        operation("1")
-        operation("2")
-        operation("3")
-        operation("4")
-        operation("5")
+//        operation("1")
+//        operation("2")
+//        operation("3")
+//        operation("4")
+//        operation("5")
+//        operation("6")
+//        operation("7")
+//        operation("8")
+//        operation("9")
+//        operation("0")
+//        operation("1")
+//        operation("2")
+//        operation("3")
+//        operation("4")
+//        operation("5")
+//        operation("6")
+//        operation("7")
+//        operation("8")
+//        operation("9")
+//        operation("0")
+//        operation("1")
+//        operation("2")
+//        operation("3")
+//        operation("4")
+//        operation("5")
         //        operation("6")
         //        operation("7")
         //        operation("1")

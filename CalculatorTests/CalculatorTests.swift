@@ -11,12 +11,18 @@ import XCTest
 
 class CalculatorTests: XCTestCase {
     
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func testTODOs() throws {
+        let brain = Brain()
+        brain.setPrecision(20000000)
+        brain.operation("7")
+        brain.operation(",")
+        brain.operation("7")
+        brain.operation("One_x")
+        brain.operation("One_x")
+        let lengths = Lengths(5000) /// also failing: 10000
+        let displayData = brain.last.getDisplayData(lengths)
+        XCTAssertEqual(displayData.left, "7,7")
+        
     }
     
     func testmultipleLiner() {
@@ -1188,7 +1194,7 @@ class CalculatorTests: XCTestCase {
         //        XCTAssertEqual(brain.debugLastDouble, 44.0)
     }
     
-    func testToGmp1() throws {
+    func _testSpeed1() throws {
         // This is an example of a performance test case.
         let brain = Brain()
         let precision = 10000000
@@ -1199,7 +1205,7 @@ class CalculatorTests: XCTestCase {
         }
     }
     
-    func testToGmp2() throws {
+    func _testSpeed2() throws {
         // This is an example of a performance test case.
         let brain = Brain()
         let precision = 10000000
@@ -1213,4 +1219,13 @@ class CalculatorTests: XCTestCase {
             x.toGmp()
         }
     }
+    
+    override func setUpWithError() throws {
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+    }
+    
+    override func tearDownWithError() throws {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    }
+    
 }
