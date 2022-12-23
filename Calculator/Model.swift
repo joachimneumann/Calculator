@@ -342,7 +342,7 @@ class Model : ObservableObject {
                 Task {
                     DispatchQueue.main.async { self.isCalculating = true }
 
-                    stupidBrain.operation(symbol)
+//                    stupidBrain.operation(symbol)
 
                     await asyncOperation(symbol)
                     if ["mc", "m+", "m-"].contains(symbol) {

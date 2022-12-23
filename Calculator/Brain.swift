@@ -23,7 +23,7 @@ class Brain {
         }
     }
     var memory: Number? = nil
-
+    
     var isValidNumber: Bool { n.last.isValid }
     var debugLastAsDouble: Double { n.last.gmp!.toDouble() }
     var debugLastAsGmp: Gmp { n.last.gmp! }
@@ -31,7 +31,7 @@ class Brain {
     var nullNumber: Number {
         return Number("0", precision: precision)
     }
-        
+    
     let trigonometricOperators = ["sin", "sinD", "cos", "cosD", "tan", "tanD"]
     let constantOperators: Dictionary <String, Inplace> = [
         "π":    Inplace(Gmp.π, 0),
@@ -86,11 +86,11 @@ class Brain {
     let openParenthesis = Operator(Operator.openParenthesesPriority)
     let closedParenthesis = Operator(Operator.openParenthesesPriority)
     let equalOperator = Operator(Operator.equalPriority)
-
+    
     func replaceLast(with number: Number) {
         n.replaceLast(with: number)
     }
-
+    
     func debugPress(_ digits: String) {
         for digit in digits {
             if let intValue = digit.wholeNumberValue {
@@ -126,7 +126,24 @@ class Brain {
     
     func percentage() {
         if operatorStack.count == 0 {
-            n.last.execute(Gmp.mul, with: Number("0.01", precision: precision))
+            print("... \(precision)")
+            var x = Number("0.01", precision: precision)
+            print("... \(precision)")
+            x = Number("0.01", precision: precision)
+            print("... \(precision)")
+            x = Number("0.01", precision: precision)
+            print("... \(precision)")
+            x = Number("0.01", precision: precision)
+            print("... \(precision)")
+            x = Number("0.01", precision: precision)
+            print("... \(precision)")
+            x = Number("0.01", precision: precision)
+            print("... \(precision)")
+            x = Number("0.01", precision: precision)
+            print("... \(precision)")
+            x = Number("0.01", precision: precision)
+            n.last.execute(Gmp.mul, with: x)
+            print("........")
         } else if operatorStack.count >= 1 && n.count >= 2 {
             if let secondLast = n.secondLast {
                 n.last.execute(Gmp.mul, with: Number("0.01", precision: precision))
@@ -213,7 +230,7 @@ class Brain {
             }
             n.last.appendDigit(symbol)
         case _ where constantOperators.keys.contains(symbol):
-           if self.pendingOperator != nil {
+            if self.pendingOperator != nil {
                 self.n.append(nullNumber)
                 self.pendingOperator = nil
             }
@@ -240,23 +257,23 @@ class Brain {
     
     init() {
         operation("AC")
-//        operation("π")
-//        operation("8")
-//        operation("8")
-//        operation("8")
-//        operation("8")
-//        operation("8")
-//        operation("8")
-//        operation("8")
-//        operation("8")
-//        operation("8")
-//        operation("x^3")
-//        operation("x^3")
-//        operation("x^3")
-//        operation("x^3")
-//        operation("x^3")
-//        operation("x^3")
-
+        //        operation("π")
+        //        operation("8")
+        //        operation("8")
+        //        operation("8")
+        //        operation("8")
+        //        operation("8")
+        //        operation("8")
+        //        operation("8")
+        //        operation("8")
+        //        operation("8")
+        //        operation("x^3")
+        //        operation("x^3")
+        //        operation("x^3")
+        //        operation("x^3")
+        //        operation("x^3")
+        //        operation("x^3")
+        
         operation("1")
         operation("2")
         operation("3")
@@ -282,14 +299,30 @@ class Brain {
         operation("3")
         operation("4")
         operation("5")
-//        operation("6")
-//        operation("7")
-//        operation("1")
-//        operation("1")
-//        operation("1")
-//        operation("1")
-//        operation("1")
-//        operation("1")
+        //        operation("6")
+        //        operation("7")
+        //        operation("1")
+        //        operation("1")
+        //        operation("1")
+        //        operation("1")
+        //        operation("1")
+        //        operation("1")
     }
-            
+    
+    static func internalPrecision(for precision: Int) -> Int {
+        if precision <= 500 {
+            return 1000
+        } else if precision <= 10000 {
+            return 2 * precision
+        } else if precision <= 100000 {
+            return Int(round(1.5*Double(precision)))
+        } else {
+            return precision + 50000
+        }
+    }
+    static func bits(for precision: Int) -> Int {
+        Int(Double(internalPrecision(for: precision)) * 3.32192809489)
+    }
+
 }
+

@@ -53,7 +53,7 @@ class Number: CustomDebugStringConvertible {
     }
     func toGmp() {
         if isStr {
-            _gmp = Gmp(str!, precision: _precision)
+            _gmp = Gmp(fromString: str!, bits: Brain.bits(for: _precision))
             _str = nil
         }
     }
@@ -194,14 +194,11 @@ class Number: CustomDebugStringConvertible {
 
         /// not a short enough str, use gmp
         let displayGmp: Gmp
-        print("convert start")
         if gmp != nil {
             displayGmp = gmp!
         } else {
-            let p = forLong ? _precision : min(_precision, lengths.withCommaNonScientific)
-            displayGmp = Gmp(str!, precision: p)
+            displayGmp = Gmp(fromString: str!, bits: Brain.bits(for: _precision))
         }
-            print("convert end")
 
         if displayGmp.NaN {
             ret.left = "not a number"

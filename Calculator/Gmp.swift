@@ -24,15 +24,20 @@ class Gmp: Equatable, CustomDebugStringConvertible {
     
     /// there is only ine initialzer that takes a string.
     /// Implementing an initializer that accepts a double which is created from a string leads to a loss of precision.
-    convenience init(_ s: String, precision: Int) {
-        self.init(s, withBits: Gmp.bits(for: precision))
+    convenience init(fromString string: String, bits: Int) {
+        var temp = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
+        mpfr_init2 (&temp, min(bits, Brain.bits(for: string.count)))
+        let noComma = string.replacingOccurrences(of: ",", with: ".")
+        mpfr_set_str (&temp, noComma, 10, MPFR_RNDN)
+        self.init(withMpfr: &temp, bits: bits)
     }
-    private init(_ s: String, withBits bits: Int) {
+
+    private init(withMpfr from_mpfr: inout __mpfr_struct, bits: Int) {
         self.bits = bits
-        let s1 = s.replacingOccurrences(of: ",", with: ".")
         mpfr_init2 (&mpfr, bits)
-        mpfr_set_str (&mpfr, s1, 10, MPFR_RNDN)
+        mpfr_set(&mpfr, &from_mpfr, MPFR_RNDN)
     }
+
     deinit {
         mpfr_clear(&mpfr)
     }
@@ -77,7 +82,7 @@ class Gmp: Equatable, CustomDebugStringConvertible {
     }
 
     func copy() -> Gmp {
-        let ret = Gmp.init("0", withBits: bits)
+        let ret = Gmp.init(fromString: "0", bits: bits)
         mpfr_set(&ret.mpfr, &mpfr, MPFR_RNDN)
         return ret
     }
@@ -121,13 +126,13 @@ class Gmp: Equatable, CustomDebugStringConvertible {
     
     static func assertConstants(bits: Int) {
         if bits != rad_deg_bits {
-            deg2rad = Gmp("0", withBits: bits);
+            deg2rad = Gmp(fromString: "0", bits: bits);
             deg2rad!.π()
-            deg2rad!.div(other: Gmp("180", withBits: bits))
-            Gmp.rad2deg = Gmp("0", withBits: bits);
+            deg2rad!.div(other: Gmp(fromString: "180", bits: bits))
+            Gmp.rad2deg = Gmp(fromString: "0", bits: bits);
             Gmp.rad2deg!.π()
             Gmp.rad2deg!.rez()
-            Gmp.rad2deg!.mul(other: Gmp("180", withBits: bits))
+            Gmp.rad2deg!.mul(other: Gmp(fromString: "180", bits: bits))
         }
         rad_deg_bits = bits
     }
@@ -143,7 +148,7 @@ class Gmp: Equatable, CustomDebugStringConvertible {
         mpfr_const_pi(&mpfr, MPFR_RNDN)
     }
     func e() {
-        mpfr_exp( &mpfr, &Gmp("1.0", withBits: bits).mpfr, MPFR_RNDN)
+        mpfr_exp( &mpfr, &Gmp(fromString: "1.0", bits: bits).mpfr, MPFR_RNDN)
         /// Note: mpfr_const_euler() returns 0.577..., not 2.718
     }
     
@@ -223,23 +228,7 @@ class Gmp: Equatable, CustomDebugStringConvertible {
     var isZero: Bool {
         mpfr_zero_p(&mpfr) != 0
     }
-    
-    static func internalPrecision(for precision: Int) -> Int {
-        if precision <= 500 {
-            return 1000
-        } else if precision <= 10000 {
-            return 2 * precision
-        } else if precision <= 100000 {
-            return Int(round(1.5*Double(precision)))
-        } else {
-            return precision + 50000
-        }
-    }
-    
-    static func bits(for precision: Int) -> Int {
-        return Int(Double(internalPrecision(for: precision)) * 3.32192809489)
-    }
-    
+        
     static func memorySize(bits: Int) -> Int {
         mpfr_custom_get_size(bits)
     }
