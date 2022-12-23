@@ -170,18 +170,7 @@ class Number: CustomDebugStringConvertible {
         var ret = DisplayData()
         if !forceScientific {
             if let s = str {
-                if s.contains("e") {
-                    /// e.g. 1.4e7
-                    if s.count <= lengths.withCommaScientific {
-                        let separated = s.split(separator: "e")
-                        if separated.count == 2 {
-                            ret.left = String(separated[0])
-                            ret.right = "e"+String(separated[1])
-                            ret.isAbbreviated = false
-                            return ret
-                        }
-                    }
-                } else {
+                if !s.contains("e") { // no shortcut for scientific strings
                     if s.contains(",") {
                         /// e.g. 43.22
                         if s.count <= lengths.withCommaNonScientific {
@@ -208,7 +197,8 @@ class Number: CustomDebugStringConvertible {
         if gmp != nil {
             displayGmp = gmp!
         } else {
-            displayGmp = Gmp(fromString: str!, bits: Brain.bits(for: _precision))
+            // I add 1000 digits in the precision to make sure that all 10.000 digits in the long display are correctly displayed
+            displayGmp = Gmp(fromString: str!, bits: Brain.bits(for: min(_precision, maxDisplayLength) + 1000))
         }
 
         if displayGmp.NaN {

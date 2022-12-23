@@ -342,10 +342,10 @@ class Model : ObservableObject {
                 Task {
                     DispatchQueue.main.async { self.isCalculating = true }
 
-//                    stupidBrain.operation(symbol)
-                    print("executing START")
+                    stupidBrain.operation(symbol)
+                    // print("executing START")
                     await asyncOperation(symbol)
-                    print("executing DONE")
+                    // print("executing DONE")
                     if ["mc", "m+", "m-"].contains(symbol) {
                         if let memory = brain.memory {
                             let temp = memory.getDisplayData(
