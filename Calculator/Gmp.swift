@@ -24,8 +24,9 @@ class Gmp: Equatable, CustomDebugStringConvertible {
 
     init(fromString string: String, bits: Int) {
         self.bits = bits
+        let string_dot = string.replacingOccurrences(of: ",", with: ".")
         mpfr_init2 (&mpfr, bits)
-        mpfr_set_str (&mpfr, string, 10, MPFR_RNDN)
+        mpfr_set_str (&mpfr, string_dot, 10, MPFR_RNDN)
     }
 
 //    private init(withMpfr from_mpfr: inout __mpfr_struct, bits: Int) {

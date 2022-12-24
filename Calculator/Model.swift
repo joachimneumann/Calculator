@@ -234,6 +234,7 @@ class Model : ObservableObject {
     }
     
     func haveStupidBrainResultCallback() {
+        /// only show this if the high precision result isOld
         if displayData.isOld {
             var temp = stupidBrain.last.getDisplayData(
                 forLandscape: false,
@@ -243,7 +244,7 @@ class Model : ObservableObject {
                 showAsFloat: false)
             temp.isPreliminary = true
             temp.isOld = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + C.preliminaryDelay) {
                 if self.displayData.isOld {
                     self.displayData = temp
                 }
@@ -331,12 +332,11 @@ class Model : ObservableObject {
                 } else {
                     hasBeenReset = false
                 }
+                
+                displayData.isOld = true
                 Task {
-                    DispatchQueue.main.async {
-                        self.isCalculating = true
-                        self.displayData.isOld = true
-                    }
                     stupidBrain.operation(symbol)
+                    isCalculating = true
                     await asyncOperation(symbol)
                     if ["mc", "m+", "m-"].contains(symbol) {
                         if let memory = brain.memory {
