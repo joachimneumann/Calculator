@@ -9,6 +9,18 @@ import SwiftUI
 
 let testColors = false
 
+struct MyNavigation<Content>: View where Content: View {
+    @ViewBuilder var content: () -> Content
+    
+    var body: some View {
+        if #available(iOS 16, *) {
+            NavigationStack(root: content)
+        } else {
+            NavigationView(content: content)
+        }
+    }
+}
+
 struct Calculator: View {
     @ObservedObject var model: Model
     @StateObject var store = Store()
@@ -36,7 +48,7 @@ struct Calculator: View {
             .padding(.horizontal, model.screenInfo.portraitIPhoneHorizontalPadding)
             .padding(.bottom, model.screenInfo.portraitIPhoneBottomPadding)
         } else {
-            NavigationStack {
+            MyNavigation {
                 /*
                  lowest level: longDisplay and Icons
                  mid level: Keyboard with info and rectangle on top

@@ -21,26 +21,13 @@ class Gmp: Equatable, CustomDebugStringConvertible {
     
     /// init with zeros. The struct will be initialized correctly in init() with mpfr_init2()
     private var mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
-    
-    /// there is only ine initialzer that takes a string.
-    /// Implementing an initializer that accepts a double which is created from a string leads to a loss of precision.
-//    convenience init(fromString string: String, bits: Int) {
-//        var temp = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
-//        mpfr_init2 (&temp, bits)
-//        let noComma = string.replacingOccurrences(of: ",", with: ".")
-//        mpfr_set_str (&temp, noComma, 10, MPFR_RNDN)
-//        let tempGmp = Gmp(withMpfr: &temp, bits: 10000)
-//        print("tempGmp \(tempGmp) bits \(bits)")
-//        self.init(withMpfr: &temp, bits: bits)
-//    }
 
     init(fromString string: String, bits: Int) {
         self.bits = bits
         mpfr_init2 (&mpfr, bits)
-        let noComma = string.replacingOccurrences(of: ",", with: ".")
-        mpfr_set_str (&mpfr, noComma, 10, MPFR_RNDN)
+        mpfr_set_str (&mpfr, string, 10, MPFR_RNDN)
     }
-//
+
 //    private init(withMpfr from_mpfr: inout __mpfr_struct, bits: Int) {
 //        self.bits = bits
 //        mpfr_init2 (&mpfr, bits)
