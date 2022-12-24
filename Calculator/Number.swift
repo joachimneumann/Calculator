@@ -276,14 +276,13 @@ class Number: CustomDebugStringConvertible {
             /// restore trailing zeros that have been removed
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
             // print(mantissa)
-            if mantissa.count > firstLineWithoutComma {
-                ret.canBeInteger = true
-            } else {
-                if forLandscape && showAsInteger {
-                    ret.left = (isNegative ? "-" : "") + mantissa
-                    ret.dotsWidth = ret.dotsWidth(portraitMaxLength: lengths.withoutComma, fontSize: fontsize)
-                    return ret
-                }
+            
+            if mantissa.count > firstLineWithoutComma { ret.canBeInteger = true }
+            if mantissa.count <= firstLineWithoutComma ||
+                (forLandscape && showAsInteger) {
+                ret.left = (isNegative ? "-" : "") + mantissa
+                ret.dotsWidth = ret.dotsWidth(portraitMaxLength: lengths.withoutComma, fontSize: fontsize)
+                return ret
             }
         }
         

@@ -242,8 +242,8 @@ class Model : ObservableObject {
             forceScientific: forceScientific,
             showAsInteger: showAsInteger,
             showAsFloat: showAsFloat)
-        tempDisplayData.isPreliminary = false
         DispatchQueue.main.async {
+            tempDisplayData.isPreliminary = false
             self.displayDataIsOld = false
             self.displayData = tempDisplayData
         }
@@ -259,8 +259,8 @@ class Model : ObservableObject {
                 forceScientific: forceScientific,
                 showAsInteger: false,
                 showAsFloat: false)
-            tempDisplayData.isPreliminary = true
             DispatchQueue.main.asyncAfter(deadline: .now() + C.preliminaryDelay) {
+                tempDisplayData.isPreliminary = true
                 if self.displayDataIsOld {
                     self.displayData = tempDisplayData
                 }
@@ -353,8 +353,8 @@ class Model : ObservableObject {
                 DispatchQueue.main.async {
                     self.isCalculating = true
                 }
+                stupidBrain.operation(symbol)
                 Task {
-                    stupidBrain.operation(symbol)
                     await asyncOperation(symbol)
                     if ["mc", "m+", "m-"].contains(symbol) {
                         if let memory = brain.memory {
