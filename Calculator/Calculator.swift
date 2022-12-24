@@ -68,7 +68,6 @@ struct Calculator: View {
                         store: store,
                         model: model,
                         screenInfo: model.screenInfo,
-                        isCalculating: model.isCalculating,
                         isZoomed: $model.isZoomed)
                     .offset(y: model.offsetToVerticallyIconWithText)
                 }

@@ -13,7 +13,6 @@ struct Icons : View {
     @ObservedObject var store: Store
     @ObservedObject var model: Model
     let screenInfo: ScreenInfo
-    let isCalculating: Bool
     @State var pasteAllowedState: Bool = true
     @Binding var isZoomed: Bool
     @State var copyDone = true
@@ -34,120 +33,117 @@ struct Icons : View {
                         isZoomed.toggle()
                     }
                 }
-            Group {
-                if !simulatePurchased && store.purchasedIDs.isEmpty {
-                    NavigationLink {
-                        PurchaseView(store: store, model: model, font: Font(screenInfo.infoUiFont))
-                    } label: {
+            if !model.isCalculating {
+                Group {
+                    if !simulatePurchased && store.purchasedIDs.isEmpty {
+                        NavigationLink {
+                            PurchaseView(store: store, model: model, font: Font(screenInfo.infoUiFont))
+                        } label: {
+                            Text("copy")
+                                .font(Font(screenInfo.infoUiFont))
+                                .foregroundColor(Color.white)
+                        }
+                    } else {
                         Text("copy")
                             .font(Font(screenInfo.infoUiFont))
-                            .foregroundColor(.white)
-                    }
-                } else {
-                    Text("copy")
-                        .font(Font(screenInfo.infoUiFont))
-                        .foregroundColor(model.isCopying || !copyDone ? Color.orange : Color.white)
-                        .onTapGesture {
-                            if copyDone && pasteDone {
-                                DispatchQueue.main.async {
-                                    model.isCopying = true
-                                }
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                    model.isCopying = false
-                                }
-                                Task {
+                            .foregroundColor(model.isCopying || !copyDone ? Color.orange : Color.white)
+                            .onTapGesture {
+                                if copyDone && pasteDone {
                                     DispatchQueue.main.async {
-                                        copyDone = false
-                                        //print("copyDone \(copyDone)")
+                                        model.isCopying = true
                                     }
-                                    await model.copyToPastBin()
-                                    DispatchQueue.main.async {
-                                        copyDone = true
-                                        //print("copyDone \(copyDone)")
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                        model.isCopying = false
+                                    }
+                                    Task {
+                                        DispatchQueue.main.async {
+                                            copyDone = false
+                                            //print("copyDone \(copyDone)")
+                                        }
+                                        await model.copyToPastBin()
+                                        DispatchQueue.main.async {
+                                            copyDone = true
+                                            //print("copyDone \(copyDone)")
+                                        }
                                     }
                                 }
                             }
+                    }
+                    if !simulatePurchased && store.purchasedIDs.isEmpty {
+                        NavigationLink {
+                            PurchaseView(store: store, model: model, font: Font(screenInfo.infoUiFont))
+                        } label: {
+                            Text("paste")
+                                .font(Font(screenInfo.infoUiFont))
+                                .foregroundColor(Color.white)
                         }
-                }
-                if !simulatePurchased && store.purchasedIDs.isEmpty {
-                    NavigationLink {
-                        PurchaseView(store: store, model: model, font: Font(screenInfo.infoUiFont))
-                    } label: {
+                    } else {
                         Text("paste")
                             .font(Font(screenInfo.infoUiFont))
-                            .foregroundColor(.white)
-                    }
-                } else {
-                    Text("paste")
-                        .font(Font(screenInfo.infoUiFont))
-                        .foregroundColor((model.isPasting || !pasteDone) ? Color.orange : Color.white)
-                        .onTapGesture {
-                            if copyDone && pasteDone {
-                                DispatchQueue.main.async {
-                                    model.isPasting = true
-                                }
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                    model.isPasting = false
-                                }
-                                Task {
+                            .foregroundColor((model.isPasting || !pasteDone) ? Color.orange : Color.white)
+                            .onTapGesture {
+                                if copyDone && pasteDone {
                                     DispatchQueue.main.async {
-                                        pasteDone = false
-                                        //print("pasteDone \(pasteDone)")
+                                        model.isPasting = true
                                     }
-                                    model.fromPastBin()
-                                    DispatchQueue.main.async {
-                                        pasteDone = true
-                                        //print("pasteDone \(pasteDone)")
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                        model.isPasting = false
+                                    }
+                                    Task {
+                                        DispatchQueue.main.async {
+                                            pasteDone = false
+                                            //print("pasteDone \(pasteDone)")
+                                        }
+                                        model.fromPastBin()
+                                        DispatchQueue.main.async {
+                                            pasteDone = true
+                                            //print("pasteDone \(pasteDone)")
+                                        }
                                     }
                                 }
                             }
+                    }
+                    
+                    NavigationLink {
+                        Settings(model: model, font: Font(screenInfo.infoUiFont))
+                    } label: {
+                        Image(systemName: "gearshape")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .font(Font.title.weight(.thin))
+                            .frame(height: screenInfo.plusIconSize * 0.6)
+                            .foregroundColor(Color.white)
+                    }
+                    
+                    let integerLabel = model.displayData.isInteger ? (model.showAsInteger ? "→ sci" : "→ int") : ""
+                    if integerLabel.count > 0 {
+                        Button {
+                            model.showAsInteger.toggle()
+                            model.updateDisplayData()
+                        } label: {
+                            Text(integerLabel)
+                                .font(Font(screenInfo.infoUiFont))
+                                .foregroundColor(Color.white)
                         }
-                    //                            DispatchQueue.main.async {
-                    //                                pasteAllowedState = model.checkIfPasteBinIsValidNumber()
-                    //                            }
-                    //                          .disabled(!pasteAllowedState)
-                }
-                
-                NavigationLink {
-                    Settings(model: model, font: Font(screenInfo.infoUiFont))
-                } label: {
-                    Image(systemName: "gearshape")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .font(Font.title.weight(.thin))
-                        .frame(height: screenInfo.plusIconSize * 0.6)
-                        .foregroundColor(.white)
-                }
-                
-                let integerLabel = model.displayData.isInteger ? (model.showAsInteger ? "→ sci" : "→ int") : ""
-                //                    (model.displayData.isFloat ? "→ float" : "")
-                if integerLabel.count > 0 {
-                    Button {
-                        model.showAsInteger.toggle()
-                        model.updateDisplayData()
-                    } label: {
-                        Text(integerLabel)
-                            .font(Font(screenInfo.infoUiFont))
-                            .foregroundColor(.white)
                     }
-                }
-                
-                let floatLabel = model.displayData.isFloat ? (model.showAsFloat ? "→ sci" : "→ float") : ""
-                if integerLabel.count == 0 && floatLabel.count > 0 {
-                    Button {
-                        model.showAsFloat.toggle()
-                        model.updateDisplayData()
-                    } label: {
-                        Text(floatLabel)
-                            .font(Font(screenInfo.infoUiFont))
-                            .foregroundColor(.white)
+                    
+                    let floatLabel = model.displayData.isFloat ? (model.showAsFloat ? "→ sci" : "→ float") : ""
+                    if integerLabel.count == 0 && floatLabel.count > 0 {
+                        Button {
+                            model.showAsFloat.toggle()
+                            model.updateDisplayData()
+                        } label: {
+                            Text(floatLabel)
+                                .font(Font(screenInfo.infoUiFont))
+                                .foregroundColor(Color.white)
+                        }
                     }
+                    
                 }
-                
+                .padding(.top, screenInfo.plusIconSize * 0.5)
+                .lineLimit(1)
+                .minimumScaleFactor(0.01) // in case "paste" is too wide on small phones
             }
-            .padding(.top, screenInfo.plusIconSize * 0.5)
-            .lineLimit(1)
-            .minimumScaleFactor(0.01) // in case "paste" is too wide on small phones
         }
         .frame(width: model.screenInfo.plusIconSize)
         .padding(.leading, model.screenInfo.plusIconLeftPadding)
