@@ -215,7 +215,7 @@ class Number: CustomDebugStringConvertible {
             // The length of the string is not sufficient because Gmp does not use base 10
             // Let's try three times the length with a minumum of 1000
             // Note that displayGmp is not use in further calculations!
-            let displayPrecision: Int = str!.count * 3//max(str!.count * 3, 1000)
+            let displayPrecision: Int = max(str!.count * 3, 1000)
             displayGmp = Gmp(fromString: str!, bits: Brain.bits(for: displayPrecision))
         }
 
