@@ -143,12 +143,25 @@ class Model : ObservableObject {
     }
 
     func updateScreenInfo(to screenInfo: ScreenInfo) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [self] in
             self.screenInfo = screenInfo
-            self.lengths = lengthMeasurement(width: screenInfo.displayWidth, uiFont: screenInfo.uiFont, infoUiFont: screenInfo.infoUiFont, ePadding: screenInfo.ePadding)
+            self.lengths = lengthMeasurement(width: screenInfo.displayWidth, uiFont: self.screenInfo.uiFont, infoUiFont: screenInfo.infoUiFont, ePadding: screenInfo.ePadding)
 
-            self.offsetToVerticallyAlignTextWithkeyboard = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - self.lengths.height
-            self.offsetToVerticallyIconWithText          = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - screenInfo.plusIconSize + screenInfo.uiFont.descender - 0.5 * screenInfo.uiFont.capHeight + screenInfo.plusIconSize * 0.5
+            self.offsetToVerticallyAlignTextWithkeyboard =
+            screenInfo.calculatorSize.height -
+            screenInfo.keyboardHeight -
+            screenInfo.infoUiFontSize -
+            self.lengths.height
+
+            self.offsetToVerticallyIconWithText =
+            screenInfo.calculatorSize.height -
+            screenInfo.keyboardHeight -
+            screenInfo.infoUiFontSize -
+            screenInfo.plusIconSize +
+            screenInfo.uiFont.descender -
+            0.5 * self.screenInfo.uiFont.capHeight +
+            0.5 * screenInfo.plusIconSize
+
             self.updateDisplayData()
         }
     }
@@ -281,7 +294,7 @@ class Model : ObservableObject {
         // check mr
         keyInfo["mr"]!.enabled = brain.memory != nil
     }
-    
+
     private var previous: String? = nil
     func pendingOperatorCallback(op: String?) {
         /// In the brain, we have already asserted that the new op is different from previous

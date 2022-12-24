@@ -5,7 +5,7 @@
 //  Created by Joachim Neumann on 10/26/21.
 //
 
-import Foundation
+import UIKit
 
 class Number: CustomDebugStringConvertible {
     private var _precision: Int = 0
@@ -149,6 +149,31 @@ class Number: CustomDebugStringConvertible {
         getDisplayData(forLandscape: false, lengths: lengths, forceScientific: false, showAsInteger: false, showAsFloat: false)
     }
 
+    func fontSizeFactor(len: Int, maxLength: Int) -> CGFloat {
+        let expandMin = 1.0
+        let expandMax = 2.3
+        
+        let notOccupiedLength = CGFloat(len) / CGFloat(maxLength)
+        var expand = expandMax - notOccupiedLength * (expandMax - expandMin)
+        if expand > 1.5 { expand = 1.5 }
+        if expand < 1.0 { expand = 1.0 }
+        return expand
+    }
+    
+    func add(displayData: inout DisplayData, screenInfo: ScreenInfo) -> DisplayData {
+        var len = displayData.left.count
+        if displayData.right != nil { len += displayData.right!.count }
+        
+        let factor = fontSizeFactor(len: len, maxLength: displayData.portraitMaxLength)
+        if factor == 1.0 {
+            displayData.uiFont = UIFont.monospacedDigitSystemFont(ofSize: screenInfo.uiFontSize, weight: C.fontWeight)
+        } else {
+            displayData.uiFont = UIFont.monospacedDigitSystemFont(ofSize: screenInfo.uiFontSize * factor, weight: C.fontWeight)
+            displayData.digitWidth = "0".textSize(for: displayData.uiFont).width
+        }
+        return displayData
+    }
+    
     func getDisplayData(
         forLandscape: Bool,
         lengths: Lengths,
