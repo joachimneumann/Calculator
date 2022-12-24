@@ -22,7 +22,6 @@ struct Calculator: View {
                 PortraitDisplay(
                     displayData: model.displayData,
                     screenInfo: model.screenInfo,
-                    lengths: model.lengths,
                     preliminary: model.displayData.preliminary,
                     digitWidth: model.lengths.digitWidth)
                 //.background(Color.yellow)

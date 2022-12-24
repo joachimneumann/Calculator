@@ -20,7 +20,7 @@ struct ScreenInfo {
     
     /// needed to correcty calculate the lengths in init()
     let uiFont: UIFont
-    let uiFontLarge: UIFont
+    let uiFontSize: CGFloat
     let infoUiFont: UIFont
     let largeFontScaleFactor: CGFloat = 1.0 / 1.5
     let infoUiFontSize: CGFloat
@@ -83,14 +83,13 @@ struct ScreenInfo {
         ePadding = isPortraitPhone ? plusIconSize * 0.1 : plusIconSize * 0.3
 
         displayWidth = calculatorSize.width - (isPortraitPhone ?
-            portraitIPhoneHorizontalPadding + portraitIPhoneDisplayBottomPadding :
+            portraitIPhoneHorizontalPadding :
             plusIconSize + plusIconLeftPadding)
 
-        let singleLineFontSize = ((isPortraitPhone ? 0.125 : 0.16) * keyboardHeight).rounded()
-        uiFont = UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize, weight: C.fontWeight)
-        infoUiFontSize = singleLineFontSize * 0.3
+        uiFontSize = ((isPortraitPhone ? 0.125 : 0.16) * keyboardHeight).rounded()
+        uiFont = UIFont.monospacedDigitSystemFont(ofSize: uiFontSize, weight: C.fontWeight)
+        infoUiFontSize = uiFontSize * 0.3
         infoUiFont = UIFont.monospacedDigitSystemFont(ofSize: infoUiFontSize, weight: .regular)
-        uiFontLarge = UIFont.monospacedDigitSystemFont(ofSize: singleLineFontSize / largeFontScaleFactor, weight: C.fontWeight)
         C.kerning = 0.0//-0.05 * singleLineFontSize
     }
 }

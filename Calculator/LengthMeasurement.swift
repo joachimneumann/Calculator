@@ -61,7 +61,7 @@ func lengthMeasurement(width: CGFloat, uiFont: UIFont, infoUiFont: UIFont, ePadd
 }
 
     
-fileprivate extension String {
+extension String {
     func textSize(for uiFont: UIFont) -> CGSize {
         //  attrString.addAttribute(NSAttributedStringKey.kern, value: 2, range: NSMakeRange(0, attrString.length))
 

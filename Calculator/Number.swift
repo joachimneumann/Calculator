@@ -10,6 +10,7 @@ import Foundation
 
 struct DisplayData {
     var left: String = "0"
+    var portraitMaxLength = 1000
     var right: String?
     var isInteger: Bool = false
     var isFloat: Bool = false
@@ -187,6 +188,7 @@ class Number: CustomDebugStringConvertible {
                                     leftCandidate == "0," + String(repeating: "0", count: leftCandidate.count - 2) {
                                         /// do nothing
                                 } else {
+                                    ret.portraitMaxLength = lengths.withCommaNonScientific
                                     ret.isAbbreviated = s.count > lengths.withCommaNonScientific
                                     ret.left = leftCandidate
                                     return ret
@@ -196,6 +198,7 @@ class Number: CustomDebugStringConvertible {
                     } else {
                         /// e.g. 23423
                         if s.count <= lengths.withoutComma {
+                            ret.portraitMaxLength = lengths.withoutComma
                             ret.left = s
                             ret.right = nil
                             ret.isAbbreviated = false
@@ -287,6 +290,7 @@ class Number: CustomDebugStringConvertible {
             if mantissa.count <= firstLineWithoutComma ||
                 (forLandscape && showAsInteger) {
                 ret.left = (isNegative ? "-" : "") + mantissa
+                ret.portraitMaxLength = lengths.withoutComma
                 return ret
             }
         }
@@ -311,6 +315,7 @@ class Number: CustomDebugStringConvertible {
                         ret.isAbbreviated = true
                     }
                     if isNegative { ret.left = "-" + ret.left }
+                    ret.portraitMaxLength = lengths.withCommaNonScientific
                     return ret
                 }
             }
@@ -335,6 +340,7 @@ class Number: CustomDebugStringConvertible {
                         ret.isAbbreviated = true
                     }
                     if isNegative { ret.left = "-" + ret.left }
+                    ret.portraitMaxLength = lengths.withCommaNonScientific
                     return ret
                 }
             }
@@ -361,6 +367,7 @@ class Number: CustomDebugStringConvertible {
         }
         ret.left = mantissa
         if isNegative { ret.left = "-" + ret.left }
+        ret.portraitMaxLength = lengths.withCommaScientific
         return ret
     }
 }

@@ -127,7 +127,6 @@ struct Icons : View {
                         model.updateDisplayData()
                     } label: {
                         Text(integerLabel)
-                            .minimumScaleFactor(0.01)
                             .font(Font(screenInfo.infoUiFont))
                             .foregroundColor(.white)
                     }
@@ -140,7 +139,6 @@ struct Icons : View {
                         model.updateDisplayData()
                     } label: {
                         Text(floatLabel)
-                            .minimumScaleFactor(0.01)
                             .font(Font(screenInfo.infoUiFont))
                             .foregroundColor(.white)
                     }
