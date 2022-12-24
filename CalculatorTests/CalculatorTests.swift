@@ -1207,8 +1207,7 @@ class CalculatorTests: XCTestCase {
         //        XCTAssertEqual(brain.debugLastDouble, 44.0)
     }
     
-    func _testSpeed1() throws {
-        // This is an example of a performance test case.
+    func testSpeed1() throws {
         let brain = Brain()
         let precision = 10000000
         brain.setPrecision(precision)
@@ -1218,17 +1217,12 @@ class CalculatorTests: XCTestCase {
         }
     }
     
-    func _testSpeed2() throws {
-        // This is an example of a performance test case.
+    func testSpeed2() throws {
         let brain = Brain()
         let precision = 10000000
         brain.setPrecision(precision)
         self.measure {
-            let x = Number("88888888", precision: 20)
-            let f = Number("10", precision: 20)
-            f.toGmp()
-            f.gmp?.setValue(other: f.gmp!)
-            x.execute(Gmp.mul, with: f)
+            let x = Number("888888888,8888888", precision: precision)
             x.toGmp()
         }
     }

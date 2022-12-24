@@ -162,7 +162,7 @@ class Model : ObservableObject {
     
     func copyToPastBin() async {
         let displayData = brain.last.getDisplayData(
-            forLong: true,
+            forLandscape: true,
             lengths: Lengths(precision),
             forceScientific: false,
             showAsInteger: showAsInteger,
@@ -222,7 +222,7 @@ class Model : ObservableObject {
         /// called after rotating the device and when I have a result
         if displayData.preliminary && !forceNonPreliminary {
             var temp = stupidBrain.last.getDisplayData(
-                forLong: false,
+                forLandscape: false,
                 lengths: lengths,
                 forceScientific: forceScientific,
                 showAsInteger: showAsInteger,
@@ -234,7 +234,7 @@ class Model : ObservableObject {
         } else {
             /// not preliminary
             let temp = brain.last.getDisplayData(
-                forLong: !screenInfo.isPortraitPhone,
+                forLandscape: !screenInfo.isPortraitPhone,
                 lengths: lengths,
                 forceScientific: forceScientific,
                 showAsInteger: showAsInteger,
@@ -247,7 +247,7 @@ class Model : ObservableObject {
     
     func haveStupidBrainResultCallback() {
         var temp = stupidBrain.last.getDisplayData(
-            forLong: false,
+            forLandscape: false,
             lengths: lengths,
             forceScientific: forceScientific,
             showAsInteger: false,
@@ -349,7 +349,7 @@ class Model : ObservableObject {
                     if ["mc", "m+", "m-"].contains(symbol) {
                         if let memory = brain.memory {
                             let temp = memory.getDisplayData(
-                                forLong: true,
+                                forLandscape: true,
                                 lengths: Lengths(precision),
                                 forceScientific: false,
                                 showAsInteger: showAsInteger,

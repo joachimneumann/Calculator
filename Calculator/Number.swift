@@ -156,11 +156,11 @@ class Number: CustomDebugStringConvertible {
     }
     
     func getDisplayData(_ lengths: Lengths) -> DisplayData {
-        getDisplayData(forLong: false, lengths: lengths, forceScientific: false, showAsInteger: false, showAsFloat: false)
+        getDisplayData(forLandscape: false, lengths: lengths, forceScientific: false, showAsInteger: false, showAsFloat: false)
     }
 
     func getDisplayData(
-        forLong: Bool,
+        forLandscape: Bool,
         lengths: Lengths,
         forceScientific: Bool,
         showAsInteger: Bool,
@@ -170,13 +170,28 @@ class Number: CustomDebugStringConvertible {
         var ret = DisplayData()
         if !forceScientific {
             if let s = str {
-                if !s.contains("e") { // no shortcut for scientific strings
+                if !s.contains("e") { // no shortcut for "scientific strings". This can not happen (I think)
                     if let pos = s.position(of: ",") {
                         if pos < lengths.withCommaNonScientific {
-                            ret.left = String(s.prefix(forLong ? maxDisplayLength : lengths.withCommaNonScientific))
-                            ret.right = nil
-                            ret.isAbbreviated = false
-                            return ret
+                            if forLandscape {
+                                ret.isAbbreviated = s.count > maxDisplayLength
+                                ret.left = String(s.prefix(maxDisplayLength))
+                                ret.right = nil
+                                return ret
+                            } else {
+                                /// portrait
+                                let leftCandidate = String(s.prefix(lengths.withCommaNonScientific))
+
+                                /// Oh. I dont't want to allow 0.0000000
+                                if leftCandidate.count == lengths.withCommaNonScientific &&
+                                    leftCandidate == "0," + String(repeating: "0", count: leftCandidate.count - 2) {
+                                        /// do nothing
+                                } else {
+                                    ret.isAbbreviated = s.count > lengths.withCommaNonScientific
+                                    ret.left = leftCandidate
+                                    return ret
+                                }
+                            }
                         }
                     } else {
                         /// e.g. 23423
@@ -196,8 +211,12 @@ class Number: CustomDebugStringConvertible {
         if gmp != nil {
             displayGmp = gmp!
         } else {
-            // I add 1000 digits in the precision to make sure that all 10.000 digits in the long display are correctly displayed
-            displayGmp = Gmp(fromString: str!, bits: Brain.bits(for: min(_precision, maxDisplayLength) + 1000))
+            // what precision do I need to convert the string into a Gmp?
+            // The length of the string is not sufficient because Gmp does not use base 10
+            // Let's try three times the length with a minumum of 1000
+            // Note that displayGmp is not use in further calculations!
+            let displayPrecision: Int = str!.count * 3//max(str!.count * 3, 1000)
+            displayGmp = Gmp(fromString: str!, bits: Brain.bits(for: displayPrecision))
         }
 
         if displayGmp.NaN {
@@ -221,7 +240,7 @@ class Number: CustomDebugStringConvertible {
         var firstLineWithCommaNonScientific: Int
         var firstLineWithoutComma: Int
 
-        if forLong {
+        if forLandscape {
             mantissaLength                  = min(_precision, maxDisplayLength)
             withoutComma                    = min(_precision, maxDisplayLength)
             withCommaNonScientific          = min(_precision, maxDisplayLength)
@@ -266,7 +285,7 @@ class Number: CustomDebugStringConvertible {
             // print(mantissa)
             if mantissa.count > firstLineWithoutComma { ret.isInteger = true }
             if mantissa.count <= firstLineWithoutComma ||
-                (forLong && showAsInteger) {
+                (forLandscape && showAsInteger) {
                 ret.left = (isNegative ? "-" : "") + mantissa
                 return ret
             }
@@ -284,7 +303,7 @@ class Number: CustomDebugStringConvertible {
                 if exponent + 1 >= firstLineWithCommaNonScientific { if !ret.isInteger { ret.isFloat = true } }
 
                 if exponent + 1 < firstLineWithCommaNonScientific ||
-                    (forLong && showAsFloat) {
+                    (forLandscape && showAsFloat) {
                     if floatString.count <= withCommaNonScientific {
                         ret.left = floatString
                     } else {
@@ -303,7 +322,7 @@ class Number: CustomDebugStringConvertible {
             if -1 * exponent < withCommaNonScientific - 1 {
                 if -1 * exponent + 1 >= firstLineWithCommaNonScientific { if !ret.isInteger { ret.isFloat = true } }
                 if -1 * exponent + 1 < firstLineWithCommaNonScientific ||
-                        (forLong && showAsFloat) {
+                        (forLandscape && showAsFloat) {
                     var floatString = mantissa
                     for _ in 0..<(-1*exponent - 1) {
                         floatString = "0" + floatString
