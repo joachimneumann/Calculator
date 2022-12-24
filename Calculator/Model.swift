@@ -30,6 +30,7 @@ class Model : ObservableObject {
         }
     }
     
+    private var displayDataIsOld = false
     private let timerDefaultText = "click to measure"
     private var timer: Timer?
     private var timerCounter = 0
@@ -177,6 +178,7 @@ class Model : ObservableObject {
         let displayData = brain.last.getDisplayData(
             forLandscape: true,
             lengths: Lengths(precision),
+            fontsize: screenInfo.uiFontSize,
             forceScientific: false,
             showAsInteger: showAsInteger,
             showAsFloat: showAsFloat,
@@ -233,33 +235,34 @@ class Model : ObservableObject {
     
     func updateDisplayData() {
         /// called after rotating the device and when I have a result
-        var temp = brain.last.getDisplayData(
+        var tempDisplayData = brain.last.getDisplayData(
             forLandscape: !screenInfo.isPortraitPhone,
             lengths: lengths,
+            fontsize: screenInfo.uiFontSize,
             forceScientific: forceScientific,
             showAsInteger: showAsInteger,
             showAsFloat: showAsFloat)
-        temp.isPreliminary = false
-        temp.isOld = false
+        tempDisplayData.isPreliminary = false
         DispatchQueue.main.async {
-            self.displayData = temp
+            self.displayDataIsOld = false
+            self.displayData = tempDisplayData
         }
     }
     
     func haveStupidBrainResultCallback() {
         /// only show this if the high precision result isOld
-        if displayData.isOld {
-            var temp = stupidBrain.last.getDisplayData(
+        if displayDataIsOld {
+            var tempDisplayData = stupidBrain.last.getDisplayData(
                 forLandscape: false,
                 lengths: lengths,
+                fontsize: screenInfo.uiFontSize,
                 forceScientific: forceScientific,
                 showAsInteger: false,
                 showAsFloat: false)
-            temp.isPreliminary = true
-            temp.isOld = false
+            tempDisplayData.isPreliminary = true
             DispatchQueue.main.asyncAfter(deadline: .now() + C.preliminaryDelay) {
-                if self.displayData.isOld {
-                    self.displayData = temp
+                if self.displayDataIsOld {
+                    self.displayData = tempDisplayData
                 }
             }
         }
@@ -346,16 +349,19 @@ class Model : ObservableObject {
                     hasBeenReset = false
                 }
                 
-                displayData.isOld = true
+                displayDataIsOld = true
+                DispatchQueue.main.async {
+                    self.isCalculating = true
+                }
                 Task {
                     stupidBrain.operation(symbol)
-                    isCalculating = true
                     await asyncOperation(symbol)
                     if ["mc", "m+", "m-"].contains(symbol) {
                         if let memory = brain.memory {
                             let temp = memory.getDisplayData(
                                 forLandscape: true,
                                 lengths: Lengths(precision),
+                                fontsize: screenInfo.uiFontSize,
                                 forceScientific: false,
                                 showAsInteger: showAsInteger,
                                 showAsFloat: showAsFloat,

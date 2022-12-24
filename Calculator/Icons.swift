@@ -116,7 +116,7 @@ struct Icons : View {
                                 .foregroundColor(Color.white)
                         }
                         
-                        let integerLabel = model.displayData.isInteger ? (model.showAsInteger ? "→ sci" : "→ int") : ""
+                        let integerLabel = model.displayData.canBeInteger ? (model.showAsInteger ? "→ sci" : "→ int") : ""
                         if integerLabel.count > 0 {
                             Button {
                                 model.showAsInteger.toggle()
@@ -128,7 +128,7 @@ struct Icons : View {
                             }
                         }
                         
-                        let floatLabel = model.displayData.isFloat ? (model.showAsFloat ? "→ sci" : "→ float") : ""
+                        let floatLabel = model.displayData.canBeFloat ? (model.showAsFloat ? "→ sci" : "→ float") : ""
                         if integerLabel.count == 0 && floatLabel.count > 0 {
                             Button {
                                 model.showAsFloat.toggle()

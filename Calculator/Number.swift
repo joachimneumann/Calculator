@@ -146,37 +146,13 @@ class Number: CustomDebugStringConvertible {
     }
     
     func getDisplayData(_ lengths: Lengths) -> DisplayData {
-        getDisplayData(forLandscape: false, lengths: lengths, forceScientific: false, showAsInteger: false, showAsFloat: false)
-    }
-
-    func fontSizeFactor(len: Int, maxLength: Int) -> CGFloat {
-        let expandMin = 1.0
-        let expandMax = 2.3
-        
-        let notOccupiedLength = CGFloat(len) / CGFloat(maxLength)
-        var expand = expandMax - notOccupiedLength * (expandMax - expandMin)
-        if expand > 1.5 { expand = 1.5 }
-        if expand < 1.0 { expand = 1.0 }
-        return expand
-    }
-    
-    func add(displayData: inout DisplayData, screenInfo: ScreenInfo) -> DisplayData {
-        var len = displayData.left.count
-        if displayData.right != nil { len += displayData.right!.count }
-        
-        let factor = fontSizeFactor(len: len, maxLength: displayData.portraitMaxLength)
-        if factor == 1.0 {
-            displayData.uiFont = UIFont.monospacedDigitSystemFont(ofSize: screenInfo.uiFontSize, weight: C.fontWeight)
-        } else {
-            displayData.uiFont = UIFont.monospacedDigitSystemFont(ofSize: screenInfo.uiFontSize * factor, weight: C.fontWeight)
-            displayData.digitWidth = "0".textSize(for: displayData.uiFont).width
-        }
-        return displayData
+        getDisplayData(forLandscape: false, lengths: lengths, fontsize: 0, forceScientific: false, showAsInteger: false, showAsFloat: false)
     }
     
     func getDisplayData(
         forLandscape: Bool,
         lengths: Lengths,
+        fontsize: CGFloat,
         forceScientific: Bool,
         showAsInteger: Bool,
         showAsFloat: Bool,
@@ -189,7 +165,7 @@ class Number: CustomDebugStringConvertible {
                     if let pos = s.position(of: ",") {
                         if pos < lengths.withCommaNonScientific {
                             if forLandscape {
-                                ret.isAbbreviated = s.count > maxDisplayLength
+//                                ret.isAbbreviated = s.count > maxDisplayLength
                                 ret.left = String(s.prefix(maxDisplayLength))
                                 ret.right = nil
                                 return ret
@@ -202,9 +178,9 @@ class Number: CustomDebugStringConvertible {
                                     leftCandidate == "0," + String(repeating: "0", count: leftCandidate.count - 2) {
                                         /// do nothing
                                 } else {
-                                    ret.portraitMaxLength = lengths.withCommaNonScientific
-                                    ret.isAbbreviated = s.count > lengths.withCommaNonScientific
                                     ret.left = leftCandidate
+                                    ret.dotsWidth = ret.dotsWidth(portraitMaxLength: lengths.withCommaNonScientific, fontSize: fontsize)
+                                    // ret.isAbbreviated = s.count > lengths.withCommaNonScientific
                                     return ret
                                 }
                             }
@@ -212,10 +188,10 @@ class Number: CustomDebugStringConvertible {
                     } else {
                         /// e.g. 23423
                         if s.count <= lengths.withoutComma {
-                            ret.portraitMaxLength = lengths.withoutComma
                             ret.left = s
                             ret.right = nil
-                            ret.isAbbreviated = false
+                            ret.dotsWidth = ret.dotsWidth(portraitMaxLength: lengths.withoutComma, fontSize: fontsize)
+//                            ret.isAbbreviated = false
                             return ret
                         }
                     }
@@ -300,12 +276,14 @@ class Number: CustomDebugStringConvertible {
             /// restore trailing zeros that have been removed
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
             // print(mantissa)
-            if mantissa.count > firstLineWithoutComma { ret.isInteger = true }
-            if mantissa.count <= firstLineWithoutComma ||
-                (forLandscape && showAsInteger) {
-                ret.left = (isNegative ? "-" : "") + mantissa
-                ret.portraitMaxLength = lengths.withoutComma
-                return ret
+            if mantissa.count > firstLineWithoutComma {
+                ret.canBeInteger = true
+            } else {
+                if forLandscape && showAsInteger {
+                    ret.left = (isNegative ? "-" : "") + mantissa
+                    ret.dotsWidth = ret.dotsWidth(portraitMaxLength: lengths.withoutComma, fontSize: fontsize)
+                    return ret
+                }
             }
         }
         
@@ -318,7 +296,7 @@ class Number: CustomDebugStringConvertible {
                 floatString.insert(",", at: index)
 
                 /// is the comma visible in the first line and is there at least one digit after the comma?
-                if exponent + 1 >= firstLineWithCommaNonScientific { if !ret.isInteger { ret.isFloat = true } }
+                if exponent + 1 >= firstLineWithCommaNonScientific { if !ret.canBeInteger { ret.canBeFloat = true } }
 
                 if exponent + 1 < firstLineWithCommaNonScientific ||
                     (forLandscape && showAsFloat) {
@@ -326,10 +304,10 @@ class Number: CustomDebugStringConvertible {
                         ret.left = floatString
                     } else {
                         ret.left = String(floatString.prefix(withCommaNonScientific))
-                        ret.isAbbreviated = true
+                        // ret.isAbbreviated = true
                     }
                     if isNegative { ret.left = "-" + ret.left }
-                    ret.portraitMaxLength = lengths.withCommaNonScientific
+                    ret.dotsWidth = ret.dotsWidth(portraitMaxLength: lengths.withCommaNonScientific, fontSize: fontsize)
                     return ret
                 }
             }
@@ -339,7 +317,7 @@ class Number: CustomDebugStringConvertible {
         /// additional requirement: first non-zero digit in first line. If not -> Scientific
         if !forceScientific && exponent < 0 {
             if -1 * exponent < withCommaNonScientific - 1 {
-                if -1 * exponent + 1 >= firstLineWithCommaNonScientific { if !ret.isInteger { ret.isFloat = true } }
+                if -1 * exponent + 1 >= firstLineWithCommaNonScientific { if !ret.canBeInteger { ret.canBeFloat = true } }
                 if -1 * exponent + 1 < firstLineWithCommaNonScientific ||
                         (forLandscape && showAsFloat) {
                     var floatString = mantissa
@@ -351,10 +329,10 @@ class Number: CustomDebugStringConvertible {
                         ret.left = floatString
                     } else {
                         ret.left = String(floatString.prefix(withCommaNonScientific))
-                        ret.isAbbreviated = true
+//                        ret.isAbbreviated = true
                     }
                     if isNegative { ret.left = "-" + ret.left }
-                    ret.portraitMaxLength = lengths.withCommaNonScientific
+                    ret.dotsWidth = ret.dotsWidth(portraitMaxLength: lengths.withCommaNonScientific, fontSize: fontsize)
                     return ret
                 }
             }
@@ -371,17 +349,17 @@ class Number: CustomDebugStringConvertible {
             if remainingMantissaLength < 3 {
                 ret.left = "Can't Show"
                 ret.right = nil
-                ret.isAbbreviated = false
+                // ret.isAbbreviated = false
                 return ret
             } else {
                 /// shorten...
                 mantissa = String(mantissa.prefix(withCommaScientific - ret.right!.count))
-                ret.isAbbreviated = true
+                // ret.isAbbreviated = true
             }
         }
         ret.left = mantissa
         if isNegative { ret.left = "-" + ret.left }
-        ret.portraitMaxLength = lengths.withCommaScientific
+        ret.dotsWidth = ret.dotsWidth(portraitMaxLength: lengths.withCommaScientific, fontSize: fontsize)
         return ret
     }
 }
