@@ -15,7 +15,6 @@ struct DisplayData {
     var isInteger: Bool = false
     var isFloat: Bool = false
     var isAbbreviated: Bool = false // show a message that there is more?
-    var preliminary: Bool = false
 }
 
 class Number: CustomDebugStringConvertible {

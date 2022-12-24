@@ -62,8 +62,9 @@ class Model : ObservableObject {
     @Published var keyInfo: [String: KeyInfo] = [:]
     @Published var showAC = true
     @Published var hasBeenReset = false
-    @Published var displayData = DisplayData()
-    
+    @Published var highPrecisionDisplayData: DisplayData? = nil
+    @Published var lowPrecisionDisplayData: DisplayData? = nil
+
     var precisionDescription = "unknown"
     
     var lengths = Lengths(0)
@@ -149,7 +150,7 @@ class Model : ObservableObject {
 
             self.offsetToVerticallyAlignTextWithkeyboard = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - self.lengths.height
             self.offsetToVerticallyIconWithText          = screenInfo.calculatorSize.height - screenInfo.keyboardHeight - screenInfo.infoUiFontSize - screenInfo.plusIconSize + screenInfo.uiFont.descender - 0.5 * screenInfo.uiFont.capHeight + screenInfo.plusIconSize * 0.5
-            self.updateDisplayData(forceNonPreliminary: false)
+            self.updateDisplayData()
         }
     }
         
@@ -218,48 +219,41 @@ class Model : ObservableObject {
         return result
     }
     
-    func updateDisplayData(forceNonPreliminary: Bool = false) {
+    func updateDisplayData() {
         /// called after rotating the device and when I have a result
-        if displayData.preliminary && !forceNonPreliminary {
-            var temp = stupidBrain.last.getDisplayData(
-                forLandscape: false,
-                lengths: lengths,
-                forceScientific: forceScientific,
-                showAsInteger: showAsInteger,
-                showAsFloat: showAsFloat)
-            temp.preliminary = true
-            DispatchQueue.main.async {
-                self.displayData = temp
-            }
-        } else {
-            /// not preliminary
-            let temp = brain.last.getDisplayData(
-                forLandscape: !screenInfo.isPortraitPhone,
-                lengths: lengths,
-                forceScientific: forceScientific,
-                showAsInteger: showAsInteger,
-                showAsFloat: showAsFloat)
-            DispatchQueue.main.async {
-                self.displayData = temp
-            }
+        var temp = stupidBrain.last.getDisplayData(
+            forLandscape: false,
+            lengths: lengths,
+            forceScientific: forceScientific,
+            showAsInteger: showAsInteger,
+            showAsFloat: showAsFloat)
+        DispatchQueue.main.async {
+            self.lowPrecisionDisplayData = temp
+        }
+        temp = brain.last.getDisplayData(
+            forLandscape: !screenInfo.isPortraitPhone,
+            lengths: lengths,
+            forceScientific: forceScientific,
+            showAsInteger: showAsInteger,
+            showAsFloat: showAsFloat)
+        DispatchQueue.main.async {
+            self.highPrecisionDisplayData = temp
         }
     }
     
     func haveStupidBrainResultCallback() {
-        var temp = stupidBrain.last.getDisplayData(
+        let temp = stupidBrain.last.getDisplayData(
             forLandscape: false,
             lengths: lengths,
             forceScientific: forceScientific,
             showAsInteger: false,
             showAsFloat: false)
-        temp.preliminary = true
         DispatchQueue.main.async {
-            self.displayData = temp
+            self.lowPrecisionDisplayData = temp
         }
     }
     
     func haveResultCallback() {
-        //print("haveResultCallback \(lengths.withoutComma) \(brain.last) isPortraitPhone \(screenInfo.isPortraitPhone)")
         if brain.last.isNull {
             DispatchQueue.main.async {
                 self.showAC = true
@@ -271,7 +265,7 @@ class Model : ObservableObject {
             }
         }
         
-        updateDisplayData(forceNonPreliminary: true)
+        updateDisplayData()
         
         for key in C.keysAll {
             if brain.isValidNumber {
@@ -340,12 +334,13 @@ class Model : ObservableObject {
                     hasBeenReset = false
                 }
                 Task {
-                    DispatchQueue.main.async { self.isCalculating = true }
-
+                    DispatchQueue.main.async {
+                        self.isCalculating = true
+                        self.highPrecisionDisplayData = nil
+                        self.lowPrecisionDisplayData = nil
+                    }
                     stupidBrain.operation(symbol)
-                    // print("executing START")
                     await asyncOperation(symbol)
-                    // print("executing DONE")
                     if ["mc", "m+", "m-"].contains(symbol) {
                         if let memory = brain.memory {
                             let temp = memory.getDisplayData(
