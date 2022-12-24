@@ -7,16 +7,6 @@
 
 import Foundation
 
-
-struct DisplayData {
-    var left: String = "0"
-    var portraitMaxLength = 1000
-    var right: String?
-    var isInteger: Bool = false
-    var isFloat: Bool = false
-    var isAbbreviated: Bool = false // show a message that there is more?
-}
-
 class Number: CustomDebugStringConvertible {
     private var _precision: Int = 0
     private var _str: String?

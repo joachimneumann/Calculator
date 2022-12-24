@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct PortraitDisplay: View {
-    let highprecisionDisplayData: DisplayData?
-    let lowPrecisionDisplayData: DisplayData?
+    let displayData: DisplayData
     let screenInfo: ScreenInfo
     let digitWidth: CGFloat
     
@@ -50,19 +49,16 @@ struct PortraitDisplay: View {
     var body: some View {
         HStack(alignment: .bottom, spacing: 0.0) {
             Spacer(minLength: 0.0)
-            let displayData = highprecisionDisplayData ?? (lowPrecisionDisplayData ?? DisplayData())
-            let preliminary = highprecisionDisplayData == nil && lowPrecisionDisplayData != nil
-
-            let toShow = preliminary && displayData.left.count > 1 ? String(displayData.left.dropLast()) : displayData.left
+            let toShow = displayData.isPreliminary && displayData.left.count > 1 ? String(displayData.left.dropLast()) : displayData.left
             let portraitFontInfo = portraitFontInfo(for: displayData)
             Text(toShow)
                 .kerning(C.kerning)
                 .font(portraitFontInfo.font)
-                .foregroundColor(preliminary ? .gray : .white)
+                .foregroundColor(displayData.isPreliminary ? .gray : .white)
                 .multilineTextAlignment(.trailing)
                 .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
                 .lineLimit(1)
-            if preliminary {
+            if displayData.isPreliminary {
                 AnimatedDots().frame(width: portraitFontInfo.digitWidth, height: portraitFontInfo.digitWidth / 3)
                     .offset(y: -portraitFontInfo.digitWidth / 3)
             }
@@ -70,7 +66,7 @@ struct PortraitDisplay: View {
                 Text(displayData.right!)
                     .kerning(C.kerning)
                     .font(portraitFontInfo.font)
-                    .foregroundColor(preliminary ? .gray : .white)
+                    .foregroundColor(displayData.isPreliminary ? .gray : .white)
                     .multilineTextAlignment(.trailing)
                     .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
                     .lineLimit(1)

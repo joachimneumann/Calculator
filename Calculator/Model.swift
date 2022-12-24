@@ -62,8 +62,7 @@ class Model : ObservableObject {
     @Published var keyInfo: [String: KeyInfo] = [:]
     @Published var showAC = true
     @Published var hasBeenReset = false
-    @Published var highPrecisionDisplayData: DisplayData? = nil
-    @Published var lowPrecisionDisplayData: DisplayData? = nil
+    @Published var displayData: DisplayData
 
     var precisionDescription = "unknown"
     
@@ -88,7 +87,7 @@ class Model : ObservableObject {
         // At init, not much is happening in the brain
         brain = Brain()
         stupidBrain = Brain()
-
+        displayData = DisplayData()
         brain.setPrecision(precision)
         brain.haveResultCallback = haveResultCallback
         brain.pendingOperatorCallback = pendingOperatorCallback
@@ -221,35 +220,34 @@ class Model : ObservableObject {
     
     func updateDisplayData() {
         /// called after rotating the device and when I have a result
-        var temp = stupidBrain.last.getDisplayData(
-            forLandscape: false,
-            lengths: lengths,
-            forceScientific: forceScientific,
-            showAsInteger: showAsInteger,
-            showAsFloat: showAsFloat)
-        DispatchQueue.main.async {
-            self.lowPrecisionDisplayData = temp
-        }
-        temp = brain.last.getDisplayData(
+        var temp = brain.last.getDisplayData(
             forLandscape: !screenInfo.isPortraitPhone,
             lengths: lengths,
             forceScientific: forceScientific,
             showAsInteger: showAsInteger,
             showAsFloat: showAsFloat)
+        temp.isPreliminary = false
+        temp.isOld = false
         DispatchQueue.main.async {
-            self.highPrecisionDisplayData = temp
+            self.displayData = temp
         }
     }
     
     func haveStupidBrainResultCallback() {
-        let temp = stupidBrain.last.getDisplayData(
-            forLandscape: false,
-            lengths: lengths,
-            forceScientific: forceScientific,
-            showAsInteger: false,
-            showAsFloat: false)
-        DispatchQueue.main.async {
-            self.lowPrecisionDisplayData = temp
+        if displayData.isOld {
+            var temp = stupidBrain.last.getDisplayData(
+                forLandscape: false,
+                lengths: lengths,
+                forceScientific: forceScientific,
+                showAsInteger: false,
+                showAsFloat: false)
+            temp.isPreliminary = true
+            temp.isOld = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                if self.displayData.isOld {
+                    self.displayData = temp
+                }
+            }
         }
     }
     
@@ -336,8 +334,7 @@ class Model : ObservableObject {
                 Task {
                     DispatchQueue.main.async {
                         self.isCalculating = true
-                        self.highPrecisionDisplayData = nil
-                        self.lowPrecisionDisplayData = nil
+                        self.displayData.isOld = true
                     }
                     stupidBrain.operation(symbol)
                     await asyncOperation(symbol)

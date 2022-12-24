@@ -32,8 +32,7 @@ struct Calculator: View {
             VStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
                 PortraitDisplay(
-                    highprecisionDisplayData: model.highPrecisionDisplayData,
-                    lowPrecisionDisplayData: model.lowPrecisionDisplayData,
+                    displayData: model.displayData,
                     screenInfo: model.screenInfo,
                     digitWidth: model.lengths.digitWidth)
                 //.background(Color.yellow)
@@ -54,13 +53,11 @@ struct Calculator: View {
                  mid level: Keyboard with info and rectangle on top
                  top level: single line
                  */
-                let preliminary = model.highPrecisionDisplayData == nil && model.lowPrecisionDisplayData != nil
-                let color: Color = (model.isCopying || model.isPasting) ? .orange : (preliminary ? .gray : .white)
-                let displayData = model.highPrecisionDisplayData ?? (model.lowPrecisionDisplayData ?? DisplayData())
+                let color: Color = (model.isCopying || model.isPasting) ? .orange : (model.displayData.isPreliminary ? .gray : .white)
                 HStack(alignment: .top, spacing: 0.0) {
                     Spacer(minLength: 0.0)
                     ScrollViewConditionalAnimation(
-                        text: displayData.left,
+                        text: model.displayData.left,
                         font: Font(model.screenInfo.uiFont),
                         foregroundColor: color,
                         backgroundColor: testColors ? .yellow : .black,
@@ -68,10 +65,10 @@ struct Calculator: View {
                         disabled: !model.isZoomed,
                         scrollViewHasScolled: $model.scrollViewHasScrolled,
                         scrollViewID: model.scrollViewID,
-                        preliminary: preliminary,
+                        preliminary: model.displayData.isPreliminary,
                         digitWidth: model.lengths.digitWidth)
-                    if displayData.right != nil {
-                        Text(displayData.right!)
+                    if model.displayData.right != nil {
+                        Text(model.displayData.right!)
                             .kerning(C.kerning)
                             .font(Font(model.screenInfo.uiFont))
                             .foregroundColor(color)
