@@ -80,7 +80,7 @@ struct Label: View {
                     .frame(width: size * 0.3)
             } else {
                 Text(symbol)
-                    .font(.system(size: size * 0.3, weight: .none))
+                    .font(.system(size: size * 0.3))
             }
         }
     }

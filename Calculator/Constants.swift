@@ -88,7 +88,6 @@ struct C {
     static let keysThatDoNotNeedToBeDisabled = ["2nd", "Rad", "Deg"]
 
     static let fontWeight: UIFont.Weight = .thin // UIFont.Weight(rawValue: -4.02) is not continuous
-    static let fontWidth: Font.Width = .standard // not supported in leangthmeasurement
     static var kerning: CGFloat = 0.0
     static let sfImageforKey: [String: String] = [
         "+":   "plus",
