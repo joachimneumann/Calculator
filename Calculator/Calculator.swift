@@ -58,7 +58,7 @@ struct Calculator: View {
                         display: model.display,
                         screenInfo: model.screenInfo,
                         color: (model.isCopying || model.isPasting) ? .orange : model.display.format.color,
-                        disabled: !model.isZoomed,
+                        disabledScrolling: !model.isZoomed,
                         scrollViewHasScrolled: $model.scrollViewHasScrolled,
                         scrollViewID: model.scrollViewID
                     )

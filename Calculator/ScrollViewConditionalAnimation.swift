@@ -13,7 +13,7 @@ struct ScrollViewConditionalAnimation: View {
     let foregroundColor: Color
     let backgroundColor: Color
     let offsetY: CGFloat
-    let disabled: Bool
+    let disabledScrolling: Bool
     @Binding var scrollViewHasScolled: Bool
     var scrollViewID: UUID
     let preliminary: Bool
@@ -43,6 +43,7 @@ struct ScrollViewConditionalAnimation: View {
                         .anchorPreference(key: OffsetKey.self, value: .top) {
                             g[$0].y
                         }
+                        //.animation(Animation.easeInOut(duration: 0.2), value: foregroundColor)
                     if preliminary {
                         AnimatedDots().frame(width: digitWidth, height: digitWidth / 3)
                             .offset(y: -digitWidth / 6)
@@ -50,7 +51,7 @@ struct ScrollViewConditionalAnimation: View {
                 }
             }
             .id(scrollViewID)
-            .disabled(disabled)
+            .disabled(disabledScrolling)
         }
     }
     

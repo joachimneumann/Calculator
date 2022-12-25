@@ -36,7 +36,7 @@ class Model : ObservableObject {
     private var timerCounter = 0
     private var isPreliminary: Bool = false
     @Published var timerInfo: String
-
+    
     @Published var screenInfo: ScreenInfo = ScreenInfo(hardwareSize: CGSize(), insets: UIEdgeInsets(), appOrientation: .unknown)
     @Published var secondActive = false
     @Published var isCalculating = false {
@@ -56,7 +56,7 @@ class Model : ObservableObject {
     @Published var isCopying: Bool = false
     @Published var isPasting: Bool = false
     var copyAnimationDone = false
-
+    
     private let brain: Brain
     private let stupidBrain: Brain
     private let stupidBrainPrecision = 100
@@ -64,7 +64,7 @@ class Model : ObservableObject {
     @Published var showAC = true
     @Published var hasBeenReset = false
     @Published var display: Display
-
+    
     var precisionDescription = "unknown"
     
     @AppStorage("precision", store: .standard) private (set) var precision: Int = 1000
@@ -91,11 +91,11 @@ class Model : ObservableObject {
         brain.setPrecision(precision)
         brain.haveResultCallback = haveResultCallback
         brain.pendingOperatorCallback = pendingOperatorCallback
-
+        
         stupidBrain.setPrecision(stupidBrainPrecision)
         stupidBrain.haveResultCallback = haveStupidBrainResultCallback
         /// no pendingOperatorCallback
-
+        
         if memoryValue == "" {
             brain.memory = nil
             stupidBrain.memory = nil
@@ -103,7 +103,7 @@ class Model : ObservableObject {
             brain.memory = Number(memoryValue, precision: precision)
             stupidBrain.memory = Number(memoryValue, precision: stupidBrainPrecision)
         }
-
+        
         for key in C.keysAll {
             keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))
         }
@@ -132,7 +132,7 @@ class Model : ObservableObject {
             self.timerInfo = executionTime.asTime
         }
     }
-
+    
     func timerReset() {
         timerCounter = 0
         timer?.invalidate()
@@ -141,14 +141,14 @@ class Model : ObservableObject {
             self.timerInfo = self.timerDefaultText
         }
     }
-
+    
     func initiateScreenInfo(to screenInfo: ScreenInfo) {
         DispatchQueue.main.async { [self] in
             self.screenInfo = screenInfo
             self.updateDisplayData()
         }
     }
-        
+    
     // the update of the precision in brain can be slow.
     // Therefore, I only want to do that when leaving the settings screen
     func updatePrecision(to newPecision: Int) {
@@ -226,7 +226,7 @@ class Model : ObservableObject {
         DispatchQueue.main.async {
             self.display = temp
         }
-
+        
     }
     
     func haveStupidBrainResultCallback() {
@@ -268,8 +268,8 @@ class Model : ObservableObject {
             forceScientific: forceScientific,
             showAsInteger: showAsInteger,
             showAsFloat: showAsFloat)
+        self.displayDataIsOld = false
         DispatchQueue.main.async {
-            self.displayDataIsOld = false
             self.display = temp
         }
         
@@ -284,11 +284,11 @@ class Model : ObservableObject {
                 }
             }
         }
-
+        
         // check mr
         keyInfo["mr"]!.enabled = brain.memory != nil
     }
-
+    
     private var previous: String? = nil
     func pendingOperatorCallback(op: String?) {
         /// In the brain, we have already asserted that the new op is different from previous
@@ -316,7 +316,7 @@ class Model : ObservableObject {
         }
         previous = op
     }
-
+    
     func pressed(_ _symbol: String) {
         let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(_symbol) && !rad ? _symbol+"D" : _symbol
         
@@ -369,7 +369,7 @@ class Model : ObservableObject {
             }
         }
     }
-
+    
     func asyncOperation(_ symbol: String) async {
         brain.operation(symbol)
         DispatchQueue.main.async { self.isCalculating = false }

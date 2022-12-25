@@ -11,7 +11,7 @@ struct LandscapeDisplay: View {
     let display: Display
     let screenInfo: ScreenInfo
     let color: Color
-    let disabled: Bool
+    let disabledScrolling: Bool
     @Binding var scrollViewHasScrolled: Bool
     var scrollViewID: UUID
     
@@ -22,7 +22,7 @@ struct LandscapeDisplay: View {
             foregroundColor: color,
             backgroundColor: testColors ? .yellow : .black,
             offsetY: screenInfo.offsetToVerticallyAlignTextWithkeyboard,
-            disabled: disabled,
+            disabledScrolling: disabledScrolling,
             scrollViewHasScolled: $scrollViewHasScrolled,
             scrollViewID: scrollViewID,
             preliminary: display.format.showThreeDots,
