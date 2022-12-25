@@ -54,6 +54,7 @@ struct Calculator: View {
                  */
                 HStack(alignment: .top, spacing: 0.0) {
                     Spacer(minLength: 0.0)
+                    let _ = print("fontsize \(model.display.format.font)")
                     LandscapeDisplay(
                         display: model.display,
                         screenInfo: model.screenInfo,

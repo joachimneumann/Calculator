@@ -18,7 +18,7 @@ struct LandscapeDisplay: View {
     var body: some View {
         ScrollViewConditionalAnimation(
             text: display.data.left,
-            font: Font(screenInfo.uiFont),
+            font: display.format.font,
             foregroundColor: color,
             backgroundColor: testColors ? .yellow : .black,
             offsetY: screenInfo.offsetToVerticallyAlignTextWithkeyboard,
@@ -30,7 +30,7 @@ struct LandscapeDisplay: View {
         if display.data.right != nil {
             Text(display.data.right!)
                 .kerning(C.kerning)
-                .font(Font(screenInfo.uiFont))
+                .font(display.format.font)
                 .foregroundColor(color)
                 .padding(.leading, screenInfo.ePadding)
                 .offset(y: screenInfo.offsetToVerticallyAlignTextWithkeyboard)

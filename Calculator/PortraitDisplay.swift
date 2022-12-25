@@ -17,7 +17,7 @@ struct PortraitDisplay: View {
             Spacer(minLength: 0.0)
             Text(toShow)
                 .kerning(C.kerning)
-                .font(Font(screenInfo.uiFont))
+                .font(display.format.font)
                 .foregroundColor(display.format.color)
                 .multilineTextAlignment(.trailing)
                 .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
@@ -29,7 +29,7 @@ struct PortraitDisplay: View {
             if display.data.right != nil {
                 Text(display.data.right!)
                     .kerning(C.kerning)
-                    .font(Font(screenInfo.uiFont))
+                    .font(display.format.font)
                     .foregroundColor(display.format.color)
                     .multilineTextAlignment(.trailing)
                     .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
