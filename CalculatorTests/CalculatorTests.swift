@@ -13,8 +13,8 @@ class CalculatorTests: XCTestCase {
     
     func testBits() throws {
         let brain = Brain()
-        let lengths = Lengths(5000) /// also failing: 10000
-        brain.setPrecision(200000)
+        let lengths = Lengths(5_000) /// also failing: 10000
+        brain.setPrecision(200_000)
         var displayData: DisplayData
         
         brain.operation("7")
@@ -1209,7 +1209,7 @@ class CalculatorTests: XCTestCase {
     
     func _testSpeed1() throws {
         let brain = Brain()
-        let precision = 10000000
+        let precision = 10_000_000
         brain.setPrecision(precision)
         self.measure {
             let x = Number("88888888", precision: precision)
@@ -1219,7 +1219,7 @@ class CalculatorTests: XCTestCase {
     
     func _testSpeed2() throws {
         let brain = Brain()
-        let precision = 10000000
+        let precision = 10_000_000
         brain.setPrecision(precision)
         self.measure {
             let x = Number("888888888,8888888", precision: precision)

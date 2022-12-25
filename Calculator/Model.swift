@@ -71,7 +71,7 @@ class Model : ObservableObject {
     @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
     @AppStorage("memoryValue", store: .standard) var memoryValue: String = ""
     @AppStorage("rad", store: .standard) var rad: Bool = false
-    static let MAX_DISPLAY_LEN = 10000 // too long strings in Text() crash the app
+    static let MAX_DISPLAY_LEN = 10_000 // too long strings in Text() crash the app
     
     var isValidNumber: Bool {
         brain.isValidNumber

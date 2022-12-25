@@ -11,7 +11,7 @@ class Number: CustomDebugStringConvertible {
     private var _precision: Int = 0
     private var _str: String?
     private var _gmp: Gmp?
-    static let MAX_DISPLAY_LENGTH = 10000 // too long strings in Text() crash the app
+    static let MAX_DISPLAY_LENGTH = 10_000 // too long strings in Text() crash the app
 
     var isStr: Bool { _str != nil }
     var str: String? { return _str }
