@@ -54,7 +54,7 @@ struct Icons : View {
                                             model.isCopying = true
                                         }
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                            model.isCopying = false
+                                            if copyDone { model.isCopying = false }
                                         }
                                         Task {
                                             DispatchQueue.main.async {
@@ -64,7 +64,7 @@ struct Icons : View {
                                             await model.copyToPastBin()
                                             DispatchQueue.main.async {
                                                 copyDone = true
-                                                //print("copyDone \(copyDone)")
+                                                model.isCopying = false
                                             }
                                         }
                                     }

@@ -10,7 +10,7 @@ import SwiftUI
 struct LandscapeDisplay: View {
     let display: Display
     let screenInfo: ScreenInfo
-    let color: Color
+    let showOrange: Bool
     let disabledScrolling: Bool
     @Binding var scrollViewHasScrolled: Bool
     var scrollViewID: UUID
@@ -19,7 +19,7 @@ struct LandscapeDisplay: View {
         ScrollViewConditionalAnimation(
             text: display.data.left,
             font: display.format.font,
-            foregroundColor: color,
+            foregroundColor: showOrange ? .orange : display.format.color,
             backgroundColor: testColors ? .yellow : .black,
             offsetY: screenInfo.offsetToVerticallyAlignTextWithkeyboard,
             disabledScrolling: disabledScrolling,
@@ -31,7 +31,7 @@ struct LandscapeDisplay: View {
             Text(display.data.right!)
                 .kerning(C.kerning)
                 .font(display.format.font)
-                .foregroundColor(color)
+                .foregroundColor(showOrange ? .orange : display.format.color)
                 .padding(.leading, screenInfo.ePadding)
                 .offset(y: screenInfo.offsetToVerticallyAlignTextWithkeyboard)
         }

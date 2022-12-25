@@ -58,7 +58,7 @@ struct Calculator: View {
                     LandscapeDisplay(
                         display: model.display,
                         screenInfo: model.screenInfo,
-                        color: (model.isCopying || model.isPasting) ? .orange : model.display.format.color,
+                        showOrange: model.isCopying || model.isPasting,
                         disabledScrolling: !model.isZoomed,
                         scrollViewHasScrolled: $model.scrollViewHasScrolled,
                         scrollViewID: model.scrollViewID
