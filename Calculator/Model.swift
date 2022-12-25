@@ -141,10 +141,9 @@ class Model : ObservableObject {
         }
     }
 
-    func updateScreenInfo(to screenInfo: ScreenInfo) {
+    func initiateScreenInfo(to screenInfo: ScreenInfo) {
         DispatchQueue.main.async { [self] in
             self.screenInfo = screenInfo
-
             self.updateDisplayData()
         }
     }

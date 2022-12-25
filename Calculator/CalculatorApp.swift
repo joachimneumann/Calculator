@@ -25,7 +25,7 @@ struct CalculatorApp: App {
                         hardwareSize: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height),
                         insets: UIApplication.shared.keyWindow?.safeAreaInsets ?? UIEdgeInsets(),
                         appOrientation: appOrientation)
-                    let _ = model.updateScreenInfo(to: s)
+                    let _ = model.initiateScreenInfo(to: s)
 //                    let _ = print("App size \(UIScreen.main.bounds.size)")
 //                    let _ = print("App s.isPortraitPhone \(s.isPortraitPhone)")
 //                    let _ = print("App m isPortraitPhone \(model.screenInfo.isPortraitPhone)")
