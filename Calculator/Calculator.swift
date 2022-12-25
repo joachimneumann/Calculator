@@ -32,7 +32,7 @@ struct Calculator: View {
             VStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
                 PortraitDisplay(
-                    displayData: model.displayData,
+                    display: model.display,
                     screenInfo: model.screenInfo,
                     digitWidth: model.lengths.digitWidth)
                 //.background(Color.yellow)
@@ -53,11 +53,11 @@ struct Calculator: View {
                  mid level: Keyboard with info and rectangle on top
                  top level: single line
                  */
-                let color: Color = (model.isCopying || model.isPasting) ? .orange : (model.displayData.showThreeDots ? .gray : .white)
+                let color: Color = (model.isCopying || model.isPasting) ? .orange : model.display.format.color
                 HStack(alignment: .top, spacing: 0.0) {
                     Spacer(minLength: 0.0)
                     ScrollViewConditionalAnimation(
-                        text: model.displayData.left,
+                        text: model.display.data.left,
                         font: Font(model.screenInfo.uiFont),
                         foregroundColor: color,
                         backgroundColor: testColors ? .yellow : .black,
@@ -65,10 +65,10 @@ struct Calculator: View {
                         disabled: !model.isZoomed,
                         scrollViewHasScolled: $model.scrollViewHasScrolled,
                         scrollViewID: model.scrollViewID,
-                        preliminary: model.displayData.showThreeDots,
+                        preliminary: model.display.data.showThreeDots,
                         digitWidth: model.lengths.digitWidth)
-                    if model.displayData.right != nil {
-                        Text(model.displayData.right!)
+                    if model.display.data.right != nil {
+                        Text(model.display.data.right!)
                             .kerning(C.kerning)
                             .font(Font(model.screenInfo.uiFont))
                             .foregroundColor(color)

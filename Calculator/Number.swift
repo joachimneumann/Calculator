@@ -146,13 +146,12 @@ class Number: CustomDebugStringConvertible {
     }
     
     func getDisplayData(_ lengths: Lengths) -> DisplayData {
-        getDisplayData(forLandscape: false, lengths: lengths, fontsize: 0, forceScientific: false, showAsInteger: false, showAsFloat: false)
+        getDisplayData(multipleLines: false, lengths: lengths, forceScientific: false, showAsInteger: false, showAsFloat: false)
     }
     
     func getDisplayData(
-        forLandscape: Bool,
+        multipleLines: Bool,
         lengths: Lengths,
-        fontsize: CGFloat,
         forceScientific: Bool,
         showAsInteger: Bool,
         showAsFloat: Bool,
@@ -164,7 +163,7 @@ class Number: CustomDebugStringConvertible {
                 if !s.contains("e") { // no shortcut for "scientific strings". This can not happen (I think)
                     if let pos = s.position(of: ",") {
                         if pos < lengths.withCommaNonScientific {
-                            if forLandscape {
+                            if multipleLines {
 //                                ret.isAbbreviated = s.count > maxDisplayLength
                                 ret.left = String(s.prefix(maxDisplayLength))
                                 ret.right = nil
@@ -179,7 +178,7 @@ class Number: CustomDebugStringConvertible {
                                         /// do nothing
                                 } else {
                                     ret.left = leftCandidate
-                                    ret.dotsWidth = ret.dotsWidth(portraitMaxLength: lengths.withCommaNonScientific, fontSize: fontsize)
+                                    ret.maxlength = lengths.withCommaNonScientific
                                     // ret.isAbbreviated = s.count > lengths.withCommaNonScientific
                                     return ret
                                 }
@@ -190,7 +189,7 @@ class Number: CustomDebugStringConvertible {
                         if s.count <= lengths.withoutComma {
                             ret.left = s
                             ret.right = nil
-                            ret.dotsWidth = ret.dotsWidth(portraitMaxLength: lengths.withoutComma, fontSize: fontsize)
+                            ret.maxlength = lengths.withoutComma
 //                            ret.isAbbreviated = false
                             return ret
                         }
@@ -233,7 +232,7 @@ class Number: CustomDebugStringConvertible {
         var firstLineWithCommaNonScientific: Int
         var firstLineWithoutComma: Int
 
-        if forLandscape {
+        if multipleLines {
             mantissaLength                  = min(_precision, maxDisplayLength)
             withoutComma                    = min(_precision, maxDisplayLength)
             withCommaNonScientific          = min(_precision, maxDisplayLength)
@@ -279,9 +278,9 @@ class Number: CustomDebugStringConvertible {
             
             if mantissa.count > firstLineWithoutComma { ret.canBeInteger = true }
             if mantissa.count <= firstLineWithoutComma ||
-                (forLandscape && showAsInteger) {
+                (multipleLines && showAsInteger) {
                 ret.left = (isNegative ? "-" : "") + mantissa
-                ret.dotsWidth = ret.dotsWidth(portraitMaxLength: lengths.withoutComma, fontSize: fontsize)
+                ret.maxlength = lengths.withoutComma
                 return ret
             }
         }
@@ -298,7 +297,7 @@ class Number: CustomDebugStringConvertible {
                 if exponent + 1 >= firstLineWithCommaNonScientific { if !ret.canBeInteger { ret.canBeFloat = true } }
 
                 if exponent + 1 < firstLineWithCommaNonScientific ||
-                    (forLandscape && showAsFloat) {
+                    (multipleLines && showAsFloat) {
                     if floatString.count <= withCommaNonScientific {
                         ret.left = floatString
                     } else {
@@ -306,7 +305,7 @@ class Number: CustomDebugStringConvertible {
                         // ret.isAbbreviated = true
                     }
                     if isNegative { ret.left = "-" + ret.left }
-                    ret.dotsWidth = ret.dotsWidth(portraitMaxLength: lengths.withCommaNonScientific, fontSize: fontsize)
+                    ret.maxlength = lengths.withCommaNonScientific
                     return ret
                 }
             }
@@ -318,7 +317,7 @@ class Number: CustomDebugStringConvertible {
             if -1 * exponent < withCommaNonScientific - 1 {
                 if -1 * exponent + 1 >= firstLineWithCommaNonScientific { if !ret.canBeInteger { ret.canBeFloat = true } }
                 if -1 * exponent + 1 < firstLineWithCommaNonScientific ||
-                        (forLandscape && showAsFloat) {
+                        (multipleLines && showAsFloat) {
                     var floatString = mantissa
                     for _ in 0..<(-1*exponent - 1) {
                         floatString = "0" + floatString
@@ -331,7 +330,7 @@ class Number: CustomDebugStringConvertible {
 //                        ret.isAbbreviated = true
                     }
                     if isNegative { ret.left = "-" + ret.left }
-                    ret.dotsWidth = ret.dotsWidth(portraitMaxLength: lengths.withCommaNonScientific, fontSize: fontsize)
+                    ret.maxlength = lengths.withCommaNonScientific
                     return ret
                 }
             }
@@ -358,7 +357,7 @@ class Number: CustomDebugStringConvertible {
         }
         ret.left = mantissa
         if isNegative { ret.left = "-" + ret.left }
-        ret.dotsWidth = ret.dotsWidth(portraitMaxLength: lengths.withCommaScientific, fontSize: fontsize)
+        ret.maxlength = lengths.withCommaScientific
         return ret
     }
 }

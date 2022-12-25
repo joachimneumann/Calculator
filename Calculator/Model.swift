@@ -52,6 +52,7 @@ class Model : ObservableObject {
             }
         }
     }
+    
     var hideKeyboard = false
     @Published var isCopying: Bool = false
     @Published var isPasting: Bool = false
@@ -63,7 +64,7 @@ class Model : ObservableObject {
     @Published var keyInfo: [String: KeyInfo] = [:]
     @Published var showAC = true
     @Published var hasBeenReset = false
-    @Published var displayData: DisplayData
+    @Published var display: Display
 
     var precisionDescription = "unknown"
     
@@ -88,7 +89,7 @@ class Model : ObservableObject {
         // At init, not much is happening in the brain
         brain = Brain()
         stupidBrain = Brain()
-        displayData = DisplayData()
+        display = Display()
         brain.setPrecision(precision)
         brain.haveResultCallback = haveResultCallback
         brain.pendingOperatorCallback = pendingOperatorCallback
@@ -176,14 +177,13 @@ class Model : ObservableObject {
     
     func copyToPastBin() async {
         let displayData = brain.last.getDisplayData(
-            forLandscape: true,
+            multipleLines: true,
             lengths: Lengths(precision),
-            fontsize: screenInfo.uiFontSize,
             forceScientific: false,
             showAsInteger: showAsInteger,
             showAsFloat: showAsFloat,
             maxDisplayLength: precision)
-        UIPasteboard.general.string = displayData.left + (displayData.right ?? "")
+        UIPasteboard.general.string = displayData.oneLine
     }
     
     func checkIfPasteBinIsValidNumber() -> Bool {
@@ -235,34 +235,34 @@ class Model : ObservableObject {
     
     func updateDisplayData() {
         /// called after rotating the device and when I have a result
-        var tempDisplayData = brain.last.getDisplayData(
-            forLandscape: !screenInfo.isPortraitPhone,
+        let temp = Display(
+            number: brain.last,
+            isPreliminary: false,
+            screenInfo: screenInfo,
             lengths: lengths,
-            fontsize: screenInfo.uiFontSize,
             forceScientific: forceScientific,
             showAsInteger: showAsInteger,
             showAsFloat: showAsFloat)
         DispatchQueue.main.async {
-            tempDisplayData.showThreeDots = false
             self.displayDataIsOld = false
-            self.displayData = tempDisplayData
+            self.display = temp
         }
     }
     
     func haveStupidBrainResultCallback() {
         /// only show this if the high precision result isOld
         if displayDataIsOld {
-            var tempDisplayData = stupidBrain.last.getDisplayData(
-                forLandscape: false,
+            let temp = Display(
+                number: stupidBrain.last,
+                isPreliminary: true,
+                screenInfo: screenInfo,
                 lengths: lengths,
-                fontsize: screenInfo.uiFontSize,
                 forceScientific: forceScientific,
-                showAsInteger: false,
-                showAsFloat: false)
+                showAsInteger: showAsInteger,
+                showAsFloat: showAsFloat)
             DispatchQueue.main.asyncAfter(deadline: .now() + C.preliminaryDelay) {
-                tempDisplayData.showThreeDots = true
                 if self.displayDataIsOld {
-                    self.displayData = tempDisplayData
+                    self.display = temp
                 }
             }
         }
@@ -359,9 +359,8 @@ class Model : ObservableObject {
                     if ["mc", "m+", "m-"].contains(symbol) {
                         if let memory = brain.memory {
                             let temp = memory.getDisplayData(
-                                forLandscape: true,
+                                multipleLines: true,
                                 lengths: Lengths(precision),
-                                fontsize: screenInfo.uiFontSize,
                                 forceScientific: false,
                                 showAsInteger: showAsInteger,
                                 showAsFloat: showAsFloat,
