@@ -33,8 +33,7 @@ struct Calculator: View {
                 Spacer(minLength: 0.0)
                 PortraitDisplay(
                     display: model.display,
-                    screenInfo: model.screenInfo,
-                    digitWidth: model.lengths.digitWidth)
+                    screenInfo: model.screenInfo)
                 //.background(Color.yellow)
                 .padding(.horizontal, model.screenInfo.portraitIPhoneDisplayHorizontalPadding)
                 .padding(.bottom, model.screenInfo.portraitIPhoneDisplayBottomPadding)
@@ -61,33 +60,33 @@ struct Calculator: View {
                         font: Font(model.screenInfo.uiFont),
                         foregroundColor: color,
                         backgroundColor: testColors ? .yellow : .black,
-                        offsetY: model.offsetToVerticallyAlignTextWithkeyboard,
+                        offsetY: model.screenInfo.offsetToVerticallyAlignTextWithkeyboard,
                         disabled: !model.isZoomed,
                         scrollViewHasScolled: $model.scrollViewHasScrolled,
                         scrollViewID: model.scrollViewID,
                         preliminary: model.display.data.showThreeDots,
-                        digitWidth: model.lengths.digitWidth)
+                        digitWidth: model.screenInfo.lengths.digitWidth)
                     if model.display.data.right != nil {
                         Text(model.display.data.right!)
                             .kerning(C.kerning)
                             .font(Font(model.screenInfo.uiFont))
                             .foregroundColor(color)
                             .padding(.leading, model.screenInfo.ePadding)
-                        .offset(y: model.offsetToVerticallyAlignTextWithkeyboard)
+                            .offset(y: model.screenInfo.offsetToVerticallyAlignTextWithkeyboard)
                     }
                     Icons(
                         store: store,
                         model: model,
                         screenInfo: model.screenInfo,
                         isZoomed: $model.isZoomed)
-                    .offset(y: model.offsetToVerticallyIconWithText)
+                    .offset(y: model.screenInfo.offsetToVerticallyIconWithText)
                 }
                 .overlay() {
                     VStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
                         Rectangle()
                             .foregroundColor(.black)
-                            .frame(height: model.lengths.infoHeight)
+                            .frame(height: model.screenInfo.lengths.infoHeight)
                             .overlay() {
                                 let info = "\(model.hasBeenReset ? "Precision: "+model.precisionDescription+" digits" : "\(model.rad ? "Rad" : "")")"
                                 if info.count > 0 {
@@ -113,7 +112,7 @@ struct Calculator: View {
                 }
             }
             .accentColor(.white) // for the navigation back button
-            .onChange(of: model.lengths.withoutComma) { _ in
+            .onChange(of: model.screenInfo.lengths.withoutComma) { _ in
                 model.updateDisplayData() // redraw with or without keyboard
             }
         }

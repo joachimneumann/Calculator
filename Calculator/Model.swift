@@ -37,8 +37,6 @@ class Model : ObservableObject {
     @Published var timerInfo: String
 
     @Published var screenInfo: ScreenInfo = ScreenInfo(hardwareSize: CGSize(), insets: UIEdgeInsets(), appOrientation: .unknown)
-    var offsetToVerticallyAlignTextWithkeyboard: CGFloat = 0.0
-    var offsetToVerticallyIconWithText: CGFloat = 0.0
     @Published var secondActive = false
     @Published var isCalculating = false {
         didSet {
@@ -68,7 +66,6 @@ class Model : ObservableObject {
 
     var precisionDescription = "unknown"
     
-    var lengths = Lengths(0)
     @AppStorage("precision", store: .standard) private (set) var precision: Int = 1000
     @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
     @AppStorage("memoryValue", store: .standard) var memoryValue: String = ""
@@ -147,22 +144,6 @@ class Model : ObservableObject {
     func updateScreenInfo(to screenInfo: ScreenInfo) {
         DispatchQueue.main.async { [self] in
             self.screenInfo = screenInfo
-            self.lengths = lengthMeasurement(width: screenInfo.displayWidth, uiFont: self.screenInfo.uiFont, infoUiFont: screenInfo.infoUiFont, ePadding: screenInfo.ePadding)
-
-            self.offsetToVerticallyAlignTextWithkeyboard =
-            screenInfo.calculatorSize.height -
-            screenInfo.keyboardHeight -
-            screenInfo.infoUiFontSize -
-            self.lengths.height
-
-            self.offsetToVerticallyIconWithText =
-            screenInfo.calculatorSize.height -
-            screenInfo.keyboardHeight -
-            screenInfo.infoUiFontSize -
-            screenInfo.plusIconSize +
-            screenInfo.uiFont.descender -
-            0.5 * self.screenInfo.uiFont.capHeight +
-            0.5 * screenInfo.plusIconSize
 
             self.updateDisplayData()
         }
@@ -239,7 +220,6 @@ class Model : ObservableObject {
             number: brain.last,
             isPreliminary: false,
             screenInfo: screenInfo,
-            lengths: lengths,
             forceScientific: forceScientific,
             showAsInteger: showAsInteger,
             showAsFloat: showAsFloat)
@@ -256,7 +236,6 @@ class Model : ObservableObject {
                 number: stupidBrain.last,
                 isPreliminary: true,
                 screenInfo: screenInfo,
-                lengths: lengths,
                 forceScientific: forceScientific,
                 showAsInteger: showAsInteger,
                 showAsFloat: showAsFloat)

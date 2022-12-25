@@ -14,19 +14,19 @@ struct Display {
     init(number: Number,
          isPreliminary: Bool,
          screenInfo: ScreenInfo,
-         lengths: Lengths,
          forceScientific: Bool,
          showAsInteger: Bool,
          showAsFloat: Bool
     ) {
         data = number.getDisplayData(
             multipleLines: !isPreliminary && !screenInfo.isPortraitPhone,
-            lengths: lengths,
+            lengths: screenInfo.lengths,
             forceScientific: forceScientific,
             showAsInteger: showAsInteger,
             showAsFloat: showAsFloat)
         format = DisplayFormat(
             for: data.length,
+            screenInfo: screenInfo,
             withMaxLength: data.maxlength,
             fontSize: screenInfo.uiFontSize,
             showThreeDots: isPreliminary)
@@ -36,7 +36,7 @@ struct Display {
 extension Display {
     init() {
         data = DisplayData(left: "0", maxlength: 0, showThreeDots: false, canBeInteger: false, canBeFloat: false)
-        format = DisplayFormat(for: 0, withMaxLength: 0, fontSize: 0, showThreeDots: false)
+        format = DisplayFormat(for: 0, screenInfo: ScreenInfo(hardwareSize: CGSize(), insets: UIEdgeInsets(), appOrientation: .unknown), withMaxLength: 0, fontSize: 0, showThreeDots: false)
     }
 }
 
@@ -72,10 +72,9 @@ extension DisplayData {
 struct DisplayFormat {
     let font: Font
     let color: Color
-    let dotsWidth: CGFloat
     let showThreeDots: Bool
-    
-    init(for length: Int, withMaxLength maxLength: Int, fontSize: CGFloat, showThreeDots: Bool) {
+
+    init(for length: Int, screenInfo: ScreenInfo, withMaxLength maxLength: Int, fontSize: CGFloat, showThreeDots: Bool) {
         let factorMin = 1.0
         let factorMax = 2.3
         
@@ -88,7 +87,6 @@ struct DisplayFormat {
         
         font = Font(uiFont)
         color = showThreeDots ? .gray : .white
-        dotsWidth = "0".textSize(for: uiFont).width
         self.showThreeDots = showThreeDots
     }
 }
@@ -97,7 +95,6 @@ extension DisplayFormat {
     init() {
         font = Font(UIFont())
         color = Color.white
-        dotsWidth = 100
         showThreeDots = false
     }
 }

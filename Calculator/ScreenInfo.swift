@@ -17,7 +17,10 @@ struct ScreenInfo {
     let plusIconSize: CGFloat
     let plusIconLeftPadding: CGFloat
     let ePadding: CGFloat
-    
+    let lengths: Lengths
+    let offsetToVerticallyAlignTextWithkeyboard: CGFloat
+    let offsetToVerticallyIconWithText: CGFloat
+
     /// needed to correcty calculate the lengths in init()
     let uiFont: UIFont
     let uiFontSize: CGFloat
@@ -31,7 +34,7 @@ struct ScreenInfo {
     let displayWidth: CGFloat
 
     init(hardwareSize: CGSize, insets: UIEdgeInsets, appOrientation: UIDeviceOrientation) {
-        // print("ScreenInfo init() \(hardwareSize)")
+        print("ScreenInfo init() \(hardwareSize)")
         /// appOrientation is used here to trigger a redraw when the orientation changes ???????
         isPad = UIDevice.current.userInterfaceIdiom == .pad
         isPortraitPhone = isPad ? false : UIScreen.main.bounds.size.height > UIScreen.main.bounds.size.width
@@ -91,5 +94,26 @@ struct ScreenInfo {
         infoUiFontSize = uiFontSize * 0.3
         infoUiFont = UIFont.monospacedDigitSystemFont(ofSize: infoUiFontSize, weight: .regular)
         C.kerning = 0.0//-0.05 * singleLineFontSize
+        lengths = lengthMeasurement(width: displayWidth, uiFont: uiFont, infoUiFont: infoUiFont, ePadding: ePadding)
+        offsetToVerticallyAlignTextWithkeyboard =
+        CGFloat(calculatorSize.height) -
+        CGFloat(keyboardHeight) -
+        CGFloat(infoUiFontSize) -
+        CGFloat(lengths.height)
+
+        offsetToVerticallyIconWithText =
+        CGFloat(calculatorSize.height) -
+        CGFloat(keyboardHeight) -
+        CGFloat(infoUiFontSize) -
+        CGFloat(plusIconSize) +
+        CGFloat(uiFont.descender) -
+        CGFloat(0.5 * uiFont.capHeight) +
+        CGFloat(0.5 * plusIconSize)
+    }
+}
+
+extension ScreenInfo {
+    init() {
+        self.init(hardwareSize: CGSize(), insets: UIEdgeInsets(), appOrientation: .unknown)
     }
 }
