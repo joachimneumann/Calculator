@@ -166,6 +166,23 @@ class Model : ObservableObject {
             maxDisplayLength: precision)
         UIPasteboard.general.string = displayData.oneLine
     }
+    func copyFromPastBin() async {
+        if UIPasteboard.general.hasStrings {
+            if let pasteString = UIPasteboard.general.string {
+                var ok = false
+                if pasteString.count > 0 {
+                    if Gmp.isValidGmpString(pasteString, bits: 1000) {
+                        ok = true
+                    }
+                }
+                if ok {
+                    brain.replaceLast(with: Number(pasteString, precision: brain.precision))
+                    haveResultCallback() // TODO: make sure that forLong is true here!!!!
+                }
+            }
+        }
+    }
+
     
     func checkIfPasteBinIsValidNumber() -> Bool {
         if UIPasteboard.general.hasStrings {
@@ -179,25 +196,7 @@ class Model : ObservableObject {
         }
         return false
     }
-    
-    func fromPastBin() {
-        if UIPasteboard.general.hasStrings {
-            if let pasteString = UIPasteboard.general.string {
-                var ok = false
-                if pasteString.count > 0 {
-                    if Gmp.isValidGmpString(pasteString, bits: 1000) {
-                        ok = true
-                    }
-                }
-                if ok {
-                    brain.replaceLast(with: Number(pasteString, precision: brain.precision))
-                    haveResultCallback() // TODO: make sure that forLong is true here!!!!
-                    hasBeenReset = false
-                }
-            }
-        }
-    }
-    
+        
     func speedTest(precision: Int) async -> Double {
         let testBrain = Brain()
         testBrain.setPrecision(precision)

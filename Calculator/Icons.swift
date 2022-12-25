@@ -17,7 +17,7 @@ struct Icons : View {
     @Binding var isZoomed: Bool
     @State var copyDone = true
     @State var pasteDone = true
-    
+    @State var wait300msDone = false
     var body: some View {
         VStack(alignment: .center, spacing: 0.0) {
             Image(systemName: "plus.circle.fill")
@@ -47,24 +47,27 @@ struct Icons : View {
                         } else {
                             Text("copy")
                                 .font(Font(screenInfo.infoUiFont))
-                                .foregroundColor(model.isCopying || !copyDone ? Color.orange : Color.white)
+                                .foregroundColor(model.isCopying ? Color.orange : Color.white)
                                 .onTapGesture {
-                                    if copyDone && pasteDone {
-                                        DispatchQueue.main.async {
-                                            model.isCopying = true
-                                        }
+                                    if copyDone && pasteDone && !model.isCopying && !model.isPasting {
+                                        setIsCopying(to: true)
+                                        wait300msDone = false
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                            if copyDone { model.isCopying = false }
+                                            wait300msDone = true
+                                            if copyDone {
+                                                setIsCopying(to: false)
+                                            }
                                         }
                                         Task {
                                             DispatchQueue.main.async {
                                                 copyDone = false
-                                                //print("copyDone \(copyDone)")
                                             }
                                             await model.copyToPastBin()
                                             DispatchQueue.main.async {
                                                 copyDone = true
-                                                model.isCopying = false
+                                                if wait300msDone {
+                                                    setIsCopying(to: false)
+                                                }
                                             }
                                         }
                                     }
@@ -81,24 +84,23 @@ struct Icons : View {
                         } else {
                             Text("paste")
                                 .font(Font(screenInfo.infoUiFont))
-                                .foregroundColor((model.isPasting || !pasteDone) ? Color.orange : Color.white)
+                                .foregroundColor(model.isPasting ? Color.orange : Color.white)
                                 .onTapGesture {
-                                    if copyDone && pasteDone {
-                                        DispatchQueue.main.async {
-                                            model.isPasting = true
-                                        }
+                                    if copyDone && pasteDone && !model.isCopying && !model.isPasting {
+                                        setIsPasting(to: true)
+                                        pasteDone = false
+                                        wait300msDone = false
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                            model.isPasting = false
+                                            wait300msDone = true
+                                            if pasteDone {
+                                                model.isPasting = false
+                                            }
                                         }
                                         Task {
-                                            DispatchQueue.main.async {
-                                                pasteDone = false
-                                                //print("pasteDone \(pasteDone)")
-                                            }
-                                            model.fromPastBin()
-                                            DispatchQueue.main.async {
-                                                pasteDone = true
-                                                //print("pasteDone \(pasteDone)")
+                                            await model.copyFromPastBin()
+                                            pasteDone = true
+                                            if wait300msDone {
+                                                setIsPasting(to: false)
                                             }
                                         }
                                     }
@@ -159,6 +161,12 @@ struct Icons : View {
                 }
             }
         }
+    }
+    @MainActor func setIsCopying(to isCopying: Bool) {
+        model.isCopying = isCopying
+    }
+    @MainActor func setIsPasting(to isPasting: Bool) {
+        model.isPasting = isPasting
     }
 }
 //struct Icons_Previews: PreviewProvider {
