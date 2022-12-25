@@ -35,7 +35,7 @@ struct Display {
 
 extension Display {
     init() {
-        data = DisplayData(left: "0", maxlength: 0, showThreeDots: false, canBeInteger: false, canBeFloat: false)
+        data = DisplayData(left: "0", maxlength: 0, canBeInteger: false, canBeFloat: false)
         format = DisplayFormat(for: 0, screenInfo: ScreenInfo(hardwareSize: CGSize(), insets: UIEdgeInsets(), appOrientation: .unknown), withMaxLength: 0, fontSize: 0, showThreeDots: false)
     }
 }
@@ -44,7 +44,6 @@ struct DisplayData {
     var left: String
     var right: String?
     var maxlength: Int
-    var showThreeDots: Bool
     var canBeInteger: Bool
     var canBeFloat: Bool
     
@@ -63,7 +62,6 @@ extension DisplayData {
         left = "0"
         right = nil
         maxlength = 0
-        showThreeDots = false
         canBeInteger = false
         canBeFloat = false
     }

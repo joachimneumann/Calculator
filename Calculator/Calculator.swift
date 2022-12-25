@@ -64,7 +64,7 @@ struct Calculator: View {
                         disabled: !model.isZoomed,
                         scrollViewHasScolled: $model.scrollViewHasScrolled,
                         scrollViewID: model.scrollViewID,
-                        preliminary: model.display.data.showThreeDots,
+                        preliminary: model.display.format.showThreeDots,
                         digitWidth: model.screenInfo.lengths.digitWidth)
                     if model.display.data.right != nil {
                         Text(model.display.data.right!)

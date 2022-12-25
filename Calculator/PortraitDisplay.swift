@@ -21,7 +21,7 @@ struct PortraitDisplay: View {
                 .multilineTextAlignment(.trailing)
                 .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
                 .lineLimit(1)
-            if display.data.showThreeDots {
+            if display.format.showThreeDots {
                 AnimatedDots().frame(width: screenInfo.lengths.digitWidth, height: screenInfo.lengths.digitWidth / 3)
                     .offset(y: -screenInfo.lengths.digitWidth / 3)
             }
