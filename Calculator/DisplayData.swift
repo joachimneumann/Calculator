@@ -11,7 +11,7 @@ struct DisplayData {
     var left: String
     var right: String?
     var color: Color
-    var isPreliminary: Bool
+    var showThreeDots: Bool
     var dotsWidth: CGFloat
     var canBeInteger: Bool
     var canBeFloat: Bool
@@ -43,43 +43,9 @@ extension DisplayData {
         left = "0"
         right = nil
         color = .white
-        isPreliminary = false
+        showThreeDots = false
         dotsWidth = 0.0
         canBeInteger = false
         canBeFloat = false
     }
 }
-//
-//var portraitMaxLength: Int { get set }
-//
-//struct PDisplayData : DisplayData {
-//    var left: String = "0"
-//    var portraitMaxLength: Int = 1000
-//    var right: String? = nil
-//    var isInteger: Bool = false
-//    var isFloat: Bool = false
-//    var isAbbreviated: Bool = false
-//    
-//    var isPreliminary: Bool = false
-//}
-//
-//struct ODisplayData : DisplayData {
-//    var left: String
-//    var portraitMaxLength: Int
-//    var right: String?
-//    var isInteger: Bool
-//    var isFloat: Bool
-//    var isAbbreviated: Bool
-//    
-//    var isOld: Bool
-//
-//    init(pDisplayData: PDisplayData, isOld: Bool) {
-//        self.left = pDisplayData.left
-//        self.portraitMaxLength = pDisplayData.portraitMaxLength
-//        self.right = pDisplayData.right
-//        self.isInteger = pDisplayData.isInteger
-//        self.isFloat = pDisplayData.isFloat
-//        self.isAbbreviated = pDisplayData.isAbbreviated
-//        self.isOld = isOld
-//    }
-//}

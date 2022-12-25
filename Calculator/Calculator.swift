@@ -53,7 +53,7 @@ struct Calculator: View {
                  mid level: Keyboard with info and rectangle on top
                  top level: single line
                  */
-                let color: Color = (model.isCopying || model.isPasting) ? .orange : (model.displayData.isPreliminary ? .gray : .white)
+                let color: Color = (model.isCopying || model.isPasting) ? .orange : (model.displayData.showThreeDots ? .gray : .white)
                 HStack(alignment: .top, spacing: 0.0) {
                     Spacer(minLength: 0.0)
                     ScrollViewConditionalAnimation(
@@ -65,7 +65,7 @@ struct Calculator: View {
                         disabled: !model.isZoomed,
                         scrollViewHasScolled: $model.scrollViewHasScrolled,
                         scrollViewID: model.scrollViewID,
-                        preliminary: model.displayData.isPreliminary,
+                        preliminary: model.displayData.showThreeDots,
                         digitWidth: model.lengths.digitWidth)
                     if model.displayData.right != nil {
                         Text(model.displayData.right!)

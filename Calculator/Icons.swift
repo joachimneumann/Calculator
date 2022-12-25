@@ -34,7 +34,7 @@ struct Icons : View {
                     }
                 }
             if !model.isCalculating {
-                if !model.displayData.isPreliminary {
+                if !model.displayData.showThreeDots {
                     Group {
                         if !simulatePurchased && store.purchasedIDs.isEmpty {
                             NavigationLink {

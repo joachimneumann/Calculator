@@ -243,7 +243,7 @@ class Model : ObservableObject {
             showAsInteger: showAsInteger,
             showAsFloat: showAsFloat)
         DispatchQueue.main.async {
-            tempDisplayData.isPreliminary = false
+            tempDisplayData.showThreeDots = false
             self.displayDataIsOld = false
             self.displayData = tempDisplayData
         }
@@ -260,7 +260,7 @@ class Model : ObservableObject {
                 showAsInteger: false,
                 showAsFloat: false)
             DispatchQueue.main.asyncAfter(deadline: .now() + C.preliminaryDelay) {
-                tempDisplayData.isPreliminary = true
+                tempDisplayData.showThreeDots = true
                 if self.displayDataIsOld {
                     self.displayData = tempDisplayData
                 }
