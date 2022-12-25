@@ -5,7 +5,7 @@
 //  Created by Joachim Neumann on 10/26/21.
 //
 
-import UIKit
+import Foundation
 
 class Number: CustomDebugStringConvertible {
     private var _precision: Int = 0
