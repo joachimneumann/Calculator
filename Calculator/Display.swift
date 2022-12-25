@@ -73,14 +73,18 @@ struct DisplayFormat {
     let showThreeDots: Bool
 
     init(for length: Int, screenInfo: ScreenInfo, withMaxLength maxLength: Int, fontSize: CGFloat, showThreeDots: Bool) {
-        let factorMin = 1.0
-        let factorMax = 2.3
+        var factor = 1.0
         
-        let notOccupiedLength = CGFloat(length) / CGFloat(maxLength)
-        var factor = factorMax - notOccupiedLength * (factorMax - factorMin)
-        if factor > 1.5 { factor = 1.5 }
-        if factor < 1.0 { factor = 1.0 }
-
+        if screenInfo.isPortraitPhone {
+            let factorMin = 1.0
+            let factorMax = 2.3
+            
+            let notOccupiedLength = CGFloat(length) / CGFloat(maxLength)
+            factor = factorMax - notOccupiedLength * (factorMax - factorMin)
+            if factor > 1.5 { factor = 1.5 }
+            if factor < 1.0 { factor = 1.0 }
+        }
+        
         let uiFont = UIFont.monospacedDigitSystemFont(ofSize: fontSize * factor, weight: C.fontWeight)
         
         font = Font(uiFont)
