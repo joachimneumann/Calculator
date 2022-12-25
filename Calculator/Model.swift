@@ -166,10 +166,10 @@ class Model : ObservableObject {
             maxDisplayLength: precision)
         UIPasteboard.general.string = displayData.oneLine
     }
-    func copyFromPastBin() async {
+    func copyFromPastBin() async -> Bool {
+        var ok = false
         if UIPasteboard.general.hasStrings {
             if let pasteString = UIPasteboard.general.string {
-                var ok = false
                 if pasteString.count > 0 {
                     if Gmp.isValidGmpString(pasteString, bits: 1000) {
                         ok = true
@@ -181,6 +181,7 @@ class Model : ObservableObject {
                 }
             }
         }
+        return ok
     }
 
     

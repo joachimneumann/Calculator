@@ -13,10 +13,10 @@ struct Icons : View {
     @ObservedObject var store: Store
     @ObservedObject var model: Model
     let screenInfo: ScreenInfo
-    @State var pasteAllowedState: Bool = true
     @Binding var isZoomed: Bool
     @State var copyDone = true
     @State var pasteDone = true
+    @State var isValidPasteContent = true
     @State var wait300msDone = false
     var body: some View {
         VStack(alignment: .center, spacing: 0.0) {
@@ -59,17 +59,14 @@ struct Icons : View {
                                             }
                                         }
                                         Task {
-                                            DispatchQueue.main.async {
-                                                copyDone = false
-                                            }
+                                            copyDone = false
                                             await model.copyToPastBin()
-                                            DispatchQueue.main.async {
-                                                copyDone = true
-                                                if wait300msDone {
-                                                    setIsCopying(to: false)
-                                                }
+                                            copyDone = true
+                                            if wait300msDone {
+                                                setIsCopying(to: false)
                                             }
                                         }
+                                        isValidPasteContent = true
                                     }
                                 }
                         }
@@ -84,9 +81,9 @@ struct Icons : View {
                         } else {
                             Text("paste")
                                 .font(Font(screenInfo.infoUiFont))
-                                .foregroundColor(model.isPasting ? Color.orange : Color.white)
+                                .foregroundColor(model.isPasting ? .orange : isValidPasteContent ? .white : .gray)
                                 .onTapGesture {
-                                    if copyDone && pasteDone && !model.isCopying && !model.isPasting {
+                                    if copyDone && pasteDone && !model.isCopying && !model.isPasting && isValidPasteContent {
                                         setIsPasting(to: true)
                                         pasteDone = false
                                         wait300msDone = false
@@ -97,7 +94,7 @@ struct Icons : View {
                                             }
                                         }
                                         Task {
-                                            await model.copyFromPastBin()
+                                            isValidPasteContent = await model.copyFromPastBin()
                                             pasteDone = true
                                             if wait300msDone {
                                                 setIsPasting(to: false)
@@ -153,12 +150,7 @@ struct Icons : View {
         .padding(.leading, model.screenInfo.plusIconLeftPadding)
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .active {
-                DispatchQueue.main.async {
-                    if pasteAllowedState == false {
-                        /// this can only happen after the popup
-                        pasteAllowedState = model.checkIfPasteBinIsValidNumber()
-                    }
-                }
+                self.isValidPasteContent = true
             }
         }
     }
