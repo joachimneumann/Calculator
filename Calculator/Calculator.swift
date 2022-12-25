@@ -52,28 +52,16 @@ struct Calculator: View {
                  mid level: Keyboard with info and rectangle on top
                  top level: single line
                  */
-                let color: Color = (model.isCopying || model.isPasting) ? .orange : model.display.format.color
                 HStack(alignment: .top, spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    ScrollViewConditionalAnimation(
-                        text: model.display.data.left,
-                        font: Font(model.screenInfo.uiFont),
-                        foregroundColor: color,
-                        backgroundColor: testColors ? .yellow : .black,
-                        offsetY: model.screenInfo.offsetToVerticallyAlignTextWithkeyboard,
+                    LandscapeDisplay(
+                        display: model.display,
+                        screenInfo: model.screenInfo,
+                        color: (model.isCopying || model.isPasting) ? .orange : model.display.format.color,
                         disabled: !model.isZoomed,
-                        scrollViewHasScolled: $model.scrollViewHasScrolled,
-                        scrollViewID: model.scrollViewID,
-                        preliminary: model.display.format.showThreeDots,
-                        digitWidth: model.screenInfo.lengths.digitWidth)
-                    if model.display.data.right != nil {
-                        Text(model.display.data.right!)
-                            .kerning(C.kerning)
-                            .font(Font(model.screenInfo.uiFont))
-                            .foregroundColor(color)
-                            .padding(.leading, model.screenInfo.ePadding)
-                            .offset(y: model.screenInfo.offsetToVerticallyAlignTextWithkeyboard)
-                    }
+                        scrollViewHasScrolled: $model.scrollViewHasScrolled,
+                        scrollViewID: model.scrollViewID
+                    )
                     Icons(
                         store: store,
                         model: model,

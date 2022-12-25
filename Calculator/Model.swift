@@ -34,6 +34,7 @@ class Model : ObservableObject {
     private let timerDefaultText = "click to measure"
     private var timer: Timer?
     private var timerCounter = 0
+    private var isPreliminary: Bool = false
     @Published var timerInfo: String
 
     @Published var screenInfo: ScreenInfo = ScreenInfo(hardwareSize: CGSize(), insets: UIEdgeInsets(), appOrientation: .unknown)
@@ -216,24 +217,25 @@ class Model : ObservableObject {
     func updateDisplayData() {
         /// called after rotating the device and when I have a result
         let temp = Display(
-            number: brain.last,
-            isPreliminary: false,
+            number: isPreliminary ? stupidBrain.last : brain.last,
+            isPreliminary: isPreliminary,
             screenInfo: screenInfo,
             forceScientific: forceScientific,
             showAsInteger: showAsInteger,
             showAsFloat: showAsFloat)
         DispatchQueue.main.async {
-            self.displayDataIsOld = false
             self.display = temp
         }
+
     }
     
     func haveStupidBrainResultCallback() {
         /// only show this if the high precision result isOld
         if displayDataIsOld {
+            isPreliminary = true
             let temp = Display(
                 number: stupidBrain.last,
-                isPreliminary: true,
+                isPreliminary: isPreliminary,
                 screenInfo: screenInfo,
                 forceScientific: forceScientific,
                 showAsInteger: showAsInteger,
@@ -258,7 +260,18 @@ class Model : ObservableObject {
             }
         }
         
-        updateDisplayData()
+        isPreliminary = false
+        let temp = Display(
+            number: brain.last,
+            isPreliminary: isPreliminary,
+            screenInfo: screenInfo,
+            forceScientific: forceScientific,
+            showAsInteger: showAsInteger,
+            showAsFloat: showAsFloat)
+        DispatchQueue.main.async {
+            self.displayDataIsOld = false
+            self.display = temp
+        }
         
         for key in C.keysAll {
             if brain.isValidNumber {

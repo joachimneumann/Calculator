@@ -12,9 +12,10 @@ struct PortraitDisplay: View {
     let screenInfo: ScreenInfo
         
     var body: some View {
+        let toShow = display.format.showThreeDots && display.data.left.count > 1 ? String(display.data.left.dropLast()) : display.data.left
         HStack(alignment: .bottom, spacing: 0.0) {
             Spacer(minLength: 0.0)
-            Text(display.data.left)
+            Text(toShow)
                 .kerning(C.kerning)
                 .font(Font(screenInfo.uiFont))
                 .foregroundColor(display.format.color)

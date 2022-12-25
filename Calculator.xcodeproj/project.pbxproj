@@ -32,6 +32,7 @@
 		AA6CE7072945C1D4002BB5FE /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6CE7062945C1D4002BB5FE /* Store.swift */; };
 		AA6CE70A2945CC5C002BB5FE /* Test.storekit in Resources */ = {isa = PBXBuildFile; fileRef = AA6CE7092945CC5C002BB5FE /* Test.storekit */; };
 		AA6CE70C2945CE0A002BB5FE /* PurchaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6CE70B2945CE0A002BB5FE /* PurchaseView.swift */; };
+		AA6D79D82957FCB900AF7E13 /* LandscapeDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6D79D72957FCB900AF7E13 /* LandscapeDisplay.swift */; };
 		AA8453E8294D872300A50B74 /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8453E7294D872300A50B74 /* Icons.swift */; };
 		AA92B4C329250827005E43F0 /* ColoredStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92B4C229250827005E43F0 /* ColoredStepper.swift */; };
 		AA92B4C529266CC1005E43F0 /* AnimatedDots.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92B4C429266CC1005E43F0 /* AnimatedDots.swift */; };
@@ -101,6 +102,7 @@
 		AA6CE7082945C25E002BB5FE /* Calculator.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Calculator.storekit; sourceTree = "<group>"; };
 		AA6CE7092945CC5C002BB5FE /* Test.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Test.storekit; sourceTree = "<group>"; };
 		AA6CE70B2945CE0A002BB5FE /* PurchaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseView.swift; sourceTree = "<group>"; };
+		AA6D79D72957FCB900AF7E13 /* LandscapeDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandscapeDisplay.swift; sourceTree = "<group>"; };
 		AA8453E7294D872300A50B74 /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
 		AA92B4C229250827005E43F0 /* ColoredStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredStepper.swift; sourceTree = "<group>"; };
 		AA92B4C429266CC1005E43F0 /* AnimatedDots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedDots.swift; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 				AA8453E7294D872300A50B74 /* Icons.swift */,
 				AA672B09295189950044DC08 /* ScrollViewConditionalAnimation.swift */,
 				AA01B9D32957E44300617AFB /* Display.swift */,
+				AA6D79D72957FCB900AF7E13 /* LandscapeDisplay.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -333,6 +336,7 @@
 			files = (
 				AA8453E8294D872300A50B74 /* Icons.swift in Sources */,
 				AA0D7BBA294B52EB00F63F49 /* ScreenInfo.swift in Sources */,
+				AA6D79D82957FCB900AF7E13 /* LandscapeDisplay.swift in Sources */,
 				AA01B9D42957E44300617AFB /* Display.swift in Sources */,
 				AAB10B9C292A2222004707E9 /* NonScientificKeyboard.swift in Sources */,
 				AA92B4C329250827005E43F0 /* ColoredStepper.swift in Sources */,
