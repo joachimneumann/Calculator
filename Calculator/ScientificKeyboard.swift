@@ -1,5 +1,5 @@
 //
-//  ScientificKeys.swift
+//  ScientificKeyboard.swift
 //  Calculator
 //
 //  Created by Joachim Neumann on 11/21/22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ScientificBoard: View {
+struct ScientificKeyboard: View {
     @ObservedObject var model: Model
     let spacing: CGFloat
     let keySize: CGSize

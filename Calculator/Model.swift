@@ -42,7 +42,7 @@ class Model : ObservableObject {
     @Published var secondActive = false
     @Published var isCalculating = false {
         didSet {
-            for key in C.keysThatDoNotNeedToBeDisabled {
+            for key in C.keysToDisable {
                 self.keyInfo[key]!.enabled = !isCalculating
             }
         }

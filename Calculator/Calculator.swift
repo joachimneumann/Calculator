@@ -90,7 +90,7 @@ struct Calculator: View {
                                 }
                             }
                         HStack(spacing: 0.0) {
-                            ScientificBoard(model: model, spacing: model.screenInfo.keySpacing, keySize: model.screenInfo.keySize)
+                            ScientificKeyboard(model: model, spacing: model.screenInfo.keySpacing, keySize: model.screenInfo.keySize)
                                 .padding(.trailing, model.screenInfo.keySpacing)
                             NonScientificKeyboard(model: model, spacing: model.screenInfo.keySpacing, keySize: model.screenInfo.keySize)
                         }
