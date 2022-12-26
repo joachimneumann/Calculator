@@ -23,7 +23,7 @@ class Model : ObservableObject {
     @Published var showAsFloat = false
     @Published var scrollViewID = UUID()
     var scrollViewHasScrolled = false
-    @Published var isZoomed: Bool {
+    @Published var isZoomed: Bool = false {
         didSet {
             if scrollViewHasScrolled {
                 scrollViewID = UUID()
@@ -73,10 +73,9 @@ class Model : ObservableObject {
         brain.isValidNumber
     }
     
-    init(isZoomed: Bool) {
+    init() {
         timerInfo = timerDefaultText
         // print("Model init isPortraitPhone \(screenInfo.isPortraitPhone)")
-        self.isZoomed = isZoomed
         
         // the later assignment of precision is a a bit strange, but a work-around for the error
         // "'self' used in property access 'precision' before all stored properties are initialized"

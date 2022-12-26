@@ -13,7 +13,7 @@ struct CalculatorApp: App {
     @State private var appOrientation = UIDeviceOrientation.unknown
     @Environment(\.safeAreaInsets) private var safeAreaInsets
 
-    let model: Model = Model(isZoomed: false)
+    let model: Model = Model()
 
     var body: some Scene {
         WindowGroup {
