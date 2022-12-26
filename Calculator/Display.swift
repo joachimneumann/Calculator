@@ -33,9 +33,9 @@ struct Display {
 }
 
 extension Display {
-    init() {
+    init(screen: Screen) {
         data = DisplayData(left: "0", maxlength: 0, canBeInteger: false, canBeFloat: false)
-        format = DisplayFormat(for: 0, withMaxLength: 0, showThreeDots: false, screen: Screen(CGSize()))
+        format = DisplayFormat(for: 1, withMaxLength: 1, showThreeDots: false, screen: screen)
     }
 }
 

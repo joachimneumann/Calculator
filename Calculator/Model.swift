@@ -7,17 +7,9 @@
 
 import SwiftUI
 
+@MainActor
 class Model : ObservableObject {
-    class KeyInfo: ObservableObject {
-        let symbol: String
-        @Published var colors: ColorsOf
-        var enabled = true
-        init(symbol: String, colors: ColorsOf) {
-            // print("KeyInfo init() ", symbol, "true")
-            self.symbol = symbol
-            self.colors = colors
-        }
-    }
+    let screen: Screen
     
     @Published var showAsInteger = false
     @Published var showAsFloat = false
@@ -72,7 +64,9 @@ class Model : ObservableObject {
         brain.isValidNumber
     }
     
-    init() {
+    init(screen: Screen) {
+        self.screen = screen
+
         timerInfo = timerDefaultText
         // print("Model init isPortraitPhone \(screenInfo.isPortraitPhone)")
         
@@ -81,7 +75,7 @@ class Model : ObservableObject {
         // At init, not much is happening in the brain
         brain = Brain()
         stupidBrain = Brain()
-        display = Display()
+        display = Display(screen: screen)
         brain.setPrecision(precision)
 //        brain.haveResultCallback = haveResultCallback
         brain.pendingOperatorCallback = pendingOperatorCallback
@@ -307,6 +301,46 @@ class Model : ObservableObject {
         previous = op
     }
     
+    func asyncBrainOperation(_ symbol: String) async {
+        brain.operation(symbol)
+    }
+
+    private func execute(_ symbol: String) {
+        if symbol == "AC" {
+            hasBeenReset.toggle()
+        } else {
+            hasBeenReset = false
+        }
+        
+        displayDataIsOld = true
+        //stupidBrain.operation(symbol)
+
+        Task {
+            isCalculating = true
+            await asyncBrainOperation(symbol)
+            isCalculating = false
+            display = Display(number: brain.last, isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
+//            if ["mc", "m+", "m-"].contains(symbol) {
+//                if let memory = brain.memory {
+//                    let temp = memory.getDisplayData(
+//                        multipleLines: true,
+//                        lengths: Lengths(precision),
+//                        forceScientific: false,
+//                        showAsInteger: showAsInteger,
+//                        showAsFloat: showAsFloat,
+//                        maxDisplayLength: precision)
+//                    DispatchQueue.main.sync {
+//                        memoryValue = temp.left + (temp.right ?? "")
+//                    }
+//                } else {
+//                    DispatchQueue.main.sync {
+//                        memoryValue = ""
+//                    }
+//                }
+//            }
+        }
+    }
+
     func pressed(_ _symbol: String) {
         let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(_symbol) && !rad ? _symbol+"D" : _symbol
         
@@ -322,45 +356,20 @@ class Model : ObservableObject {
             rad = false
         default:
             if !isCalculating && keyInfo[symbol]!.enabled {
-                if symbol == "AC" {
-                    hasBeenReset.toggle()
-                } else {
-                    hasBeenReset = false
-                }
-                
-                displayDataIsOld = true
-                DispatchQueue.main.async {
-                    self.isCalculating = true
-                }
-                stupidBrain.operation(symbol)
-                Task {
-                    await asyncOperation(symbol)
-                    if ["mc", "m+", "m-"].contains(symbol) {
-                        if let memory = brain.memory {
-                            let temp = memory.getDisplayData(
-                                multipleLines: true,
-                                lengths: Lengths(precision),
-                                forceScientific: false,
-                                showAsInteger: showAsInteger,
-                                showAsFloat: showAsFloat,
-                                maxDisplayLength: precision)
-                            DispatchQueue.main.sync {
-                                memoryValue = temp.left + (temp.right ?? "")
-                            }
-                        } else {
-                            DispatchQueue.main.sync {
-                                memoryValue = ""
-                            }
-                        }
-                    }
-                }
+                execute(symbol)
             }
         }
     }
     
-    func asyncOperation(_ symbol: String) async {
-        brain.operation(symbol)
-        DispatchQueue.main.async { self.isCalculating = false }
+    class KeyInfo: ObservableObject {
+        let symbol: String
+        @Published var colors: ColorsOf
+        var enabled = true
+        init(symbol: String, colors: ColorsOf) {
+            // print("KeyInfo init() ", symbol, "true")
+            self.symbol = symbol
+            self.colors = colors
+        }
     }
 }
 

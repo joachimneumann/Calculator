@@ -23,22 +23,22 @@ struct MyNavigation<Content>: View where Content: View {
 
 struct Calculator: View {
     let screen: Screen
-    @StateObject private var model = Model()
+    @StateObject private var model: Model
     @StateObject private var store = Store()
     
-    init(_ screenModel: Screen) {
+    init(_ screen: Screen) {
         print("Calculator INIT")
-        self.screen = screenModel
+        self.screen = screen
+        _model = StateObject(wrappedValue: Model(screen: screen))
     }
     
     var body: some View {
-        let _ = print("screenModel.isPortraitPhone", screen.isPortraitPhone)
+        // let _ = print("screenModel.isPortraitPhone", screen.isPortraitPhone)
         if screen.isPortraitPhone {
             VStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
                 PortraitDisplay(
                     display: model.display)
-                .background(Color.yellow)
                 .padding(.horizontal, screen.portraitIPhoneDisplayHorizontalPadding)
                 .padding(.bottom, screen.portraitIPhoneDisplayBottomPadding)
                 NonScientificKeyboard(
