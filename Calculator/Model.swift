@@ -13,7 +13,7 @@ class Model : ObservableObject {
         @Published var colors: ColorsOf
         var enabled = true
         init(symbol: String, colors: ColorsOf) {
-            print("KeyInfo init() ", symbol, "true")
+            // print("KeyInfo init() ", symbol, "true")
             self.symbol = symbol
             self.colors = colors
         }
