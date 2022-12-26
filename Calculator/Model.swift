@@ -306,6 +306,7 @@ class Model : ObservableObject {
     }
 
     private func execute(_ symbol: String) {
+        isCalculating = true
         if symbol == "AC" {
             hasBeenReset.toggle()
         } else {
@@ -316,9 +317,29 @@ class Model : ObservableObject {
         //stupidBrain.operation(symbol)
 
         Task {
-            isCalculating = true
+            let preliminaryResultTask = Task {
+                // sleep(300 ms)
+//                if not self.cancelled { stupidBrain.operation(symbol) }
+//                if not self.cancelled { let tempDisplay = stupidBrain.getDisplay }
+//                if not self.cancelled { display = temp }
+            }
             await asyncBrainOperation(symbol)
             isCalculating = false
+            if brain.isValidNumber {
+                for key in C.keysAll {
+                    keyInfo[key]!.enabled = true
+                }
+            } else {
+                for key in C.keysAll {
+                    if C.keysThatRequireValidNumber.contains(key) {
+                        keyInfo[key]!.enabled = false
+                    } else {
+                        keyInfo[key]!.enabled = true
+                    }
+                }
+            }
+
+            
             display = Display(number: brain.last, isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
 //            if ["mc", "m+", "m-"].contains(symbol) {
 //                if let memory = brain.memory {
@@ -365,6 +386,7 @@ class Model : ObservableObject {
         let symbol: String
         @Published var colors: ColorsOf
         var enabled = true
+        var isPressedWhileDisabled = false
         init(symbol: String, colors: ColorsOf) {
             // print("KeyInfo init() ", symbol, "true")
             self.symbol = symbol

@@ -23,10 +23,10 @@ struct Key: View {
         self.doubleWidth = doubleWidth
     }
     
-    @State var tapped: Bool = false
+    @State var tapped: TappedStatus = .notTapped
 
     var body: some View {
-        // let _ = print("Key: keyinfo ", keyInfo.symbol, keyInfo.enabled)
+         let _ = print("Key: keyinfo ", keyInfo.symbol, keyInfo.enabled)
         // use this to print to make sure that keys are not redrawn too often
         // let _ = print("Key \(keyInfo.symbol)")
         ZStack {
@@ -39,9 +39,9 @@ struct Key: View {
                     .frame(width: size.width, height: size.height)
             }
        }
-        .background(Color(tapped ? (keyInfo.enabled ? keyInfo.colors.downColor : C.disabledColor) : keyInfo.colors.upColor))
+        .background(Color(tapped == .tappedWhileDisabled ? C.disabledColor : (tapped == .tapped ? keyInfo.colors.downColor : keyInfo.colors.upColor) ))
         .clipShape(Capsule())
-        .onTouchGesture(tapped: $tapped, symbol: keyInfo.symbol, callback: callback)
+        .onTouchGesture(tapped: $tapped, enabled: keyInfo.enabled, symbol: keyInfo.symbol, callback: callback)
     }
 
     func callback() {
@@ -49,14 +49,21 @@ struct Key: View {
     }
 }
 
+enum TappedStatus {
+    case notTapped
+    case tapped
+    case tappedWhileDisabled
+}
+
 extension View {
-    func onTouchGesture(tapped: Binding<Bool>, symbol: String, callback: @escaping () -> ()) -> some View {
-        modifier(OnTouchGestureModifier(tapped: tapped, symbol: symbol, callback: callback))
+    func onTouchGesture(tapped: Binding<TappedStatus>, enabled: Bool, symbol: String, callback: @escaping () -> ()) -> some View {
+        modifier(OnTouchGestureModifier(tapped: tapped, enabled: enabled, symbol: symbol, callback: callback))
     }
 }
 
 private struct OnTouchGestureModifier: ViewModifier {
-    @Binding var tapped: Bool
+    @Binding var tapped: TappedStatus
+    let enabled: Bool
     let symbol: String
     let callback: () -> ()
 
@@ -71,36 +78,39 @@ private struct OnTouchGestureModifier: ViewModifier {
         content
             .simultaneousGesture(DragGesture(minimumDistance: 0)
                 .onChanged { _ in
-                    if !self.tapped {
-                        callback()
+                    if self.tapped == .notTapped {
+                        if enabled {
+                            withAnimation(.easeIn(duration: downTime)) {
+                                self.tapped = .tapped
+                            }
+                            callback()
+                            upHasHappended = false
 
-                        upHasHappended = false
-                        //print("self.tapped \(self.tapped)")
-
-                        self.downAnimationFinished = false
-                        //print("onChanged downAnimationFinished \(downAnimationFinished)")
-                        withAnimation(.easeIn(duration: downTime)) {
-                            self.tapped = true
+                            self.downAnimationFinished = false
+                            keyDone()
+                        } else {
+                            withAnimation(.easeIn(duration: downTime)) {
+                                tapped = .tappedWhileDisabled
+                            }
                         }
-                        keyDone()
                     }
                 }
                 .onEnded { _ in
                     if self.downAnimationFinished {
                         withAnimation(.easeIn(duration: upTime)) {
-                            self.tapped = false
+                            self.tapped = .notTapped
                         }
                     } else {
                         upHasHappended = true
                     }
                 })
     }
-    @MainActor func keyDone() {
+    func keyDone() {
         DispatchQueue.main.asyncAfter(deadline: .now() + downTime) {
             self.downAnimationFinished = true
             if upHasHappended {
                 withAnimation(.easeIn(duration: upTime)) {
-                    self.tapped = false
+                    self.tapped = .notTapped
                 }
             }
         }
