@@ -22,9 +22,39 @@ struct MyNavigation<Content>: View where Content: View {
 }
 
 struct Calculator: View {
-    @ObservedObject var model: Model
-    @StateObject var store = Store()
-
+    @StateObject private var model = Model()
+    @StateObject private var store = Store()
+    @StateObject private var screenModel = ScreenModel(CGSize())
+    var body: some View {
+        GeometryReader { (geo) in
+            let _ = screenModel.updateSize(geo.size)
+            let _ = print("screenModel.isPortraitPhone", screenModel.isPortraitPhone)
+            if false { //screenModel.isPortraitPhone {
+                VStack(spacing: 0.0) {
+                    Spacer(minLength: 0.0)
+//                    PortraitDisplay(
+//                        display: model.display,
+//                        screenInfo: model.screenInfo)
+//                    //.background(Color.yellow)
+//                    .padding(.horizontal, model.screenInfo.portraitIPhoneDisplayHorizontalPadding)
+//                    .padding(.bottom, model.screenInfo.portraitIPhoneDisplayBottomPadding)
+                    NonScientificKeyboard(
+                        model: model,
+                        spacing: screenModel.keySpacing,
+                        keySize: screenModel.keySize)
+                }
+            } else {
+                Text("landscape \(geo.size.width)x\(geo.size.height)")
+                    .frame(width: 100)//screenModel.keySize.width*2)
+                    .background(Color.red)
+                    .padding()
+                    .onTapGesture {
+                        print("XXX")
+                    }
+            }
+        }
+    }
+/*
     var body: some View {
         // let _ = print("Calculator: isPortraitPhone \(model.screenInfo.isPortraitPhone) size \(model.screenInfo.calculatorSize)")
         // let _ = print("model.displayData.left \(model.displayData.left)")
@@ -106,6 +136,7 @@ struct Calculator: View {
             }
         }
     }
+ */
 }
 
 
