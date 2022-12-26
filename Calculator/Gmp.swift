@@ -214,7 +214,10 @@ class Gmp: Equatable, CustomDebugStringConvertible {
         return mpfr_get_d(&mpfr, MPFR_RNDN)
     }
     var isValid: Bool {
-        mpfr_number_p(&mpfr) != 0
+        if mpfr_number_p(&mpfr) != 0 { return false }
+        if NaN { return false }
+        if inf { return false }
+        return true
     }
     var NaN: Bool {
         mpfr_nan_p(&mpfr) != 0

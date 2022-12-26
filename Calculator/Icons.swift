@@ -81,7 +81,7 @@ struct Icons : View {
                         } else {
                             Text("paste")
                                 .font(Font(screenInfo.infoUiFont))
-                                .foregroundColor(model.isPasting ? .orange : isValidPasteContent ? .white : .gray)
+                                .foregroundColor(isValidPasteContent ? (model.isPasting ? .orange : .white) : .gray)
                                 .onTapGesture {
                                     if copyDone && pasteDone && !model.isCopying && !model.isPasting && isValidPasteContent {
                                         setIsPasting(to: true)

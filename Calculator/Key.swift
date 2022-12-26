@@ -26,6 +26,7 @@ struct Key: View {
     @State var tapped: Bool = false
 
     var body: some View {
+        let _ = print("Key: keyinfo ", keyInfo.symbol, keyInfo.enabled)
         // use this to print to make sure that keys are not redrawn too often
         // let _ = print("Key \(keyInfo.symbol)")
         ZStack {
@@ -44,7 +45,7 @@ struct Key: View {
     }
 
     func callback() {
-        modelCallback(keyInfo.symbol)
+        if keyInfo.enabled { modelCallback(keyInfo.symbol) }
     }
 }
 
@@ -81,14 +82,7 @@ private struct OnTouchGestureModifier: ViewModifier {
                         withAnimation(.easeIn(duration: downTime)) {
                             self.tapped = true
                         }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + downTime) {
-                            self.downAnimationFinished = true
-                            if upHasHappended {
-                                withAnimation(.easeIn(duration: upTime)) {
-                                    self.tapped = false
-                                }
-                            }
-                        }
+                        keyDone()
                     }
                 }
                 .onEnded { _ in
@@ -100,6 +94,16 @@ private struct OnTouchGestureModifier: ViewModifier {
                         upHasHappended = true
                     }
                 })
+    }
+    @MainActor func keyDone() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + downTime) {
+            self.downAnimationFinished = true
+            if upHasHappended {
+                withAnimation(.easeIn(duration: upTime)) {
+                    self.tapped = false
+                }
+            }
+        }
     }
 }
 

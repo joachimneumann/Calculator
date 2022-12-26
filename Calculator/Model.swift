@@ -13,6 +13,7 @@ class Model : ObservableObject {
         @Published var colors: ColorsOf
         var enabled = true
         init(symbol: String, colors: ColorsOf) {
+            print("KeyInfo init() ", symbol, "true")
             self.symbol = symbol
             self.colors = colors
         }
@@ -41,13 +42,8 @@ class Model : ObservableObject {
     @Published var secondActive = false
     @Published var isCalculating = false {
         didSet {
-            //print("isCalculating -> \(isCalculating)")
-            DispatchQueue.main.async {
-                for key in C.keysAll {
-                    if !C.keysThatDoNotNeedToBeDisabled.contains(key) {
-                        self.keyInfo[key]!.enabled = !self.isCalculating
-                    }
-                }
+            for key in C.keysThatDoNotNeedToBeDisabled {
+                self.keyInfo[key]!.enabled = !isCalculating
             }
         }
     }
@@ -273,10 +269,12 @@ class Model : ObservableObject {
             self.display = temp
         }
         
-        for key in C.keysAll {
-            if brain.isValidNumber {
+        if brain.isValidNumber {
+            for key in C.keysAll {
                 keyInfo[key]!.enabled = true
-            } else {
+            }
+        } else {
+            for key in C.keysAll {
                 if C.keysThatRequireValidNumber.contains(key) {
                     keyInfo[key]!.enabled = false
                 } else {
@@ -284,6 +282,7 @@ class Model : ObservableObject {
                 }
             }
         }
+        print("haveResultCallback: keyInfo[10^x] \( keyInfo["10^x"]!.enabled)")
         
         // check mr
         keyInfo["mr"]!.enabled = brain.memory != nil
@@ -333,7 +332,8 @@ class Model : ObservableObject {
         case "plusKey":
             break
         default:
-            if !isCalculating {
+            print("Model: keyInfo[10^x] \( keyInfo["10^x"]!.enabled)")
+            if !isCalculating && keyInfo[symbol]!.enabled {
                 if symbol == "AC" {
                     hasBeenReset.toggle()
                 } else {
