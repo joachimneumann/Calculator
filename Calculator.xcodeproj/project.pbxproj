@@ -40,7 +40,7 @@
 		AAB10B9A292A2222004707E9 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB10B94292A2222004707E9 /* Label.swift */; };
 		AAB10B9C292A2222004707E9 /* NonScientificKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB10B96292A2222004707E9 /* NonScientificKeyboard.swift */; };
 		AABCF8BA292B8818007E5C35 /* ScientificKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABCF8B9292B8818007E5C35 /* ScientificKeyboard.swift */; };
-		AAE426F729597AE3005FE365 /* ScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE426F629597AE3005FE365 /* ScreenModel.swift */; };
+		AAE426F729597AE3005FE365 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE426F629597AE3005FE365 /* Screen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,7 +110,7 @@
 		AAB10B94292A2222004707E9 /* Label.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		AAB10B96292A2222004707E9 /* NonScientificKeyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonScientificKeyboard.swift; sourceTree = "<group>"; };
 		AABCF8B9292B8818007E5C35 /* ScientificKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScientificKeyboard.swift; sourceTree = "<group>"; };
-		AAE426F629597AE3005FE365 /* ScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenModel.swift; sourceTree = "<group>"; };
+		AAE426F629597AE3005FE365 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,7 +185,7 @@
 				AA672B09295189950044DC08 /* ScrollViewConditionalAnimation.swift */,
 				AA01B9D32957E44300617AFB /* Display.swift */,
 				AA6D79D72957FCB900AF7E13 /* LandscapeDisplay.swift */,
-				AAE426F629597AE3005FE365 /* ScreenModel.swift */,
+				AAE426F629597AE3005FE365 /* Screen.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -350,7 +350,7 @@
 				AA2FAC12272F2349006DE4C8 /* NumberStack.swift in Sources */,
 				AA2FABF2272F217F006DE4C8 /* Gmp.swift in Sources */,
 				AAB10B9A292A2222004707E9 /* Label.swift in Sources */,
-				AAE426F729597AE3005FE365 /* ScreenModel.swift in Sources */,
+				AAE426F729597AE3005FE365 /* Screen.swift in Sources */,
 				AABCF8BA292B8818007E5C35 /* ScientificKeyboard.swift in Sources */,
 				AA92B4C929273A58005E43F0 /* Calculator.swift in Sources */,
 				AA2FAC23272F2349006DE4C8 /* OperatorStack.swift in Sources */,

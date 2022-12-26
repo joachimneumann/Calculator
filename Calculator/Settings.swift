@@ -9,6 +9,7 @@ import SwiftUI
 
 struct Settings: View {
     @ObservedObject var model: Model
+    let screen: Screen
     let font: Font
     
     func decrease(_ current: Int) -> Int {
@@ -51,8 +52,8 @@ struct Settings: View {
                     Image(systemName: "chevron.left")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(height: model.screenInfo.infoUiFontSize * 0.7)
-                        .padding(.trailing, model.screenInfo.infoUiFontSize * 0.1)
+                        .frame(height: screen.infoUiFontSize * 0.7)
+                        .padding(.trailing, screen.infoUiFontSize * 0.1)
                     Text("Back")
                 }
                 Spacer()
@@ -105,13 +106,13 @@ struct Settings: View {
                     HStack {
                         Text("Time to calculate sin(")
                             .foregroundColor(.gray)
-                        let h = 3 * model.screenInfo.infoUiFontSize
+                        let h = 3 * screen.infoUiFontSize
                         Label(keyInfo: model.keyInfo["√"]!, size: h, color: .gray)
                             .frame(width: h, height: h)
-                            .offset(x: -1.2 * model.screenInfo.infoUiFontSize)
+                            .offset(x: -1.2 * screen.infoUiFontSize)
                         Text("):")
                             .foregroundColor(.gray)
-                            .offset(x: -2.4 * model.screenInfo.infoUiFontSize)
+                            .offset(x: -2.4 * screen.infoUiFontSize)
                         Button {
                                 model.timerStart()
                             Task {
@@ -123,9 +124,9 @@ struct Settings: View {
                                 .foregroundColor(.gray)
                         }
                         .disabled(model.timerIsRunning)
-                        .offset(x: -2.0 * model.screenInfo.infoUiFontSize)
+                        .offset(x: -2.0 * screen.infoUiFontSize)
                     }
-                    .offset(y: -0.15 * model.screenInfo.infoUiFontSize)
+                    .offset(y: -0.15 * screen.infoUiFontSize)
 
                     HStack(spacing: 0.0) {
                         Text("Force scientific display")
@@ -160,7 +161,7 @@ struct Settings: View {
                 if model.precision != settingsPrecision {
                     model.updatePrecision(to: settingsPrecision)
                 }
-                model.haveResultCallback()
+// TODO: call again               model.haveResultCallback()
             }
         }
         .onAppear() {

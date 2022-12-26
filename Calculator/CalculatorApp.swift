@@ -11,7 +11,9 @@ import SwiftUI
 struct CalculatorApp: App {
     var body: some Scene {
         WindowGroup {
-            Calculator()
+            GeometryReader { (geo) in
+                Calculator(Screen(geo.size))
+            }
             .preferredColorScheme(.dark)
         }
     }

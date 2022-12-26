@@ -7,18 +7,26 @@
 
 import UIKit
 
-class ScreenModel: ObservableObject {
+struct Screen {
+    /// no @Published propertied, but objectWillChange.send() at the end of update()
     let isPad: Bool
     let isPortraitPhone: Bool
     let keyboardHeight: CGFloat
     let keySpacing: CGFloat
     let keySize: CGSize
-    func updateSize(_ newSize: CGSize) {
-        print("ScreenModel updateSize", newSize)
-    }
+    let lengths: Lengths
+    let ePadding: CGFloat
+    let plusIconSize: CGFloat
+    let plusIconLeftPadding: CGFloat
+    let uiFontSize: CGFloat
+    let infoUiFont: UIFont
+    let infoUiFontSize: CGFloat
+    let portraitIPhoneDisplayHorizontalPadding: CGFloat
+    let portraitIPhoneDisplayBottomPadding: CGFloat
+    
     init(_ screenSize: CGSize) {
-        print("ScreenModel INIT")
-
+        print("ScreenModel INIT", screenSize)
+        
         isPad = UIDevice.current.userInterfaceIdiom == .pad
         let isPortrait = screenSize.height > screenSize.width
         isPortraitPhone = isPad ? false : isPortrait
@@ -50,6 +58,20 @@ class ScreenModel: ObservableObject {
         }
         
         keySize = CGSize(width: tempKeyWidth, height: tempKeyheight)
+        
+        portraitIPhoneDisplayHorizontalPadding = screenSize.width * 0.035
+        portraitIPhoneDisplayBottomPadding = screenSize.height * 0.012
 
+        let portraitIPhoneHorizontalPadding = screenSize.width * 0.08
+        plusIconSize = keyboardHeight * 0.13
+        plusIconLeftPadding = plusIconSize * 0.4
+        ePadding = isPortraitPhone ? plusIconSize * 0.1 : plusIconSize * 0.3
+        let displayWidth = screenSize.width -
+        (isPortraitPhone ? portraitIPhoneHorizontalPadding : plusIconSize + plusIconLeftPadding)
+        uiFontSize = ((isPortraitPhone ? 0.125 : 0.16) * keyboardHeight).rounded()
+        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: uiFontSize, weight: C.fontWeight)
+        infoUiFontSize = uiFontSize * 0.3
+        infoUiFont = UIFont.monospacedDigitSystemFont(ofSize: infoUiFontSize, weight: .regular)
+        lengths = lengthMeasurement(width: displayWidth, uiFont: uiFont, infoUiFont: infoUiFont, ePadding: ePadding)
     }
 }

@@ -38,7 +38,6 @@ class Model : ObservableObject {
     private var isPreliminary: Bool = false
     @Published var timerInfo: String
     
-    @Published var screenInfo: ScreenInfo = ScreenInfo(hardwareSize: CGSize(), insets: UIEdgeInsets(), appOrientation: .unknown)
     @Published var secondActive = false
     @Published var isCalculating = false {
         didSet {
@@ -84,11 +83,11 @@ class Model : ObservableObject {
         stupidBrain = Brain()
         display = Display()
         brain.setPrecision(precision)
-        brain.haveResultCallback = haveResultCallback
+//        brain.haveResultCallback = haveResultCallback
         brain.pendingOperatorCallback = pendingOperatorCallback
         
         stupidBrain.setPrecision(stupidBrainPrecision)
-        stupidBrain.haveResultCallback = haveStupidBrainResultCallback
+//        stupidBrain.haveResultCallback = haveStupidBrainResultCallback
         /// no pendingOperatorCallback
         
         if memoryValue == "" {
@@ -137,13 +136,6 @@ class Model : ObservableObject {
         }
     }
     
-    func initiateScreenInfo(to screenInfo: ScreenInfo) {
-        DispatchQueue.main.async { [self] in
-            self.screenInfo = screenInfo
-            self.updateDisplayData()
-        }
-    }
-    
     // the update of the precision in brain can be slow.
     // Therefore, I only want to do that when leaving the settings screen
     func updatePrecision(to newPecision: Int) {
@@ -172,7 +164,7 @@ class Model : ObservableObject {
                 }
                 if ok {
                     brain.replaceLast(with: Number(pasteString, precision: brain.precision))
-                    haveResultCallback() // TODO: make sure that forLong is true here!!!!
+//                    haveResultCallback() // TODO: make sure that forLong is true here!!!!
                 }
             }
         }
@@ -209,83 +201,83 @@ class Model : ObservableObject {
         return result
     }
     
-    func updateDisplayData() {
-        /// called after rotating the device and when I have a result
-        let temp = Display(
-            number: isPreliminary ? stupidBrain.last : brain.last,
-            isPreliminary: isPreliminary,
-            screenInfo: screenInfo,
-            forceScientific: forceScientific,
-            showAsInteger: showAsInteger,
-            showAsFloat: showAsFloat)
-        DispatchQueue.main.async {
-            self.display = temp
-        }
-        
-    }
-    
-    func haveStupidBrainResultCallback() {
-        /// only show this if the high precision result isOld
-        if displayDataIsOld {
-            isPreliminary = true
-            let temp = Display(
-                number: stupidBrain.last,
-                isPreliminary: isPreliminary,
-                screenInfo: screenInfo,
-                forceScientific: forceScientific,
-                showAsInteger: showAsInteger,
-                showAsFloat: showAsFloat)
-            DispatchQueue.main.asyncAfter(deadline: .now() + C.preliminaryDelay) {
-                if self.displayDataIsOld {
-                    self.display = temp
-                }
-            }
-        }
-    }
-    
-    func haveResultCallback() {
-        if brain.last.isNull {
-            DispatchQueue.main.async {
-                self.showAC = true
-                self.precisionDescription = self.precision.useWords
-            }
-        } else {
-            DispatchQueue.main.async {
-                self.showAC = false
-            }
-        }
-        
-        isPreliminary = false
-        let temp = Display(
-            number: brain.last,
-            isPreliminary: isPreliminary,
-            screenInfo: screenInfo,
-            forceScientific: forceScientific,
-            showAsInteger: showAsInteger,
-            showAsFloat: showAsFloat)
-        self.displayDataIsOld = false
-        DispatchQueue.main.async {
-            self.display = temp
-        }
-        
-        if brain.isValidNumber {
-            for key in C.keysAll {
-                keyInfo[key]!.enabled = true
-            }
-        } else {
-            for key in C.keysAll {
-                if C.keysThatRequireValidNumber.contains(key) {
-                    keyInfo[key]!.enabled = false
-                } else {
-                    keyInfo[key]!.enabled = true
-                }
-            }
-        }
-        print("haveResultCallback: keyInfo[10^x] \( keyInfo["10^x"]!.enabled)")
-        
-        // check mr
-        keyInfo["mr"]!.enabled = brain.memory != nil
-    }
+//    func updateDisplayData() {
+//        /// called after rotating the device and when I have a result
+//        let temp = Display(
+//            number: isPreliminary ? stupidBrain.last : brain.last,
+//            isPreliminary: isPreliminary,
+//            screen: screen,
+//            forceScientific: forceScientific,
+//            showAsInteger: showAsInteger,
+//            showAsFloat: showAsFloat)
+//        DispatchQueue.main.async {
+//            self.display = temp
+//        }
+//        
+//    }
+//    
+//    func haveStupidBrainResultCallback() {
+//        /// only show this if the high precision result isOld
+//        if displayDataIsOld {
+//            isPreliminary = true
+//            let temp = Display(
+//                number: stupidBrain.last,
+//                isPreliminary: isPreliminary,
+//                screen: screen,
+//                forceScientific: forceScientific,
+//                showAsInteger: showAsInteger,
+//                showAsFloat: showAsFloat)
+//            DispatchQueue.main.asyncAfter(deadline: .now() + C.preliminaryDelay) {
+//                if self.displayDataIsOld {
+//                    self.display = temp
+//                }
+//            }
+//        }
+//    }
+//    
+//    func haveResultCallback() {
+//        if brain.last.isNull {
+//            DispatchQueue.main.async {
+//                self.showAC = true
+//                self.precisionDescription = self.precision.useWords
+//            }
+//        } else {
+//            DispatchQueue.main.async {
+//                self.showAC = false
+//            }
+//        }
+//        
+//        isPreliminary = false
+//        let temp = Display(
+//            number: brain.last,
+//            isPreliminary: isPreliminary,
+//            screen: screen,
+//            forceScientific: forceScientific,
+//            showAsInteger: showAsInteger,
+//            showAsFloat: showAsFloat)
+//        self.displayDataIsOld = false
+//        DispatchQueue.main.async {
+//            self.display = temp
+//        }
+//        
+//        if brain.isValidNumber {
+//            for key in C.keysAll {
+//                keyInfo[key]!.enabled = true
+//            }
+//        } else {
+//            for key in C.keysAll {
+//                if C.keysThatRequireValidNumber.contains(key) {
+//                    keyInfo[key]!.enabled = false
+//                } else {
+//                    keyInfo[key]!.enabled = true
+//                }
+//            }
+//        }
+//        print("haveResultCallback: keyInfo[10^x] \( keyInfo["10^x"]!.enabled)")
+//        
+//        // check mr
+//        keyInfo["mr"]!.enabled = brain.memory != nil
+//    }
     
     private var previous: String? = nil
     func pendingOperatorCallback(op: String?) {
@@ -328,10 +320,7 @@ class Model : ObservableObject {
         case "Deg":
             hasBeenReset = false
             rad = false
-        case "plusKey":
-            break
         default:
-            print("Model: keyInfo[10^x] \( keyInfo["10^x"]!.enabled)")
             if !isCalculating && keyInfo[symbol]!.enabled {
                 if symbol == "AC" {
                     hasBeenReset.toggle()

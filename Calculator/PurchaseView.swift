@@ -11,6 +11,7 @@ struct PurchaseView: View {
     @Environment(\.presentationMode) var presentation
     @ObservedObject var store: Store
     let model: Model
+    let screen: Screen
     let font: Font
     
     var body: some View {
@@ -24,8 +25,8 @@ struct PurchaseView: View {
                             Image(systemName: "chevron.left")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(height: model.screenInfo.infoUiFontSize * 0.7)
-                                .padding(.trailing, model.screenInfo.infoUiFontSize * 0.1)
+                                .frame(height: screen.infoUiFontSize * 0.7)
+                                .padding(.trailing, screen.infoUiFontSize * 0.1)
                             Text("Back")
                         }
                         .padding(.bottom, 40)
@@ -89,7 +90,7 @@ struct PurchaseView: View {
         }
         .onDisappear() {
             model.hideKeyboard = false
-            model.haveResultCallback()
+            //model.haveResultCallback()
         }
     }
 }

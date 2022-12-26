@@ -13,30 +13,29 @@ struct Display {
     
     init(number: Number,
          isPreliminary: Bool,
-         screenInfo: ScreenInfo,
+         screen: Screen,
          forceScientific: Bool,
          showAsInteger: Bool,
          showAsFloat: Bool
     ) {
         data = number.getDisplayData(
-            multipleLines: !isPreliminary && !screenInfo.isPortraitPhone,
-            lengths: screenInfo.lengths,
+            multipleLines: !isPreliminary && !screen.isPortraitPhone,
+            lengths: screen.lengths,
             forceScientific: forceScientific,
             showAsInteger: showAsInteger,
             showAsFloat: showAsFloat)
         format = DisplayFormat(
             for: data.length,
-            screenInfo: screenInfo,
             withMaxLength: data.maxlength,
-            fontSize: screenInfo.uiFontSize,
-            showThreeDots: isPreliminary)
+            showThreeDots: isPreliminary,
+            screen: screen)
     }
 }
 
 extension Display {
     init() {
         data = DisplayData(left: "0", maxlength: 0, canBeInteger: false, canBeFloat: false)
-        format = DisplayFormat(for: 0, screenInfo: ScreenInfo(hardwareSize: CGSize(), insets: UIEdgeInsets(), appOrientation: .unknown), withMaxLength: 0, fontSize: 0, showThreeDots: false)
+        format = DisplayFormat(for: 0, withMaxLength: 0, showThreeDots: false, screen: Screen(CGSize()))
     }
 }
 
@@ -71,11 +70,13 @@ struct DisplayFormat {
     let font: Font
     let color: Color
     let showThreeDots: Bool
+    let digitWidth: CGFloat
+    let ePadding: CGFloat
 
-    init(for length: Int, screenInfo: ScreenInfo, withMaxLength maxLength: Int, fontSize: CGFloat, showThreeDots: Bool) {
+    init(for length: Int, withMaxLength maxLength: Int, showThreeDots: Bool, screen: Screen) {
         var factor = 1.0
         
-        if screenInfo.isPortraitPhone {
+        if screen.isPortraitPhone {
             let factorMin = 1.0
             let factorMax = 2.3
             
@@ -85,11 +86,13 @@ struct DisplayFormat {
             if factor < 1.0 { factor = 1.0 }
         }
         
-        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: fontSize * factor, weight: C.fontWeight)
+        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: screen.uiFontSize * factor, weight: C.fontWeight)
         
         font = Font(uiFont)
         color = showThreeDots ? .gray : .white
         self.showThreeDots = showThreeDots
+        self.digitWidth = screen.lengths.digitWidth
+        self.ePadding = screen.lengths.ePadding
     }
 }
 
@@ -98,5 +101,7 @@ extension DisplayFormat {
         font = Font(UIFont())
         color = Color.white
         showThreeDots = false
+        digitWidth = 0.0
+        ePadding = 0.0
     }
 }

@@ -22,122 +22,124 @@ struct MyNavigation<Content>: View where Content: View {
 }
 
 struct Calculator: View {
+    let screen: Screen
     @StateObject private var model = Model()
     @StateObject private var store = Store()
-    @StateObject private var screenModel = ScreenModel(CGSize())
-    var body: some View {
-        GeometryReader { (geo) in
-            let _ = screenModel.updateSize(geo.size)
-            let _ = print("screenModel.isPortraitPhone", screenModel.isPortraitPhone)
-            if false { //screenModel.isPortraitPhone {
-                VStack(spacing: 0.0) {
-                    Spacer(minLength: 0.0)
-//                    PortraitDisplay(
-//                        display: model.display,
-//                        screenInfo: model.screenInfo)
-//                    //.background(Color.yellow)
-//                    .padding(.horizontal, model.screenInfo.portraitIPhoneDisplayHorizontalPadding)
-//                    .padding(.bottom, model.screenInfo.portraitIPhoneDisplayBottomPadding)
-                    NonScientificKeyboard(
-                        model: model,
-                        spacing: screenModel.keySpacing,
-                        keySize: screenModel.keySize)
-                }
-            } else {
-                Text("landscape \(geo.size.width)x\(geo.size.height)")
-                    .frame(width: 100)//screenModel.keySize.width*2)
-                    .background(Color.red)
-                    .padding()
-                    .onTapGesture {
-                        print("XXX")
-                    }
-            }
-        }
+    
+    init(_ screenModel: Screen) {
+        print("Calculator INIT")
+        self.screen = screenModel
     }
-/*
+    
     var body: some View {
-        // let _ = print("Calculator: isPortraitPhone \(model.screenInfo.isPortraitPhone) size \(model.screenInfo.calculatorSize)")
-        // let _ = print("model.displayData.left \(model.displayData.left)")
-        if model.screenInfo.isPortraitPhone {
+        let _ = print("screenModel.isPortraitPhone", screen.isPortraitPhone)
+        if screen.isPortraitPhone {
             VStack(spacing: 0.0) {
                 Spacer(minLength: 0.0)
                 PortraitDisplay(
-                    display: model.display,
-                    screenInfo: model.screenInfo)
-                //.background(Color.yellow)
-                .padding(.horizontal, model.screenInfo.portraitIPhoneDisplayHorizontalPadding)
-                .padding(.bottom, model.screenInfo.portraitIPhoneDisplayBottomPadding)
+                    display: model.display)
+                .background(Color.yellow)
+                .padding(.horizontal, screen.portraitIPhoneDisplayHorizontalPadding)
+                .padding(.bottom, screen.portraitIPhoneDisplayBottomPadding)
                 NonScientificKeyboard(
                     model: model,
-                    spacing: model.screenInfo.keySpacing,
-                    keySize: model.screenInfo.keySize)
+                    spacing: screen.keySpacing,
+                    keySize: screen.keySize)
             }
-            //.background(Color.blue)
-            .padding(.horizontal, model.screenInfo.portraitIPhoneHorizontalPadding)
-            .padding(.bottom, model.screenInfo.portraitIPhoneBottomPadding)
         } else {
-            MyNavigation {
-                /*
-                 lowest level: longDisplay and Icons
-                 mid level: Keyboard with info and rectangle on top
-                 top level: single line
-                 */
-                HStack(alignment: .top, spacing: 0.0) {
-                    Spacer(minLength: 0.0)
-                    // let _ = print("fontsize \(model.display.format.font)")
-                    LandscapeDisplay(
-                        display: model.display,
-                        screenInfo: model.screenInfo,
-                        showOrange: model.isCopying || model.isPasting,
-                        disabledScrolling: !model.isZoomed,
-                        scrollViewHasScrolled: $model.scrollViewHasScrolled,
-                        scrollViewID: model.scrollViewID
-                    )
-                    Icons(
-                        store: store,
-                        model: model,
-                        screenInfo: model.screenInfo,
-                        isZoomed: $model.isZoomed)
-                    .offset(y: model.screenInfo.offsetToVerticallyIconWithText)
+            Text("landscape \(screen.keySize.width)x\(screen.keySize.height)")
+                .frame(width: 100)//screenModel.keySize.width*2)
+                .background(Color.red)
+                .padding()
+                .onTapGesture {
+                    print("XXX")
                 }
-                .overlay() {
-                    VStack(spacing: 0.0) {
-                        Spacer(minLength: 0.0)
-                        Rectangle()
-                            .foregroundColor(.black)
-                            .frame(height: model.screenInfo.lengths.infoHeight)
-                            .overlay() {
-                                let info = "\(model.hasBeenReset ? "Precision: "+model.precisionDescription+" digits" : "\(model.rad ? "Rad" : "")")"
-                                if info.count > 0 {
-                                    HStack(spacing: 0.0) {
-                                        Text(info)
-                                            .foregroundColor(.white)
-                                            .font(Font(model.screenInfo.infoUiFont))
-                                        Spacer()
-                                    }
-                                    .padding(.leading, model.screenInfo.keySize.width * 0.3)
-                                    //                                .offset(x: screenInfo.keySpacing, y: -screenInfo.keyboardHeight)
-                                }
-                            }
-                        HStack(spacing: 0.0) {
-                            ScientificKeyboard(model: model, spacing: model.screenInfo.keySpacing, keySize: model.screenInfo.keySize)
-                                .padding(.trailing, model.screenInfo.keySpacing)
-                            NonScientificKeyboard(model: model, spacing: model.screenInfo.keySpacing, keySize: model.screenInfo.keySize)
-                        }
-                        .background(Color.black)
-                    }
-                    .offset(y: model.isZoomed ? model.screenInfo.calculatorSize.height : 0.0)
-                    .transition(.move(edge: .bottom))
-                }
-            }
-            .accentColor(.white) // for the navigation back button
-            .onChange(of: model.screenInfo.lengths.withoutComma) { _ in
-                model.updateDisplayData() // redraw with or without keyboard
-            }
         }
     }
- */
 }
+/*
+ var body: some View {
+ // let _ = print("Calculator: isPortraitPhone \(model.screenInfo.isPortraitPhone) size \(model.screenInfo.calculatorSize)")
+ // let _ = print("model.displayData.left \(model.displayData.left)")
+ if model.screenInfo.isPortraitPhone {
+ VStack(spacing: 0.0) {
+ Spacer(minLength: 0.0)
+ PortraitDisplay(
+ display: model.display,
+ screenInfo: model.screenInfo)
+ //.background(Color.yellow)
+ .padding(.horizontal, model.screenInfo.portraitIPhoneDisplayHorizontalPadding)
+ .padding(.bottom, model.screenInfo.portraitIPhoneDisplayBottomPadding)
+ NonScientificKeyboard(
+ model: model,
+ spacing: model.screenInfo.keySpacing,
+ keySize: model.screenInfo.keySize)
+ }
+ //.background(Color.blue)
+ .padding(.horizontal, model.screenInfo.portraitIPhoneHorizontalPadding)
+ .padding(.bottom, model.screenInfo.portraitIPhoneBottomPadding)
+ } else {
+ MyNavigation {
+ /*
+  lowest level: longDisplay and Icons
+  mid level: Keyboard with info and rectangle on top
+  top level: single line
+  */
+ HStack(alignment: .top, spacing: 0.0) {
+ Spacer(minLength: 0.0)
+ // let _ = print("fontsize \(model.display.format.font)")
+ LandscapeDisplay(
+ display: model.display,
+ screenInfo: model.screenInfo,
+ showOrange: model.isCopying || model.isPasting,
+ disabledScrolling: !model.isZoomed,
+ scrollViewHasScrolled: $model.scrollViewHasScrolled,
+ scrollViewID: model.scrollViewID
+ )
+ Icons(
+ store: store,
+ model: model,
+ screenInfo: model.screenInfo,
+ isZoomed: $model.isZoomed)
+ .offset(y: model.screenInfo.offsetToVerticallyIconWithText)
+ }
+ .overlay() {
+ VStack(spacing: 0.0) {
+ Spacer(minLength: 0.0)
+ Rectangle()
+ .foregroundColor(.black)
+ .frame(height: model.screenInfo.lengths.infoHeight)
+ .overlay() {
+ let info = "\(model.hasBeenReset ? "Precision: "+model.precisionDescription+" digits" : "\(model.rad ? "Rad" : "")")"
+ if info.count > 0 {
+ HStack(spacing: 0.0) {
+ Text(info)
+ .foregroundColor(.white)
+ .font(Font(model.screenInfo.infoUiFont))
+ Spacer()
+ }
+ .padding(.leading, model.screenInfo.keySize.width * 0.3)
+ //                                .offset(x: screenInfo.keySpacing, y: -screenInfo.keyboardHeight)
+ }
+ }
+ HStack(spacing: 0.0) {
+ ScientificKeyboard(model: model, spacing: model.screenInfo.keySpacing, keySize: model.screenInfo.keySize)
+ .padding(.trailing, model.screenInfo.keySpacing)
+ NonScientificKeyboard(model: model, spacing: model.screenInfo.keySpacing, keySize: model.screenInfo.keySize)
+ }
+ .background(Color.black)
+ }
+ .offset(y: model.isZoomed ? model.screenInfo.calculatorSize.height : 0.0)
+ .transition(.move(edge: .bottom))
+ }
+ }
+ .accentColor(.white) // for the navigation back button
+ .onChange(of: model.screenInfo.lengths.withoutComma) { _ in
+ model.updateDisplayData() // redraw with or without keyboard
+ }
+ }
+ }
+ */
 
 
 extension View {

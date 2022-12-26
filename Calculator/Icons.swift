@@ -12,7 +12,7 @@ struct Icons : View {
     @Environment(\.scenePhase) var scenePhase
     @ObservedObject var store: Store
     @ObservedObject var model: Model
-    let screenInfo: ScreenInfo
+    let screen: Screen
     @Binding var isZoomed: Bool
     @State var copyDone = true
     @State var pasteDone = true
@@ -24,7 +24,7 @@ struct Icons : View {
                 .resizable()
                 .font(Font.title.weight(.thin))
                 .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
-                .frame(width: screenInfo.plusIconSize, height: screenInfo.plusIconSize)
+                .frame(width: screen.plusIconSize, height: screen.plusIconSize)
                 .background(.white)
                 .foregroundColor(.gray)
                 .clipShape(Circle())
@@ -38,15 +38,15 @@ struct Icons : View {
                     Group {
                         if !simulatePurchased && store.purchasedIDs.isEmpty {
                             NavigationLink {
-                                PurchaseView(store: store, model: model, font: Font(screenInfo.infoUiFont))
+                                PurchaseView(store: store, model: model, screen: screen, font: Font(screen.infoUiFont))
                             } label: {
                                 Text("copy")
-                                    .font(Font(screenInfo.infoUiFont))
+                                    .font(Font(screen.infoUiFont))
                                     .foregroundColor(Color.white)
                             }
                         } else {
                             Text("copy")
-                                .font(Font(screenInfo.infoUiFont))
+                                .font(Font(screen.infoUiFont))
                                 .foregroundColor(model.isCopying ? Color.orange : Color.white)
                                 .onTapGesture {
                                     if copyDone && pasteDone && !model.isCopying && !model.isPasting {
@@ -72,15 +72,15 @@ struct Icons : View {
                         }
                         if !simulatePurchased && store.purchasedIDs.isEmpty {
                             NavigationLink {
-                                PurchaseView(store: store, model: model, font: Font(screenInfo.infoUiFont))
+                                PurchaseView(store: store, model: model, screen: screen, font: Font(screen.infoUiFont))
                             } label: {
                                 Text("paste")
-                                    .font(Font(screenInfo.infoUiFont))
+                                    .font(Font(screen.infoUiFont))
                                     .foregroundColor(Color.white)
                             }
                         } else {
                             Text("paste")
-                                .font(Font(screenInfo.infoUiFont))
+                                .font(Font(screen.infoUiFont))
                                 .foregroundColor(isValidPasteContent ? (model.isPasting ? .orange : .white) : .gray)
                                 .onTapGesture {
                                     if copyDone && pasteDone && !model.isCopying && !model.isPasting && isValidPasteContent {
@@ -105,13 +105,13 @@ struct Icons : View {
                         }
                         
                         NavigationLink {
-                            Settings(model: model, font: Font(screenInfo.infoUiFont))
+                            Settings(model: model, screen: screen, font: Font(screen.infoUiFont))
                         } label: {
                             Image(systemName: "gearshape")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .font(Font.title.weight(.thin))
-                                .frame(height: screenInfo.plusIconSize * 0.6)
+                                .frame(height: screen.plusIconSize * 0.6)
                                 .foregroundColor(Color.white)
                         }
                         
@@ -119,10 +119,10 @@ struct Icons : View {
                         if integerLabel.count > 0 {
                             Button {
                                 model.showAsInteger.toggle()
-                                model.updateDisplayData()
+                                //                                model.updateDisplayData()
                             } label: {
                                 Text(integerLabel)
-                                    .font(Font(screenInfo.infoUiFont))
+                                    .font(Font(screen.infoUiFont))
                                     .foregroundColor(Color.white)
                             }
                         }
@@ -131,23 +131,23 @@ struct Icons : View {
                         if integerLabel.count == 0 && floatLabel.count > 0 {
                             Button {
                                 model.showAsFloat.toggle()
-                                model.updateDisplayData()
+                                //                                model.updateDisplayData()
                             } label: {
                                 Text(floatLabel)
-                                    .font(Font(screenInfo.infoUiFont))
+                                    .font(Font(screen.infoUiFont))
                                     .foregroundColor(Color.white)
                             }
                         }
                         
                     }
-                    .padding(.top, screenInfo.plusIconSize * 0.5)
+                    .padding(.top, screen.plusIconSize * 0.5)
                     .lineLimit(1)
                     .minimumScaleFactor(0.01) // in case "paste" is too wide on small phones
                 }
             }
         }
-        .frame(width: model.screenInfo.plusIconSize)
-        .padding(.leading, model.screenInfo.plusIconLeftPadding)
+        .frame(width: screen.plusIconSize)
+        .padding(.leading, screen.plusIconLeftPadding)
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .active {
                 self.isValidPasteContent = true
