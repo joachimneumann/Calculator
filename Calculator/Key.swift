@@ -26,7 +26,7 @@ struct Key: View {
     @State var tapped: Bool = false
 
     var body: some View {
-        let _ = print("Key: keyinfo ", keyInfo.symbol, keyInfo.enabled)
+        //let _ = print("Key: keyinfo ", keyInfo.symbol, keyInfo.enabled)
         // use this to print to make sure that keys are not redrawn too often
         // let _ = print("Key \(keyInfo.symbol)")
         ZStack {
