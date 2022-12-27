@@ -23,16 +23,24 @@ struct MyNavigation<Content>: View where Content: View {
 
 struct Calculator: View {
     let screen: Screen
-    @ObservedObject var model: Model
-    var store = Store()
-    @ObservedObject var keyModel: KeyModel
-    
-    init(_ screen: Screen) {
-        print("Calculator INIT")
-        self.screen = screen
-        self.model = Model(screen: screen)
-        self.keyModel = KeyModel(model: _model.wrappedValue)
+    let model: Model
+    let keyModel: KeyModel
+
+    @State var scrollViewHasScrolled = false
+    @State var scrollViewID = UUID()
+
+    @State var isZoomed: Bool = false {
+        didSet {
+            if scrollViewHasScrolled {
+                scrollViewID = UUID()
+            }
+        }
     }
+
+//    @ObservedObject var model: Model
+    var store = Store()
+//    @ObservedObject var keyModel: KeyModel
+    
     
     var body: some View {
         // let _ = print("screenModel.isPortraitPhone", screen.isPortraitPhone)
@@ -60,18 +68,18 @@ struct Calculator: View {
                     LandscapeDisplay(
                         display: model.display,
                         showOrange: model.isCopying || model.isPasting,
-                        disabledScrolling: !model.isZoomed,
-                        scrollViewHasScrolled: $model.scrollViewHasScrolled,
+                        disabledScrolling: !isZoomed,
+                        scrollViewHasScrolled: $scrollViewHasScrolled,
                         offsetToVerticallyAlignTextWithkeyboard: screen.offsetToVerticallyAlignTextWithkeyboard,
                         digitWidth: screen.lengths.digitWidth,
                         ePadding: screen.lengths.ePadding,
-                        scrollViewID: model.scrollViewID
+                        scrollViewID: scrollViewID
                     )
                     Icons(
                         store: store,
                         model: model,
                         screen: screen,
-                        isZoomed: $model.isZoomed)
+                        isZoomed: $isZoomed)
                     .offset(y: screen.offsetToVerticallyIconWithText)
                 }
                 .overlay() {
@@ -105,7 +113,7 @@ struct Calculator: View {
                         }
                         .background(Color.black)
                     }
-                    .offset(y: model.isZoomed ? screen.keyboardHeight + screen.keySize.height : 0.0)
+                    .offset(y: isZoomed ? screen.keyboardHeight + screen.keySize.height : 0.0)
                     .transition(.move(edge: .bottom))
                 }
             }

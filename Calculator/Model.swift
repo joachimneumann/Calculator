@@ -12,15 +12,6 @@ class Model : ObservableObject {
     
     @Published var showAsInteger = false
     @Published var showAsFloat = false
-    @Published var scrollViewID = UUID()
-    var scrollViewHasScrolled = false
-    @Published var isZoomed: Bool = false {
-        didSet {
-            if scrollViewHasScrolled {
-                scrollViewID = UUID()
-            }
-        }
-    }
     
     private var displayDataIsOld = false
     private let timerDefaultText = "click to measure"
@@ -295,14 +286,11 @@ class Model : ObservableObject {
 //        previous = op
     }
     
-    func asyncBrainOperation(_ symbol: String) async {
-        await brain.operation(symbol)
-    }
-
     @MainActor func updateDisplay(with newDisplay: Display) {
         display = newDisplay
     }
-    private func execute(_ symbol: String) {
+    
+    func execute(_ symbol: String) async -> Brain.Result {
 //        isCalculating = true
 //        for key in C.keysToDisable {
 //            keyInfo[key]!.enabled = false
@@ -316,14 +304,15 @@ class Model : ObservableObject {
         displayDataIsOld = true
         //stupidBrain.operation(symbol)
 
-        Task {
 //            let preliminaryResultTask = Task {
                 // sleep(300 ms)
 //                if not self.cancelled { stupidBrain.operation(symbol) }
 //                if not self.cancelled { let tempDisplay = stupidBrain.getDisplay }
 //                if not self.cancelled { display = temp }
 //            }
-            await asyncBrainOperation(symbol)
+        let result = await brain.operation(symbol)
+        await updateDisplay(with: Display(number: brain.last, isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat))
+        return result
 //            isCalculating = false
 //            if brain.isValidNumber {
 //                for key in C.keysAll {
@@ -341,7 +330,6 @@ class Model : ObservableObject {
 //            print("key ± ", keyInfo["±"]!.enabled)
 //            objectWillChange.send()
             
-            await updateDisplay(with: Display(number: brain.last, isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat))
 //            if ["mc", "m+", "m-"].contains(symbol) {
 //                if let memory = brain.memory {
 //                    let temp = memory.getDisplayData(
@@ -359,16 +347,8 @@ class Model : ObservableObject {
 //                        memoryValue = ""
 //                    }
 //                }
-//            }
-        }
     }
 
-    func pressed(_ symbol: String) {
-        if !isCalculating { // && keyInfo[symbol]!.enabled {
-            execute(symbol)
-        }
-    }
-    
     var isNull: Bool {
         get async {
             await brain.last.isNull

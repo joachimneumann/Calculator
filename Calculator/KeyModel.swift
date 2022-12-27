@@ -9,17 +9,17 @@ import SwiftUI
 
 class KeyModel: ObservableObject {
     let keySize: CGSize
+    let callback: (String) async -> Brain.Result
     @Published var showAC = true
     var showPrecision: Bool = false
     var secondActive = false
     @Published var backgroundColor: [String: Color] = [:]
     @AppStorage("rad", store: .standard) var rad: Bool = false
 
-    private let model: Model
-
-    init(model: Model) {
-        keySize = model.screen.keySize
-        self.model = model
+    
+    init(screen: Screen, callback: @escaping (String) async -> Brain.Result) {
+        self.callback = callback
+        keySize = screen.keySize
         for symbol in C.keysAll {
             backgroundColor[symbol] = keyBackground(symbol).upColor
         }
@@ -49,8 +49,8 @@ class KeyModel: ObservableObject {
             }
             Task {
                 // if !isCalculating && keyInfo[symbol]!.enabled {
-                model.pressed(symbol)
-                if await model.isNull {
+                let result = await callback(symbol)
+                if result.isNull {
                     showAC = true
                 } else {
                     showAC = false

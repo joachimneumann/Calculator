@@ -7,15 +7,16 @@
 
 import Foundation
 
+
 actor Brain {
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
     private (set) var precision: Int = 0
-    var no: Int { operatorStack.count }
-    var nn: Int { n.count }
-    var haveResultCallback: () -> () = { }
-    var pendingOperatorCallback: (String?) -> () = { _ in }
-    var pendingOperator: String? {
+    private var no: Int { operatorStack.count }
+    private var nn: Int { n.count }
+    private var haveResultCallback: () -> () = { }
+    private var pendingOperatorCallback: (String?) -> () = { _ in }
+    private var pendingOperator: String? {
         willSet {
             if pendingOperator != newValue {
                 pendingOperatorCallback(newValue)
@@ -139,7 +140,7 @@ actor Brain {
         }
     }
     
-    func operation(_ symbol: String) {
+    func operation(_ symbol: String) -> Result {
         // debugging
         // if symbol != "C" && symbol != "AC" { print("nn \(nn) no \(no)") }
         
@@ -228,8 +229,10 @@ actor Brain {
             assert(false, "### non-existing operation \(symbol)")
         }
         if n.last.valueHasChanged {
-            haveResultCallback()
+            return Result(number: n.last, pendingSymbol: pendingOperator)
             n.last.valueHasChanged = false
+        } else {
+            return Result(number: nil, pendingSymbol: pendingOperator)
         }
     }
     
@@ -309,6 +312,14 @@ actor Brain {
     }
     static func bits(for precision: Int) -> Int {
         Int(Double(internalPrecision(for: precision)) * 3.32192809489)
+    }
+
+    struct Result {
+        let number: Number?
+        let pendingSymbol: String?
+        
+        var isNull: Bool { number?.isNull ?? false }
+        var isValidNumber: Bool { number?.isValid ?? false }
     }
 
 }
