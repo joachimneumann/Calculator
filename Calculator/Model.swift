@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 class Model : ObservableObject {
     let screen: Screen
     
@@ -30,12 +29,11 @@ class Model : ObservableObject {
     private var isPreliminary: Bool = false
     @Published var timerInfo: String
     
-    @Published var secondActive = false
     @Published var isCalculating = false {
         didSet {
-            for key in C.keysToDisable {
-                self.keyInfo[key]!.enabled = !isCalculating
-            }
+//            for key in C.keysToDisable {
+//                self.keyInfo[key]!.enabled = !isCalculating
+//            }
         }
     }
     
@@ -47,8 +45,8 @@ class Model : ObservableObject {
     private let brain: Brain
     private let stupidBrain: Brain
     private let stupidBrainPrecision = 100
-    @Published var keyInfo: [String: KeyInfo] = [:]
-    @Published var showAC = true
+    @Published var color: [String: Color] = [:]
+    var keyInfo: [String: KeyInfo] = [:]
     @Published var hasBeenReset = false
     @Published var display: Display
     
@@ -57,7 +55,6 @@ class Model : ObservableObject {
     @AppStorage("precision", store: .standard) private (set) var precision: Int = 1000
     @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
     @AppStorage("memoryValue", store: .standard) var memoryValue: String = ""
-    @AppStorage("rad", store: .standard) var rad: Bool = false
     static let MAX_DISPLAY_LEN = 10_000 // too long strings in Text() crash the app
     
     var isValidNumber: Bool {
@@ -78,7 +75,7 @@ class Model : ObservableObject {
         display = Display(screen: screen)
         brain.setPrecision(precision)
 //        brain.haveResultCallback = haveResultCallback
-        brain.pendingOperatorCallback = pendingOperatorCallback
+//        brain.pendingOperatorCallback = pendingOperatorCallback
         
         stupidBrain.setPrecision(stupidBrainPrecision)
 //        stupidBrain.haveResultCallback = haveStupidBrainResultCallback
@@ -91,44 +88,40 @@ class Model : ObservableObject {
             brain.memory = Number(memoryValue, precision: precision)
             stupidBrain.memory = Number(memoryValue, precision: stupidBrainPrecision)
         }
-        
-        for key in C.keysAll {
-            keyInfo[key] = KeyInfo(symbol: key, colors: C.getKeyColors(for: key))
-        }
     }
     
     var timerIsRunning: Bool { timer != nil }
     
-    func timerStart() {
-        timerCounter = 0
-        DispatchQueue.main.async {
-            self.timerInfo = "0"
-        }
-        timer = Timer.scheduledTimer(withTimeInterval:1.0, repeats: true) { _ in
-            self.timerCounter += 1
-            DispatchQueue.main.async {
-                self.timerInfo = "\(self.timerCounter)"
-            }
-        }
-    }
-    
-    func timerStop(with executionTime: Double) {
-        timerCounter = 0
-        timer?.invalidate()
-        timer = nil
-        DispatchQueue.main.async {
-            self.timerInfo = executionTime.asTime
-        }
-    }
-    
-    func timerReset() {
-        timerCounter = 0
-        timer?.invalidate()
-        timer = nil
-        DispatchQueue.main.async {
-            self.timerInfo = self.timerDefaultText
-        }
-    }
+//    func timerStart() {
+//        timerCounter = 0
+//        DispatchQueue.main.async {
+//            self.timerInfo = "0"
+//        }
+//        timer = Timer.scheduledTimer(withTimeInterval:1.0, repeats: true) { _ in
+//            self.timerCounter += 1
+//            DispatchQueue.main.async {
+//                self.timerInfo = "\(self.timerCounter)"
+//            }
+//        }
+//    }
+//    
+//    func timerStop(with executionTime: Double) {
+//        timerCounter = 0
+//        timer?.invalidate()
+//        timer = nil
+//        DispatchQueue.main.async {
+//            self.timerInfo = executionTime.asTime
+//        }
+//    }
+//    
+//    func timerReset() {
+//        timerCounter = 0
+//        timer?.invalidate()
+//        timer = nil
+//        DispatchQueue.main.async {
+//            self.timerInfo = self.timerDefaultText
+//        }
+//    }
     
     // the update of the precision in brain can be slow.
     // Therefore, I only want to do that when leaving the settings screen
@@ -305,42 +298,49 @@ class Model : ObservableObject {
         brain.operation(symbol)
     }
 
+    @MainActor func updateDisplay(with newDisplay: Display) {
+        display = newDisplay
+    }
     private func execute(_ symbol: String) {
-        isCalculating = true
-        if symbol == "AC" {
-            hasBeenReset.toggle()
-        } else {
-            hasBeenReset = false
-        }
+//        isCalculating = true
+//        for key in C.keysToDisable {
+//            keyInfo[key]!.enabled = false
+//        }
+//        if symbol == "AC" {
+//            hasBeenReset.toggle()
+//        } else {
+//            hasBeenReset = false
+//        }
         
         displayDataIsOld = true
         //stupidBrain.operation(symbol)
 
         Task {
-            let preliminaryResultTask = Task {
+//            let preliminaryResultTask = Task {
                 // sleep(300 ms)
 //                if not self.cancelled { stupidBrain.operation(symbol) }
 //                if not self.cancelled { let tempDisplay = stupidBrain.getDisplay }
 //                if not self.cancelled { display = temp }
-            }
+//            }
             await asyncBrainOperation(symbol)
-            isCalculating = false
-            if brain.isValidNumber {
-                for key in C.keysAll {
-                    keyInfo[key]!.enabled = true
-                }
-            } else {
-                for key in C.keysAll {
-                    if C.keysThatRequireValidNumber.contains(key) {
-                        keyInfo[key]!.enabled = false
-                    } else {
-                        keyInfo[key]!.enabled = true
-                    }
-                }
-            }
-
+//            isCalculating = false
+//            if brain.isValidNumber {
+//                for key in C.keysAll {
+//                    keyInfo[key]!.enabled = true
+//                }
+//            } else {
+//                for key in C.keysThatRequireValidNumber {
+//                    if C.keysThatRequireValidNumber.contains(key) {
+//                        keyInfo[key]!.enabled = false
+//                    } else {
+//                        keyInfo[key]!.enabled = true
+//                    }
+//                }
+//            }
+//            print("key ± ", keyInfo["±"]!.enabled)
+//            objectWillChange.send()
             
-            display = Display(number: brain.last, isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
+            await updateDisplay(with: Display(number: brain.last, isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat))
 //            if ["mc", "m+", "m-"].contains(symbol) {
 //                if let memory = brain.memory {
 //                    let temp = memory.getDisplayData(
@@ -362,24 +362,14 @@ class Model : ObservableObject {
         }
     }
 
-    func pressed(_ _symbol: String) {
-        let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(_symbol) && !rad ? _symbol+"D" : _symbol
-        
-        switch symbol {
-        case "2nd":
-            secondActive.toggle()
-            self.keyInfo["2nd"]!.colors = secondActive ? C.secondActiveColors : C.secondColors
-        case "Rad":
-            hasBeenReset = false
-            rad = true
-        case "Deg":
-            hasBeenReset = false
-            rad = false
-        default:
-            if !isCalculating && keyInfo[symbol]!.enabled {
-                execute(symbol)
-            }
+    func pressed(_ symbol: String) {
+        if !isCalculating { // && keyInfo[symbol]!.enabled {
+            execute(symbol)
         }
+    }
+    
+    var isNull: Bool {
+        brain.last.isNull
     }
     
     class KeyInfo: ObservableObject {

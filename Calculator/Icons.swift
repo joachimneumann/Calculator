@@ -19,6 +19,7 @@ struct Icons : View {
     @State var isValidPasteContent = true
     @State var wait300msDone = false
     var body: some View {
+        let _ = print("Icons zoomed ", isZoomed)
         VStack(alignment: .center, spacing: 0.0) {
             Image(systemName: "plus.circle.fill")
                 .resizable()

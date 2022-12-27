@@ -12,14 +12,12 @@ func ~=<T: Equatable>(pattern: [T], value: T) -> Bool {
 }
 
 struct Label: View {
-    
-    
-    let keyInfo: Model.KeyInfo
+    let symbol: String
     let size: CGFloat
     let color: Color
     var sizeFactor: CGFloat
-    init(keyInfo: Model.KeyInfo, size: CGFloat, color: Color = Color.white) {
-        self.keyInfo = keyInfo
+    init(symbol: String, size: CGFloat, color: Color = Color.white) {
+        self.symbol = symbol
         self.color = color
         
         let sizeFactorDigits          = 1.5
@@ -27,14 +25,14 @@ struct Label: View {
         let sizeFactorOperator        = 0.8666
         let sizeFactorComma           = 1.5
 
-        switch keyInfo.symbol {
+        switch symbol {
         case C.keysForDigits, "C", "AC":
             sizeFactor = sizeFactorDigits
         case "±", "%":
             sizeFactor = sizeFactorSpecialOperator
         case "x":
             sizeFactor = 0.8 /// the sfImage multiply is a bit large
-        case _ where C.sfImageforKey.keys.contains(keyInfo.symbol):
+        case _ where C.sfImageforKey.keys.contains(symbol):
             sizeFactor = sizeFactorOperator
         case ",":
             sizeFactor = sizeFactorComma
@@ -47,7 +45,6 @@ struct Label: View {
     }
 
     var body: some View {
-        let symbol = keyInfo.symbol
         // let _ = print("Label \(symbol)")
         switch symbol {
         case "√" :    RootShapeView(rootDigit: "2", color: color, size: size)
@@ -230,55 +227,55 @@ struct Label: View {
 }
 
 
-struct Label_Previews: PreviewProvider {
-    static var previews: some View {
-        let h = 131.1
-        let keyInfo1 = Model.KeyInfo(symbol: "log10", colors: C.getKeyColors(for: "log10"))
-        let keyInfo2 = Model.KeyInfo(symbol: "Rand", colors: C.getKeyColors(for: "One_x"))
-        let keyInfo3 = Model.KeyInfo(symbol: "x", colors: C.getKeyColors(for: "x"))
-        HStack {
-            VStack {
-                Label(keyInfo: keyInfo1, size: h)
-                    .foregroundColor(Color.white)
-                    .frame(width: h, height: h)
-                    .background(Color.black)
-                    .clipShape(Capsule())
-                    .padding(.bottom, 20)
-                Label(keyInfo: keyInfo1, size: h)
-                    .foregroundColor(Color.white)
-                    .frame(width: h*2, height: h)
-                    .background(Color.black)
-                    .clipShape(Capsule())
-                    .padding(.bottom, 20)
-            }
-            VStack {
-                Label(keyInfo: keyInfo2, size: h)
-                    .foregroundColor(Color.white)
-                    .frame(width: h, height: h)
-                    .background(Color.black)
-                    .clipShape(Capsule())
-                    .padding(.bottom, 20)
-                Label(keyInfo: keyInfo2, size: h)
-                    .foregroundColor(Color.white)
-                    .frame(width: h*2, height: h)
-                    .background(Color.black)
-                    .clipShape(Capsule())
-                    .padding(.bottom, 20)
-            }
-            VStack {
-                Label(keyInfo: keyInfo3, size: h)
-                    .foregroundColor(Color.white)
-                    .frame(width: h, height: h)
-                    .background(Color.black)
-                    .clipShape(Capsule())
-                    .padding(.bottom, 20)
-                Label(keyInfo: keyInfo3, size: h)
-                    .foregroundColor(Color.white)
-                    .frame(width: h*2, height: h)
-                    .background(Color.black)
-                    .clipShape(Capsule())
-                    .padding(.bottom, 20)
-            }
-        }
-    }
-}
+//struct Label_Previews: PreviewProvider {
+//    static var previews: some View {
+//        let h = 131.1
+//        let keyInfo1 = Model.KeyInfo(symbol: "log10", colors: C.getKeyColors(for: "log10"))
+//        let keyInfo2 = Model.KeyInfo(symbol: "Rand", colors: C.getKeyColors(for: "One_x"))
+//        let keyInfo3 = Model.KeyInfo(symbol: "x", colors: C.getKeyColors(for: "x"))
+//        HStack {
+//            VStack {
+//                Label(keyInfo: keyInfo1, size: h)
+//                    .foregroundColor(Color.white)
+//                    .frame(width: h, height: h)
+//                    .background(Color.black)
+//                    .clipShape(Capsule())
+//                    .padding(.bottom, 20)
+//                Label(keyInfo: keyInfo1, size: h)
+//                    .foregroundColor(Color.white)
+//                    .frame(width: h*2, height: h)
+//                    .background(Color.black)
+//                    .clipShape(Capsule())
+//                    .padding(.bottom, 20)
+//            }
+//            VStack {
+//                Label(keyInfo: keyInfo2, size: h)
+//                    .foregroundColor(Color.white)
+//                    .frame(width: h, height: h)
+//                    .background(Color.black)
+//                    .clipShape(Capsule())
+//                    .padding(.bottom, 20)
+//                Label(keyInfo: keyInfo2, size: h)
+//                    .foregroundColor(Color.white)
+//                    .frame(width: h*2, height: h)
+//                    .background(Color.black)
+//                    .clipShape(Capsule())
+//                    .padding(.bottom, 20)
+//            }
+//            VStack {
+//                Label(keyInfo: keyInfo3, size: h)
+//                    .foregroundColor(Color.white)
+//                    .frame(width: h, height: h)
+//                    .background(Color.black)
+//                    .clipShape(Capsule())
+//                    .padding(.bottom, 20)
+//                Label(keyInfo: keyInfo3, size: h)
+//                    .foregroundColor(Color.white)
+//                    .frame(width: h*2, height: h)
+//                    .background(Color.black)
+//                    .clipShape(Capsule())
+//                    .padding(.bottom, 20)
+//            }
+//        }
+//    }
+//}

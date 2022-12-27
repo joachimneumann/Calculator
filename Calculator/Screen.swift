@@ -23,6 +23,9 @@ struct Screen {
     let infoUiFontSize: CGFloat
     let portraitIPhoneDisplayHorizontalPadding: CGFloat
     let portraitIPhoneDisplayBottomPadding: CGFloat
+    let offsetToVerticallyAlignTextWithkeyboard: CGFloat
+    let offsetToVerticallyIconWithText: CGFloat
+
     
     init(_ screenSize: CGSize) {
         print("ScreenModel INIT", screenSize)
@@ -73,5 +76,21 @@ struct Screen {
         infoUiFontSize = uiFontSize * 0.3
         infoUiFont = UIFont.monospacedDigitSystemFont(ofSize: infoUiFontSize, weight: .regular)
         lengths = lengthMeasurement(width: displayWidth, uiFont: uiFont, infoUiFont: infoUiFont, ePadding: ePadding)
+        
+        offsetToVerticallyAlignTextWithkeyboard =
+        CGFloat(screenSize.height) -
+        CGFloat(keyboardHeight) -
+        CGFloat(infoUiFontSize) -
+        CGFloat(lengths.height)
+
+        offsetToVerticallyIconWithText =
+        CGFloat(screenSize.height) -
+        CGFloat(keyboardHeight) -
+        CGFloat(infoUiFontSize) -
+        CGFloat(plusIconSize) +
+        CGFloat(uiFont.descender) -
+        CGFloat(0.5 * uiFont.capHeight) +
+        CGFloat(0.5 * plusIconSize)
+
     }
 }

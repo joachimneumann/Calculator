@@ -8,51 +8,51 @@
 import SwiftUI
 
 struct ScientificKeyboard: View {
-    @ObservedObject var model: Model
+    @ObservedObject var keyModel: KeyModel
     let spacing: CGFloat
     let keySize: CGSize
 
     var body: some View {
         VStack(spacing: spacing) {
             HStack(spacing: spacing) {
-                Key(keyInfo: model.keyInfo["( "]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo[" )"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["mc"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["m+"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["m-"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["mr"]!, modelCallback: model.pressed, size: keySize)
+                Key("( ", keyModel)
+                Key(" )", keyModel)
+                Key("mc", keyModel)
+                Key("m+", keyModel)
+                Key("m-", keyModel)
+                Key("mr", keyModel)
             }
             HStack(spacing: spacing) {
-                Key(keyInfo: model.keyInfo["2nd"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["x^2"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["x^3"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["x^y"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo[model.secondActive ? "y^x" : "e^x"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo[model.secondActive ? "2^x" : "10^x"]!, modelCallback: model.pressed, size: keySize)
+                Key("2nd", keyModel)
+                Key("x^2", keyModel)
+                Key("x^3", keyModel)
+                Key("x^y", keyModel)
+                Key(keyModel.secondActive ? "y^x" : "e^x", keyModel)
+                Key(keyModel.secondActive ? "2^x" : "10^x", keyModel)
             }
             HStack(spacing: spacing) {
-                Key(keyInfo: model.keyInfo["One_x"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["√"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["3√"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["y√"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo[model.secondActive ? "logy" : "ln"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo[model.secondActive ? "log2" : "log10"]!, modelCallback: model.pressed, size: keySize)
+                Key("One_x", keyModel)
+                Key("√", keyModel)
+                Key("3√", keyModel)
+                Key("y√", keyModel)
+                Key(keyModel.secondActive ? "logy" : "ln", keyModel)
+                Key(keyModel.secondActive ? "log2" : "log10", keyModel)
             }
             HStack(spacing: spacing) {
-                Key(keyInfo: model.keyInfo["x!"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo[model.secondActive ? "asin" : "sin"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo[model.secondActive ? "acos" : "cos"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo[model.secondActive ? "atan" : "tan"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["e"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["EE"]!, modelCallback: model.pressed, size: keySize)
+                Key("x!", keyModel)
+                Key(keyModel.secondActive ? "asin" : "sin", keyModel)
+                Key(keyModel.secondActive ? "acos" : "cos", keyModel)
+                Key(keyModel.secondActive ? "atan" : "tan", keyModel)
+                Key("e", keyModel)
+                Key("EE", keyModel)
             }
             HStack(spacing: spacing) {
-                Key(keyInfo: model.keyInfo[model.rad ? "Deg" : "Rad"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo[model.secondActive ? "asinh" : "sinh"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo[model.secondActive ? "acosh" : "cosh"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo[model.secondActive ? "atanh" : "tanh"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["π"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["Rand"]!, modelCallback: model.pressed, size: keySize)
+                Key(keyModel.rad ? "Deg" : "Rad", keyModel)
+                Key(keyModel.secondActive ? "asinh" : "sinh", keyModel)
+                Key(keyModel.secondActive ? "acosh" : "cosh", keyModel)
+                Key(keyModel.secondActive ? "atanh" : "tanh", keyModel)
+                Key("π", keyModel)
+                Key("Rand", keyModel)
             }
         }
         //.background(Color.black)

@@ -66,18 +66,18 @@ struct Settings: View {
                     HStack {
                         Text("Precision:")
                         ColoredStepper(
-                            plusEnabled: !model.timerIsRunning && memoryNeeded < PHYSICAL_MEMORY,
-                            minusEnabled: !model.timerIsRunning && settingsPrecision > MIN_PRECISION,
+                            plusEnabled: true, //!model.timerIsRunning && memoryNeeded < PHYSICAL_MEMORY,
+                            minusEnabled: true,// !model.timerIsRunning && settingsPrecision > MIN_PRECISION,
                             onIncrement: {
                                 DispatchQueue.main.async {
                                     settingsPrecision = increase(settingsPrecision)
-                                    model.timerReset()
+//                                    model.timerReset()
                                 }
                             },
                             onDecrement: {
                                 DispatchQueue.main.async {
                                     settingsPrecision = decrease(settingsPrecision)
-                                    model.timerReset()
+//                                    model.timerReset()
                                 }
                             })
                         .padding(.horizontal, 4)
@@ -103,30 +103,30 @@ struct Settings: View {
                     Text("Memory size of one Number: \(sizeOfOneNumber.asMemorySize)")
                         .foregroundColor(.gray)
                         .padding(.bottom, -4)
-                    HStack {
-                        Text("Time to calculate sin(")
-                            .foregroundColor(.gray)
-                        let h = 3 * screen.infoUiFontSize
-                        Label(keyInfo: model.keyInfo["√"]!, size: h, color: .gray)
-                            .frame(width: h, height: h)
-                            .offset(x: -1.2 * screen.infoUiFontSize)
-                        Text("):")
-                            .foregroundColor(.gray)
-                            .offset(x: -2.4 * screen.infoUiFontSize)
-                        Button {
-                                model.timerStart()
-                            Task {
-                                let result = await model.speedTest(precision: settingsPrecision)
-                                model.timerStop(with: result)
-                            }
-                        } label: {
-                            Text(model.timerInfo)
-                                .foregroundColor(.gray)
-                        }
-                        .disabled(model.timerIsRunning)
-                        .offset(x: -2.0 * screen.infoUiFontSize)
-                    }
-                    .offset(y: -0.15 * screen.infoUiFontSize)
+//                    HStack {
+//                        Text("Time to calculate sin(")
+//                            .foregroundColor(.gray)
+//                        let h = 3 * screen.infoUiFontSize
+//                        Label(symbol: "√", size: h, color: .gray)
+//                            .frame(width: h, height: h)
+//                            .offset(x: -1.2 * screen.infoUiFontSize)
+//                        Text("):")
+//                            .foregroundColor(.gray)
+//                            .offset(x: -2.4 * screen.infoUiFontSize)
+//                        Button {
+//                                model.timerStart()
+//                            Task {
+//                                let result = await model.speedTest(precision: settingsPrecision)
+//                                model.timerStop(with: result)
+//                            }
+//                        } label: {
+//                            Text(model.timerInfo)
+//                                .foregroundColor(.gray)
+//                        }
+//                        .disabled(model.timerIsRunning)
+//                        .offset(x: -2.0 * screen.infoUiFontSize)
+//                    }
+//                    .offset(y: -0.15 * screen.infoUiFontSize)
 
                     HStack(spacing: 0.0) {
                         Text("Force scientific display")
@@ -143,7 +143,7 @@ struct Settings: View {
                         Spacer()
                     }
                     .padding(.top, 20)
-                    
+
                     Spacer()
                 }
                 .font(font)

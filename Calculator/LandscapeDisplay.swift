@@ -9,10 +9,12 @@ import SwiftUI
 
 struct LandscapeDisplay: View {
     let display: Display
-    let screenInfo: ScreenInfo
     let showOrange: Bool
     let disabledScrolling: Bool
     @Binding var scrollViewHasScrolled: Bool
+    let offsetToVerticallyAlignTextWithkeyboard: CGFloat
+    let digitWidth: CGFloat
+    let ePadding: CGFloat
     var scrollViewID: UUID
     
     var body: some View {
@@ -21,19 +23,19 @@ struct LandscapeDisplay: View {
             font: display.format.font,
             foregroundColor: showOrange ? .orange : display.format.color,
             backgroundColor: testColors ? .yellow : .black,
-            offsetY: screenInfo.offsetToVerticallyAlignTextWithkeyboard,
+            offsetY: offsetToVerticallyAlignTextWithkeyboard,
             disabledScrolling: disabledScrolling,
             scrollViewHasScolled: $scrollViewHasScrolled,
             scrollViewID: scrollViewID,
             preliminary: display.format.showThreeDots,
-            digitWidth: screenInfo.lengths.digitWidth)
+            digitWidth: digitWidth)
         if display.data.right != nil {
             Text(display.data.right!)
                 .kerning(C.kerning)
                 .font(display.format.font)
                 .foregroundColor(showOrange ? .orange : display.format.color)
-                .padding(.leading, screenInfo.ePadding)
-                .offset(y: screenInfo.offsetToVerticallyAlignTextWithkeyboard)
+                .padding(.leading, ePadding)
+                .offset(y: offsetToVerticallyAlignTextWithkeyboard)
         }
     }
 }

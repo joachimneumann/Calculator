@@ -8,10 +8,10 @@
 import SwiftUI
 
 class ColorsOf {
-    var textColor: UIColor
-    var upColor: UIColor
-    var downColor: UIColor
-    init(textColor: UIColor, upColor: UIColor, downColor: UIColor) {
+    var textColor: Color
+    var upColor: Color
+    var downColor: Color
+    init(textColor: Color, upColor: Color, downColor: Color) {
         self.textColor = textColor
         self.upColor = upColor
         self.downColor = downColor
@@ -19,37 +19,36 @@ class ColorsOf {
 }
 
 struct C {    
-    static let appBackgroundUI: UIColor = UIColor.black
-    static let appBackground = Color(appBackgroundUI)
+    static let appBackground: Color = .black
     static let digitColors = ColorsOf(
-        textColor: UIColor(.white),
-        upColor:   UIColor(white: 0.2, alpha: 1.0),
-        downColor: UIColor(white: 0.4, alpha: 1.0))
-    static let disabledColor = UIColor.red
+        textColor: .white,
+        upColor:   Color(white: 0.3),
+        downColor: Color(white: 0.4))
+    static let disabledColor = Color.red
     static let operatorColors = ColorsOf(
-        textColor: UIColor(.white),
-        upColor:   UIColor(white: 0.5, alpha: 1.0),
-        downColor: UIColor(white: 0.7, alpha: 1.0))
+        textColor: Color(.white),
+        upColor:   Color(white: 0.5),
+        downColor: Color(white: 0.7))
     static let pendingOperatorColors = ColorsOf(
-        textColor: UIColor(white: 0.3, alpha: 1.0),
-        upColor:   UIColor(white: 0.9, alpha: 1.0),
-        downColor: UIColor(white: 0.8, alpha: 1.0))
+        textColor: Color(white: 0.3),
+        upColor:   Color(white: 0.9),
+        downColor: Color(white: 0.8))
     static let scientificColors = ColorsOf(
-        textColor: UIColor(.white),
-        upColor:   UIColor(white: 0.12, alpha: 1.0),
-        downColor: UIColor(white: 0.32, alpha: 1.0))
+        textColor: Color(.white),
+        upColor:   Color(white: 0.12),
+        downColor: Color(white: 0.32))
     static let pendingScientificColors = ColorsOf(
-        textColor: UIColor(white: 0.3, alpha: 1.0),
-        upColor:   UIColor(white: 0.7, alpha: 1.0),
-        downColor: UIColor(white: 0.6, alpha: 1.0))
+        textColor: Color(white: 0.3),
+        upColor:   Color(white: 0.7),
+        downColor: Color(white: 0.6))
     static let secondColors = ColorsOf(
-        textColor: UIColor(.white),
-        upColor:   UIColor(white: 0.12, alpha: 1.0),
-        downColor: UIColor(white: 0.12, alpha: 1.0))
+        textColor: Color(.white),
+        upColor:   Color(white: 0.12),
+        downColor: Color(white: 0.12))
     static let secondActiveColors = ColorsOf(
-        textColor: UIColor(white: 0.2, alpha: 1.0),
-        upColor:   UIColor(white: 0.6, alpha: 1.0),
-        downColor: UIColor(white: 0.6, alpha: 1.0))
+        textColor: Color(white: 0.2),
+        upColor:   Color(white: 0.6),
+        downColor: Color(white: 0.6))
     
     static func spaceBetween(keyWidth: CGFloat) -> CGFloat {
         0.1 * keyWidth
@@ -57,19 +56,6 @@ struct C {
 
     static func doubleKeyWidth(keyWidth : CGFloat) -> CGFloat {
         2 * keyWidth + spaceBetween(keyWidth: keyWidth)
-    }
-    
-    static func getKeyColors(for symbol: String) -> ColorsOf {
-        if keysForDigits.contains(symbol) {
-            return digitColors
-        } else if symbol == "2nd" {
-            return secondColors
-        } else if keysOfOperator.contains(symbol) {
-            return operatorColors
-        } else if keysOfScientificOperators.contains(symbol) {
-            return scientificColors
-        }
-        return digitColors
     }
 
     static let keysForDigits: [String] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]

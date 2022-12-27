@@ -8,6 +8,48 @@
 import SwiftUI
 
 struct Key: View {
+    let symbol: String
+    let size: CGSize
+    let backgroundColor: Color
+    let touchDown: (String) -> ()
+    let touchUp: (String) -> ()
+    let doubleWidth: CGFloat
+    
+    init(_ symbol: String,
+         _ keyModel: KeyModel,
+         doubleWidth: CGFloat = 0.0) {
+        self.symbol = symbol
+        self.size = keyModel.keySize
+        self.backgroundColor = keyModel.backgroundColor[symbol]!
+        self.touchDown = keyModel.touchDown
+        self.touchUp = keyModel.touchUp
+        self.doubleWidth = doubleWidth
+    }
+    
+    var body: some View {
+        ZStack {
+            if symbol == "0" {
+                Label(symbol: symbol, size: size.height)
+                    .offset(x: doubleWidth * -0.5 + size.width * 0.5)
+                    .frame(width: doubleWidth, height: size.height)
+            } else {
+                Label(symbol: symbol, size: size.height)
+                    .frame(width: size.width, height: size.height)
+            }
+        }
+        .background(backgroundColor)
+        .clipShape(Capsule())
+        .simultaneousGesture(DragGesture(minimumDistance: 0)
+            .onChanged { _ in
+                touchDown(symbol)
+            }
+            .onEnded { _ in
+                touchUp(symbol)
+            })
+    }
+}
+/*
+struct Key: View {
     @ObservedObject var keyInfo: Model.KeyInfo
     let modelCallback: (String) -> ()
     let size: CGSize
@@ -26,7 +68,7 @@ struct Key: View {
     @State var tapped: TappedStatus = .notTapped
 
     var body: some View {
-         let _ = print("Key: keyinfo ", keyInfo.symbol, keyInfo.enabled)
+        // let _ = print("Key: keyinfo ", keyInfo.symbol, keyInfo.enabled)
         // use this to print to make sure that keys are not redrawn too often
         // let _ = print("Key \(keyInfo.symbol)")
         ZStack {
@@ -122,3 +164,4 @@ private struct OnTouchGestureModifier: ViewModifier {
 //        Key(symbol: "5", model: KeyModel(), textColor: Color.white, upColor: Color.green, downColor: Color.yellow, size: CGSize(width: 100, height: 100))
 //    }
 //}
+*/

@@ -8,40 +8,40 @@
 import SwiftUI
 
 struct NonScientificKeyboard: View {
-    @ObservedObject var model: Model
+    @ObservedObject var keyModel: KeyModel
     let spacing: CGFloat
     let keySize: CGSize
     
     var body: some View {
         VStack(spacing: spacing) {
             HStack(spacing: spacing) {
-                Key(keyInfo: model.keyInfo[model.showAC ? "AC" : "C"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["±"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["%"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["/"]!, modelCallback: model.pressed, size: keySize)
+                Key(keyModel.showAC ? "AC" : "C", keyModel)
+                Key("±", keyModel)
+                Key("%", keyModel)
+                Key("/", keyModel)
             }
             HStack(spacing: spacing) {
-                Key(keyInfo: model.keyInfo["7"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["8"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["9"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["x"]!, modelCallback: model.pressed, size: keySize)
+                Key("7", keyModel)
+                Key("8", keyModel)
+                Key("9", keyModel)
+                Key("x", keyModel)
             }
             HStack(spacing: spacing) {
-                Key(keyInfo: model.keyInfo["4"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["5"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["6"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["-"]!, modelCallback: model.pressed, size: keySize)
+                Key("4", keyModel)
+                Key("5", keyModel)
+                Key("6", keyModel)
+                Key("-", keyModel)
             }
             HStack(spacing: spacing) {
-                Key(keyInfo: model.keyInfo["1"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["2"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["3"]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["+"]!, modelCallback: model.pressed, size: keySize)
+                Key("1", keyModel)
+                Key("2", keyModel)
+                Key("3", keyModel)
+                Key("+", keyModel)
             }
             HStack(spacing: spacing) {
-                Key(keyInfo: model.keyInfo["0"]!, modelCallback: model.pressed, size: keySize, doubleWidth: 2.0 * keySize.width + spacing)
-                Key(keyInfo: model.keyInfo[","]!, modelCallback: model.pressed, size: keySize)
-                Key(keyInfo: model.keyInfo["="]!, modelCallback: model.pressed, size: keySize)
+                Key("0", keyModel, doubleWidth: 2.0 * keySize.width + spacing)
+                Key(",", keyModel)
+                Key("=", keyModel)
             }
         }
     }

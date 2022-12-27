@@ -23,13 +23,15 @@ struct MyNavigation<Content>: View where Content: View {
 
 struct Calculator: View {
     let screen: Screen
-    @StateObject private var model: Model
-    @StateObject private var store = Store()
+    @ObservedObject var model: Model
+    var store = Store()
+    var keyModel: KeyModel
     
     init(_ screen: Screen) {
         print("Calculator INIT")
         self.screen = screen
-        _model = StateObject(wrappedValue: Model(screen: screen))
+        self.model = Model(screen: screen)
+        self.keyModel = KeyModel(model: _model.wrappedValue)
     }
     
     var body: some View {
@@ -42,18 +44,76 @@ struct Calculator: View {
                 .padding(.horizontal, screen.portraitIPhoneDisplayHorizontalPadding)
                 .padding(.bottom, screen.portraitIPhoneDisplayBottomPadding)
                 NonScientificKeyboard(
-                    model: model,
+                    keyModel: keyModel,
                     spacing: screen.keySpacing,
                     keySize: screen.keySize)
             }
         } else {
-            Text("landscape \(screen.keySize.width)x\(screen.keySize.height)")
-                .frame(width: 100)//screenModel.keySize.width*2)
-                .background(Color.red)
-                .padding()
-                .onTapGesture {
-                    print("XXX")
+            MyNavigation {
+                /*
+                 lowest level: longDisplay and Icons
+                 mid level: Keyboard with info and rectangle on top
+                 top level: single line
+                 */
+                HStack(alignment: .top, spacing: 0.0) {
+                    Spacer(minLength: 0.0)
+                    LandscapeDisplay(
+                        display: model.display,
+                        showOrange: model.isCopying || model.isPasting,
+                        disabledScrolling: !model.isZoomed,
+                        scrollViewHasScrolled: $model.scrollViewHasScrolled,
+                        offsetToVerticallyAlignTextWithkeyboard: screen.offsetToVerticallyAlignTextWithkeyboard,
+                        digitWidth: screen.lengths.digitWidth,
+                        ePadding: screen.lengths.ePadding,
+                        scrollViewID: model.scrollViewID
+                    )
+                    Icons(
+                        store: store,
+                        model: model,
+                        screen: screen,
+                        isZoomed: $model.isZoomed)
+                    .offset(y: screen.offsetToVerticallyIconWithText)
                 }
+                .overlay() {
+                    VStack(spacing: 0.0) {
+                        Spacer(minLength: 0.0)
+//                        Rectangle()
+//                            .foregroundColor(.black)
+//                            .frame(height: screen.lengths.infoHeight)
+//                            .overlay() {
+//                                let info = "\(model.hasBeenReset ? "Precision: "+model.precisionDescription+" digits" : "\(model.rad ? "Rad" : "")")"
+//                                if info.count > 0 {
+//                                    HStack(spacing: 0.0) {
+//                                        Text(info)
+//                                            .foregroundColor(.white)
+//                                            .font(Font(model.screenInfo.infoUiFont))
+//                                        Spacer()
+//                                    }
+//                                    .padding(.leading, model.screenInfo.keySize.width * 0.3)
+//                                    //                                .offset(x: screenInfo.keySpacing, y: -screenInfo.keyboardHeight)
+//                                }
+//                            }
+                        HStack(spacing: 0.0) {
+                            ScientificKeyboard(
+                                keyModel: keyModel,
+                                spacing: screen.keySpacing,
+                                keySize: screen.keySize)
+                            .padding(.trailing, screen.keySpacing)
+                            NonScientificKeyboard(
+                                keyModel: keyModel,
+                                spacing: screen.keySpacing,
+                                keySize: screen.keySize)
+                        }
+                        .background(Color.black)
+                    }
+                    .offset(y: model.isZoomed ? screen.keyboardHeight + screen.keySize.height : 0.0)
+                    .transition(.move(edge: .bottom))
+                }
+            }
+//            .accentColor(.white) // for the navigation back button
+//            .onChange(of: model.screenInfo.lengths.withoutComma) { _ in
+//                model.updateDisplayData() // redraw with or without keyboard
+//            }
         }
     }
 }
