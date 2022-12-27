@@ -82,7 +82,6 @@ struct Calculator: View {
                             .frame(height: screen.lengths.infoHeight)
                             .overlay() {
                                 let info = "\(keyModel.showPrecision ? "Precision: "+model.precisionDescription+" digits" : "\(keyModel.rad ? "Rad" : "")")"
-                                let _ = print("info", info, "keyModel.showAC", keyModel.showAC)
                                 if info.count > 0 {
                                     HStack(spacing: 0.0) {
                                         Text(info)
@@ -91,7 +90,6 @@ struct Calculator: View {
                                         Spacer()
                                     }
                                     .padding(.leading, screen.keySize.width * 0.3)
-                                    .offset(x: screen.keySpacing)
                                 }
                             }
                         HStack(spacing: 0.0) {
@@ -111,7 +109,7 @@ struct Calculator: View {
                     .transition(.move(edge: .bottom))
                 }
             }
-//            .accentColor(.white) // for the navigation back button
+            .accentColor(.white) // for the navigation back button
 //            .onChange(of: model.screenInfo.lengths.withoutComma) { _ in
 //                model.updateDisplayData() // redraw with or without keyboard
 //            }
