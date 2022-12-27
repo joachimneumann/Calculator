@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Brain {
+actor Brain {
     private var n = NumberStack()
     private var operatorStack = OperatorStack()
     private (set) var precision: Int = 0
@@ -22,7 +22,7 @@ class Brain {
             }
         }
     }
-    var memory: Number? = nil
+    private var memory: Number? = nil
     
     var isValidNumber: Bool { n.last.isValid }
     var debugLastAsDouble: Double { n.last.gmp!.toDouble() }
@@ -89,6 +89,10 @@ class Brain {
     
     func replaceLast(with number: Number) {
         n.replaceLast(with: number)
+    }
+    
+    func setMemory(_ memory: Number?) {
+        self.memory = memory
     }
     
     func debugPress(_ digits: String) {

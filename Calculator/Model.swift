@@ -57,7 +57,9 @@ class Model : ObservableObject {
     static let MAX_DISPLAY_LEN = 10_000 // too long strings in Text() crash the app
     
     var isValidNumber: Bool {
-        brain.isValidNumber
+        get async {
+            await brain.isValidNumber
+        }
     }
     
     init(screen: Screen) {
@@ -72,20 +74,22 @@ class Model : ObservableObject {
         brain = Brain()
         stupidBrain = Brain()
         display = Display(screen: screen)
-        brain.setPrecision(precision)
-//        brain.haveResultCallback = haveResultCallback
-//        brain.pendingOperatorCallback = pendingOperatorCallback
-        
-        stupidBrain.setPrecision(stupidBrainPrecision)
-//        stupidBrain.haveResultCallback = haveStupidBrainResultCallback
-        /// no pendingOperatorCallback
-        
-        if memoryValue == "" {
-            brain.memory = nil
-            stupidBrain.memory = nil
-        } else {
-            brain.memory = Number(memoryValue, precision: precision)
-            stupidBrain.memory = Number(memoryValue, precision: stupidBrainPrecision)
+        Task {
+            await brain.setPrecision(precision)
+            //        brain.haveResultCallback = haveResultCallback
+            //        brain.pendingOperatorCallback = pendingOperatorCallback
+            
+            await stupidBrain.setPrecision(stupidBrainPrecision)
+            //        stupidBrain.haveResultCallback = haveStupidBrainResultCallback
+            /// no pendingOperatorCallback
+            
+            if memoryValue == "" {
+                await brain.setMemory(nil)
+                await stupidBrain.setMemory(nil)
+            } else {
+                await brain.setMemory(Number(memoryValue, precision: precision))
+                await stupidBrain.setMemory(Number(memoryValue, precision: stupidBrainPrecision))
+            }
         }
     }
     
@@ -124,13 +128,13 @@ class Model : ObservableObject {
     
     // the update of the precision in brain can be slow.
     // Therefore, I only want to do that when leaving the settings screen
-    func updatePrecision(to newPecision: Int) {
+    func updatePrecision(to newPecision: Int) async {
         precision = newPecision
-        brain.setPrecision(newPecision)
+        await brain.setPrecision(newPecision)
     }
     
     func copyToPastBin() async {
-        let displayData = brain.last.getDisplayData(
+        let displayData = await brain.last.getDisplayData(
             multipleLines: true,
             lengths: Lengths(precision),
             forceScientific: false,
@@ -149,7 +153,7 @@ class Model : ObservableObject {
                     }
                 }
                 if ok {
-                    brain.replaceLast(with: Number(pasteString, precision: brain.precision))
+                    await brain.replaceLast(with: Number(pasteString, precision: brain.precision))
 //                    haveResultCallback() // TODO: make sure that forLong is true here!!!!
                 }
             }
@@ -173,15 +177,15 @@ class Model : ObservableObject {
         
     func speedTest(precision: Int) async -> Double {
         let testBrain = Brain()
-        testBrain.setPrecision(precision)
+        await testBrain.setPrecision(precision)
         
-        testBrain.operation("AC")
+        await testBrain.operation("AC")
         //print("testBrain.n.count \(testBrain.n.count)")
-        testBrain.operation("Rand")
+        await testBrain.operation("Rand")
         
         let parkBenchTimer = ParkBenchTimer()
-        testBrain.operation("√")
-        testBrain.operation("sin")
+        await testBrain.operation("√")
+        await testBrain.operation("sin")
         let result = parkBenchTimer.stop()
         // print("speedTest done \(result.asTime)")
         return result
@@ -294,7 +298,7 @@ class Model : ObservableObject {
     }
     
     func asyncBrainOperation(_ symbol: String) async {
-        brain.operation(symbol)
+        await brain.operation(symbol)
     }
 
     @MainActor func updateDisplay(with newDisplay: Display) {
@@ -368,7 +372,9 @@ class Model : ObservableObject {
     }
     
     var isNull: Bool {
-        brain.last.isNull
+        get async {
+            await brain.last.isNull
+        }
     }
     
     class KeyInfo: ObservableObject {

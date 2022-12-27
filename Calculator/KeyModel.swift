@@ -50,7 +50,7 @@ class KeyModel: ObservableObject {
             Task {
                 // if !isCalculating && keyInfo[symbol]!.enabled {
                 model.pressed(symbol)
-                if model.isNull {
+                if await model.isNull {
                     showAC = true
                 } else {
                     showAC = false

@@ -159,7 +159,9 @@ struct Settings: View {
                     model.forceScientific = settingsForceScientific
                 }
                 if model.precision != settingsPrecision {
-                    model.updatePrecision(to: settingsPrecision)
+                    Task {
+                        await model.updatePrecision(to: settingsPrecision)
+                    }
                 }
 // TODO: call again               model.haveResultCallback()
             }
