@@ -1,5 +1,5 @@
 //
-//  Model.swift
+//  BrainModel.swift
 //  bg
 //
 //  Created by Joachim Neumann on 11/27/22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class Model : ObservableObject {
+class BrainModel : ObservableObject {
     let screen: Screen
     
     @Published var showAsInteger = false

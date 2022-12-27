@@ -23,7 +23,7 @@
 		AA2FAC1A272F2349006DE4C8 /* CalculatorCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC04272F2348006DE4C8 /* CalculatorCommands.swift */; };
 		AA2FAC23272F2349006DE4C8 /* OperatorStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0D272F2349006DE4C8 /* OperatorStack.swift */; };
 		AA370C2D293352960041AE4E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA370C2C293352960041AE4E /* Constants.swift */; };
-		AA370C2F293352B10041AE4E /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA370C2E293352B10041AE4E /* Model.swift */; };
+		AA370C2F293352B10041AE4E /* BrainModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA370C2E293352B10041AE4E /* BrainModel.swift */; };
 		AA370C31293352D60041AE4E /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA370C30293352D60041AE4E /* Key.swift */; };
 		AA3FB8272920E0E5002ECCEB /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3FB8262920E0E5002ECCEB /* Settings.swift */; };
 		AA4C672D295A74430074345B /* KeyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4C672C295A74430074345B /* KeyModel.swift */; };
@@ -93,7 +93,7 @@
 		AA2FAC04272F2348006DE4C8 /* CalculatorCommands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorCommands.swift; sourceTree = "<group>"; };
 		AA2FAC0D272F2349006DE4C8 /* OperatorStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperatorStack.swift; sourceTree = "<group>"; };
 		AA370C2C293352960041AE4E /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		AA370C2E293352B10041AE4E /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		AA370C2E293352B10041AE4E /* BrainModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrainModel.swift; sourceTree = "<group>"; };
 		AA370C30293352D60041AE4E /* Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		AA3FB8262920E0E5002ECCEB /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		AA4C672C295A74430074345B /* KeyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyModel.swift; sourceTree = "<group>"; };
@@ -175,7 +175,7 @@
 				AAB10B96292A2222004707E9 /* NonScientificKeyboard.swift */,
 				AA584F562938E8A9008823F3 /* LengthMeasurement.swift */,
 				AA370C2C293352960041AE4E /* Constants.swift */,
-				AA370C2E293352B10041AE4E /* Model.swift */,
+				AA370C2E293352B10041AE4E /* BrainModel.swift */,
 				AA370C30293352D60041AE4E /* Key.swift */,
 				AA6CE7062945C1D4002BB5FE /* Store.swift */,
 				AA6577F42935B90D00DA98E7 /* TODOs.rtf */,
@@ -362,7 +362,7 @@
 				AA3FB8272920E0E5002ECCEB /* Settings.swift in Sources */,
 				AA4C672D295A74430074345B /* KeyModel.swift in Sources */,
 				AA2FAC15272F2349006DE4C8 /* CalculatorApp.swift in Sources */,
-				AA370C2F293352B10041AE4E /* Model.swift in Sources */,
+				AA370C2F293352B10041AE4E /* BrainModel.swift in Sources */,
 				AA2FAC1A272F2349006DE4C8 /* CalculatorCommands.swift in Sources */,
 				AA584F572938E8A9008823F3 /* LengthMeasurement.swift in Sources */,
 			);

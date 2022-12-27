@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Settings: View {
-    @ObservedObject var model: Model
+    @ObservedObject var brainModel: BrainModel
     let screen: Screen
     let font: Font
     
@@ -66,18 +66,18 @@ struct Settings: View {
                     HStack {
                         Text("Precision:")
                         ColoredStepper(
-                            plusEnabled: true, //!model.timerIsRunning && memoryNeeded < PHYSICAL_MEMORY,
-                            minusEnabled: true,// !model.timerIsRunning && settingsPrecision > MIN_PRECISION,
+                            plusEnabled: true, //!brainModel.timerIsRunning && memoryNeeded < PHYSICAL_MEMORY,
+                            minusEnabled: true,// !brainModel.timerIsRunning && settingsPrecision > MIN_PRECISION,
                             onIncrement: {
                                 DispatchQueue.main.async {
                                     settingsPrecision = increase(settingsPrecision)
-//                                    model.timerReset()
+//                                    brainModel.timerReset()
                                 }
                             },
                             onDecrement: {
                                 DispatchQueue.main.async {
                                     settingsPrecision = decrease(settingsPrecision)
-//                                    model.timerReset()
+//                                    brainModel.timerReset()
                                 }
                             })
                         .padding(.horizontal, 4)
@@ -114,16 +114,16 @@ struct Settings: View {
 //                            .foregroundColor(.gray)
 //                            .offset(x: -2.4 * screen.infoUiFontSize)
 //                        Button {
-//                                model.timerStart()
+//                                brainModel.timerStart()
 //                            Task {
-//                                let result = await model.speedTest(precision: settingsPrecision)
-//                                model.timerStop(with: result)
+//                                let result = await brainModel.speedTest(precision: settingsPrecision)
+//                                brainModel.timerStop(with: result)
 //                            }
 //                        } label: {
-//                            Text(model.timerInfo)
+//                            Text(brainModel.timerInfo)
 //                                .foregroundColor(.gray)
 //                        }
-//                        .disabled(model.timerIsRunning)
+//                        .disabled(brainModel.timerIsRunning)
 //                        .offset(x: -2.0 * screen.infoUiFontSize)
 //                    }
 //                    .offset(y: -0.15 * screen.infoUiFontSize)
@@ -151,24 +151,24 @@ struct Settings: View {
             }
             .padding()
             .onAppear() {
-                model.hideKeyboard = true
+                brainModel.hideKeyboard = true
             }
             .onDisappear() {
-                model.hideKeyboard = false
-                if model.forceScientific != settingsForceScientific {
-                    model.forceScientific = settingsForceScientific
+                brainModel.hideKeyboard = false
+                if brainModel.forceScientific != settingsForceScientific {
+                    brainModel.forceScientific = settingsForceScientific
                 }
-                if model.precision != settingsPrecision {
+                if brainModel.precision != settingsPrecision {
                     Task {
-                        await model.updatePrecision(to: settingsPrecision)
+                        await brainModel.updatePrecision(to: settingsPrecision)
                     }
                 }
-// TODO: call again               model.haveResultCallback()
+// TODO: call again               brainModel.haveResultCallback()
             }
         }
         .onAppear() {
-            settingsForceScientific = model.forceScientific
-            settingsPrecision       = model.precision
+            settingsForceScientific = brainModel.forceScientific
+            settingsPrecision       = brainModel.precision
         }
         .navigationBarBackButtonHidden(true)
     }
@@ -186,7 +186,7 @@ struct Settings: View {
     
     //    struct ControlCenter_Previews: PreviewProvider {
     //        static var previews: some View {
-    //            Settings(model: Model(), font: Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
+    //            Settings(brainModel: Model(), font: Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
     //        }
     //    }
     

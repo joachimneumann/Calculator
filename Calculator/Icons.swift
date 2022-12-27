@@ -11,7 +11,7 @@ struct Icons : View {
     let simulatePurchased = true
     @Environment(\.scenePhase) var scenePhase
     @ObservedObject var store: Store
-    @ObservedObject var model: Model
+    @ObservedObject var brainModel: BrainModel
     let screen: Screen
     @Binding var isZoomed: Bool
     @State var copyDone = true
@@ -33,12 +33,12 @@ struct Icons : View {
                         isZoomed.toggle()
                     }
                 }
-            if !model.isCalculating {
-                if !model.display.format.showThreeDots {
+            if !brainModel.isCalculating {
+                if !brainModel.display.format.showThreeDots {
                     Group {
                         if !simulatePurchased && store.purchasedIDs.isEmpty {
                             NavigationLink {
-                                PurchaseView(store: store, model: model, screen: screen, font: Font(screen.infoUiFont))
+                                PurchaseView(store: store, brainModel: brainModel, screen: screen, font: Font(screen.infoUiFont))
                             } label: {
                                 Text("copy")
                                     .font(Font(screen.infoUiFont))
@@ -47,9 +47,9 @@ struct Icons : View {
                         } else {
                             Text("copy")
                                 .font(Font(screen.infoUiFont))
-                                .foregroundColor(model.isCopying ? Color.orange : Color.white)
+                                .foregroundColor(brainModel.isCopying ? Color.orange : Color.white)
                                 .onTapGesture {
-                                    if copyDone && pasteDone && !model.isCopying && !model.isPasting {
+                                    if copyDone && pasteDone && !brainModel.isCopying && !brainModel.isPasting {
                                         setIsCopying(to: true)
                                         wait300msDone = false
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -60,7 +60,7 @@ struct Icons : View {
                                         }
                                         Task {
                                             copyDone = false
-                                            await model.copyToPastBin()
+                                            await brainModel.copyToPastBin()
                                             copyDone = true
                                             if wait300msDone {
                                                 setIsCopying(to: false)
@@ -72,7 +72,7 @@ struct Icons : View {
                         }
                         if !simulatePurchased && store.purchasedIDs.isEmpty {
                             NavigationLink {
-                                PurchaseView(store: store, model: model, screen: screen, font: Font(screen.infoUiFont))
+                                PurchaseView(store: store, brainModel: brainModel, screen: screen, font: Font(screen.infoUiFont))
                             } label: {
                                 Text("paste")
                                     .font(Font(screen.infoUiFont))
@@ -81,20 +81,20 @@ struct Icons : View {
                         } else {
                             Text("paste")
                                 .font(Font(screen.infoUiFont))
-                                .foregroundColor(isValidPasteContent ? (model.isPasting ? .orange : .white) : .gray)
+                                .foregroundColor(isValidPasteContent ? (brainModel.isPasting ? .orange : .white) : .gray)
                                 .onTapGesture {
-                                    if copyDone && pasteDone && !model.isCopying && !model.isPasting && isValidPasteContent {
+                                    if copyDone && pasteDone && !brainModel.isCopying && !brainModel.isPasting && isValidPasteContent {
                                         setIsPasting(to: true)
                                         pasteDone = false
                                         wait300msDone = false
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                                             wait300msDone = true
                                             if pasteDone {
-                                                model.isPasting = false
+                                                brainModel.isPasting = false
                                             }
                                         }
                                         Task {
-                                            isValidPasteContent = await model.copyFromPastBin()
+                                            isValidPasteContent = await brainModel.copyFromPastBin()
                                             pasteDone = true
                                             if wait300msDone {
                                                 setIsPasting(to: false)
@@ -105,7 +105,7 @@ struct Icons : View {
                         }
                         
                         NavigationLink {
-                            Settings(model: model, screen: screen, font: Font(screen.infoUiFont))
+                            Settings(brainModel: brainModel, screen: screen, font: Font(screen.infoUiFont))
                         } label: {
                             Image(systemName: "gearshape")
                                 .resizable()
@@ -115,11 +115,11 @@ struct Icons : View {
                                 .foregroundColor(Color.white)
                         }
                         
-                        let integerLabel = model.display.data.canBeInteger ? (model.showAsInteger ? "→ sci" : "→ int") : ""
+                        let integerLabel = brainModel.display.data.canBeInteger ? (brainModel.showAsInteger ? "→ sci" : "→ int") : ""
                         if integerLabel.count > 0 {
                             Button {
-                                model.showAsInteger.toggle()
-                                //                                model.updateDisplayData()
+                                brainModel.showAsInteger.toggle()
+                                //                                brainModel.updateDisplayData()
                             } label: {
                                 Text(integerLabel)
                                     .font(Font(screen.infoUiFont))
@@ -127,11 +127,11 @@ struct Icons : View {
                             }
                         }
                         
-                        let floatLabel = model.display.data.canBeFloat ? (model.showAsFloat ? "→ sci" : "→ float") : ""
+                        let floatLabel = brainModel.display.data.canBeFloat ? (brainModel.showAsFloat ? "→ sci" : "→ float") : ""
                         if integerLabel.count == 0 && floatLabel.count > 0 {
                             Button {
-                                model.showAsFloat.toggle()
-                                //                                model.updateDisplayData()
+                                brainModel.showAsFloat.toggle()
+                                //                                brainModel.updateDisplayData()
                             } label: {
                                 Text(floatLabel)
                                     .font(Font(screen.infoUiFont))
@@ -155,10 +155,10 @@ struct Icons : View {
         }
     }
     @MainActor func setIsCopying(to isCopying: Bool) {
-        model.isCopying = isCopying
+        brainModel.isCopying = isCopying
     }
     @MainActor func setIsPasting(to isPasting: Bool) {
-        model.isPasting = isPasting
+        brainModel.isPasting = isPasting
     }
 }
 //struct Icons_Previews: PreviewProvider {

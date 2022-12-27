@@ -10,7 +10,7 @@ import SwiftUI
 struct PurchaseView: View {
     @Environment(\.presentationMode) var presentation
     @ObservedObject var store: Store
-    let model: Model
+    let brainModel: BrainModel
     let screen: Screen
     let font: Font
     
@@ -86,11 +86,11 @@ struct PurchaseView: View {
             Task {
                 await store.requestProducts()
             }
-            model.hideKeyboard = true
+            brainModel.hideKeyboard = true
         }
         .onDisappear() {
-            model.hideKeyboard = false
-            //model.haveResultCallback()
+            brainModel.hideKeyboard = false
+            //brainModel.haveResultCallback()
         }
     }
 }
@@ -98,6 +98,6 @@ struct PurchaseView: View {
 
 //struct PurchaseView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        PurchaseView(store: Store(), model: Model(), font: Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
+//        PurchaseView(store: Store(), brainModel: Model(), font: Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
 //    }
 //}
