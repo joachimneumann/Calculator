@@ -23,7 +23,7 @@ struct MyNavigation<Content>: View where Content: View {
 
 struct Calculator: View {
     let screen: Screen
-    let brainModel: BrainModel
+    @ObservedObject var brainModel: BrainModel
     let keyModel: KeyModel
 
     @State var scrollViewHasScrolled = false

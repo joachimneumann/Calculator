@@ -49,6 +49,12 @@ class BrainModel : ObservableObject {
 //        stupidBrain = Brain(precision: stupidBrainPrecision)
 //        display = Display(screen: screen)
         brain = Brain(precision: _precision.wrappedValue)
+        Task { @MainActor in
+            calculationResult = await brain.operation("AC")
+            if let number = calculationResult.number {
+                display = Display(number: number, isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
+            }
+        }
 //        if memoryValue == "" {
 ////                await brain.setMemory(nil)
 ////                await stupidBrain.setMemory(nil)
