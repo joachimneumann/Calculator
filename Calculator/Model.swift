@@ -45,8 +45,6 @@ class Model : ObservableObject {
     private let brain: Brain
     private let stupidBrain: Brain
     private let stupidBrainPrecision = 100
-    @Published var color: [String: Color] = [:]
-    var keyInfo: [String: KeyInfo] = [:]
     @Published var display: Display
     
     var precisionDescription = "unknown"
@@ -274,27 +272,27 @@ class Model : ObservableObject {
         /// In the brain, we have already asserted that the new op is different from previous
         
         /// Set the previous one back to normal?
-        if let previous = previous {
-            DispatchQueue.main.async {
-                if C.keysWithPendingOperations.contains(previous) {
-                    self.keyInfo[previous]!.colors = C.scientificColors
-                } else {
-                    self.keyInfo[previous]!.colors = C.operatorColors
-                }
-            }
-        }
-        
-        /// Set the colors for the pending operation key
-        if let op = op {
-            DispatchQueue.main.async {
-                if C.keysWithPendingOperations.contains(op) {
-                    self.keyInfo[op]!.colors = C.pendingScientificColors
-                } else {
-                    self.keyInfo[op]!.colors = C.pendingOperatorColors
-                }
-            }
-        }
-        previous = op
+//        if let previous = previous {
+//            DispatchQueue.main.async {
+//                if C.keysWithPendingOperations.contains(previous) {
+//                    self.keyInfo[previous]!.colors = C.scientificColors
+//                } else {
+//                    self.keyInfo[previous]!.colors = C.operatorColors
+//                }
+//            }
+//        }
+//        
+//        /// Set the colors for the pending operation key
+//        if let op = op {
+//            DispatchQueue.main.async {
+//                if C.keysWithPendingOperations.contains(op) {
+//                    self.keyInfo[op]!.colors = C.pendingScientificColors
+//                } else {
+//                    self.keyInfo[op]!.colors = C.pendingOperatorColors
+//                }
+//            }
+//        }
+//        previous = op
     }
     
     func asyncBrainOperation(_ symbol: String) async {
@@ -376,20 +374,7 @@ class Model : ObservableObject {
             await brain.last.isNull
         }
     }
-    
-    class KeyInfo: ObservableObject {
-        let symbol: String
-        @Published var colors: ColorsOf
-        var enabled = true
-        var isPressedWhileDisabled = false
-        init(symbol: String, colors: ColorsOf) {
-            // print("KeyInfo init() ", symbol, "true")
-            self.symbol = symbol
-            self.colors = colors
-        }
-    }
 }
-
 
 
 class ParkBenchTimer {
