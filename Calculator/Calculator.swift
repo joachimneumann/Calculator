@@ -25,7 +25,7 @@ struct Calculator: View {
     let screen: Screen
     @ObservedObject var model: Model
     var store = Store()
-    var keyModel: KeyModel
+    @ObservedObject var keyModel: KeyModel
     
     init(_ screen: Screen) {
         print("Calculator INIT")
@@ -77,22 +77,23 @@ struct Calculator: View {
                 .overlay() {
                     VStack(spacing: 0.0) {
                         Spacer(minLength: 0.0)
-//                        Rectangle()
-//                            .foregroundColor(.black)
-//                            .frame(height: screen.lengths.infoHeight)
-//                            .overlay() {
-//                                let info = "\(model.hasBeenReset ? "Precision: "+model.precisionDescription+" digits" : "\(model.rad ? "Rad" : "")")"
-//                                if info.count > 0 {
-//                                    HStack(spacing: 0.0) {
-//                                        Text(info)
-//                                            .foregroundColor(.white)
-//                                            .font(Font(model.screenInfo.infoUiFont))
-//                                        Spacer()
-//                                    }
-//                                    .padding(.leading, model.screenInfo.keySize.width * 0.3)
-//                                    //                                .offset(x: screenInfo.keySpacing, y: -screenInfo.keyboardHeight)
-//                                }
-//                            }
+                        Rectangle()
+                            .foregroundColor(.black)
+                            .frame(height: screen.lengths.infoHeight)
+                            .overlay() {
+                                let info = "\(keyModel.showPrecision ? "Precision: "+model.precisionDescription+" digits" : "\(keyModel.rad ? "Rad" : "")")"
+                                let _ = print("info", info, "keyModel.showAC", keyModel.showAC)
+                                if info.count > 0 {
+                                    HStack(spacing: 0.0) {
+                                        Text(info)
+                                            .foregroundColor(.white)
+                                            .font(Font(screen.infoUiFont))
+                                        Spacer()
+                                    }
+                                    .padding(.leading, screen.keySize.width * 0.3)
+                                    .offset(x: screen.keySpacing)
+                                }
+                            }
                         HStack(spacing: 0.0) {
                             ScientificKeyboard(
                                 keyModel: keyModel,

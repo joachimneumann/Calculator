@@ -9,7 +9,8 @@ import SwiftUI
 
 class KeyModel: ObservableObject {
     let keySize: CGSize
-    var showAC = true
+    @Published var showAC = true
+    var showPrecision: Bool = false
     var secondActive = false
     @Published var backgroundColor: [String: Color] = [:]
     @AppStorage("rad", store: .standard) var rad: Bool = false
@@ -28,7 +29,7 @@ class KeyModel: ObservableObject {
         backgroundColor[symbol] = keyBackground(symbol).downColor
     }
     
-    func touchUp(symbol: String) {
+    @MainActor func touchUp(symbol: String) {
         backgroundColor[symbol] = keyBackground(symbol).upColor
         let _symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(symbol) && !rad ? symbol+"D" : symbol
         
@@ -43,17 +44,18 @@ class KeyModel: ObservableObject {
 //            hasBeenReset = false
             rad = false
         default:
+            if _symbol == "AC" {
+                showPrecision.toggle()
+            }
             Task {
-                await model.pressed(symbol)
-                if await model.isNull {
+                // if !isCalculating && keyInfo[symbol]!.enabled {
+                model.pressed(symbol)
+                if model.isNull {
                     showAC = true
                 } else {
                     showAC = false
                 }
             }
-//            if !isCalculating && keyInfo[symbol]!.enabled {
-//                execute(symbol)
-//            }
         }
         
     }

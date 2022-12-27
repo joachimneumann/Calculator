@@ -47,7 +47,6 @@ class Model : ObservableObject {
     private let stupidBrainPrecision = 100
     @Published var color: [String: Color] = [:]
     var keyInfo: [String: KeyInfo] = [:]
-    @Published var hasBeenReset = false
     @Published var display: Display
     
     var precisionDescription = "unknown"
