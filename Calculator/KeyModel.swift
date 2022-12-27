@@ -9,7 +9,7 @@ import SwiftUI
 
 class KeyModel: ObservableObject {
     let keySize: CGSize
-    let callback: (String) async -> Brain.Result
+    let callback: (String) async -> Brain.CalculationResult
     @Published var showAC = true
     var showPrecision: Bool = false
     var secondActive = false
@@ -17,7 +17,7 @@ class KeyModel: ObservableObject {
     @AppStorage("rad", store: .standard) var rad: Bool = false
 
     
-    init(screen: Screen, callback: @escaping (String) async -> Brain.Result) {
+    init(screen: Screen, callback: @escaping (String) async -> Brain.CalculationResult) {
         self.callback = callback
         keySize = screen.keySize
         for symbol in C.keysAll {
@@ -29,7 +29,7 @@ class KeyModel: ObservableObject {
         backgroundColor[symbol] = keyBackground(symbol).downColor
     }
     
-    @MainActor func touchUp(symbol: String) {
+    func touchUp(symbol: String) {
         backgroundColor[symbol] = keyBackground(symbol).upColor
         let _symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(symbol) && !rad ? symbol+"D" : symbol
         
@@ -50,10 +50,12 @@ class KeyModel: ObservableObject {
             Task {
                 // if !isCalculating && keyInfo[symbol]!.enabled {
                 let result = await callback(symbol)
-                if result.isNull {
-                    showAC = true
-                } else {
-                    showAC = false
+                Task { @MainActor in
+                    if result.isNull {
+                        showAC = true
+                    } else {
+                        showAC = false
+                    }
                 }
             }
         }

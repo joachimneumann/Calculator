@@ -14,32 +14,15 @@ actor Brain {
     private (set) var precision: Int = 0
     private var no: Int { operatorStack.count }
     private var nn: Int { n.count }
-    private var haveResultCallback: () -> () = { }
-    private var pendingOperatorCallback: (String?) -> () = { _ in }
-    private var pendingOperator: String? {
-        willSet {
-            if pendingOperator != newValue {
-                pendingOperatorCallback(newValue)
-            }
-        }
-    }
+    private var pendingOperator: String?
     private var memory: Number? = nil
-    
-    var isValidNumber: Bool { n.last.isValid }
-    var debugLastAsDouble: Double { n.last.gmp!.toDouble() }
-    var debugLastAsGmp: Gmp { n.last.gmp! }
-    var last: Number { n.last }
-    var nullNumber: Number {
-        return Number("0", precision: precision)
-    }
-    
-    let trigonometricOperators = ["sin", "sinD", "cos", "cosD", "tan", "tanD"]
-    let constantOperators: Dictionary <String, Inplace> = [
+    private var nullNumber: Number { Number("0", precision: precision) }
+    private let constantOperators: Dictionary <String, Inplace> = [
         "π":    Inplace(Gmp.π, 0),
         "e":    Inplace(Gmp.e, 0),
         "Rand": Inplace(Gmp.rand, 0)
     ]
-    let inplaceOperators: Dictionary <String, Inplace> = [
+    private let inplaceOperators: Dictionary <String, Inplace> = [
         "x^2":    Inplace(Gmp.pow_x_2, 1),
         "One_x":  Inplace(Gmp.rez, 1),
         "x!":     Inplace(Gmp.fac, 1),
@@ -72,7 +55,7 @@ actor Brain {
         "e^x":    Inplace(Gmp.pow_e_x, 1),
         "10^x":   Inplace(Gmp.pow_10_x, 1)
     ]
-    let twoOperandOperators: Dictionary <String, TwoOperand> = [
+    private let twoOperandOperators: Dictionary <String, TwoOperand> = [
         "+":    TwoOperand(Gmp.add, 1),
         "-":    TwoOperand(Gmp.sub, 1),
         "x":    TwoOperand(Gmp.mul, 2),
@@ -84,35 +67,25 @@ actor Brain {
         "x↑↑y": TwoOperand(Gmp.x_double_up_arrow_y, 3),
         "EE":   TwoOperand(Gmp.EE, 3)
     ]
-    let openParenthesis = Operator(Operator.openParenthesesPriority)
-    let closedParenthesis = Operator(Operator.openParenthesesPriority)
-    let equalOperator = Operator(Operator.equalPriority)
+    private let openParenthesis = Operator(Operator.openParenthesesPriority)
+    private let closedParenthesis = Operator(Operator.openParenthesesPriority)
+    private let equalOperator = Operator(Operator.equalPriority)
     
-    func replaceLast(with number: Number) {
-        n.replaceLast(with: number)
-    }
-    
-    func setMemory(_ memory: Number?) {
+    private func setMemory(_ memory: Number?) {
         self.memory = memory
     }
-    
-    func debugPress(_ digits: String) {
-        for digit in digits {
-            if let intValue = digit.wholeNumberValue {
-                debugPress(intValue)
-            } else {
-                assert(false)
+    private func percentage() {
+        if operatorStack.count == 0 {
+            n.last.execute(Gmp.mul, with: Number("0.01", precision: precision))
+        } else if operatorStack.count >= 1 && n.count >= 2 {
+            if let secondLast = n.secondLast {
+                n.last.execute(Gmp.mul, with: Number("0.01", precision: precision))
+                n.last.execute(Gmp.mul, with: secondLast)
             }
         }
     }
     
-    func debugPress(_ digit: Int) {
-        if digit >= 0 && digit <= 9 {
-            operation(String(digit))
-        }
-    }
-    
-    func execute(priority newPriority: Int) {
+    private func execute(priority newPriority: Int) {
         while !operatorStack.isEmpty && operatorStack.last!.priority >= newPriority {
             let op = operatorStack.pop()
             if let twoOperand = op as? TwoOperand {
@@ -128,25 +101,19 @@ actor Brain {
             operatorStack.removeLast()
         }
     }
-    
-    func percentage() {
-        if operatorStack.count == 0 {
-            n.last.execute(Gmp.mul, with: Number("0.01", precision: precision))
-        } else if operatorStack.count >= 1 && n.count >= 2 {
-            if let secondLast = n.secondLast {
-                n.last.execute(Gmp.mul, with: Number("0.01", precision: precision))
-                n.last.execute(Gmp.mul, with: secondLast)
-            }
-        }
+
+    /// used in the model for mr and paste
+    func replaceLast(with number: Number) {
+        n.replaceLast(with: number)
     }
     
-    func operation(_ symbol: String) -> Result {
+    func operation(_ symbol: String) -> CalculationResult {
         // debugging
         // if symbol != "C" && symbol != "AC" { print("nn \(nn) no \(no)") }
         
         switch symbol {
         case "C":
-            if last.isNull {
+            if n.last.isNull {
                 operatorStack.removeAll()
                 n.removeAll()
                 pendingOperator = nil
@@ -229,23 +196,29 @@ actor Brain {
             assert(false, "### non-existing operation \(symbol)")
         }
         if n.last.valueHasChanged {
-            return Result(number: n.last, pendingSymbol: pendingOperator)
             n.last.valueHasChanged = false
+            return CalculationResult(number: n.last, pendingSymbol: pendingOperator)
         } else {
-            return Result(number: nil, pendingSymbol: pendingOperator)
+            return CalculationResult(number: nil, pendingSymbol: pendingOperator)
         }
     }
     
-    func setPrecision(_ newPrecision: Int) {
+    /// used on Settings
+    func setPrecision(_ newPrecision: Int) -> CalculationResult {
         if newPrecision != precision {
             n.updatePrecision(from: precision, to: newPrecision)
             precision = newPrecision
-            haveResultCallback()
         }
+        return CalculationResult(number: n.last, pendingSymbol: pendingOperator)
     }
     
-    init() {
-        operation("AC")
+    init(precision: Int) {
+        self.precision = precision
+        operatorStack.removeAll()
+        n.removeAll()
+        pendingOperator = nil
+        n.append(Number("0", precision: precision))
+        
         //        operation("π")
         //        operation("8")
         //        operation("8")
@@ -314,7 +287,7 @@ actor Brain {
         Int(Double(internalPrecision(for: precision)) * 3.32192809489)
     }
 
-    struct Result {
+    struct CalculationResult {
         let number: Number?
         let pendingSymbol: String?
         
@@ -322,5 +295,21 @@ actor Brain {
         var isValidNumber: Bool { number?.isValid ?? false }
     }
 
+    func debugPress(_ digits: String) {
+        for digit in digits {
+            if let intValue = digit.wholeNumberValue {
+                debugPress(intValue)
+            } else {
+                assert(false)
+            }
+        }
+    }
+    
+    func debugPress(_ digit: Int) {
+        if digit >= 0 && digit <= 9 {
+            let _  = operation(String(digit))
+        }
+    }
+    
 }
 

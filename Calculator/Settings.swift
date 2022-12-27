@@ -150,11 +150,11 @@ struct Settings: View {
                 .foregroundColor(Color.white)
             }
             .padding()
-            .onAppear() {
-                brainModel.hideKeyboard = true
-            }
+//            .onAppear() {
+//                brainModel.hideKeyboard = true
+//            }
             .onDisappear() {
-                brainModel.hideKeyboard = false
+//                brainModel.hideKeyboard = false
                 if brainModel.forceScientific != settingsForceScientific {
                     brainModel.forceScientific = settingsForceScientific
                 }

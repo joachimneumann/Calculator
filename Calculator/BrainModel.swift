@@ -8,81 +8,57 @@
 import SwiftUI
 
 class BrainModel : ObservableObject {
-    let screen: Screen
-    
-    @Published var showAsInteger = false
-    @Published var showAsFloat = false
-    
+    private var calculationResult: Brain.CalculationResult = Brain.CalculationResult(number: nil, pendingSymbol: nil)
+    private var showAsInteger = false
+    private var showAsFloat = false
     private var displayDataIsOld = false
     private let timerDefaultText = "click to measure"
-    private var timer: Timer?
+    private var timer: Timer? = nil
     private var timerCounter = 0
     private var isPreliminary: Bool = false
-    @Published var timerInfo: String
-    
-    @Published var isCalculating = false {
-        didSet {
-//            for key in C.keysToDisable {
-//                self.keyInfo[key]!.enabled = !isCalculating
-//            }
-        }
-    }
-    
-    var hideKeyboard = false
+    private var timerInfo: String = ""
+//
+//    var hideKeyboard = false
     @Published var isCopying: Bool = false
     @Published var isPasting: Bool = false
     var copyAnimationDone = false
-    
+//
     private let brain: Brain
-    private let stupidBrain: Brain
-    private let stupidBrainPrecision = 100
-    @Published var display: Display
-    
+//    private let stupidBrain: Brain
+//    private let stupidBrainPrecision = 100
+
     var precisionDescription = "unknown"
-    
+
     @AppStorage("precision", store: .standard) private (set) var precision: Int = 1000
     @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
     @AppStorage("memoryValue", store: .standard) var memoryValue: String = ""
     static let MAX_DISPLAY_LEN = 10_000 // too long strings in Text() crash the app
-    
-    var isValidNumber: Bool {
-        get async {
-            await brain.isValidNumber
-        }
-    }
-    
+//
+    @Published var display: Display = Display(screen: Screen(CGSize()))
+    private var screen: Screen
+
     init(screen: Screen) {
         self.screen = screen
 
-        timerInfo = timerDefaultText
+//        timerInfo = timerDefaultText
         // print("Model init isPortraitPhone \(screenInfo.isPortraitPhone)")
         
         // the later assignment of precision is a a bit strange, but a work-around for the error
         // "'self' used in property access 'precision' before all stored properties are initialized"
         // At init, not much is happening in the brain
-        brain = Brain()
-        stupidBrain = Brain()
-        display = Display(screen: screen)
-        Task {
-            await brain.setPrecision(precision)
-            //        brain.haveResultCallback = haveResultCallback
-            //        brain.pendingOperatorCallback = pendingOperatorCallback
-            
-            await stupidBrain.setPrecision(stupidBrainPrecision)
-            //        stupidBrain.haveResultCallback = haveStupidBrainResultCallback
-            /// no pendingOperatorCallback
-            
-            if memoryValue == "" {
-                await brain.setMemory(nil)
-                await stupidBrain.setMemory(nil)
-            } else {
-                await brain.setMemory(Number(memoryValue, precision: precision))
-                await stupidBrain.setMemory(Number(memoryValue, precision: stupidBrainPrecision))
-            }
-        }
+//        stupidBrain = Brain(precision: stupidBrainPrecision)
+//        display = Display(screen: screen)
+        brain = Brain(precision: _precision.wrappedValue)
+//        if memoryValue == "" {
+////                await brain.setMemory(nil)
+////                await stupidBrain.setMemory(nil)
+//        } else {
+////                await brain.setMemory(Number(memoryValue, precision: precision))
+////                await stupidBrain.setMemory(Number(memoryValue, precision: stupidBrainPrecision))
+//        }
     }
     
-    var timerIsRunning: Bool { timer != nil }
+//    var timerIsRunning: Bool { timer != nil }
     
 //    func timerStart() {
 //        timerCounter = 0
@@ -119,18 +95,21 @@ class BrainModel : ObservableObject {
     // Therefore, I only want to do that when leaving the settings screen
     func updatePrecision(to newPecision: Int) async {
         precision = newPecision
-        await brain.setPrecision(newPecision)
+        precisionDescription = self.precision.useWords
+        let _ = await brain.setPrecision(newPecision)
     }
     
-    func copyToPastBin() async {
-        let displayData = await brain.last.getDisplayData(
-            multipleLines: true,
-            lengths: Lengths(precision),
-            forceScientific: false,
-            showAsInteger: showAsInteger,
-            showAsFloat: showAsFloat,
-            maxDisplayLength: precision)
-        UIPasteboard.general.string = displayData.oneLine
+    func copyToPastBin() {
+        if let number = calculationResult.number {
+            let copyData = number.getDisplayData(
+                multipleLines: true,
+                lengths: Lengths(precision),
+                forceScientific: false,
+                showAsInteger: showAsInteger,
+                showAsFloat: showAsFloat,
+                maxDisplayLength: precision)
+            UIPasteboard.general.string = copyData.oneLine
+        }
     }
     func copyFromPastBin() async -> Bool {
         var ok = false
@@ -150,7 +129,7 @@ class BrainModel : ObservableObject {
         return ok
     }
 
-    
+
     func checkIfPasteBinIsValidNumber() -> Bool {
         if UIPasteboard.general.hasStrings {
             if let pasteString = UIPasteboard.general.string {
@@ -163,23 +142,23 @@ class BrainModel : ObservableObject {
         }
         return false
     }
-        
-    func speedTest(precision: Int) async -> Double {
-        let testBrain = Brain()
-        await testBrain.setPrecision(precision)
-        
-        await testBrain.operation("AC")
-        //print("testBrain.n.count \(testBrain.n.count)")
-        await testBrain.operation("Rand")
-        
-        let parkBenchTimer = ParkBenchTimer()
-        await testBrain.operation("√")
-        await testBrain.operation("sin")
-        let result = parkBenchTimer.stop()
-        // print("speedTest done \(result.asTime)")
-        return result
-    }
-    
+
+//    func speedTest(precision: Int) async -> Double {
+//        let testBrain = Brain()
+//        await testBrain.setPrecision(precision)
+//
+//        await testBrain.operation("AC")
+//        //print("testBrain.n.count \(testBrain.n.count)")
+//        await testBrain.operation("Rand")
+//
+//        let parkBenchTimer = ParkBenchTimer()
+//        await testBrain.operation("√")
+//        await testBrain.operation("sin")
+//        let result = parkBenchTimer.stop()
+//        // print("speedTest done \(result.asTime)")
+//        return result
+//    }
+
 //    func updateDisplayData() {
 //        /// called after rotating the device and when I have a result
 //        let temp = Display(
@@ -192,9 +171,9 @@ class BrainModel : ObservableObject {
 //        DispatchQueue.main.async {
 //            self.display = temp
 //        }
-//        
+//
 //    }
-//    
+//
 //    func haveStupidBrainResultCallback() {
 //        /// only show this if the high precision result isOld
 //        if displayDataIsOld {
@@ -213,7 +192,7 @@ class BrainModel : ObservableObject {
 //            }
 //        }
 //    }
-//    
+//
 //    func haveResultCallback() {
 //        if brain.last.isNull {
 //            DispatchQueue.main.async {
@@ -225,7 +204,7 @@ class BrainModel : ObservableObject {
 //                self.showAC = false
 //            }
 //        }
-//        
+//
 //        isPreliminary = false
 //        let temp = Display(
 //            number: brain.last,
@@ -238,7 +217,7 @@ class BrainModel : ObservableObject {
 //        DispatchQueue.main.async {
 //            self.display = temp
 //        }
-//        
+//
 //        if brain.isValidNumber {
 //            for key in C.keysAll {
 //                keyInfo[key]!.enabled = true
@@ -253,15 +232,15 @@ class BrainModel : ObservableObject {
 //            }
 //        }
 //        print("haveResultCallback: keyInfo[10^x] \( keyInfo["10^x"]!.enabled)")
-//        
+//
 //        // check mr
 //        keyInfo["mr"]!.enabled = brain.memory != nil
 //    }
-    
+
     private var previous: String? = nil
     func pendingOperatorCallback(op: String?) {
         /// In the brain, we have already asserted that the new op is different from previous
-        
+
         /// Set the previous one back to normal?
 //        if let previous = previous {
 //            DispatchQueue.main.async {
@@ -272,7 +251,7 @@ class BrainModel : ObservableObject {
 //                }
 //            }
 //        }
-//        
+//
 //        /// Set the colors for the pending operation key
 //        if let op = op {
 //            DispatchQueue.main.async {
@@ -285,12 +264,8 @@ class BrainModel : ObservableObject {
 //        }
 //        previous = op
     }
-    
-    @MainActor func updateDisplay(with newDisplay: Display) {
-        display = newDisplay
-    }
-    
-    func execute(_ symbol: String) async -> Brain.Result {
+
+    func execute(_ symbol: String) async -> Brain.CalculationResult {
 //        isCalculating = true
 //        for key in C.keysToDisable {
 //            keyInfo[key]!.enabled = false
@@ -300,7 +275,7 @@ class BrainModel : ObservableObject {
 //        } else {
 //            hasBeenReset = false
 //        }
-        
+
         displayDataIsOld = true
         //stupidBrain.operation(symbol)
 
@@ -310,9 +285,13 @@ class BrainModel : ObservableObject {
 //                if not self.cancelled { let tempDisplay = stupidBrain.getDisplay }
 //                if not self.cancelled { display = temp }
 //            }
-        let result = await brain.operation(symbol)
-        await updateDisplay(with: Display(number: brain.last, isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat))
-        return result
+        calculationResult = await brain.operation(symbol)
+        if let number = calculationResult.number {
+            Task { @MainActor in
+                display = Display(number: number, isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
+            }
+        }
+        return calculationResult
 //            isCalculating = false
 //            if brain.isValidNumber {
 //                for key in C.keysAll {
@@ -329,7 +308,7 @@ class BrainModel : ObservableObject {
 //            }
 //            print("key ± ", keyInfo["±"]!.enabled)
 //            objectWillChange.send()
-            
+
 //            if ["mc", "m+", "m-"].contains(symbol) {
 //                if let memory = brain.memory {
 //                    let temp = memory.getDisplayData(
@@ -347,12 +326,6 @@ class BrainModel : ObservableObject {
 //                        memoryValue = ""
 //                    }
 //                }
-    }
-
-    var isNull: Bool {
-        get async {
-            await brain.last.isNull
-        }
     }
 }
 

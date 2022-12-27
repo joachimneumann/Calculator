@@ -33,111 +33,111 @@ struct Icons : View {
                         isZoomed.toggle()
                     }
                 }
-            if !brainModel.isCalculating {
+            if true { // !brainModel.isCalculating {
                 if !brainModel.display.format.showThreeDots {
                     Group {
-                        if !simulatePurchased && store.purchasedIDs.isEmpty {
-                            NavigationLink {
-                                PurchaseView(store: store, brainModel: brainModel, screen: screen, font: Font(screen.infoUiFont))
-                            } label: {
-                                Text("copy")
-                                    .font(Font(screen.infoUiFont))
-                                    .foregroundColor(Color.white)
-                            }
-                        } else {
-                            Text("copy")
-                                .font(Font(screen.infoUiFont))
-                                .foregroundColor(brainModel.isCopying ? Color.orange : Color.white)
-                                .onTapGesture {
-                                    if copyDone && pasteDone && !brainModel.isCopying && !brainModel.isPasting {
-                                        setIsCopying(to: true)
-                                        wait300msDone = false
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                            wait300msDone = true
-                                            if copyDone {
-                                                setIsCopying(to: false)
-                                            }
-                                        }
-                                        Task {
-                                            copyDone = false
-                                            await brainModel.copyToPastBin()
-                                            copyDone = true
-                                            if wait300msDone {
-                                                setIsCopying(to: false)
-                                            }
-                                        }
-                                        isValidPasteContent = true
-                                    }
-                                }
-                        }
-                        if !simulatePurchased && store.purchasedIDs.isEmpty {
-                            NavigationLink {
-                                PurchaseView(store: store, brainModel: brainModel, screen: screen, font: Font(screen.infoUiFont))
-                            } label: {
-                                Text("paste")
-                                    .font(Font(screen.infoUiFont))
-                                    .foregroundColor(Color.white)
-                            }
-                        } else {
-                            Text("paste")
-                                .font(Font(screen.infoUiFont))
-                                .foregroundColor(isValidPasteContent ? (brainModel.isPasting ? .orange : .white) : .gray)
-                                .onTapGesture {
-                                    if copyDone && pasteDone && !brainModel.isCopying && !brainModel.isPasting && isValidPasteContent {
-                                        setIsPasting(to: true)
-                                        pasteDone = false
-                                        wait300msDone = false
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                            wait300msDone = true
-                                            if pasteDone {
-                                                brainModel.isPasting = false
-                                            }
-                                        }
-                                        Task {
-                                            isValidPasteContent = await brainModel.copyFromPastBin()
-                                            pasteDone = true
-                                            if wait300msDone {
-                                                setIsPasting(to: false)
-                                            }
-                                        }
-                                    }
-                                }
-                        }
+//                        if !simulatePurchased && store.purchasedIDs.isEmpty {
+//                            NavigationLink {
+//                                PurchaseView(store: store, brainModel: brainModel, screen: screen, font: Font(screen.infoUiFont))
+//                            } label: {
+//                                Text("copy")
+//                                    .font(Font(screen.infoUiFont))
+//                                    .foregroundColor(Color.white)
+//                            }
+//                        } else {
+//                            Text("copy")
+//                                .font(Font(screen.infoUiFont))
+//                                .foregroundColor(brainModel.isCopying ? Color.orange : Color.white)
+//                                .onTapGesture {
+//                                    if copyDone && pasteDone && !brainModel.isCopying && !brainModel.isPasting {
+//                                        setIsCopying(to: true)
+//                                        wait300msDone = false
+//                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+//                                            wait300msDone = true
+//                                            if copyDone {
+//                                                setIsCopying(to: false)
+//                                            }
+//                                        }
+//                                        Task {
+//                                            copyDone = false
+//                                            await brainModel.copyToPastBin()
+//                                            copyDone = true
+//                                            if wait300msDone {
+//                                                setIsCopying(to: false)
+//                                            }
+//                                        }
+//                                        isValidPasteContent = true
+//                                    }
+//                                }
+//                        }
+//                        if !simulatePurchased && store.purchasedIDs.isEmpty {
+//                            NavigationLink {
+//                                PurchaseView(store: store, brainModel: brainModel, screen: screen, font: Font(screen.infoUiFont))
+//                            } label: {
+//                                Text("paste")
+//                                    .font(Font(screen.infoUiFont))
+//                                    .foregroundColor(Color.white)
+//                            }
+//                        } else {
+//                            Text("paste")
+//                                .font(Font(screen.infoUiFont))
+//                                .foregroundColor(isValidPasteContent ? (brainModel.isPasting ? .orange : .white) : .gray)
+//                                .onTapGesture {
+//                                    if copyDone && pasteDone && !brainModel.isCopying && !brainModel.isPasting && isValidPasteContent {
+//                                        setIsPasting(to: true)
+//                                        pasteDone = false
+//                                        wait300msDone = false
+//                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+//                                            wait300msDone = true
+//                                            if pasteDone {
+//                                                brainModel.isPasting = false
+//                                            }
+//                                        }
+//                                        Task {
+//                                            isValidPasteContent = await brainModel.copyFromPastBin()
+//                                            pasteDone = true
+//                                            if wait300msDone {
+//                                                setIsPasting(to: false)
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                        }
                         
-                        NavigationLink {
-                            Settings(brainModel: brainModel, screen: screen, font: Font(screen.infoUiFont))
-                        } label: {
-                            Image(systemName: "gearshape")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .font(Font.title.weight(.thin))
-                                .frame(height: screen.plusIconSize * 0.6)
-                                .foregroundColor(Color.white)
-                        }
-                        
-                        let integerLabel = brainModel.display.data.canBeInteger ? (brainModel.showAsInteger ? "→ sci" : "→ int") : ""
-                        if integerLabel.count > 0 {
-                            Button {
-                                brainModel.showAsInteger.toggle()
-                                //                                brainModel.updateDisplayData()
-                            } label: {
-                                Text(integerLabel)
-                                    .font(Font(screen.infoUiFont))
-                                    .foregroundColor(Color.white)
-                            }
-                        }
-                        
-                        let floatLabel = brainModel.display.data.canBeFloat ? (brainModel.showAsFloat ? "→ sci" : "→ float") : ""
-                        if integerLabel.count == 0 && floatLabel.count > 0 {
-                            Button {
-                                brainModel.showAsFloat.toggle()
-                                //                                brainModel.updateDisplayData()
-                            } label: {
-                                Text(floatLabel)
-                                    .font(Font(screen.infoUiFont))
-                                    .foregroundColor(Color.white)
-                            }
-                        }
+//                        NavigationLink {
+//                            Settings(brainModel: brainModel, screen: screen, font: Font(screen.infoUiFont))
+//                        } label: {
+//                            Image(systemName: "gearshape")
+//                                .resizable()
+//                                .aspectRatio(contentMode: .fit)
+//                                .font(Font.title.weight(.thin))
+//                                .frame(height: screen.plusIconSize * 0.6)
+//                                .foregroundColor(Color.white)
+//                        }
+//                        
+//                        let integerLabel = brainModel.display.data.canBeInteger ? (brainModel.showAsInteger ? "→ sci" : "→ int") : ""
+//                        if integerLabel.count > 0 {
+//                            Button {
+//                                brainModel.showAsInteger.toggle()
+//                                //                                brainModel.updateDisplayData()
+//                            } label: {
+//                                Text(integerLabel)
+//                                    .font(Font(screen.infoUiFont))
+//                                    .foregroundColor(Color.white)
+//                            }
+//                        }
+//                        
+//                        let floatLabel = brainModel.display.data.canBeFloat ? (brainModel.showAsFloat ? "→ sci" : "→ float") : ""
+//                        if integerLabel.count == 0 && floatLabel.count > 0 {
+//                            Button {
+//                                brainModel.showAsFloat.toggle()
+//                                //                                brainModel.updateDisplayData()
+//                            } label: {
+//                                Text(floatLabel)
+//                                    .font(Font(screen.infoUiFont))
+//                                    .foregroundColor(Color.white)
+//                            }
+//                        }
                         
                     }
                     .padding(.top, screen.plusIconSize * 0.5)
