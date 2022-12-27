@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 class BrainModel : ObservableObject {
     private var calculationResult: Brain.CalculationResult = Brain.CalculationResult(number: nil, pendingSymbol: nil)
     private var showAsInteger = false
@@ -49,10 +50,13 @@ class BrainModel : ObservableObject {
 //        stupidBrain = Brain(precision: stupidBrainPrecision)
 //        display = Display(screen: screen)
         brain = Brain(precision: _precision.wrappedValue)
-        Task { @MainActor in
+        Task {
             calculationResult = await brain.operation("AC")
             if let number = calculationResult.number {
-                display = Display(number: number, isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
+                let temp = Display(number: number, isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
+                Task { @MainActor in
+                    display = temp
+                }
             }
         }
 //        if memoryValue == "" {
@@ -293,8 +297,9 @@ class BrainModel : ObservableObject {
 //            }
         calculationResult = await brain.operation(symbol)
         if let number = calculationResult.number {
+            let temp = Display(number: number, isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
             Task { @MainActor in
-                display = Display(number: number, isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
+                display = temp
             }
         }
         return calculationResult
