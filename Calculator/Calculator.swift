@@ -26,8 +26,8 @@ struct Calculator: View {
     @StateObject private var keyModel: KeyModel
     init(screen: Screen) {
         _brainModel = StateObject(wrappedValue: BrainModel(screen: screen))
-        _keyModel = StateObject(wrappedValue: KeyModel(screen: screen))
-        _keyModel.wrappedValue.callback = brainModel.execute
+        let callback = _brainModel.wrappedValue.execute
+        _keyModel = StateObject(wrappedValue: KeyModel(screen: screen, callback: callback))
     }
 
     @State var scrollViewHasScrolled = false
