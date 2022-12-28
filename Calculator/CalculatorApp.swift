@@ -12,10 +12,7 @@ struct CalculatorApp: App {
     var body: some Scene {
         WindowGroup {
             GeometryReader { (geo) in
-                let screen = Screen(geo.size)
-                let brainModel = BrainModel(screen: screen)
-                let keyModel = KeyModel(screen: screen, callback: brainModel.execute)
-                Calculator(screen: Screen(geo.size), brainModel: brainModel, keyModel: keyModel)
+                Calculator(screen: Screen(geo.size))
             }
             .preferredColorScheme(.dark)
         }

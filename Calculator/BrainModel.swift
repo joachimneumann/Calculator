@@ -36,7 +36,7 @@ class BrainModel : ObservableObject {
     static let MAX_DISPLAY_LEN = 10_000 // too long strings in Text() crash the app
 //
     @Published var display: Display = Display(screen: Screen(CGSize()))
-    private var screen: Screen
+    let screen: Screen
 
     init(screen: Screen) {
         self.screen = screen
