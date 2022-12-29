@@ -82,12 +82,10 @@ struct PurchaseView: View {
         .font(font)
         .foregroundColor(.white)
         .padding()
-        .onAppear() {
-            Task {
-                await store.requestProducts()
-            }
-//            brainModel.hideKeyboard = true
+        .task {
+            await store.requestProducts()
         }
+//            brainModel.hideKeyboard = true
         .onDisappear() {
 //            brainModel.hideKeyboard = false
             //brainModel.haveResultCallback()
