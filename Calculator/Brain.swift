@@ -8,12 +8,10 @@
 import Foundation
 
 
-actor Brain {
-    private var n = NumberStack()
-    private var operatorStack = OperatorStack()
+class Brain {
+    fileprivate var n = NumberStack()
+    fileprivate var operatorStack = OperatorStack()
     private (set) var precision: Int = 0
-    private var no: Int { operatorStack.count }
-    private var nn: Int { n.count }
     private var pendingOperator: String?
     private var memory: Number? = nil
     private var nullNumber: Number { Number("0", precision: precision) }
@@ -287,14 +285,10 @@ actor Brain {
         Int(Double(internalPrecision(for: precision)) * 3.32192809489)
     }
 
-    struct CalculationResult {
-        let number: Number?
-        let pendingSymbol: String?
-        
-        var isNull: Bool { number?.isNull ?? false }
-        var isValidNumber: Bool { number?.isValid ?? false }
-    }
+}
 
+
+class DebugBrain: Brain {
     func debugPress(_ digits: String) {
         for digit in digits {
             if let intValue = digit.wholeNumberValue {
@@ -305,11 +299,32 @@ actor Brain {
         }
     }
     
+    var no: Int { operatorStack.count }
+    var nn: Int { n.count }
+
+    func run(_ s: String) {
+        _ = operation(s)
+    }
+    func run(_ i: Int) {
+        _ = operation(String(i))
+    }
+    func run(_ d: Double) {
+        _ = operation(String(d))
+    }
+
+    var oneLine: String {
+        Display(number: n.last).data.oneLine
+    }
+    var left: String {
+        Display(number: n.last).data.left
+    }
+    var right: String? {
+        Display(number: n.last).data.right
+    }
     func debugPress(_ digit: Int) {
         if digit >= 0 && digit <= 9 {
             let _  = operation(String(digit))
         }
     }
-    
 }
 

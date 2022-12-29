@@ -39,6 +39,18 @@ extension Display {
     }
 }
 
+extension Display {
+    init(number: Number) {
+        data = number.getDisplayData(
+            multipleLines: false,
+            lengths: Lengths(100),
+            forceScientific: false,
+            showAsInteger: false,
+            showAsFloat: false)
+        format = DisplayFormat()
+    }
+}
+
 struct DisplayData {
     var left: String
     var right: String?

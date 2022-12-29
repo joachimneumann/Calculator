@@ -24,10 +24,10 @@ struct MyNavigation<Content>: View where Content: View {
 struct Calculator: View {
     @StateObject private var brainModel: BrainModel
     @StateObject private var keyModel: KeyModel
+    
     init(screen: Screen) {
         _brainModel = StateObject(wrappedValue: BrainModel(screen: screen))
-        let callback = _brainModel.wrappedValue.execute
-        _keyModel = StateObject(wrappedValue: KeyModel(screen: screen, callback: callback))
+        _keyModel = StateObject(wrappedValue: KeyModel(screen: screen))
     }
 
     @State var scrollViewHasScrolled = false
@@ -120,6 +120,9 @@ struct Calculator: View {
                     .offset(y: isZoomed ? brainModel.screen.keyboardHeight + brainModel.screen.keySize.height : 0.0)
                     .transition(.move(edge: .bottom))
                 }
+            }
+            .onAppear() {
+                keyModel.assignCallback(callback: brainModel.execute)
             }
             .accentColor(.white) // for the navigation back button
 //            .onChange(of: brainModel.screenInfo.lengths.withoutComma) { _ in

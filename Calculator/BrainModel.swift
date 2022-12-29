@@ -9,7 +9,7 @@ import SwiftUI
 
 @MainActor
 class BrainModel : ObservableObject {
-    private var calculationResult: Brain.CalculationResult = Brain.CalculationResult(number: nil, pendingSymbol: nil)
+    private var calculationResult: CalculationResult = CalculationResult(number: nil, pendingSymbol: nil)
     private var showAsInteger = false
     private var showAsFloat = false
     private var displayDataIsOld = false
@@ -275,7 +275,7 @@ class BrainModel : ObservableObject {
 //        previous = op
     }
 
-    func execute(_ symbol: String) async -> Brain.CalculationResult {
+    func execute(_ symbol: String) async -> CalculationResult {
 //        isCalculating = true
 //        for key in C.keysToDisable {
 //            keyInfo[key]!.enabled = false
