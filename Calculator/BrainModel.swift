@@ -24,7 +24,7 @@ class BrainModel : ObservableObject {
     @Published var isPasting: Bool = false
     var copyAnimationDone = false
 //
-    private let brain: Brain
+    private let actorBrain: ActorBrain
 //    private let stupidBrain: Brain
 //    private let stupidBrainPrecision = 100
 
@@ -49,9 +49,9 @@ class BrainModel : ObservableObject {
         // At init, not much is happening in the brain
 //        stupidBrain = Brain(precision: stupidBrainPrecision)
 //        display = Display(screen: screen)
-        brain = Brain(precision: _precision.wrappedValue)
+        actorBrain = ActorBrain(precision: _precision.wrappedValue)
         Task {
-            calculationResult = await brain.operation("AC")
+            calculationResult = await actorBrain.operation("AC")
             if let number = calculationResult.number {
                 let temp = Display(number: number, isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
                 Task { @MainActor in
@@ -106,7 +106,7 @@ class BrainModel : ObservableObject {
     func updatePrecision(to newPecision: Int) async {
         precision = newPecision
         precisionDescription = self.precision.useWords
-        let _ = await brain.setPrecision(newPecision)
+        let _ = await actorBrain.setPrecision(newPecision)
     }
     
     func copyToPastBin() {
@@ -131,7 +131,7 @@ class BrainModel : ObservableObject {
                     }
                 }
                 if ok {
-                    await brain.replaceLast(with: Number(pasteString, precision: brain.precision))
+                    await actorBrain.replaceLast(with: Number(pasteString, precision: actorBrain.precision))
 //                    haveResultCallback() // TODO: make sure that forLong is true here!!!!
                 }
             }
@@ -295,7 +295,7 @@ class BrainModel : ObservableObject {
 //                if not self.cancelled { let tempDisplay = stupidBrain.getDisplay }
 //                if not self.cancelled { display = temp }
 //            }
-        calculationResult = await brain.operation(symbol)
+        calculationResult = await actorBrain.operation(symbol)
         if let number = calculationResult.number {
             let temp = Display(number: number, isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
             Task { @MainActor in

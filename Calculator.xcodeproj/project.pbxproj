@@ -31,6 +31,7 @@
 		AA6577F52935B90D00DA98E7 /* TODOs.rtf in Resources */ = {isa = PBXBuildFile; fileRef = AA6577F42935B90D00DA98E7 /* TODOs.rtf */; };
 		AA672B0A295189950044DC08 /* ScrollViewConditionalAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA672B09295189950044DC08 /* ScrollViewConditionalAnimation.swift */; };
 		AA689115295BE56900129593 /* CalculationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA689114295BE56900129593 /* CalculationResult.swift */; };
+		AA689125295E681400129593 /* ActorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA689124295E681400129593 /* ActorBrain.swift */; };
 		AA6CE7072945C1D4002BB5FE /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6CE7062945C1D4002BB5FE /* Store.swift */; };
 		AA6CE70A2945CC5C002BB5FE /* Test.storekit in Resources */ = {isa = PBXBuildFile; fileRef = AA6CE7092945CC5C002BB5FE /* Test.storekit */; };
 		AA6CE70C2945CE0A002BB5FE /* PurchaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6CE70B2945CE0A002BB5FE /* PurchaseView.swift */; };
@@ -102,6 +103,7 @@
 		AA6577F42935B90D00DA98E7 /* TODOs.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = TODOs.rtf; sourceTree = "<group>"; };
 		AA672B09295189950044DC08 /* ScrollViewConditionalAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewConditionalAnimation.swift; sourceTree = "<group>"; };
 		AA689114295BE56900129593 /* CalculationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculationResult.swift; sourceTree = "<group>"; };
+		AA689124295E681400129593 /* ActorBrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActorBrain.swift; sourceTree = "<group>"; };
 		AA6CE7062945C1D4002BB5FE /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		AA6CE7082945C25E002BB5FE /* Calculator.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Calculator.storekit; sourceTree = "<group>"; };
 		AA6CE7092945CC5C002BB5FE /* Test.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Test.storekit; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 				AA1B007F294777190054C851 /* mpf2mpfr.h */,
 				AA1B007E294777190054C851 /* mpfr.h */,
 				AA2FAC01272F2348006DE4C8 /* Brain.swift */,
+				AA689124295E681400129593 /* ActorBrain.swift */,
 				AA2FABF1272F217F006DE4C8 /* Gmp.swift */,
 				AA2FABF8272F2348006DE4C8 /* Number.swift */,
 				AA2FABFB272F2348006DE4C8 /* NumberStack.swift */,
@@ -366,6 +369,7 @@
 				AA3FB8272920E0E5002ECCEB /* Settings.swift in Sources */,
 				AA4C672D295A74430074345B /* KeyModel.swift in Sources */,
 				AA2FAC15272F2349006DE4C8 /* CalculatorApp.swift in Sources */,
+				AA689125295E681400129593 /* ActorBrain.swift in Sources */,
 				AA370C2F293352B10041AE4E /* BrainModel.swift in Sources */,
 				AA2FAC1A272F2349006DE4C8 /* CalculatorCommands.swift in Sources */,
 				AA584F572938E8A9008823F3 /* LengthMeasurement.swift in Sources */,
