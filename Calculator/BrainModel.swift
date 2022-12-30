@@ -7,7 +7,11 @@
 
 import SwiftUI
 
-class BrainModel : ObservableObject {
+protocol KeyPressResponder {
+    func keyPress(symbol: String)
+}
+
+class BrainModel : KeyPressResponder, ObservableObject {
     private var showAsInteger = false
     private var showAsFloat = false
     private var displayDataIsOld = false

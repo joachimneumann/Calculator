@@ -9,7 +9,7 @@ import SwiftUI
 
 class KeyModel: ObservableObject {
     let keySize: CGSize
-    var callback: (String) -> () = { _ in print("KEY CALLBACK NOT IMPLEMENTED") }
+    var keyPressResponder: KeyPressResponder? = nil
     @Published var showAC = true
     var showPrecision: Bool = false
     var secondActive = false
@@ -23,11 +23,7 @@ class KeyModel: ObservableObject {
             backgroundColor[symbol] = keyBackground(symbol).upColor
         }
     }
-    
-    func assignCallback(callback: @escaping (String) -> ()) {
-        self.callback = callback
-    }
-    
+        
     func touchDown(symbol: String) {
         backgroundColor[symbol] = keyBackground(symbol).downColor
     }
@@ -50,7 +46,9 @@ class KeyModel: ObservableObject {
             if _symbol == "AC" {
                 showPrecision.toggle()
             }
-            callback(symbol)
+            if let keyPressResponder = keyPressResponder {
+                keyPressResponder.keyPress(symbol: symbol)
+            }
         }
         
     }

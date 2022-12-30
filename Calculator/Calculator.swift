@@ -126,7 +126,7 @@ struct Calculator: View {
             }
         }
         .onAppear() {
-            keyModel.assignCallback(callback: brainModel.keyPress)
+            keyModel.keyPressResponder = brainModel
             brainModel.keyPress(symbol: "AC")
         }
 //            .onChange(of: brainModel.screenInfo.lengths.withoutComma) { _ in
