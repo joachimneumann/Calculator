@@ -220,12 +220,12 @@
 				AA1B007C294777180054C851 /* gmp.h */,
 				AA1B007F294777190054C851 /* mpf2mpfr.h */,
 				AA1B007E294777190054C851 /* mpfr.h */,
-				AA2FAC01272F2348006DE4C8 /* BrainEngine.swift */,
-				AA689124295E681400129593 /* Brain.swift */,
 				AA2FABF1272F217F006DE4C8 /* Gmp.swift */,
 				AA2FABF8272F2348006DE4C8 /* Number.swift */,
 				AA2FABFB272F2348006DE4C8 /* NumberStack.swift */,
 				AA2FAC0D272F2349006DE4C8 /* OperatorStack.swift */,
+				AA689124295E681400129593 /* Brain.swift */,
+				AA2FAC01272F2348006DE4C8 /* BrainEngine.swift */,
 				AA689114295BE56900129593 /* CalculationResult.swift */,
 			);
 			name = Brain;

@@ -7,9 +7,7 @@
 
 import SwiftUI
 
-@MainActor
 class BrainModel : ObservableObject {
-    private var calculationResult: CalculationResult = CalculationResult(number: nil, pendingSymbol: nil)
     private var showAsInteger = false
     private var showAsFloat = false
     private var displayDataIsOld = false
@@ -24,7 +22,7 @@ class BrainModel : ObservableObject {
     @Published var isPasting: Bool = false
     var copyAnimationDone = false
 //
-    private let actorBrain: Brain
+    private let brain: Brain
 //    private let stupidBrain: Brain
 //    private let stupidBrainPrecision = 100
 
@@ -49,15 +47,17 @@ class BrainModel : ObservableObject {
         // At init, not much is happening in the brain
 //        stupidBrain = Brain(precision: stupidBrainPrecision)
 //        display = Display(screen: screen)
-        actorBrain = Brain(precision: _precision.wrappedValue)
+        brain = Brain(precision: _precision.wrappedValue)
         Task {
-            calculationResult = await actorBrain.operation("AC")
-            if let number = calculationResult.number {
-                let temp = Display(number: number, isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
-                Task { @MainActor in
-                    display = temp
-                }
-            }
+//            calculationResult = await brain.operation("AC")
+//            display = await calculationResult.display(isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
+            
+//            if let number = calculationResult.number {
+//                let temp = Display(number: number, isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
+//                Task { @MainActor in
+//                    display = temp
+//                }
+//            }
         }
 //        if memoryValue == "" {
 ////                await brain.setMemory(nil)
@@ -106,20 +106,20 @@ class BrainModel : ObservableObject {
     func updatePrecision(to newPecision: Int) async {
         precision = newPecision
         precisionDescription = self.precision.useWords
-        let _ = await actorBrain.setPrecision(newPecision)
+        let _ = await brain.setPrecision(newPecision)
     }
     
-    func copyToPastBin() {
-        if let number = calculationResult.number {
-            let copyData = number.getDisplayData(
-                multipleLines: true,
-                lengths: Lengths(precision),
-                forceScientific: false,
-                showAsInteger: showAsInteger,
-                showAsFloat: showAsFloat,
-                maxDisplayLength: precision)
-            UIPasteboard.general.string = copyData.oneLine
-        }
+    func copyToPastBin() async {
+//        if let number = calculationResult.number {
+//            let copyData = await number.getDisplayData(
+//                multipleLines: true,
+//                lengths: Lengths(precision),
+//                forceScientific: false,
+//                showAsInteger: showAsInteger,
+//                showAsFloat: showAsFloat,
+//                maxDisplayLength: precision)
+//            UIPasteboard.general.string = copyData.oneLine
+//        }
     }
     func copyFromPastBin() async -> Bool {
         var ok = false
@@ -131,7 +131,7 @@ class BrainModel : ObservableObject {
                     }
                 }
                 if ok {
-                    await actorBrain.replaceLast(with: Number(pasteString, precision: actorBrain.precision))
+                    await brain.replaceLast(with: Number(pasteString, precision: brain.precision))
 //                    haveResultCallback() // TODO: make sure that forLong is true here!!!!
                 }
             }
@@ -275,7 +275,13 @@ class BrainModel : ObservableObject {
 //        previous = op
     }
 
-    func execute(_ symbol: String) async -> CalculationResult {
+    func keyPress(symbol: String) {
+        Task {
+            await execute(symbol)
+        }
+    }
+    
+    func execute(_ symbol: String) async {
 //        isCalculating = true
 //        for key in C.keysToDisable {
 //            keyInfo[key]!.enabled = false
@@ -295,14 +301,11 @@ class BrainModel : ObservableObject {
 //                if not self.cancelled { let tempDisplay = stupidBrain.getDisplay }
 //                if not self.cancelled { display = temp }
 //            }
-        calculationResult = await actorBrain.operation(symbol)
-        if let number = calculationResult.number {
-            let temp = Display(number: number, isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
-            Task { @MainActor in
-                display = temp
-            }
-        }
-        return calculationResult
+        let calculationResult = await brain.operation(symbol)
+        let temp = await calculationResult.display(isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
+        await MainActor.run(body: {
+            display = temp
+        })
 //            isCalculating = false
 //            if brain.isValidNumber {
 //                for key in C.keysAll {

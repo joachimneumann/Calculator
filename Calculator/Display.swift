@@ -11,25 +11,25 @@ struct Display {
     let data: DisplayData
     let format: DisplayFormat
     
-    init(number: Number,
-         isPreliminary: Bool,
-         screen: Screen,
-         forceScientific: Bool,
-         showAsInteger: Bool,
-         showAsFloat: Bool
-    ) {
-        data = number.getDisplayData(
-            multipleLines: !isPreliminary && !screen.isPortraitPhone,
-            lengths: screen.lengths,
-            forceScientific: forceScientific,
-            showAsInteger: showAsInteger,
-            showAsFloat: showAsFloat)
-        format = DisplayFormat(
-            for: data.length,
-            withMaxLength: data.maxlength,
-            showThreeDots: isPreliminary,
-            screen: screen)
-    }
+//    init(number: Number,
+//         isPreliminary: Bool,
+//         screen: Screen,
+//         forceScientific: Bool,
+//         showAsInteger: Bool,
+//         showAsFloat: Bool
+//    ) {
+//        data = number.getDisplayData(
+//            multipleLines: !isPreliminary && !screen.isPortraitPhone,
+//            lengths: screen.lengths,
+//            forceScientific: forceScientific,
+//            showAsInteger: showAsInteger,
+//            showAsFloat: showAsFloat)
+//        format = DisplayFormat(
+//            for: data.length,
+//            withMaxLength: data.maxlength,
+//            showThreeDots: isPreliminary,
+//            screen: screen)
+//    }
 }
 
 extension Display {
@@ -39,17 +39,17 @@ extension Display {
     }
 }
 
-extension Display {
-    init(number: Number) {
-        data = number.getDisplayData(
-            multipleLines: false,
-            lengths: Lengths(100),
-            forceScientific: false,
-            showAsInteger: false,
-            showAsFloat: false)
-        format = DisplayFormat()
-    }
-}
+//extension Display {
+//    init(number: Number) {
+//        data = number.getDisplayData(
+//            multipleLines: false,
+//            lengths: Lengths(100),
+//            forceScientific: false,
+//            showAsInteger: false,
+//            showAsFloat: false)
+//        format = DisplayFormat()
+//    }
+//}
 
 struct DisplayData {
     var left: String

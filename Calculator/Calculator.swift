@@ -48,87 +48,90 @@ struct Calculator: View {
     
     var body: some View {
         // let _ = print("screenModel.isPortraitPhone", screen.isPortraitPhone)
-        if brainModel.screen.isPortraitPhone {
-            VStack(spacing: 0.0) {
-                Spacer(minLength: 0.0)
-                PortraitDisplay(
-                    display: brainModel.display)
-                .padding(.horizontal, brainModel.screen.portraitIPhoneDisplayHorizontalPadding)
-                .padding(.bottom, brainModel.screen.portraitIPhoneDisplayBottomPadding)
-                NonScientificKeyboard(
-                    keyModel: keyModel,
-                    spacing: brainModel.screen.keySpacing,
-                    keySize: brainModel.screen.keySize)
-            }
-        } else {
-            MyNavigation {
-                /*
-                 lowest level: longDisplay and Icons
-                 mid level: Keyboard with info and rectangle on top
-                 top level: single line
-                 */
-                HStack(alignment: .top, spacing: 0.0) {
+        Group {
+            if brainModel.screen.isPortraitPhone {
+                VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    LandscapeDisplay(
-                        display: brainModel.display,
-                        showOrange: brainModel.isCopying || brainModel.isPasting,
-                        disabledScrolling: !isZoomed,
-                        scrollViewHasScrolled: $scrollViewHasScrolled,
-                        offsetToVerticallyAlignTextWithkeyboard: brainModel.screen.offsetToVerticallyAlignTextWithkeyboard,
-                        digitWidth: brainModel.screen.lengths.digitWidth,
-                        ePadding: brainModel.screen.lengths.ePadding,
-                        scrollViewID: scrollViewID
-                    )
-                    Icons(
-                        store: store,
-                        brainModel: brainModel,
-                        screen: brainModel.screen,
-                        isZoomed: $isZoomed)
-                    .offset(y: brainModel.screen.offsetToVerticallyIconWithText)
+                    PortraitDisplay(
+                        display: brainModel.display)
+                    .padding(.horizontal, brainModel.screen.portraitIPhoneDisplayHorizontalPadding)
+                    .padding(.bottom, brainModel.screen.portraitIPhoneDisplayBottomPadding)
+                    NonScientificKeyboard(
+                        keyModel: keyModel,
+                        spacing: brainModel.screen.keySpacing,
+                        keySize: brainModel.screen.keySize)
                 }
-                .overlay() {
-                    VStack(spacing: 0.0) {
+            } else {
+                MyNavigation {
+                    /*
+                     lowest level: longDisplay and Icons
+                     mid level: Keyboard with info and rectangle on top
+                     top level: single line
+                     */
+                    HStack(alignment: .top, spacing: 0.0) {
                         Spacer(minLength: 0.0)
-                        Rectangle()
-                            .foregroundColor(.black)
-                            .frame(height: brainModel.screen.lengths.infoHeight)
-                            .overlay() {
-                                let info = "\(keyModel.showPrecision ? "Precision: "+brainModel.precisionDescription+" digits" : "\(keyModel.rad ? "Rad" : "")")"
-                                if info.count > 0 {
-                                    HStack(spacing: 0.0) {
-                                        Text(info)
-                                            .foregroundColor(.white)
-                                            .font(Font(brainModel.screen.infoUiFont))
-                                        Spacer()
-                                    }
-                                    .padding(.leading, brainModel.screen.keySize.width * 0.3)
-                                }
-                            }
-                        HStack(spacing: 0.0) {
-                            ScientificKeyboard(
-                                keyModel: keyModel,
-                                spacing: brainModel.screen.keySpacing,
-                                keySize: brainModel.screen.keySize)
-                            .padding(.trailing, brainModel.screen.keySpacing)
-                            NonScientificKeyboard(
-                                keyModel: keyModel,
-                                spacing: brainModel.screen.keySpacing,
-                                keySize: brainModel.screen.keySize)
-                        }
-                        .background(Color.black)
+                        LandscapeDisplay(
+                            display: brainModel.display,
+                            showOrange: brainModel.isCopying || brainModel.isPasting,
+                            disabledScrolling: !isZoomed,
+                            scrollViewHasScrolled: $scrollViewHasScrolled,
+                            offsetToVerticallyAlignTextWithkeyboard: brainModel.screen.offsetToVerticallyAlignTextWithkeyboard,
+                            digitWidth: brainModel.screen.lengths.digitWidth,
+                            ePadding: brainModel.screen.lengths.ePadding,
+                            scrollViewID: scrollViewID
+                        )
+                        Icons(
+                            store: store,
+                            brainModel: brainModel,
+                            screen: brainModel.screen,
+                            isZoomed: $isZoomed)
+                        .offset(y: brainModel.screen.offsetToVerticallyIconWithText)
                     }
-                    .offset(y: isZoomed ? brainModel.screen.keyboardHeight + brainModel.screen.keySize.height : 0.0)
-                    .transition(.move(edge: .bottom))
+                    .overlay() {
+                        VStack(spacing: 0.0) {
+                            Spacer(minLength: 0.0)
+                            Rectangle()
+                                .foregroundColor(.black)
+                                .frame(height: brainModel.screen.lengths.infoHeight)
+                                .overlay() {
+                                    let info = "\(keyModel.showPrecision ? "Precision: "+brainModel.precisionDescription+" digits" : "\(keyModel.rad ? "Rad" : "")")"
+                                    if info.count > 0 {
+                                        HStack(spacing: 0.0) {
+                                            Text(info)
+                                                .foregroundColor(.white)
+                                                .font(Font(brainModel.screen.infoUiFont))
+                                            Spacer()
+                                        }
+                                        .padding(.leading, brainModel.screen.keySize.width * 0.3)
+                                    }
+                                }
+                            HStack(spacing: 0.0) {
+                                ScientificKeyboard(
+                                    keyModel: keyModel,
+                                    spacing: brainModel.screen.keySpacing,
+                                    keySize: brainModel.screen.keySize)
+                                .padding(.trailing, brainModel.screen.keySpacing)
+                                NonScientificKeyboard(
+                                    keyModel: keyModel,
+                                    spacing: brainModel.screen.keySpacing,
+                                    keySize: brainModel.screen.keySize)
+                            }
+                            .background(Color.black)
+                        }
+                        .offset(y: isZoomed ? brainModel.screen.keyboardHeight + brainModel.screen.keySize.height : 0.0)
+                        .transition(.move(edge: .bottom))
+                    }
                 }
+                .accentColor(.white) // for the navigation back button
             }
-            .onAppear() {
-                keyModel.assignCallback(callback: brainModel.execute)
-            }
-            .accentColor(.white) // for the navigation back button
+        }
+        .onAppear() {
+            keyModel.assignCallback(callback: brainModel.keyPress)
+            brainModel.keyPress(symbol: "AC")
+        }
 //            .onChange(of: brainModel.screenInfo.lengths.withoutComma) { _ in
 //                brainModel.updateDisplayData() // redraw with or without keyboard
 //            }
-        }
     }
 }
 /*

@@ -193,12 +193,9 @@ class BrainEngine {
         default:
             assert(false, "### non-existing operation \(symbol)")
         }
-        if n.last.valueHasChanged {
-            n.last.valueHasChanged = false
-            return CalculationResult(number: n.last, pendingSymbol: pendingOperator)
-        } else {
-            return CalculationResult(number: nil, pendingSymbol: pendingOperator)
-        }
+        let hasChanged = n.last.valueHasChanged
+        n.last.valueHasChanged = false
+        return CalculationResult(number: n.last, hasChanged: hasChanged, pendingSymbol: pendingOperator)
     }
     
     /// used on Settings
@@ -207,7 +204,7 @@ class BrainEngine {
             n.updatePrecision(from: precision, to: newPrecision)
             precision = newPrecision
         }
-        return CalculationResult(number: n.last, pendingSymbol: pendingOperator)
+        return CalculationResult(number: n.last, hasChanged: true, pendingSymbol: pendingOperator)
     }
     
     init(precision: Int) {
@@ -275,7 +272,9 @@ class DebugBrain: BrainEngine {
     func debugPress(_ digits: String) {
         for digit in digits {
             if let intValue = digit.wholeNumberValue {
-                debugPress(intValue)
+                if intValue >= 0 && intValue <= 9 {
+                    let _  = operation(String(digit))
+                }
             } else {
                 assert(false)
             }
@@ -295,18 +294,13 @@ class DebugBrain: BrainEngine {
         _ = operation(String(d))
     }
 
-    var oneLine: String {
-        Display(number: n.last).data.oneLine
-    }
-    var left: String {
-        Display(number: n.last).data.left
-    }
-    var right: String? {
-        Display(number: n.last).data.right
-    }
-    func debugPress(_ digit: Int) {
-        if digit >= 0 && digit <= 9 {
-            let _  = operation(String(digit))
-        }
-    }
+//    var oneLine: String {
+//        Display(number: n.last).data.oneLine
+//    }
+//    var left: String {
+//        Display(number: n.last).data.left
+//    }
+//    var right: String? {
+//        Display(number: n.last).data.right
+//    }
 }

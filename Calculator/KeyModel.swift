@@ -9,7 +9,7 @@ import SwiftUI
 
 class KeyModel: ObservableObject {
     let keySize: CGSize
-    var callback: ((String) async -> CalculationResult) = { _ in CalculationResult(number: nil, pendingSymbol: nil) }
+    var callback: (String) -> () = { _ in print("KEY CALLBACK NOT IMPLEMENTED") }
     @Published var showAC = true
     var showPrecision: Bool = false
     var secondActive = false
@@ -17,17 +17,16 @@ class KeyModel: ObservableObject {
     @AppStorage("rad", store: .standard) var rad: Bool = false
 
     
-    init(screen: Screen) {//, callback: @escaping (String) async -> CalculationResult) {
-        keySize = screen.keySize
+    init(screen: Screen) {
+        self.keySize = screen.keySize
         for symbol in C.keysAll {
             backgroundColor[symbol] = keyBackground(symbol).upColor
         }
     }
     
-    func assignCallback(callback: @escaping (String) async -> CalculationResult) {
+    func assignCallback(callback: @escaping (String) -> ()) {
         self.callback = callback
     }
-    
     
     func touchDown(symbol: String) {
         backgroundColor[symbol] = keyBackground(symbol).downColor
@@ -51,17 +50,7 @@ class KeyModel: ObservableObject {
             if _symbol == "AC" {
                 showPrecision.toggle()
             }
-            Task {
-                // if !isCalculating && keyInfo[symbol]!.enabled {
-                let result = await callback(symbol)
-                Task { @MainActor in
-                    if result.isNull {
-                        showAC = true
-                    } else {
-                        showAC = false
-                    }
-                }
-            }
+            callback(symbol)
         }
         
     }
