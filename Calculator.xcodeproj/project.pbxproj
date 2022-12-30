@@ -19,7 +19,7 @@
 		AA2FAC0F272F2349006DE4C8 /* Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FABF8272F2348006DE4C8 /* Number.swift */; };
 		AA2FAC12272F2349006DE4C8 /* NumberStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FABFB272F2348006DE4C8 /* NumberStack.swift */; };
 		AA2FAC15272F2349006DE4C8 /* CalculatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FABFF272F2348006DE4C8 /* CalculatorApp.swift */; };
-		AA2FAC17272F2349006DE4C8 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC01272F2348006DE4C8 /* Brain.swift */; };
+		AA2FAC17272F2349006DE4C8 /* BrainEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC01272F2348006DE4C8 /* BrainEngine.swift */; };
 		AA2FAC1A272F2349006DE4C8 /* CalculatorCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC04272F2348006DE4C8 /* CalculatorCommands.swift */; };
 		AA2FAC23272F2349006DE4C8 /* OperatorStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0D272F2349006DE4C8 /* OperatorStack.swift */; };
 		AA370C2D293352960041AE4E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA370C2C293352960041AE4E /* Constants.swift */; };
@@ -31,7 +31,7 @@
 		AA6577F52935B90D00DA98E7 /* TODOs.rtf in Resources */ = {isa = PBXBuildFile; fileRef = AA6577F42935B90D00DA98E7 /* TODOs.rtf */; };
 		AA672B0A295189950044DC08 /* ScrollViewConditionalAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA672B09295189950044DC08 /* ScrollViewConditionalAnimation.swift */; };
 		AA689115295BE56900129593 /* CalculationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA689114295BE56900129593 /* CalculationResult.swift */; };
-		AA689125295E681400129593 /* ActorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA689124295E681400129593 /* ActorBrain.swift */; };
+		AA689125295E681400129593 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA689124295E681400129593 /* Brain.swift */; };
 		AA6CE7072945C1D4002BB5FE /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6CE7062945C1D4002BB5FE /* Store.swift */; };
 		AA6CE70A2945CC5C002BB5FE /* Test.storekit in Resources */ = {isa = PBXBuildFile; fileRef = AA6CE7092945CC5C002BB5FE /* Test.storekit */; };
 		AA6CE70C2945CE0A002BB5FE /* PurchaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6CE70B2945CE0A002BB5FE /* PurchaseView.swift */; };
@@ -91,7 +91,7 @@
 		AA2FABFB272F2348006DE4C8 /* NumberStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberStack.swift; sourceTree = "<group>"; };
 		AA2FABFC272F2348006DE4C8 /* Calculator.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Calculator.entitlements; sourceTree = "<group>"; };
 		AA2FABFF272F2348006DE4C8 /* CalculatorApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorApp.swift; sourceTree = "<group>"; };
-		AA2FAC01272F2348006DE4C8 /* Brain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Brain.swift; sourceTree = "<group>"; };
+		AA2FAC01272F2348006DE4C8 /* BrainEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrainEngine.swift; sourceTree = "<group>"; };
 		AA2FAC04272F2348006DE4C8 /* CalculatorCommands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorCommands.swift; sourceTree = "<group>"; };
 		AA2FAC0D272F2349006DE4C8 /* OperatorStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperatorStack.swift; sourceTree = "<group>"; };
 		AA370C2C293352960041AE4E /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -103,7 +103,7 @@
 		AA6577F42935B90D00DA98E7 /* TODOs.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = TODOs.rtf; sourceTree = "<group>"; };
 		AA672B09295189950044DC08 /* ScrollViewConditionalAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewConditionalAnimation.swift; sourceTree = "<group>"; };
 		AA689114295BE56900129593 /* CalculationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculationResult.swift; sourceTree = "<group>"; };
-		AA689124295E681400129593 /* ActorBrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActorBrain.swift; sourceTree = "<group>"; };
+		AA689124295E681400129593 /* Brain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brain.swift; sourceTree = "<group>"; };
 		AA6CE7062945C1D4002BB5FE /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		AA6CE7082945C25E002BB5FE /* Calculator.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Calculator.storekit; sourceTree = "<group>"; };
 		AA6CE7092945CC5C002BB5FE /* Test.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Test.storekit; sourceTree = "<group>"; };
@@ -220,8 +220,8 @@
 				AA1B007C294777180054C851 /* gmp.h */,
 				AA1B007F294777190054C851 /* mpf2mpfr.h */,
 				AA1B007E294777190054C851 /* mpfr.h */,
-				AA2FAC01272F2348006DE4C8 /* Brain.swift */,
-				AA689124295E681400129593 /* ActorBrain.swift */,
+				AA2FAC01272F2348006DE4C8 /* BrainEngine.swift */,
+				AA689124295E681400129593 /* Brain.swift */,
 				AA2FABF1272F217F006DE4C8 /* Gmp.swift */,
 				AA2FABF8272F2348006DE4C8 /* Number.swift */,
 				AA2FABFB272F2348006DE4C8 /* NumberStack.swift */,
@@ -356,7 +356,7 @@
 				AA370C2D293352960041AE4E /* Constants.swift in Sources */,
 				AA29F58A293CD608001ADF5A /* PortraitDisplay.swift in Sources */,
 				AA92B4C529266CC1005E43F0 /* AnimatedDots.swift in Sources */,
-				AA2FAC17272F2349006DE4C8 /* Brain.swift in Sources */,
+				AA2FAC17272F2349006DE4C8 /* BrainEngine.swift in Sources */,
 				AA2FAC12272F2349006DE4C8 /* NumberStack.swift in Sources */,
 				AA2FABF2272F217F006DE4C8 /* Gmp.swift in Sources */,
 				AAB10B9A292A2222004707E9 /* Label.swift in Sources */,
@@ -369,7 +369,7 @@
 				AA3FB8272920E0E5002ECCEB /* Settings.swift in Sources */,
 				AA4C672D295A74430074345B /* KeyModel.swift in Sources */,
 				AA2FAC15272F2349006DE4C8 /* CalculatorApp.swift in Sources */,
-				AA689125295E681400129593 /* ActorBrain.swift in Sources */,
+				AA689125295E681400129593 /* Brain.swift in Sources */,
 				AA370C2F293352B10041AE4E /* BrainModel.swift in Sources */,
 				AA2FAC1A272F2349006DE4C8 /* CalculatorCommands.swift in Sources */,
 				AA584F572938E8A9008823F3 /* LengthMeasurement.swift in Sources */,

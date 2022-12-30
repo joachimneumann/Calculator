@@ -24,7 +24,7 @@ class BrainModel : ObservableObject {
     @Published var isPasting: Bool = false
     var copyAnimationDone = false
 //
-    private let actorBrain: ActorBrain
+    private let actorBrain: Brain
 //    private let stupidBrain: Brain
 //    private let stupidBrainPrecision = 100
 
@@ -49,7 +49,7 @@ class BrainModel : ObservableObject {
         // At init, not much is happening in the brain
 //        stupidBrain = Brain(precision: stupidBrainPrecision)
 //        display = Display(screen: screen)
-        actorBrain = ActorBrain(precision: _precision.wrappedValue)
+        actorBrain = Brain(precision: _precision.wrappedValue)
         Task {
             calculationResult = await actorBrain.operation("AC")
             if let number = calculationResult.number {

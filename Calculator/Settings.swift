@@ -40,8 +40,8 @@ struct Settings: View {
     private let PHYSICAL_MEMORY = ProcessInfo.processInfo.physicalMemory
     
     var body: some View {
-        let bitsInfo = Brain.bits(for: settingsPrecision)
-        let internalPrecisionInfo = Brain.internalPrecision(for: settingsPrecision)
+        let bitsInfo = Number.bits(for: settingsPrecision)
+        let internalPrecisionInfo = Number.internalPrecision(for: settingsPrecision)
         let sizeOfOneNumber = Gmp.memorySize(bits: bitsInfo)
         let memoryNeeded = sizeOfOneNumber * 100
         VStack {
