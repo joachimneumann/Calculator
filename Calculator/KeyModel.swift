@@ -15,10 +15,11 @@ class KeyModel: ObservableObject {
     var secondActive = false
     @Published var backgroundColor: [String: Color] = [:]
     @AppStorage("rad", store: .standard) var rad: Bool = false
-
+    @Published var currentDisplay: Display
     
     init(screen: Screen) {
         self.screen = screen
+        self.currentDisplay = Display(screen: screen)
         for symbol in C.keysAll {
             backgroundColor[symbol] = keyBackground(symbol).upColor
         }
@@ -48,6 +49,12 @@ class KeyModel: ObservableObject {
             }
             if let keyPressResponder = keyPressResponder {
                 keyPressResponder.keyPress(symbol: symbol, screen: screen)
+//                let temp = await calculationResult.getDisplay(isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
+//                await MainActor.run(body: {
+//                    display = temp
+//                })
+
+                
             }
         }
         

@@ -38,6 +38,7 @@ class BrainModel : KeyPressResponder, ObservableObject {
     static let MAX_DISPLAY_LEN = 10_000 // too long strings in Text() crash the app
 //
     @Published var display: Display = Display(screen: Screen(CGSize()))
+    private var calculationResult: CalculationResult = CalculationResult(number: Number("0", precision: 10), hasChanged: false, pendingSymbol: nil)
 //    let screen: Screen
 
     init() {
@@ -52,7 +53,7 @@ class BrainModel : KeyPressResponder, ObservableObject {
 //        stupidBrain = Brain(precision: stupidBrainPrecision)
 //        display = Display(screen: screen)
         brain = Brain(precision: _precision.wrappedValue)
-        Task {
+//        Task {
 //            calculationResult = await brain.operation("AC")
 //            display = await calculationResult.display(isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
             
@@ -62,7 +63,7 @@ class BrainModel : KeyPressResponder, ObservableObject {
 //                    display = temp
 //                }
 //            }
-        }
+//        }
 //        if memoryValue == "" {
 ////                await brain.setMemory(nil)
 ////                await stupidBrain.setMemory(nil)
@@ -285,7 +286,12 @@ class BrainModel : KeyPressResponder, ObservableObject {
         }
     }
 
-
+    func refreshDisplay(screen: Screen) async {
+        let tempDisplay = await calculationResult.getDisplay(isPreliminary: isPreliminary, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
+        await MainActor.run() {
+            display = tempDisplay
+        }
+    }
     func execute(_ symbol: String, screen: Screen) async {
 //        isCalculating = true
 //        for key in C.keysToDisable {
@@ -306,11 +312,8 @@ class BrainModel : KeyPressResponder, ObservableObject {
 //                if not self.cancelled { let tempDisplay = stupidBrain.getDisplay }
 //                if not self.cancelled { display = temp }
 //            }
-        let calculationResult = await brain.operation(symbol)
-        let temp = await calculationResult.display(isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
-        await MainActor.run(body: {
-            display = temp
-        })
+        calculationResult = await brain.operation(symbol)
+        await refreshDisplay(screen: screen)
 //            isCalculating = false
 //            if brain.isValidNumber {
 //                for key in C.keysAll {

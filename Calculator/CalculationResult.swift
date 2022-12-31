@@ -15,7 +15,7 @@ struct CalculationResult {
     var isNull: Bool { number.isNull }
     var isValidNumber: Bool { number.isValid }
     
-    func display(isPreliminary: Bool,
+    func getDisplay(isPreliminary: Bool,
                  screen: Screen,
                  forceScientific: Bool,
                  showAsInteger: Bool,

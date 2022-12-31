@@ -37,10 +37,7 @@ struct Calculator: View {
         }
     }
 
-//    @ObservedObject var brainModel: Model
     var store = Store()
-//    @ObservedObject var keyModel: KeyModel
-    
     
     var body: some View {
         // let _ = print("screenModel.isPortraitPhone", screen.isPortraitPhone)
@@ -48,13 +45,13 @@ struct Calculator: View {
             if keyModel.screen.isPortraitPhone {
                 VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
-                    PortraitDisplay(display: brainModel.display)
-                        .padding(.horizontal, keyModel.screen.portraitIPhoneDisplayHorizontalPadding)
-                        .padding(.bottom, keyModel.screen.portraitIPhoneDisplayBottomPadding)
-                    NonScientificKeyboard(
-                        keyModel: keyModel,
-                        spacing: keyModel.screen.keySpacing,
-                        keySize: keyModel.screen.keySize)
+                                        PortraitDisplay(display: brainModel.display)
+                                            .padding(.horizontal, keyModel.screen.portraitIPhoneDisplayHorizontalPadding)
+                                            .padding(.bottom, keyModel.screen.portraitIPhoneDisplayBottomPadding)
+                                        NonScientificKeyboard(
+                                            keyModel: keyModel,
+                                            spacing: keyModel.screen.keySpacing,
+                                            keySize: keyModel.screen.keySize)
                 }
             } else {
                 MyNavigation {
@@ -126,9 +123,12 @@ struct Calculator: View {
             }
             brainModel.keyPress(symbol: "AC", screen: keyModel.screen)
         }
-        .onChange(of: keyModel.screen.lengths.withoutComma) { _ in
-//            brainModel.display.update(withScreen: keyModel.screen)
-        }
+//        .onChange(of: keyModel.screen.lengths.withoutComma) { _ in
+//            print("keyModel.screen.lengths.withoutComma", keyModel.screen.lengths.withoutComma)
+//            Task {
+//                await brainModel.refreshDisplay(screen: keyModel.screen)
+//            }
+//        }
     }
 }
 /*
