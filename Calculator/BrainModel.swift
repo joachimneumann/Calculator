@@ -8,7 +8,7 @@
 import SwiftUI
 
 protocol KeyPressResponder {
-    func keyPress(symbol: String)
+    func keyPress(symbol: String, screen: Screen)
 }
 
 class BrainModel : KeyPressResponder, ObservableObject {
@@ -38,10 +38,10 @@ class BrainModel : KeyPressResponder, ObservableObject {
     static let MAX_DISPLAY_LEN = 10_000 // too long strings in Text() crash the app
 //
     @Published var display: Display = Display(screen: Screen(CGSize()))
-    let screen: Screen
+//    let screen: Screen
 
-    init(screen: Screen) {
-        self.screen = screen
+    init() {
+//        self.screen = screen
 
 //        timerInfo = timerDefaultText
         // print("Model init isPortraitPhone \(screenInfo.isPortraitPhone)")
@@ -279,13 +279,14 @@ class BrainModel : KeyPressResponder, ObservableObject {
 //        previous = op
     }
 
-    func keyPress(symbol: String) {
+    func keyPress(symbol: String, screen: Screen) {
         Task {
-            await execute(symbol)
+            await execute(symbol, screen: screen)
         }
     }
-    
-    func execute(_ symbol: String) async {
+
+
+    func execute(_ symbol: String, screen: Screen) async {
 //        isCalculating = true
 //        for key in C.keysToDisable {
 //            keyInfo[key]!.enabled = false

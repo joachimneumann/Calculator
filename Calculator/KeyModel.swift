@@ -8,7 +8,7 @@
 import SwiftUI
 
 class KeyModel: ObservableObject {
-    let keySize: CGSize
+    let screen: Screen
     var keyPressResponder: KeyPressResponder? = nil
     @Published var showAC = true
     var showPrecision: Bool = false
@@ -18,7 +18,7 @@ class KeyModel: ObservableObject {
 
     
     init(screen: Screen) {
-        self.keySize = screen.keySize
+        self.screen = screen
         for symbol in C.keysAll {
             backgroundColor[symbol] = keyBackground(symbol).upColor
         }
@@ -47,7 +47,7 @@ class KeyModel: ObservableObject {
                 showPrecision.toggle()
             }
             if let keyPressResponder = keyPressResponder {
-                keyPressResponder.keyPress(symbol: symbol)
+                keyPressResponder.keyPress(symbol: symbol, screen: screen)
             }
         }
         

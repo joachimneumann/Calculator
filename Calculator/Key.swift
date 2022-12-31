@@ -19,7 +19,7 @@ struct Key: View {
          _ keyModel: KeyModel,
          doubleWidth: CGFloat = 0.0) {
         self.symbol = symbol
-        self.size = keyModel.keySize
+        self.size = keyModel.screen.keySize
         self.backgroundColor = keyModel.backgroundColor[symbol]!
         self.touchDown = keyModel.touchDown
         self.touchUp = keyModel.touchUp
