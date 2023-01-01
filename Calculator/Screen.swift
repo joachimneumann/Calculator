@@ -32,7 +32,7 @@ class Screen: Equatable, ObservableObject {
 
     
     init(_ screenSize: CGSize) {
-        print("Screen INIT", screenSize)
+        // print("Screen INIT", screenSize)
         
         isPad = UIDevice.current.userInterfaceIdiom == .pad
         let isPortrait = screenSize.height > screenSize.width

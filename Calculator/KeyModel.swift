@@ -18,7 +18,6 @@ class KeyModel: ObservableObject {
     @Published var currentDisplay: Display
     
     init() {
-//        self.screen = screen
         self.currentDisplay = Display(screen: Screen(CGSize()))
         for symbol in C.keysAll {
             backgroundColor[symbol] = keyBackground(symbol).upColor
@@ -52,12 +51,6 @@ class KeyModel: ObservableObject {
                     calculationResult = await keyPressResponder.keyPress(symbol)
                     await refreshDisplay(screen: screen)
                 }
-//                let temp = await calculationResult.getDisplay(isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
-//                await MainActor.run(body: {
-//                    display = temp
-//                })
-
-                
             } else {
                 print("no keyPressResponder set")
             }
@@ -69,7 +62,7 @@ class KeyModel: ObservableObject {
             let tempDisplay = await calculationResult.getDisplay(keyPressResponder: keyPressResponder, screen: screen)
             await MainActor.run() {
                 currentDisplay = tempDisplay
-                print("currentDisplay", currentDisplay.data.left)
+                //print("currentDisplay", currentDisplay.data.left)
             }
         }
     }

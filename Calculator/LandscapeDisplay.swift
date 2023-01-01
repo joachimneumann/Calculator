@@ -13,12 +13,10 @@ struct LandscapeDisplay: View {
     let disabledScrolling: Bool
     @Binding var scrollViewHasScrolled: Bool
     let offsetToVerticallyAlignTextWithkeyboard: CGFloat
-    let digitWidth: CGFloat
-    let ePadding: CGFloat
     var scrollViewID: UUID
     
     var body: some View {
-        let _ = print("LandscapeDisplay", display.data.left)
+        //let _ = print("LandscapeDisplay", display.data.left)
         ScrollViewConditionalAnimation(
             text: display.data.left,
             font: display.format.font,
@@ -29,13 +27,13 @@ struct LandscapeDisplay: View {
             scrollViewHasScolled: $scrollViewHasScrolled,
             scrollViewID: scrollViewID,
             preliminary: display.format.showThreeDots,
-            digitWidth: digitWidth)
+            digitWidth: display.format.digitWidth)
         if display.data.right != nil {
             Text(display.data.right!)
                 .kerning(C.kerning)
                 .font(display.format.font)
                 .foregroundColor(showOrange ? .orange : display.format.color)
-                .padding(.leading, ePadding)
+                .padding(.leading, display.format.ePadding)
                 .offset(y: offsetToVerticallyAlignTextWithkeyboard)
         }
     }

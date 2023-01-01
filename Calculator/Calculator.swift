@@ -50,9 +50,7 @@ struct Calculator: View {
                                             .padding(.bottom, screen.portraitIPhoneDisplayBottomPadding)
                     NonScientificKeyboard(
                         screen: screen,
-                        keyModel: keyModel,
-                        spacing: screen.keySpacing,
-                        keySize: screen.keySize)
+                        keyModel: keyModel)
                 }
             } else {
                 MyNavigation {
@@ -69,8 +67,6 @@ struct Calculator: View {
                             disabledScrolling: !isZoomed,
                             scrollViewHasScrolled: $scrollViewHasScrolled,
                             offsetToVerticallyAlignTextWithkeyboard: screen.offsetToVerticallyAlignTextWithkeyboard,
-                            digitWidth: screen.lengths.digitWidth,
-                            ePadding: screen.lengths.ePadding,
                             scrollViewID: scrollViewID
                         )
                         Icons(
@@ -101,15 +97,11 @@ struct Calculator: View {
                             HStack(spacing: 0.0) {
                                 ScientificKeyboard(
                                     screen: screen,
-                                    keyModel: keyModel,
-                                    spacing: screen.keySpacing,
-                                    keySize: screen.keySize)
+                                    keyModel: keyModel)
                                 .padding(.trailing, screen.keySpacing)
                                 NonScientificKeyboard(
                                     screen: screen,
-                                    keyModel: keyModel,
-                                    spacing: screen.keySpacing,
-                                    keySize: screen.keySize)
+                                    keyModel: keyModel)
                             }
                             .background(Color.black)
                         }
@@ -137,89 +129,7 @@ struct Calculator: View {
         }
     }
 }
-/*
- var body: some View {
- // let _ = print("Calculator: isPortraitPhone \(screen,Info.isPortraitPhone) size \(screen,Info.calculatorSize)")
- // let _ = print("brainModel.displayData.left \(brainModel.displayData.left)")
- if screen,Info.isPortraitPhone {
- VStack(spacing: 0.0) {
- Spacer(minLength: 0.0)
- PortraitDisplay(
- display: brainModel.display,
- screenInfo: screen,Info)
- //.background(Color.yellow)
- .padding(.horizontal, screen,Info.portraitIPhoneDisplayHorizontalPadding)
- .padding(.bottom, screen,Info.portraitIPhoneDisplayBottomPadding)
- NonScientificKeyboard(
- brainModel: brainModel,
- spacing: screen,Info.keySpacing,
- keySize: screen,Info.keySize)
- }
- //.background(Color.blue)
- .padding(.horizontal, screen,Info.portraitIPhoneHorizontalPadding)
- .padding(.bottom, screen,Info.portraitIPhoneBottomPadding)
- } else {
- MyNavigation {
- /*
-  lowest level: longDisplay and Icons
-  mid level: Keyboard with info and rectangle on top
-  top level: single line
-  */
- HStack(alignment: .top, spacing: 0.0) {
- Spacer(minLength: 0.0)
- // let _ = print("fontsize \(brainModel.display.format.font)")
- LandscapeDisplay(
- display: brainModel.display,
- screenInfo: screen,Info,
- showOrange: brainModel.isCopying || brainModel.isPasting,
- disabledScrolling: !brainModel.isZoomed,
- scrollViewHasScrolled: $brainModel.scrollViewHasScrolled,
- scrollViewID: brainModel.scrollViewID
- )
- Icons(
- store: store,
- brainModel: brainModel,
- screenInfo: screen,Info,
- isZoomed: $brainModel.isZoomed)
- .offset(y: screen,Info.offsetToVerticallyIconWithText)
- }
- .overlay() {
- VStack(spacing: 0.0) {
- Spacer(minLength: 0.0)
- Rectangle()
- .foregroundColor(.black)
- .frame(height: screen,Info.lengths.infoHeight)
- .overlay() {
- let info = "\(brainModel.hasBeenReset ? "Precision: "+brainModel.precisionDescription+" digits" : "\(brainModel.rad ? "Rad" : "")")"
- if info.count > 0 {
- HStack(spacing: 0.0) {
- Text(info)
- .foregroundColor(.white)
- .font(Font(screen,Info.infoUiFont))
- Spacer()
- }
- .padding(.leading, screen,Info.keySize.width * 0.3)
- //                                .offset(x: screenInfo.keySpacing, y: -screenInfo.keyboardHeight)
- }
- }
- HStack(spacing: 0.0) {
- ScientificKeyboard(brainModel: brainModel, spacing: screen,Info.keySpacing, keySize: screen,Info.keySize)
- .padding(.trailing, screen,Info.keySpacing)
- NonScientificKeyboard(brainModel: brainModel, spacing: screen,Info.keySpacing, keySize: screen,Info.keySize)
- }
- .background(Color.black)
- }
- .offset(y: brainModel.isZoomed ? screen,Info.calculatorSize.height : 0.0)
- .transition(.move(edge: .bottom))
- }
- }
- .accentColor(.white) // for the navigation back button
- .onChange(of: screen,Info.lengths.withoutComma) { _ in
- brainModel.updateDisplayData() // redraw with or without keyboard
- }
- }
- }
- */
+
 
 
 extension View {

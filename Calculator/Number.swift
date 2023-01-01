@@ -145,10 +145,6 @@ class Number: CustomDebugStringConvertible {
         }
     }
     
-    func getDisplayData(_ lengths: Lengths) async -> DisplayData {
-        return await getDisplayData(multipleLines: false, lengths: lengths, forceScientific: false, showAsInteger: false, showAsFloat: false)
-    }
-    
     func getDisplayData(
         multipleLines: Bool,
         lengths: Lengths,

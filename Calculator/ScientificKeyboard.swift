@@ -10,10 +10,10 @@ import SwiftUI
 struct ScientificKeyboard: View {
     let screen: Screen
     @ObservedObject var keyModel: KeyModel
-    let spacing: CGFloat
-    let keySize: CGSize
 
     var body: some View {
+        let spacing = screen.keySpacing
+        let keySize = screen.keySize
         VStack(spacing: spacing) {
             HStack(spacing: spacing) {
                 Key(screen, "( ", keyModel, keySize)
