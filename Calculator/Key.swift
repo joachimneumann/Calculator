@@ -12,6 +12,7 @@ struct Key: View {
     let symbol: String
     let keySize: CGSize
     let backgroundColor: Color
+    let textColor: Color
     let touchDown: (String) -> ()
     let touchUp: (String, Screen) -> ()
     let doubleWidth: CGFloat
@@ -25,6 +26,7 @@ struct Key: View {
         self.symbol = symbol
         self.keySize = keySize
         self.backgroundColor = keyModel.backgroundColor[symbol]!
+        self.textColor = keyModel.textColor[symbol]!
         self.touchDown = keyModel.touchDown
         self.touchUp = keyModel.touchUp
 //        self.touchUp = keyModel.touchUp
@@ -34,12 +36,14 @@ struct Key: View {
     var body: some View {
         ZStack {
             if symbol == "0" {
-                Label(symbol: symbol, size: keySize.height)
+                Label(symbol: symbol, size: keySize.height, color: textColor)
                     .offset(x: doubleWidth * -0.5 + keySize.width * 0.5)
+                    .foregroundColor(textColor)
                     .frame(width: doubleWidth, height: keySize.height)
             } else {
-                Label(symbol: symbol, size: keySize.height)
+                Label(symbol: symbol, size: keySize.height, color: textColor)
                     .frame(width: keySize.width, height: keySize.height)
+                    .foregroundColor(textColor)
             }
         }
         .background(backgroundColor)

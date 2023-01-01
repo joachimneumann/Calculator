@@ -14,22 +14,24 @@ class KeyModel: ObservableObject {
     var showPrecision: Bool = false
     var secondActive = false
     @Published var backgroundColor: [String: Color] = [:]
+    @Published var textColor: [String: Color] = [:]
     @AppStorage("rad", store: .standard) var rad: Bool = false
     @Published var currentDisplay: Display
-    
+    private var previouslyPendingOperator: String? = nil
     init() {
         self.currentDisplay = Display()
         for symbol in C.keysAll {
-            backgroundColor[symbol] = keyBackground(symbol).upColor
+            backgroundColor[symbol] = keyColors(symbol, pending: false).upColor
+            textColor[symbol]       = keyColors(symbol, pending: false).textColor
         }
     }
         
     func touchDown(symbol: String) {
-        backgroundColor[symbol] = keyBackground(symbol).downColor
+        backgroundColor[symbol] = keyColors(symbol, pending: false).downColor
     }
     
     func touchUp(symbol: String, screen: Screen) {
-        backgroundColor[symbol] = keyBackground(symbol).upColor
+        backgroundColor[symbol] = keyColors(symbol, pending: false).upColor
         let _symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(symbol) && !rad ? symbol+"D" : symbol
         
         switch _symbol {
@@ -49,6 +51,21 @@ class KeyModel: ObservableObject {
             if let keyPressResponder = keyPressResponder {
                 Task {
                     calculationResult = await keyPressResponder.keyPress(symbol)
+                    if let previous = previouslyPendingOperator {
+                        await MainActor.run() {
+                            backgroundColor[previous] = keyColors(previous, pending: false).upColor
+                            textColor[previous] = keyColors(previous, pending: false).textColor
+                        }
+                    }
+                    if let newPending = calculationResult.pendingSymbol {
+                        await MainActor.run() {
+                            backgroundColor[newPending] = keyColors(newPending, pending: true).upColor
+                            textColor[newPending] = keyColors(newPending, pending: true).textColor
+                            
+//                            this does not seem to work
+                        }
+                    }
+                    previouslyPendingOperator = calculationResult.pendingSymbol
                     await refreshDisplay(screen: screen)
                 }
             } else {
@@ -68,15 +85,15 @@ class KeyModel: ObservableObject {
     }
 
     
-    func keyBackground(_ symbol: String) -> ColorsOf {
+    func keyColors(_ symbol: String, pending: Bool) -> ColorsOf {
         if C.keysForDigits.contains(symbol) {
             return C.digitColors
         } else if symbol == "2nd" {
             return C.secondColors
         } else if C.keysOfOperator.contains(symbol) {
-            return C.operatorColors
+            return pending ? C.pendingOperatorColors : C.operatorColors
         } else if C.keysOfScientificOperators.contains(symbol) {
-            return C.scientificColors
+            return pending ? C.pendingScientificColors : C.scientificColors
         }
         return C.digitColors
     }

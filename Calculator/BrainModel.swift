@@ -256,7 +256,7 @@ class BrainModel : KeyPressResponder, ObservableObject {
     //        keyInfo["mr"]!.enabled = brain.memory != nil
     //    }
     
-    private var previous: String? = nil
+//    private var previous: String? = nil
     func pendingOperatorCallback(op: String?) {
         /// In the brain, we have already asserted that the new op is different from previous
         

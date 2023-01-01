@@ -16,7 +16,7 @@ struct Label: View {
     let size: CGFloat
     let color: Color
     var sizeFactor: CGFloat
-    init(symbol: String, size: CGFloat, color: Color = Color.white) {
+    init(symbol: String, size: CGFloat, color: Color) {
         //let _ = print("LABEL for", symbol)
         self.symbol = symbol
         self.color = color
