@@ -41,9 +41,6 @@ class BrainModel : KeyPressResponder, ObservableObject {
     @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
     @AppStorage("memoryValue", store: .standard) var memoryValue: String = ""
     static let MAX_DISPLAY_LEN = 10_000 // too long strings in Text() crash the app
-    //
-    private var calculationResult: CalculationResult = CalculationResult(number: Number("0", precision: 10), hasChanged: false, pendingSymbol: nil)
-    //    let screen: Screen
     
     init() {
         //        self.screen = screen
@@ -255,34 +252,6 @@ class BrainModel : KeyPressResponder, ObservableObject {
     //        // check mr
     //        keyInfo["mr"]!.enabled = brain.memory != nil
     //    }
-    
-//    private var previous: String? = nil
-    func pendingOperatorCallback(op: String?) {
-        /// In the brain, we have already asserted that the new op is different from previous
-        
-        /// Set the previous one back to normal?
-        //        if let previous = previous {
-        //            DispatchQueue.main.async {
-        //                if C.keysWithPendingOperations.contains(previous) {
-        //                    self.keyInfo[previous]!.colors = C.scientificColors
-        //                } else {
-        //                    self.keyInfo[previous]!.colors = C.operatorColors
-        //                }
-        //            }
-        //        }
-        //
-        //        /// Set the colors for the pending operation key
-        //        if let op = op {
-        //            DispatchQueue.main.async {
-        //                if C.keysWithPendingOperations.contains(op) {
-        //                    self.keyInfo[op]!.colors = C.pendingScientificColors
-        //                } else {
-        //                    self.keyInfo[op]!.colors = C.pendingOperatorColors
-        //                }
-        //            }
-        //        }
-        //        previous = op
-    }
     
     
     func keyPress(_ symbol: String) async -> CalculationResult {

@@ -27,11 +27,11 @@ class KeyModel: ObservableObject {
     }
         
     func touchDown(symbol: String) {
-        backgroundColor[symbol] = keyColors(symbol, pending: false).downColor
+        backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).downColor
     }
     
     func touchUp(symbol: String, screen: Screen) {
-        backgroundColor[symbol] = keyColors(symbol, pending: false).upColor
+        backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).upColor
         let _symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(symbol) && !rad ? symbol+"D" : symbol
         
         switch _symbol {
