@@ -18,7 +18,7 @@ class KeyModel: ObservableObject {
     @Published var currentDisplay: Display
     
     init() {
-        self.currentDisplay = Display(screen: Screen(CGSize()))
+        self.currentDisplay = Display()
         for symbol in C.keysAll {
             backgroundColor[symbol] = keyBackground(symbol).upColor
         }

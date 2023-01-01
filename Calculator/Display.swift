@@ -10,46 +10,7 @@ import SwiftUI
 struct Display {
     let data: DisplayData
     let format: DisplayFormat
-    
-//    init(number: Number,
-//         isPreliminary: Bool,
-//         screen: Screen,
-//         forceScientific: Bool,
-//         showAsInteger: Bool,
-//         showAsFloat: Bool
-//    ) {
-//        data = number.getDisplayData(
-//            multipleLines: !isPreliminary && !screen.isPortraitPhone,
-//            lengths: screen.lengths,
-//            forceScientific: forceScientific,
-//            showAsInteger: showAsInteger,
-//            showAsFloat: showAsFloat)
-//        format = DisplayFormat(
-//            for: data.length,
-//            withMaxLength: data.maxlength,
-//            showThreeDots: isPreliminary,
-//            screen: screen)
-//    }
 }
-
-extension Display {
-    init(screen: Screen) {
-        data = DisplayData(left: "0", maxlength: 0, canBeInteger: false, canBeFloat: false)
-        format = DisplayFormat(for: 1, withMaxLength: 1, showThreeDots: false, screen: screen)
-    }
-}
-
-//extension Display {
-//    init(number: Number) {
-//        data = number.getDisplayData(
-//            multipleLines: false,
-//            lengths: Lengths(100),
-//            forceScientific: false,
-//            showAsInteger: false,
-//            showAsFloat: false)
-//        format = DisplayFormat()
-//    }
-//}
 
 struct DisplayData {
     var left: String
@@ -65,16 +26,6 @@ struct DisplayData {
         var ret = left.count
         if right != nil { ret += right!.count }
         return ret
-    }
-}
-
-extension DisplayData {
-    init() {
-        left = "0"
-        right = nil
-        maxlength = 0
-        canBeInteger = false
-        canBeFloat = false
     }
 }
 
@@ -108,9 +59,24 @@ struct DisplayFormat {
     }
 }
 
+extension Display {
+    init() {
+        data = DisplayData()
+        format = DisplayFormat()
+    }
+}
+extension DisplayData {
+    init() {
+        left = "0"
+        right = nil
+        maxlength = 0
+        canBeInteger = false
+        canBeFloat = false
+    }
+}
 extension DisplayFormat {
     init() {
-        font = Font(UIFont())
+        font = Font(UIFont.monospacedDigitSystemFont(ofSize: 10, weight: .regular))
         color = Color.white
         showThreeDots = false
         digitWidth = 0.0
