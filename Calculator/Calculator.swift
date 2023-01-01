@@ -40,25 +40,20 @@ struct Calculator: View {
     var store = Store()
     
     var body: some View {
-      let _ = print("Calculator body keyModel isPortraitPhone", screen.isPortraitPhone)
+      //let _ = print("Calculator body keyModel isPortraitPhone", screen.isPortraitPhone)
         ZStack {
             if screen.isPortraitPhone {
                 VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
                     PortraitDisplay(display: keyModel.currentDisplay)
-                                            .padding(.horizontal, screen.portraitIPhoneDisplayHorizontalPadding)
-                                            .padding(.bottom, screen.portraitIPhoneDisplayBottomPadding)
+                        .padding(.horizontal, screen.portraitIPhoneDisplayHorizontalPadding)
+                        .padding(.bottom, screen.portraitIPhoneDisplayBottomPadding)
                     NonScientificKeyboard(
                         screen: screen,
                         keyModel: keyModel)
                 }
             } else {
                 MyNavigation {
-                    /*
-                     lowest level: longDisplay and Icons
-                     mid level: Keyboard with info and rectangle on top
-                     top level: single line
-                     */
                     HStack(alignment: .top, spacing: 0.0) {
                         Spacer(minLength: 0.0)
                         LandscapeDisplay(
@@ -72,6 +67,7 @@ struct Calculator: View {
                         Icons(
                             store: store,
                             brainModel: brainModel,
+                            keyModel: keyModel,
                             screen: screen,
                             isZoomed: $isZoomed)
                         .offset(y: screen.offsetToVerticallyIconWithText)
@@ -112,6 +108,7 @@ struct Calculator: View {
                 .accentColor(.white) // for the navigation back button
             }
         }
+        .preferredColorScheme(.dark)
         .onAppear() {
             if keyModel.keyPressResponder == nil {
                 keyModel.keyPressResponder = brainModel

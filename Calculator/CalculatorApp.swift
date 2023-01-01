@@ -13,9 +13,7 @@ struct CalculatorApp: App {
         WindowGroup {
             GeometryReader { (geo) in
                 Calculator(screen: Screen(geo.size))
-//                    .environmentObject(Screen(geo.size)) // Make the theme available through the environment.
             }
-            .preferredColorScheme(.dark)
         }
     }
 }
