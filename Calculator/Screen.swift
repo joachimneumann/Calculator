@@ -7,7 +7,11 @@
 
 import UIKit
 
-struct Screen {
+class Screen: Equatable, ObservableObject {
+    static func == (lhs: Screen, rhs: Screen) -> Bool {
+        lhs.keySize == rhs.keySize
+    }
+    
     /// no @Published propertied, but objectWillChange.send() at the end of update()
     let isPad: Bool
     let isPortraitPhone: Bool
@@ -28,7 +32,7 @@ struct Screen {
 
     
     init(_ screenSize: CGSize) {
-        print("ScreenModel INIT", screenSize)
+        print("Screen INIT", screenSize)
         
         isPad = UIDevice.current.userInterfaceIdiom == .pad
         let isPortrait = screenSize.height > screenSize.width
@@ -91,6 +95,6 @@ struct Screen {
         CGFloat(uiFont.descender) -
         CGFloat(0.5 * uiFont.capHeight) +
         CGFloat(0.5 * plusIconSize)
-
+        objectWillChange.send()
     }
 }

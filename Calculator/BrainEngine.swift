@@ -293,14 +293,4 @@ class DebugBrain: BrainEngine {
     func run(_ d: Double) {
         _ = operation(String(d))
     }
-
-//    var oneLine: String {
-//        Display(number: n.last).data.oneLine
-//    }
-//    var left: String {
-//        Display(number: n.last).data.left
-//    }
-//    var right: String? {
-//        Display(number: n.last).data.right
-//    }
 }

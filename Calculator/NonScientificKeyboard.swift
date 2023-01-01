@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct NonScientificKeyboard: View {
+    let screen: Screen
     @ObservedObject var keyModel: KeyModel
     let spacing: CGFloat
     let keySize: CGSize
@@ -15,33 +16,33 @@ struct NonScientificKeyboard: View {
     var body: some View {
         VStack(spacing: spacing) {
             HStack(spacing: spacing) {
-                Key(keyModel.showAC ? "AC" : "C", keyModel)
-                Key("±", keyModel)
-                Key("%", keyModel)
-                Key("/", keyModel)
+                Key(screen, keyModel.showAC ? "AC" : "C", keyModel, keySize)
+                Key(screen, "±", keyModel, keySize)
+                Key(screen, "%", keyModel, keySize)
+                Key(screen, "/", keyModel, keySize)
             }
             HStack(spacing: spacing) {
-                Key("7", keyModel)
-                Key("8", keyModel)
-                Key("9", keyModel)
-                Key("x", keyModel)
+                Key(screen, "7", keyModel, keySize)
+                Key(screen, "8", keyModel, keySize)
+                Key(screen, "9", keyModel, keySize)
+                Key(screen, "x", keyModel, keySize)
             }
             HStack(spacing: spacing) {
-                Key("4", keyModel)
-                Key("5", keyModel)
-                Key("6", keyModel)
-                Key("-", keyModel)
+                Key(screen, "4", keyModel, keySize)
+                Key(screen, "5", keyModel, keySize)
+                Key(screen, "6", keyModel, keySize)
+                Key(screen, "-", keyModel, keySize)
             }
             HStack(spacing: spacing) {
-                Key("1", keyModel)
-                Key("2", keyModel)
-                Key("3", keyModel)
-                Key("+", keyModel)
+                Key(screen, "1", keyModel, keySize)
+                Key(screen, "2", keyModel, keySize)
+                Key(screen, "3", keyModel, keySize)
+                Key(screen, "+", keyModel, keySize)
             }
             HStack(spacing: spacing) {
-                Key("0", keyModel, doubleWidth: 2.0 * keySize.width + spacing)
-                Key(",", keyModel)
-                Key("=", keyModel)
+                Key(screen, "0", keyModel, keySize, doubleWidth: 2.0 * keySize.width + spacing)
+                Key(screen, ",", keyModel, keySize)
+                Key(screen, "=", keyModel, keySize)
             }
         }
     }

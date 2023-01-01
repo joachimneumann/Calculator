@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ScientificKeyboard: View {
+    let screen: Screen
     @ObservedObject var keyModel: KeyModel
     let spacing: CGFloat
     let keySize: CGSize
@@ -15,44 +16,44 @@ struct ScientificKeyboard: View {
     var body: some View {
         VStack(spacing: spacing) {
             HStack(spacing: spacing) {
-                Key("( ", keyModel)
-                Key(" )", keyModel)
-                Key("mc", keyModel)
-                Key("m+", keyModel)
-                Key("m-", keyModel)
-                Key("mr", keyModel)
+                Key(screen, "( ", keyModel, keySize)
+                Key(screen, " )", keyModel, keySize)
+                Key(screen, "mc", keyModel, keySize)
+                Key(screen, "m+", keyModel, keySize)
+                Key(screen, "m-", keyModel, keySize)
+                Key(screen, "mr", keyModel, keySize)
             }
             HStack(spacing: spacing) {
-                Key("2nd", keyModel)
-                Key("x^2", keyModel)
-                Key("x^3", keyModel)
-                Key("x^y", keyModel)
-                Key(keyModel.secondActive ? "y^x" : "e^x", keyModel)
-                Key(keyModel.secondActive ? "2^x" : "10^x", keyModel)
+                Key(screen, "2nd", keyModel, keySize)
+                Key(screen, "x^2", keyModel, keySize)
+                Key(screen, "x^3", keyModel, keySize)
+                Key(screen, "x^y", keyModel, keySize)
+                Key(screen, keyModel.secondActive ? "y^x" : "e^x", keyModel, keySize)
+                Key(screen, keyModel.secondActive ? "2^x" : "10^x", keyModel, keySize)
             }
             HStack(spacing: spacing) {
-                Key("One_x", keyModel)
-                Key("√", keyModel)
-                Key("3√", keyModel)
-                Key("y√", keyModel)
-                Key(keyModel.secondActive ? "logy" : "ln", keyModel)
-                Key(keyModel.secondActive ? "log2" : "log10", keyModel)
+                Key(screen, "One_x", keyModel, keySize)
+                Key(screen, "√", keyModel, keySize)
+                Key(screen, "3√", keyModel, keySize)
+                Key(screen, "y√", keyModel, keySize)
+                Key(screen, keyModel.secondActive ? "logy" : "ln", keyModel, keySize)
+                Key(screen, keyModel.secondActive ? "log2" : "log10", keyModel, keySize)
             }
             HStack(spacing: spacing) {
-                Key("x!", keyModel)
-                Key(keyModel.secondActive ? "asin" : "sin", keyModel)
-                Key(keyModel.secondActive ? "acos" : "cos", keyModel)
-                Key(keyModel.secondActive ? "atan" : "tan", keyModel)
-                Key("e", keyModel)
-                Key("EE", keyModel)
+                Key(screen, "x!", keyModel, keySize)
+                Key(screen, keyModel.secondActive ? "asin" : "sin", keyModel, keySize)
+                Key(screen, keyModel.secondActive ? "acos" : "cos", keyModel, keySize)
+                Key(screen, keyModel.secondActive ? "atan" : "tan", keyModel, keySize)
+                Key(screen, "e", keyModel, keySize)
+                Key(screen, "EE", keyModel, keySize)
             }
             HStack(spacing: spacing) {
-                Key(keyModel.rad ? "Deg" : "Rad", keyModel)
-                Key(keyModel.secondActive ? "asinh" : "sinh", keyModel)
-                Key(keyModel.secondActive ? "acosh" : "cosh", keyModel)
-                Key(keyModel.secondActive ? "atanh" : "tanh", keyModel)
-                Key("π", keyModel)
-                Key("Rand", keyModel)
+                Key(screen, keyModel.rad ? "Deg" : "Rad", keyModel, keySize)
+                Key(screen, keyModel.secondActive ? "asinh" : "sinh", keyModel, keySize)
+                Key(screen, keyModel.secondActive ? "acosh" : "cosh", keyModel, keySize)
+                Key(screen, keyModel.secondActive ? "atanh" : "tanh", keyModel, keySize)
+                Key(screen, "π", keyModel, keySize)
+                Key(screen, "Rand", keyModel, keySize)
             }
         }
         //.background(Color.black)

@@ -146,7 +146,7 @@ class Number: CustomDebugStringConvertible {
     }
     
     func getDisplayData(_ lengths: Lengths) async -> DisplayData {
-        await getDisplayData(multipleLines: false, lengths: lengths, forceScientific: false, showAsInteger: false, showAsFloat: false)
+        return await getDisplayData(multipleLines: false, lengths: lengths, forceScientific: false, showAsInteger: false, showAsFloat: false)
     }
     
     func getDisplayData(
@@ -156,7 +156,7 @@ class Number: CustomDebugStringConvertible {
         showAsInteger: Bool,
         showAsFloat: Bool,
         maxDisplayLength: Int = Number.MAX_DISPLAY_LENGTH) async -> DisplayData {
-            // print("getDisplayData")
+            print("getDisplayData!!!!!!!")
             var ret = DisplayData()
             if !forceScientific {
                 if let s = str {

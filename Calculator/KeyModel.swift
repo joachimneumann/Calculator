@@ -8,7 +8,7 @@
 import SwiftUI
 
 class KeyModel: ObservableObject {
-    let screen: Screen
+    private var calculationResult = CalculationResult(number: Number("0", precision: 10), hasChanged: false, pendingSymbol: nil)
     var keyPressResponder: KeyPressResponder? = nil
     @Published var showAC = true
     var showPrecision: Bool = false
@@ -17,9 +17,9 @@ class KeyModel: ObservableObject {
     @AppStorage("rad", store: .standard) var rad: Bool = false
     @Published var currentDisplay: Display
     
-    init(screen: Screen) {
-        self.screen = screen
-        self.currentDisplay = Display(screen: screen)
+    init() {
+//        self.screen = screen
+        self.currentDisplay = Display(screen: Screen(CGSize()))
         for symbol in C.keysAll {
             backgroundColor[symbol] = keyBackground(symbol).upColor
         }
@@ -29,7 +29,7 @@ class KeyModel: ObservableObject {
         backgroundColor[symbol] = keyBackground(symbol).downColor
     }
     
-    func touchUp(symbol: String) {
+    func touchUp(symbol: String, screen: Screen) {
         backgroundColor[symbol] = keyBackground(symbol).upColor
         let _symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(symbol) && !rad ? symbol+"D" : symbol
         
@@ -48,17 +48,32 @@ class KeyModel: ObservableObject {
                 showPrecision.toggle()
             }
             if let keyPressResponder = keyPressResponder {
-                keyPressResponder.keyPress(symbol: symbol, screen: screen)
+                Task {
+                    calculationResult = await keyPressResponder.keyPress(symbol)
+                    await refreshDisplay(screen: screen)
+                }
 //                let temp = await calculationResult.getDisplay(isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
 //                await MainActor.run(body: {
 //                    display = temp
 //                })
 
                 
+            } else {
+                print("no keyPressResponder set")
             }
         }
-        
     }
+    
+    func refreshDisplay(screen: Screen) async {
+        if let keyPressResponder = keyPressResponder {
+            let tempDisplay = await calculationResult.getDisplay(keyPressResponder: keyPressResponder, screen: screen)
+            await MainActor.run() {
+                currentDisplay = tempDisplay
+                print("currentDisplay", currentDisplay.data.left)
+            }
+        }
+    }
+
     
     func keyBackground(_ symbol: String) -> ColorsOf {
         if C.keysForDigits.contains(symbol) {

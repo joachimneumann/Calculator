@@ -34,7 +34,7 @@ struct Icons : View {
                     }
                 }
             if true { // !brainModel.isCalculating {
-                if !brainModel.display.format.showThreeDots {
+                if true { //}!keyModel.display.format.showThreeDots {
                     Group {
 //                        if !simulatePurchased && store.purchasedIDs.isEmpty {
 //                            NavigationLink {

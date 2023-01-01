@@ -12,9 +12,8 @@ struct CalculatorApp: App {
     var body: some Scene {
         WindowGroup {
             GeometryReader { (geo) in
-                let screen = Screen(geo.size)
-                let keyModel = KeyModel(screen: screen)
-                Calculator(keyModel: keyModel)
+                Calculator(screen: Screen(geo.size))
+//                    .environmentObject(Screen(geo.size)) // Make the theme available through the environment.
             }
             .preferredColorScheme(.dark)
         }

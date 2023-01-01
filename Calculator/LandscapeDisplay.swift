@@ -18,6 +18,7 @@ struct LandscapeDisplay: View {
     var scrollViewID: UUID
     
     var body: some View {
+        let _ = print("LandscapeDisplay", display.data.left)
         ScrollViewConditionalAnimation(
             text: display.data.left,
             font: display.format.font,
