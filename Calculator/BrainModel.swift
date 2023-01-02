@@ -43,69 +43,21 @@ class BrainModel : KeyPressResponder, ObservableObject {
     static let MAX_DISPLAY_LEN = 10_000 // too long strings in Text() crash the app
     
     init() {
-        //        self.screen = screen
-        
-        //        timerInfo = timerDefaultText
-        // print("Model init isPortraitPhone \(screenInfo.isPortraitPhone)")
-        
-        // the later assignment of precision is a a bit strange, but a work-around for the error
-        // "'self' used in property access 'precision' before all stored properties are initialized"
-        // At init, not much is happening in the brain
-        //        stupidBrain = Brain(precision: stupidBrainPrecision)
-        //        display = Display(screen: screen)
         brain = Brain(precision: _precision.wrappedValue)
-        //        Task {
-        //            calculationResult = await brain.operation("AC")
-        //            display = await calculationResult.display(isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
-        
-        //            if let number = calculationResult.number {
-        //                let temp = Display(number: number, isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
-        //                Task { @MainActor in
-        //                    display = temp
-        //                }
-        //            }
-        //        }
-        //        if memoryValue == "" {
-        ////                await brain.setMemory(nil)
-        ////                await stupidBrain.setMemory(nil)
-        //        } else {
-        ////                await brain.setMemory(Number(memoryValue, precision: precision))
-        ////                await stupidBrain.setMemory(Number(memoryValue, precision: stupidBrainPrecision))
-        //        }
     }
     
-    //    var timerIsRunning: Bool { timer != nil }
-    
-    //    func timerStart() {
-    //        timerCounter = 0
-    //        DispatchQueue.main.async {
-    //            self.timerInfo = "0"
-    //        }
-    //        timer = Timer.scheduledTimer(withTimeInterval:1.0, repeats: true) { _ in
-    //            self.timerCounter += 1
-    //            DispatchQueue.main.async {
-    //                self.timerInfo = "\(self.timerCounter)"
-    //            }
-    //        }
-    //    }
-    //
-    //    func timerStop(with executionTime: Double) {
-    //        timerCounter = 0
-    //        timer?.invalidate()
-    //        timer = nil
-    //        DispatchQueue.main.async {
-    //            self.timerInfo = executionTime.asTime
-    //        }
-    //    }
-    //
-    //    func timerReset() {
-    //        timerCounter = 0
-    //        timer?.invalidate()
-    //        timer = nil
-    //        DispatchQueue.main.async {
-    //            self.timerInfo = self.timerDefaultText
-    //        }
-    //    }
+    func keyPress(_ symbol: String) async -> CalculationResult {
+        displayDataIsOld = true
+        //stupidBrain.operation(symbol)
+        
+        //            let preliminaryResultTask = Task {
+        // sleep(300 ms)
+        //                if not self.cancelled { stupidBrain.operation(symbol) }
+        //                if not self.cancelled { let tempDisplay = stupidBrain.getDisplay }
+        //                if not self.cancelled { display = temp }
+        //            }
+        return await brain.operation(symbol)
+    }
     
     // the update of the precision in brain can be slow.
     // Therefore, I only want to do that when leaving the settings screen
@@ -159,6 +111,72 @@ class BrainModel : KeyPressResponder, ObservableObject {
         return false
     }
     
+    
+    
+        //        self.screen = screen
+        
+        //        timerInfo = timerDefaultText
+        // print("Model init isPortraitPhone \(screenInfo.isPortraitPhone)")
+        
+        // the later assignment of precision is a a bit strange, but a work-around for the error
+        // "'self' used in property access 'precision' before all stored properties are initialized"
+        // At init, not much is happening in the brain
+        //        stupidBrain = Brain(precision: stupidBrainPrecision)
+        //        display = Display(screen: screen)
+        //        Task {
+        //            calculationResult = await brain.operation("AC")
+        //            display = await calculationResult.display(isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
+        
+        //            if let number = calculationResult.number {
+        //                let temp = Display(number: number, isPreliminary: false, screen: screen, forceScientific: forceScientific, showAsInteger: showAsInteger, showAsFloat: showAsFloat)
+        //                Task { @MainActor in
+        //                    display = temp
+        //                }
+        //            }
+        //        }
+        //        if memoryValue == "" {
+        ////                await brain.setMemory(nil)
+        ////                await stupidBrain.setMemory(nil)
+        //        } else {
+        ////                await brain.setMemory(Number(memoryValue, precision: precision))
+        ////                await stupidBrain.setMemory(Number(memoryValue, precision: stupidBrainPrecision))
+        //        }
+//    }
+    
+    //    var timerIsRunning: Bool { timer != nil }
+    
+    //    func timerStart() {
+    //        timerCounter = 0
+    //        DispatchQueue.main.async {
+    //            self.timerInfo = "0"
+    //        }
+    //        timer = Timer.scheduledTimer(withTimeInterval:1.0, repeats: true) { _ in
+    //            self.timerCounter += 1
+    //            DispatchQueue.main.async {
+    //                self.timerInfo = "\(self.timerCounter)"
+    //            }
+    //        }
+    //    }
+    //
+    //    func timerStop(with executionTime: Double) {
+    //        timerCounter = 0
+    //        timer?.invalidate()
+    //        timer = nil
+    //        DispatchQueue.main.async {
+    //            self.timerInfo = executionTime.asTime
+    //        }
+    //    }
+    //
+    //    func timerReset() {
+    //        timerCounter = 0
+    //        timer?.invalidate()
+    //        timer = nil
+    //        DispatchQueue.main.async {
+    //            self.timerInfo = self.timerDefaultText
+    //        }
+    //    }
+    
+
     //    func speedTest(precision: Int) async -> Double {
     //        let testBrain = Brain()
     //        await testBrain.setPrecision(precision)
@@ -254,7 +272,7 @@ class BrainModel : KeyPressResponder, ObservableObject {
     //    }
     
     
-    func keyPress(_ symbol: String) async -> CalculationResult {
+//    func keyPress(_ symbol: String) async -> CalculationResult {
         //        isCalculating = true
         //        for key in C.keysToDisable {
         //            keyInfo[key]!.enabled = false
@@ -265,7 +283,7 @@ class BrainModel : KeyPressResponder, ObservableObject {
         //            hasBeenReset = false
         //        }
         
-        displayDataIsOld = true
+//        displayDataIsOld = true
         //stupidBrain.operation(symbol)
         
         //            let preliminaryResultTask = Task {
@@ -274,7 +292,7 @@ class BrainModel : KeyPressResponder, ObservableObject {
         //                if not self.cancelled { let tempDisplay = stupidBrain.getDisplay }
         //                if not self.cancelled { display = temp }
         //            }
-        return await brain.operation(symbol)
+//        return await brain.operation(symbol)
         //            isCalculating = false
         //            if brain.isValidNumber {
         //                for key in C.keysAll {
@@ -309,7 +327,7 @@ class BrainModel : KeyPressResponder, ObservableObject {
         //                        memoryValue = ""
         //                    }
         //                }
-    }
+//    }
 }
 
 
