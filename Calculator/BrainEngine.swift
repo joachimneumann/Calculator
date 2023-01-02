@@ -279,6 +279,7 @@ class DebugBrain: BrainEngine {
         if C.keysAll.contains(numberOrOperator) {
             _ = operation(numberOrOperator)
         } else {
+            var isNegative = false
             for digit in numberOrOperator {
                 if let intValue = digit.wholeNumberValue {
                     if intValue >= 0 && intValue <= 9 {
@@ -286,19 +287,37 @@ class DebugBrain: BrainEngine {
                     }
                 } else if digit == "." || digit == "," {
                     let _  = operation(",")
+                } else if digit == "-" {
+                    isNegative = true
                 } else {
                     assert(false)
                 }
+            }
+            if isNegative {
+                let _  = operation("±")
             }
         }
     }
     func push(_ integer: Int) { push(String(integer)) }
     func push(_ double: Double) { push(String(double)) }
+    func pushnew(_ something: String) {
+        push("AC")
+        push(something)
+    }
+    func pushnew(_ integer: Int) {
+        push("AC")
+        push(integer)
+    }
+    func pushnew(_ double: Double) {
+        push("AC")
+        push(double)
+    }
 
     var no: Int { operatorStack.count }
     var nn: Int { n.count }
     var data: DisplayData {
-        n.last.getDisplayData(multipleLines: false, lengths: lengths, forceScientific: false, showAsInteger: false, showAsFloat: false)
+        let d = n.last.getDisplayData(multipleLines: false, lengths: lengths, forceScientific: false, showAsInteger: false, showAsFloat: false)
+        return d
     }
     var left: String { data.left }
     var right: String? { data.right }

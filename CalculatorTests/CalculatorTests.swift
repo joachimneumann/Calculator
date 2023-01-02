@@ -27,495 +27,495 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(debugBrain.left, "0,7")
     }
     
-//    func testmultipleLiner() {
-//        let debugBrain = DebugBrain(precision: 100)
-//        let lengths = Lengths(withoutComma: 8, withCommaNonScientific: 9, withCommaScientific: 9, height: 0, digitWidth: 0, infoHeight: 0, ePadding: 0)
-//
-//        /// integers
-//        displayData = Number("123", precision: precision).getDisplayData(lengths)
-//
-//
-//        XCTAssertEqual(debugBrain.left, "123")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("1234", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1234")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("12345", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "12345")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("12345", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "12345")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("12300", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "12300")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("12300", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "12300")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("123456", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "123456")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("123456", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "123456")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("1234567", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1234567")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("12345678", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "12345678")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("123456789", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,23456")
-//        XCTAssertEqual(debugBrain.right, "e8")
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-123", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-123")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-12345", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-12345")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-123456", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-123456")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-1234567", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-1234567")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-12345678", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-1,2345")
-//        XCTAssertEqual(debugBrain.right, "e7")
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//
-//        displayData = Number("1234567", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1234567")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-1234567", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-1234567")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//
-//        /// floating point numbers
-//        displayData = Number("1,234", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,234")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("1,2345", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,2345")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("1,23456", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,23456")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("1,234567", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,234567")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("1,2345678", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,2345678")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("1,23456789", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,2345678")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-1,234", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-1,234")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-1,2345", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-1,2345")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-1,23456", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-1,23456")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-1,234567", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-1,234567")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-1,2345678", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-1,234567")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//
-//        displayData = Number("1,234", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,234")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("1,234", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,234")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("1,234", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,234")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("1,234", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,234")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("1,234", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,234")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("1,234567", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,234567")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("1,2345678", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,2345678")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("1,23456789", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,2345678")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-1,234", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-1,234")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-1,2345", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-1,2345")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-1,23456", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-1,23456")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-1,23456789", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-1,234567")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-144,23456789", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-144,2345")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("1445,23456789", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1445,2345")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("14456,23456789", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "14456,234")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("144567,23456789", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "144567,23")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("1445678,23456789", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1445678,2")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("14456785,23456789", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "14456785,")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,123", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "0,123")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,1234", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "0,1234")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,12345", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "0,12345")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,123456", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "0,123456")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,1234567", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "0,1234567")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,12345678", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "0,1234567")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,000012", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "0,000012")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,000004", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "0,000004")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,0000123456", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "0,0000123")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-0,000012", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-0,000012")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-0,0000123", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-0,000012")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-0,0000123456", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-0,000012")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-0,123", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-0,123")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-0,1234", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-0,1234")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-0,12345", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-0,12345")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-0,123456", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-0,123456")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-0,1234567", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-0,123456")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("14456789,23456789", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "14456789,")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-144567,23456789", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-144567,2")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-1445678,23456789", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-1445678,")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("1445678,23456789", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1445678,2")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,0123", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "0,0123")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,01234567", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "0,0123456")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,0012", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "0,0012")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-0,0012", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-0,0012")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,001234567", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "0,0012345")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-0,001234567", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-0,001234")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,0001234567", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "0,0001234")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-0,0001234567", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-0,000123")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,00001234567", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "0,0000123")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-0,00001234567", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-0,000012")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,12345678", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "0,1234567")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        /// scientific notation
-//
-//        displayData = Number("1,5e12", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,5")
-//        XCTAssertEqual(debugBrain.right, "e12")
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("1,5e12", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,5")
-//        XCTAssertEqual(debugBrain.right, "e12")
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,00000004", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "4,0")
-//        XCTAssertEqual(debugBrain.right, "e-8")
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,0000004", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "0,0000004")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("12345678349875349873", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,2345")
-//        XCTAssertEqual(debugBrain.right, "e19")
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("123456783498753498731", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,2345")
-//        XCTAssertEqual(debugBrain.right, "e20")
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,012345678", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "0,0123456")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,0012345678", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "0,0012345")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("-1445,23456789", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "-1445,234")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("921387491237419283092340238420398423098423049874129837649128364519234875", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "9,2138")
-//        XCTAssertEqual(debugBrain.right, "e71")
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("1,23", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,23")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("1,23", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "1,23")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,0023", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "0,0023")
-//        XCTAssertNil(  debugBrain.right)
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,000000000023", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "2,3")
-//        XCTAssertEqual(debugBrain.right, "e-11")
-////        XCTAssertFalse(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,0000000000232837642876", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "2,328")
-//        XCTAssertEqual(debugBrain.right, "e-11")
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//
-//        displayData = Number("0,0000000000232837642876239827342", precision: precision).getDisplayData(lengths)
-//        XCTAssertEqual(debugBrain.left, "2,328")
-//        XCTAssertEqual(debugBrain.right, "e-11")
-////        XCTAssertTrue(debugBrain.isAbbreviated)
-//    }
-//
+    func testmultipleLiner() {
+        let debugBrain = DebugBrain(precision: 100, lengths: Lengths(withoutComma: 8, withCommaNonScientific: 9, withCommaScientific: 9, height: 0, digitWidth: 0, infoHeight: 0, ePadding: 0))
+
+        /// integers
+        debugBrain.pushnew(123)
+        XCTAssertEqual(debugBrain.left, "123")
+        XCTAssertNil(  debugBrain.right)
+
+        debugBrain.pushnew(1234)
+        XCTAssertEqual(debugBrain.left, "1234")
+        XCTAssertNil(  debugBrain.right)
+
+        debugBrain.pushnew(12345)
+        XCTAssertEqual(debugBrain.left, "12345")
+        XCTAssertNil(  debugBrain.right)
+
+        debugBrain.pushnew("12345")
+        XCTAssertEqual(debugBrain.left, "12345")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("12300")
+        XCTAssertEqual(debugBrain.left, "12300")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("12300")
+        XCTAssertEqual(debugBrain.left, "12300")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("123456")
+        XCTAssertEqual(debugBrain.left, "123456")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("123456")
+        XCTAssertEqual(debugBrain.left, "123456")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("1234567")
+        XCTAssertEqual(debugBrain.left, "1234567")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("12345678")
+        XCTAssertEqual(debugBrain.left, "12345678")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("123456789")
+        XCTAssertEqual(debugBrain.left, "1,23456")
+        XCTAssertEqual(debugBrain.right, "e8")
+
+
+        debugBrain.pushnew("-123")
+        XCTAssertEqual(debugBrain.left, "-123")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew(-12345)
+        XCTAssertEqual(debugBrain.left, "-12345")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew(-123456)
+        XCTAssertEqual(debugBrain.left, "-123456")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew(-1234567)
+        XCTAssertEqual(debugBrain.left, "-1234567")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew(-12345678)
+        XCTAssertEqual(debugBrain.left, "-1,2345")
+        XCTAssertEqual(debugBrain.right, "e7")
+
+
+
+        debugBrain.pushnew(1234567)
+        XCTAssertEqual(debugBrain.left, "1234567")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew(-1234567)
+        XCTAssertEqual(debugBrain.left, "-1234567")
+        XCTAssertNil(  debugBrain.right)
+
+
+
+        /// floating point numbers
+        debugBrain.pushnew("1,234")
+        XCTAssertEqual(debugBrain.left, "1,234")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("1,2345")
+        XCTAssertEqual(debugBrain.left, "1,2345")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("1,23456")
+        XCTAssertEqual(debugBrain.left, "1,23456")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("1,234567")
+        XCTAssertEqual(debugBrain.left, "1,234567")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("1,2345678")
+        XCTAssertEqual(debugBrain.left, "1,2345678")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("1,23456789")
+        XCTAssertEqual(debugBrain.left, "1,2345678")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-1,234")
+        XCTAssertEqual(debugBrain.left, "-1,234")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-1,2345")
+        XCTAssertEqual(debugBrain.left, "-1,2345")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-1,23456")
+        XCTAssertEqual(debugBrain.left, "-1,23456")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-1,234567")
+        XCTAssertEqual(debugBrain.left, "-1,234567")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-1,2345678")
+        XCTAssertEqual(debugBrain.left, "-1,234567")
+        XCTAssertNil(  debugBrain.right)
+
+
+
+        debugBrain.pushnew("1,234")
+        XCTAssertEqual(debugBrain.left, "1,234")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("1,234")
+        XCTAssertEqual(debugBrain.left, "1,234")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("1,234")
+        XCTAssertEqual(debugBrain.left, "1,234")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("1,234")
+        XCTAssertEqual(debugBrain.left, "1,234")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("1,234")
+        XCTAssertEqual(debugBrain.left, "1,234")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("1,234567")
+        XCTAssertEqual(debugBrain.left, "1,234567")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("1,2345678")
+        XCTAssertEqual(debugBrain.left, "1,2345678")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("1,23456789")
+        XCTAssertEqual(debugBrain.left, "1,2345678")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-1,234")
+        XCTAssertEqual(debugBrain.left, "-1,234")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-1,2345")
+        XCTAssertEqual(debugBrain.left, "-1,2345")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-1,23456")
+        XCTAssertEqual(debugBrain.left, "-1,23456")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-1,23456789")
+        XCTAssertEqual(debugBrain.left, "-1,234567")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-144,23456789")
+        XCTAssertEqual(debugBrain.left, "-144,2345")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("1445,23456789")
+        XCTAssertEqual(debugBrain.left, "1445,2345")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("14456,23456789")
+        XCTAssertEqual(debugBrain.left, "14456,234")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("144567,23456789")
+        XCTAssertEqual(debugBrain.left, "144567,23")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("1445678,23456789")
+        XCTAssertEqual(debugBrain.left, "1445678,2")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("14456785,23456789")
+        XCTAssertEqual(debugBrain.left, "14456785,")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("0,123")
+        XCTAssertEqual(debugBrain.left, "0,123")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("0,1234")
+        XCTAssertEqual(debugBrain.left, "0,1234")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("0,12345")
+        XCTAssertEqual(debugBrain.left, "0,12345")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("0,123456")
+        XCTAssertEqual(debugBrain.left, "0,123456")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("0,1234567")
+        XCTAssertEqual(debugBrain.left, "0,1234567")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("0,12345678")
+        XCTAssertEqual(debugBrain.left, "0,1234567")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("0,000012")
+        XCTAssertEqual(debugBrain.left, "0,000012")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("0,000004")
+        XCTAssertEqual(debugBrain.left, "0,000004")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("0,0000123456")
+        XCTAssertEqual(debugBrain.left, "0,0000123")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-0,000012")
+        XCTAssertEqual(debugBrain.left, "-0,000012")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-0,0000123")
+        XCTAssertEqual(debugBrain.left, "-0,000012")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-0,0000123456")
+        XCTAssertEqual(debugBrain.left, "-0,000012")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-0,123")
+        XCTAssertEqual(debugBrain.left, "-0,123")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-0,1234")
+        XCTAssertEqual(debugBrain.left, "-0,1234")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-0,12345")
+        XCTAssertEqual(debugBrain.left, "-0,12345")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-0,123456")
+        XCTAssertEqual(debugBrain.left, "-0,123456")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-0,1234567")
+        XCTAssertEqual(debugBrain.left, "-0,123456")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("14456789,23456789")
+        XCTAssertEqual(debugBrain.left, "14456789,")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-144567,23456789")
+        XCTAssertEqual(debugBrain.left, "-144567,2")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-1445678,23456789")
+        XCTAssertEqual(debugBrain.left, "-1445678,")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("1445678,23456789")
+        XCTAssertEqual(debugBrain.left, "1445678,2")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("0,0123")
+        XCTAssertEqual(debugBrain.left, "0,0123")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("0,01234567")
+        XCTAssertEqual(debugBrain.left, "0,0123456")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("0,0012")
+        XCTAssertEqual(debugBrain.left, "0,0012")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-0,0012")
+        XCTAssertEqual(debugBrain.left, "-0,0012")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("0,001234567")
+        XCTAssertEqual(debugBrain.left, "0,0012345")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-0,001234567")
+        XCTAssertEqual(debugBrain.left, "-0,001234")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("0,0001234567")
+        XCTAssertEqual(debugBrain.left, "0,0001234")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-0,0001234567")
+        XCTAssertEqual(debugBrain.left, "-0,000123")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("0,00001234567")
+        XCTAssertEqual(debugBrain.left, "0,0000123")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-0,00001234567")
+        XCTAssertEqual(debugBrain.left, "-0,000012")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("0,12345678")
+        XCTAssertEqual(debugBrain.left, "0,1234567")
+        XCTAssertNil(  debugBrain.right)
+
+
+        /// scientific notation
+
+        debugBrain.pushnew(1.5)
+        debugBrain.push("EE")
+        debugBrain.push(12)
+        debugBrain.push("=")
+        XCTAssertEqual(debugBrain.left, "1,5")
+        XCTAssertEqual(debugBrain.right, "e12")
+
+
+        debugBrain.pushnew("1,5")
+        debugBrain.push("EE")
+        debugBrain.push("12")
+        debugBrain.push("=")
+        XCTAssertEqual(debugBrain.left, "1,5")
+        XCTAssertEqual(debugBrain.right, "e12")
+
+
+        debugBrain.pushnew("0,00000004")
+        XCTAssertEqual(debugBrain.left, "4,0")
+        XCTAssertEqual(debugBrain.right, "e-8")
+
+
+        debugBrain.pushnew("0,0000004")
+        XCTAssertEqual(debugBrain.left, "0,0000004")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("12345678349875349873")
+        XCTAssertEqual(debugBrain.left, "1,2345")
+        XCTAssertEqual(debugBrain.right, "e19")
+
+
+        debugBrain.pushnew("123456783498753498731")
+        XCTAssertEqual(debugBrain.left, "1,2345")
+        XCTAssertEqual(debugBrain.right, "e20")
+
+
+        debugBrain.pushnew("0,012345678")
+        XCTAssertEqual(debugBrain.left, "0,0123456")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("0,0012345678")
+        XCTAssertEqual(debugBrain.left, "0,0012345")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("-1445,23456789")
+        XCTAssertEqual(debugBrain.left, "-1445,234")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("921387491237419283092340238420398423098423049874129837649128364519234875")
+        XCTAssertEqual(debugBrain.left, "9,2138")
+        XCTAssertEqual(debugBrain.right, "e71")
+
+
+        debugBrain.pushnew("1,23")
+        XCTAssertEqual(debugBrain.left, "1,23")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("1,23")
+        XCTAssertEqual(debugBrain.left, "1,23")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("0,0023")
+        XCTAssertEqual(debugBrain.left, "0,0023")
+        XCTAssertNil(  debugBrain.right)
+
+
+        debugBrain.pushnew("0,000000000023")
+        XCTAssertEqual(debugBrain.left, "2,3")
+        XCTAssertEqual(debugBrain.right, "e-11")
+
+
+        debugBrain.pushnew("0,0000000000232837642876")
+        XCTAssertEqual(debugBrain.left, "2,328")
+        XCTAssertEqual(debugBrain.right, "e-11")
+
+
+        debugBrain.pushnew("0,0000000000232837642876239827342")
+        XCTAssertEqual(debugBrain.left, "2,328")
+        XCTAssertEqual(debugBrain.right, "e-11")
+
+    }
+
     func test() {
         let debugBrain = DebugBrain(precision: 100, lengths: Lengths(10))
 
@@ -524,7 +524,7 @@ class CalculatorTests: XCTestCase {
         debugBrain.push("2")
         XCTAssertEqual(debugBrain.left, "2")
         XCTAssertNil(  debugBrain.right)
-//        XCTAssertFalse(debugBrain.isAbbreviated)
+
         debugBrain.push("√")
         XCTAssertEqual(debugBrain.left, "1,41421356")
 
@@ -1099,7 +1099,7 @@ class CalculatorTests: XCTestCase {
         debugBrain.push("y^x")
         debugBrain.push(2)
         debugBrain.push("=")
-        //        XCTAssertEqual(debugBrain.debugLastGmp, Gmp("1024", precision: precision).getDisplayData(lengths)
+        //        XCTAssertEqual(debugBrain.debugLastGmp, Gmp("1024")
 
         /// 2x(6+4)
         debugBrain.push("AC")
@@ -1122,9 +1122,9 @@ class CalculatorTests: XCTestCase {
         debugBrain.push(" )")
         XCTAssertEqual(debugBrain.no, 1)
         XCTAssertEqual(debugBrain.nn, 2)
-        //        XCTAssertEqual(debugBrain.debugLastGmp, Gmp("10", precision: precision).getDisplayData(lengths)
+        //        XCTAssertEqual(debugBrain.debugLastGmp, Gmp("10")
         debugBrain.push("=")
-        //        XCTAssertEqual(debugBrain.debugLastGmp, Gmp("20", precision: precision).getDisplayData(lengths)
+        //        XCTAssertEqual(debugBrain.debugLastGmp, Gmp("20")
 
         XCTAssertEqual(debugBrain.left, "20")
         XCTAssertEqual(debugBrain.right, nil)
