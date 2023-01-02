@@ -12,19 +12,18 @@ import XCTest
 class CalculatorTests: XCTestCase {
     
     func testBits() throws {
-        let debugBrain = DebugBrain(precision: 200_000)
-        let _ = Lengths(5_000) /// also failing: 10000
+        let debugBrain = DebugBrain(precision: 200_000, lengths: Lengths(5_000)) /// also failing: 10000
 
-        debugBrain.run(7.7)
-        debugBrain.run("One_x")
-        debugBrain.run("One_x")
+        debugBrain.push(7.7)
+        debugBrain.push("One_x")
+        debugBrain.push("One_x")
         XCTAssertEqual(debugBrain.oneLine, "7,7")
 
-        debugBrain.run("AC")
-        debugBrain.run(0.3)
-        debugBrain.run("+")
-        debugBrain.run("0,4")
-        debugBrain.run("=")
+        debugBrain.push("AC")
+        debugBrain.push(0.3)
+        debugBrain.push("+")
+        debugBrain.push("0,4")
+        debugBrain.push("=")
         XCTAssertEqual(debugBrain.left, "0,7")
     }
     
@@ -518,118 +517,117 @@ class CalculatorTests: XCTestCase {
 //    }
 //
     func test() {
-        let debugBrain = DebugBrain(precision: 100)
-        let lengths = Lengths(10)
+        let debugBrain = DebugBrain(precision: 100, lengths: Lengths(10))
 
         /// 1
-        debugBrain.run("AC")
-        debugBrain.run("2")
+        debugBrain.push("AC")
+        debugBrain.push("2")
         XCTAssertEqual(debugBrain.left, "2")
         XCTAssertNil(  debugBrain.right)
 //        XCTAssertFalse(debugBrain.isAbbreviated)
-        debugBrain.run("√")
+        debugBrain.push("√")
         XCTAssertEqual(debugBrain.left, "1,41421356")
 
         /// 0
-        debugBrain.run("AC")
+        debugBrain.push("AC")
 
         XCTAssertEqual(debugBrain.left, "0")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.debugPress(0)
+        debugBrain.push(0)
 
         XCTAssertEqual(debugBrain.left, "0")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.debugPress(0)
+        debugBrain.push(0)
 
         XCTAssertEqual(debugBrain.left, "0")
         XCTAssertEqual(debugBrain.right, nil)
 
 
         // 12
-        debugBrain.run("AC")
-        debugBrain.debugPress(1)
-        debugBrain.debugPress(2)
+        debugBrain.push("AC")
+        debugBrain.push(1)
+        debugBrain.push(2)
 
         XCTAssertEqual(debugBrain.left, "12")
         XCTAssertEqual(debugBrain.right, nil)
 
         // 01
-        debugBrain.run("AC")
+        debugBrain.push("AC")
 
         XCTAssertEqual(debugBrain.left, "0")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.debugPress(0)
+        debugBrain.push(0)
 
         XCTAssertEqual(debugBrain.left, "0")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.debugPress(1)
+        debugBrain.push(1)
 
         XCTAssertEqual(debugBrain.left, "1")
         XCTAssertEqual(debugBrain.right, nil)
 
         /// 1234567890
-        debugBrain.run("AC")
-        debugBrain.debugPress("1234567890")
+        debugBrain.push("AC")
+        debugBrain.push("1234567890")
 
         XCTAssertEqual(debugBrain.left, "1234567890")
         XCTAssertEqual(debugBrain.right, nil)
 
         /// 1234567891
-        debugBrain.run("AC")
-        debugBrain.debugPress("12345678901")
+        debugBrain.push("AC")
+        debugBrain.push("12345678901")
 
         XCTAssertEqual(debugBrain.left, "1,23456")
         XCTAssertEqual(debugBrain.right, "e10")
 
         /// 123456789012345678
-        debugBrain.run("AC")
-        debugBrain.debugPress("12345678901234567")
+        debugBrain.push("AC")
+        debugBrain.push("12345678901234567")
 
         XCTAssertEqual(debugBrain.left, "1,23456")
         XCTAssertEqual(debugBrain.right, "e16")
-        debugBrain.debugPress(8)
+        debugBrain.push(8)
 
         XCTAssertEqual(debugBrain.left, "1,23456")
         XCTAssertEqual(debugBrain.right, "e17")
 
 
         /// -12345678901234
-        debugBrain.run("AC")
-        debugBrain.debugPress("123456789")
-        debugBrain.run("±")
+        debugBrain.push("AC")
+        debugBrain.push("123456789")
+        debugBrain.push("±")
 
         XCTAssertEqual(debugBrain.left, "-123456789")
         XCTAssertEqual(debugBrain.right, nil)
 
 
         /// 77777777777777777
-        debugBrain.run("AC")
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
+        debugBrain.push("AC")
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push(7)
 
         XCTAssertEqual(debugBrain.left, "777777777")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push(7)
 
         XCTAssertEqual(debugBrain.left, "7,77777")
         XCTAssertEqual(debugBrain.right, "e22")
@@ -637,208 +635,208 @@ class CalculatorTests: XCTestCase {
 
 
         /// -123456789012345
-        debugBrain.run("AC")
-        debugBrain.debugPress(1)
-        debugBrain.debugPress(2)
-        debugBrain.debugPress(3)
-        debugBrain.debugPress(4)
-        debugBrain.debugPress(5)
-        debugBrain.debugPress(6)
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(8)
-        debugBrain.debugPress(9)
-        debugBrain.run("±")
+        debugBrain.push("AC")
+        debugBrain.push(1)
+        debugBrain.push(2)
+        debugBrain.push(3)
+        debugBrain.push(4)
+        debugBrain.push(5)
+        debugBrain.push(6)
+        debugBrain.push(7)
+        debugBrain.push(8)
+        debugBrain.push(9)
+        debugBrain.push("±")
 
         XCTAssertEqual(debugBrain.left, "-123456789")
         XCTAssertEqual(debugBrain.right, nil)
 
 
         /// ±
-        debugBrain.run("AC")
-        debugBrain.debugPress(7)
+        debugBrain.push("AC")
+        debugBrain.push(7)
 
         XCTAssertEqual(debugBrain.left, "7")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run("±")
+        debugBrain.push("±")
 
         XCTAssertEqual(debugBrain.left, "-7")
         XCTAssertEqual(debugBrain.right, nil)
 
         /// 0,
-        debugBrain.run("AC")
-        debugBrain.run(",")
+        debugBrain.push("AC")
+        debugBrain.push(",")
 
         XCTAssertEqual(debugBrain.left, "0,")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run(",")
+        debugBrain.push(",")
 
         XCTAssertEqual(debugBrain.left, "0,")
         XCTAssertEqual(debugBrain.right, nil)
 
         /// -0,7
-        debugBrain.run("AC")
-        debugBrain.run(",")
+        debugBrain.push("AC")
+        debugBrain.push(",")
 
         XCTAssertEqual(debugBrain.left, "0,")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.debugPress(7)
+        debugBrain.push(7)
 
         XCTAssertEqual(debugBrain.left, "0,7")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run("±")
+        debugBrain.push("±")
 
         XCTAssertEqual(debugBrain.left, "-0,7")
         XCTAssertEqual(debugBrain.right, nil)
 
         /// 3 e6
-        debugBrain.run("AC")
-        debugBrain.debugPress(3)
-        debugBrain.run("EE")
-        debugBrain.debugPress(6)
-        debugBrain.run("=")
+        debugBrain.push("AC")
+        debugBrain.push(3)
+        debugBrain.push("EE")
+        debugBrain.push(6)
+        debugBrain.push("=")
 
         XCTAssertEqual(debugBrain.left, "3000000")
         XCTAssertEqual(debugBrain.right, nil)
 
         /// 3 e6 + 0.01
-        debugBrain.run("AC")
-        debugBrain.debugPress(3)
-        debugBrain.run("EE")
-        debugBrain.debugPress(5)
-        debugBrain.run("=")
-        debugBrain.run("+")
-        debugBrain.run(",")
-        debugBrain.debugPress(0)
-        debugBrain.debugPress(0)
-        debugBrain.debugPress(1)
-        debugBrain.run("=")
+        debugBrain.push("AC")
+        debugBrain.push(3)
+        debugBrain.push("EE")
+        debugBrain.push(5)
+        debugBrain.push("=")
+        debugBrain.push("+")
+        debugBrain.push(",")
+        debugBrain.push(0)
+        debugBrain.push(0)
+        debugBrain.push(1)
+        debugBrain.push("=")
 
         XCTAssertEqual(debugBrain.left, "300000,001")
         XCTAssertEqual(debugBrain.right, nil)
 
 
         /// 3 e77
-        debugBrain.run("AC")
-        debugBrain.debugPress(3)
-        debugBrain.run("EE")
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.run("=")
+        debugBrain.push("AC")
+        debugBrain.push(3)
+        debugBrain.push("EE")
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push("=")
 
         XCTAssertEqual(debugBrain.left, "3,0")
         XCTAssertEqual(debugBrain.right, "e77")
 
         /// 3 e-77
-        debugBrain.run("AC")
-        debugBrain.debugPress(3)
-        debugBrain.run("EE")
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.run("±")
-        debugBrain.run("=")
+        debugBrain.push("AC")
+        debugBrain.push(3)
+        debugBrain.push("EE")
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push("±")
+        debugBrain.push("=")
 
         XCTAssertEqual(debugBrain.left, "3,0")
         XCTAssertEqual(debugBrain.right, "e-77")
 
         /// -3 e-77
-        debugBrain.run("AC")
-        debugBrain.debugPress(3)
-        debugBrain.run("EE")
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.run("±")
-        debugBrain.run("=")
-        debugBrain.run("±")
+        debugBrain.push("AC")
+        debugBrain.push(3)
+        debugBrain.push("EE")
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push("±")
+        debugBrain.push("=")
+        debugBrain.push("±")
 
         XCTAssertEqual(debugBrain.left, "-3,0")
         XCTAssertEqual(debugBrain.right, "e-77")
 
         /// -3 e-77
-        debugBrain.run("AC")
-        debugBrain.debugPress(3)
-        debugBrain.run("±")
-        debugBrain.run("EE")
-        debugBrain.debugPress(7)
-        debugBrain.debugPress(7)
-        debugBrain.run("±")
-        debugBrain.run("=")
+        debugBrain.push("AC")
+        debugBrain.push(3)
+        debugBrain.push("±")
+        debugBrain.push("EE")
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push("±")
+        debugBrain.push("=")
 
         XCTAssertEqual(debugBrain.left, "-3,0")
         XCTAssertEqual(debugBrain.right, "e-77")
 
 
         /// 8888888
-        debugBrain.run("AC")
-        debugBrain.debugPress(8)
-        debugBrain.debugPress(8)
-        debugBrain.debugPress(8)
-        debugBrain.debugPress(8)
-        debugBrain.debugPress(8)
-        debugBrain.debugPress(8)
-        debugBrain.debugPress(8)
+        debugBrain.push("AC")
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
 
         XCTAssertEqual(debugBrain.left, "8888888")
         XCTAssertEqual(debugBrain.right, nil)
 
 
         /// memory
-        debugBrain.run("AC")
-        debugBrain.debugPress(1)
-        debugBrain.debugPress(2)
+        debugBrain.push("AC")
+        debugBrain.push(1)
+        debugBrain.push(2)
 
         XCTAssertEqual(debugBrain.left, "12")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run("mc")
+        debugBrain.push("mc")
 
         XCTAssertEqual(debugBrain.left, "12")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run("m+")
+        debugBrain.push("m+")
 
         XCTAssertEqual(debugBrain.left, "12")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run("m+")
+        debugBrain.push("m+")
 
         XCTAssertEqual(debugBrain.left, "12")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run("mr")
+        debugBrain.push("mr")
 
         XCTAssertEqual(debugBrain.left, "24")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run("m-")
+        debugBrain.push("m-")
 
         XCTAssertEqual(debugBrain.left, "0")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run("mr")
+        debugBrain.push("mr")
 
         XCTAssertEqual(debugBrain.left, "0")
         XCTAssertEqual(debugBrain.right, nil)
 
         /// 0,0000010
-        debugBrain.run("AC")
-        debugBrain.debugPress(0)
+        debugBrain.push("AC")
+        debugBrain.push(0)
 
         XCTAssertEqual(debugBrain.left, "0")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run(",")
+        debugBrain.push(",")
 
         XCTAssertEqual(debugBrain.left, "0,")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.debugPress(0)
+        debugBrain.push(0)
 
         XCTAssertEqual(debugBrain.left, "0,0")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.debugPress(0)
-        debugBrain.debugPress(0)
-        debugBrain.debugPress(0)
-        debugBrain.debugPress(0)
+        debugBrain.push(0)
+        debugBrain.push(0)
+        debugBrain.push(0)
+        debugBrain.push(0)
 
         XCTAssertEqual(debugBrain.left, "0,00000")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.debugPress(1)
+        debugBrain.push(1)
 
         XCTAssertEqual(debugBrain.left, "0,000001")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.debugPress(0)
+        debugBrain.push(0)
 
         XCTAssertEqual(debugBrain.left, "0,0000010")
         XCTAssertEqual(debugBrain.right, nil)
@@ -848,33 +846,33 @@ class CalculatorTests: XCTestCase {
         let digits = 5
 
         /// 1 e -15
-        debugBrain.run("AC")
-        debugBrain.run(",")
+        debugBrain.push("AC")
+        debugBrain.push(",")
         res = "0,"
         for _ in 1..<digits-1 {
             res += "0"
-            debugBrain.debugPress(0)
+            debugBrain.push(0)
     
             XCTAssertEqual(debugBrain.left, res)
             XCTAssertEqual(debugBrain.right, nil)
         }
-        debugBrain.debugPress(1)
+        debugBrain.push(1)
 
         XCTAssertEqual(debugBrain.left, "0,0001")
         XCTAssertEqual(debugBrain.left, res+"1")
         XCTAssertEqual(debugBrain.right, nil)
 
         /// 32456.2244
-        debugBrain.run("AC")
-        debugBrain.debugPress(3)
-        debugBrain.debugPress(2)
-        debugBrain.debugPress(4)
-        debugBrain.debugPress(5)
-        debugBrain.debugPress(6)
-        debugBrain.run(",")
-        debugBrain.debugPress(2)
-        debugBrain.debugPress(2)
-        debugBrain.debugPress(4)
+        debugBrain.push("AC")
+        debugBrain.push(3)
+        debugBrain.push(2)
+        debugBrain.push(4)
+        debugBrain.push(5)
+        debugBrain.push(6)
+        debugBrain.push(",")
+        debugBrain.push(2)
+        debugBrain.push(2)
+        debugBrain.push(4)
         res = "32456,224"
 
         XCTAssertEqual(debugBrain.left, res)
@@ -882,317 +880,322 @@ class CalculatorTests: XCTestCase {
 
 
         /// 32456.224433
-        debugBrain.debugPress(3)
+        debugBrain.push(3)
         res += "3"
 
         XCTAssertEqual(debugBrain.left, res)
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.debugPress(3)
+        debugBrain.push(3)
 
         XCTAssertEqual(debugBrain.left, res)
         XCTAssertEqual(debugBrain.right, nil)
 
         /// 1/7*7 --> has more digits?
-        debugBrain.run("AC")
-        debugBrain.debugPress(7)
-        debugBrain.run("One_x")
-        debugBrain.run("x")
-        debugBrain.debugPress(7)
-        debugBrain.run("=")
+        debugBrain.push("AC")
+        debugBrain.push(7)
+        debugBrain.push("One_x")
+        debugBrain.push("x")
+        debugBrain.push(7)
+        debugBrain.push("=")
 
         XCTAssertEqual(debugBrain.left, "1")
         XCTAssertEqual(debugBrain.right, nil)
 
         /// -1/3
-        debugBrain.run("AC")
-        debugBrain.debugPress(3)
-        debugBrain.run("One_x")
+        debugBrain.push("AC")
+        debugBrain.push(3)
+        debugBrain.push("One_x")
         var correct = "0,33333333"
 
         XCTAssertEqual (debugBrain.left, correct)
-        debugBrain.run("±")
+        debugBrain.push("±")
         correct = "-0,3333333"
 
         XCTAssertEqual (debugBrain.left, correct)
 
         /// 9 %%%% ^2 ^2 ^2
-        debugBrain.run("AC")
-        debugBrain.run("9")
-        debugBrain.run("%")
+        debugBrain.push("AC")
+        debugBrain.push("9")
+        debugBrain.push("%")
 
         XCTAssertEqual(debugBrain.left, "0,09")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run("%")
+        debugBrain.push("%")
 
         XCTAssertEqual(debugBrain.left, "0,0009")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run("%")
-        debugBrain.run("%")
+        debugBrain.push("%")
+        debugBrain.push("%")
 
         XCTAssertEqual(debugBrain.left, "0,00000009")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run("x^2")
+        debugBrain.push("x^2")
 
         XCTAssertEqual(debugBrain.left, "8,1")
         XCTAssertEqual(debugBrain.right, "e-15")
 
 
         /// 1/10 and 1/16
-        debugBrain.run("AC")
-        debugBrain.debugPress(1)
-        debugBrain.debugPress(0)
+        debugBrain.push("AC")
+        debugBrain.push(1)
+        debugBrain.push(0)
 
         XCTAssertEqual(debugBrain.left, "10")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run("One_x")
+        debugBrain.push("One_x")
 
         XCTAssertEqual(debugBrain.left, "0,1")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.debugPress(1)
-        debugBrain.debugPress(6)
+        debugBrain.push(1)
+        debugBrain.push(6)
 
         XCTAssertEqual(debugBrain.left, "16")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run("One_x")
+        debugBrain.push("One_x")
 
         XCTAssertEqual(debugBrain.left, "0,0625")
         XCTAssertEqual(debugBrain.right, nil)
 
         /// 1+2+5+2= + 1/4 =
-        debugBrain.debugPress(1)
-        debugBrain.run("+")
-        debugBrain.debugPress(2)
-        debugBrain.run("+")
+        debugBrain.push(1)
+        debugBrain.push("+")
+        debugBrain.push(2)
+        debugBrain.push("+")
 
         XCTAssertEqual(debugBrain.left, "3")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.debugPress(5)
-        debugBrain.run("+")
+        debugBrain.push(5)
+        debugBrain.push("+")
 
         XCTAssertEqual(debugBrain.left, "8")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.debugPress(2)
-        debugBrain.run("=")
+        debugBrain.push(2)
+        debugBrain.push("=")
 
         XCTAssertEqual(debugBrain.left, "10")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run("+")
+        debugBrain.push("+")
 
         XCTAssertEqual(debugBrain.left, "10")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.debugPress(4)
-        debugBrain.run("One_x")
+        debugBrain.push(4)
+        debugBrain.push("One_x")
 
         XCTAssertEqual(debugBrain.left, "0,25")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run("=")
+        debugBrain.push("=")
 
         XCTAssertEqual(debugBrain.left, "10,25")
         XCTAssertEqual(debugBrain.right, nil)
 
         /// 1+2*4=
-        debugBrain.run("AC")
-        debugBrain.debugPress(1)
+        debugBrain.push("AC")
+        debugBrain.push(1)
 
         XCTAssertEqual(debugBrain.left, "1")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run("+")
-        debugBrain.debugPress(2)
-        debugBrain.run("x")
+        debugBrain.push("+")
+        debugBrain.push(2)
+        debugBrain.push("x")
 
         XCTAssertEqual(debugBrain.left, "2")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.debugPress(4)
+        debugBrain.push(4)
 
         XCTAssertEqual(debugBrain.left, "4")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run("=")
+        debugBrain.push("=")
 
         XCTAssertEqual(debugBrain.left, "9")
         XCTAssertEqual(debugBrain.right, nil)
 
         /// 2*3*4*5=
-        debugBrain.run("AC")
-        debugBrain.debugPress(2)
-        debugBrain.run("x")
-        debugBrain.debugPress(3)
-        debugBrain.run("x")
-        debugBrain.debugPress(4)
-        debugBrain.run("x")
+        debugBrain.push("AC")
+        debugBrain.push(2)
+        debugBrain.push("x")
+        debugBrain.push(3)
+        debugBrain.push("x")
+        debugBrain.push(4)
+        debugBrain.push("x")
 
         XCTAssertEqual(debugBrain.left, "24")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.debugPress(5)
-        debugBrain.run("=")
+        debugBrain.push(5)
+        debugBrain.push("=")
 
         XCTAssertEqual(debugBrain.left, "120")
         XCTAssertEqual(debugBrain.right, nil)
 
         /// 1+2*4
-        debugBrain.run("AC")
-        debugBrain.debugPress(1)
-        debugBrain.run("+")
-        debugBrain.debugPress(2)
-        debugBrain.run("x")
+        debugBrain.push("AC")
+        debugBrain.push(1)
+        debugBrain.push("+")
+        debugBrain.push(2)
+        debugBrain.push("x")
 
         XCTAssertEqual(debugBrain.left, "2")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.debugPress(4)
+        debugBrain.push(4)
 
         XCTAssertEqual(debugBrain.left, "4")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run("+")
+        debugBrain.push("+")
 
         XCTAssertEqual(debugBrain.left, "9")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.debugPress(1)
-        debugBrain.debugPress(0)
-        debugBrain.debugPress(0)
+        debugBrain.push(1)
+        debugBrain.push(0)
+        debugBrain.push(0)
 
         XCTAssertEqual(debugBrain.left, "100")
         XCTAssertEqual(debugBrain.right, nil)
-        debugBrain.run("=")
+        debugBrain.push("=")
 
         XCTAssertEqual(debugBrain.left, "109")
         XCTAssertEqual(debugBrain.right, nil)
 
         /// pi
-        debugBrain.run("AC")
-        debugBrain.run("π")
+        debugBrain.push("AC")
+        debugBrain.push("π")
         correct = "3,14159265"
 
         XCTAssertEqual(debugBrain.left, correct)
         XCTAssertEqual(debugBrain.right, nil)
 
         /// 1+pi
-        debugBrain.run("AC")
-        debugBrain.debugPress(1)
-        debugBrain.run("+")
-        debugBrain.run("π")
-        debugBrain.run("=")
+        debugBrain.push("AC")
+        debugBrain.push(1)
+        debugBrain.push("+")
+        debugBrain.push("π")
+        debugBrain.push("=")
         correct = "4,14159265"
 
         XCTAssertEqual(debugBrain.left, correct)
         XCTAssertEqual(debugBrain.right, nil)
 
-        debugBrain.run("AC")
-        debugBrain.run("π")
-        debugBrain.run("x")
-        debugBrain.debugPress(2)
-        debugBrain.run("=")
+        debugBrain.push("AC")
+        debugBrain.push("π")
+        debugBrain.push("x")
+        debugBrain.push(2)
+        debugBrain.push("=")
         correct = "6,28318530"
 
         XCTAssertEqual(debugBrain.left, correct)
         XCTAssertEqual(debugBrain.right, nil)
 
-        debugBrain.run("AC")
-        debugBrain.debugPress(2)
-        debugBrain.run("x^y")
-        debugBrain.debugPress(1)
-        debugBrain.debugPress(0)
-        debugBrain.run("=")
+        debugBrain.push("AC")
+        debugBrain.push(2)
+        debugBrain.push("x^y")
+        debugBrain.push(1)
+        debugBrain.push(0)
+        debugBrain.push("=")
 
         XCTAssertEqual(debugBrain.left, "1024")
         XCTAssertEqual(debugBrain.right, nil)
 
-        debugBrain.run("AC")
-        debugBrain.debugPress(1)
-        debugBrain.debugPress(0)
-        debugBrain.run("y^x")
-        debugBrain.debugPress(2)
-        debugBrain.run("=")
+        debugBrain.push("AC")
+        debugBrain.push(1)
+        debugBrain.push(0)
+        debugBrain.push("y^x")
+        debugBrain.push(2)
+        debugBrain.push("=")
         //        XCTAssertEqual(debugBrain.debugLastGmp, Gmp("1024", precision: precision).getDisplayData(lengths)
 
         /// 2x(6+4)
-        debugBrain.run("AC")
-        debugBrain.debugPress(2)
+        debugBrain.push("AC")
+        debugBrain.push(2)
         XCTAssertEqual(debugBrain.no, 0)
-        debugBrain.run("x")
+        debugBrain.push("x")
         XCTAssertEqual(debugBrain.no, 1)
-        debugBrain.run("( ")
+        debugBrain.push("( ")
         XCTAssertEqual(debugBrain.no, 2)
-        debugBrain.debugPress(6)
+        debugBrain.push(6)
 
         XCTAssertEqual(debugBrain.left, "6")
         XCTAssertEqual(debugBrain.nn, 2)
-        debugBrain.run("+")
+        debugBrain.push("+")
         XCTAssertEqual(debugBrain.no, 3)
-        debugBrain.debugPress(4)
+        debugBrain.push(4)
 
         XCTAssertEqual(debugBrain.left, "4")
         XCTAssertEqual(debugBrain.nn, 3)
-        debugBrain.run(" )")
+        debugBrain.push(" )")
         XCTAssertEqual(debugBrain.no, 1)
         XCTAssertEqual(debugBrain.nn, 2)
         //        XCTAssertEqual(debugBrain.debugLastGmp, Gmp("10", precision: precision).getDisplayData(lengths)
-        debugBrain.run("=")
+        debugBrain.push("=")
         //        XCTAssertEqual(debugBrain.debugLastGmp, Gmp("20", precision: precision).getDisplayData(lengths)
 
         XCTAssertEqual(debugBrain.left, "20")
         XCTAssertEqual(debugBrain.right, nil)
 
         /// 2x(6+4*(5+9))
-        debugBrain.run("AC")
-        debugBrain.debugPress(2)
-        debugBrain.run("x")
-        debugBrain.run("( ")
-        debugBrain.debugPress(6)
-        debugBrain.run("+")
-        debugBrain.debugPress(4)
-        debugBrain.run("x")
-        debugBrain.run("( ")
-        debugBrain.debugPress(5)
-        debugBrain.run("+")
-        debugBrain.debugPress(9)
-        debugBrain.run(" )")
-        debugBrain.run(" )")
-        debugBrain.run("=")
-        //        XCTAssertEqual(debugBrain.debugLastGmp, Gmp("124", precision: precision).getDisplayData(lengths)
+        debugBrain.push("AC")
+        debugBrain.push(2)
+        debugBrain.push("x")
+        debugBrain.push("( ")
+        debugBrain.push(6)
+        debugBrain.push("+")
+        debugBrain.push(4)
+        debugBrain.push("x")
+        debugBrain.push("( ")
+        debugBrain.push(5)
+        debugBrain.push("+")
+        debugBrain.push(9)
+        debugBrain.push(" )")
+        debugBrain.push(" )")
+        debugBrain.push("=")
+        XCTAssertEqual(debugBrain.left, "124")
 
         /// 1+2=3
-        debugBrain.run("AC")
-        debugBrain.debugPress(1)
-        debugBrain.run("+")
-        debugBrain.debugPress(2)
-        debugBrain.run("=")
-        debugBrain.debugPress(2)
+        debugBrain.push("AC")
+        debugBrain.push(1)
+        debugBrain.push("+")
+        debugBrain.push(2)
+        debugBrain.push("=")
+        debugBrain.push(2)
         XCTAssertEqual(debugBrain.nn, 1)
 
-        debugBrain.run("AC")
-        debugBrain.run("π")
-        //        XCTAssertEqual(debugBrain.debugLastDouble, 3.14159265358979, accuracy: 0.00000001)
+        debugBrain.push("AC")
+        debugBrain.push("π")
+        XCTAssertEqual(debugBrain.double, 3.14159265358979, accuracy: 0.00000001)
 
-        debugBrain.run("AC")
-        debugBrain.debugPress(0)
-        debugBrain.run(",")
-        debugBrain.debugPress(0)
-        debugBrain.debugPress(1)
-        debugBrain.run("/")
-        debugBrain.debugPress(1)
-        debugBrain.run("EE")
-        debugBrain.debugPress(4)
-        debugBrain.run("=")
-        //        XCTAssertEqual(debugBrain.debugLastDouble, 0.000001)
+        debugBrain.push("AC")
+        debugBrain.push(0.01)
+        debugBrain.push("/")
+        debugBrain.push(1)
+        debugBrain.push("EE")
+        debugBrain.push(4)
+        debugBrain.push("=")
+        XCTAssertEqual(debugBrain.double, 0.000001)
 
-        debugBrain.run("AC")
-        debugBrain.debugPress(8)
-        debugBrain.debugPress(8)
-        debugBrain.run("%")
-        //        XCTAssertEqual(debugBrain.debugLastDouble, 0.88)
+        debugBrain.push("AC")
+        debugBrain.push(88)
+        debugBrain.push("%")
+        XCTAssertEqual(debugBrain.double, 0.88)
 
-        debugBrain.run("AC")
-        debugBrain.debugPress(4)
-        debugBrain.debugPress(0)
-        debugBrain.run("+")
-        debugBrain.debugPress(1)
-        debugBrain.debugPress(0)
-        debugBrain.run("%")
-        debugBrain.run("=")
-        //        XCTAssertEqual(debugBrain.debugLastDouble, 44.0)
+        debugBrain.push("AC")
+        debugBrain.push(40)
+        debugBrain.push("+")
+        debugBrain.push(10)
+        debugBrain.push("%")
+        debugBrain.push("=")
+        XCTAssertEqual(debugBrain.double, 44.0)
+        
+        /// 5+4*3^2 = 5+4*9 = 5+36 = 41
+        debugBrain.push("AC")
+        debugBrain.push(5)
+        debugBrain.push("+")
+        debugBrain.push(4)
+        debugBrain.push("x")
+        debugBrain.push(3)
+        debugBrain.push("x^y")
+        debugBrain.push(2)
+        debugBrain.push("=")
+        XCTAssertEqual(debugBrain.left, "41")
     }
     
     func _testSpeed1() throws {
-        let debugBrain = DebugBrain(precision: 10_000_000)
         self.measure {
             let x = Number("88888888", precision: 10_000_000)
             x.toGmp()
@@ -1200,7 +1203,6 @@ class CalculatorTests: XCTestCase {
     }
     
     func _testSpeed2() throws {
-        let debugBrain = DebugBrain(precision: 10_000_000)
         self.measure {
             let x = Number("888888888,8888888", precision: 10_000_000)
             x.toGmp()

@@ -14,19 +14,21 @@ struct CalculationResult {
     
     var isNull: Bool { number.isNull }
     var isValidNumber: Bool { number.isValid }
-    
+        
     func getDisplay(keyPressResponder: KeyPressResponder, screen: Screen) async -> Display {
-        let data = await number.getDisplayData(
-            multipleLines: !keyPressResponder.isPreliminary && !screen.isPortraitPhone,
-            lengths: screen.lengths,
-            forceScientific: keyPressResponder.forceScientific,
-            showAsInteger: keyPressResponder.showAsInteger,
-            showAsFloat: keyPressResponder.showAsFloat)
-        let format = DisplayFormat(
-            for: data.length,
-            withMaxLength: data.maxlength,
-            showThreeDots: keyPressResponder.isPreliminary,
-            screen: screen)
-        return Display(data: data, format: format)
+        return await Task.detached {
+            let data = number.getDisplayData(
+                multipleLines: !keyPressResponder.isPreliminary && !screen.isPortraitPhone,
+                lengths: screen.lengths,
+                forceScientific: keyPressResponder.forceScientific,
+                showAsInteger: keyPressResponder.showAsInteger,
+                showAsFloat: keyPressResponder.showAsFloat)
+            let format = DisplayFormat(
+                for: data.length,
+                withMaxLength: data.maxlength,
+                showThreeDots: keyPressResponder.isPreliminary,
+                screen: screen)
+            return Display(data: data, format: format)
+        }.value
     }
 }

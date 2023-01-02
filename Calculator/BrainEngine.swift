@@ -269,28 +269,39 @@ class BrainEngine {
 
 // DebugBrain implemented in the same file, because BrainEngine has fileprivate properties
 class DebugBrain: BrainEngine {
-    func debugPress(_ digits: String) {
-        for digit in digits {
-            if let intValue = digit.wholeNumberValue {
-                if intValue >= 0 && intValue <= 9 {
-                    let _  = operation(String(digit))
+    let lengths: Lengths
+    init(precision: Int, lengths: Lengths) {
+        self.lengths = lengths
+        super.init(precision: precision)
+    }
+
+    func push(_ numberOrOperator: String) {
+        if C.keysAll.contains(numberOrOperator) {
+            _ = operation(numberOrOperator)
+        } else {
+            for digit in numberOrOperator {
+                if let intValue = digit.wholeNumberValue {
+                    if intValue >= 0 && intValue <= 9 {
+                        let _  = operation(String(digit))
+                    }
+                } else if digit == "." || digit == "," {
+                    let _  = operation(",")
+                } else {
+                    assert(false)
                 }
-            } else {
-                assert(false)
             }
         }
     }
-    
+    func push(_ integer: Int) { push(String(integer)) }
+    func push(_ double: Double) { push(String(double)) }
+
     var no: Int { operatorStack.count }
     var nn: Int { n.count }
-
-    func run(_ s: String) {
-        _ = operation(s)
+    var data: DisplayData {
+        n.last.getDisplayData(multipleLines: false, lengths: lengths, forceScientific: false, showAsInteger: false, showAsFloat: false)
     }
-    func run(_ i: Int) {
-        _ = operation(String(i))
-    }
-    func run(_ d: Double) {
-        _ = operation(String(d))
-    }
+    var left: String { data.left }
+    var right: String? { data.right }
+    var oneLine: String { data.left + (data.right ?? "") }
+    var double: Double { n.last.gmp != nil ? n.last.gmp!.toDouble() : -1.0 }
 }

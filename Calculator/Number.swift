@@ -151,7 +151,7 @@ class Number: CustomDebugStringConvertible {
         forceScientific: Bool,
         showAsInteger: Bool,
         showAsFloat: Bool,
-        maxDisplayLength: Int = Number.MAX_DISPLAY_LENGTH) async -> DisplayData {
+        maxDisplayLength: Int = Number.MAX_DISPLAY_LENGTH) -> DisplayData {
             //print("getDisplayData!!!!!!!")
             var ret = DisplayData()
             if !forceScientific {
