@@ -20,11 +20,10 @@ struct Key: View {
     init(_ screen: Screen,
          _ symbol: String,
          _ keyModel: KeyModel,
-         _ keySize: CGSize,
          doubleWidth: CGFloat = 0.0) {
         self.screen = screen
         self.symbol = symbol
-        self.keySize = keySize
+        self.keySize = screen.keySize
         self.backgroundColor = keyModel.backgroundColor[symbol]!
         self.textColor = keyModel.textColor[symbol]!
         self.touchDown = keyModel.touchDown
@@ -58,17 +57,17 @@ struct Key: View {
     }
 }
 
-//struct Key_Previews: PreviewProvider {
-//    static var previews: some View {
-//        VStack {
-//            HStack {
-//                Key("√", KeyModel(screen: Screen(CGSize(width: 1400, height: 600))))
-//                    .foregroundColor(.white)
-//                Key("5", KeyModel(screen: Screen(CGSize(width: 1400, height: 600))))
-//                    .foregroundColor(.white)
-//            }
-//            Key("0", KeyModel(screen: Screen(CGSize(width: 1400, height: 600))), doubleWidth: 200)
-//                .foregroundColor(.white)
-//        }
-//    }
-//}
+struct Key_Previews: PreviewProvider {
+    static var previews: some View {
+        let screen = Screen(CGSize(width: 1400, height: 600))
+        let keyModel = KeyModel()
+        VStack {
+            HStack {
+                Key(screen, "√", keyModel)
+                Key(screen, "5", keyModel)
+            }
+            Key(screen, "0", keyModel, doubleWidth: 200)
+        }
+        .foregroundColor(.white)
+    }
+}
