@@ -67,7 +67,7 @@ struct C {
         "x!", "sin", "cos", "tan", "asin", "acos", "atan", "e", "EE",
         "Deg", "Rad", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh", "π", "Rand"]
     static let keysAll = [keysForDigits, [","], keysOfOperator, keysOfScientificOperators].joined()
-    
+    static let keysThatHavePendingOperation = ["/", "x", "-", "+", "x^y", "y^x"]
     static let keysThatRequireValidNumber = ["±", "%", "/", "x", "-", "+", "=", "( ", " )", "m+", "m-", "mr", "x^2", "x^3", "x^y", "e^x", "y^x", "2^x", "10^x", "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10", "x!", "sin", "cos", "tan", "asin", "acos", "atan", "EE", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh"]
     static let keysThatDoNotNeedToBeDisabled = ["2nd", "Rad", "Deg"]
     static let keysToDisable = C.keysAll.filter {!C.keysThatDoNotNeedToBeDisabled.contains($0)}

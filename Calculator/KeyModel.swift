@@ -8,7 +8,7 @@
 import SwiftUI
 
 class KeyModel: ObservableObject {
-    private var calculationResult = CalculationResult(number: Number("0", precision: 10), hasChanged: false, pendingSymbol: nil)
+    private var calculationResult = CalculationResult(number: Number("0", precision: 10), hasChanged: false)
     var keyPressResponder: KeyPressResponder? = nil
     @Published var showAC = true
     var showPrecision: Bool = false
@@ -30,11 +30,10 @@ class KeyModel: ObservableObject {
         backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).downColor
     }
     
-    func touchUp(symbol: String, screen: Screen) {
-        backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).upColor
-        let _symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(symbol) && !rad ? symbol+"D" : symbol
+    func touchUp(symbol _symbol: String, screen: Screen) {
+        let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(_symbol) && !rad ? _symbol+"D" : _symbol
         
-        switch _symbol {
+        switch symbol {
         case "2nd":
             secondActive.toggle()
             backgroundColor["2nd"] = secondActive ? C.secondActiveColors.upColor : C.secondColors.upColor
@@ -45,27 +44,31 @@ class KeyModel: ObservableObject {
 //            hasBeenReset = false
             rad = false
         default:
-            if _symbol == "AC" {
+            if symbol == "AC" {
                 showPrecision.toggle()
             }
             if let keyPressResponder = keyPressResponder {
+                
+                backgroundColor[symbol] = keyColors(symbol, pending: false).upColor
                 Task {
+
+                    /// pending ?
+                    if C.keysThatHavePendingOperation.contains(symbol) {
+                        await MainActor.run() {
+                            backgroundColor[symbol] = keyColors(symbol, pending: true).upColor
+                            textColor[symbol] = keyColors(symbol, pending: true).textColor
+                            previouslyPendingOperator = symbol
+                        }
+                    } else {
+                        if let previous = previouslyPendingOperator {
+                            await MainActor.run() {
+                                backgroundColor[previous] = keyColors(previous, pending: false).upColor
+                                textColor[previous] = keyColors(previous, pending: false).textColor
+                            }
+                        }
+                    }
+
                     calculationResult = await keyPressResponder.keyPress(symbol)
-                    if let previous = previouslyPendingOperator {
-                        await MainActor.run() {
-                            backgroundColor[previous] = keyColors(previous, pending: false).upColor
-                            textColor[previous] = keyColors(previous, pending: false).textColor
-                        }
-                    }
-                    if let newPending = calculationResult.pendingSymbol {
-                        await MainActor.run() {
-                            backgroundColor[newPending] = keyColors(newPending, pending: true).upColor
-                            textColor[newPending] = keyColors(newPending, pending: true).textColor
-                            
-//                            this does not seem to work
-                        }
-                    }
-                    previouslyPendingOperator = calculationResult.pendingSymbol
                     await refreshDisplay(screen: screen)
                 }
             } else {

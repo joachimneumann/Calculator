@@ -12,7 +12,7 @@ class BrainEngine {
     fileprivate var n = NumberStack()
     fileprivate var operatorStack = OperatorStack()
     private (set) var precision: Int = 0
-    private var pendingOperator: String?
+    private var pending: Bool
     private var memory: Number? = nil
     private var nullNumber: Number { Number("0", precision: precision) }
     private let constantOperators: Dictionary <String, Inplace> = [
@@ -114,7 +114,7 @@ class BrainEngine {
             if n.last.isNull {
                 operatorStack.removeAll()
                 n.removeAll()
-                pendingOperator = nil
+                pending = false
                 n.append(nullNumber)
             } else {
                 n.removeLast()
@@ -123,7 +123,7 @@ class BrainEngine {
         case "AC":
             operatorStack.removeAll()
             n.removeAll()
-            pendingOperator = nil
+            pending = false
             n.append(nullNumber)
         case "mc":
             memory = nil
@@ -143,9 +143,9 @@ class BrainEngine {
             }
         case "mr":
             if memory != nil {
-                if pendingOperator != nil {
+                if pending {
                     n.append(memory!)
-                    pendingOperator = nil
+                    pending = false
                 } else {
                     n.replaceLast(with: memory!)
                 }
@@ -157,15 +157,15 @@ class BrainEngine {
         case "%":
             self.percentage()
         case ",":
-            if pendingOperator != nil {
+            if pending {
                 n.append(nullNumber)
-                pendingOperator = nil
+                pending = false
             }
             n.last.appendComma()
         case "0":
-            if pendingOperator != nil {
+            if pending {
                 n.append(nullNumber)
-                pendingOperator = nil
+                pending = false
             }
             n.last.appendZero()
         case "±":
@@ -173,21 +173,21 @@ class BrainEngine {
         case "=":
             execute(priority: Operator.equalPriority)
         case C.keysForDigits:
-            if pendingOperator != nil {
+            if pending {
                 n.append(nullNumber)
-                pendingOperator = nil
+                pending = false
             }
             n.last.appendDigit(symbol)
         case _ where constantOperators.keys.contains(symbol):
-            if self.pendingOperator != nil {
+            if pending {
                 self.n.append(nullNumber)
-                self.pendingOperator = nil
+                pending = false
             }
             self.n.last.execute(constantOperators[symbol]!.operation)
         case _ where inplaceOperators.keys.contains(symbol):
             n.last.execute(inplaceOperators[symbol]!.operation)
         case _ where twoOperandOperators.keys.contains(symbol):
-            pendingOperator = symbol
+            pending = true
             execute(priority: twoOperandOperators[symbol]!.priority)
             operatorStack.push(twoOperandOperators[symbol]!)
         default:
@@ -195,7 +195,7 @@ class BrainEngine {
         }
         let hasChanged = n.last.valueHasChanged
         n.last.valueHasChanged = false
-        return CalculationResult(number: n.last, hasChanged: hasChanged, pendingSymbol: pendingOperator)
+        return CalculationResult(number: n.last, hasChanged: hasChanged)
     }
     
     /// used on Settings
@@ -204,16 +204,19 @@ class BrainEngine {
             n.updatePrecision(from: precision, to: newPrecision)
             precision = newPrecision
         }
-        return CalculationResult(number: n.last, hasChanged: true, pendingSymbol: pendingOperator)
+        return CalculationResult(number: n.last, hasChanged: true)
     }
     
     init(precision: Int) {
         self.precision = precision
         operatorStack.removeAll()
         n.removeAll()
-        pendingOperator = nil
+        pending = false
         n.append(Number("0", precision: precision))
-        
+        // fullDisplay()
+    }
+    
+    func fullDisplay() {
         //        operation("π")
         //        operation("8")
         //        operation("8")

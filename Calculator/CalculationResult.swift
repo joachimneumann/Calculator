@@ -10,7 +10,6 @@ import Foundation
 struct CalculationResult {
     let number: Number
     let hasChanged: Bool
-    let pendingSymbol: String?
     
     var isNull: Bool { number.isNull }
     var isValidNumber: Bool { number.isValid }
