@@ -13,47 +13,46 @@ struct ScientificKeyboard: View {
 
     var body: some View {
         let spacing = screen.keySpacing
-        let keySize = screen.keySize
         VStack(spacing: spacing) {
             HStack(spacing: spacing) {
-                Key(screen, "( ", keyModel)
-                Key(screen, " )", keyModel)
-                Key(screen, "mc", keyModel)
-                Key(screen, "m+", keyModel)
-                Key(screen, "m-", keyModel)
-                Key(screen, "mr", keyModel)
+                Key("( ", screen, keyModel)
+                Key(" )", screen, keyModel)
+                Key("mc", screen, keyModel)
+                Key("m+", screen, keyModel)
+                Key("m-", screen, keyModel)
+                Key("mr", screen, keyModel)
             }
             HStack(spacing: spacing) {
-                Key(screen, "2nd", keyModel)
-                Key(screen, "x^2", keyModel)
-                Key(screen, "x^3", keyModel)
-                Key(screen, "x^y", keyModel)
-                Key(screen, keyModel.secondActive ? "y^x" : "e^x", keyModel)
-                Key(screen, keyModel.secondActive ? "2^x" : "10^x", keyModel)
+                Key("2nd", screen, keyModel)
+                Key("x^2", screen, keyModel)
+                Key("x^3", screen, keyModel)
+                Key("x^y", screen, keyModel)
+                Key(keyModel.secondActive ? "y^x" : "e^x", screen, keyModel)
+                Key(keyModel.secondActive ? "2^x" : "10^x", screen, keyModel)
             }
             HStack(spacing: spacing) {
-                Key(screen, "One_x", keyModel)
-                Key(screen, "√", keyModel)
-                Key(screen, "3√", keyModel)
-                Key(screen, "y√", keyModel)
-                Key(screen, keyModel.secondActive ? "logy" : "ln", keyModel)
-                Key(screen, keyModel.secondActive ? "log2" : "log10", keyModel)
+                Key("One_x", screen, keyModel)
+                Key("√", screen, keyModel)
+                Key("3√", screen, keyModel)
+                Key("y√", screen, keyModel)
+                Key(keyModel.secondActive ? "logy" : "ln", screen, keyModel)
+                Key(keyModel.secondActive ? "log2" : "log10", screen, keyModel)
             }
             HStack(spacing: spacing) {
-                Key(screen, "x!", keyModel)
-                Key(screen, keyModel.secondActive ? "asin" : "sin", keyModel)
-                Key(screen, keyModel.secondActive ? "acos" : "cos", keyModel)
-                Key(screen, keyModel.secondActive ? "atan" : "tan", keyModel)
-                Key(screen, "e", keyModel)
-                Key(screen, "EE", keyModel)
+                Key("x!", screen, keyModel)
+                Key(keyModel.secondActive ? "asin" : "sin", screen, keyModel)
+                Key(keyModel.secondActive ? "acos" : "cos", screen, keyModel)
+                Key(keyModel.secondActive ? "atan" : "tan", screen, keyModel)
+                Key("e", screen, keyModel)
+                Key("EE", screen, keyModel)
             }
             HStack(spacing: spacing) {
-                Key(screen, keyModel.rad ? "Deg" : "Rad", keyModel)
-                Key(screen, keyModel.secondActive ? "asinh" : "sinh", keyModel)
-                Key(screen, keyModel.secondActive ? "acosh" : "cosh", keyModel)
-                Key(screen, keyModel.secondActive ? "atanh" : "tanh", keyModel)
-                Key(screen, "π", keyModel)
-                Key(screen, "Rand", keyModel)
+                Key(keyModel.rad ? "Deg" : "Rad", screen, keyModel)
+                Key(keyModel.secondActive ? "asinh" : "sinh", screen, keyModel)
+                Key(keyModel.secondActive ? "acosh" : "cosh", screen, keyModel)
+                Key(keyModel.secondActive ? "atanh" : "tanh", screen, keyModel)
+                Key("π", screen, keyModel)
+                Key("Rand", screen, keyModel)
             }
         }
         //.background(Color.black)

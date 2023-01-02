@@ -17,8 +17,8 @@ struct Key: View {
     let touchUp: (String, Screen) -> ()
     let doubleWidth: CGFloat
     
-    init(_ screen: Screen,
-         _ symbol: String,
+    init(_ symbol: String,
+         _ screen: Screen,
          _ keyModel: KeyModel,
          doubleWidth: CGFloat = 0.0) {
         self.screen = screen
@@ -63,10 +63,10 @@ struct Key_Previews: PreviewProvider {
         let keyModel = KeyModel()
         VStack {
             HStack {
-                Key(screen, "√", keyModel)
-                Key(screen, "5", keyModel)
+                Key("√", screen, keyModel)
+                Key("5", screen, keyModel)
             }
-            Key(screen, "0", keyModel, doubleWidth: 200)
+            Key("0", screen, keyModel, doubleWidth: 200)
         }
         .foregroundColor(.white)
     }
