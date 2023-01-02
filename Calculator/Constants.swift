@@ -76,13 +76,13 @@ struct C {
     static var kerning: CGFloat = 0.0
     static let preliminaryDelay = 0.3 /// seconds
     static let sfImageforKey: [String: String] = [
-        "+":   "plus",
-        "-":   "minus",
-        "x":   "multiply",
-        "/":   "divide",
+        "+": "plus",
+        "-": "minus",
+        "x": "multiply",
+        "/": "divide",
         "±": "plus.slash.minus",
-        "=":   "equal",
-        "%":   "percent",
+        "=": "equal",
+        "%": "percent",
     ]
 
 }
