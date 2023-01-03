@@ -8,6 +8,13 @@
 import SwiftUI
 
 class KeyModel: ObservableObject {
+    var upHasHappended = false
+    var downAnimationFinished = false
+    let downTime = 0.1
+    let upTime = 0.3
+    private var downAnimation: Task<(), Error>?
+
+    
     private var calculationResult = CalculationResult(number: Number("0", precision: 10), hasChanged: false)
     var keyPressResponder: KeyPressResponder? = nil
     @Published var showAC = true
@@ -19,6 +26,7 @@ class KeyModel: ObservableObject {
     @Published var currentDisplay: Display
     private var previouslyPendingOperator: String? = nil
     init() {
+        print("KeyModel INIT")
         self.currentDisplay = Display()
         for symbol in C.keysAll {
             backgroundColor[symbol] = keyColors(symbol, pending: false).upColor
@@ -26,8 +34,29 @@ class KeyModel: ObservableObject {
         }
     }
         
+    ///  To give a clear visual feedback to the user that the button has been pressed,
+    ///  the animation will always wait for the downAnimation to finish
+    
     func touchDown(symbol: String) {
-        backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).downColor
+        downAnimation = Task {
+            upHasHappended = false
+            downAnimationFinished = false
+            await MainActor.run {
+                withAnimation(.easeIn(duration: downTime)) {
+                    backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).downColor
+                }
+            }
+            try await Task.sleep(nanoseconds: UInt64(downTime * 1_000_000_000))
+            downAnimationFinished = true
+            print("down: upHasHappended", upHasHappended)
+            if upHasHappended {
+                await MainActor.run {
+                    withAnimation(.easeIn(duration: upTime)) {
+                        backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).upColor
+                    }
+                }
+            }
+        }
     }
     
     func touchUp(symbol _symbol: String, screen: Screen) {
@@ -47,32 +76,37 @@ class KeyModel: ObservableObject {
             if symbol == "AC" {
                 showPrecision.toggle()
             }
-            if let keyPressResponder = keyPressResponder {
-                
-                backgroundColor[symbol] = keyColors(symbol, pending: false).upColor
-                Task {
+            Task {
+                //await MainActor.run { }
 
-                    /// pending ?
-                    if C.keysThatHavePendingOperation.contains(symbol) {
+                /// pending colors
+                if C.keysThatHavePendingOperation.contains(symbol) {
+                    await MainActor.run() {
+                        backgroundColor[symbol] = keyColors(symbol, pending: true).upColor
+                        textColor[symbol] = keyColors(symbol, pending: true).textColor
+                        previouslyPendingOperator = symbol
+                    }
+                } else {
+                    if let previous = previouslyPendingOperator {
                         await MainActor.run() {
-                            backgroundColor[symbol] = keyColors(symbol, pending: true).upColor
-                            textColor[symbol] = keyColors(symbol, pending: true).textColor
-                            previouslyPendingOperator = symbol
-                        }
-                    } else {
-                        if let previous = previouslyPendingOperator {
-                            await MainActor.run() {
-                                backgroundColor[previous] = keyColors(previous, pending: false).upColor
-                                textColor[previous] = keyColors(previous, pending: false).textColor
-                            }
+                            backgroundColor[previous] = keyColors(previous, pending: false).upColor
+                            textColor[previous] = keyColors(previous, pending: false).textColor
                         }
                     }
-
-                    calculationResult = await keyPressResponder.keyPress(symbol)
-                    await refreshDisplay(screen: screen)
                 }
-            } else {
-                print("no keyPressResponder set")
+                
+                upHasHappended = true
+                if downAnimationFinished {
+                    await MainActor.run {
+                        withAnimation(.easeIn(duration: upTime)) {
+                            backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).upColor
+                        }
+                    }
+                }
+                
+                guard let keyPressResponder = keyPressResponder else { print("no keyPressResponder set"); return }
+                calculationResult = await keyPressResponder.keyPress(symbol)
+                await refreshDisplay(screen: screen)
             }
         }
     }
