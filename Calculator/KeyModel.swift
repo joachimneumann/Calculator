@@ -26,7 +26,7 @@ class KeyModel: ObservableObject {
     @Published var currentDisplay: Display
     private var previouslyPendingOperator: String? = nil
     init() {
-        print("KeyModel INIT")
+        //print("KeyModel INIT")
         self.currentDisplay = Display()
         for symbol in C.keysAll {
             backgroundColor[symbol] = keyColors(symbol, pending: false).upColor
@@ -34,6 +34,21 @@ class KeyModel: ObservableObject {
         }
     }
         
+    private func setBG(_ symbol: String, _ color: Color) {
+        Task {
+            await MainActor.run() {
+                backgroundColor[symbol] = color
+            }
+        }
+    }
+    private func setT(_ symbol: String, _ color: Color) {
+        Task {
+            await MainActor.run() {
+                textColor[symbol] = color
+            }
+        }
+    }
+
     ///  To give a clear visual feedback to the user that the button has been pressed,
     ///  the animation will always wait for the downAnimation to finish
     
@@ -41,19 +56,15 @@ class KeyModel: ObservableObject {
         downAnimation = Task {
             upHasHappended = false
             downAnimationFinished = false
-            await MainActor.run {
-                withAnimation(.easeIn(duration: downTime)) {
-                    backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).downColor
-                }
+            withAnimation(.easeIn(duration: downTime)) {
+                setBG(symbol, keyColors(symbol, pending: symbol == previouslyPendingOperator).downColor)
             }
             try await Task.sleep(nanoseconds: UInt64(downTime * 1_000_000_000))
             downAnimationFinished = true
-            print("down: upHasHappended", upHasHappended)
+            // print("down: upHasHappended", upHasHappended)
             if upHasHappended {
-                await MainActor.run {
-                    withAnimation(.easeIn(duration: upTime)) {
-                        backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).upColor
-                    }
+                withAnimation(.easeIn(duration: upTime)) {
+                    setBG(symbol, keyColors(symbol, pending: symbol == previouslyPendingOperator).upColor)
                 }
             }
         }
@@ -65,7 +76,7 @@ class KeyModel: ObservableObject {
         switch symbol {
         case "2nd":
             secondActive.toggle()
-            backgroundColor["2nd"] = secondActive ? C.secondActiveColors.upColor : C.secondColors.upColor
+            setBG("2nd", secondActive ? C.secondActiveColors.upColor : C.secondColors.upColor)
         case "Rad":
 //            hasBeenReset = false
             rad = true
@@ -81,26 +92,20 @@ class KeyModel: ObservableObject {
 
                 /// pending colors
                 if C.keysThatHavePendingOperation.contains(symbol) {
-                    await MainActor.run() {
-                        backgroundColor[symbol] = keyColors(symbol, pending: true).upColor
-                        textColor[symbol] = keyColors(symbol, pending: true).textColor
-                        previouslyPendingOperator = symbol
-                    }
+                    setBG(symbol, keyColors(symbol, pending: true).upColor)
+                    setT(symbol, keyColors(symbol, pending: true).textColor)
+                    previouslyPendingOperator = symbol
                 } else {
                     if let previous = previouslyPendingOperator {
-                        await MainActor.run() {
-                            backgroundColor[previous] = keyColors(previous, pending: false).upColor
-                            textColor[previous] = keyColors(previous, pending: false).textColor
-                        }
+                        setBG(previous, keyColors(previous, pending: false).upColor)
+                        setT(previous, keyColors(previous, pending: false).textColor)
                     }
                 }
                 
                 upHasHappended = true
                 if downAnimationFinished {
-                    await MainActor.run {
-                        withAnimation(.easeIn(duration: upTime)) {
-                            backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).upColor
-                        }
+                    withAnimation(.easeIn(duration: upTime)) {
+                        setBG(symbol, keyColors(symbol, pending: symbol == previouslyPendingOperator).upColor)
                     }
                 }
                 
@@ -116,7 +121,6 @@ class KeyModel: ObservableObject {
             let tempDisplay = await calculationResult.getDisplay(keyPressResponder: keyPressResponder, screen: screen)
             await MainActor.run() {
                 currentDisplay = tempDisplay
-                //print("currentDisplay", currentDisplay.data.left)
             }
         }
     }
