@@ -15,13 +15,14 @@ struct Backgrounds: ViewModifier {
     let upColor: Color
     let downColor: Color
     let downTime = 0.1
-    let upTime = 0.4
+    let upTime = 0.6
 
 
     init(up upColor: Color, down downColor: Color) {
         self.upColor = upColor
         self.downColor = downColor
         self.color = upColor
+        //print("BG colors:", self.upColor, self.downColor, self.color)
     }
     
     func body(content: Content) -> some View {
