@@ -80,18 +80,17 @@ class KeyModel: ObservableObject {
                 //await MainActor.run { }
 
                 /// pending colors
+                if let previous = previouslyPendingOperator {
+                    await MainActor.run() {
+                        backgroundColor[previous] = keyColors(previous, pending: false).upColor
+                        textColor[previous] = keyColors(previous, pending: false).textColor
+                    }
+                }
                 if C.keysThatHavePendingOperation.contains(symbol) {
                     await MainActor.run() {
                         backgroundColor[symbol] = keyColors(symbol, pending: true).upColor
                         textColor[symbol] = keyColors(symbol, pending: true).textColor
                         previouslyPendingOperator = symbol
-                    }
-                } else {
-                    if let previous = previouslyPendingOperator {
-                        await MainActor.run() {
-                            backgroundColor[previous] = keyColors(previous, pending: false).upColor
-                            textColor[previous] = keyColors(previous, pending: false).textColor
-                        }
                     }
                 }
                 
