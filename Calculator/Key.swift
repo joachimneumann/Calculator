@@ -33,6 +33,8 @@ struct Key: View {
     }
     
     var body: some View {
+        let _ = print("Key body", symbol)
+        let _ = Self._printChanges()
         ZStack {
             if symbol == "0" {
                 Label(symbol: symbol, size: keySize.height, color: textColor)

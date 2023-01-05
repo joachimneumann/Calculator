@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Backgrounds: ViewModifier {
     /// Note: place   .onTapGesture { }   BEFORE   .modifier(Backgrounds( ))
-    @State var color: Color
+    @Binding var color: Color
     @State var upHasHappended = false
     @State var downAnimationFinished = false
     let upColor: Color
@@ -18,16 +18,15 @@ struct Backgrounds: ViewModifier {
     let upTime = 0.6
 
 
-    init(up upColor: Color, down downColor: Color) {
-        self.upColor = upColor
-        self.downColor = downColor
-        self.color = upColor
-        //print("BG colors:", self.upColor, self.downColor, self.color)
-    }
+//    init(up upColor: Color, down downColor: Color) {
+//        self.upColor = upColor
+//        self.downColor = downColor
+//        self.color = upColor
+//        //print("BG colors:", self.upColor, self.downColor, self.color)
+//    }
     
     func body(content: Content) -> some View {
         content
-            .background(color)
             .simultaneousGesture(DragGesture(minimumDistance: 0)
                 .onChanged { _ in
                     Task {
@@ -62,6 +61,6 @@ struct Backgrounds_Previews: PreviewProvider {
     
     static var previews: some View {
         Text("XX")
-            .modifier(Backgrounds(up: .gray, down: .white))
+            .modifier(Backgrounds(color: .constant(Color.white), upColor: .gray, downColor: .white))
     }
 }
