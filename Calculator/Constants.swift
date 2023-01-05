@@ -22,8 +22,8 @@ struct C {
     static let appBackground: Color = .black
     static let digitColors = ColorsOf(
         textColor: .white,
-        upColor:   Color(white: 0.3),
-        downColor: Color(white: 0.4))
+        upColor:   Color(white: 0.2),
+        downColor: Color(white: 0.45))
     static let disabledColor = Color.red
     static let operatorColors = ColorsOf(
         textColor: Color(.white),
