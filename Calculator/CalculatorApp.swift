@@ -11,10 +11,10 @@ import SwiftUI
 struct CalculatorApp: App {
     var body: some Scene {
         WindowGroup {
-            DictionaryBootcamp()
-//            GeometryReader { (geo) in
-//                Calculator(screen: Screen(geo.size))
-//            }
+//            DictionaryBootcamp()
+            GeometryReader { (geo) in
+                Calculator(screen: Screen(geo.size))
+            }
         }
     }
 }

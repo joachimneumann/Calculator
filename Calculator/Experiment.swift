@@ -8,19 +8,16 @@
 import SwiftUI
 
 
-//class ColorsOf: ObservableObject {
-//    var textColor: Color
-//    @Published var upColor: Color
-//    var downColor: Color
-//    init(textColor: Color, upColor: Color, downColor: Color) {
-//        self.textColor = textColor
-//        self.upColor = upColor
-//        self.downColor = downColor
-//    }
-//}
-
 class DictionaryBootcampViewModel: ObservableObject {
+    @Published var dict: [String: ColorsOf] = [:]
     @Published var colorsOf: ColorsOf = ColorsOf(textColor: .yellow, upColor: .yellow, downColor: .yellow)
+    
+    init() {
+        dict["press 0"] = ColorsOf(textColor: .white, upColor: .gray, downColor: .black)
+        dict["press 1"] = ColorsOf(textColor: .white, upColor: .gray, downColor: .black)
+        dict["press 2"] = ColorsOf(textColor: .white, upColor: .gray, downColor: .black)
+        dict["press 3"] = ColorsOf(textColor: .white, upColor: .gray, downColor: .black)
+    }
     func pressed() {
         self.colorsOf.upColor = Color.random
         self.objectWillChange.send()
@@ -49,7 +46,6 @@ struct DictionaryBootcamp: View {
     var body: some View {
         let _ = print("DictionaryBootcamp body: viewModel.colorsOf.upColor", viewModel.colorsOf.upColor)
         let _ = Self._printChanges()
-        let b = Backgrounds(color: $viewModel.colorsOf.upColor, upColor: .gray, downColor: .black)
         VStack(spacing: 40) {
             KKey(
                 text: "press 0",
@@ -59,19 +55,19 @@ struct DictionaryBootcamp: View {
                 text: "press 1",
                 viewModel: viewModel
             )
-            Text("press B1")
+            Text("press 2")
                 .frame(width: 250, height: 40)
                 .foregroundColor(Color.white)
-                .background(b.color)
+                .background(viewModel.colorsOf.upColor)
                 .onTapGesture {
                     viewModel.pressed()
                 }
                 .modifier(Backgrounds(color: $viewModel.colorsOf.upColor, upColor: .gray, downColor: .black))
                 .clipShape(Capsule())
-            Text("press B2")
+            Text("press 3")
                 .frame(width: 250, height: 40)
                 .foregroundColor(Color.white)
-                .background(b.color)
+                .background(viewModel.colorsOf.upColor)
                 .onTapGesture {
                     viewModel.pressed()
                 }

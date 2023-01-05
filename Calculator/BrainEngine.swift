@@ -12,7 +12,7 @@ class BrainEngine {
     fileprivate var n = NumberStack()
     fileprivate var operatorStack = OperatorStack()
     private (set) var precision: Int = 0
-    private var pending: Bool
+    private var anOperationIsPending: Bool
     private var memory: Number? = nil
     private var nullNumber: Number { Number("0", precision: precision) }
     private let constantOperators: Dictionary <String, Inplace> = [
@@ -114,7 +114,7 @@ class BrainEngine {
             if n.last.isNull {
                 operatorStack.removeAll()
                 n.removeAll()
-                pending = false
+                anOperationIsPending = false
                 n.append(nullNumber)
             } else {
                 n.removeLast()
@@ -123,7 +123,7 @@ class BrainEngine {
         case "AC":
             operatorStack.removeAll()
             n.removeAll()
-            pending = false
+            anOperationIsPending = false
             n.append(nullNumber)
         case "mc":
             memory = nil
@@ -143,9 +143,9 @@ class BrainEngine {
             }
         case "mr":
             if memory != nil {
-                if pending {
+                if anOperationIsPending {
                     n.append(memory!)
-                    pending = false
+                    anOperationIsPending = false
                 } else {
                     n.replaceLast(with: memory!)
                 }
@@ -157,15 +157,15 @@ class BrainEngine {
         case "%":
             self.percentage()
         case ",":
-            if pending {
+            if anOperationIsPending {
                 n.append(nullNumber)
-                pending = false
+                anOperationIsPending = false
             }
             n.last.appendComma()
         case "0":
-            if pending {
+            if anOperationIsPending {
                 n.append(nullNumber)
-                pending = false
+                anOperationIsPending = false
             }
             n.last.appendZero()
         case "±":
@@ -173,21 +173,21 @@ class BrainEngine {
         case "=":
             execute(priority: Operator.equalPriority)
         case C.keysForDigits:
-            if pending {
+            if anOperationIsPending {
                 n.append(nullNumber)
-                pending = false
+                anOperationIsPending = false
             }
             n.last.appendDigit(symbol)
         case _ where constantOperators.keys.contains(symbol):
-            if pending {
+            if anOperationIsPending {
                 self.n.append(nullNumber)
-                pending = false
+                anOperationIsPending = false
             }
             self.n.last.execute(constantOperators[symbol]!.operation)
         case _ where inplaceOperators.keys.contains(symbol):
             n.last.execute(inplaceOperators[symbol]!.operation)
         case _ where twoOperandOperators.keys.contains(symbol):
-            pending = true
+            anOperationIsPending = true
             execute(priority: twoOperandOperators[symbol]!.priority)
             operatorStack.push(twoOperandOperators[symbol]!)
         default:
@@ -211,7 +211,7 @@ class BrainEngine {
         self.precision = precision
         operatorStack.removeAll()
         n.removeAll()
-        pending = false
+        anOperationIsPending = false
         n.append(Number("0", precision: precision))
         // fullDisplay()
     }

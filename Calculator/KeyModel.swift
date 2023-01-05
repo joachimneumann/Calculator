@@ -87,22 +87,20 @@ class KeyModel: ObservableObject {
             if symbol == "AC" {
                 showPrecision.toggle()
             }
+            if let previous = previouslyPendingOperator {
+                setBG(previous, keyColors(previous, pending: false).upColor)
+                setT(previous, keyColors(previous, pending: false).textColor)
+            }
+            if C.keysThatHavePendingOperation.contains(symbol) {
+                setBG(symbol, keyColors(symbol, pending: true).upColor)
+                setT(symbol, keyColors(symbol, pending: true).textColor)
+                previouslyPendingOperator = symbol
+            }
+            upHasHappended = true
             Task {
                 //await MainActor.run { }
 
                 /// pending colors
-                if C.keysThatHavePendingOperation.contains(symbol) {
-                    setBG(symbol, keyColors(symbol, pending: true).upColor)
-                    setT(symbol, keyColors(symbol, pending: true).textColor)
-                    previouslyPendingOperator = symbol
-                } else {
-                    if let previous = previouslyPendingOperator {
-                        setBG(previous, keyColors(previous, pending: false).upColor)
-                        setT(previous, keyColors(previous, pending: false).textColor)
-                    }
-                }
-                
-                upHasHappended = true
                 if downAnimationFinished {
                     withAnimation(.easeIn(duration: upTime)) {
                         setBG(symbol, keyColors(symbol, pending: symbol == previouslyPendingOperator).upColor)
