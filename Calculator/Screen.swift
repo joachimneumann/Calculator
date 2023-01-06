@@ -27,6 +27,8 @@ class Screen: Equatable, ObservableObject {
     let infoUiFontSize: CGFloat
     let portraitIPhoneDisplayHorizontalPadding: CGFloat
     let portraitIPhoneDisplayBottomPadding: CGFloat
+    let horizontalPadding: CGFloat
+    let bottomPadding: CGFloat
     let offsetToVerticallyAlignTextWithkeyboard: CGFloat
     let offsetToVerticallyIconWithText: CGFloat
 
@@ -37,22 +39,29 @@ class Screen: Equatable, ObservableObject {
         isPad = UIDevice.current.userInterfaceIdiom == .pad
         let isPortrait = screenSize.height > screenSize.width
         isPortraitPhone = isPad ? false : isPortrait
+
         if isPortraitPhone {
             keySpacing = 0.034 * screenSize.width
         } else {
             // with scientific keyboard: narrower spacing
             keySpacing = 0.012 * screenSize.width
         }
+        
+        portraitIPhoneDisplayHorizontalPadding = screenSize.width * 0.035
+        portraitIPhoneDisplayBottomPadding = screenSize.height * 0.012
+        horizontalPadding = keySpacing
+
+        let calculatorWidth = screenSize.width - 2 * horizontalPadding
         let tempKeyWidth: CGFloat
         let tempKeyheight: CGFloat
         if isPortrait {
             /// Round keys
-            tempKeyWidth = isPad ? (screenSize.width - 9.0 * keySpacing) * 0.1 : (screenSize.width - 3.0 * keySpacing) * 0.25
+            tempKeyWidth = isPad ? (calculatorWidth - 9.0 * keySpacing) * 0.1 : (calculatorWidth - 3.0 * keySpacing) * 0.25
             tempKeyheight = tempKeyWidth
             keyboardHeight = 5 * tempKeyheight + 4 * keySpacing
         } else {
             /// wider keys
-            tempKeyWidth = (screenSize.width - 9.0 * keySpacing) * 0.1
+            tempKeyWidth = (calculatorWidth - 9.0 * keySpacing) * 0.1
             if isPad {
                 /// landscape iPad: half of the screen is the keyboard
                 keyboardHeight = isPortrait ? screenSize.height * 0.4 : screenSize.height * 0.5
@@ -62,12 +71,10 @@ class Screen: Equatable, ObservableObject {
             }
             tempKeyheight = (keyboardHeight - 4.0 * keySpacing) * 0.2
         }
-        
+        bottomPadding = keyboardHeight * 0.09
+
         keySize = CGSize(width: tempKeyWidth, height: tempKeyheight)
         
-        portraitIPhoneDisplayHorizontalPadding = screenSize.width * 0.035
-        portraitIPhoneDisplayBottomPadding = screenSize.height * 0.012
-
         plusIconSize = keyboardHeight * 0.13
         plusIconLeftPadding = plusIconSize * 0.4
         ePadding = isPortraitPhone ? plusIconSize * 0.1 : plusIconSize * 0.3

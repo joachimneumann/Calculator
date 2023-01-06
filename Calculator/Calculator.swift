@@ -55,8 +55,8 @@ struct Calculator: View {
                         keyModel: keyModel)
                 }
                 .background(Color.red)
-//                .padding(.bottom, screen.keyboardHeight * 0.07)
-//                .padding(.horizontal, screen.keySize.width * 0.2)
+                .padding(.bottom, screen.bottomPadding)
+                .padding(.horizontal, screen.horizontalPadding)
             } else {
                 MyNavigation {
                     HStack(alignment: .top, spacing: 0.0) {
