@@ -249,7 +249,7 @@ class Number: CustomDebugStringConvertible {
             var mantissa: String = mantissaExponent.mantissa
             var exponent: Int = mantissaExponent.exponent
             
-            if mantissa == "" {
+            if mantissa.isEmpty {
                 mantissa = "0"
             } else {
                 exponent = exponent - 1

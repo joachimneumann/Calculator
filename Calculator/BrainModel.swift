@@ -134,7 +134,7 @@ class BrainModel : KeyPressResponder, ObservableObject {
         //                }
         //            }
         //        }
-        //        if memoryValue == "" {
+        //        if memoryValue.isEmpty {
         ////                await brain.setMemory(nil)
         ////                await stupidBrain.setMemory(nil)
         //        } else {
