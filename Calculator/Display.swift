@@ -41,14 +41,16 @@ struct DisplayFormat {
         
         if screen.isPortraitPhone {
             let factorMin = 1.0
-            let factorMax = 2.3
+            let factorMax = 2.0
+            // if factorMax is too large (above 2.3) the space needed
+            // for the new caracter is more then the shrinking,
+            // which results in the string to be too long
             
             let notOccupiedLength = CGFloat(length) / CGFloat(maxLength)
             factor = factorMax - notOccupiedLength * (factorMax - factorMin)
             if factor > 1.5 { factor = 1.5 }
             if factor < 1.0 { factor = 1.0 }
         }
-        
         let uiFont = UIFont.monospacedDigitSystemFont(ofSize: screen.uiFontSize * factor, weight: C.fontWeight)
         
         font = Font(uiFont)

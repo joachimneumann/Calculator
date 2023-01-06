@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PortraitDisplay: View {
     let display: Display
-        
+    
     var body: some View {
         //let _ = print(display.data.left)
         let toShow = display.format.showThreeDots && display.data.left.count > 1 ? String(display.data.left.dropLast()) : display.data.left
