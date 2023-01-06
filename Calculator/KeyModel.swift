@@ -11,7 +11,7 @@ class KeyModel: ObservableObject {
     var upHasHappended = false
     var downAnimationFinished = false
     let downTime = 0.1
-    let upTime = 0.3
+    let upTime = 0.4
     private var downAnimation: Task<(), Error>?
 
     
@@ -26,7 +26,7 @@ class KeyModel: ObservableObject {
     @Published var currentDisplay: Display
     private var previouslyPendingOperator: String? = nil
     init() {
-        print("KeyModel INIT")
+        // print("KeyModel INIT")
         self.currentDisplay = Display()
         for symbol in C.keysAll {
             backgroundColor[symbol] = keyColors(symbol, pending: false).upColor
@@ -48,7 +48,7 @@ class KeyModel: ObservableObject {
             }
             try await Task.sleep(nanoseconds: UInt64(downTime * 1_000_000_000))
             downAnimationFinished = true
-            print("down: upHasHappended", upHasHappended)
+            //print("down: upHasHappended", upHasHappended)
             if upHasHappended {
                 await MainActor.run {
                     withAnimation(.easeIn(duration: upTime)) {
