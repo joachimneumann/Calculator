@@ -13,7 +13,6 @@ struct CalculatorApp: App {
         WindowGroup {
             GeometryReader { (geo) in
                 Calculator(screen: Screen(geo.size))
-                    .background(Color.white)
             }
         }
     }

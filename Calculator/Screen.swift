@@ -42,14 +42,15 @@ class Screen: Equatable, ObservableObject {
 
         if isPortraitPhone {
             keySpacing = 0.034 * screenSize.width
+            horizontalPadding = keySpacing
         } else {
             // with scientific keyboard: narrower spacing
             keySpacing = 0.012 * screenSize.width
+            horizontalPadding = 0.0
         }
         
         portraitIPhoneDisplayHorizontalPadding = screenSize.width * 0.035
         portraitIPhoneDisplayBottomPadding = screenSize.height * 0.012
-        horizontalPadding = keySpacing
 
         let calculatorWidth = screenSize.width - 2 * horizontalPadding
         let tempKeyWidth: CGFloat
@@ -78,7 +79,7 @@ class Screen: Equatable, ObservableObject {
         plusIconSize = keyboardHeight * 0.13
         plusIconLeftPadding = plusIconSize * 0.4
         ePadding = isPortraitPhone ? plusIconSize * 0.1 : plusIconSize * 0.3
-        let displayWidth = screenSize.width -
+        let displayWidth = calculatorWidth -
         (isPortraitPhone ? 2.0 * portraitIPhoneDisplayHorizontalPadding : plusIconSize + plusIconLeftPadding)
         uiFontSize = ((isPortraitPhone ? 0.125 : 0.16) * keyboardHeight).rounded()
         let uiFont = UIFont.monospacedDigitSystemFont(ofSize: uiFontSize, weight: C.fontWeight)

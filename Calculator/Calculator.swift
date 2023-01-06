@@ -47,16 +47,13 @@ struct Calculator: View {
                     Spacer(minLength: 0.0)
                     PortraitDisplay(display: keyModel.currentDisplay)
                         .padding(.bottom, screen.portraitIPhoneDisplayBottomPadding)
-                        .background(Color.yellow)
                         .padding(.horizontal, screen.portraitIPhoneDisplayHorizontalPadding)
-                        .background(Color.blue)
                     NonScientificKeyboard(
                         screen: screen,
                         keyModel: keyModel)
                 }
-                .background(Color.red)
+//                .background(Color.red)
                 .padding(.bottom, screen.bottomPadding)
-                .padding(.horizontal, screen.horizontalPadding)
             } else {
                 MyNavigation {
                     HStack(alignment: .top, spacing: 0.0) {
@@ -113,6 +110,7 @@ struct Calculator: View {
                 .accentColor(.white) // for the navigation back button
             }
         }
+        .padding(.horizontal, screen.horizontalPadding)
         .preferredColorScheme(.dark)
         .onAppear() {
             if keyModel.keyPressResponder == nil {
@@ -124,7 +122,6 @@ struct Calculator: View {
 //            print("Calculator onAppear", keyModel.keyPressResponder)
         }
         .onChange(of: screen) { newScreen in
-            print("X")
             Task {
                 await keyModel.refreshDisplay(screen: newScreen)
             }
