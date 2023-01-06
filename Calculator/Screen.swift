@@ -60,6 +60,7 @@ class Screen: Equatable, ObservableObject {
             tempKeyWidth = isPad ? (calculatorWidth - 9.0 * keySpacing) * 0.1 : (calculatorWidth - 3.0 * keySpacing) * 0.25
             tempKeyheight = tempKeyWidth
             keyboardHeight = 5 * tempKeyheight + 4 * keySpacing
+            bottomPadding = isPad ? 0.0 : keyboardHeight * 0.09
         } else {
             /// wider keys
             tempKeyWidth = (calculatorWidth - 9.0 * keySpacing) * 0.1
@@ -71,8 +72,8 @@ class Screen: Equatable, ObservableObject {
                 keyboardHeight = 0.8 * screenSize.height
             }
             tempKeyheight = (keyboardHeight - 4.0 * keySpacing) * 0.2
+            bottomPadding = 0.0
         }
-        bottomPadding = keyboardHeight * 0.09
 
         keySize = CGSize(width: tempKeyWidth, height: tempKeyheight)
         

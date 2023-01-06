@@ -52,8 +52,6 @@ struct Calculator: View {
                         screen: screen,
                         keyModel: keyModel)
                 }
-//                .background(Color.red)
-                .padding(.bottom, screen.bottomPadding)
             } else {
                 MyNavigation {
                     HStack(alignment: .top, spacing: 0.0) {
@@ -110,6 +108,7 @@ struct Calculator: View {
                 .accentColor(.white) // for the navigation back button
             }
         }
+        .padding(.bottom, screen.bottomPadding)
         .padding(.horizontal, screen.horizontalPadding)
         .preferredColorScheme(.dark)
         .onAppear() {
