@@ -46,12 +46,17 @@ struct Calculator: View {
                 VStack(spacing: 0.0) {
                     Spacer(minLength: 0.0)
                     PortraitDisplay(display: keyModel.currentDisplay)
-                        .padding(.horizontal, screen.portraitIPhoneDisplayHorizontalPadding)
                         .padding(.bottom, screen.portraitIPhoneDisplayBottomPadding)
+                        .background(Color.yellow)
+                        .padding(.horizontal, screen.portraitIPhoneDisplayHorizontalPadding)
+                        .background(Color.blue)
                     NonScientificKeyboard(
                         screen: screen,
                         keyModel: keyModel)
                 }
+                .background(Color.red)
+//                .padding(.bottom, screen.keyboardHeight * 0.07)
+//                .padding(.horizontal, screen.keySize.width * 0.2)
             } else {
                 MyNavigation {
                     HStack(alignment: .top, spacing: 0.0) {

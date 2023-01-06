@@ -45,7 +45,6 @@ class Screen: Equatable, ObservableObject {
         }
         let tempKeyWidth: CGFloat
         let tempKeyheight: CGFloat
-
         if isPortrait {
             /// Round keys
             tempKeyWidth = isPad ? (screenSize.width - 9.0 * keySpacing) * 0.1 : (screenSize.width - 3.0 * keySpacing) * 0.25
@@ -69,12 +68,11 @@ class Screen: Equatable, ObservableObject {
         portraitIPhoneDisplayHorizontalPadding = screenSize.width * 0.035
         portraitIPhoneDisplayBottomPadding = screenSize.height * 0.012
 
-        let portraitIPhoneHorizontalPadding = screenSize.width * 0.08
         plusIconSize = keyboardHeight * 0.13
         plusIconLeftPadding = plusIconSize * 0.4
         ePadding = isPortraitPhone ? plusIconSize * 0.1 : plusIconSize * 0.3
         let displayWidth = screenSize.width -
-        (isPortraitPhone ? portraitIPhoneHorizontalPadding : plusIconSize + plusIconLeftPadding)
+        (isPortraitPhone ? 2.0 * portraitIPhoneDisplayHorizontalPadding : plusIconSize + plusIconLeftPadding)
         uiFontSize = ((isPortraitPhone ? 0.125 : 0.16) * keyboardHeight).rounded()
         let uiFont = UIFont.monospacedDigitSystemFont(ofSize: uiFontSize, weight: C.fontWeight)
         infoUiFontSize = uiFontSize * 0.3

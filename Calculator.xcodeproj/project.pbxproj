@@ -11,7 +11,6 @@
 		AA08C7C6272EDA4A001B8575 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA08C7C5272EDA4A001B8575 /* Assets.xcassets */; };
 		AA08C7C9272EDA4A001B8575 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA08C7C8272EDA4A001B8575 /* Preview Assets.xcassets */; };
 		AA08C7D3272EDA4A001B8575 /* CalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA08C7D2272EDA4A001B8575 /* CalculatorTests.swift */; };
-		AA0D7BBA294B52EB00F63F49 /* ScreenInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0D7BB9294B52EB00F63F49 /* ScreenInfo.swift */; };
 		AA29F58A293CD608001ADF5A /* PortraitDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA29F589293CD608001ADF5A /* PortraitDisplay.swift */; };
 		AA2FABEB272F2135006DE4C8 /* mpfr.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA2FABEA272F2135006DE4C8 /* mpfr.xcframework */; };
 		AA2FABEF272F2141006DE4C8 /* gmp.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA2FABEE272F2141006DE4C8 /* gmp.xcframework */; };
@@ -78,7 +77,6 @@
 		AA08C7D2272EDA4A001B8575 /* CalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorTests.swift; sourceTree = "<group>"; };
 		AA08C7EB272F1241001B8575 /* Calculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Calculator.entitlements; sourceTree = "<group>"; };
 		AA08C7EC272F1572001B8575 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		AA0D7BB9294B52EB00F63F49 /* ScreenInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenInfo.swift; sourceTree = "<group>"; };
 		AA1B007C294777180054C851 /* gmp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gmp.h; path = dist/include/gmp.h; sourceTree = SOURCE_ROOT; };
 		AA1B007D294777180054C851 /* bridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bridge.h; path = dist/include/bridge.h; sourceTree = SOURCE_ROOT; };
 		AA1B007E294777190054C851 /* mpfr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mpfr.h; path = dist/include/mpfr.h; sourceTree = SOURCE_ROOT; };
@@ -186,7 +184,6 @@
 				AA6CE7082945C25E002BB5FE /* Calculator.storekit */,
 				AA6CE7092945CC5C002BB5FE /* Test.storekit */,
 				AA6CE70B2945CE0A002BB5FE /* PurchaseView.swift */,
-				AA0D7BB9294B52EB00F63F49 /* ScreenInfo.swift */,
 				AA8453E7294D872300A50B74 /* Icons.swift */,
 				AA672B09295189950044DC08 /* ScrollViewConditionalAnimation.swift */,
 				AA01B9D32957E44300617AFB /* Display.swift */,
@@ -344,7 +341,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA8453E8294D872300A50B74 /* Icons.swift in Sources */,
-				AA0D7BBA294B52EB00F63F49 /* ScreenInfo.swift in Sources */,
 				AA6D79D82957FCB900AF7E13 /* LandscapeDisplay.swift in Sources */,
 				AA01B9D42957E44300617AFB /* Display.swift in Sources */,
 				AAB10B9C292A2222004707E9 /* NonScientificKeyboard.swift in Sources */,
