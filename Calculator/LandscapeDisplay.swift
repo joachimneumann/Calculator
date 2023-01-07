@@ -15,8 +15,7 @@ struct LandscapeDisplay: View {
     let offsetToVerticallyAlignTextWithkeyboard: CGFloat
     var scrollViewID: UUID
     
-    var body: some View {
-        //let _ = print("LandscapeDisplay", display.data.left)
+    var mantissa: some View {
         ScrollViewConditionalAnimation(
             text: display.data.left,
             font: display.format.font,
@@ -28,6 +27,10 @@ struct LandscapeDisplay: View {
             scrollViewID: scrollViewID,
             preliminary: display.format.showThreeDots,
             digitWidth: display.format.digitWidth)
+    }
+    
+    @ViewBuilder
+    var exponent: some View {
         if display.data.right != nil {
             Text(display.data.right!)
                 .kerning(C.kerning)
@@ -35,6 +38,14 @@ struct LandscapeDisplay: View {
                 .foregroundColor(showOrange ? .orange : display.format.color)
                 .padding(.leading, display.format.ePadding)
                 .offset(y: offsetToVerticallyAlignTextWithkeyboard)
+        }
+    }
+    
+    var body: some View {
+        //let _ = print("LandscapeDisplay", display.data.left)
+        HStack(alignment: .top, spacing: 0.0) {
+            mantissa
+            exponent
         }
     }
 }

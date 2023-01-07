@@ -10,32 +10,47 @@ import SwiftUI
 struct PortraitDisplay: View {
     let display: Display
     
-    var body: some View {
-        //let _ = print(display.data.left)
+    @ViewBuilder
+    var mantissa: some View {
         let toShow = display.format.showThreeDots && display.data.left.count > 1 ? String(display.data.left.dropLast()) : display.data.left
-        HStack(alignment: .bottom, spacing: 0.0) {
-            Spacer(minLength: 0.0)
-            Text(toShow)
+        Text(toShow)
+            .kerning(C.kerning)
+            .font(display.format.font)
+            .foregroundColor(display.format.color)
+            .multilineTextAlignment(.trailing)
+            .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
+            .lineLimit(1)
+    }
+
+    @ViewBuilder
+    var animatedDots: some View {
+        if display.format.showThreeDots {
+            AnimatedDots().frame(width: display.format.digitWidth, height: display.format.digitWidth / 3)
+                .offset(y: -display.format.digitWidth / 3)
+        }
+    }
+    
+    @ViewBuilder
+    var exponent: some View {
+        if let exponent = display.data.right {
+            Text(exponent)
                 .kerning(C.kerning)
                 .font(display.format.font)
                 .foregroundColor(display.format.color)
                 .multilineTextAlignment(.trailing)
                 .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
                 .lineLimit(1)
-            if display.format.showThreeDots {
-                AnimatedDots().frame(width: display.format.digitWidth, height: display.format.digitWidth / 3)
-                    .offset(y: -display.format.digitWidth / 3)
-            }
-            if display.data.right != nil {
-                Text(display.data.right!)
-                    .kerning(C.kerning)
-                    .font(display.format.font)
-                    .foregroundColor(display.format.color)
-                    .multilineTextAlignment(.trailing)
-                    .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
-                    .lineLimit(1)
-                    .padding(.leading, display.format.ePadding)
-            }
+                .padding(.leading, display.format.ePadding)
+        }
+    }
+    
+    var body: some View {
+        //let _ = print(display.data.left)
+        HStack(alignment: .bottom, spacing: 0.0) {
+            Spacer(minLength: 0.0)
+            mantissa
+            animatedDots
+            exponent
         }
     }
 }
