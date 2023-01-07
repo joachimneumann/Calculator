@@ -60,7 +60,7 @@ struct Key: View {
 struct Key_Previews: PreviewProvider {
     static var previews: some View {
         let screen = Screen(CGSize(width: 1400, height: 600))
-        let keyModel = KeyModel(keyPressResponder: BrainModel())
+        let keyModel = KeyModel()
         VStack {
             HStack {
                 Key("√", screen, keyModel)
