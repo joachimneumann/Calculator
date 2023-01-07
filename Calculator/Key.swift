@@ -11,7 +11,8 @@ struct Key: View {
     let screen: Screen
     let symbol: String
     let keySize: CGSize
-    let backgroundColor: Color
+    let upColor: Color
+    let downColor: Color
     let textColor: Color
     let touchDown: (String) -> ()
     let touchUp: (String, Screen) -> ()
@@ -21,10 +22,12 @@ struct Key: View {
          _ screen: Screen,
          _ keyModel: KeyModel,
          doubleWidth: CGFloat = 0.0) {
+        let _ = print("Key init", symbol)
         self.screen = screen
         self.symbol = symbol
         self.keySize = screen.keySize
-        self.backgroundColor = keyModel.backgroundColor[symbol]!
+        self.upColor = keyModel.upColor[symbol]!
+        self.downColor = keyModel.downColor[symbol]!
         self.textColor = keyModel.textColor[symbol]!
         self.touchDown = keyModel.touchDown
         self.touchUp = keyModel.touchUp
@@ -45,7 +48,8 @@ struct Key: View {
                     .foregroundColor(textColor)
             }
         }
-        .background(backgroundColor)
+        .modifier(Backgrounds(up: upColor, down: downColor))
+//        .background(backgroundColor)
         .clipShape(Capsule())
         .simultaneousGesture(DragGesture(minimumDistance: 0)
             .onChanged { _ in
