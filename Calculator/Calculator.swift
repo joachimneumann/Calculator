@@ -23,8 +23,8 @@ struct MyNavigation<Content>: View where Content: View {
 
 struct Calculator: View {
     @ObservedObject var screen: Screen
-    @StateObject private var keyModel: KeyModel = KeyModel()
-    @StateObject private var brainModel: BrainModel = BrainModel()
+    @StateObject private var keyModel: KeyModel// = KeyModel()
+    @StateObject private var brainModel: BrainModel// = BrainModel()
 
     @State var scrollViewHasScrolled = false
     @State var scrollViewID = UUID()
@@ -38,6 +38,13 @@ struct Calculator: View {
     }
 
     var store = Store()
+    
+    init(screen: Screen) {
+        self.screen = screen
+        _brainModel = StateObject(wrappedValue: BrainModel())
+        let keyPressResponder: KeyPressResponder = _brainModel.wrappedValue
+        _keyModel = StateObject(wrappedValue: KeyModel(keyPressResponder: keyPressResponder))
+    }
     
     var body: some View {
       //let _ = print("Calculator body keyModel isPortraitPhone", screen.isPortraitPhone)
@@ -112,15 +119,11 @@ struct Calculator: View {
         .padding(.horizontal, screen.horizontalPadding)
         .preferredColorScheme(.dark)
         .onAppear() {
-            if keyModel.keyPressResponder == nil {
-                keyModel.keyPressResponder = brainModel
-            }
             Task {
                 await keyModel.refreshDisplay(screen: screen)
             }
-//            print("Calculator onAppear", keyModel.keyPressResponder)
         }
-        .onChange(of: screen) { newScreen in
+        .onChange(of: screen) { newScreen in /// e.g., rotation
             Task {
                 await keyModel.refreshDisplay(screen: newScreen)
             }

@@ -8,15 +8,15 @@
 import SwiftUI
 
 class KeyModel: ObservableObject {
+    var keyPressResponder: KeyPressResponder
+
     var upHasHappended = false
     var downAnimationFinished = false
     let downTime = 0.1
     let upTime = 0.4
     private var downAnimation: Task<(), Error>?
-
     
     private var calculationResult = CalculationResult(number: Number("0", precision: 10), hasChanged: false)
-    var keyPressResponder: KeyPressResponder? = nil
     @Published var showAC = true
     var showPrecision: Bool = false
     var secondActive = false
@@ -25,8 +25,9 @@ class KeyModel: ObservableObject {
     @AppStorage("rad", store: .standard) var rad: Bool = false
     @Published var currentDisplay: Display
     private var previouslyPendingOperator: String? = nil
-    init() {
+    init(keyPressResponder: KeyPressResponder) {
         // print("KeyModel INIT")
+        self.keyPressResponder = keyPressResponder
         self.currentDisplay = Display()
         for symbol in C.keysAll {
             backgroundColor[symbol] = keyColors(symbol, pending: false).upColor
@@ -103,7 +104,6 @@ class KeyModel: ObservableObject {
                     }
                 }
                 
-                guard let keyPressResponder = keyPressResponder else { print("no keyPressResponder set"); return }
                 calculationResult = await keyPressResponder.keyPress(symbol)
                 await refreshDisplay(screen: screen)
             }
@@ -111,12 +111,10 @@ class KeyModel: ObservableObject {
     }
     
     func refreshDisplay(screen: Screen) async {
-        if let keyPressResponder = keyPressResponder {
-            let tempDisplay = await calculationResult.getDisplay(keyPressResponder: keyPressResponder, screen: screen)
-            await MainActor.run() {
-                currentDisplay = tempDisplay
-                //print("currentDisplay", currentDisplay.data.left)
-            }
+        let tempDisplay = await calculationResult.getDisplay(keyPressResponder: keyPressResponder, screen: screen)
+        await MainActor.run() {
+            currentDisplay = tempDisplay
+            //print("currentDisplay", currentDisplay.data.left)
         }
     }
 
