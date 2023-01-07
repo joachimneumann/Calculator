@@ -10,6 +10,35 @@ import SwiftUI
 class KeyModel: ObservableObject {
     var keyPressResponder: KeyPressResponder?
 
+    let digitColors = ColorsOf(
+        textColor: .white,
+        upColor:   Color(white: 0.2),
+        downColor: Color(white: 0.45))
+    let disabledColor = Color.red
+    let operatorColors = ColorsOf(
+        textColor: Color(.white),
+        upColor:   Color(white: 0.5),
+        downColor: Color(white: 0.7))
+    let pendingOperatorColors = ColorsOf(
+        textColor: Color(white: 0.3),
+        upColor:   Color(white: 0.9),
+        downColor: Color(white: 0.8))
+    let scientificColors = ColorsOf(
+        textColor: Color(.white),
+        upColor:   Color(white: 0.12),
+        downColor: Color(white: 0.32))
+    let pendingScientificColors = ColorsOf(
+        textColor: Color(white: 0.3),
+        upColor:   Color(white: 0.7),
+        downColor: Color(white: 0.6))
+    let secondColors = ColorsOf(
+        textColor: Color(.white),
+        upColor:   Color(white: 0.12),
+        downColor: Color(white: 0.12))
+    let secondActiveColors = ColorsOf(
+        textColor: Color(white: 0.2),
+        upColor:   Color(white: 0.6),
+        downColor: Color(white: 0.6))
     var upHasHappended = false
     var downAnimationFinished = false
     let downTime = 0.1
@@ -65,7 +94,7 @@ class KeyModel: ObservableObject {
         switch symbol {
         case "2nd":
             secondActive.toggle()
-            backgroundColor["2nd"] = secondActive ? C.secondActiveColors.upColor : C.secondColors.upColor
+            backgroundColor["2nd"] = secondActive ? secondActiveColors.upColor : secondColors.upColor
         case "Rad":
 //            hasBeenReset = false
             rad = true
@@ -123,14 +152,14 @@ class KeyModel: ObservableObject {
     
     func keyColors(_ symbol: String, pending: Bool) -> ColorsOf {
         if C.keysForDigits.contains(symbol) {
-            return C.digitColors
+            return digitColors
         } else if symbol == "2nd" {
-            return C.secondColors
+            return secondColors
         } else if C.keysOfOperator.contains(symbol) {
-            return pending ? C.pendingOperatorColors : C.operatorColors
+            return pending ? pendingOperatorColors : operatorColors
         } else if C.keysOfScientificOperators.contains(symbol) {
-            return pending ? C.pendingScientificColors : C.scientificColors
+            return pending ? pendingScientificColors : scientificColors
         }
-        return C.digitColors
+        return digitColors
     }
 }

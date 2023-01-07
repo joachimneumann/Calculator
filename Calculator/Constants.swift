@@ -18,46 +18,7 @@ class ColorsOf {
     }
 }
 
-struct C {    
-    static let appBackground: Color = .black
-    static let digitColors = ColorsOf(
-        textColor: .white,
-        upColor:   Color(white: 0.2),
-        downColor: Color(white: 0.45))
-    static let disabledColor = Color.red
-    static let operatorColors = ColorsOf(
-        textColor: Color(.white),
-        upColor:   Color(white: 0.5),
-        downColor: Color(white: 0.7))
-    static let pendingOperatorColors = ColorsOf(
-        textColor: Color(white: 0.3),
-        upColor:   Color(white: 0.9),
-        downColor: Color(white: 0.8))
-    static let scientificColors = ColorsOf(
-        textColor: Color(.white),
-        upColor:   Color(white: 0.12),
-        downColor: Color(white: 0.32))
-    static let pendingScientificColors = ColorsOf(
-        textColor: Color(white: 0.3),
-        upColor:   Color(white: 0.7),
-        downColor: Color(white: 0.6))
-    static let secondColors = ColorsOf(
-        textColor: Color(.white),
-        upColor:   Color(white: 0.12),
-        downColor: Color(white: 0.12))
-    static let secondActiveColors = ColorsOf(
-        textColor: Color(white: 0.2),
-        upColor:   Color(white: 0.6),
-        downColor: Color(white: 0.6))
-    
-    static func spaceBetween(keyWidth: CGFloat) -> CGFloat {
-        0.1 * keyWidth
-    }
-
-    static func doubleKeyWidth(keyWidth : CGFloat) -> CGFloat {
-        2 * keyWidth + spaceBetween(keyWidth: keyWidth)
-    }
-
+struct C {
     static let keysForDigits: [String] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
     static let keysOfOperator = ["C", "AC", "±", "%", "/", "x", "-", "+", "="]
     static let keysOfScientificOperators = [
@@ -74,17 +35,6 @@ struct C {
 
     static let fontWeight: UIFont.Weight = .thin // UIFont.Weight(rawValue: -4.02) is not continuous
     static var kerning: CGFloat = 0.0
-    static let preliminaryDelay = 0.3 /// seconds
-    static let sfImageforKey: [String: String] = [
-        "+": "plus",
-        "-": "minus",
-        "x": "multiply",
-        "/": "divide",
-        "±": "plus.slash.minus",
-        "=": "equal",
-        "%": "percent",
-    ]
-
 }
 
 extension Int {

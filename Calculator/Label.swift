@@ -16,6 +16,15 @@ struct Label: View {
     let size: CGFloat
     let color: Color
     var sizeFactor: CGFloat
+    let sfImageforKey: [String: String] = [
+        "+": "plus",
+        "-": "minus",
+        "x": "multiply",
+        "/": "divide",
+        "±": "plus.slash.minus",
+        "=": "equal",
+        "%": "percent",
+    ]
     init(symbol: String, size: CGFloat, color: Color) {
         //let _ = print("LABEL for", symbol)
         self.symbol = symbol
@@ -33,7 +42,7 @@ struct Label: View {
             sizeFactor = sizeFactorSpecialOperator
         case "x":
             sizeFactor = 0.8 /// the sfImage multiply is a bit large
-        case _ where C.sfImageforKey.keys.contains(symbol):
+        case _ where sfImageforKey.keys.contains(symbol):
             sizeFactor = sizeFactorOperator
         case ",":
             sizeFactor = sizeFactorComma
@@ -70,7 +79,7 @@ struct Label: View {
         case "acosh": Pow(base: "cosh", exponent: "-1", size: size)
         case "atanh": Pow(base: "tanh", exponent: "-1", size: size)
         default:
-            if let sfImage = C.sfImageforKey[symbol] {
+            if let sfImage = sfImageforKey[symbol] {
                 Image(systemName: sfImage)
                     .resizable()
                     .font(Font.title.weight(.semibold))
