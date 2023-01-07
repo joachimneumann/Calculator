@@ -13,7 +13,6 @@ struct NonScientificKeyboard: View {
     
     var body: some View {
         let spacing = screen.keySpacing
-        let keySize = screen.keySize
         VStack(spacing: spacing) {
             HStack(spacing: spacing) {
                 Key(keyModel.showAC ? "AC" : "C", screen, keyModel)
@@ -40,7 +39,7 @@ struct NonScientificKeyboard: View {
                 Key("+", screen, keyModel)
             }
             HStack(spacing: spacing) {
-                Key("0", screen, keyModel, doubleWidth: 2.0 * keySize.width + spacing)
+                Key("0", screen, keyModel)
                 Key(",", screen, keyModel)
                 Key("=", screen, keyModel)
             }

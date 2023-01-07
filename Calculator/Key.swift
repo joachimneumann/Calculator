@@ -11,40 +11,37 @@ struct Key: View {
     let screen: Screen
     let symbol: String
     let keySize: CGSize
+    let xOffset: CGFloat
     let backgroundColor: Color
     let textColor: Color
     let touchDown: (String) -> ()
     let touchUp: (String, Screen) -> ()
-    let doubleWidth: CGFloat
     
     init(_ symbol: String,
          _ screen: Screen,
-         _ keyModel: KeyModel,
-         doubleWidth: CGFloat = 0.0) {
+         _ keyModel: KeyModel) {
         self.screen = screen
         self.symbol = symbol
-        self.keySize = screen.keySize
+        if symbol == "0" {
+            self.keySize = CGSize(
+                width: 2.0 * screen.keySize.width + screen.keySpacing,
+                height: screen.keySize.height)
+            xOffset = self.keySize.width * -0.5 + screen.keySize.width * 0.5
+        } else {
+            self.keySize = screen.keySize
+            xOffset = 0.0
+        }
         self.backgroundColor = keyModel.backgroundColor[symbol]!
         self.textColor = keyModel.textColor[symbol]!
         self.touchDown = keyModel.touchDown
-        self.touchUp = keyModel.touchUp
-//        self.touchUp = keyModel.touchUp
-        self.doubleWidth = doubleWidth
+        self.touchUp   = keyModel.touchUp
     }
     
     var body: some View {
-        ZStack {
-            if symbol == "0" {
-                Label(symbol: symbol, size: keySize.height, color: textColor)
-                    .offset(x: doubleWidth * -0.5 + keySize.width * 0.5)
-                    .foregroundColor(textColor)
-                    .frame(width: doubleWidth, height: keySize.height)
-            } else {
-                Label(symbol: symbol, size: keySize.height, color: textColor)
-                    .frame(width: keySize.width, height: keySize.height)
-                    .foregroundColor(textColor)
-            }
-        }
+        Label(symbol: symbol, size: keySize.height, color: textColor)
+            .offset(x: xOffset)
+            .foregroundColor(textColor)
+            .frame(width: keySize.width, height: keySize.height)
         .background(backgroundColor)
         .clipShape(Capsule())
         .simultaneousGesture(DragGesture(minimumDistance: 0)
@@ -66,7 +63,7 @@ struct Key_Previews: PreviewProvider {
                 Key("√", screen, keyModel)
                 Key("5", screen, keyModel)
             }
-            Key("0", screen, keyModel, doubleWidth: 200)
+            Key("0", screen, keyModel)
         }
         .foregroundColor(.white)
     }
