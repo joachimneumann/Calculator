@@ -16,32 +16,40 @@ struct Backgrounds: ViewModifier {
     let downColor: Color
     let downTime = 0.1
     let upTime = 0.6
-
+    @State var newUpColor: Color? = nil
 
     init(up upColor: Color, down downColor: Color) {
         self.color = upColor
         self.upColor = upColor
         self.downColor = downColor
-        //print("BG colors:", self.upColor, self.downColor, self.color)
     }
-    
+    func u() -> Color { upColor }
     func body(content: Content) -> some View {
         content
+            .onChange(of: upColor) { upColor in
+                newUpColor = upColor
+            }
             .background(color)
             .simultaneousGesture(DragGesture(minimumDistance: 0)
                 .onChanged { _ in
                     Task {
                         upHasHappended = false
                         downAnimationFinished = false
+                        newUpColor = nil
                         withAnimation(.easeIn(duration: downTime)) {
                             color = downColor
                         }
                         try await Task.sleep(nanoseconds: UInt64(downTime * 1_000_000_000))
                         downAnimationFinished = true
-                        // print("down: upHasHappended", upHasHappended)
                         if upHasHappended {
                             withAnimation(.easeIn(duration: upTime)) {
-                                color = upColor
+                                print("newUpColor", newUpColor)
+                                if newUpColor != nil {
+                                    color = newUpColor!
+                                } else {
+                                    color = upColor
+                                }
+                                print("upHasHappended color", upColor, self.upColor, u())
                             }
                         }
                     }
@@ -50,7 +58,13 @@ struct Backgrounds: ViewModifier {
                     upHasHappended = true
                     if downAnimationFinished {
                         withAnimation(.easeIn(duration: upTime)) {
-                            color = upColor
+                            print("newUpColor", newUpColor)
+                            if newUpColor != nil {
+                                color = newUpColor!
+                            } else {
+                                color = upColor
+                            }
+                            print("upHasHappended color", upColor, self.upColor, u())
                         }
                     }
                 })

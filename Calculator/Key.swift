@@ -22,7 +22,7 @@ struct Key: View {
          _ screen: Screen,
          _ keyModel: KeyModel,
          doubleWidth: CGFloat = 0.0) {
-        let _ = print("Key init", symbol)
+        //let _ = print("Key init", symbol)
         self.screen = screen
         self.symbol = symbol
         self.keySize = screen.keySize
