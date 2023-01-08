@@ -162,22 +162,16 @@ class BrainEngine {
                 pending = false
             }
             n.last.appendComma()
-        case "0":
+        case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
             if pending {
                 n.append(nullNumber)
                 pending = false
             }
-            n.last.appendZero()
+            n.last.append(symbol)
         case "±":
             n.last.changeSign()
         case "=":
             execute(priority: Operator.equalPriority)
-        case C.keysForDigits:
-            if pending {
-                n.append(nullNumber)
-                pending = false
-            }
-            n.last.appendDigit(symbol)
         case _ where constantOperators.keys.contains(symbol):
             if pending {
                 self.n.append(nullNumber)

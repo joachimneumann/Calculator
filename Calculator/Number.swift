@@ -92,16 +92,15 @@ class Number: CustomDebugStringConvertible {
         valueHasChanged = true
     }
     
-    func appendZero()  {
-        if isStr {
-            if _str != "0" {
-                _str!.append("0")
-            }
-        } else {
-            _str = "0"
+    func append(_ digit: String) {
+        if !isStr {
+            _str = digit
             _gmp = nil
+        } else if _str == "0" {
+            _str = digit
+        } else {
+            _str!.append(digit)
         }
-        valueHasChanged = true
     }
     
     func appendComma() {
@@ -109,16 +108,6 @@ class Number: CustomDebugStringConvertible {
             _str = "0,"
         } else {
             if !_str!.contains(",") { _str!.append(",") }
-        }
-        valueHasChanged = true
-    }
-    
-    func appendDigit(_ digit: String) {
-        if !isStr || _str == "0" {
-            _str = digit
-            _gmp = nil
-        } else {
-            _str!.append(digit)
         }
         valueHasChanged = true
     }
