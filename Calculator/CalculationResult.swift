@@ -8,12 +8,21 @@
 import Foundation
 
 struct CalculationResult {
-    let number: Number
-    let hasChanged: Bool
+    private let number: Number
+    private let hasChanged: Bool
+    
+    init() {
+        self.init(number: Number("0", precision: 10), hasChanged: false)
+    }
+    
+    init(number: Number, hasChanged: Bool) {
+        self.number = number
+        self.hasChanged = hasChanged
+    }
     
     var isNull: Bool { number.isNull }
     var isValidNumber: Bool { number.isValid }
-        
+    
     func getDisplay(keyPressResponder: KeyPressResponder, screen: Screen) async -> Display {
         return await Task.detached {
             let data = number.getDisplayData(

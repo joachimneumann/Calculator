@@ -61,7 +61,7 @@ struct Calculator: View {
                 screen: screen,
                 keyModel: keyModel)
         }
-        .background(Color.black)
+        .background(Color.black) /// this hides the Icons
     }
     
     var infoView: some View {

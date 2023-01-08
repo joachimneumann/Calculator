@@ -45,7 +45,7 @@ class KeyModel: ObservableObject {
     private let upTime = 0.4
     private var downAnimation: Task<(), Error>?
     
-    private var calculationResult = CalculationResult(number: Number("0", precision: 10), hasChanged: false)
+    private var calculationResult = CalculationResult()
     @Published var showAC = true
     var showPrecision: Bool = false
     var secondActive = false
@@ -106,8 +106,6 @@ class KeyModel: ObservableObject {
                 showPrecision.toggle()
             }
             Task {
-                //await MainActor.run { }
-
                 /// pending colors
                 if let previous = previouslyPendingOperator {
                     await MainActor.run() {
