@@ -43,7 +43,6 @@ class KeyModel: ObservableObject {
     private var downAnimationFinished = false
     private let downTime = 0.1
     private let upTime = 0.4
-    private var downAnimation: Task<(), Error>?
     
     private var calculationResult = CalculationResult()
     @Published var showAC = true
@@ -67,21 +66,31 @@ class KeyModel: ObservableObject {
     ///  the animation will always wait for the downAnimation to finish
     
     func touchDown(symbol: String) {
-        downAnimation = Task {
-            upHasHappended = false
-            downAnimationFinished = false
-            await MainActor.run {
-                withAnimation(.easeIn(duration: downTime)) {
-                    backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).downColor
-                }
-            }
-            try await Task.sleep(nanoseconds: UInt64(downTime * 1_000_000_000))
-            downAnimationFinished = true
-            //print("down: upHasHappended", upHasHappended)
-            if upHasHappended {
+        Task {
+            // can I use this key?
+            if !calculationResult.isValidNumber && C.keysThatRequireValidNumber.contains(symbol) {
+                // nope!
                 await MainActor.run {
-                    withAnimation(.easeIn(duration: upTime)) {
-                        backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).upColor
+                    withAnimation(.easeIn(duration: downTime)) {
+                        backgroundColor[symbol] = disabledColor
+                    }
+                }
+            } else {
+                upHasHappended = false
+                downAnimationFinished = false
+                await MainActor.run {
+                    withAnimation(.easeIn(duration: downTime)) {
+                        backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).downColor
+                    }
+                }
+                try await Task.sleep(nanoseconds: UInt64(downTime * 1_000_000_000))
+                downAnimationFinished = true
+                //print("down: upHasHappended", upHasHappended)
+                if upHasHappended {
+                    await MainActor.run {
+                        withAnimation(.easeIn(duration: upTime)) {
+                            backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).upColor
+                        }
                     }
                 }
             }
@@ -106,22 +115,8 @@ class KeyModel: ObservableObject {
                 showPrecision.toggle()
             }
             Task {
-                /// pending colors
-                if let previous = previouslyPendingOperator {
-                    await MainActor.run() {
-                        backgroundColor[previous] = keyColors(previous, pending: false).upColor
-                        textColor[previous] = keyColors(previous, pending: false).textColor
-                    }
-                }
-                if ["/", "x", "-", "+", "x^y", "y^x"].contains(symbol) {
-                    await MainActor.run() {
-                        backgroundColor[symbol] = keyColors(symbol, pending: true).upColor
-                        textColor[symbol] = keyColors(symbol, pending: true).textColor
-                        previouslyPendingOperator = symbol
-                    }
-                }
-                
                 upHasHappended = true
+                /// Set the background color back to normal
                 if downAnimationFinished {
                     await MainActor.run {
                         withAnimation(.easeIn(duration: upTime)) {
@@ -129,10 +124,29 @@ class KeyModel: ObservableObject {
                         }
                     }
                 }
-                
-                guard let keyPressResponder = keyPressResponder else { print("no keyPressResponder set"); return }
-                calculationResult = await keyPressResponder.keyPress(symbol)
-                await refreshDisplay(screen: screen)
+
+                // can I use this key?
+                if !calculationResult.isValidNumber && C.keysThatRequireValidNumber.contains(symbol) {
+                    /// do nothing
+                } else {
+                    /// pending colors
+                    if let previous = previouslyPendingOperator {
+                        await MainActor.run() {
+                            backgroundColor[previous] = keyColors(previous, pending: false).upColor
+                            textColor[previous] = keyColors(previous, pending: false).textColor
+                        }
+                    }
+                    if ["/", "x", "-", "+", "x^y", "y^x"].contains(symbol) {
+                        await MainActor.run() {
+                            backgroundColor[symbol] = keyColors(symbol, pending: true).upColor
+                            textColor[symbol] = keyColors(symbol, pending: true).textColor
+                            previouslyPendingOperator = symbol
+                        }
+                    }
+                    guard let keyPressResponder = keyPressResponder else { print("no keyPressResponder set"); return }
+                    calculationResult = await keyPressResponder.keyPress(symbol)
+                    await refreshDisplay(screen: screen)
+                }
             }
         }
     }
