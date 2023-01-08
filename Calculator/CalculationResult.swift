@@ -8,7 +8,7 @@
 import Foundation
 
 struct CalculationResult {
-    private let number: Number
+    let number: Number
     private let hasChanged: Bool
     
     init() {

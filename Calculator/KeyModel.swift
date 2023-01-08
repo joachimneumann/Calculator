@@ -9,6 +9,7 @@ import SwiftUI
 
 class KeyModel: ObservableObject {
     var keyPressResponder: KeyPressResponder?
+    var stupidBrain = BrainEngine(precision: 100)
 
     private let digitColors = ColorsOf(
         textColor: .white,
@@ -45,6 +46,7 @@ class KeyModel: ObservableObject {
     private let upTime = 0.4
     
     private var calculationResult = CalculationResult()
+    private var haveCalculationResult = false
     @Published var showAC = true
     var showPrecision: Bool = false
     var secondActive = false
@@ -66,6 +68,7 @@ class KeyModel: ObservableObject {
     ///  the animation will always wait for the downAnimation to finish
     
     func touchDown(symbol: String) {
+        haveCalculationResult = false
         Task {
             // can I use this key?
             if !calculationResult.isValidNumber && C.keysThatRequireValidNumber.contains(symbol) {
@@ -121,7 +124,6 @@ class KeyModel: ObservableObject {
                         }
                     }
                 }
-            }
 
             // can I use this key?
             if !calculationResult.isValidNumber && C.keysThatRequireValidNumber.contains(symbol) {
@@ -130,6 +132,35 @@ class KeyModel: ObservableObject {
             if symbol == "AC" {
                 showPrecision.toggle()
             }
+            
+            haveCalculationResult = false
+
+            let preliminaryResult = stupidBrain.operation(symbol)
+            let data = preliminaryResult.number.getDisplayData(
+                multipleLines: false,
+                lengths: screen.lengths,
+                forceScientific: keyPressResponder!.forceScientific,
+                showAsInteger: keyPressResponder!.showAsInteger,
+                showAsFloat: keyPressResponder!.showAsFloat)
+            let format = DisplayFormat(
+                for: data.length,
+                withMaxLength: data.maxlength,
+                showThreeDots: true,
+                screen: screen)
+            let preliminaryDisplay = Display(data: data, format: format)
+            
+                try await Task.sleep(nanoseconds: 3_000_000)
+//                try await Task.sleep(nanoseconds: 0)
+                print("haveCalculationResult", haveCalculationResult)
+                if !haveCalculationResult {
+                    await MainActor.run() {
+                        if !haveCalculationResult {
+                            currentDisplay = preliminaryDisplay
+                        }
+                    }
+                }
+            }
+
             Task {
                 /// pending colors
                 if let previous = previouslyPendingOperator {
@@ -145,8 +176,12 @@ class KeyModel: ObservableObject {
                         previouslyPendingOperator = symbol
                     }
                 }
+            }
+            
+            Task {
                 guard let keyPressResponder = keyPressResponder else { print("no keyPressResponder set"); return }
                 calculationResult = await keyPressResponder.keyPress(symbol)
+                haveCalculationResult = true
                 await refreshDisplay(screen: screen)
             }
         }
