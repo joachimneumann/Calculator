@@ -10,39 +10,39 @@ import SwiftUI
 class KeyModel: ObservableObject {
     var keyPressResponder: KeyPressResponder?
 
-    let digitColors = ColorsOf(
+    private let digitColors = ColorsOf(
         textColor: .white,
         upColor:   Color(white: 0.2),
         downColor: Color(white: 0.45))
-    let disabledColor = Color.red
-    let operatorColors = ColorsOf(
+    private let disabledColor = Color.red
+    private let operatorColors = ColorsOf(
         textColor: Color(.white),
         upColor:   Color(white: 0.5),
         downColor: Color(white: 0.7))
-    let pendingOperatorColors = ColorsOf(
+    private let pendingOperatorColors = ColorsOf(
         textColor: Color(white: 0.3),
         upColor:   Color(white: 0.9),
         downColor: Color(white: 0.8))
-    let scientificColors = ColorsOf(
+    private let scientificColors = ColorsOf(
         textColor: Color(.white),
         upColor:   Color(white: 0.12),
         downColor: Color(white: 0.32))
-    let pendingScientificColors = ColorsOf(
+    private let pendingScientificColors = ColorsOf(
         textColor: Color(white: 0.3),
         upColor:   Color(white: 0.7),
         downColor: Color(white: 0.6))
-    let secondColors = ColorsOf(
+    private let secondColors = ColorsOf(
         textColor: Color(.white),
         upColor:   Color(white: 0.12),
         downColor: Color(white: 0.12))
-    let secondActiveColors = ColorsOf(
+    private let secondActiveColors = ColorsOf(
         textColor: Color(white: 0.2),
         upColor:   Color(white: 0.6),
         downColor: Color(white: 0.6))
-    var upHasHappended = false
-    var downAnimationFinished = false
-    let downTime = 0.1
-    let upTime = 0.4
+    private var upHasHappended = false
+    private var downAnimationFinished = false
+    private let downTime = 0.1
+    private let upTime = 0.4
     private var downAnimation: Task<(), Error>?
     
     private var calculationResult = CalculationResult(number: Number("0", precision: 10), hasChanged: false)
@@ -115,7 +115,7 @@ class KeyModel: ObservableObject {
                         textColor[previous] = keyColors(previous, pending: false).textColor
                     }
                 }
-                if C.keysThatHavePendingOperation.contains(symbol) {
+                if ["/", "x", "-", "+", "x^y", "y^x"].contains(symbol) {
                     await MainActor.run() {
                         backgroundColor[symbol] = keyColors(symbol, pending: true).upColor
                         textColor[symbol] = keyColors(symbol, pending: true).textColor
@@ -151,15 +151,14 @@ class KeyModel: ObservableObject {
 
     
     func keyColors(_ symbol: String, pending: Bool) -> ColorsOf {
-        if C.keysForDigits.contains(symbol) {
+        if ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ","].contains(symbol) {
             return digitColors
         } else if symbol == "2nd" {
             return secondColors
-        } else if C.keysOfOperator.contains(symbol) {
+        } else if ["C", "AC", "±", "%", "/", "x", "-", "+", "="].contains(symbol) {
             return pending ? pendingOperatorColors : operatorColors
-        } else if C.keysOfScientificOperators.contains(symbol) {
+        } else {
             return pending ? pendingScientificColors : scientificColors
         }
-        return digitColors
     }
 }
