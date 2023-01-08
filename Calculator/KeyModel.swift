@@ -111,9 +111,6 @@ class KeyModel: ObservableObject {
 //            hasBeenReset = false
             rad = false
         default:
-            if symbol == "AC" {
-                showPrecision.toggle()
-            }
             Task {
                 upHasHappended = true
                 /// Set the background color back to normal
@@ -124,29 +121,33 @@ class KeyModel: ObservableObject {
                         }
                     }
                 }
+            }
 
-                // can I use this key?
-                if !calculationResult.isValidNumber && C.keysThatRequireValidNumber.contains(symbol) {
-                    /// do nothing
-                } else {
-                    /// pending colors
-                    if let previous = previouslyPendingOperator {
-                        await MainActor.run() {
-                            backgroundColor[previous] = keyColors(previous, pending: false).upColor
-                            textColor[previous] = keyColors(previous, pending: false).textColor
-                        }
+            // can I use this key?
+            if !calculationResult.isValidNumber && C.keysThatRequireValidNumber.contains(symbol) {
+                return
+            }
+            if symbol == "AC" {
+                showPrecision.toggle()
+            }
+            Task {
+                /// pending colors
+                if let previous = previouslyPendingOperator {
+                    await MainActor.run() {
+                        backgroundColor[previous] = keyColors(previous, pending: false).upColor
+                        textColor[previous] = keyColors(previous, pending: false).textColor
                     }
-                    if ["/", "x", "-", "+", "x^y", "y^x"].contains(symbol) {
-                        await MainActor.run() {
-                            backgroundColor[symbol] = keyColors(symbol, pending: true).upColor
-                            textColor[symbol] = keyColors(symbol, pending: true).textColor
-                            previouslyPendingOperator = symbol
-                        }
-                    }
-                    guard let keyPressResponder = keyPressResponder else { print("no keyPressResponder set"); return }
-                    calculationResult = await keyPressResponder.keyPress(symbol)
-                    await refreshDisplay(screen: screen)
                 }
+                if ["/", "x", "-", "+", "x^y", "y^x"].contains(symbol) {
+                    await MainActor.run() {
+                        backgroundColor[symbol] = keyColors(symbol, pending: true).upColor
+                        textColor[symbol] = keyColors(symbol, pending: true).textColor
+                        previouslyPendingOperator = symbol
+                    }
+                }
+                guard let keyPressResponder = keyPressResponder else { print("no keyPressResponder set"); return }
+                calculationResult = await keyPressResponder.keyPress(symbol)
+                await refreshDisplay(screen: screen)
             }
         }
     }

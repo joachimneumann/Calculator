@@ -16,7 +16,6 @@ protocol KeyPressResponder {
 }
 
 class BrainModel : KeyPressResponder, ObservableObject {
-    
     internal var isPreliminary: Bool = false
     internal var showAsInteger = false
     internal var showAsFloat = false
