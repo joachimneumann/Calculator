@@ -44,6 +44,7 @@ class BrainModel : KeyPressResponder, ObservableObject {
     
     init() {
         brain = Brain(precision: _precision.wrappedValue)
+        precisionDescription = _precision.wrappedValue.useWords
     }
     
     func keyPress(_ symbol: String) async -> CalculationResult {
