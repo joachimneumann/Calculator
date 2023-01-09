@@ -131,15 +131,6 @@ class KeyModel: ObservableObject {
     func touchUp(symbol rawSymbol: String, screen: Screen) {
         let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(rawSymbol) && !rad ? rawSymbol+"D" : rawSymbol
 
-        //print("up, state = ", keyState)
-        guard keyState == .notPressed else { return }
-
-
-        let valid = calculationResult.isValidNumber || !C.keysThatRequireValidNumber.contains(symbol)
-        guard valid else { return }
-
-        keyState = .processing
-
         switch symbol {
         case "2nd":
             secondActive.toggle()
@@ -151,6 +142,13 @@ class KeyModel: ObservableObject {
             //            hasBeenReset = false
             rad = false
         default:
+
+            guard keyState == .notPressed else { return }
+
+            let valid = calculationResult.isValidNumber || !C.keysThatRequireValidNumber.contains(symbol)
+            guard valid else { return }
+
+            keyState = .processing
             upHasHappended = true
             Task(priority: .low) {
                 await defaultTask(symbol: symbol, screen: screen)
