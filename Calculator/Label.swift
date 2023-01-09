@@ -81,7 +81,6 @@ struct Label: View {
         default:
             
             if let sfImage = sfImageforKey[symbol] {
-                let _ = print("image!!!!! KeyID_"+symbol)
                 Image(systemName: sfImage)
                     .resizable()
                     .font(Font.title.weight(.semibold))

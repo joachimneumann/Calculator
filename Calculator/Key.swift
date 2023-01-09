@@ -38,7 +38,7 @@ struct Key: View {
     }
     
     var body: some View {
-        let _ = print("KeyID_"+symbol.replacing("^", with: ""))
+        //let _ = print("KeyID_"+symbol.replacing("^", with: ""))
         Label(symbol: symbol, size: keySize.height, color: textColor)
             .offset(x: xOffset)
             .foregroundColor(textColor)

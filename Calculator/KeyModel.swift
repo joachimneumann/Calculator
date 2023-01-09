@@ -76,7 +76,7 @@ class KeyModel: ObservableObject {
     @Published var currentDisplay: Display
     private var previouslyPendingOperator: String? = nil
     init() {
-        print("KeyModel INIT")
+        //print("KeyModel INIT")
         self.currentDisplay = Display()
         for symbol in C.keysAll {
             backgroundColor[symbol] = keyColors(symbol, pending: false).upColor
@@ -105,7 +105,7 @@ class KeyModel: ObservableObject {
                 return
             }
 
-            print("down keyState", keyState)
+            //print("down keyState", keyState)
             upHasHappended = false
             downAnimationFinished = false
             await MainActor.run {
@@ -131,7 +131,7 @@ class KeyModel: ObservableObject {
     func touchUp(symbol rawSymbol: String, screen: Screen) {
         let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(rawSymbol) && !rad ? rawSymbol+"D" : rawSymbol
 
-        print("up, state = ", keyState)
+        //print("up, state = ", keyState)
         guard keyState == .notPressed else { return }
 
 
@@ -160,7 +160,7 @@ class KeyModel: ObservableObject {
     }
     
     func defaultTask(symbol: String, screen: Screen) async {
-        print("defaultTask", symbol)
+        //print("defaultTask", symbol)
 
         guard let keyPressResponder = keyPressResponder else { print("no keyPressResponder set"); return }
 
