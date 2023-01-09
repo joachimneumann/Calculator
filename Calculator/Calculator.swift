@@ -70,6 +70,7 @@ struct Calculator: View {
             Text(info)
                 .foregroundColor(.white)
                 .font(Font(screen.infoUiFont))
+                .accessibilityIdentifier("infoText")
             Spacer()
         }
         .padding(.leading, screen.keySize.width * 0.3)

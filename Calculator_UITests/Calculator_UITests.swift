@@ -12,25 +12,22 @@ final class Calculator_UITests: XCTestCase {
     let app = XCUIApplication()
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
         app.launch()
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+        app.staticTexts["KeyID_AC"].tap()
+        let infoText = app.staticTexts["infoText"]
+        XCTAssertEqual(infoText.label, "Precision: ten million digits")
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
+    func test_invalidNumber_e_notChanged() throws {
         app.staticTexts["KeyID_AC"].tap()
         app.staticTexts["KeyID_ln"].tap()
-        XCTAssertTrue(app.staticTexts["landscapeDisplayText"].label == "infinity")
+        XCTAssertEqual(app.staticTexts["landscapeDisplayText"].label, "infinity")
         app.staticTexts["KeyID_e"].tap()
-        XCTAssertTrue(app.staticTexts["landscapeDisplayText"].label == "infinity")
+        XCTAssertEqual(app.staticTexts["landscapeDisplayText"].label, "infinity")
     }
 
 //    func XestLaunchPerformance() throws {
