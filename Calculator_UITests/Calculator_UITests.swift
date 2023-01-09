@@ -33,20 +33,20 @@ final class Calculator_UITests: XCTestCase {
         XCTAssertEqual(app.staticTexts["landscapeDisplayText"].label, "infinity")
     }
 
-    func test_e_infinity_notChanged() throws {
+    func test_e_infinity_notChanged() {
         app.staticTexts["KeyID_ln"].tap()
         XCTAssertEqual(app.staticTexts["landscapeDisplayText"].label, "infinity")
         app.staticTexts["KeyID_e^x"].tap()
         XCTAssertEqual(app.staticTexts["landscapeDisplayText"].label, "infinity")
     }
     
-    func test_changeSign_7() throws {
+    func test_changeSign_7() {
         app.staticTexts["KeyID_7"].tap()
         app.images["KeyID_±"].tap()
         XCTAssertEqual(app.staticTexts["landscapeDisplayText"].label, "-7")
     }
 
-    func test_2nd() throws {
+    func test_2nd() {
         let app = XCUIApplication()
         app.staticTexts["KeyID_2^nd"].tap()
         app.staticTexts["KeyID_2^nd"].tap()
@@ -54,7 +54,7 @@ final class Calculator_UITests: XCTestCase {
         XCTAssertEqual(app.staticTexts["landscapeDisplayText"].label, "0")
     }
 
-    func test_9_sin_cos_tan() throws {
+    func test_9_sin_cos_tan() {
         let app = XCUIApplication()
         /// make sure we are in Degrees, not Radians
         if app.staticTexts["infoText"].label == "Rad" {
