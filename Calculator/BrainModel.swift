@@ -279,11 +279,6 @@ class BrainModel : KeyPressResponder, ObservableObject {
         //        for key in C.keysToDisable {
         //            keyInfo[key]!.enabled = false
         //        }
-        //        if symbol == "AC" {
-        //            hasBeenReset.toggle()
-        //        } else {
-        //            hasBeenReset = false
-        //        }
         
 //        displayDataIsOld = true
         //stupidBrain.operation(symbol)
