@@ -14,6 +14,7 @@ final class Calculator_UITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
         app.launch()
+        print(app.debugDescription)
         app.staticTexts["KeyID_AC"].tap()
         let infoText = app.staticTexts["infoText"]
         XCTAssertEqual(infoText.label, "Precision: ten million digits")
@@ -22,13 +23,24 @@ final class Calculator_UITests: XCTestCase {
     override func tearDownWithError() throws {
     }
 
-    func test_invalidNumber_e_notChanged() throws {
-        app.staticTexts["KeyID_AC"].tap()
+    func test_ln_0_infinity() throws {
         app.staticTexts["KeyID_ln"].tap()
         XCTAssertEqual(app.staticTexts["landscapeDisplayText"].label, "infinity")
-        app.staticTexts["KeyID_e"].tap()
+    }
+
+    func test_e_infinity_notChanged() throws {
+        app.staticTexts["KeyID_ln"].tap()
+        XCTAssertEqual(app.staticTexts["landscapeDisplayText"].label, "infinity")
+        app.staticTexts["KeyID_e^x"].tap()
         XCTAssertEqual(app.staticTexts["landscapeDisplayText"].label, "infinity")
     }
+    
+    func test_changeSign_7() throws {
+        app.staticTexts["KeyID_7"].tap()
+        app.images["KeyID_±"].tap()
+        XCTAssertEqual(app.staticTexts["landscapeDisplayText"].label, "-7")
+    }
+    
 
 //    func XestLaunchPerformance() throws {
 //        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {

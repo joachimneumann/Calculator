@@ -128,14 +128,18 @@ class KeyModel: ObservableObject {
         }
     }
     
-    func touchUp(symbol _symbol: String, screen: Screen) {
+    func touchUp(symbol rawSymbol: String, screen: Screen) {
+        let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(rawSymbol) && !rad ? rawSymbol+"D" : rawSymbol
+
         print("up, state = ", keyState)
         guard keyState == .notPressed else { return }
 
+
+        let valid = calculationResult.isValidNumber || !C.keysThatRequireValidNumber.contains(symbol)
+        guard valid else { return }
+
         keyState = .processing
-        
-        let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(_symbol) && !rad ? _symbol+"D" : _symbol
-        
+
         switch symbol {
         case "2nd":
             secondActive.toggle()

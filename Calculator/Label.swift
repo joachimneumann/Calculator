@@ -79,15 +79,19 @@ struct Label: View {
         case "acosh": Pow(base: "cosh", exponent: "-1", size: size)
         case "atanh": Pow(base: "tanh", exponent: "-1", size: size)
         default:
+            
             if let sfImage = sfImageforKey[symbol] {
+                let _ = print("image!!!!! KeyID_"+symbol)
                 Image(systemName: sfImage)
                     .resizable()
                     .font(Font.title.weight(.semibold))
                     .aspectRatio(contentMode: .fit)
                     .frame(width: size * 0.3)
+                    .accessibilityIdentifier("KeyID_"+symbol)
             } else {
                 Text(symbol)
                     .font(.system(size: size * 0.3))
+                    .accessibilityIdentifier("KeyID_"+symbol)
             }
         }
     }
@@ -224,6 +228,7 @@ struct Label: View {
                         Spacer(minLength: 0.0)
                         Text(base)
                             .font(.system(size: size * 0.3))
+                            .accessibilityIdentifier("KeyID_"+base+"^"+exponent)
                         Text(exponent)
                             .font(.system(size: size * 0.18))
                             .offset(x: 0.0, y: -0.08 * size)
