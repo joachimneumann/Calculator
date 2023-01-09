@@ -42,15 +42,17 @@ struct Key: View {
             .offset(x: xOffset)
             .foregroundColor(textColor)
             .frame(width: keySize.width, height: keySize.height)
-        .background(backgroundColor)
-        .clipShape(Capsule())
-        .simultaneousGesture(DragGesture(minimumDistance: 0)
-            .onChanged { _ in
-                touchDown(symbol)
-            }
-            .onEnded { _ in
-                touchUp(symbol, screen)
-            })
+            .background(backgroundColor)
+            .clipShape(Capsule())
+            .simultaneousGesture(DragGesture(minimumDistance: 0)
+                .onChanged { _ in
+                    touchDown(symbol)
+                }
+                .onEnded { _ in
+                    touchUp(symbol, screen)
+                })
+            .accessibilityIdentifier("KeyID_"+symbol)
+
     }
 }
 

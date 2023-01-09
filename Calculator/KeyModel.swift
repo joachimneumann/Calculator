@@ -7,9 +7,29 @@
 
 import SwiftUI
 
+/*
+ 10 million digits. Then
+ 8 7 times x^3 --> 1,14.. e1975. Then quickly press 3rd root, and x^3
+ 1. Problem: result back to 1,14.. e1975. Should be 2,25.. e658
+ 2. Problem: red color remains visible too long
+ 
+ keyState:
+ case notPressed,
+ case downlegal,
+ case downNotlegal,
+ case upPreliminaryProcessing
+ case upHighprecisionProcessing
+ */
+
+
 class KeyModel: ObservableObject {
     var keyPressResponder: KeyPressResponder?
     var stupidBrain = BrainEngine(precision: 100)
+    
+    private enum KeyState {
+        case notPressed
+        case processing
+    }
 
     private let digitColors = ColorsOf(
         textColor: .white,
@@ -42,11 +62,11 @@ class KeyModel: ObservableObject {
         downColor: Color(white: 0.6))
     private var upHasHappended = false
     private var downAnimationFinished = false
+    private var keyState: KeyState = .notPressed
     private let downTime = 0.1
     private let upTime = 0.4
     
     private var calculationResult = CalculationResult()
-    private var haveCalculationResult = false
     @Published var showAC = true
     var showPrecision: Bool = false
     var secondActive = false
@@ -56,44 +76,52 @@ class KeyModel: ObservableObject {
     @Published var currentDisplay: Display
     private var previouslyPendingOperator: String? = nil
     init() {
-        // print("KeyModel INIT")
+        print("KeyModel INIT")
         self.currentDisplay = Display()
         for symbol in C.keysAll {
             backgroundColor[symbol] = keyColors(symbol, pending: false).upColor
             textColor[symbol]       = keyColors(symbol, pending: false).textColor
         }
     }
-        
+    
     ///  To give a clear visual feedback to the user that the button has been pressed,
     ///  the animation will always wait for the downAnimation to finish
     
     func touchDown(symbol: String) {
-        haveCalculationResult = false
-        Task {
-            // can I use this key?
-            if !calculationResult.isValidNumber && C.keysThatRequireValidNumber.contains(symbol) {
-                // nope!
+        Task(priority: .userInitiated) {
+            let notValid = !calculationResult.isValidNumber && C.keysThatRequireValidNumber.contains(symbol)
+            if keyState != .notPressed || notValid {
                 await MainActor.run {
                     withAnimation(.easeIn(duration: downTime)) {
                         backgroundColor[symbol] = disabledColor
                     }
                 }
-            } else {
-                upHasHappended = false
-                downAnimationFinished = false
+                try await Task.sleep(nanoseconds: UInt64(downTime * 1_000_000_000))
                 await MainActor.run {
-                    withAnimation(.easeIn(duration: downTime)) {
-                        backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).downColor
+                    withAnimation(.easeIn(duration: upTime)) {
+                        backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).upColor
                     }
                 }
-                try await Task.sleep(nanoseconds: UInt64(downTime * 1_000_000_000))
-                downAnimationFinished = true
-                //print("down: upHasHappended", upHasHappended)
-                if upHasHappended {
-                    await MainActor.run {
-                        withAnimation(.easeIn(duration: upTime)) {
-                            backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).upColor
-                        }
+                return
+            }
+
+            print("down keyState", keyState)
+            upHasHappended = false
+            downAnimationFinished = false
+            await MainActor.run {
+                withAnimation(.easeIn(duration: downTime)) {
+                    backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).downColor
+                }
+            }
+            //print("down: timer START", downTime)
+            try await Task.sleep(nanoseconds: UInt64(downTime * 1_000_000_000))
+            //print("down: timer STOP")
+            downAnimationFinished = true
+            //print("down: upHasHappended", upHasHappended)
+            if upHasHappended {
+                await MainActor.run {
+                    withAnimation(.easeIn(duration: upTime)) {
+                        backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).upColor
                     }
                 }
             }
@@ -101,6 +129,11 @@ class KeyModel: ObservableObject {
     }
     
     func touchUp(symbol _symbol: String, screen: Screen) {
+        print("up, state = ", keyState)
+        guard keyState == .notPressed else { return }
+
+        keyState = .processing
+        
         let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(_symbol) && !rad ? _symbol+"D" : _symbol
         
         switch symbol {
@@ -108,85 +141,74 @@ class KeyModel: ObservableObject {
             secondActive.toggle()
             backgroundColor["2nd"] = secondActive ? secondActiveColors.upColor : secondColors.upColor
         case "Rad":
-//            hasBeenReset = false
+            //            hasBeenReset = false
             rad = true
         case "Deg":
-//            hasBeenReset = false
+            //            hasBeenReset = false
             rad = false
         default:
-            Task {
-                upHasHappended = true
-                /// Set the background color back to normal
-                if downAnimationFinished {
-                    await MainActor.run {
-                        withAnimation(.easeIn(duration: upTime)) {
-                            backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).upColor
-                        }
-                    }
-                }
-
-            // can I use this key?
-            if !calculationResult.isValidNumber && C.keysThatRequireValidNumber.contains(symbol) {
-                return
-            }
-            if symbol == "AC" {
-                showPrecision.toggle()
-            }
-            
-            haveCalculationResult = false
-
-            let preliminaryResult = stupidBrain.operation(symbol)
-            let data = preliminaryResult.number.getDisplayData(
-                multipleLines: false,
-                lengths: screen.lengths,
-                forceScientific: keyPressResponder!.forceScientific,
-                showAsInteger: keyPressResponder!.showAsInteger,
-                showAsFloat: keyPressResponder!.showAsFloat)
-            let format = DisplayFormat(
-                for: data.length,
-                withMaxLength: data.maxlength,
-                showThreeDots: true,
-                screen: screen)
-            let preliminaryDisplay = Display(data: data, format: format)
-            
-                try await Task.sleep(nanoseconds: 3_000_000)
-//                try await Task.sleep(nanoseconds: 0)
-                print("haveCalculationResult", haveCalculationResult)
-                if !haveCalculationResult {
-                    await MainActor.run() {
-                        if !haveCalculationResult {
-                            currentDisplay = preliminaryDisplay
-                        }
-                    }
-                }
-            }
-
-            Task {
-                /// pending colors
-                if let previous = previouslyPendingOperator {
-                    await MainActor.run() {
-                        backgroundColor[previous] = keyColors(previous, pending: false).upColor
-                        textColor[previous] = keyColors(previous, pending: false).textColor
-                    }
-                }
-                if ["/", "x", "-", "+", "x^y", "y^x"].contains(symbol) {
-                    await MainActor.run() {
-                        backgroundColor[symbol] = keyColors(symbol, pending: true).upColor
-                        textColor[symbol] = keyColors(symbol, pending: true).textColor
-                        previouslyPendingOperator = symbol
-                    }
-                }
-            }
-            
-            Task {
-                guard let keyPressResponder = keyPressResponder else { print("no keyPressResponder set"); return }
-                calculationResult = await keyPressResponder.keyPress(symbol)
-                haveCalculationResult = true
-                await refreshDisplay(screen: screen)
+            upHasHappended = true
+            Task(priority: .low) {
+                await defaultTask(symbol: symbol, screen: screen)
+                keyState = .notPressed
             }
         }
     }
     
+    func defaultTask(symbol: String, screen: Screen) async {
+        print("defaultTask", symbol)
+
+        guard let keyPressResponder = keyPressResponder else { print("no keyPressResponder set"); return }
+
+        /// Set the background color back to normal
+        if downAnimationFinished {
+            await MainActor.run {
+                withAnimation(.easeIn(duration: upTime)) {
+                    backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).upColor
+                }
+            }
+        }
+        
+        if symbol == "AC" {
+            showPrecision.toggle()
+        }
+        
+        let preliminaryResult = stupidBrain.operation(symbol)
+        let data = preliminaryResult.number.getDisplayData(
+            multipleLines: false,
+            lengths: screen.lengths,
+            forceScientific: keyPressResponder.forceScientific,
+            showAsInteger: keyPressResponder.showAsInteger,
+            showAsFloat: keyPressResponder.showAsFloat)
+        let format = DisplayFormat(
+            for: data.length,
+            withMaxLength: data.maxlength,
+            showThreeDots: true,
+            screen: screen)
+        let preliminaryDisplay = Display(data: data, format: format)
+
+        await MainActor.run() {
+            currentDisplay = preliminaryDisplay
+        }
+
+        /// pending colors
+        if let previous = previouslyPendingOperator {
+            await MainActor.run() {
+                backgroundColor[previous] = keyColors(previous, pending: false).upColor
+                textColor[previous] = keyColors(previous, pending: false).textColor
+            }
+        }
+        if ["/", "x", "-", "+", "x^y", "y^x"].contains(symbol) {
+            await MainActor.run() {
+                backgroundColor[symbol] = keyColors(symbol, pending: true).upColor
+                textColor[symbol] = keyColors(symbol, pending: true).textColor
+                previouslyPendingOperator = symbol
+            }
+        }
+
+        calculationResult = await keyPressResponder.keyPress(symbol)
+        await refreshDisplay(screen: screen)
+    }
     func refreshDisplay(screen: Screen) async {
         if let keyPressResponder = keyPressResponder {
             let tempDisplay = await calculationResult.getDisplay(keyPressResponder: keyPressResponder, screen: screen)
@@ -196,7 +218,7 @@ class KeyModel: ObservableObject {
             }
         }
     }
-
+    
     
     func keyColors(_ symbol: String, pending: Bool) -> ColorsOf {
         if ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ","].contains(symbol) {
