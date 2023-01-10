@@ -7,28 +7,14 @@
 
 import SwiftUI
 
-/*
- 10 million digits. Then
- 8 7 times x^3 --> 1,14.. e1975. Then quickly press 3rd root, and x^3
- 1. Problem: result back to 1,14.. e1975. Should be 2,25.. e658
- 2. Problem: red color remains visible too long
- 
- keyState:
- case notPressed,
- case downlegal,
- case downNotlegal,
- case upPreliminaryProcessing
- case upHighprecisionProcessing
- */
-
-
 class KeyModel: ObservableObject {
     var keyPressResponder: KeyPressResponder?
     var stupidBrain = BrainEngine(precision: 100)
     
     private enum KeyState {
         case notPressed
-        case processing
+        case pressed
+        case highPrecisionProcessing
     }
 
     private let digitColors = ColorsOf(
@@ -130,8 +116,8 @@ class KeyModel: ObservableObject {
     
     func touchDown(symbol: String) {
         Task(priority: .userInitiated) {
-            let notValid = !calculationResult.isValidNumber && C.keysThatRequireValidNumber.contains(symbol)
-            if keyState != .notPressed || notValid {
+            let validOrAllowed = calculationResult.isValidNumber || !C.keysThatRequireValidNumber.contains(symbol)
+            guard keyState == .notPressed && validOrAllowed else {
                 await showDisabledColors(symbol: symbol)
                 return
             }
@@ -180,7 +166,7 @@ class KeyModel: ObservableObject {
                 showPrecision.toggle()
             }
 
-            keyState = .processing
+            keyState = .pressed
             upHasHappended = true
             Task(priority: .low) {
                 if downAnimationFinished {
@@ -213,11 +199,15 @@ class KeyModel: ObservableObject {
             showThreeDots: true,
             screen: screen)
         let preliminaryDisplay = Display(data: data, format: format)
-
-        await MainActor.run() {
-            currentDisplay = preliminaryDisplay
+        Task(priority: .high) {
+            try? await Task.sleep(nanoseconds: 300_000_000)
+            if keyState == .highPrecisionProcessing {
+                await MainActor.run() {
+                    currentDisplay = preliminaryDisplay
+                }
+            }
         }
-
+        keyState = .highPrecisionProcessing
         calculationResult = await keyPressResponder.keyPress(symbol)
         await refreshDisplay(screen: screen)
     }
