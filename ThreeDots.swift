@@ -1,5 +1,5 @@
 //
-//  AnimatedDots.swift
+//  ThreeDots.swift
 //  Calculator
 //
 //  Created by Joachim Neumann on 11/17/22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AnimatedDots: View {
+struct ThreeDots: View {
     private let small = 0.6
     private let large = 0.8
     private let duration = 0.4
@@ -46,7 +46,7 @@ struct AnimatedDots: View {
 
 struct Dots_Previews: PreviewProvider {
     static var previews: some View {
-        AnimatedDots()
+        ThreeDots()
             .background(Color.black)
     }
 }

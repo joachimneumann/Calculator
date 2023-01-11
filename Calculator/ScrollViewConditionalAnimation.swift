@@ -46,7 +46,7 @@ struct ScrollViewConditionalAnimation: View {
                         .accessibilityIdentifier("landscapeDisplayText")
                         //.animation(Animation.easeInOut(duration: 0.2), value: foregroundColor)
                     if preliminary {
-                        AnimatedDots().frame(width: digitWidth, height: digitWidth / 3)
+                        ThreeDots().frame(width: digitWidth, height: digitWidth / 3)
                             .offset(y: -digitWidth / 6)
                     }
                 }

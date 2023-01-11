@@ -25,7 +25,7 @@ struct PortraitDisplay: View {
     @ViewBuilder
     var animatedDots: some View {
         if display.format.showThreeDots {
-            AnimatedDots().frame(width: display.format.digitWidth, height: display.format.digitWidth / 3)
+            ThreeDots().frame(width: display.format.digitWidth, height: display.format.digitWidth / 3)
                 .offset(y: -display.format.digitWidth / 3)
         }
     }

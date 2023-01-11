@@ -28,7 +28,6 @@ class BrainModel : KeyPressResponder, ObservableObject {
     //    var hideKeyboard = false
     @Published var isCopying: Bool = false
     @Published var isPasting: Bool = false
-    var copyAnimationDone = false
     //
     private let brain: Brain
     //    private let stupidBrain: Brain
