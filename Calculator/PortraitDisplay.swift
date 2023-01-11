@@ -23,7 +23,7 @@ struct PortraitDisplay: View {
     }
 
     @ViewBuilder
-    var animatedDots: some View {
+    var threeDots: some View {
         if display.format.showThreeDots {
             ThreeDots().frame(width: display.format.digitWidth, height: display.format.digitWidth / 3)
                 .offset(y: -display.format.digitWidth / 3)
@@ -49,7 +49,7 @@ struct PortraitDisplay: View {
         HStack(alignment: .bottom, spacing: 0.0) {
             Spacer(minLength: 0.0)
             mantissa
-            animatedDots
+            threeDots
             exponent
         }
     }

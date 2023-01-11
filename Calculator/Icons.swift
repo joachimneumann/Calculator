@@ -29,10 +29,9 @@ struct Icons : View {
             .background(.white)
             .foregroundColor(.gray)
             .clipShape(Circle())
+            .animation(.linear, value: isZoomed)
             .onTapGesture {
-                withAnimation(.linear(duration: 0.4)) {
-                    isZoomed.toggle()
-                }
+                isZoomed.toggle()
             }
             .accessibilityIdentifier("plusButton")
     }

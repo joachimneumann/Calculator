@@ -11,7 +11,7 @@ let testColors = false
 
 struct MyNavigation<Content>: View where Content: View {
     @ViewBuilder var content: () -> Content
-
+    
     var body: some View {
         if #available(iOS 16, *) {
             NavigationStack(root: content)
@@ -25,14 +25,14 @@ struct Calculator: View {
     @ObservedObject var screen: Screen
     @StateObject private var keyModel: KeyModel = KeyModel()
     @StateObject private var brainModel: BrainModel = BrainModel()
-
+    
     @State var scrollViewHasScrolled = false
     @State var scrollViewID = UUID()
-
+    
     @State var isZoomed: Bool = false
-
+    
     var store = Store()
-        
+    
     var portraitView: some View {
         VStack(spacing: 0.0) {
             Spacer(minLength: 0.0)
@@ -71,7 +71,7 @@ struct Calculator: View {
     }
     
     var landscapeKeyboardPlusStuff: some View {
-        VStack(spacing: 0.0) {
+        return VStack(spacing: 0.0) {
             Spacer(minLength: 0.0)
             Rectangle()
                 .foregroundColor(.black)
@@ -82,7 +82,7 @@ struct Calculator: View {
             landscapeKeyboard
         }
         .offset(y: isZoomed ? screen.keyboardHeight + screen.keySize.height : 0.0)
-        .transition(.move(edge: .bottom))
+        .animation(.linear, value: isZoomed)
     }
     
     var landscapeDisplayAndIcons: some View {
@@ -116,9 +116,9 @@ struct Calculator: View {
     var landscapeView: some View {
         MyNavigation {
             landscapeDisplayAndIcons
-            .overlay() {
-                landscapeKeyboardPlusStuff
-            }
+                .overlay() {
+                    landscapeKeyboardPlusStuff
+                }
         }
         .accentColor(.white) // for the navigation back button
     }
@@ -134,22 +134,22 @@ struct Calculator: View {
     
     
     var body: some View {
-      //let _ = print("Calculator body keyModel isPortraitPhone", screen.isPortraitPhone)
+        //let _ = print("Calculator body keyModel isPortraitPhone", screen.isPortraitPhone)
         content
-        .padding(.bottom, screen.bottomPadding)
-        .padding(.horizontal, screen.horizontalPadding)
-        .preferredColorScheme(.dark)
-        .onAppear() {
-            keyModel.keyPressResponder = brainModel
-            Task {
-                await keyModel.refreshDisplay(screen: screen)
+            .padding(.bottom, screen.bottomPadding)
+            .padding(.horizontal, screen.horizontalPadding)
+            .preferredColorScheme(.dark)
+            .onAppear() {
+                keyModel.keyPressResponder = brainModel
+                Task {
+                    await keyModel.refreshDisplay(screen: screen)
+                }
             }
-        }
-        .onChange(of: screen) { newScreen in /// e.g., rotation
-            Task {
-                await keyModel.refreshDisplay(screen: newScreen)
+            .onChange(of: screen) { newScreen in /// e.g., rotation
+                Task {
+                    await keyModel.refreshDisplay(screen: newScreen)
+                }
             }
-        }
     }
 }
 
