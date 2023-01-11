@@ -16,7 +16,51 @@ final class Calculator_UITests: XCTestCase {
         device.orientation = .landscapeRight
         continueAfterFailure = false
         app.launch()
-        print(app.debugDescription)
+
+        app.staticTexts["KeyID_AC"].tap()
+        if app.staticTexts["infoText"].label != "Precision: 200 thousand digits" {
+            app.images["plusButton"].tap()
+            app.buttons["settingsButton"].tap()
+            let decrementButton = app.scrollViews.otherElements.buttons["decrementButton"]
+            let incrementButton = app.scrollViews.otherElements.buttons["incrementButton"]
+            decrementButton.tap()
+            decrementButton.tap()
+            decrementButton.tap()
+            decrementButton.tap()
+            decrementButton.tap()
+            decrementButton.tap()
+            decrementButton.tap()
+            decrementButton.tap()
+            decrementButton.tap()
+            decrementButton.tap()
+            decrementButton.tap()
+            decrementButton.tap()
+            decrementButton.tap()
+            decrementButton.tap()
+            decrementButton.tap()
+            decrementButton.tap()
+            decrementButton.tap()
+            decrementButton.tap()
+    
+            incrementButton.tap()
+            incrementButton.tap()
+            incrementButton.tap()
+            incrementButton.tap()
+            incrementButton.tap()
+            incrementButton.tap()
+            incrementButton.tap()
+            incrementButton.tap()
+            incrementButton.tap()
+            incrementButton.tap()
+            incrementButton.tap()
+            incrementButton.tap()
+            incrementButton.tap() /// --> 200,000
+            app.buttons["Back"].tap()
+            app.images["plusButton"].tap()
+            app.staticTexts["KeyID_AC"].tap()
+            app.staticTexts["KeyID_AC"].tap()
+        }
+        app.staticTexts["KeyID_AC"].tap()
     }
 
     override func tearDownWithError() throws {
@@ -24,8 +68,11 @@ final class Calculator_UITests: XCTestCase {
 
     func test_infoText() {
         app.staticTexts["KeyID_AC"].tap()
-        let infoText = app.staticTexts["infoText"]
+        var infoText = app.staticTexts["infoText"]
         XCTAssertEqual(infoText.label, "Precision: 200 thousand digits")
+        app.staticTexts["KeyID_AC"].tap()
+        infoText = app.staticTexts["infoText"]
+        XCTAssertEqual(infoText.label, "")
     }
     
     func test_ln_0_infinity() throws {
@@ -47,7 +94,6 @@ final class Calculator_UITests: XCTestCase {
     }
 
     func test_2nd() {
-        let app = XCUIApplication()
         app.staticTexts["KeyID_2^nd"].tap()
         app.staticTexts["KeyID_2^nd"].tap()
         app.staticTexts["KeyID_sin"].tap()
@@ -55,25 +101,26 @@ final class Calculator_UITests: XCTestCase {
     }
 
     func test_9_sin_cos_tan() {
-        let app = XCUIApplication()
         /// make sure we are in Degrees, not Radians
         if app.staticTexts["infoText"].label == "Rad" {
             app.staticTexts["KeyID_Deg"].tap()
         }
+        let sleepDuration:UInt32 = 4 // seconds
         app.staticTexts["KeyID_9"].tap()
         app.staticTexts["KeyID_sin"].tap()
-        sleep(4)
+        sleep(sleepDuration)
         app.staticTexts["KeyID_cos"].tap()
-        sleep(4)
+        sleep(sleepDuration)
         app.staticTexts["KeyID_tan"].tap()
-        sleep(4)
+        sleep(sleepDuration)
         app.staticTexts["KeyID_2^nd"].tap()
         app.staticTexts["KeyID_tan^-1"].tap()
-        sleep(4)
+        sleep(sleepDuration)
         app.staticTexts["KeyID_cos^-1"].tap()
-        sleep(4)
+        sleep(sleepDuration)
         app.staticTexts["KeyID_sin^-1"].tap()
-        sleep(4)
+        sleep(sleepDuration)
+        /// if this test fails, maybe the sleepDuration was too short
         XCTAssertEqual(app.staticTexts["landscapeDisplayText"].label, "9")
     }
     

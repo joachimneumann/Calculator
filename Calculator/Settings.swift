@@ -66,8 +66,8 @@ struct Settings: View {
                     HStack {
                         Text("Precision:")
                         ColoredStepper(
-                            plusEnabled: true, //!brainModel.timerIsRunning && memoryNeeded < PHYSICAL_MEMORY,
-                            minusEnabled: true,// !brainModel.timerIsRunning && settingsPrecision > MIN_PRECISION,
+                            plusEnabled: memoryNeeded < PHYSICAL_MEMORY, //!brainModel.timerIsRunning && memoryNeeded < PHYSICAL_MEMORY,
+                            minusEnabled: settingsPrecision > MIN_PRECISION,// !brainModel.timerIsRunning && settingsPrecision > MIN_PRECISION,
                             onIncrement: {
                                 DispatchQueue.main.async {
                                     settingsPrecision = increase(settingsPrecision)

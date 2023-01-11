@@ -105,6 +105,7 @@ class BrainEngine {
         n.replaceLast(with: number)
     }
     
+    /// central function, used in the model
     func operation(_ symbol: String) -> CalculationResult {
         // debugging
         // if symbol != "C" && symbol != "AC" { print("nn \(nn) no \(no)") }
@@ -207,64 +208,14 @@ class BrainEngine {
         n.removeAll()
         pending = false
         n.append(Number("0", precision: precision))
-        // fullDisplay()
-    }
-    
-    func fullDisplay() {
         //        operation("π")
         //        operation("8")
-        //        operation("8")
-        //        operation("8")
-        //        operation("8")
-        //        operation("8")
-        //        operation("8")
-        //        operation("8")
-        //        operation("8")
-        //        operation("8")
-        //        operation("x^3")
-        //        operation("x^3")
-        //        operation("x^3")
-        //        operation("x^3")
-        //        operation("x^3")
-        //        operation("x^3")
-        
-//        operation("1")
-//        operation("2")
-//        operation("3")
-//        operation("4")
-//        operation("5")
-//        operation("6")
-//        operation("7")
-//        operation("8")
-//        operation("9")
-//        operation("0")
-//        operation("1")
-//        operation("2")
-//        operation("3")
-//        operation("4")
-//        operation("5")
-//        operation("6")
-//        operation("7")
-//        operation("8")
-//        operation("9")
-//        operation("0")
-//        operation("1")
-//        operation("2")
-//        operation("3")
-//        operation("4")
-//        operation("5")
-        //        operation("6")
-        //        operation("7")
-        //        operation("1")
-        //        operation("1")
-        //        operation("1")
-        //        operation("1")
-        //        operation("1")
-        //        operation("1")
     }
+    
 }
 
-// DebugBrain implemented in the same file, because BrainEngine has fileprivate properties
+/// DebugBrain implemented in the same file, because it uses
+/// fileprivate properties of BrainEngine
 class DebugBrain: BrainEngine {
     let lengths: Lengths
     init(precision: Int, lengths: Lengths) {
@@ -295,7 +246,7 @@ class DebugBrain: BrainEngine {
             }
         }
     }
-    func push(_ integer: Int) { push(String(integer)) }
+    func push(_ integer: Int)   { push(String(integer)) }
     func push(_ double: Double) { push(String(double)) }
     func pushnew(_ something: String) {
         push("AC")
@@ -312,12 +263,13 @@ class DebugBrain: BrainEngine {
 
     var no: Int { operatorStack.count }
     var nn: Int { n.count }
-    var data: DisplayData {
-        let d = n.last.getDisplayData(multipleLines: false, lengths: lengths, forceScientific: false, showAsInteger: false, showAsFloat: false)
-        return d
-    }
     var left: String { data.left }
     var right: String? { data.right }
     var oneLine: String { data.left + (data.right ?? "") }
     var double: Double { n.last.gmp != nil ? n.last.gmp!.toDouble() : -1.0 }
+
+    private var data: DisplayData {
+        let d = n.last.getDisplayData(multipleLines: false, lengths: lengths, forceScientific: false, showAsInteger: false, showAsFloat: false)
+        return d
+    }
 }

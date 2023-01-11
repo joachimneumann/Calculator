@@ -43,6 +43,7 @@ struct ColoredStepper: View {
             .disabled(!minusEnabled)
             .foregroundColor(minusEnabled ? stepperColors.leftBtnColor : Color.gray)
             .background(minusEnabled ? stepperColors.backgroundColor : Color(UIColor.darkGray))
+            .accessibilityIdentifier("decrementButton")
             
             Spacer().frame(width: 2)
             
@@ -54,6 +55,7 @@ struct ColoredStepper: View {
             .disabled(!plusEnabled)
             .foregroundColor(plusEnabled ? stepperColors.rightBtnColor : Color.gray)
             .background(plusEnabled ? stepperColors.backgroundColor : Color(UIColor.darkGray))
+            .accessibilityIdentifier("incrementButton")
         }
         .clipShape(RoundedRectangle(cornerRadius: 8))
         

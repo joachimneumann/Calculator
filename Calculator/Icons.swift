@@ -34,6 +34,7 @@ struct Icons : View {
                     isZoomed.toggle()
                 }
             }
+            .accessibilityIdentifier("plusButton")
     }
     
     @ViewBuilder
@@ -121,6 +122,7 @@ struct Icons : View {
                 .font(Font.title.weight(.thin))
                 .frame(height: screen.plusIconSize * 0.6)
                 .foregroundColor(Color.white)
+                .accessibilityIdentifier("settingsButton")
         }
     }
     
