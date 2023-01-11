@@ -38,27 +38,44 @@ struct ColoredStepper: View {
             Button {
                 decrement()
             } label: {
-                Image(systemName: "minus").frame(width: 38, height: 30)
             }
+            .buttonStyle(StateableButton(change: { state in
+                Image(systemName: "minus").frame(width: 38, height: 30)
+                .frame(width: 38, height: 30)
+                .foregroundColor(minusEnabled ? .white : .gray)
+                .background(state || !minusEnabled ? Color(UIColor.darkGray) : .gray)
+
+            }))
             .disabled(!minusEnabled)
-            .foregroundColor(minusEnabled ? stepperColors.leftBtnColor : Color.gray)
-            .background(minusEnabled ? stepperColors.backgroundColor : Color(UIColor.darkGray))
             .accessibilityIdentifier("decrementButton")
+            
             
             Spacer().frame(width: 2)
             
             Button {
                 increment()
             } label: {
-                Image(systemName: "plus").frame(width: 38, height: 30)
             }
+            .buttonStyle(StateableButton(change: { state in
+                Image(systemName: "plus").frame(width: 38, height: 30)
+                .frame(width: 38, height: 30)
+                .foregroundColor(plusEnabled ? .white : .gray)
+                .background(state || !plusEnabled ? Color(UIColor.darkGray) : .gray)
+
+            }))
             .disabled(!plusEnabled)
-            .foregroundColor(plusEnabled ? stepperColors.rightBtnColor : Color.gray)
-            .background(plusEnabled ? stepperColors.backgroundColor : Color(UIColor.darkGray))
             .accessibilityIdentifier("incrementButton")
         }
         .clipShape(RoundedRectangle(cornerRadius: 8))
         
+    }
+    
+    struct StateableButton<Content>: ButtonStyle where Content: View {
+        var change: (Bool) -> Content
+        
+        func makeBody(configuration: Configuration) -> some View {
+            return change(configuration.isPressed)
+        }
     }
     
     func decrement() {
