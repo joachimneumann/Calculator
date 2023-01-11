@@ -29,13 +29,7 @@ struct Calculator: View {
     @State var scrollViewHasScrolled = false
     @State var scrollViewID = UUID()
 
-    @State var isZoomed: Bool = false {
-        didSet {
-            if scrollViewHasScrolled {
-                scrollViewID = UUID()
-            }
-        }
-    }
+    @State var isZoomed: Bool = false
 
     var store = Store()
         
@@ -102,6 +96,13 @@ struct Calculator: View {
                 offsetToVerticallyAlignTextWithkeyboard: screen.offsetToVerticallyAlignTextWithkeyboard,
                 scrollViewID: scrollViewID
             )
+            .onChange(of: isZoomed) { _ in
+                if scrollViewHasScrolled {
+                    withAnimation(.linear(duration: 0.4)) {
+                        scrollViewID = UUID()
+                    }
+                }
+            }
             Icons(
                 store: store,
                 brainModel: brainModel,

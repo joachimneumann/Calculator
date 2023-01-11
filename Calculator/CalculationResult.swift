@@ -26,7 +26,7 @@ struct CalculationResult {
     func getDisplay(keyPressResponder: KeyPressResponder, screen: Screen) async -> Display {
         return await Task.detached {
             let data = number.getDisplayData(
-                multipleLines: !keyPressResponder.isPreliminary && !screen.isPortraitPhone,
+                multipleLines: !screen.isPortraitPhone,
                 lengths: screen.lengths,
                 forceScientific: keyPressResponder.forceScientific,
                 showAsInteger: keyPressResponder.showAsInteger,
@@ -34,7 +34,7 @@ struct CalculationResult {
             let format = DisplayFormat(
                 for: data.length,
                 withMaxLength: data.maxlength,
-                showThreeDots: keyPressResponder.isPreliminary,
+                showThreeDots: false,
                 screen: screen)
             return Display(data: data, format: format)
         }.value

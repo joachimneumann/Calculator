@@ -8,17 +8,17 @@
 import SwiftUI
 
 protocol KeyPressResponder {
-    var isPreliminary: Bool { get set }
     var forceScientific: Bool { get set }
     var showAsInteger: Bool { get set }
     var showAsFloat: Bool { get set }
+    var isNull: Bool { get set }
     func keyPress(_ symbol: String) async -> CalculationResult
 }
 
 class BrainModel : KeyPressResponder, ObservableObject {
-    internal var isPreliminary: Bool = false
-    internal var showAsInteger = false
-    internal var showAsFloat = false
+    @Published internal var showAsInteger = false /// This will update the "-> Int or -> sci button texts
+    @Published internal var showAsFloat = false
+    @Published internal var isNull = false
     private var displayDataIsOld = false
     private let timerDefaultText = "click to measure"
     private var timer: Timer? = nil

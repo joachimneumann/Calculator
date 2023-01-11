@@ -132,7 +132,9 @@ struct Icons : View {
         if integerLabel.count > 0 {
             Button {
                 brainModel.showAsInteger.toggle()
-                //                                brainModel.updateDisplayData()
+                Task {
+                    await keyModel.refreshDisplay(screen: screen)
+                }
             } label: {
                 Text(integerLabel)
                     .font(Font(screen.infoUiFont))
@@ -147,7 +149,9 @@ struct Icons : View {
         if !keyModel.currentDisplay.data.canBeInteger && floatLabel.count > 0 {
             Button {
                 brainModel.showAsFloat.toggle()
-                //                                brainModel.updateDisplayData()
+                Task {
+                    await keyModel.refreshDisplay(screen: screen)
+                }
             } label: {
                 Text(floatLabel)
                     .font(Font(screen.infoUiFont))

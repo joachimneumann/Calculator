@@ -163,6 +163,16 @@ class KeyModel: ObservableObject {
             guard valid else { return }
 
             if symbol == "AC" {
+                //        if brain.last.isNull {
+                //            DispatchQueue.main.async {
+                //                self.showAC = true
+                //                self.precisionDescription = self.precision.useWords
+                //            }
+                //        } else {
+                //            DispatchQueue.main.async {
+                //                self.showAC = false
+                //            }
+                //        }
                 showPrecision.toggle()
             }
 

@@ -59,7 +59,7 @@ struct ScrollViewConditionalAnimation: View {
     var body: some View {
         scrollView
             .onPreferenceChange(OffsetKey.self) { verticalScrollPosition in
-                // print("verticalScrollPosition \(verticalScrollPosition)")
+                //print("verticalScrollPosition \(verticalScrollPosition)")
                 if abs(verticalScrollPosition) > 0.01 {
                     scrollViewHasScolled = true
                 } else {
