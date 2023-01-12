@@ -112,15 +112,8 @@ class BrainEngine {
         
         switch symbol {
         case "C":
-            if n.last.isNull {
-                operatorStack.removeAll()
-                n.removeAll()
-                pending = false
-                n.append(nullNumber)
-            } else {
-                n.removeLast()
-                n.append(nullNumber)
-            }
+            n.removeLast()
+            n.append(nullNumber)
         case "AC":
             operatorStack.removeAll()
             n.removeAll()

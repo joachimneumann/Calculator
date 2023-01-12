@@ -18,18 +18,18 @@ class Number: CustomDebugStringConvertible {
     var gmp: Gmp? { return _gmp }
     var valueHasChanged: Bool
     
-    var isNull: Bool {
-        if isStr {
-            if str == "0" { return true }
-            return false
-        } else {
-            if let g = gmp {
-                return g.isNull()
-            }
-            assert(false)
-        }
-        return false
-    }
+//    var isNull: Bool {
+//        if isStr {
+//            if str == "0" { return true }
+//            return false
+//        } else {
+//            if let g = gmp {
+//                return g.isNull()
+//            }
+//            assert(false)
+//        }
+//        return false
+//    }
     
     var isValid: Bool {
         if isStr { return true }

@@ -20,7 +20,6 @@ struct CalculationResult {
         self.hasChanged = hasChanged
     }
     
-    var isNull: Bool { number.isNull }
     var isValidNumber: Bool { number.isValid }
     
     func getDisplay(keyPressResponder: KeyPressResponder, screen: Screen) async -> Display {

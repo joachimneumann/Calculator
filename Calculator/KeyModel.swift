@@ -163,16 +163,6 @@ class KeyModel: ObservableObject {
             guard valid else { return }
 
             if symbol == "AC" {
-                //        if brain.last.isNull {
-                //            DispatchQueue.main.async {
-                //                self.showAC = true
-                //                self.precisionDescription = self.precision.useWords
-                //            }
-                //        } else {
-                //            DispatchQueue.main.async {
-                //                self.showAC = false
-                //            }
-                //        }
                 showPrecision.toggle()
             }
 
@@ -184,7 +174,6 @@ class KeyModel: ObservableObject {
                 }
 
                 await setPendingColors(symbol: symbol)
-                
                 await defaultTask(symbol: symbol, screen: screen)
                 keyState = .notPressed
             }
@@ -227,11 +216,12 @@ class KeyModel: ObservableObject {
             let tempDisplay = await calculationResult.getDisplay(keyPressResponder: keyPressResponder, screen: screen)
             await MainActor.run() {
                 currentDisplay = tempDisplay
+                self.showAC = tempDisplay.data.isZero
                 //print("currentDisplay", currentDisplay.data.left)
             }
         }
     }
-    
+
     
     func keyColors(_ symbol: String, pending: Bool) -> ColorsOf {
         if ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ","].contains(symbol) {

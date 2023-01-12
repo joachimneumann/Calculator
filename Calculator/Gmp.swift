@@ -86,7 +86,7 @@ class Gmp: Equatable, CustomDebugStringConvertible {
     
     static var randstate: gmp_randstate_t? = nil
     
-    func isNull()       -> Bool { mpfr_cmp_d(&mpfr, 0.0) == 0 }
+    //func isNull()       -> Bool { mpfr_cmp_d(&mpfr, 0.0) == 0 }
     func isNegtive()    -> Bool { mpfr_cmp_d(&mpfr, 0.0)  < 0 }
     
     func inPlace(op: inplaceType) { op(self)() }

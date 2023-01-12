@@ -8,17 +8,15 @@
 import SwiftUI
 
 protocol KeyPressResponder {
-    var forceScientific: Bool { get set }
-    var showAsInteger: Bool { get set }
-    var showAsFloat: Bool { get set }
-    var isNull: Bool { get set }
+    var forceScientific: Bool { get }
+    var showAsInteger: Bool { get }
+    var showAsFloat: Bool { get }
     func keyPress(_ symbol: String) async -> CalculationResult
 }
 
 class BrainModel : KeyPressResponder, ObservableObject {
     @Published internal var showAsInteger = false /// This will update the "-> Int or -> sci button texts
     @Published internal var showAsFloat = false
-    @Published internal var isNull = false
     private var displayDataIsOld = false
     private let timerDefaultText = "click to measure"
     private var timer: Timer? = nil
@@ -55,7 +53,8 @@ class BrainModel : KeyPressResponder, ObservableObject {
         //                if not self.cancelled { let tempDisplay = stupidBrain.getDisplay }
         //                if not self.cancelled { display = temp }
         //            }
-        return await brain.operation(symbol)
+        let result = await brain.operation(symbol)
+        return result
     }
     
     // the update of the precision in brain can be slow.

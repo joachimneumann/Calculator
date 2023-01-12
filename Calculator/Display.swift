@@ -18,6 +18,9 @@ struct DisplayData {
     var maxlength: Int
     var canBeInteger: Bool
     var canBeFloat: Bool
+    var isZero: Bool {
+        left == "0" && right == nil
+    }
     
     var oneLine: String {
         left + (right ?? "")
