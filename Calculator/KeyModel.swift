@@ -64,7 +64,7 @@ class KeyModel: ObservableObject {
     private let downTime = 0.1
     private let upTime = 0.4
     
-    private var calculationResult = Number("0", precision: 10)
+    private var displayNumber = Number("0", precision: 10)
     @Published var showAC = true
     var showPrecision: Bool = false
     var secondActive = false
@@ -128,7 +128,7 @@ class KeyModel: ObservableObject {
     
     func touchDown(symbol: String) {
         Task(priority: .userInitiated) {
-            let validOrAllowed = calculationResult.isValid || !C.keysThatRequireValidNumber.contains(symbol)
+            let validOrAllowed = displayNumber.isValid || !C.keysThatRequireValidNumber.contains(symbol)
             guard keyState == .notPressed && validOrAllowed else {
                 await showDisabledColors(symbol: symbol)
                 return
@@ -171,7 +171,7 @@ class KeyModel: ObservableObject {
         default:
             guard keyState == .notPressed else { return }
 
-            let valid = calculationResult.isValid || !C.keysThatRequireValidNumber.contains(symbol)
+            let valid = displayNumber.isValid || !C.keysThatRequireValidNumber.contains(symbol)
             guard valid else { return }
 
             if symbol == "AC" {
@@ -220,13 +220,13 @@ class KeyModel: ObservableObject {
             }
         }
         keyState = .highPrecisionProcessing
-        calculationResult = await keyPressResponder.keyPress(symbol)
+        displayNumber = await keyPressResponder.keyPress(symbol)
         await refreshDisplay(screen: screen)
     }
     
     func refreshDisplay(screen: Screen) async {
         if let keyPressResponder = keyPressResponder {
-            let tempDisplayData = calculationResult.getDisplayData(
+            let tempDisplayData = displayNumber.getDisplayData(
                     multipleLines: !screen.isPortraitPhone,
                     lengths: screen.lengths,
                     useMaximalLength: false,
@@ -250,8 +250,8 @@ class KeyModel: ObservableObject {
 
     func copyFromPasteBin(screen: Screen) async -> Bool {
         guard let keyPressResponder = keyPressResponder else { return false }
-        if let result = await keyPressResponder.copyFromPasteBin() {
-            calculationResult = result
+        if let copyResult = await keyPressResponder.copyFromPasteBin() {
+            displayNumber = copyResult
             await refreshDisplay(screen: screen)
             return true
         } else {
@@ -261,7 +261,7 @@ class KeyModel: ObservableObject {
     
     func copyToPastBin() async {
         guard let keyPressResponder = keyPressResponder else { return }
-        let copyData = calculationResult.getDisplayData(
+        let copyData = displayNumber.getDisplayData(
             multipleLines: true,
             lengths: Lengths(0),
             useMaximalLength: true,
