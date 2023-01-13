@@ -144,7 +144,7 @@ class KeyModel: ObservableObject {
                 }
             }
         }
-        if ["/", "x", "-", "+", "x^y", "y^x"].contains(symbol) {
+        if ["/", "x", "-", "+", "x^y", "y^x", "y√"].contains(symbol) {
             await MainActor.run() {
                 withAnimation(.easeIn(duration: downTime)) {
                     backgroundColor[symbol] = keyColors(symbol, pending: true).upColor
