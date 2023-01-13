@@ -71,6 +71,7 @@ struct Icons : View {
                         isValidPasteContent = true
                     }
                 }
+                .accessibilityIdentifier("copyButton")
         }
     }
     
@@ -108,6 +109,7 @@ struct Icons : View {
                         }
                     }
                 }
+                .accessibilityIdentifier("pasteButton")
         }
     }
     

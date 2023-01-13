@@ -11,6 +11,19 @@ final class Calculator_UITests: XCTestCase {
 
     let app = XCUIApplication()
 
+    func forcePrecision(incrementCounter: Int) {
+        app.images["plusButton"].tap()
+        app.buttons["settingsButton"].tap()
+        let decrementButton = app.scrollViews.otherElements.buttons["decrementButton"]
+        let incrementButton = app.scrollViews.otherElements.buttons["incrementButton"]
+        for _ in 0..<30 { decrementButton.tap() }
+        for _ in 0..<incrementCounter { incrementButton.tap() }
+        app.buttons["Back"].tap()
+        app.images["plusButton"].tap()
+        app.staticTexts["KeyID_AC"].tap()
+        app.staticTexts["KeyID_AC"].tap()
+    }
+    
     override func setUpWithError() throws {
         let device = XCUIDevice.shared
         device.orientation = .landscapeRight
@@ -19,16 +32,7 @@ final class Calculator_UITests: XCTestCase {
 
         app.staticTexts["KeyID_AC"].tap()
         if app.staticTexts["infoText"].label != "Precision: 200 thousand digits" {
-            app.images["plusButton"].tap()
-            app.buttons["settingsButton"].tap()
-            let decrementButton = app.scrollViews.otherElements.buttons["decrementButton"]
-            let incrementButton = app.scrollViews.otherElements.buttons["incrementButton"]
-            for _ in 0..<20 { decrementButton.tap() }
-            for _ in 0..<13 { incrementButton.tap() } /// --> 200,000
-            app.buttons["Back"].tap()
-            app.images["plusButton"].tap()
-            app.staticTexts["KeyID_AC"].tap()
-            app.staticTexts["KeyID_AC"].tap()
+            forcePrecision(incrementCounter: 13) // 200,000
         }
         app.staticTexts["KeyID_AC"].tap()
     }
@@ -94,6 +98,30 @@ final class Calculator_UITests: XCTestCase {
         XCTAssertEqual(app.staticTexts["landscapeDisplayText"].label, "9")
     }
     
+    func test_REQUIRES_PERMISSION_IN_POPUP_copy_paste_precision() {
+        app.staticTexts["Rand"].tap()
+        let plusbuttonImage = app.images["plusButton"]
+        plusbuttonImage.tap()
+        app.staticTexts["copyButton"].tap()
+        plusbuttonImage.tap()
+        XCTAssertEqual(UIPasteboard.general.string?.count, 200_000)
+    }
+    
+    func test_copy_pending() {
+        
+    }
+
+    func test_copy_non_pending() {
+        
+    }
+
+    func test_mr_pending() {
+        
+    }
+
+    func test_mr_non_pending() {
+        
+    }
 
 //    func XestLaunchPerformance() throws {
 //        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {

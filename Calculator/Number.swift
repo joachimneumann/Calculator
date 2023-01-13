@@ -224,12 +224,21 @@ class Number: CustomDebugStringConvertible {
             var firstLineWithoutComma: Int
             
             if multipleLines {
-                mantissaLength                  = min(_precision, Number.MAX_DISPLAY_LENGTH)
-                withoutComma                    = min(_precision, Number.MAX_DISPLAY_LENGTH)
-                withCommaNonScientific          = min(_precision, Number.MAX_DISPLAY_LENGTH)
-                withCommaScientific             = min(_precision, Number.MAX_DISPLAY_LENGTH)
-                firstLineWithoutComma           = min(_precision, lengths.withoutComma)
-                firstLineWithCommaNonScientific = min(_precision, lengths.withCommaNonScientific)
+                if useMaximalLength {
+                    mantissaLength                  = _precision
+                    withoutComma                    = _precision
+                    withCommaNonScientific          = _precision
+                    withCommaScientific             = _precision
+                    firstLineWithoutComma           = _precision
+                    firstLineWithCommaNonScientific = _precision
+                } else {
+                    mantissaLength                  = min(_precision, Number.MAX_DISPLAY_LENGTH)
+                    withoutComma                    = min(_precision, Number.MAX_DISPLAY_LENGTH)
+                    withCommaNonScientific          = min(_precision, Number.MAX_DISPLAY_LENGTH)
+                    withCommaScientific             = min(_precision, Number.MAX_DISPLAY_LENGTH)
+                    firstLineWithoutComma           = min(_precision, lengths.withoutComma)
+                    firstLineWithCommaNonScientific = min(_precision, lengths.withCommaNonScientific)
+                }
             } else {
                 mantissaLength                  = lengths.withCommaScientific
                 withoutComma                    = min(_precision, lengths.withoutComma)
