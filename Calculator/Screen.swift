@@ -23,6 +23,7 @@ class Screen: Equatable, ObservableObject {
     let plusIconSize: CGFloat
     let plusIconLeftPadding: CGFloat
     let uiFontSize: CGFloat
+    let uiFontWeight: UIFont.Weight
     let infoUiFont: UIFont
     let infoUiFontSize: CGFloat
     let portraitIPhoneDisplayHorizontalPadding: CGFloat
@@ -84,7 +85,8 @@ class Screen: Equatable, ObservableObject {
         let displayWidth = calculatorWidth -
         (isPortraitPhone ? 2.0 * portraitIPhoneDisplayHorizontalPadding : plusIconSize + plusIconLeftPadding)
         uiFontSize = ((isPortraitPhone ? 0.125 : 0.16) * keyboardHeight).rounded()
-        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: uiFontSize, weight: C.fontWeight)
+        uiFontWeight = UIFont.Weight.thin
+        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: uiFontSize, weight: uiFontWeight)
         infoUiFontSize = uiFontSize * 0.3
         infoUiFont = UIFont.monospacedDigitSystemFont(ofSize: infoUiFontSize, weight: .regular)
         kerning = -0.02 * uiFontSize

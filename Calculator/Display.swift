@@ -55,7 +55,7 @@ struct DisplayFormat {
             if factor > 1.5 { factor = 1.5 }
             if factor < 1.0 { factor = 1.0 }
         }
-        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: screen.uiFontSize * factor, weight: C.fontWeight)
+        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: screen.uiFontSize * factor, weight: screen.uiFontWeight)
         
         font = Font(uiFont)
         color = showThreeDots ? .gray : .white
