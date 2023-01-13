@@ -98,7 +98,7 @@ final class Calculator_UITests: XCTestCase {
         XCTAssertEqual(app.staticTexts["landscapeDisplayText"].label, "9")
     }
     
-    func test_REQUIRES_PERMISSION_IN_POPUP_copy_paste_precision() {
+    func xxx_test_REQUIRES_PERMISSION_IN_POPUP_copy_paste_precision() {
         app.staticTexts["Rand"].tap()
         let plusbuttonImage = app.images["plusButton"]
         plusbuttonImage.tap()
