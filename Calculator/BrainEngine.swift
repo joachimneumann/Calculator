@@ -86,9 +86,31 @@ class BrainEngine {
         while !operatorStack.isEmpty && operatorStack.last!.priority >= newPriority {
             let op = operatorStack.pop()
             if let twoOperand = op as? TwoOperand {
-                if n.count >= 2 {
-                    let other = n.popLast()
-                    n.last.execute(twoOperand.operation, with: other)
+                
+                var specialCase = false
+                if twoOperand == twoOperandOperators["y√"] {
+                    if let radicand = n.secondLast { /// this is the number under the root
+                        if radicand.isNegative {
+                            if let radicalAsString = n.last.str { /// the radical is describes which nth root shall be calculated
+                                if let radicalAsInt = Int(radicalAsString) {
+                                    if radicalAsInt % 2 != 0 {
+                                        // odd root radical
+                                        let radical = n.popLast()
+                                        n.last.changeSign()
+                                        n.last.execute(twoOperand.operation, with: radical)
+                                        n.last.changeSign()
+                                        specialCase = true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if !specialCase {
+                    if n.count >= 2 {
+                        let other = n.popLast()
+                        n.last.execute(twoOperand.operation, with: other)
+                    }
                 }
             }
         }

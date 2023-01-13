@@ -103,7 +103,13 @@ class Number: CustomDebugStringConvertible {
             if !_str!.contains(",") { _str!.append(",") }
         }
     }
-    
+    var isNegative: Bool {
+        if isStr {
+            return _str!.starts(with: "-")
+        } else {
+            return _gmp!.isNegtive()
+        }
+    }
     func changeSign() {
         if isStr {
             if _str == "0" { return }
