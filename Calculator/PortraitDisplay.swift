@@ -14,7 +14,7 @@ struct PortraitDisplay: View {
     var mantissa: some View {
         let toShow = display.format.showThreeDots && display.data.left.count > 1 ? String(display.data.left.dropLast()) : display.data.left
         Text(toShow)
-            .kerning(C.kerning)
+            .kerning(display.format.kerning)
             .font(display.format.font)
             .foregroundColor(display.format.color)
             .multilineTextAlignment(.trailing)
@@ -34,7 +34,7 @@ struct PortraitDisplay: View {
     var exponent: some View {
         if let exponent = display.data.right {
             Text(exponent)
-                .kerning(C.kerning)
+                .kerning(display.format.kerning)
                 .font(display.format.font)
                 .foregroundColor(display.format.color)
                 .multilineTextAlignment(.trailing)

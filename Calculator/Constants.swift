@@ -7,17 +7,6 @@
 
 import SwiftUI
 
-class ColorsOf {
-    var textColor: Color
-    var upColor: Color
-    var downColor: Color
-    init(textColor: Color, upColor: Color, downColor: Color) {
-        self.textColor = textColor
-        self.upColor = upColor
-        self.downColor = downColor
-    }
-}
-
 struct C {
     static let keysAll = [
         "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",",
@@ -33,7 +22,6 @@ struct C {
     static let keysToDisable = C.keysAll.filter {!C.keysThatDoNotNeedToBeDisabled.contains($0)}
 
     static let fontWeight: UIFont.Weight = .thin // UIFont.Weight(rawValue: -4.02) is not continuous
-    static var kerning: CGFloat = 0.0
 }
 
 extension Int {

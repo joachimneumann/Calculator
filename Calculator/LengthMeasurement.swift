@@ -37,11 +37,11 @@ struct Lengths {
 //let _ = print("Calculator len \(model.displayData.longLeft) \(xxx.width)")
 
 
-func lengthMeasurement(width: CGFloat, uiFont: UIFont, infoUiFont: UIFont, ePadding: CGFloat) -> Lengths {
-    let digitWidth = "0".textSize(for: uiFont).width
-    let height     = "0".textSize(for: uiFont).height
-    let commaWidth = ",".textSize(for: uiFont).width
-    let eWidth     = "e".textSize(for: uiFont).width
+func lengthMeasurement(width: CGFloat, uiFont: UIFont, infoUiFont: UIFont, ePadding: CGFloat, kerning: CGFloat) -> Lengths {
+    let digitWidth = "0".textSize(for: uiFont, kerning: kerning).width
+    let height     = "0".textSize(for: uiFont, kerning: kerning).height
+    let commaWidth = ",".textSize(for: uiFont, kerning: kerning).width
+    let eWidth     = "e".textSize(for: uiFont, kerning: kerning).width
 
     let withoutComma           = Int(  width                                   / digitWidth)
     let withCommaNonScientific = Int( (width - commaWidth)                     / digitWidth) + 1
@@ -54,7 +54,7 @@ func lengthMeasurement(width: CGFloat, uiFont: UIFont, infoUiFont: UIFont, ePadd
         withCommaScientific: withCommaScientific,
         height: height,
         digitWidth: digitWidth,
-        infoHeight: "info".textSize(for: infoUiFont).height,
+        infoHeight: "info".textSize(for: infoUiFont, kerning: kerning).height,
         ePadding: ePadding)
     // print("lengthMeasurement \(result)")
     return result
@@ -62,11 +62,11 @@ func lengthMeasurement(width: CGFloat, uiFont: UIFont, infoUiFont: UIFont, ePadd
 
     
 extension String {
-    func textSize(for uiFont: UIFont) -> CGSize {
+    func textSize(for uiFont: UIFont, kerning: CGFloat) -> CGSize {
         //  attrString.addAttribute(NSAttributedStringKey.kern, value: 2, range: NSMakeRange(0, attrString.length))
 
         var attributes: [NSAttributedString.Key : Any] = [:]
-        attributes[.kern] = C.kerning
+        attributes[.kern] = kerning
 //        attributes[.strokeWidth] = 300
         attributes[.font] = uiFont
 //        let fontAttribute = [NSAttributedString.Key.font: uiFont]

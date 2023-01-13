@@ -27,8 +27,6 @@ class BrainModel : KeyPressResponder, ObservableObject {
     @Published var isPasting: Bool = false
     
     private let brain: Brain
-    //    private let stupidBrain: Brain
-    //    private let stupidBrainPrecision = 100
     
     var precisionDescription = "unknown"
     

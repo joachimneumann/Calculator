@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 class BrainEngine {
     fileprivate var n = NumberStack()
     fileprivate var operatorStack = OperatorStack()

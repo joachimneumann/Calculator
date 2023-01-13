@@ -17,8 +17,7 @@ struct LandscapeDisplay: View {
     
     var mantissa: some View {
         ScrollViewConditionalAnimation(
-            text: display.data.left,
-            font: display.format.font,
+            display: display,
             foregroundColor: showOrange ? .orange : display.format.color,
             backgroundColor: testColors ? .yellow : .black,
             offsetY: offsetToVerticallyAlignTextWithkeyboard,
@@ -33,7 +32,7 @@ struct LandscapeDisplay: View {
     var exponent: some View {
         if display.data.right != nil {
             Text(display.data.right!)
-                .kerning(C.kerning)
+                .kerning(display.format.kerning)
                 .font(display.format.font)
                 .foregroundColor(showOrange ? .orange : display.format.color)
                 .padding(.leading, display.format.ePadding)

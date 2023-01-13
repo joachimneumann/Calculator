@@ -8,13 +8,25 @@
 import SwiftUI
 
 class KeyModel: ObservableObject {
+    
     var keyPressResponder: KeyPressResponder?
-    var stupidBrain = BrainEngine(precision: 100)
+    var stupidBrain = BrainEngine(precision: 100) // I want to call fast sync functions
     
     private enum KeyState {
         case notPressed
         case pressed
         case highPrecisionProcessing
+    }
+
+    class ColorsOf {
+        var textColor: Color
+        var upColor: Color
+        var downColor: Color
+        init(textColor: Color, upColor: Color, downColor: Color) {
+            self.textColor = textColor
+            self.upColor = upColor
+            self.downColor = downColor
+        }
     }
 
     private let digitColors = ColorsOf(

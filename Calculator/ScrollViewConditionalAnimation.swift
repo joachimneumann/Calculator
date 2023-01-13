@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct ScrollViewConditionalAnimation: View {
-    let text: String
-    let font: Font
+    let display: Display
     let foregroundColor: Color
     let backgroundColor: Color
     let offsetY: CGFloat
@@ -30,11 +29,11 @@ struct ScrollViewConditionalAnimation: View {
         GeometryReader { g in
             ScrollView(.vertical) {
                 HStack(alignment: .bottom, spacing: 0.0) {
-                    let toShow = preliminary && text.count > 1 ? String(text.dropLast()) : text
+                    let toShow = preliminary && display.data.left.count > 1 ? String(display.data.left.dropLast()) : display.data.left
                     Spacer(minLength: 0.0)
                     Text(toShow)
-                        .kerning(C.kerning)
-                        .font(font)
+                        .kerning(display.format.kerning)
+                        .font(display.format.font)
                         .foregroundColor(foregroundColor)
                         .multilineTextAlignment(.trailing)
                         .background(backgroundColor)

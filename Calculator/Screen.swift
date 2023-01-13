@@ -31,6 +31,7 @@ class Screen: Equatable, ObservableObject {
     let bottomPadding: CGFloat
     let offsetToVerticallyAlignTextWithkeyboard: CGFloat
     let offsetToVerticallyIconWithText: CGFloat
+    let kerning: CGFloat
 
     
     init(_ screenSize: CGSize) {
@@ -86,7 +87,8 @@ class Screen: Equatable, ObservableObject {
         let uiFont = UIFont.monospacedDigitSystemFont(ofSize: uiFontSize, weight: C.fontWeight)
         infoUiFontSize = uiFontSize * 0.3
         infoUiFont = UIFont.monospacedDigitSystemFont(ofSize: infoUiFontSize, weight: .regular)
-        lengths = lengthMeasurement(width: displayWidth, uiFont: uiFont, infoUiFont: infoUiFont, ePadding: ePadding)
+        kerning = -0.02 * uiFontSize
+        lengths = lengthMeasurement(width: displayWidth, uiFont: uiFont, infoUiFont: infoUiFont, ePadding: ePadding, kerning: kerning)
         
         offsetToVerticallyAlignTextWithkeyboard =
         CGFloat(screenSize.height) -

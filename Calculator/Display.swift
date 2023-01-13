@@ -38,6 +38,7 @@ struct DisplayFormat {
     let showThreeDots: Bool
     let digitWidth: CGFloat
     let ePadding: CGFloat
+    let kerning: CGFloat
 
     init(for length: Int, withMaxLength maxLength: Int, showThreeDots: Bool, screen: Screen) {
         var factor = 1.0
@@ -61,6 +62,7 @@ struct DisplayFormat {
         self.showThreeDots = showThreeDots
         self.digitWidth = screen.lengths.digitWidth
         self.ePadding = screen.lengths.ePadding
+        self.kerning = screen.kerning
     }
 }
 
@@ -86,5 +88,6 @@ extension DisplayFormat {
         showThreeDots = false
         digitWidth = 0.0
         ePadding = 0.0
+        kerning = 0.0
     }
 }
