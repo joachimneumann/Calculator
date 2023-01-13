@@ -101,8 +101,14 @@ class BrainEngine {
     }
 
     /// used in the model for mr and paste
-    func replaceLast(with number: Number) {
-        n.replaceLast(with: number)
+    func replaceLast(with number: Number) -> CalculationResult {
+        if pending {
+            n.append(number)
+            pending = false
+        } else {
+            n.replaceLast(with: number)
+        }
+        return CalculationResult(number: n.last, hasChanged: true)
     }
     
     /// central function, used in the model
@@ -137,12 +143,7 @@ class BrainEngine {
             }
         case "mr":
             if memory != nil {
-                if pending {
-                    n.append(memory!)
-                    pending = false
-                } else {
-                    n.replaceLast(with: memory!)
-                }
+                _ = replaceLast(with: memory!)
             }
         case "( ":
             self.operatorStack.push(self.openParenthesis)
@@ -262,7 +263,7 @@ class DebugBrain: BrainEngine {
     var double: Double { n.last.gmp != nil ? n.last.gmp!.toDouble() : -1.0 }
 
     private var data: DisplayData {
-        let d = n.last.getDisplayData(multipleLines: false, lengths: lengths, forceScientific: false, showAsInteger: false, showAsFloat: false)
+        let d = n.last.getDisplayData(multipleLines: false, lengths: lengths, useMaximalLength: false, forceScientific: false, showAsInteger: false, showAsFloat: false)
         return d
     }
 }

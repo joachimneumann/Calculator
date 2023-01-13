@@ -12,6 +12,7 @@ protocol KeyPressResponder {
     var showAsInteger: Bool { get }
     var showAsFloat: Bool { get }
     func keyPress(_ symbol: String) async -> CalculationResult
+    func copyFromPasteBin() async -> CalculationResult?
 }
 
 class BrainModel : KeyPressResponder, ObservableObject {
@@ -67,34 +68,19 @@ class BrainModel : KeyPressResponder, ObservableObject {
         let _ = await brain.setPrecision(newPecision)
     }
     
-    func copyToPastBin() async {
-        //        if let number = calculationResult.number {
-        //            let copyData = await number.getDisplayData(
-        //                multipleLines: true,
-        //                lengths: Lengths(precision),
-        //                forceScientific: false,
-        //                showAsInteger: showAsInteger,
-        //                showAsFloat: showAsFloat,
-        //                maxDisplayLength: precision)
-        //            UIPasteboard.general.string = copyData.oneLine
-        //        }
-    }
-    func copyFromPastBin() async -> Bool {
-        var ok = false
+    func copyFromPasteBin() async -> CalculationResult? {
+        var calculationResult: CalculationResult? = nil
         if UIPasteboard.general.hasStrings {
             if let pasteString = UIPasteboard.general.string {
+                print("pasteString", pasteString, pasteString.count)
                 if pasteString.count > 0 {
                     if Gmp.isValidGmpString(pasteString, bits: 1000) {
-                        ok = true
+                        calculationResult = await brain.replaceLast(with: Number(pasteString, precision: brain.precision))
                     }
-                }
-                if ok {
-                    await brain.replaceLast(with: Number(pasteString, precision: brain.precision))
-                    //                    haveResultCallback() // TODO: make sure that forLong is true here!!!!
                 }
             }
         }
-        return ok
+        return calculationResult
     }
     
     

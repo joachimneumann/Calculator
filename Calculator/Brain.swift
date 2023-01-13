@@ -22,7 +22,7 @@ actor Brain {
         brainEngine.setPrecision(newPrecision)
     }
     
-    func replaceLast(with number: Number) {
+    func replaceLast(with number: Number) -> CalculationResult {
         brainEngine.replaceLast(with: number)
     }
     

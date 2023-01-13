@@ -27,6 +27,7 @@ struct CalculationResult {
             let data = number.getDisplayData(
                 multipleLines: !screen.isPortraitPhone,
                 lengths: screen.lengths,
+                useMaximalLength: false,
                 forceScientific: keyPressResponder.forceScientific,
                 showAsInteger: keyPressResponder.showAsInteger,
                 showAsFloat: keyPressResponder.showAsFloat)

@@ -136,11 +136,17 @@ class Number: CustomDebugStringConvertible {
     
     func getDisplayData(
         multipleLines: Bool,
-        lengths: Lengths,
+        lengths specifiedLengths: Lengths,
+        useMaximalLength: Bool,
         forceScientific: Bool,
         showAsInteger: Bool,
-        showAsFloat: Bool,
-        maxDisplayLength: Int = Number.MAX_DISPLAY_LENGTH) -> DisplayData {
+        showAsFloat: Bool) -> DisplayData {
+            let lengths: Lengths
+            if useMaximalLength {
+                lengths = Lengths(_precision)
+            } else {
+                lengths = specifiedLengths
+            }
             //print("getDisplayData!!!!!!!")
             var displayData = DisplayData()
             if !forceScientific {
@@ -150,7 +156,7 @@ class Number: CustomDebugStringConvertible {
                             if pos < lengths.withCommaNonScientific {
                                 if multipleLines {
                                     //                                ret.isAbbreviated = s.count > maxDisplayLength
-                                    displayData.left = String(s.prefix(maxDisplayLength))
+                                    displayData.left = String(s.prefix(Number.MAX_DISPLAY_LENGTH))
                                     displayData.right = nil
                                     return displayData
                                 } else {
@@ -218,10 +224,10 @@ class Number: CustomDebugStringConvertible {
             var firstLineWithoutComma: Int
             
             if multipleLines {
-                mantissaLength                  = min(_precision, maxDisplayLength)
-                withoutComma                    = min(_precision, maxDisplayLength)
-                withCommaNonScientific          = min(_precision, maxDisplayLength)
-                withCommaScientific             = min(_precision, maxDisplayLength)
+                mantissaLength                  = min(_precision, Number.MAX_DISPLAY_LENGTH)
+                withoutComma                    = min(_precision, Number.MAX_DISPLAY_LENGTH)
+                withCommaNonScientific          = min(_precision, Number.MAX_DISPLAY_LENGTH)
+                withCommaScientific             = min(_precision, Number.MAX_DISPLAY_LENGTH)
                 firstLineWithoutComma           = min(_precision, lengths.withoutComma)
                 firstLineWithCommaNonScientific = min(_precision, lengths.withCommaNonScientific)
             } else {

@@ -62,7 +62,7 @@ struct Icons : View {
                         }
                         Task {
                             copyDone = false
-                            await brainModel.copyToPastBin()
+                            await keyModel.copyToPastBin()
                             copyDone = true
                             if wait300msDone {
                                 setIsCopying(to: false)
@@ -100,7 +100,7 @@ struct Icons : View {
                             }
                         }
                         Task {
-                            isValidPasteContent = await brainModel.copyFromPastBin()
+                            isValidPasteContent = await keyModel.copyFromPasteBin(screen: screen)
                             pasteDone = true
                             if wait300msDone {
                                 setIsPasting(to: false)

@@ -189,6 +189,7 @@ class KeyModel: ObservableObject {
         let data = preliminaryResult.number.getDisplayData(
             multipleLines: false,
             lengths: screen.lengths,
+            useMaximalLength: false,
             forceScientific: keyPressResponder.forceScientific,
             showAsInteger: keyPressResponder.showAsInteger,
             showAsFloat: keyPressResponder.showAsFloat)
@@ -214,12 +215,36 @@ class KeyModel: ObservableObject {
     func refreshDisplay(screen: Screen) async {
         if let keyPressResponder = keyPressResponder {
             let tempDisplay = await calculationResult.getDisplay(keyPressResponder: keyPressResponder, screen: screen)
+            print("tempDisplay", tempDisplay)
             await MainActor.run() {
                 currentDisplay = tempDisplay
                 self.showAC = tempDisplay.data.isZero
                 //print("currentDisplay", currentDisplay.data.left)
             }
         }
+    }
+
+    func copyFromPasteBin(screen: Screen) async -> Bool {
+        guard let keyPressResponder = keyPressResponder else { return false }
+        if let result = await keyPressResponder.copyFromPasteBin() {
+            calculationResult = result
+            await refreshDisplay(screen: screen)
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func copyToPastBin() async {
+        guard let keyPressResponder = keyPressResponder else { return }
+        let copyData = calculationResult.number.getDisplayData(
+            multipleLines: true,
+            lengths: Lengths(0),
+            useMaximalLength: true,
+            forceScientific: keyPressResponder.forceScientific,
+            showAsInteger: keyPressResponder.showAsInteger,
+            showAsFloat: keyPressResponder.showAsFloat)
+        UIPasteboard.general.string = copyData.oneLine
     }
 
     
