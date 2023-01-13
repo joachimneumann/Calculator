@@ -100,18 +100,18 @@ class BrainEngine {
     }
 
     /// used in the model for mr and paste
-    func replaceLast(with number: Number) -> CalculationResult {
+    func replaceLast(with number: Number) -> Number {
         if pending {
             n.append(number)
             pending = false
         } else {
             n.replaceLast(with: number)
         }
-        return CalculationResult(number: n.last, hasChanged: true)
+        return n.last
     }
     
     /// central function, used in the model
-    func operation(_ symbol: String) -> CalculationResult {
+    func operation(_ symbol: String) -> Number {
         // debugging
         // if symbol != "C" && symbol != "AC" { print("nn \(nn) no \(no)") }
         
@@ -181,18 +181,16 @@ class BrainEngine {
         default:
             assert(false, "### non-existing operation \(symbol)")
         }
-        let hasChanged = n.last.valueHasChanged
-        n.last.valueHasChanged = false
-        return CalculationResult(number: n.last, hasChanged: hasChanged)
+        return n.last
     }
     
     /// used on Settings
-    func setPrecision(_ newPrecision: Int) -> CalculationResult {
+    func setPrecision(_ newPrecision: Int) -> Number {
         if newPrecision != precision {
             n.updatePrecision(from: precision, to: newPrecision)
             precision = newPrecision
         }
-        return CalculationResult(number: n.last, hasChanged: true)
+        return n.last
     }
     
     init(precision: Int) {

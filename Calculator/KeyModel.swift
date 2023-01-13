@@ -64,7 +64,7 @@ class KeyModel: ObservableObject {
     private let downTime = 0.1
     private let upTime = 0.4
     
-    private var calculationResult = CalculationResult()
+    private var calculationResult = Number("0", precision: 10)
     @Published var showAC = true
     var showPrecision: Bool = false
     var secondActive = false
@@ -128,7 +128,7 @@ class KeyModel: ObservableObject {
     
     func touchDown(symbol: String) {
         Task(priority: .userInitiated) {
-            let validOrAllowed = calculationResult.isValidNumber || !C.keysThatRequireValidNumber.contains(symbol)
+            let validOrAllowed = calculationResult.isValid || !C.keysThatRequireValidNumber.contains(symbol)
             guard keyState == .notPressed && validOrAllowed else {
                 await showDisabledColors(symbol: symbol)
                 return
@@ -171,7 +171,7 @@ class KeyModel: ObservableObject {
         default:
             guard keyState == .notPressed else { return }
 
-            let valid = calculationResult.isValidNumber || !C.keysThatRequireValidNumber.contains(symbol)
+            let valid = calculationResult.isValid || !C.keysThatRequireValidNumber.contains(symbol)
             guard valid else { return }
 
             if symbol == "AC" {
@@ -198,7 +198,7 @@ class KeyModel: ObservableObject {
         guard let keyPressResponder = keyPressResponder else { print("no keyPressResponder set"); return }
                         
         let preliminaryResult = stupidBrain.operation(symbol)
-        let data = preliminaryResult.number.getDisplayData(
+        let data = preliminaryResult.getDisplayData(
             multipleLines: false,
             lengths: screen.lengths,
             useMaximalLength: false,
@@ -226,11 +226,23 @@ class KeyModel: ObservableObject {
     
     func refreshDisplay(screen: Screen) async {
         if let keyPressResponder = keyPressResponder {
-            let tempDisplay = await calculationResult.getDisplay(keyPressResponder: keyPressResponder, screen: screen)
-            print("tempDisplay", tempDisplay)
+            let tempDisplayData = calculationResult.getDisplayData(
+                    multipleLines: !screen.isPortraitPhone,
+                    lengths: screen.lengths,
+                    useMaximalLength: false,
+                    forceScientific: keyPressResponder.forceScientific,
+                    showAsInteger: keyPressResponder.showAsInteger,
+                    showAsFloat: keyPressResponder.showAsFloat)
+            let format = DisplayFormat(
+                for: tempDisplayData.length,
+                withMaxLength: tempDisplayData.maxlength,
+                showThreeDots: false,
+                screen: screen)
+
+            //print("tempDisplay", tempDisplay)
             await MainActor.run() {
-                currentDisplay = tempDisplay
-                self.showAC = tempDisplay.data.isZero
+                currentDisplay = Display(data: tempDisplayData, format: format)
+                self.showAC = currentDisplay.data.isZero
                 //print("currentDisplay", currentDisplay.data.left)
             }
         }
@@ -249,7 +261,7 @@ class KeyModel: ObservableObject {
     
     func copyToPastBin() async {
         guard let keyPressResponder = keyPressResponder else { return }
-        let copyData = calculationResult.number.getDisplayData(
+        let copyData = calculationResult.getDisplayData(
             multipleLines: true,
             lengths: Lengths(0),
             useMaximalLength: true,

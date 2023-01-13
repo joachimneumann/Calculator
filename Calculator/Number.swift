@@ -16,7 +16,6 @@ class Number: CustomDebugStringConvertible {
     var isStr: Bool { _str != nil }
     var str: String? { return _str }
     var gmp: Gmp? { return _gmp }
-    var valueHasChanged: Bool
     
 //    var isNull: Bool {
 //        if isStr {
@@ -52,33 +51,28 @@ class Number: CustomDebugStringConvertible {
         toGmp()
         other.toGmp()
         _gmp!.execute(op, with: other._gmp!)
-        valueHasChanged = true
     }
     func execute(_ op: inplaceType) {
         toGmp()
         _gmp!.inPlace(op: op)
-        valueHasChanged = true
     }
     
     init(_ str: String, precision: Int) {
         _str = str
         _gmp = nil
         _precision = precision
-        valueHasChanged = true
     }
     init(_ gmp: Gmp, precision: Int) {
         //print("Number init()")
         _str = nil
         _gmp = gmp
         _precision = precision
-        valueHasChanged = true
     }
     fileprivate init() {
         //print("Number init()")
         _str = nil
         _gmp = nil
         _precision = 0
-        valueHasChanged = true
     }
     
     func setValue(other number: Number) {
@@ -89,7 +83,6 @@ class Number: CustomDebugStringConvertible {
             toGmp()
             _gmp!.setValue(other: number._gmp!)
         }
-        valueHasChanged = true
     }
     
     func append(_ digit: String) {
@@ -109,7 +102,6 @@ class Number: CustomDebugStringConvertible {
         } else {
             if !_str!.contains(",") { _str!.append(",") }
         }
-        valueHasChanged = true
     }
     
     func changeSign() {
@@ -123,7 +115,6 @@ class Number: CustomDebugStringConvertible {
         } else {
             _gmp!.changeSign()
         }
-        valueHasChanged = true
     }
     
     var debugDescription: String {

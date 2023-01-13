@@ -14,15 +14,15 @@ actor Brain {
         self.brainEngine = BrainEngine(precision: precision)
     }
     
-    func operation(_ symbol: String) -> CalculationResult {
+    func operation(_ symbol: String) -> Number {
         brainEngine.operation(symbol)
     }
     
-    func setPrecision(_ newPrecision: Int) -> CalculationResult {
+    func setPrecision(_ newPrecision: Int) -> Number {
         brainEngine.setPrecision(newPrecision)
     }
     
-    func replaceLast(with number: Number) -> CalculationResult {
+    func replaceLast(with number: Number) -> Number {
         brainEngine.replaceLast(with: number)
     }
     

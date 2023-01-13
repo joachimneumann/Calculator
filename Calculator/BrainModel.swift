@@ -11,8 +11,8 @@ protocol KeyPressResponder {
     var forceScientific: Bool { get }
     var showAsInteger: Bool { get }
     var showAsFloat: Bool { get }
-    func keyPress(_ symbol: String) async -> CalculationResult
-    func copyFromPasteBin() async -> CalculationResult?
+    func keyPress(_ symbol: String) async -> Number
+    func copyFromPasteBin() async -> Number?
 }
 
 class BrainModel : KeyPressResponder, ObservableObject {
@@ -40,9 +40,8 @@ class BrainModel : KeyPressResponder, ObservableObject {
         precisionDescription = _precision.wrappedValue.useWords
     }
     
-    func keyPress(_ symbol: String) async -> CalculationResult {
-        let result = await brain.operation(symbol)
-        return result
+    func keyPress(_ symbol: String) async -> Number {
+        await brain.operation(symbol)
     }
     
     // the update of the precision in brain can be slow.
@@ -55,8 +54,8 @@ class BrainModel : KeyPressResponder, ObservableObject {
         let _ = await brain.setPrecision(newPecision)
     }
     
-    func copyFromPasteBin() async -> CalculationResult? {
-        var result: CalculationResult? = nil
+    func copyFromPasteBin() async -> Number? {
+        var result: Number? = nil
         if UIPasteboard.general.hasStrings {
             if let pasteString = UIPasteboard.general.string {
                 print("pasteString", pasteString, pasteString.count)
