@@ -85,11 +85,6 @@ struct PurchaseView: View {
         .task {
             await store.requestProducts()
         }
-//            brainModel.hideKeyboard = true
-        .onDisappear() {
-//            brainModel.hideKeyboard = false
-            //brainModel.haveResultCallback()
-        }
     }
 }
 

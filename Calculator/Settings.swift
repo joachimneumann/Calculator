@@ -9,6 +9,10 @@ import SwiftUI
 
 struct Settings: View {
     @ObservedObject var brainModel: BrainModel
+    @State var timerIsRunning: Bool = false
+    private let timerInfoDefault: String = "click to measure"
+    @State var timerInfo: String = "click to measure"
+    let keyModel: KeyModel
     let screen: Screen
     let font: Font
     
@@ -47,7 +51,9 @@ struct Settings: View {
         VStack {
             HStack {
                 Button {
-                    self.presentation.wrappedValue.dismiss()
+                    if !timerIsRunning {
+                        self.presentation.wrappedValue.dismiss()
+                    }
                 } label: {
                     Image(systemName: "chevron.left")
                         .resizable()
@@ -59,33 +65,36 @@ struct Settings: View {
                 Spacer()
             }
             .font(font)
-            .foregroundColor(.white)
+            .foregroundColor(timerIsRunning ? .gray : .white)
             .padding()
             ScrollView {
                 VStack(alignment: .leading, spacing: 0.0) {
                     HStack {
                         Text("Precision:")
+                            .foregroundColor(timerIsRunning ? .gray : .white)
                         ColoredStepper(
-                            plusEnabled: memoryNeeded < PHYSICAL_MEMORY, //!brainModel.timerIsRunning && memoryNeeded < PHYSICAL_MEMORY,
-                            minusEnabled: settingsPrecision > MIN_PRECISION,// !brainModel.timerIsRunning && settingsPrecision > MIN_PRECISION,
+                            plusEnabled: !timerIsRunning && memoryNeeded < PHYSICAL_MEMORY,
+                            minusEnabled: !timerIsRunning && settingsPrecision > MIN_PRECISION,
                             height: 30,
                             onIncrement: {
                                 DispatchQueue.main.async {
                                     settingsPrecision = increase(settingsPrecision)
-//                                    brainModel.timerReset()
+                                    timerInfo = timerInfoDefault
                                 }
                             },
                             onDecrement: {
                                 DispatchQueue.main.async {
                                     settingsPrecision = decrease(settingsPrecision)
-//                                    brainModel.timerReset()
+                                    timerInfo = timerInfoDefault
                                 }
                             })
                         .padding(.horizontal, 4)
                         HStack {
                             Text("\(settingsPrecision.useWords) significant digits")
+                                .foregroundColor(timerIsRunning ? .gray : .white)
                             if memoryNeeded >= PHYSICAL_MEMORY {
                                 Text("(memory limit reached)")
+                                    .foregroundColor(timerIsRunning ? .gray : .white)
                             }
                         }
                         Spacer()
@@ -104,40 +113,51 @@ struct Settings: View {
                     Text("Memory size of one Number: \(sizeOfOneNumber.asMemorySize)")
                         .foregroundColor(.gray)
                         .padding(.bottom, -4)
-//                    HStack {
-//                        Text("Time to calculate sin(")
-//                            .foregroundColor(.gray)
-//                        let h = 3 * screen.infoUiFontSize
-//                        Label(symbol: "√", size: h, color: .gray)
-//                            .frame(width: h, height: h)
-//                            .offset(x: -1.2 * screen.infoUiFontSize)
-//                        Text("):")
-//                            .foregroundColor(.gray)
-//                            .offset(x: -2.4 * screen.infoUiFontSize)
-//                        Button {
-//                                brainModel.timerStart()
-//                            Task {
-//                                let result = await brainModel.speedTest(precision: settingsPrecision)
-//                                brainModel.timerStop(with: result)
-//                            }
-//                        } label: {
-//                            Text(brainModel.timerInfo)
-//                                .foregroundColor(.gray)
-//                        }
-//                        .disabled(brainModel.timerIsRunning)
-//                        .offset(x: -2.0 * screen.infoUiFontSize)
-//                    }
-//                    .offset(y: -0.15 * screen.infoUiFontSize)
+                    HStack {
+                        Text("Time to calculate sin(")
+                            .foregroundColor(.gray)
+                        let h = 3 * screen.infoUiFontSize
+                        Label(symbol: "√", size: h, color: .gray)
+                            .frame(width: h, height: h)
+                            .offset(x: -1.2 * screen.infoUiFontSize)
+                        Text("):")
+                            .foregroundColor(.gray)
+                            .offset(x: -2.4 * screen.infoUiFontSize)
+                        Button {
+                            timerIsRunning = true
+                            Task.detached {
+                                let speedTestBrain = await DebugBrain(precision: settingsPrecision, lengths: Lengths(0))
+                                let result = await speedTestBrain.speedTest()
+                                await MainActor.run() {
+                                    timerInfo = result
+                                    timerIsRunning = false
+                                }
+                            }
+                        } label: {
+                            if timerIsRunning {
+                                Text("...measuring")
+                                    .foregroundColor(.white)
+                            } else {
+                                Text(timerInfo)
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                        .disabled(timerIsRunning)
+                        .offset(x: -2.0 * screen.infoUiFontSize)
+                    }
+                    .offset(y: -0.15 * screen.infoUiFontSize)
 
                     HStack(spacing: 0.0) {
                         Text("Force scientific display")
+                            .foregroundColor(timerIsRunning ? .gray : .white)
                         Toggle("", isOn: $settingsForceScientific)
                             .foregroundColor(Color.green)
                             .toggleStyle(
-                                ColoredToggleStyle(onColor: Color(UIColor(white: 0.6, alpha: 1.0)),
+                                ColoredToggleStyle(onColor: Color(UIColor(white: timerIsRunning ? 0.4 : 0.6, alpha: 1.0)),
                                                    offColor: Color(UIColor(white: 0.3, alpha: 1.0)),
-                                                   thumbColor: .white))
+                                                   thumbColor: timerIsRunning ? .gray : .white))
                             .frame(width: 70)
+                            .disabled(timerIsRunning)
                         Text(settingsForceScientific ? "e.g. 3,1415926 e0" : "e.g. 3,141592653")
                             .foregroundColor(.gray)
                             .padding(.leading, 20)
@@ -151,11 +171,7 @@ struct Settings: View {
                 .foregroundColor(Color.white)
             }
             .padding()
-//            .onAppear() {
-//                brainModel.hideKeyboard = true
-//            }
             .onDisappear() {
-//                brainModel.hideKeyboard = false
                 if brainModel.forceScientific != settingsForceScientific {
                     brainModel.forceScientific = settingsForceScientific
                 }
@@ -164,7 +180,9 @@ struct Settings: View {
                         await brainModel.updatePrecision(to: settingsPrecision)
                     }
                 }
-// TODO: call again               brainModel.haveResultCallback()
+                Task {
+                    await keyModel.refreshDisplay(screen: screen)
+                }
             }
         }
         .onAppear() {
@@ -208,7 +226,6 @@ struct Settings: View {
             .padding(.horizontal)
         }
     }
-    
 }
 
 private extension Int {

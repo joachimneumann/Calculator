@@ -115,7 +115,7 @@ struct Icons : View {
     
     var settings: some View {
         NavigationLink {
-            Settings(brainModel: brainModel, screen: screen, font: Font(screen.infoUiFont))
+            Settings(brainModel: brainModel, keyModel: keyModel, screen: screen, font: Font(screen.infoUiFont))
         } label: {
             Image(systemName: "gearshape")
                 .resizable()

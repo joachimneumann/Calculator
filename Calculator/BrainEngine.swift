@@ -205,7 +205,7 @@ class BrainEngine {
     
 }
 
-/// DebugBrain implemented in the same file, because it uses
+/// DebugBrain is located in the same file, because it uses
 /// fileprivate properties of BrainEngine
 class DebugBrain: BrainEngine {
     let lengths: Lengths
@@ -267,8 +267,38 @@ class DebugBrain: BrainEngine {
     var oneLine: String { data.left + (data.right ?? "") }
     var double: Double { n.last.gmp != nil ? n.last.gmp!.toDouble() : -1.0 }
 
+    func speedTest() async -> String {
+        let parkBenchTimer = ParkBenchTimer()
+        push("2")
+        push("√")
+        push("sin")
+        let duration = parkBenchTimer.stop()
+        return duration.asTime
+    }
+    
     private var data: DisplayData {
         let d = n.last.getDisplayData(multipleLines: false, lengths: lengths, useMaximalLength: false, forceScientific: false, showAsInteger: false, showAsFloat: false)
         return d
+    }
+
+    class ParkBenchTimer {
+        let startTime: CFAbsoluteTime
+        var endTime: CFAbsoluteTime?
+    
+        init() {
+            startTime = CFAbsoluteTimeGetCurrent()
+        }
+    
+        func stop() -> Double {
+            endTime = CFAbsoluteTimeGetCurrent()
+            return duration!
+        }
+        var duration: CFAbsoluteTime? {
+            if let endTime = endTime {
+                return endTime - startTime
+            } else {
+                return nil
+            }
+        }
     }
 }

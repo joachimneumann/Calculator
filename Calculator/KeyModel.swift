@@ -105,9 +105,9 @@ class KeyModel: ObservableObject {
                 backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).downColor
             }
         }
-        //print("down: timer START", downTime)
+        //print("down: downColor sleep START", downTime)
         try? await Task.sleep(nanoseconds: UInt64(downTime * 1_000_000_000))
-        //print("down: timer STOP")
+        //print("down: downColor sleep STOP")
         downAnimationFinished = true
         //print("down: upHasHappended", upHasHappended)
         if upHasHappended {

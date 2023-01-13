@@ -18,11 +18,6 @@ protocol KeyPressResponder {
 class BrainModel : KeyPressResponder, ObservableObject {
     @Published internal var showAsInteger = false /// This will update the "-> Int or -> sci button texts
     @Published internal var showAsFloat = false
-    private let timerDefaultText = "click to measure"
-    private var timer: Timer? = nil
-    private var timerCounter = 0
-    private var timerInfo: String = ""
-
     @Published var isCopying: Bool = false
     @Published var isPasting: Bool = false
     
@@ -67,28 +62,5 @@ class BrainModel : KeyPressResponder, ObservableObject {
             }
         }
         return result
-    }
-}
-
-
-class ParkBenchTimer {
-    let startTime: CFAbsoluteTime
-    var endTime: CFAbsoluteTime?
-    
-    init() {
-        //print("ParkBenchTimer init()")
-        startTime = CFAbsoluteTimeGetCurrent()
-    }
-    
-    func stop() -> Double {
-        endTime = CFAbsoluteTimeGetCurrent()
-        return duration!
-    }
-    var duration: CFAbsoluteTime? {
-        if let endTime = endTime {
-            return endTime - startTime
-        } else {
-            return nil
-        }
     }
 }
