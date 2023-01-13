@@ -210,3 +210,19 @@ struct Settings: View {
     }
     
 }
+
+private extension Int {
+    var asMemorySize: String {
+        let d = Double(self)
+        if d > 1e9 {
+            return String(format: "%.1fGB", d / 1e9)
+        }
+        if d > 1e6 {
+            return String(format: "%.1fMB", d / 1e6)
+        }
+        if d > 1e3 {
+            return String(format: "%.1fKB", d / 1e3)
+        }
+        return String(format: "%.0f bytes", d)
+    }
+}

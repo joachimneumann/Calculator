@@ -8,12 +8,13 @@
 import SwiftUI
 
 extension Int {
-    func remainderInWords(_ remainder: String) -> String {
-        if remainder == "1" { return "one" }
-        if remainder == "10" { return "ten" }
-        return remainder
-    }
     var useWords: String {
+        func remainderInWords(_ remainder: String) -> String {
+            if remainder == "1" { return "one" }
+            if remainder == "10" { return "ten" }
+            return remainder
+        }
+
         let asString = "\(self)"
         if asString.hasSuffix("000000000000") {
             let remainder = String(asString.dropLast(12))
@@ -48,19 +49,6 @@ extension Int {
             }
         }
         return "\(self)"
-    }
-    var asMemorySize: String {
-        let d = Double(self)
-        if d > 1e9 {
-            return String(format: "%.1fGB", d / 1e9)
-        }
-        if d > 1e6 {
-            return String(format: "%.1fMB", d / 1e6)
-        }
-        if d > 1e3 {
-            return String(format: "%.1fKB", d / 1e3)
-        }
-        return String(format: "%.0f bytes", d)
     }
 }
 
