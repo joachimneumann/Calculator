@@ -58,32 +58,18 @@ class BrainModel : KeyPressResponder, ObservableObject {
     }
     
     func copyFromPasteBin() async -> CalculationResult? {
-        var calculationResult: CalculationResult? = nil
+        var result: CalculationResult? = nil
         if UIPasteboard.general.hasStrings {
             if let pasteString = UIPasteboard.general.string {
                 print("pasteString", pasteString, pasteString.count)
                 if pasteString.count > 0 {
                     if Gmp.isValidGmpString(pasteString, bits: 1000) {
-                        calculationResult = await brain.replaceLast(with: Number(pasteString, precision: brain.precision))
+                        result = await brain.replaceLast(with: Number(pasteString, precision: brain.precision))
                     }
                 }
             }
         }
-        return calculationResult
-    }
-    
-    
-    func checkIfPasteBinIsValidNumber() -> Bool {
-        if UIPasteboard.general.hasStrings {
-            if let pasteString = UIPasteboard.general.string {
-                if pasteString.count > 0 {
-                    if Gmp.isValidGmpString(pasteString, bits: 1000) {
-                        return true
-                    }
-                }
-            }
-        }
-        return false
+        return result
     }
 }
 
