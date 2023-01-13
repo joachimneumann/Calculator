@@ -15,13 +15,13 @@ extension Int {
             return remainder
         }
 
-        let asString = "\(self)"
+        let asString = String(self)
         if asString.hasSuffix("000000000000") {
             let remainder = String(asString.dropLast(12))
             if remainder.count < 4 {
                 return remainderInWords(remainder) + " trillion"
             } else {
-                return "\(self)"
+                return asString
             }
         }
         if asString.hasSuffix("000000000") {
@@ -29,7 +29,7 @@ extension Int {
             if remainder.count < 4 {
                 return remainderInWords(remainder) + " billion"
             } else {
-                return "\(self)"
+                return asString
             }
         }
         if asString.hasSuffix("000000") {
@@ -37,7 +37,7 @@ extension Int {
             if remainder.count < 4 {
                 return remainderInWords(remainder) + " million"
             } else {
-                return "\(self)"
+                return asString
             }
         }
         if asString.hasSuffix("000") {
@@ -45,31 +45,31 @@ extension Int {
             if remainder.count < 4 {
                 return remainderInWords(remainder) + " thousand"
             } else {
-                return "\(self)"
+                return asString
             }
         }
-        return "\(self)"
+        return asString
     }
 }
 
 extension Double {
     var asTime: String {
-        if self < 1e-6 {
-            return String(format: "%.1f microseconds", 1e6 * self)
+        if self < 1.0e-6 {
+            return String(format: "%.1f microseconds", 1.0e6 * self)
         }
-        if self < 1e-4 {
-            return String(format: "%.1f microseconds", 1e6 * self)
+        if self < 1.0e-4 {
+            return String(format: "%.1f microseconds", 1.0e6 * self)
         }
         if self < 0.1 {
-            return String(format: "%.1f milliseconds", 1e3 * self)
+            return String(format: "%.1f milliseconds", 1.0e3 * self)
         }
-        if self < 0 {
+        if self < 0.0 {
             return String(format: "%.3f seconds", self)
         }
-        if self < 10 {
+        if self < 10.0 {
             return String(format: "%.1f seconds", self)
         }
-        if self < 60 {
+        if self < 60.0 {
             return String(format: "%.0f seconds", self)
         }
         return String(format: "%.1f hours", self/3600.0)
