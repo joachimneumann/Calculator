@@ -18,6 +18,8 @@ class KeyModel: ObservableObject {
         case highPrecisionProcessing
     }
 
+    private let keysThatRequireValidNumber = ["±", "%", "/", "x", "-", "+", "=", "( ", " )", "m+", "m-", "x^2", "x^3", "x^y", "e^x", "y^x", "2^x", "10^x", "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10", "x!", "sin", "cos", "tan", "asin", "acos", "atan", "EE", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh"]
+
     class ColorsOf {
         var textColor: Color
         var upColor: Color
@@ -128,7 +130,7 @@ class KeyModel: ObservableObject {
     
     func touchDown(symbol: String) {
         Task(priority: .userInitiated) {
-            let validOrAllowed = displayNumber.isValid || !C.keysThatRequireValidNumber.contains(symbol)
+            let validOrAllowed = displayNumber.isValid || !keysThatRequireValidNumber.contains(symbol)
             guard keyState == .notPressed && validOrAllowed else {
                 await showDisabledColors(symbol: symbol)
                 return
@@ -171,7 +173,7 @@ class KeyModel: ObservableObject {
         default:
             guard keyState == .notPressed else { return }
 
-            let valid = displayNumber.isValid || !C.keysThatRequireValidNumber.contains(symbol)
+            let valid = displayNumber.isValid || !keysThatRequireValidNumber.contains(symbol)
             guard valid else { return }
 
             if symbol == "AC" {
