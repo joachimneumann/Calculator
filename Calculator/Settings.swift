@@ -68,6 +68,7 @@ struct Settings: View {
                         ColoredStepper(
                             plusEnabled: memoryNeeded < PHYSICAL_MEMORY, //!brainModel.timerIsRunning && memoryNeeded < PHYSICAL_MEMORY,
                             minusEnabled: settingsPrecision > MIN_PRECISION,// !brainModel.timerIsRunning && settingsPrecision > MIN_PRECISION,
+                            height: 30,
                             onIncrement: {
                                 DispatchQueue.main.async {
                                     settingsPrecision = increase(settingsPrecision)
