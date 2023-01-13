@@ -13,13 +13,12 @@ struct StepperColors{
     let backgroundColor: Color
 }
 
-typealias CallBack = ( ()->() )?
 struct ColoredStepper: View {
     internal init(
         plusEnabled: Bool,
         minusEnabled: Bool,
-        onIncrement: CallBack,
-        onDecrement: CallBack) {
+        onIncrement: @escaping ()->(),
+        onDecrement: @escaping ()->()) {
             self.stepperColors = StepperColors(leftBtnColor: .white, rightBtnColor: .white, backgroundColor: .gray)
             self.plusEnabled = plusEnabled
             self.minusEnabled = minusEnabled
@@ -27,8 +26,8 @@ struct ColoredStepper: View {
             self.onDecrement = onDecrement
         }
     
-    private let onIncrement: CallBack
-    private let onDecrement: CallBack
+    private let onIncrement: ()->()
+    private let onDecrement: ()->()
     private let stepperColors: StepperColors
     private let plusEnabled: Bool
     private let minusEnabled: Bool
@@ -36,7 +35,7 @@ struct ColoredStepper: View {
     var body: some View {
         HStack {
             Button {
-                decrement()
+                onDecrement()
             } label: {
             }
             .buttonStyle(StateableButton(change: { state in
@@ -53,7 +52,7 @@ struct ColoredStepper: View {
             Spacer().frame(width: 2)
             
             Button {
-                increment()
+                onIncrement()
             } label: {
             }
             .buttonStyle(StateableButton(change: { state in
@@ -76,13 +75,5 @@ struct ColoredStepper: View {
         func makeBody(configuration: Configuration) -> some View {
             return change(configuration.isPressed)
         }
-    }
-    
-    func decrement() {
-        onDecrement?()
-    }
-    
-    func increment() {
-        onIncrement?()
     }
 }
