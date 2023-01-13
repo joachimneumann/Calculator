@@ -78,10 +78,6 @@ class KeyModel: ObservableObject {
     init() {
         //print("KeyModel INIT")
         self.currentDisplay = Display()
-        for symbol in C.keysAll {
-            backgroundColor[symbol] = keyColors(symbol, pending: false).upColor
-            textColor[symbol]       = keyColors(symbol, pending: false).textColor
-        }
     }
     
     ///  To give a clear visual feedback to the user that the button has been pressed,

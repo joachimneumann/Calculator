@@ -23,7 +23,7 @@
 		AA2FAC17272F2349006DE4C8 /* BrainEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC01272F2348006DE4C8 /* BrainEngine.swift */; };
 		AA2FAC1A272F2349006DE4C8 /* CalculatorCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC04272F2348006DE4C8 /* CalculatorCommands.swift */; };
 		AA2FAC23272F2349006DE4C8 /* OperatorStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC0D272F2349006DE4C8 /* OperatorStack.swift */; };
-		AA370C2D293352960041AE4E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA370C2C293352960041AE4E /* Constants.swift */; };
+		AA370C2D293352960041AE4E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA370C2C293352960041AE4E /* Extensions.swift */; };
 		AA370C2F293352B10041AE4E /* BrainModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA370C2E293352B10041AE4E /* BrainModel.swift */; };
 		AA370C31293352D60041AE4E /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA370C30293352D60041AE4E /* Key.swift */; };
 		AA3FB8272920E0E5002ECCEB /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3FB8262920E0E5002ECCEB /* Settings.swift */; };
@@ -103,7 +103,7 @@
 		AA2FAC01272F2348006DE4C8 /* BrainEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrainEngine.swift; sourceTree = "<group>"; };
 		AA2FAC04272F2348006DE4C8 /* CalculatorCommands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorCommands.swift; sourceTree = "<group>"; };
 		AA2FAC0D272F2349006DE4C8 /* OperatorStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperatorStack.swift; sourceTree = "<group>"; };
-		AA370C2C293352960041AE4E /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		AA370C2C293352960041AE4E /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		AA370C2E293352B10041AE4E /* BrainModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrainModel.swift; sourceTree = "<group>"; };
 		AA370C30293352D60041AE4E /* Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		AA3FB8262920E0E5002ECCEB /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -204,7 +204,7 @@
 				AABCF8B9292B8818007E5C35 /* ScientificKeyboard.swift */,
 				AAB10B96292A2222004707E9 /* NonScientificKeyboard.swift */,
 				AA584F562938E8A9008823F3 /* LengthMeasurement.swift */,
-				AA370C2C293352960041AE4E /* Constants.swift */,
+				AA370C2C293352960041AE4E /* Extensions.swift */,
 				AA370C2E293352B10041AE4E /* BrainModel.swift */,
 				AA370C30293352D60041AE4E /* Key.swift */,
 				AA6CE7062945C1D4002BB5FE /* Store.swift */,
@@ -414,7 +414,7 @@
 				AA6CE7072945C1D4002BB5FE /* Store.swift in Sources */,
 				AA672B0A295189950044DC08 /* ScrollViewConditionalAnimation.swift in Sources */,
 				AA2FAC0F272F2349006DE4C8 /* Number.swift in Sources */,
-				AA370C2D293352960041AE4E /* Constants.swift in Sources */,
+				AA370C2D293352960041AE4E /* Extensions.swift in Sources */,
 				AA29F58A293CD608001ADF5A /* PortraitDisplay.swift in Sources */,
 				AA92B4C529266CC1005E43F0 /* ThreeDots.swift in Sources */,
 				AA2FAC17272F2349006DE4C8 /* BrainEngine.swift in Sources */,

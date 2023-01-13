@@ -1,22 +1,11 @@
 //
-//  Constants.swift
+//  Extensions.swift
 //  bg
 //
 //  Created by Joachim Neumann on 11/27/22.
 //
 
 import SwiftUI
-
-struct C {
-    static let keysAll = [
-        "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",",
-        "C", "AC", "±", "%", "/", "x", "-", "+", "=",
-        "( ", " )", "mc", "m+", "m-", "mr",
-        "2nd", "x^2", "x^3", "x^y", "e^x", "y^x", "2^x", "10^x",
-        "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10",
-        "x!", "sin", "cos", "tan", "asin", "acos", "atan", "e", "EE",
-        "Deg", "Rad", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh", "π", "Rand"]
-}
 
 extension Int {
     func remainderInWords(_ remainder: String) -> String {
@@ -72,7 +61,8 @@ extension Int {
             return String(format: "%.1fKB", d / 1e3)
         }
         return String(format: "%.0f bytes", d)
-    }}
+    }
+}
 
 extension Double {
     var asTime: String {
