@@ -178,14 +178,15 @@ class KeyModel: ObservableObject {
 
             keyState = .pressed
             upHasHappended = true
-            Task(priority: .low) {
+            Task(priority: .high) {
                 if downAnimationFinished {
                     await showUpColors(symbol: symbol)
                 }
-
                 await setPendingColors(symbol: symbol)
-                await defaultTask(symbol: symbol, screen: screen)
-                keyState = .notPressed
+            }
+            Task.detached(priority: .low) {
+                await self.defaultTask(symbol: symbol, screen: screen)
+                self.keyState = .notPressed
             }
         }
     }
@@ -223,6 +224,7 @@ class KeyModel: ObservableObject {
     }
     
     func refreshDisplay(screen: Screen) async {
+        print("refreshDisplay")
         if let keyPressResponder = keyPressResponder {
             let tempDisplayData = displayNumber.getDisplayData(
                     multipleLines: !screen.isPortraitPhone,
