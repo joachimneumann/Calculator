@@ -205,7 +205,7 @@ class ViewModel: ObservableObject {
     }
     
     func refreshDisplay(screen: Screen) async {
-        print("refreshDisplay")
+        //print("refreshDisplay")
         let tempDisplayData = displayNumber.getDisplayData(
                 multipleLines: !screen.isPortraitPhone,
                 lengths: screen.lengths,

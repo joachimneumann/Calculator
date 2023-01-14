@@ -1193,6 +1193,14 @@ class CalculatorTests: XCTestCase {
         debugBrain.push(2)
         debugBrain.push("=")
         XCTAssertEqual(debugBrain.left, "41")
+        
+        /// odd root of negative number, implemented as special case in BrainEngine.execute
+        debugBrain.push("AC")
+        debugBrain.push(-8)
+        debugBrain.push("y√")
+        debugBrain.push(3)
+        debugBrain.push("=")
+        XCTAssertEqual(debugBrain.left, "-2")
     }
     
     func _testSpeed1() throws {

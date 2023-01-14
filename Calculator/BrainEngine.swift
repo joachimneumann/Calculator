@@ -284,9 +284,9 @@ class DebugBrain: BrainEngine {
 
     var no: Int { operatorStack.count }
     var nn: Int { n.count }
-    var left: String { data.left }
-    var right: String? { data.right }
-    var oneLine: String { data.left + (data.right ?? "") }
+    var left: String { debugData.left }
+    var right: String? { debugData.right }
+    var oneLine: String { debugData.left + (debugData.right ?? "") }
     var double: Double { n.last.gmp != nil ? n.last.gmp!.toDouble() : -1.0 }
 
     func speedTest() async -> String {
@@ -298,7 +298,7 @@ class DebugBrain: BrainEngine {
         return duration.asTime
     }
     
-    private var data: DisplayData {
+    private var debugData: DisplayData {
         let d = n.last.getDisplayData(multipleLines: false, lengths: lengths, useMaximalLength: false, forceScientific: false, showAsInteger: false, showAsFloat: false)
         return d
     }
