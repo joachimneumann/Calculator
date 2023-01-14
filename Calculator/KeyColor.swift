@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct KeyColor {
-    struct Colors {
+    private struct Colors {
         var textColor: Color
         var upColor: Color
         var downColor: Color
@@ -27,11 +27,10 @@ struct KeyColor {
     private let pendingOperatorColors   = Colors(0.30, 0.90, 0.80)
     private let scientificColors        = Colors(1.00, 0.12, 0.32)
     private let pendingScientificColors = Colors(0.30, 0.70, 0.60)
-    let secondColors            = Colors(1.00, 0.12, 0.12)
-    let secondActiveColors      = Colors(0.20, 0.60, 0.60)
-    let disabledColor = Color.red
+    private let secondColors            = Colors(1.00, 0.12, 0.12)
+    private let secondActiveColors      = Colors(0.20, 0.60, 0.60)
   
-    func color(for symbol: String, isPending pending: Bool) -> Colors {
+    private func color(for symbol: String, isPending pending: Bool) -> Colors {
         if ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ","].contains(symbol) {
             return digitColors
         } else if symbol == "2nd" {
@@ -43,4 +42,17 @@ struct KeyColor {
         }
     }
 
+    func textColor(for symbol: String, isPending pending: Bool) -> Color {
+        color(for: symbol, isPending: pending).textColor
+    }
+    func upColor(for symbol: String, isPending pending: Bool) -> Color {
+        color(for: symbol, isPending: pending).upColor
+    }
+    func downColor(for symbol: String, isPending pending: Bool) -> Color {
+        color(for: symbol, isPending: pending).downColor
+    }
+    func secondColor(active: Bool) -> Color {
+        active ? secondActiveColors.upColor : secondColors.upColor
+    }
+    let disabledColor = Color.red
 }

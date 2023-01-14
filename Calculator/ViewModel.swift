@@ -70,13 +70,13 @@ class ViewModel: ObservableObject {
     func showDisabledColors(for symbol: String) async {
         await MainActor.run {
             withAnimation(.easeIn(duration: downTime)) {
-                backgroundColor[symbol] = keyColor.disabledColor
+                backgroundColor[symbol] = disabledColor
             }
         }
         try? await Task.sleep(nanoseconds: UInt64(downTime * 1_000_000_000))
         await MainActor.run {
             withAnimation(.easeIn(duration: upTime)) {
-                backgroundColor[symbol] = color(for: symbol, isPending: symbol == previouslyPendingOperator).upColor
+                backgroundColor[symbol] = upColor(for: symbol, isPending: symbol == previouslyPendingOperator)
             }
         }
     }
@@ -86,7 +86,7 @@ class ViewModel: ObservableObject {
         downAnimationFinished = false
         await MainActor.run {
             withAnimation(.easeIn(duration: downTime)) {
-                backgroundColor[symbol] = color(for: symbol, isPending: symbol == previouslyPendingOperator).downColor
+                backgroundColor[symbol] = downColor(for: symbol, isPending: symbol == previouslyPendingOperator)
             }
         }
         //print("down: downColor sleep START", downTime)
@@ -103,7 +103,7 @@ class ViewModel: ObservableObject {
         /// Set the background color back to normal
         await MainActor.run {
             withAnimation(.easeIn(duration: upTime)) {
-                backgroundColor[symbol] = color(for: symbol, isPending: symbol == previouslyPendingOperator).upColor
+                backgroundColor[symbol] = upColor(for: symbol, isPending: symbol == previouslyPendingOperator)
             }
         }
     }
@@ -123,16 +123,16 @@ class ViewModel: ObservableObject {
         if let previous = previouslyPendingOperator {
             await MainActor.run() {
                 withAnimation(.easeIn(duration: downTime)) {
-                    backgroundColor[previous] = color(for: previous, isPending: false).upColor
-                    textColor[previous] = color(for: previous, isPending: false).textColor
+                    backgroundColor[previous] = upColor(for: previous, isPending: false)
+                    textColor[previous] = textColor(for: previous, isPending: false)
                 }
             }
         }
         if ["/", "x", "-", "+", "x^y", "y^x", "y√"].contains(symbol) {
             await MainActor.run() {
                 withAnimation(.easeIn(duration: downTime)) {
-                    backgroundColor[symbol] = color(for: symbol, isPending: true).upColor
-                    textColor[symbol] = color(for: symbol, isPending: true).textColor
+                    backgroundColor[symbol] = upColor(for: symbol, isPending: true)
+                    textColor[symbol] = textColor(for: symbol, isPending: true)
                     previouslyPendingOperator = symbol
                 }
             }
@@ -145,7 +145,7 @@ class ViewModel: ObservableObject {
         switch symbol {
         case "2nd":
             secondActive.toggle()
-            backgroundColor["2nd"] = secondActive ? keyColor.secondActiveColors.upColor : keyColor.secondColors.upColor
+            backgroundColor["2nd"] = secondColor(active: secondActive)
         case "Rad":
             rad = true
         case "Deg":
@@ -254,8 +254,20 @@ class ViewModel: ObservableObject {
         UIPasteboard.general.string = copyData.oneLine
     }
 
-    
-    func color(for symbol: String, isPending pending: Bool) -> KeyColor.Colors {
-        keyColor.color(for: symbol, isPending: pending)
+    /// colors
+    func textColor(for symbol: String, isPending pending: Bool) -> Color {
+        keyColor.textColor(for: symbol, isPending: pending)
+    }
+    func upColor(for symbol: String, isPending pending: Bool) -> Color {
+        keyColor.upColor(for: symbol, isPending: pending)
+    }
+    func downColor(for symbol: String, isPending pending: Bool) -> Color {
+        keyColor.downColor(for: symbol, isPending: pending)
+    }
+    func secondColor(active: Bool) -> Color {
+        keyColor.secondColor(active: active)
+    }
+    var disabledColor: Color {
+        keyColor.disabledColor
     }
 }
