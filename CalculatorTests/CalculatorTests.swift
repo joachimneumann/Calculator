@@ -1201,6 +1201,24 @@ class CalculatorTests: XCTestCase {
         debugBrain.push(3)
         debugBrain.push("=")
         XCTAssertEqual(debugBrain.left, "-2")
+        
+        /// change operand
+        debugBrain.push("AC")
+        debugBrain.push(5)
+        debugBrain.push("+")
+        debugBrain.push("x")
+        debugBrain.push(4)
+        debugBrain.push("=")
+        XCTAssertEqual(debugBrain.left, "20")
+
+        /// change twoOperand
+        debugBrain.push("AC")
+        debugBrain.push(5)
+        debugBrain.push("y√")
+        debugBrain.push("x^y")
+        debugBrain.push(3)
+        debugBrain.push("=")
+        XCTAssertEqual(debugBrain.left, "125")
     }
     
     func _testSpeed1() throws {
