@@ -31,8 +31,8 @@ struct Key: View {
             self.keySize = screen.keySize
             xOffset = 0.0
         }
-        self.backgroundColor = viewModel.backgroundColor[symbol] ?? viewModel.keyColors(symbol, pending: false).upColor
-        self.textColor = viewModel.textColor[symbol]             ?? viewModel.keyColors(symbol, pending: false).textColor
+        self.backgroundColor = viewModel.backgroundColor[symbol] ?? viewModel.color(for: symbol, isPending: false).upColor
+        self.textColor = viewModel.textColor[symbol]             ?? viewModel.color(for: symbol, isPending: false).textColor
         self.touchDown = viewModel.touchDown
         self.touchUp   = viewModel.touchUp
     }

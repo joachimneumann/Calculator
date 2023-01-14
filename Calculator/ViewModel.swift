@@ -20,6 +20,7 @@ class ViewModel: ObservableObject {
     var precisionDescription = "unknown"
     var showPrecision: Bool = false
     var secondActive = false
+    var keyColor = KeyColor()
 
     @AppStorage("precision", store: .standard) private (set) var precision: Int = 1000
     @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
@@ -38,46 +39,6 @@ class ViewModel: ObservableObject {
     private let keysThatRequireValidNumber = ["±", "%", "/", "x", "-", "+", "=", "( ", " )", "m+", "m-", "x^2", "x^3", "x^y", "e^x", "y^x", "2^x", "10^x", "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10", "x!", "sin", "cos", "tan", "asin", "acos", "atan", "EE", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh"]
     private static let MAX_DISPLAY_LEN = 10_000 /// too long strings in Text() crash the app
 
-    class ColorsOf {
-        var textColor: Color
-        var upColor: Color
-        var downColor: Color
-        init(textColor: Color, upColor: Color, downColor: Color) {
-            self.textColor = textColor
-            self.upColor = upColor
-            self.downColor = downColor
-        }
-    }
-
-    private let digitColors = ColorsOf(
-        textColor: .white,
-        upColor:   Color(white: 0.2),
-        downColor: Color(white: 0.45))
-    private let disabledColor = Color.red
-    private let operatorColors = ColorsOf(
-        textColor: Color(.white),
-        upColor:   Color(white: 0.5),
-        downColor: Color(white: 0.7))
-    private let pendingOperatorColors = ColorsOf(
-        textColor: Color(white: 0.3),
-        upColor:   Color(white: 0.9),
-        downColor: Color(white: 0.8))
-    private let scientificColors = ColorsOf(
-        textColor: Color(.white),
-        upColor:   Color(white: 0.12),
-        downColor: Color(white: 0.32))
-    private let pendingScientificColors = ColorsOf(
-        textColor: Color(white: 0.3),
-        upColor:   Color(white: 0.7),
-        downColor: Color(white: 0.6))
-    private let secondColors = ColorsOf(
-        textColor: Color(.white),
-        upColor:   Color(white: 0.12),
-        downColor: Color(white: 0.12))
-    private let secondActiveColors = ColorsOf(
-        textColor: Color(white: 0.2),
-        upColor:   Color(white: 0.6),
-        downColor: Color(white: 0.6))
     private var upHasHappended = false
     private var downAnimationFinished = false
     private var keyState: KeyState = .notPressed
@@ -106,26 +67,26 @@ class ViewModel: ObservableObject {
 
     ///  To give a clear visual feedback to the user that the button has been pressed,
     ///  the animation will always wait for the downAnimation to finish
-    func showDisabledColors(symbol: String) async {
+    func showDisabledColors(for symbol: String) async {
         await MainActor.run {
             withAnimation(.easeIn(duration: downTime)) {
-                backgroundColor[symbol] = disabledColor
+                backgroundColor[symbol] = keyColor.disabledColor
             }
         }
         try? await Task.sleep(nanoseconds: UInt64(downTime * 1_000_000_000))
         await MainActor.run {
             withAnimation(.easeIn(duration: upTime)) {
-                backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).upColor
+                backgroundColor[symbol] = color(for: symbol, isPending: symbol == previouslyPendingOperator).upColor
             }
         }
     }
     
-    func showDownColors(symbol: String) async {
+    func showDownColors(for symbol: String) async {
         upHasHappended = false
         downAnimationFinished = false
         await MainActor.run {
             withAnimation(.easeIn(duration: downTime)) {
-                backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).downColor
+                backgroundColor[symbol] = color(for: symbol, isPending: symbol == previouslyPendingOperator).downColor
             }
         }
         //print("down: downColor sleep START", downTime)
@@ -134,57 +95,57 @@ class ViewModel: ObservableObject {
         downAnimationFinished = true
         //print("down: upHasHappended", upHasHappended)
         if upHasHappended {
-            await showUpColors(symbol: symbol)
+            await showUpColors(for: symbol)
         }
     }
 
-    func showUpColors(symbol: String) async {
+    func showUpColors(for symbol: String) async {
         /// Set the background color back to normal
         await MainActor.run {
             withAnimation(.easeIn(duration: upTime)) {
-                backgroundColor[symbol] = keyColors(symbol, pending: symbol == previouslyPendingOperator).upColor
+                backgroundColor[symbol] = color(for: symbol, isPending: symbol == previouslyPendingOperator).upColor
             }
         }
     }
     
-    func touchDown(symbol: String) {
+    func touchDown(for symbol: String) {
         Task(priority: .userInitiated) {
             let validOrAllowed = displayNumber.isValid || !keysThatRequireValidNumber.contains(symbol)
             guard keyState == .notPressed && validOrAllowed else {
-                await showDisabledColors(symbol: symbol)
+                await showDisabledColors(for: symbol)
                 return
             }
-            await showDownColors(symbol: symbol)
+            await showDownColors(for: symbol)
         }
     }
     
-    func setPendingColors(symbol: String) async {
+    func setPendingColors(for symbol: String) async {
         if let previous = previouslyPendingOperator {
             await MainActor.run() {
                 withAnimation(.easeIn(duration: downTime)) {
-                    backgroundColor[previous] = keyColors(previous, pending: false).upColor
-                    textColor[previous] = keyColors(previous, pending: false).textColor
+                    backgroundColor[previous] = color(for: previous, isPending: false).upColor
+                    textColor[previous] = color(for: previous, isPending: false).textColor
                 }
             }
         }
         if ["/", "x", "-", "+", "x^y", "y^x", "y√"].contains(symbol) {
             await MainActor.run() {
                 withAnimation(.easeIn(duration: downTime)) {
-                    backgroundColor[symbol] = keyColors(symbol, pending: true).upColor
-                    textColor[symbol] = keyColors(symbol, pending: true).textColor
+                    backgroundColor[symbol] = color(for: symbol, isPending: true).upColor
+                    textColor[symbol] = color(for: symbol, isPending: true).textColor
                     previouslyPendingOperator = symbol
                 }
             }
         }
     }
     
-    func touchUp(symbol rawSymbol: String, screen: Screen) {
-        let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(rawSymbol) && !rad ? rawSymbol+"D" : rawSymbol
+    func touchUp(of symbol: String, screen: Screen) {
+        let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(symbol) && !rad ? symbol+"D" : symbol
 
         switch symbol {
         case "2nd":
             secondActive.toggle()
-            backgroundColor["2nd"] = secondActive ? secondActiveColors.upColor : secondColors.upColor
+            backgroundColor["2nd"] = secondActive ? keyColor.secondActiveColors.upColor : keyColor.secondColors.upColor
         case "Rad":
             rad = true
         case "Deg":
@@ -203,18 +164,18 @@ class ViewModel: ObservableObject {
             upHasHappended = true
             Task(priority: .high) {
                 if downAnimationFinished {
-                    await showUpColors(symbol: symbol)
+                    await showUpColors(for: symbol)
                 }
-                await setPendingColors(symbol: symbol)
+                await setPendingColors(for: symbol)
             }
             Task.detached(priority: .low) {
-                await self.defaultTask(symbol: symbol, screen: screen)
+                await self.defaultTask(for: symbol, screen: screen)
                 self.keyState = .notPressed
             }
         }
     }
     
-    func defaultTask(symbol: String, screen: Screen) async {
+    func defaultTask(for symbol: String, screen: Screen) async {
         //print("defaultTask", symbol)
         let preliminaryResult = stupidBrain.operation(symbol)
         let data = preliminaryResult.getDisplayData(
@@ -294,15 +255,7 @@ class ViewModel: ObservableObject {
     }
 
     
-    func keyColors(_ symbol: String, pending: Bool) -> ColorsOf {
-        if ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ","].contains(symbol) {
-            return digitColors
-        } else if symbol == "2nd" {
-            return secondColors
-        } else if ["C", "AC", "±", "%", "/", "x", "-", "+", "="].contains(symbol) {
-            return pending ? pendingOperatorColors : operatorColors
-        } else {
-            return pending ? pendingScientificColors : scientificColors
-        }
+    func color(for symbol: String, isPending pending: Bool) -> KeyColor.Colors {
+        keyColor.color(for: symbol, isPending: pending)
     }
 }
