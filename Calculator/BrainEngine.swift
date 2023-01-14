@@ -201,7 +201,7 @@ class BrainEngine {
             execute(priority: twoOperandOperators[symbol]!.priority)
             operatorStack.push(twoOperandOperators[symbol]!)
         default:
-            assert(false, "### non-existing operation \(symbol)")
+            assert(false, "### BrainEngine: Operation \(symbol) is not defined")
         }
         return n.last
     }
