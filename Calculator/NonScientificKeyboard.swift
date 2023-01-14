@@ -9,39 +9,39 @@ import SwiftUI
 
 struct NonScientificKeyboard: View {
     let screen: Screen
-    @ObservedObject var keyModel: KeyModel
+    @ObservedObject var viewModel: ViewModel
     
     var body: some View {
         let spacing = screen.keySpacing
         VStack(spacing: spacing) {
             HStack(spacing: spacing) {
-                Key(keyModel.showAC ? "AC" : "C", screen, keyModel)
-                Key("±", screen, keyModel)
-                Key("%", screen, keyModel)
-                Key("/", screen, keyModel)
+                Key(viewModel.showAC ? "AC" : "C", screen, viewModel)
+                Key("±", screen, viewModel)
+                Key("%", screen, viewModel)
+                Key("/", screen, viewModel)
             }
             HStack(spacing: spacing) {
-                Key("7", screen, keyModel)
-                Key("8", screen, keyModel)
-                Key("9", screen, keyModel)
-                Key("x", screen, keyModel)
+                Key("7", screen, viewModel)
+                Key("8", screen, viewModel)
+                Key("9", screen, viewModel)
+                Key("x", screen, viewModel)
             }
             HStack(spacing: spacing) {
-                Key("4", screen, keyModel)
-                Key("5", screen, keyModel)
-                Key("6", screen, keyModel)
-                Key("-", screen, keyModel)
+                Key("4", screen, viewModel)
+                Key("5", screen, viewModel)
+                Key("6", screen, viewModel)
+                Key("-", screen, viewModel)
             }
             HStack(spacing: spacing) {
-                Key("1", screen, keyModel)
-                Key("2", screen, keyModel)
-                Key("3", screen, keyModel)
-                Key("+", screen, keyModel)
+                Key("1", screen, viewModel)
+                Key("2", screen, viewModel)
+                Key("3", screen, viewModel)
+                Key("+", screen, viewModel)
             }
             HStack(spacing: spacing) {
-                Key("0", screen, keyModel)
-                Key(",", screen, keyModel)
-                Key("=", screen, keyModel)
+                Key("0", screen, viewModel)
+                Key(",", screen, viewModel)
+                Key("=", screen, viewModel)
             }
         }
     }

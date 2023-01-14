@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct Settings: View {
-    @ObservedObject var brainModel: BrainModel
+    @ObservedObject var viewModel: ViewModel
     @State var timerIsRunning: Bool = false
     private let timerInfoDefault: String = "click to measure"
     @State var timerInfo: String = "click to measure"
-    let keyModel: KeyModel
     let screen: Screen
     let font: Font
     
@@ -172,22 +171,22 @@ struct Settings: View {
             }
             .padding()
             .onDisappear() {
-                if brainModel.forceScientific != settingsForceScientific {
-                    brainModel.forceScientific = settingsForceScientific
+                if viewModel.forceScientific != settingsForceScientific {
+                    viewModel.forceScientific = settingsForceScientific
                 }
-                if brainModel.precision != settingsPrecision {
+                if viewModel.precision != settingsPrecision {
                     Task {
-                        await brainModel.updatePrecision(to: settingsPrecision)
+                        await viewModel.updatePrecision(to: settingsPrecision)
                     }
                 }
                 Task {
-                    await keyModel.refreshDisplay(screen: screen)
+                    await viewModel.refreshDisplay(screen: screen)
                 }
             }
         }
         .onAppear() {
-            settingsForceScientific = brainModel.forceScientific
-            settingsPrecision       = brainModel.precision
+            settingsForceScientific = viewModel.forceScientific
+            settingsPrecision       = viewModel.precision
         }
         .navigationBarBackButtonHidden(true)
     }

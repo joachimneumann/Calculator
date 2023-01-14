@@ -9,50 +9,50 @@ import SwiftUI
 
 struct ScientificKeyboard: View {
     let screen: Screen
-    @ObservedObject var keyModel: KeyModel
+    @ObservedObject var viewModel: ViewModel
 
     var body: some View {
         let spacing = screen.keySpacing
         VStack(spacing: spacing) {
             HStack(spacing: spacing) {
-                Key("( ", screen, keyModel)
-                Key(" )", screen, keyModel)
-                Key("mc", screen, keyModel)
-                Key("m+", screen, keyModel)
-                Key("m-", screen, keyModel)
-                Key("mr", screen, keyModel)
+                Key("( ", screen, viewModel)
+                Key(" )", screen, viewModel)
+                Key("mc", screen, viewModel)
+                Key("m+", screen, viewModel)
+                Key("m-", screen, viewModel)
+                Key("mr", screen, viewModel)
             }
             HStack(spacing: spacing) {
-                Key("2nd", screen, keyModel)
-                Key("x^2", screen, keyModel)
-                Key("x^3", screen, keyModel)
-                Key("x^y", screen, keyModel)
-                Key(keyModel.secondActive ? "y^x" : "e^x", screen, keyModel)
-                Key(keyModel.secondActive ? "2^x" : "10^x", screen, keyModel)
+                Key("2nd", screen, viewModel)
+                Key("x^2", screen, viewModel)
+                Key("x^3", screen, viewModel)
+                Key("x^y", screen, viewModel)
+                Key(viewModel.secondActive ? "y^x" : "e^x", screen, viewModel)
+                Key(viewModel.secondActive ? "2^x" : "10^x", screen, viewModel)
             }
             HStack(spacing: spacing) {
-                Key("One_x", screen, keyModel)
-                Key("√", screen, keyModel)
-                Key("3√", screen, keyModel)
-                Key("y√", screen, keyModel)
-                Key(keyModel.secondActive ? "logy" : "ln", screen, keyModel)
-                Key(keyModel.secondActive ? "log2" : "log10", screen, keyModel)
+                Key("One_x", screen, viewModel)
+                Key("√", screen, viewModel)
+                Key("3√", screen, viewModel)
+                Key("y√", screen, viewModel)
+                Key(viewModel.secondActive ? "logy" : "ln", screen, viewModel)
+                Key(viewModel.secondActive ? "log2" : "log10", screen, viewModel)
             }
             HStack(spacing: spacing) {
-                Key("x!", screen, keyModel)
-                Key(keyModel.secondActive ? "asin" : "sin", screen, keyModel)
-                Key(keyModel.secondActive ? "acos" : "cos", screen, keyModel)
-                Key(keyModel.secondActive ? "atan" : "tan", screen, keyModel)
-                Key("e", screen, keyModel)
-                Key("EE", screen, keyModel)
+                Key("x!", screen, viewModel)
+                Key(viewModel.secondActive ? "asin" : "sin", screen, viewModel)
+                Key(viewModel.secondActive ? "acos" : "cos", screen, viewModel)
+                Key(viewModel.secondActive ? "atan" : "tan", screen, viewModel)
+                Key("e", screen, viewModel)
+                Key("EE", screen, viewModel)
             }
             HStack(spacing: spacing) {
-                Key(keyModel.rad ? "Deg" : "Rad", screen, keyModel)
-                Key(keyModel.secondActive ? "asinh" : "sinh", screen, keyModel)
-                Key(keyModel.secondActive ? "acosh" : "cosh", screen, keyModel)
-                Key(keyModel.secondActive ? "atanh" : "tanh", screen, keyModel)
-                Key("π", screen, keyModel)
-                Key("Rand", screen, keyModel)
+                Key(viewModel.rad ? "Deg" : "Rad", screen, viewModel)
+                Key(viewModel.secondActive ? "asinh" : "sinh", screen, viewModel)
+                Key(viewModel.secondActive ? "acosh" : "cosh", screen, viewModel)
+                Key(viewModel.secondActive ? "atanh" : "tanh", screen, viewModel)
+                Key("π", screen, viewModel)
+                Key("Rand", screen, viewModel)
             }
         }
         //.background(Color.black)

@@ -19,7 +19,7 @@ struct Key: View {
     
     init(_ symbol: String,
          _ screen: Screen,
-         _ keyModel: KeyModel) {
+         _ viewModel: ViewModel) {
         self.screen = screen
         self.symbol = symbol
         if symbol == "0" {
@@ -31,10 +31,10 @@ struct Key: View {
             self.keySize = screen.keySize
             xOffset = 0.0
         }
-        self.backgroundColor = keyModel.backgroundColor[symbol] ?? keyModel.keyColors(symbol, pending: false).upColor
-        self.textColor = keyModel.textColor[symbol]             ?? keyModel.keyColors(symbol, pending: false).textColor
-        self.touchDown = keyModel.touchDown
-        self.touchUp   = keyModel.touchUp
+        self.backgroundColor = viewModel.backgroundColor[symbol] ?? viewModel.keyColors(symbol, pending: false).upColor
+        self.textColor = viewModel.textColor[symbol]             ?? viewModel.keyColors(symbol, pending: false).textColor
+        self.touchDown = viewModel.touchDown
+        self.touchUp   = viewModel.touchUp
     }
     
     var body: some View {
@@ -58,13 +58,13 @@ struct Key: View {
 struct Key_Previews: PreviewProvider {
     static var previews: some View {
         let screen = Screen(CGSize(width: 1400, height: 600))
-        let keyModel = KeyModel()
+        let viewModel = ViewModel()
         VStack {
             HStack {
-                Key("√", screen, keyModel)
-                Key("5", screen, keyModel)
+                Key("√", screen, viewModel)
+                Key("5", screen, viewModel)
             }
-            Key("0", screen, keyModel)
+            Key("0", screen, viewModel)
         }
         .foregroundColor(.white)
     }

@@ -11,8 +11,7 @@ struct Icons : View {
     let simulatePurchased = true
     @Environment(\.scenePhase) var scenePhase
     @ObservedObject var store: Store
-    @ObservedObject var brainModel: BrainModel
-    let keyModel: KeyModel
+    @ObservedObject var viewModel: ViewModel
     let screen: Screen
     @Binding var isZoomed: Bool
     @State var copyDone = true
@@ -40,7 +39,7 @@ struct Icons : View {
     var copy: some View {
         if !simulatePurchased && store.purchasedIDs.isEmpty {
             NavigationLink {
-                PurchaseView(store: store, brainModel: brainModel, screen: screen, font: Font(screen.infoUiFont))
+                PurchaseView(store: store, viewModel: viewModel, screen: screen, font: Font(screen.infoUiFont))
             } label: {
                 Text("copy")
                     .font(Font(screen.infoUiFont))
@@ -49,9 +48,9 @@ struct Icons : View {
         } else {
             Text("copy")
                 .font(Font(screen.infoUiFont))
-                .foregroundColor(brainModel.isCopying ? Color.orange : Color.white)
+                .foregroundColor(viewModel.isCopying ? Color.orange : Color.white)
                 .onTapGesture {
-                    if copyDone && pasteDone && !brainModel.isCopying && !brainModel.isPasting {
+                    if copyDone && pasteDone && !viewModel.isCopying && !viewModel.isPasting {
                         setIsCopying(to: true)
                         wait300msDone = false
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -62,7 +61,7 @@ struct Icons : View {
                         }
                         Task {
                             copyDone = false
-                            await keyModel.copyToPastBin()
+                            await viewModel.copyToPastBin()
                             copyDone = true
                             if wait300msDone {
                                 setIsCopying(to: false)
@@ -79,7 +78,7 @@ struct Icons : View {
     var paste: some View {
         if !simulatePurchased && store.purchasedIDs.isEmpty {
             NavigationLink {
-                PurchaseView(store: store, brainModel: brainModel, screen: screen, font: Font(screen.infoUiFont))
+                PurchaseView(store: store, viewModel: viewModel, screen: screen, font: Font(screen.infoUiFont))
             } label: {
                 Text("paste")
                     .font(Font(screen.infoUiFont))
@@ -88,20 +87,20 @@ struct Icons : View {
         } else {
             Text("paste")
                 .font(Font(screen.infoUiFont))
-                .foregroundColor(isValidPasteContent ? (brainModel.isPasting ? .orange : .white) : .gray)
+                .foregroundColor(isValidPasteContent ? (viewModel.isPasting ? .orange : .white) : .gray)
                 .onTapGesture {
-                    if copyDone && pasteDone && !brainModel.isCopying && !brainModel.isPasting && isValidPasteContent {
+                    if copyDone && pasteDone && !viewModel.isCopying && !viewModel.isPasting && isValidPasteContent {
                         setIsPasting(to: true)
                         pasteDone = false
                         wait300msDone = false
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                             wait300msDone = true
                             if pasteDone {
-                                brainModel.isPasting = false
+                                viewModel.isPasting = false
                             }
                         }
                         Task {
-                            isValidPasteContent = await keyModel.copyFromPasteBin(screen: screen)
+                            isValidPasteContent = await viewModel.copyFromPasteBin(screen: screen)
                             pasteDone = true
                             if wait300msDone {
                                 setIsPasting(to: false)
@@ -115,7 +114,7 @@ struct Icons : View {
     
     var settings: some View {
         NavigationLink {
-            Settings(brainModel: brainModel, keyModel: keyModel, screen: screen, font: Font(screen.infoUiFont))
+            Settings(viewModel: viewModel, screen: screen, font: Font(screen.infoUiFont))
         } label: {
             Image(systemName: "gearshape")
                 .resizable()
@@ -129,12 +128,12 @@ struct Icons : View {
     
     @ViewBuilder
     var toInt: some View {
-        let integerLabel = keyModel.currentDisplay.data.canBeInteger ? (brainModel.showAsInteger ? "→ sci" : "→ int") : ""
+        let integerLabel = viewModel.currentDisplay.data.canBeInteger ? (viewModel.showAsInteger ? "→ sci" : "→ int") : ""
         if integerLabel.count > 0 {
             Button {
-                brainModel.showAsInteger.toggle()
+                viewModel.showAsInteger.toggle()
                 Task {
-                    await keyModel.refreshDisplay(screen: screen)
+                    await viewModel.refreshDisplay(screen: screen)
                 }
             } label: {
                 Text(integerLabel)
@@ -146,12 +145,12 @@ struct Icons : View {
     
     @ViewBuilder
     var toFloat: some View {
-        let floatLabel = keyModel.currentDisplay.data.canBeFloat ? (brainModel.showAsFloat ? "→ sci" : "→ float") : ""
-        if !keyModel.currentDisplay.data.canBeInteger && floatLabel.count > 0 {
+        let floatLabel = viewModel.currentDisplay.data.canBeFloat ? (viewModel.showAsFloat ? "→ sci" : "→ float") : ""
+        if !viewModel.currentDisplay.data.canBeInteger && floatLabel.count > 0 {
             Button {
-                brainModel.showAsFloat.toggle()
+                viewModel.showAsFloat.toggle()
                 Task {
-                    await keyModel.refreshDisplay(screen: screen)
+                    await viewModel.refreshDisplay(screen: screen)
                 }
             } label: {
                 Text(floatLabel)
@@ -184,10 +183,10 @@ struct Icons : View {
         }
     }
     @MainActor func setIsCopying(to isCopying: Bool) {
-        brainModel.isCopying = isCopying
+        viewModel.isCopying = isCopying
     }
     @MainActor func setIsPasting(to isPasting: Bool) {
-        brainModel.isPasting = isPasting
+        viewModel.isPasting = isPasting
     }
 }
 //struct Icons_Previews: PreviewProvider {

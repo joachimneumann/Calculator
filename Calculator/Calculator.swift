@@ -9,26 +9,12 @@ import SwiftUI
 
 let testColors = false
 
-struct MyNavigation<Content>: View where Content: View {
-    @ViewBuilder var content: () -> Content
-    
-    var body: some View {
-        if #available(iOS 16, *) {
-            NavigationStack(root: content)
-        } else {
-            NavigationView(content: content)
-        }
-    }
-}
-
 struct Calculator: View {
+    @StateObject private var viewModel: ViewModel = ViewModel()
+
     @ObservedObject var screen: Screen
-    @StateObject private var keyModel: KeyModel = KeyModel()
-    @StateObject private var brainModel: BrainModel = BrainModel()
-    
     @State var scrollViewHasScrolled = false
     @State var scrollViewID = UUID()
-    
     @State var isZoomed: Bool = false
     
     var store = Store()
@@ -36,12 +22,12 @@ struct Calculator: View {
     var portraitView: some View {
         VStack(spacing: 0.0) {
             Spacer(minLength: 0.0)
-            PortraitDisplay(display: keyModel.currentDisplay)
+            PortraitDisplay(display: viewModel.currentDisplay)
                 .padding(.bottom, screen.portraitIPhoneDisplayBottomPadding)
                 .padding(.horizontal, screen.portraitIPhoneDisplayHorizontalPadding)
             NonScientificKeyboard(
                 screen: screen,
-                keyModel: keyModel)
+                viewModel: viewModel)
         }
     }
     
@@ -49,18 +35,18 @@ struct Calculator: View {
         HStack(spacing: 0.0) {
             ScientificKeyboard(
                 screen: screen,
-                keyModel: keyModel)
+                viewModel: viewModel)
             .padding(.trailing, screen.keySpacing)
             NonScientificKeyboard(
                 screen: screen,
-                keyModel: keyModel)
+                viewModel: viewModel)
         }
         .background(Color.black) /// this hides the Icons
     }
     
     var infoView: some View {
         HStack(spacing: 0.0) {
-            let info = "\(keyModel.showPrecision ? "Precision: "+brainModel.precisionDescription+" digits" : "\(keyModel.rad ? "Rad" : "")")"
+            let info = "\(viewModel.showPrecision ? "Precision: "+viewModel.precisionDescription+" digits" : "\(viewModel.rad ? "Rad" : "")")"
             Text(info)
                 .foregroundColor(.white)
                 .font(Font(screen.infoUiFont))
@@ -89,8 +75,8 @@ struct Calculator: View {
         HStack(alignment: .top, spacing: 0.0) {
             Spacer(minLength: 0.0)
             LandscapeDisplay(
-                display: keyModel.currentDisplay,
-                showOrange: brainModel.isCopying || brainModel.isPasting,
+                display: viewModel.currentDisplay,
+                showOrange: viewModel.isCopying || viewModel.isPasting,
                 disabledScrolling: !isZoomed,
                 scrollViewHasScrolled: $scrollViewHasScrolled,
                 offsetToVerticallyAlignTextWithkeyboard: screen.offsetToVerticallyAlignTextWithkeyboard,
@@ -105,8 +91,7 @@ struct Calculator: View {
             }
             Icons(
                 store: store,
-                brainModel: brainModel,
-                keyModel: keyModel,
+                viewModel: viewModel,
                 screen: screen,
                 isZoomed: $isZoomed)
             .offset(y: screen.offsetToVerticallyIconWithText)
@@ -114,7 +99,7 @@ struct Calculator: View {
     }
     
     var landscapeView: some View {
-        MyNavigation {
+        FlexibleNavigation {
             landscapeDisplayAndIcons
                 .overlay() {
                     landscapeKeyboardPlusStuff
@@ -132,7 +117,6 @@ struct Calculator: View {
         }
     }
     
-    
     var body: some View {
         //let _ = print("Calculator body keyModel isPortraitPhone", screen.isPortraitPhone)
         content
@@ -140,23 +124,15 @@ struct Calculator: View {
             .padding(.horizontal, screen.horizontalPadding)
             .preferredColorScheme(.dark)
             .onAppear() {
-                keyModel.keyPressResponder = brainModel
                 Task {
-                    await keyModel.refreshDisplay(screen: screen)
+                    await viewModel.refreshDisplay(screen: screen)
                 }
             }
             .onChange(of: screen) { newScreen in /// e.g., rotation
                 Task {
-                    await keyModel.refreshDisplay(screen: newScreen)
+                    await viewModel.refreshDisplay(screen: newScreen)
                 }
             }
     }
 }
 
-
-
-extension View {
-    func hidden(_ shouldHide: Bool) -> some View {
-        opacity(shouldHide ? 0 : 1)
-    }
-}

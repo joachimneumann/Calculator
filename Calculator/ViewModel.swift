@@ -9,21 +9,27 @@ import SwiftUI
 
 class ViewModel: ObservableObject {
     @Published internal var showAsInteger = false /// This will update the "-> Int or -> sci button texts
-    @Published internal var showAsFloat = false
+    @Published var showAsFloat = false
     @Published var isCopying: Bool = false
     @Published var isPasting: Bool = false
-    
-    private let brain: Brain
-    private var stupidBrain = BrainEngine(precision: 100) // I want to call fast sync functions
+    @Published var showAC = true
+    @Published var backgroundColor: [String: Color] = [:]
+    @Published var textColor: [String: Color] = [:]
+    @Published var currentDisplay: Display
 
     var precisionDescription = "unknown"
-    
+    var showPrecision: Bool = false
+    var secondActive = false
+
     @AppStorage("precision", store: .standard) private (set) var precision: Int = 1000
     @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
     @AppStorage("memoryValue", store: .standard) var memoryValue: String = ""
-    static let MAX_DISPLAY_LEN = 10_000 // too long strings in Text() crash the app
+    @AppStorage("rad", store: .standard) var rad: Bool = false
 
-    
+    private static let MAX_DISPLAY_LEN = 10_000 // too long strings in Text() crash the app
+    private let brain: Brain
+    private var stupidBrain = BrainEngine(precision: 100) // I want to call fast sync functions
+
     private enum KeyState {
         case notPressed
         case pressed
@@ -79,13 +85,6 @@ class ViewModel: ObservableObject {
     private let upTime = 0.4
     
     private var displayNumber = Number("0", precision: 10)
-    @Published var showAC = true
-    var showPrecision: Bool = false
-    var secondActive = false
-    @Published var backgroundColor: [String: Color] = [:]
-    @Published var textColor: [String: Color] = [:]
-    @AppStorage("rad", store: .standard) var rad: Bool = false
-    @Published var currentDisplay: Display
     private var previouslyPendingOperator: String? = nil
 
     init() {
@@ -282,7 +281,6 @@ class ViewModel: ObservableObject {
         }
         return false
     }
-
     
     func copyToPastBin() async {
         let copyData = displayNumber.getDisplayData(

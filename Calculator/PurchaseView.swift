@@ -10,7 +10,7 @@ import SwiftUI
 struct PurchaseView: View {
     @Environment(\.presentationMode) var presentation
     @ObservedObject var store: Store
-    let brainModel: BrainModel
+    let viewModel: ViewModel
     let screen: Screen
     let font: Font
     
