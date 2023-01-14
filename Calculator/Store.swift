@@ -47,7 +47,7 @@ class Store: NSObject, ObservableObject, SKProductsRequestDelegate {
     func requestProducts() async {
         do {
             let products = try await Product.products(for: [PRODUCT_ID])
-            DispatchQueue.main.async {
+            await MainActor.run() {
                 self.products = products
                 //print("requestProducts n = \(products.count)")
             }
@@ -67,7 +67,7 @@ class Store: NSObject, ObservableObject, SKProductsRequestDelegate {
         }
         switch state {
         case .verified(let transaction):
-            DispatchQueue.main.async {
+            await MainActor.run() {
                 self.purchasedIDs = [transaction.productID]
                 print("isPurchased \(self.purchasedIDs)")
             }
@@ -84,7 +84,7 @@ class Store: NSObject, ObservableObject, SKProductsRequestDelegate {
                 case .unverified(_, _):
                     break
                 case .verified(let verifiedFransaction):
-                    DispatchQueue.main.async {
+                    await MainActor.run() {
                         self.purchasedIDs = [verifiedFransaction.productID]
                     }
                     await verifiedFransaction.finish()
@@ -100,7 +100,7 @@ class Store: NSObject, ObservableObject, SKProductsRequestDelegate {
                 case .unverified(_, _):
                     break
                 case .verified(let verifiedFransaction):
-                    DispatchQueue.main.async {
+                    await MainActor.run() {
                         self.purchasedIDs = [verifiedFransaction.productID]
                     }
                     await verifiedFransaction.finish()

@@ -76,15 +76,19 @@ struct Settings: View {
                             minusEnabled: !timerIsRunning && settingsPrecision > MIN_PRECISION,
                             height: 30,
                             onIncrement: {
-                                DispatchQueue.main.async {
-                                    settingsPrecision = increase(settingsPrecision)
-                                    timerInfo = timerInfoDefault
+                                Task {
+                                    await MainActor.run() {
+                                        settingsPrecision = increase(settingsPrecision)
+                                        timerInfo = timerInfoDefault
+                                    }
                                 }
                             },
                             onDecrement: {
-                                DispatchQueue.main.async {
-                                    settingsPrecision = decrease(settingsPrecision)
-                                    timerInfo = timerInfoDefault
+                                Task {
+                                    await MainActor.run() {
+                                        settingsPrecision = decrease(settingsPrecision)
+                                        timerInfo = timerInfoDefault
+                                    }
                                 }
                             })
                         .padding(.horizontal, 4)

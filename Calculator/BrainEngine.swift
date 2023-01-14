@@ -111,7 +111,7 @@ class BrainEngine {
                         let other = n.popLast()
                         n.last.execute(twoOperand.operation, with: other)
                     } else {
-                        /// this can happen if the users changes the operand
+                        /// this can happen when the users changes the operand
                     }
                 }
             }

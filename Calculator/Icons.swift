@@ -53,13 +53,16 @@ struct Icons : View {
                     if copyDone && pasteDone && !viewModel.isCopying && !viewModel.isPasting {
                         setIsCopying(to: true)
                         wait300msDone = false
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                            wait300msDone = true
-                            if copyDone {
-                                setIsCopying(to: false)
+                        Task.detached(priority: .high) {
+                            try? await Task.sleep(nanoseconds: 3_000_000_000)
+                            await MainActor.run() {
+                                wait300msDone = true
+                                if copyDone {
+                                    setIsCopying(to: false)
+                                }
                             }
                         }
-                        Task {
+                        Task(priority: .low) {
                             copyDone = false
                             await viewModel.copyToPastBin()
                             copyDone = true
@@ -93,13 +96,16 @@ struct Icons : View {
                         setIsPasting(to: true)
                         pasteDone = false
                         wait300msDone = false
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                            wait300msDone = true
-                            if pasteDone {
-                                viewModel.isPasting = false
+                        Task.detached(priority: .high) {
+                            try? await Task.sleep(nanoseconds: 3_000_000_000)
+                            await MainActor.run() {
+                                wait300msDone = true
+                                if pasteDone {
+                                    viewModel.isPasting = false
+                                }
                             }
                         }
-                        Task {
+                        Task(priority: .low) {
                             isValidPasteContent = await viewModel.copyFromPasteBin(screen: screen)
                             pasteDone = true
                             if wait300msDone {
