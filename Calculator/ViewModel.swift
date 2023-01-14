@@ -26,9 +26,8 @@ class ViewModel: ObservableObject {
     @AppStorage("memoryValue", store: .standard) var memoryValue: String = ""
     @AppStorage("rad", store: .standard) var rad: Bool = false
 
-    private static let MAX_DISPLAY_LEN = 10_000 // too long strings in Text() crash the app
-    private let brain: Brain
-    private var stupidBrain = BrainEngine(precision: 100) // I want to call fast sync functions
+    private let brain: Brain /// initialized later with _precision.wrappedValue
+    private var stupidBrain = BrainEngine(precision: 100) /// I want to call fast sync functions
 
     private enum KeyState {
         case notPressed
@@ -37,6 +36,7 @@ class ViewModel: ObservableObject {
     }
 
     private let keysThatRequireValidNumber = ["±", "%", "/", "x", "-", "+", "=", "( ", " )", "m+", "m-", "x^2", "x^3", "x^y", "e^x", "y^x", "2^x", "10^x", "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10", "x!", "sin", "cos", "tan", "asin", "acos", "atan", "EE", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh"]
+    private static let MAX_DISPLAY_LEN = 10_000 /// too long strings in Text() crash the app
 
     class ColorsOf {
         var textColor: Color
