@@ -91,6 +91,6 @@ struct PurchaseView: View {
 
 //struct PurchaseView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        PurchaseView(store: Store(), brainModel: Model(), font: Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
+//        PurchaseView(store: Store(), viewModel: ViewModel(), font: Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
 //    }
 //}

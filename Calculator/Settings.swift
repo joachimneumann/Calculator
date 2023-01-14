@@ -194,7 +194,7 @@ struct Settings: View {
 
     //    struct ControlCenter_Previews: PreviewProvider {
     //        static var previews: some View {
-    //            Settings(brainModel: Model(), font: Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
+    //            Settings(viewModel: ViewModel(), font: Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
     //        }
     //    }
     

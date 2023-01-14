@@ -88,7 +88,7 @@ class ViewModel: ObservableObject {
     private var previouslyPendingOperator: String? = nil
 
     init() {
-        //print("KeyModel INIT")
+        //print("ViewModel INIT")
         self.currentDisplay = Display()
         brain = Brain(precision: _precision.wrappedValue)
         precisionDescription = _precision.wrappedValue.useWords

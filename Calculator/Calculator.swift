@@ -118,7 +118,7 @@ struct Calculator: View {
     }
     
     var body: some View {
-        //let _ = print("Calculator body keyModel isPortraitPhone", screen.isPortraitPhone)
+        //let _ = print("Calculator body isPortraitPhone", screen.isPortraitPhone)
         content
             .padding(.bottom, screen.bottomPadding)
             .padding(.horizontal, screen.horizontalPadding)
