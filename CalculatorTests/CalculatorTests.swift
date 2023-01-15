@@ -844,10 +844,56 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(debugBrain.left, "0,0000101")
         XCTAssertEqual(debugBrain.right, nil)
 
-        /// 0,0000010
+
+        /// 0,000...0010
         debugBrain.push("AC")
         debugBrain.push("0,0000000000000001")
 
+        XCTAssertEqual(debugBrain.left, "1,0")
+        XCTAssertEqual(debugBrain.right, "e-16")
+
+        /// 0,000...0010
+        debugBrain.push("AC")
+        debugBrain.push("0,00000001")
+
+        XCTAssertEqual(debugBrain.left, "0,00000001")
+        XCTAssertEqual(debugBrain.right, nil)
+
+        /// 0,000...0010
+        debugBrain.push("AC")
+        debugBrain.push("0,00000001")
+        XCTAssertEqual(debugBrain.left, "0,00000001")
+        XCTAssertEqual(debugBrain.right, nil)
+
+        /// 0,000...0010
+        debugBrain.push("AC")
+        debugBrain.push("0,000000001")
+        XCTAssertEqual(debugBrain.left, "1,0")
+        XCTAssertEqual(debugBrain.right, "e-9")
+
+        /// 0,000...0010
+        debugBrain.push("AC")
+        debugBrain.push("0,0000000001")
+        XCTAssertEqual(debugBrain.left, "1,0")
+        XCTAssertEqual(debugBrain.right, "e-10")
+
+        /// 0,000...0010
+        debugBrain.push("AC")
+        debugBrain.push("0,000000000001")
+        XCTAssertEqual(debugBrain.left, "1,0")
+        XCTAssertEqual(debugBrain.right, "e-12")
+
+        /// 0,000...0010
+        debugBrain.push("AC")
+        debugBrain.push("0,00000000000001")
+        XCTAssertEqual(debugBrain.left, "1,0")
+        XCTAssertEqual(debugBrain.right, "e-14")
+
+        
+
+        /// 0,000...0010
+        debugBrain.push("AC")
+        debugBrain.push("0,0000000000000001")
         XCTAssertEqual(debugBrain.left, "1,0")
         XCTAssertEqual(debugBrain.right, "e-16")
 
