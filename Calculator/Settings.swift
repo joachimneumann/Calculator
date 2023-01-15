@@ -46,8 +46,7 @@ struct Settings: View {
             return current * 2
         }
     }
-    
-    
+        
     var body: some View {
         let bitsInfo = Number.bits(for: settingsPrecision)
         let internalPrecisionInfo = Number.internalPrecision(for: settingsPrecision)
@@ -173,8 +172,6 @@ struct Settings: View {
                         Spacer()
                     }
                     .padding(.top, 20)
-
-
                     
                     HStack(spacing: 20.0) {
                         Text("Decimal separator")
@@ -205,35 +202,30 @@ struct Settings: View {
                     }
                     .padding(.top, 20)
 
-                    HStack(spacing: 20.0) {
-                        Text("Thousand separator")
-                            .foregroundColor(timerIsRunning ? .gray : .white)
-                        Picker("Thousand separator", selection: $screen.thousandSeparatorCase) {
-                                        Text("None").tag(0)
-                                        Text("Comma").tag(1)
-                                        Text("Dot").tag(2)
-                                    }
-                        .onChange(of: screen.thousandSeparatorCase) {
-                            tag in print("Color tag: \(tag)")
-                            if screen.thousandSeparatorCase == 1 { /// comma
-                                if screen.decimalSeparatorCase == 0 { /// also comma
-                                    screen.decimalSeparatorCase = 1
-                                }
-                            } else if screen.thousandSeparatorCase == 2 { /// dot
-                                if screen.decimalSeparatorCase == 1 { /// also dot
-                                    screen.decimalSeparatorCase = 0
-                                }
-                            }
-                        }
-                        .pickerStyle(.segmented)
-                        .frame(width: 260)
-                        Text(thousandSeparatorExample)
-                            .foregroundColor(.gray)
-                            .padding(.leading, 20)
-                    Spacer()
-                    }
+                    ThousandsSeparator(
+                        timerIsRunning: timerIsRunning,
+                        decimalSeparatorCase: $screen.decimalSeparatorCase,
+                        thousandSeparatorCase: $screen.thousandSeparatorCase,
+                        screen: screen
+                    )
                     .padding(.top, 20)
 
+                    
+//                    HStack(spacing: 20.0) {
+//                        Text("HidePreliminaryResults")
+//                            .foregroundColor(timerIsRunning ? .gray : .white)
+//                        Toggle("", isOn: $settingsForceScientific)
+//                            .foregroundColor(Color.green)
+//                            .toggleStyle(
+//                                ColoredToggleStyle(onColor: Color(UIColor(white: timerIsRunning ? 0.4 : 0.6, alpha: 1.0)),
+//                                                   offColor: Color(UIColor(white: 0.3, alpha: 1.0)),
+//                                                   thumbColor: timerIsRunning ? .gray : .white))
+//                            .frame(width: 70)
+//                            .disabled(timerIsRunning)
+//                    }
+//                    .padding(.top, 20)
+
+                    
                     Spacer()
                 }
                 .font(font)
@@ -264,11 +256,44 @@ struct Settings: View {
         .navigationBarBackButtonHidden(true)
     }
     
+    struct ThousandsSeparator: View {
+        let timerIsRunning: Bool
+        @Binding var decimalSeparatorCase: Int
+        @Binding var thousandSeparatorCase: Int
+        let screen: Screen
+        var body: some View {
+            HStack(spacing: 20.0) {
+                Text("Thousand separator")
+                    .foregroundColor(timerIsRunning ? .gray : .white)
+                Picker("Thousand separator", selection: $thousandSeparatorCase) {
+                                Text("None").tag(0)
+                                Text("Comma").tag(1)
+                                Text("Dot").tag(2)
+                            }
+                .onChange(of: thousandSeparatorCase) { _ in
+                    if thousandSeparatorCase == 1 { /// comma
+                        if decimalSeparatorCase == 0 { /// also comma
+                            decimalSeparatorCase = 1
+                        }
+                    } else if thousandSeparatorCase == 2 { /// dot
+                        if decimalSeparatorCase == 1 { /// also dot
+                            decimalSeparatorCase = 0
+                        }
+                    }
+                }
+                .pickerStyle(.segmented)
+                .frame(width: 260)
+                Text("12\(screen.thousandSeparator)000\(screen.decimalSeparator)00")
+                    .foregroundColor(.gray)
+                    .padding(.leading, 20)
+                Spacer()
+            }
+        }
+    }
+    
+    
     var decimalSeparatorExample: String {
         "3\(screen.decimalSeparator)14159"
-    }
-    var thousandSeparatorExample: String {
-        "12\(screen.thousandSeparator)000\(screen.decimalSeparator)00"
     }
     
     struct ColoredToggleStyle: ToggleStyle {
