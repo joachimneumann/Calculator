@@ -152,7 +152,6 @@ class Number: CustomDebugStringConvertible {
                         if let pos = s.position(of: ",") {
                             if pos < lengths.withCommaNonScientific {
                                 if multipleLines {
-                                    //                                ret.isAbbreviated = s.count > maxDisplayLength
                                     displayData.left = String(s.prefix(Number.MAX_DISPLAY_LENGTH))
                                     displayData.right = nil
                                     return displayData
@@ -167,7 +166,6 @@ class Number: CustomDebugStringConvertible {
                                     } else {
                                         displayData.left = leftCandidate
                                         displayData.maxlength = lengths.withCommaNonScientific
-                                        // ret.isAbbreviated = s.count > lengths.withCommaNonScientific
                                         return displayData
                                     }
                                 }
@@ -178,7 +176,6 @@ class Number: CustomDebugStringConvertible {
                                 displayData.left = s
                                 displayData.right = nil
                                 displayData.maxlength = lengths.withoutComma
-                                //                            ret.isAbbreviated = false
                                 return displayData
                             }
                         }
@@ -299,7 +296,6 @@ class Number: CustomDebugStringConvertible {
                             displayData.left = floatString
                         } else {
                             displayData.left = String(floatString.prefix(withCommaNonScientific))
-                            // ret.isAbbreviated = true
                         }
                         if isNegative { displayData.left = "-" + displayData.left }
                         displayData.maxlength = lengths.withCommaNonScientific
@@ -324,7 +320,6 @@ class Number: CustomDebugStringConvertible {
                             displayData.left = floatString
                         } else {
                             displayData.left = String(floatString.prefix(withCommaNonScientific))
-                            //                        ret.isAbbreviated = true
                         }
                         if isNegative { displayData.left = "-" + displayData.left }
                         displayData.maxlength = lengths.withCommaNonScientific
@@ -344,12 +339,10 @@ class Number: CustomDebugStringConvertible {
                 if remainingMantissaLength < 3 {
                     displayData.left = "Can't Show"
                     displayData.right = nil
-                    // ret.isAbbreviated = false
                     return displayData
                 } else {
                     /// shorten...
                     mantissa = String(mantissa.prefix(withCommaScientific - displayData.right!.count))
-                    // ret.isAbbreviated = true
                 }
             }
             displayData.left = mantissa
