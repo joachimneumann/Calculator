@@ -144,27 +144,23 @@ class Number: CustomDebugStringConvertible {
             } else {
                 lengths = specifiedLengths
             }
-            //print("getDisplayData!!!!!!!")
             var displayData = DisplayData()
             if !forceScientific {
                 if let s = str {
                     assert(!s.contains("e"), "What, a scientific string?") /// pasted numbers are always gmp
-                    if let pos = s.position(of: ",") {
-                        if pos < lengths.withCommaNonScientific {
-                            /// we want the comma to be visible in the first line!
+                    if let commaPosition = s.position(of: ",") {
+                        if commaPosition < lengths.withCommaNonScientific { /// we want the comma to be visible in the first line!
                             if multipleLines {
                                 displayData.left = String(s.prefix(Number.MAX_DISPLAY_LENGTH))
                                 displayData.right = nil
                                 return displayData
                             } else {
-                                /// something hidden after the zeroes?
+                                /// Is there something hidden after the zeroes in the first line? --> do nothing
                                 let visible = String(s.prefix(lengths.withCommaNonScientific))
-                                
                                 let allStripped = s.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: "0", with: "")
                                 let visibleStripped = visible.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: "0", with: "")
-
                                 if visibleStripped.count == 0 && allStripped.count > 0 {
-                                    /// do nothing, will be displayed as scientific String
+                                    /// the number will be displayed as scientific
                                 } else {
                                     displayData.left = String(s.prefix(lengths.withCommaNonScientific))
                                     displayData.maxlength = lengths.withCommaNonScientific
