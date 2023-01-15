@@ -40,6 +40,7 @@ func lengthMeasurement(width: CGFloat, uiFont: UIFont, infoUiFont: UIFont, ePadd
     let digitWidth = "0".textSize(for: uiFont, kerning: kerning).width
     let commaWidth = ",".textSize(for: uiFont, kerning: kerning).width
     let eWidth     = "e".textSize(for: uiFont, kerning: kerning).width
+    assert(".".textSize(for: uiFont, kerning: kerning).width == commaWidth, "lengthMeasurement: dotWidth != commaWidth")
 
     let withoutComma           = Int(  width                                   / digitWidth)
     let withCommaNonScientific = Int( (width - commaWidth)                     / digitWidth) + 1
