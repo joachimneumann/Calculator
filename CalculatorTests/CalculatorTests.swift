@@ -821,26 +821,35 @@ class CalculatorTests: XCTestCase {
 
         XCTAssertEqual(debugBrain.left, "0,")
         XCTAssertEqual(debugBrain.right, nil)
+        
         debugBrain.push(0)
-
         XCTAssertEqual(debugBrain.left, "0,0")
         XCTAssertEqual(debugBrain.right, nil)
+        
         debugBrain.push(0)
         debugBrain.push(0)
         debugBrain.push(0)
-        debugBrain.push(0)
-
-        XCTAssertEqual(debugBrain.left, "0,00000")
+        XCTAssertEqual(debugBrain.left, "0,0000")
         XCTAssertEqual(debugBrain.right, nil)
+        
         debugBrain.push(1)
-
-        XCTAssertEqual(debugBrain.left, "0,000001")
+        XCTAssertEqual(debugBrain.left, "0,00001")
         XCTAssertEqual(debugBrain.right, nil)
+        
         debugBrain.push(0)
-
-        XCTAssertEqual(debugBrain.left, "0,0000010")
+        XCTAssertEqual(debugBrain.left, "0,000010")
         XCTAssertEqual(debugBrain.right, nil)
 
+        debugBrain.push(1)
+        XCTAssertEqual(debugBrain.left, "0,0000101")
+        XCTAssertEqual(debugBrain.right, nil)
+
+        /// 0,0000010
+        debugBrain.push("AC")
+        debugBrain.push("0,0000000000000001")
+
+        XCTAssertEqual(debugBrain.left, "1,0")
+        XCTAssertEqual(debugBrain.right, "e-16")
 
         var res: String
         let digits = 5

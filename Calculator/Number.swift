@@ -148,31 +148,37 @@ class Number: CustomDebugStringConvertible {
             var displayData = DisplayData()
             if !forceScientific {
                 if let s = str {
-                    if !s.contains("e") { // no shortcut for "scientific strings". This can not happen (I think)
-                        if let pos = s.position(of: ",") {
-                            if pos < lengths.withCommaNonScientific {
-                                if multipleLines {
-                                    displayData.left = String(s.prefix(Number.MAX_DISPLAY_LENGTH))
-                                    displayData.right = nil
-                                    return displayData
+                    assert(!s.contains("e"), "What, a scientific string?") /// pasted numbers are always gmp
+                    if let pos = s.position(of: ",") {
+                        if pos < lengths.withCommaNonScientific {
+                            /// we want the comma to be visible in the first line!
+                            if multipleLines {
+                                displayData.left = String(s.prefix(Number.MAX_DISPLAY_LENGTH))
+                                displayData.right = nil
+                                return displayData
+                            } else {
+                                /// something hidden after the zeroes?
+                                let visible = String(s.prefix(lengths.withCommaNonScientific))
+                                
+                                let allStripped = s.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: "0", with: "")
+                                let visibleStripped = visible.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: "0", with: "")
+
+                                if visibleStripped.count == 0 && allStripped.count > 0 {
+                                    /// do nothing, will be displayed as scientific String
                                 } else {
-                                    /// single line, only zeroes?
-                                    let stripped = s.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: "0", with: "")
-                                    if stripped.count == 0 {
-                                        displayData.left = String(s.prefix(lengths.withCommaNonScientific))
-                                        displayData.maxlength = lengths.withCommaNonScientific
-                                        return displayData
-                                    }
+                                    displayData.left = String(s.prefix(lengths.withCommaNonScientific))
+                                    displayData.maxlength = lengths.withCommaNonScientific
+                                    return displayData
                                 }
                             }
-                        } else {
-                            /// e.g. 23423
-                            if s.count <= lengths.withoutComma {
-                                displayData.left = s
-                                displayData.right = nil
-                                displayData.maxlength = lengths.withoutComma
-                                return displayData
-                            }
+                        }
+                    } else {
+                        /// no comma -> Integer
+                        if s.count <= lengths.withoutComma {
+                            displayData.left = s
+                            displayData.right = nil
+                            displayData.maxlength = lengths.withoutComma
+                            return displayData
                         }
                     }
                 }
