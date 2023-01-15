@@ -156,15 +156,10 @@ class Number: CustomDebugStringConvertible {
                                     displayData.right = nil
                                     return displayData
                                 } else {
-                                    /// portrait
-                                    let leftCandidate = String(s.prefix(lengths.withCommaNonScientific))
-                                    
-                                    /// Oh. I dont't want to allow 0.0000000
-                                    if leftCandidate.count == lengths.withCommaNonScientific &&
-                                        leftCandidate == "0," + String(repeating: "0", count: leftCandidate.count - 2) {
-                                        /// do nothing
-                                    } else {
-                                        displayData.left = leftCandidate
+                                    /// single line, only zeroes?
+                                    let stripped = s.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: "0", with: "")
+                                    if stripped.count == 0 {
+                                        displayData.left = String(s.prefix(lengths.withCommaNonScientific))
                                         displayData.maxlength = lengths.withCommaNonScientific
                                         return displayData
                                     }
