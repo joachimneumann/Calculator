@@ -11,7 +11,7 @@ struct Settings: View {
     @Environment(\.presentationMode) var presentation /// for dismissing the screen
 
     @ObservedObject var viewModel: ViewModel
-    let screen: Screen
+    @ObservedObject var screen: Screen
     let font: Font
 
 
@@ -179,20 +179,20 @@ struct Settings: View {
                     HStack(spacing: 20.0) {
                         Text("Decimal separator")
                             .foregroundColor(timerIsRunning ? .gray : .white)
-                        Picker("", selection: $viewModel.decimalSeparatorCase) {
+                        Picker("", selection: $screen.decimalSeparatorCase) {
                             Text("Comma").tag(0)
                             Text("Dot").tag(1)
                         }
-                        .onChange(of: viewModel.decimalSeparatorCase) {
+                        .onChange(of: screen.decimalSeparatorCase) {
                             tag in print("Color tag: \(tag)")
-                            if viewModel.decimalSeparatorCase == 0 { /// comma
-                                if viewModel.thousandSeparatorCase == 1 { /// also comma
-                                    viewModel.thousandSeparatorCase = 2
+                            if screen.decimalSeparatorCase == 0 { /// comma
+                                if screen.thousandSeparatorCase == 1 { /// also comma
+                                    screen.thousandSeparatorCase = 2
                                 }
                             } else {
                                 /// decimalSeparator is dot
-                                if viewModel.thousandSeparatorCase == 2 { /// also dot
-                                    viewModel.thousandSeparatorCase = 1
+                                if screen.thousandSeparatorCase == 2 { /// also dot
+                                    screen.thousandSeparatorCase = 1
                                 }
                             }
                         }
@@ -208,20 +208,20 @@ struct Settings: View {
                     HStack(spacing: 20.0) {
                         Text("Thousand separator")
                             .foregroundColor(timerIsRunning ? .gray : .white)
-                        Picker("Thousand separator", selection: $viewModel.thousandSeparatorCase) {
+                        Picker("Thousand separator", selection: $screen.thousandSeparatorCase) {
                                         Text("None").tag(0)
                                         Text("Comma").tag(1)
                                         Text("Dot").tag(2)
                                     }
-                        .onChange(of: viewModel.thousandSeparatorCase) {
+                        .onChange(of: screen.thousandSeparatorCase) {
                             tag in print("Color tag: \(tag)")
-                            if viewModel.thousandSeparatorCase == 1 { /// comma
-                                if viewModel.decimalSeparatorCase == 0 { /// also comma
-                                    viewModel.decimalSeparatorCase = 1
+                            if screen.thousandSeparatorCase == 1 { /// comma
+                                if screen.decimalSeparatorCase == 0 { /// also comma
+                                    screen.decimalSeparatorCase = 1
                                 }
-                            } else if viewModel.thousandSeparatorCase == 2 { /// dot
-                                if viewModel.decimalSeparatorCase == 1 { /// also dot
-                                    viewModel.decimalSeparatorCase = 0
+                            } else if screen.thousandSeparatorCase == 2 { /// dot
+                                if screen.decimalSeparatorCase == 1 { /// also dot
+                                    screen.decimalSeparatorCase = 0
                                 }
                             }
                         }
@@ -265,10 +265,10 @@ struct Settings: View {
     }
     
     var decimalSeparatorExample: String {
-        "3\(viewModel.decimalSeparator)14159"
+        "3\(screen.decimalSeparator)14159"
     }
     var thousandSeparatorExample: String {
-        "12\(viewModel.thousandSeparator)000\(viewModel.decimalSeparator)00"
+        "12\(screen.thousandSeparator)000\(screen.decimalSeparator)00"
     }
     
     struct ColoredToggleStyle: ToggleStyle {

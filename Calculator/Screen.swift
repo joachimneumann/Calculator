@@ -5,10 +5,12 @@
 //  Created by Joachim Neumann on 12/26/22.
 //
 
-import UIKit
+import SwiftUI
 
 class Screen: Equatable, ObservableObject {
-    
+    @AppStorage("decimalSeparatorCase", store: .standard) var decimalSeparatorCase: Int = 0
+    @AppStorage("thousandSeparatorCase", store: .standard) var thousandSeparatorCase: Int = 0
+
     static func == (lhs: Screen, rhs: Screen) -> Bool { /// used to detect rotation
         lhs.keySize == rhs.keySize
     }
@@ -36,7 +38,7 @@ class Screen: Equatable, ObservableObject {
     let textHeight: CGFloat
     let infoTextHeight: CGFloat
 
-    var lengths: Lengths /// will be updated when the digital or thousands seperator changes
+    var lengths: Lengths /// will be updated when the digital or thousands separator changes
 
     private let uiFont: UIFont
     private let calculatorWidth: CGFloat
@@ -125,4 +127,15 @@ class Screen: Equatable, ObservableObject {
         
         objectWillChange.send()
     }
+    
+    /// Separators
+    var decimalSeparator: String {
+        decimalSeparatorCase == 0 ? "," : "."
+    }
+    var thousandSeparator: String {
+        if thousandSeparatorCase == 1 { return "," }
+        if thousandSeparatorCase == 2 { return "." }
+        return ""
+    }
+
 }

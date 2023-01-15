@@ -26,8 +26,6 @@ class ViewModel: ObservableObject {
     @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
     @AppStorage("memoryValue", store: .standard) var memoryValue: String = ""
     @AppStorage("rad", store: .standard) var rad: Bool = false
-    @AppStorage("decimalSeparatorCase", store: .standard) var decimalSeparatorCase: Int = 0
-    @AppStorage("thousandSeparatorCase", store: .standard) var thousandSeparatorCase: Int = 0
 
     private let brain: Brain /// initialized later with _precision.wrappedValue
     private var stupidBrain = BrainEngine(precision: 100) /// I want to call fast sync functions
@@ -160,6 +158,8 @@ class ViewModel: ObservableObject {
 
             if symbol == "AC" {
                 showPrecision.toggle()
+            } else {
+                showPrecision = false
             }
 
             keyState = .pressed
@@ -254,16 +254,6 @@ class ViewModel: ObservableObject {
             showAsInteger: showAsInteger,
             showAsFloat: showAsFloat)
         UIPasteboard.general.string = copyData.oneLine
-    }
-
-    /// seperators
-    var decimalSeparator: String {
-        decimalSeparatorCase == 0 ? "," : "."
-    }
-    var thousandSeparator: String {
-        if thousandSeparatorCase == 1 { return "," }
-        if thousandSeparatorCase == 2 { return "." }
-        return ""
     }
 
     /// colors

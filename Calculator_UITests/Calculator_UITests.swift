@@ -48,7 +48,16 @@ final class Calculator_UITests: XCTestCase {
         infoText = app.staticTexts["infoText"]
         XCTAssertEqual(infoText.label, "")
     }
-    
+
+    func test_infoTextDisappearing() {
+        app.staticTexts["KeyID_AC"].tap()
+        var infoText = app.staticTexts["infoText"]
+        XCTAssertEqual(infoText.label, "Precision: 200 thousand digits")
+        app.staticTexts["8"].tap()
+        infoText = app.staticTexts["infoText"]
+        XCTAssertEqual(infoText.label, "")
+    }
+
     func test_ln_0_infinity() throws {
         app.staticTexts["KeyID_ln"].tap()
         XCTAssertEqual(app.staticTexts["landscapeDisplayText"].label, "infinity")

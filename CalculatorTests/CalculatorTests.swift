@@ -28,7 +28,7 @@ class CalculatorTests: XCTestCase {
     }
     
     func testmultipleLiner() {
-        let debugBrain = DebugBrain(precision: 100, lengths: Lengths(withoutComma: 8, withCommaNonScientific: 9, withCommaScientific: 9, height: 0, digitWidth: 0, infoHeight: 0, ePadding: 0))
+        let debugBrain = DebugBrain(precision: 100, lengths: Lengths(withoutComma: 8, withCommaNonScientific: 9, withCommaScientific: 9, digitWidth: 0, ePadding: 0))
 
         /// integers
         debugBrain.pushnew(123)
