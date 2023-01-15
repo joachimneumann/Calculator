@@ -8,7 +8,8 @@
 import UIKit
 
 class Screen: Equatable, ObservableObject {
-    static func == (lhs: Screen, rhs: Screen) -> Bool {
+    
+    static func == (lhs: Screen, rhs: Screen) -> Bool { /// used to detect rotation
         lhs.keySize == rhs.keySize
     }
     
@@ -18,7 +19,6 @@ class Screen: Equatable, ObservableObject {
     let keyboardHeight: CGFloat
     let keySpacing: CGFloat
     let keySize: CGSize
-    let lengths: Lengths
     let ePadding: CGFloat
     let plusIconSize: CGFloat
     let plusIconLeftPadding: CGFloat
@@ -33,7 +33,13 @@ class Screen: Equatable, ObservableObject {
     let offsetToVerticallyAlignTextWithkeyboard: CGFloat
     let offsetToVerticallyIconWithText: CGFloat
     let kerning: CGFloat
+    let textHeight: CGFloat
+    let infoTextHeight: CGFloat
 
+    var lengths: Lengths /// will be updated when the digital or thousands seperator changes
+
+    private let uiFont: UIFont
+    private let calculatorWidth: CGFloat
     
     init(_ screenSize: CGSize) {
         // print("Screen INIT", screenSize)
@@ -54,7 +60,7 @@ class Screen: Equatable, ObservableObject {
         portraitIPhoneDisplayHorizontalPadding = screenSize.width * 0.035
         portraitIPhoneDisplayBottomPadding = screenSize.height * 0.012
 
-        let calculatorWidth = screenSize.width - 2 * horizontalPadding
+        calculatorWidth = screenSize.width - 2 * horizontalPadding
         let tempKeyWidth: CGFloat
         let tempKeyheight: CGFloat
         if isPortrait {
@@ -82,21 +88,21 @@ class Screen: Equatable, ObservableObject {
         plusIconSize = keyboardHeight * 0.13
         plusIconLeftPadding = plusIconSize * 0.4
         ePadding = isPortraitPhone ? plusIconSize * 0.1 : plusIconSize * 0.3
-        let displayWidth = calculatorWidth -
-        (isPortraitPhone ? 2.0 * portraitIPhoneDisplayHorizontalPadding : plusIconSize + plusIconLeftPadding)
         uiFontSize = ((isPortraitPhone ? 0.125 : 0.16) * keyboardHeight).rounded()
         uiFontWeight = UIFont.Weight.thin
-        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: uiFontSize, weight: uiFontWeight)
+        uiFont = UIFont.monospacedDigitSystemFont(ofSize: uiFontSize, weight: uiFontWeight)
         infoUiFontSize = uiFontSize * 0.3
         infoUiFont = UIFont.monospacedDigitSystemFont(ofSize: infoUiFontSize, weight: .regular)
         kerning = -0.02 * uiFontSize
-        lengths = lengthMeasurement(width: displayWidth, uiFont: uiFont, infoUiFont: infoUiFont, ePadding: ePadding, kerning: kerning)
-        
+
+        textHeight = heightMeasurement(uiFont: uiFont, kerning: kerning)
+        infoTextHeight = heightMeasurement(uiFont: infoUiFont, kerning: 0)
+
         offsetToVerticallyAlignTextWithkeyboard =
         CGFloat(screenSize.height) -
         CGFloat(keyboardHeight) -
         CGFloat(infoUiFontSize) -
-        CGFloat(lengths.height)
+        CGFloat(textHeight)
 
         offsetToVerticallyIconWithText =
         CGFloat(screenSize.height) -
@@ -106,6 +112,17 @@ class Screen: Equatable, ObservableObject {
         CGFloat(uiFont.descender) -
         CGFloat(0.5 * uiFont.capHeight) +
         CGFloat(0.5 * plusIconSize)
+
+        lengths = Lengths(0)
+        measureTextLengths(screenSize: screenSize)
+    }
+    
+    func measureTextLengths(screenSize: CGSize) {
+        let displayWidth = calculatorWidth -
+        (isPortraitPhone ? 2.0 * portraitIPhoneDisplayHorizontalPadding : plusIconSize + plusIconLeftPadding)
+        
+        lengths = lengthMeasurement(width: displayWidth, uiFont: uiFont, infoUiFont: infoUiFont, ePadding: ePadding, kerning: kerning)
+        
         objectWillChange.send()
     }
 }

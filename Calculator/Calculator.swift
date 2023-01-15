@@ -61,7 +61,7 @@ struct Calculator: View {
             Spacer(minLength: 0.0)
             Rectangle()
                 .foregroundColor(.black)
-                .frame(height: screen.lengths.infoHeight)
+                .frame(height: screen.infoTextHeight)
                 .overlay() {
                     infoView
                 }

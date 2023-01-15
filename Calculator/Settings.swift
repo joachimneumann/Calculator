@@ -8,13 +8,24 @@
 import SwiftUI
 
 struct Settings: View {
+    @Environment(\.presentationMode) var presentation /// for dismissing the screen
+
     @ObservedObject var viewModel: ViewModel
-    @State var timerIsRunning: Bool = false
-    private let timerInfoDefault: String = "click to measure"
-    @State var timerInfo: String = "click to measure"
     let screen: Screen
     let font: Font
-    
+
+
+    @State var timerIsRunning: Bool = false
+    @State var settingsPrecision: Int = 0
+    @State var settingsForceScientific: Bool = false
+    @State var timerInfo: String = "click to measure"
+
+    @State private var favoriteColor = 0
+
+    private let MIN_PRECISION      = 10
+    private let PHYSICAL_MEMORY = ProcessInfo.processInfo.physicalMemory
+    private let timerInfoDefault: String = "click to measure"
+        
     func decrease(_ current: Int) -> Int {
         let asString = "\(current)"
         if asString.starts(with: "2") {
@@ -36,11 +47,6 @@ struct Settings: View {
         }
     }
     
-    @Environment(\.presentationMode) var presentation
-    @State var settingsPrecision: Int = 0
-    @State var settingsForceScientific: Bool = false
-    private let MIN_PRECISION      = 10
-    private let PHYSICAL_MEMORY = ProcessInfo.processInfo.physicalMemory
     
     var body: some View {
         let bitsInfo = Number.bits(for: settingsPrecision)
@@ -168,6 +174,66 @@ struct Settings: View {
                     }
                     .padding(.top, 20)
 
+
+                    
+                    HStack(spacing: 20.0) {
+                        Text("Decimal separator")
+                            .foregroundColor(timerIsRunning ? .gray : .white)
+                        Picker("", selection: $viewModel.decimalSeparatorCase) {
+                            Text("Comma").tag(0)
+                            Text("Dot").tag(1)
+                        }
+                        .onChange(of: viewModel.decimalSeparatorCase) {
+                            tag in print("Color tag: \(tag)")
+                            if viewModel.decimalSeparatorCase == 0 { /// comma
+                                if viewModel.thousandSeparatorCase == 1 { /// also comma
+                                    viewModel.thousandSeparatorCase = 2
+                                }
+                            } else {
+                                /// decimalSeparator is dot
+                                if viewModel.thousandSeparatorCase == 2 { /// also dot
+                                    viewModel.thousandSeparatorCase = 1
+                                }
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        .frame(width: 160)
+                        Text(decimalSeparatorExample)
+                            .foregroundColor(.gray)
+                            .padding(.leading, 20)
+                        Spacer()
+                    }
+                    .padding(.top, 20)
+
+                    HStack(spacing: 20.0) {
+                        Text("Thousand separator")
+                            .foregroundColor(timerIsRunning ? .gray : .white)
+                        Picker("Thousand separator", selection: $viewModel.thousandSeparatorCase) {
+                                        Text("None").tag(0)
+                                        Text("Comma").tag(1)
+                                        Text("Dot").tag(2)
+                                    }
+                        .onChange(of: viewModel.thousandSeparatorCase) {
+                            tag in print("Color tag: \(tag)")
+                            if viewModel.thousandSeparatorCase == 1 { /// comma
+                                if viewModel.decimalSeparatorCase == 0 { /// also comma
+                                    viewModel.decimalSeparatorCase = 1
+                                }
+                            } else if viewModel.thousandSeparatorCase == 2 { /// dot
+                                if viewModel.decimalSeparatorCase == 1 { /// also dot
+                                    viewModel.decimalSeparatorCase = 0
+                                }
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        .frame(width: 260)
+                        Text(thousandSeparatorExample)
+                            .foregroundColor(.gray)
+                            .padding(.leading, 20)
+                    Spacer()
+                    }
+                    .padding(.top, 20)
+
                     Spacer()
                 }
                 .font(font)
@@ -191,16 +257,19 @@ struct Settings: View {
         .onAppear() {
             settingsForceScientific = viewModel.forceScientific
             settingsPrecision       = viewModel.precision
+            UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(white: 0.7, alpha: 1.0)
+            UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
+            UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
         }
         .navigationBarBackButtonHidden(true)
     }
     
-
-    //    struct ControlCenter_Previews: PreviewProvider {
-    //        static var previews: some View {
-    //            Settings(viewModel: ViewModel(), font: Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
-    //        }
-    //    }
+    var decimalSeparatorExample: String {
+        "3\(viewModel.decimalSeparator)14159"
+    }
+    var thousandSeparatorExample: String {
+        "12\(viewModel.thousandSeparator)000\(viewModel.decimalSeparator)00"
+    }
     
     struct ColoredToggleStyle: ToggleStyle {
         var label = ""
@@ -244,5 +313,12 @@ private extension Int {
             return String(format: "%.1fKB", d / 1e3)
         }
         return String(format: "%.0f bytes", d)
+    }
+}
+
+struct ControlCenter_Previews: PreviewProvider {
+    static var previews: some View {
+        Settings(viewModel: ViewModel(), screen: Screen(CGSize()), font: Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
+            .background(Color.black)
     }
 }
