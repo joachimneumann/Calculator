@@ -8,8 +8,32 @@
 import SwiftUI
 
 class Screen: Equatable, ObservableObject {
-    @AppStorage("decimalSeparatorCase", store: .standard) var decimalSeparatorCase: Int = 0
-    @AppStorage("thousandSeparatorCase", store: .standard) var thousandSeparatorCase: Int = 0
+    
+    enum DecimalSeparator: String, Codable, CaseIterable{
+        case comma
+        case dot
+        var string: String {
+            switch self {
+                case .comma: return "comma"
+                case .dot: return "dot"
+            }
+        }
+    }
+    enum ThousandSeparator: String, Codable, CaseIterable{
+        case none
+        case comma
+        case dot
+        var string: String {
+            switch self {
+                case .none: return ""
+                case .comma: return "comma"
+                case .dot: return "dot"
+            }
+        }
+    }
+
+    @AppStorage("DecimalSeparator") var decimalSeparator: DecimalSeparator = .comma
+    @AppStorage("DecimalSeparator") var thousandSeparator: ThousandSeparator = .none
 
     static func == (lhs: Screen, rhs: Screen) -> Bool { /// used to detect rotation
         lhs.keySize == rhs.keySize
@@ -127,15 +151,4 @@ class Screen: Equatable, ObservableObject {
         
         objectWillChange.send()
     }
-    
-    /// Separators
-    var decimalSeparator: String {
-        decimalSeparatorCase == 0 ? "," : "."
-    }
-    var thousandSeparator: String {
-        if thousandSeparatorCase == 1 { return "," }
-        if thousandSeparatorCase == 2 { return "." }
-        return ""
-    }
-
 }

@@ -302,6 +302,7 @@ class DebugBrain: BrainEngine {
     
     private var debugData: DisplayData {
         let d = n.last.getDisplayData(multipleLines: false, lengths: lengths, useMaximalLength: false, forceScientific: false, showAsInteger: false, showAsFloat: false)
+//        let d = n.last.getDisplayData(multipleLines: false, lengths: lengths, useMaximalLength: false, forceScientific: false, showAsInteger: false, showAsFloat: false)
         return d
     }
 

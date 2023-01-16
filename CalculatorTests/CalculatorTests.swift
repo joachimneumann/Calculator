@@ -11,7 +11,24 @@ import XCTest
 
 class CalculatorTests: XCTestCase {
     
-    func testBits() throws {
+    func test_Separators() {
+        let debugBrain = DebugBrain(precision: 1_000, lengths: Lengths(50))
+        let screen = Screen(CGSize(width: 200, height: 200))
+        screen.thousandSeparatorCase = 0 // none
+        screen.decimalSeparatorCase = 0 // comma
+        debugBrain.push(1234567.7)
+        XCTAssertEqual(debugBrain.oneLine, "1234567,7")
+        screen.decimalSeparatorCase = 1 // dot
+        XCTAssertEqual(debugBrain.oneLine, "1234567.7")
+        screen.thousandSeparatorCase = 1 // comma
+        screen.decimalSeparatorCase = 0 // dot
+        XCTAssertEqual(debugBrain.oneLine, "1,234,567.7")
+        screen.thousandSeparatorCase = 1 // dot
+        screen.decimalSeparatorCase = 0 // comma
+        XCTAssertEqual(debugBrain.oneLine, "1.234.567,7")
+    }
+    
+    func testBits() {
         let debugBrain = DebugBrain(precision: 200_000, lengths: Lengths(5_000)) /// also failing: 10000
 
         debugBrain.push(7.7)

@@ -14,10 +14,10 @@ struct Settings: View {
     @ObservedObject var screen: Screen
     let font: Font
 
-
     @State var timerIsRunning: Bool = false
     @State var settingsPrecision: Int = 0
     @State var settingsForceScientific: Bool = false
+    @State var settingsShowPreliminaryResults: Bool = false
     @State var timerInfo: String = "click to measure"
 
     
@@ -51,37 +51,14 @@ struct Settings: View {
                         settingsForceScientific: $settingsForceScientific)
                     .padding(.top, 20)
                     
-                    DecimalSeparator(
-                        timerIsRunning: timerIsRunning,
-                        decimalSeparatorCase: $screen.decimalSeparatorCase,
-                        thousandSeparatorCase: $screen.thousandSeparatorCase,
-                        screen: screen
-                    )
-                    .padding(.top, 20)
+                    decimalSeparatorView
+                        .padding(.top, 20)
 
-                    ThousandsSeparator(
-                        timerIsRunning: timerIsRunning,
-                        decimalSeparatorCase: $screen.decimalSeparatorCase,
-                        thousandSeparatorCase: $screen.thousandSeparatorCase,
-                        screen: screen
-                    )
-                    .padding(.top, 20)
+                    thousandsSeparator
+                        .padding(.top, 20)
 
-                    
-                    HStack(spacing: 20.0) {
-                        Text("HidePreliminaryResults")
-                            .foregroundColor(timerIsRunning ? .gray : .white)
-                        Toggle("", isOn: $settingsForceScientific)
-                            .foregroundColor(Color.green)
-                            .toggleStyle(
-                                ColoredToggleStyle(onColor: Color(UIColor(white: timerIsRunning ? 0.4 : 0.6, alpha: 1.0)),
-                                                   offColor: Color(UIColor(white: 0.3, alpha: 1.0)),
-                                                   thumbColor: timerIsRunning ? .gray : .white))
-                            .frame(width: 70)
-                            .disabled(timerIsRunning)
-                    }
+                    showPreliminaryResults
                     .padding(.top, 20)
-
                     
                     Spacer()
                 }
@@ -93,18 +70,20 @@ struct Settings: View {
                 if viewModel.forceScientific != settingsForceScientific {
                     viewModel.forceScientific = settingsForceScientific
                 }
-                if viewModel.precision != settingsPrecision {
-                    Task {
-                        await viewModel.updatePrecision(to: settingsPrecision)
-                    }
+                if viewModel.showPreliminaryResults != settingsShowPreliminaryResults {
+                    viewModel.showPreliminaryResults = settingsShowPreliminaryResults
                 }
                 Task {
+                    if viewModel.precision != settingsPrecision {
+                        await viewModel.updatePrecision(to: settingsPrecision)
+                    }
                     await viewModel.refreshDisplay(screen: screen)
                 }
             }
         }
         .onAppear() {
             settingsForceScientific = viewModel.forceScientific
+            settingsShowPreliminaryResults = viewModel.showPreliminaryResults
             settingsPrecision       = viewModel.precision
             UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(white: 0.7, alpha: 1.0)
             UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
@@ -126,37 +105,10 @@ struct Settings: View {
         private let timerInfoDefault: String = "click to measure"
         var body: some View {
             HStack {
-                Text("Precision:")
-                    .foregroundColor(timerIsRunning ? .gray : .white)
-                ColoredStepper(
-                    plusEnabled: !timerIsRunning && memoryNeeded < PHYSICAL_MEMORY,
-                    minusEnabled: !timerIsRunning && settingsPrecision > MIN_PRECISION,
-                    height: 30,
-                    onIncrement: {
-                        Task {
-                            await MainActor.run() {
-                                settingsPrecision = increase(settingsPrecision)
-                                timerInfo = timerInfoDefault
-                            }
-                        }
-                    },
-                    onDecrement: {
-                        Task {
-                            await MainActor.run() {
-                                settingsPrecision = decrease(settingsPrecision)
-                                timerInfo = timerInfoDefault
-                            }
-                        }
-                    })
-                .padding(.horizontal, 4)
-                HStack {
-                    Text("\(settingsPrecision.useWords) significant digits")
-                        .foregroundColor(timerIsRunning ? .gray : .white)
-                    if memoryNeeded >= PHYSICAL_MEMORY {
-                        Text("(memory limit reached)")
-                            .foregroundColor(timerIsRunning ? .gray : .white)
-                    }
-                }
+                precisionLabel
+                precisionStepper
+                    .padding(.horizontal, 4)
+                precisionComment
                 Spacer()
             }
             .padding(.bottom, 15)
@@ -174,6 +126,46 @@ struct Settings: View {
                 .foregroundColor(.gray)
                 .padding(.bottom, -4)
         }
+        
+        var precisionLabel: some View {
+            Text("Precision:")
+                .foregroundColor(timerIsRunning ? .gray : .white)
+        }
+        
+        var precisionComment: some View {
+            HStack {
+                Text("\(settingsPrecision.useWords) significant digits")
+                    .foregroundColor(timerIsRunning ? .gray : .white)
+                if memoryNeeded >= PHYSICAL_MEMORY {
+                    Text("(memory limit reached)")
+                        .foregroundColor(timerIsRunning ? .gray : .white)
+                }
+            }
+        }
+        
+        var precisionStepper: some View {
+            ColoredStepper(
+                plusEnabled: !timerIsRunning && memoryNeeded < PHYSICAL_MEMORY,
+                minusEnabled: !timerIsRunning && settingsPrecision > MIN_PRECISION,
+                height: 30,
+                onIncrement: {
+                    Task {
+                        await MainActor.run() {
+                            settingsPrecision = increase(settingsPrecision)
+                            timerInfo = timerInfoDefault
+                        }
+                    }
+                },
+                onDecrement: {
+                    Task {
+                        await MainActor.run() {
+                            settingsPrecision = decrease(settingsPrecision)
+                            timerInfo = timerInfoDefault
+                        }
+                    }
+                })
+        }
+
         func decrease(_ current: Int) -> Int {
             let asString = "\(current)"
             if asString.starts(with: "2") {
@@ -204,6 +196,14 @@ struct Settings: View {
         let settingsPrecision: Int
         var body: some View {
             HStack {
+                measurementLabel
+                measurementButton
+            }
+            .offset(y: -0.15 * screen.infoUiFontSize)
+        }
+        
+        var measurementLabel: some View {
+            HStack {
                 Text("Time to calculate sin(")
                     .foregroundColor(.gray)
                 let h = 3 * screen.infoUiFontSize
@@ -213,29 +213,30 @@ struct Settings: View {
                 Text("):")
                     .foregroundColor(.gray)
                     .offset(x: -2.4 * screen.infoUiFontSize)
-                Button {
-                    timerIsRunning = true
-                    Task.detached {
-                        let speedTestBrain = DebugBrain(precision: settingsPrecision, lengths: Lengths(0))
-                        let result = await speedTestBrain.speedTest()
-                        await MainActor.run() {
-                            timerInfo = result
-                            timerIsRunning = false
-                        }
-                    }
-                } label: {
-                    if timerIsRunning {
-                        Text("...measuring")
-                            .foregroundColor(.white)
-                    } else {
-                        Text(timerInfo)
-                            .foregroundColor(.gray)
+            }
+        }
+        var measurementButton: some View {
+            Button {
+                timerIsRunning = true
+                Task.detached {
+                    let speedTestBrain = DebugBrain(precision: settingsPrecision, lengths: Lengths(0))
+                    let result = await speedTestBrain.speedTest()
+                    await MainActor.run() {
+                        timerInfo = result
+                        timerIsRunning = false
                     }
                 }
-                .disabled(timerIsRunning)
-                .offset(x: -2.0 * screen.infoUiFontSize)
+            } label: {
+                if timerIsRunning {
+                    Text("...measuring")
+                        .foregroundColor(.white)
+                } else {
+                    Text(timerInfo)
+                        .foregroundColor(.gray)
+                }
             }
-            .offset(y: -0.15 * screen.infoUiFontSize)
+            .disabled(timerIsRunning)
+            .offset(x: -2.0 * screen.infoUiFontSize)
         }
     }
     struct BackButton: View {
@@ -288,77 +289,79 @@ struct Settings: View {
 
         }
     }
-    struct DecimalSeparator: View {
-        let timerIsRunning: Bool
-        @Binding var decimalSeparatorCase: Int
-        @Binding var thousandSeparatorCase: Int
-        let screen: Screen
-        var body: some View {
-            HStack(spacing: 20.0) {
-                Text("Decimal separator")
-                    .foregroundColor(timerIsRunning ? .gray : .white)
-                Picker("", selection: $decimalSeparatorCase) {
-                    Text("Comma").tag(0)
-                    Text("Dot").tag(1)
-                }
-                .onChange(of: screen.decimalSeparatorCase) { _ in
-                    if screen.decimalSeparatorCase == 0 { /// comma
-                        if screen.thousandSeparatorCase == 1 { /// also comma
-                            screen.thousandSeparatorCase = 2
-                        }
-                    } else {
-                        /// decimalSeparator is dot
-                        if screen.thousandSeparatorCase == 2 { /// also dot
-                            screen.thousandSeparatorCase = 1
-                        }
+    
+    var decimalSeparatorView: some View {
+        HStack(spacing: 20.0) {
+            Text("Decimal separator")
+                .foregroundColor(timerIsRunning ? .gray : .white)
+            Picker("", selection: $screen.decimalSeparator) {
+                Text("Comma").tag(0)
+                Text("Dot").tag(1)
+            }
+            .onChange(of: screen.decimalSeparator) { _ in
+                if screen.decimalSeparator == .comma {
+                    if screen.thousandSeparator == .comma {
+                        screen.thousandSeparator = .dot
+                    }
+                } else if screen.decimalSeparator == .dot {
+                    if screen.thousandSeparator == .dot {
+                        screen.thousandSeparator = .comma
                     }
                 }
-                .pickerStyle(.segmented)
-                .frame(width: 160)
-                Text("3\(screen.decimalSeparator)14159")
-                    .foregroundColor(.gray)
-                    .padding(.leading, 20)
-                Spacer()
             }
+            .pickerStyle(.segmented)
+            .frame(width: 160)
+            Text("e.g., 3\(screen.decimalSeparator.string)14159")
+                .foregroundColor(.gray)
+                .padding(.leading, 20)
+            Spacer()
         }
     }
     
-    struct ThousandsSeparator: View {
-        let timerIsRunning: Bool
-        @Binding var decimalSeparatorCase: Int
-        @Binding var thousandSeparatorCase: Int
-        let screen: Screen
-        var body: some View {
-            HStack(spacing: 20.0) {
-                Text("Thousand separator")
-                    .foregroundColor(timerIsRunning ? .gray : .white)
-                Picker("Thousand separator", selection: $thousandSeparatorCase) {
-                                Text("None").tag(0)
-                                Text("Comma").tag(1)
-                                Text("Dot").tag(2)
-                            }
-                .onChange(of: thousandSeparatorCase) { _ in
-                    if thousandSeparatorCase == 1 { /// comma
-                        if decimalSeparatorCase == 0 { /// also comma
-                            decimalSeparatorCase = 1
+    var thousandsSeparator: some View {
+        HStack(spacing: 20.0) {
+            Text("Thousand separator")
+                .foregroundColor(timerIsRunning ? .gray : .white)
+            Picker("Thousand separator", selection: $screen.thousandSeparator) {
+                            Text("None").tag(0)
+                            Text("Comma").tag(1)
+                            Text("Dot").tag(2)
                         }
-                    } else if thousandSeparatorCase == 2 { /// dot
-                        if decimalSeparatorCase == 1 { /// also dot
-                            decimalSeparatorCase = 0
-                        }
+            .onChange(of: screen.thousandSeparator) { _ in
+                if screen.thousandSeparator == .comma {
+                    if screen.decimalSeparator == .comma {
+                        screen.decimalSeparator = .dot
+                    }
+                } else if screen.thousandSeparator == .dot { /// dot
+                    if screen.decimalSeparator == .dot { /// also dot
+                        screen.decimalSeparator = .comma
                     }
                 }
-                .pickerStyle(.segmented)
-                .frame(width: 260)
-                Text("12\(screen.thousandSeparator)000\(screen.decimalSeparator)00")
-                    .foregroundColor(.gray)
-                    .padding(.leading, 20)
-                Spacer()
             }
+            .pickerStyle(.segmented)
+            .frame(width: 260)
+            Text("12\(screen.thousandSeparator.string)000\(screen.decimalSeparator.string)00")
+                .foregroundColor(.gray)
+                .padding(.leading, 20)
+            Spacer()
         }
     }
     
-    
+    var showPreliminaryResults: some View {
+        HStack(spacing: 20.0) {
+            Text("show preliminary results")
+                .foregroundColor(timerIsRunning ? .gray : .white)
+            Toggle("", isOn: $settingsShowPreliminaryResults)
+                .foregroundColor(Color.green)
+                .toggleStyle(
+                    ColoredToggleStyle(onColor: Color(UIColor(white: timerIsRunning ? 0.4 : 0.6, alpha: 1.0)),
+                                       offColor: Color(UIColor(white: 0.3, alpha: 1.0)),
+                                       thumbColor: timerIsRunning ? .gray : .white))
+                .frame(width: 70)
+                .disabled(timerIsRunning)
+        }
+    }
+
     struct ColoredToggleStyle: ToggleStyle {
         var label = ""
         var onColor = Color(UIColor.green)

@@ -24,6 +24,7 @@ class ViewModel: ObservableObject {
 
     @AppStorage("precision", store: .standard) private (set) var precision: Int = 1000
     @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
+    @AppStorage("showPreliminaryResults", store: .standard) var showPreliminaryResults: Bool = true
     @AppStorage("memoryValue", store: .standard) var memoryValue: String = ""
     @AppStorage("rad", store: .standard) var rad: Bool = false
 
@@ -179,25 +180,27 @@ class ViewModel: ObservableObject {
     
     func defaultTask(for symbol: String, screen: Screen) async {
         //print("defaultTask", symbol)
-        let preliminaryResult = stupidBrain.operation(symbol)
-        let data = preliminaryResult.getDisplayData(
-            multipleLines: false,
-            lengths: screen.lengths,
-            useMaximalLength: false,
-            forceScientific: forceScientific,
-            showAsInteger: showAsInteger,
-            showAsFloat: showAsFloat)
-        let format = DisplayFormat(
-            for: data.length,
-            withMaxLength: data.maxlength,
-            showThreeDots: true,
-            screen: screen)
-        let preliminaryDisplay = Display(data: data, format: format)
-        Task(priority: .high) {
-            try? await Task.sleep(nanoseconds: 300_000_000)
-            if keyState == .highPrecisionProcessing {
-                await MainActor.run() {
-                    currentDisplay = preliminaryDisplay
+        if showPreliminaryResults {
+            let preliminaryResult = stupidBrain.operation(symbol)
+            let data = preliminaryResult.getDisplayData(
+                multipleLines: false,
+                lengths: screen.lengths,
+                useMaximalLength: false,
+                forceScientific: forceScientific,
+                showAsInteger: showAsInteger,
+                showAsFloat: showAsFloat)
+            let format = DisplayFormat(
+                for: data.length,
+                withMaxLength: data.maxlength,
+                showThreeDots: true,
+                screen: screen)
+            let preliminaryDisplay = Display(data: data, format: format)
+            Task(priority: .high) {
+                try? await Task.sleep(nanoseconds: 300_000_000)
+                if keyState == .highPrecisionProcessing {
+                    await MainActor.run() {
+                        currentDisplay = preliminaryDisplay
+                    }
                 }
             }
         }
