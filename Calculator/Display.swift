@@ -32,6 +32,16 @@ struct DisplayData {
     }
 }
 
+extension DisplayData {
+    init(left: String) {
+        self.left = left
+        right = nil
+        maxlength = 0
+        canBeInteger = false
+        canBeFloat = false
+    }
+}
+
 struct DisplayFormat {
     let font: Font
     let color: Color

@@ -18,15 +18,16 @@ func testMemory(size: Int) -> Bool {
 
 class Gmp: Equatable, CustomDebugStringConvertible {
     private var bits: Int
-    
+    private (set) var precision: Int
+
     /// init with zeros. The struct will be initialized correctly in init() with mpfr_init2()
     private var mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
 
-    init(fromString string: String, bits: Int) {
-        self.bits = bits
-        let string_dot = string.replacingOccurrences(of: ",", with: ".")
+    init(withString string: String, precision: Int) {
+        self.precision = precision
+        self.bits = Number.bits(for: precision)
         mpfr_init2 (&mpfr, bits)
-        mpfr_set_str (&mpfr, string_dot, 10, MPFR_RNDN)
+        mpfr_set_str (&mpfr, string, 10, MPFR_RNDN)
     }
 
 //    private init(withMpfr from_mpfr: inout __mpfr_struct, bits: Int) {
@@ -48,11 +49,10 @@ class Gmp: Equatable, CustomDebugStringConvertible {
         return "\(mantissaExponent.mantissa) \(mantissaExponent.exponent)"
     }
 
-    static func isValidGmpString(_ s: String, bits: Int) -> Bool {
+    static func isValidGmpString(_ gmpString: String, bits: Int) -> Bool {
         var temp_mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)
         mpfr_init2 (&temp_mpfr, bits)
-        let s_dot = s.replacingOccurrences(of: ",", with: ".")
-        return mpfr_set_str (&temp_mpfr, s_dot, 10, MPFR_RNDN) == 0
+        return mpfr_set_str (&temp_mpfr, gmpString, 10, MPFR_RNDN) == 0
     }
     
     struct MantissaExponent {
@@ -79,7 +79,7 @@ class Gmp: Equatable, CustomDebugStringConvertible {
     }
 
     func copy() -> Gmp {
-        let ret = Gmp.init(fromString: "0", bits: bits)
+        let ret = Gmp.init(withString: "0", precision: precision)
         mpfr_set(&ret.mpfr, &mpfr, MPFR_RNDN)
         return ret
     }
@@ -119,33 +119,33 @@ class Gmp: Equatable, CustomDebugStringConvertible {
     
     static var deg2rad: Gmp? = nil
     static var rad2deg: Gmp? = nil
-    static var rad_deg_bits: Int = 0
+    static var rad_deg_precision: Int = 0
     
-    static func assertConstants(bits: Int) {
-        if bits != rad_deg_bits {
-            deg2rad = Gmp(fromString: "0", bits: bits);
+    static func check(_ precision: Int) {
+        if precision != rad_deg_precision {
+            deg2rad = Gmp(withString: "0", precision: precision);
             deg2rad!.π()
-            deg2rad!.div(other: Gmp(fromString: "180", bits: bits))
-            Gmp.rad2deg = Gmp(fromString: "0", bits: bits);
+            deg2rad!.div(other: Gmp(withString: "180", precision: precision))
+            Gmp.rad2deg = Gmp(withString: "0", precision: precision);
             Gmp.rad2deg!.π()
             Gmp.rad2deg!.rez()
-            Gmp.rad2deg!.mul(other: Gmp(fromString: "180", bits: bits))
+            Gmp.rad2deg!.mul(other: Gmp(withString: "180", precision: precision))
         }
-        rad_deg_bits = bits
+        rad_deg_precision = precision
     }
     
-    func sinD()  { Gmp.assertConstants(bits: bits); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_sin(  &mpfr, &mpfr, MPFR_RNDN) }
-    func cosD()  { Gmp.assertConstants(bits: bits); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_cos(  &mpfr, &mpfr, MPFR_RNDN) }
-    func tanD()  { Gmp.assertConstants(bits: bits); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_tan(  &mpfr, &mpfr, MPFR_RNDN) }
-    func asinD() { Gmp.assertConstants(bits: bits); mpfr_asin( &mpfr, &mpfr, MPFR_RNDN); mpfr_mul(&mpfr, &mpfr, &Gmp.rad2deg!.mpfr, MPFR_RNDN) }
-    func acosD() { Gmp.assertConstants(bits: bits); mpfr_acos( &mpfr, &mpfr, MPFR_RNDN); mpfr_mul(&mpfr, &mpfr, &Gmp.rad2deg!.mpfr, MPFR_RNDN) }
-    func atanD() { Gmp.assertConstants(bits: bits); mpfr_atan( &mpfr, &mpfr, MPFR_RNDN); mpfr_mul(&mpfr, &mpfr, &Gmp.rad2deg!.mpfr, MPFR_RNDN) }
+    func sinD()  { Gmp.check(precision); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_sin(  &mpfr, &mpfr, MPFR_RNDN) }
+    func cosD()  { Gmp.check(precision); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_cos(  &mpfr, &mpfr, MPFR_RNDN) }
+    func tanD()  { Gmp.check(precision); mpfr_mul(&mpfr, &mpfr, &Gmp.deg2rad!.mpfr, MPFR_RNDN); mpfr_tan(  &mpfr, &mpfr, MPFR_RNDN) }
+    func asinD() { Gmp.check(precision); mpfr_asin( &mpfr, &mpfr, MPFR_RNDN); mpfr_mul(&mpfr, &mpfr, &Gmp.rad2deg!.mpfr, MPFR_RNDN) }
+    func acosD() { Gmp.check(precision); mpfr_acos( &mpfr, &mpfr, MPFR_RNDN); mpfr_mul(&mpfr, &mpfr, &Gmp.rad2deg!.mpfr, MPFR_RNDN) }
+    func atanD() { Gmp.check(precision); mpfr_atan( &mpfr, &mpfr, MPFR_RNDN); mpfr_mul(&mpfr, &mpfr, &Gmp.rad2deg!.mpfr, MPFR_RNDN) }
     
     func π() {
         mpfr_const_pi(&mpfr, MPFR_RNDN)
     }
     func e() {
-        mpfr_exp( &mpfr, &Gmp(fromString: "1.0", bits: bits).mpfr, MPFR_RNDN)
+        mpfr_exp( &mpfr, &Gmp(withString: "1.0", precision: precision).mpfr, MPFR_RNDN)
         /// Note: mpfr_const_euler() returns 0.577..., not 2.718
     }
     

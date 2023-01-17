@@ -67,8 +67,8 @@ struct Settings: View {
             }
             .padding()
             .onDisappear() {
-                if viewModel.forceScientific != settingsForceScientific {
-                    viewModel.forceScientific = settingsForceScientific
+                if screen.forceScientific != settingsForceScientific {
+                    screen.forceScientific = settingsForceScientific
                 }
                 if viewModel.showPreliminaryResults != settingsShowPreliminaryResults {
                     viewModel.showPreliminaryResults = settingsShowPreliminaryResults
@@ -82,7 +82,7 @@ struct Settings: View {
             }
         }
         .onAppear() {
-            settingsForceScientific = viewModel.forceScientific
+            settingsForceScientific = screen.forceScientific
             settingsShowPreliminaryResults = viewModel.showPreliminaryResults
             settingsPrecision       = viewModel.precision
             UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(white: 0.7, alpha: 1.0)

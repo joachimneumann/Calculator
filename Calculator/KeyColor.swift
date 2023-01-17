@@ -33,7 +33,7 @@ struct KeyColor {
     private let secondActiveColors      = ThreeColors(0.20, 0.60, 0.60)
   
     private func color(for symbol: String, isPending pending: Bool) -> ThreeColors {
-        if ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ","].contains(symbol) {
+        if ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "."].contains(symbol) {
             return digitColors
         } else if symbol == "2nd" {
             return secondColors

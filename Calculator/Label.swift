@@ -44,7 +44,7 @@ struct Label: View {
             sizeFactor = 0.8 /// the sfImage multiply is a bit large
         case _ where sfImageforKey.keys.contains(symbol):
             sizeFactor = sizeFactorOperator
-        case ",":
+        case ",", ".":
             sizeFactor = sizeFactorComma
         case "One_x":
             sizeFactor = 0.9

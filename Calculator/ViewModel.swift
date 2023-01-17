@@ -23,7 +23,6 @@ class ViewModel: ObservableObject {
     var keyColor = KeyColor()
 
     @AppStorage("precision", store: .standard) private (set) var precision: Int = 1000
-    @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
     @AppStorage("showPreliminaryResults", store: .standard) var showPreliminaryResults: Bool = true
     @AppStorage("memoryValue", store: .standard) var memoryValue: String = ""
     @AppStorage("rad", store: .standard) var rad: Bool = false
@@ -186,7 +185,7 @@ class ViewModel: ObservableObject {
                 multipleLines: false,
                 lengths: screen.lengths,
                 useMaximalLength: false,
-                forceScientific: forceScientific,
+                forceScientific: screen.forceScientific,
                 showAsInteger: showAsInteger,
                 showAsFloat: showAsFloat)
             let format = DisplayFormat(
@@ -215,7 +214,7 @@ class ViewModel: ObservableObject {
                 multipleLines: !screen.isPortraitPhone,
                 lengths: screen.lengths,
                 useMaximalLength: false,
-                forceScientific: forceScientific,
+                forceScientific: screen.forceScientific,
                 showAsInteger: showAsInteger,
                 showAsFloat: showAsFloat)
         let format = DisplayFormat(
@@ -253,7 +252,7 @@ class ViewModel: ObservableObject {
             multipleLines: true,
             lengths: Lengths(0),
             useMaximalLength: true,
-            forceScientific: forceScientific,
+            forceScientific: false,
             showAsInteger: showAsInteger,
             showAsFloat: showAsFloat)
         UIPasteboard.general.string = copyData.oneLine

@@ -174,12 +174,12 @@ class BrainEngine {
             self.execute(priority: Operator.closedParenthesesPriority)
         case "%":
             self.percentage()
-        case ",":
+        case ",", ".":
             if pending {
                 n.append(nullNumber)
                 pending = false
             }
-            n.last.appendComma()
+            n.last.appendDot()
         case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
             if pending {
                 n.append(nullNumber)
@@ -208,7 +208,7 @@ class BrainEngine {
         return n.last
     }
     
-    func number(_ s: String) -> Number { Number(s, precision: precision) }
+    func number(_ numberString: String) -> Number { Number(numberString, precision: precision) }
 
     /// used on Settings
     func setPrecision(_ newPrecision: Int) -> Number {
@@ -242,7 +242,7 @@ class DebugBrain: BrainEngine {
 
     func push(_ numberOrOperator: String) {
         let allOperators = [
-            "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",",
+            "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",",
             "C", "AC", "±", "%", "/", "x", "-", "+", "=",
             "( ", " )", "mc", "m+", "m-", "mr",
             "2nd", "x^2", "x^3", "x^y", "e^x", "y^x", "2^x", "10^x",
@@ -258,8 +258,8 @@ class DebugBrain: BrainEngine {
                     if intValue >= 0 && intValue <= 9 {
                         let _  = operation(String(digit))
                     }
-                } else if digit == "." || digit == "," {
-                    let _  = operation(",")
+                } else if digit == "," || digit == "." {
+                    let _  = operation(".")
                 } else if digit == "-" {
                     isNegative = true
                 } else {
@@ -288,9 +288,10 @@ class DebugBrain: BrainEngine {
 
     var no: Int { operatorStack.count }
     var nn: Int { n.count }
-    var left: String { debugData.left }
-    var right: String? { debugData.right }
-    var oneLine: String { debugData.left + (debugData.right ?? "") }
+    var last: Number { n.last }
+//    var left: String { debugData.left }
+//    var right: String? { debugData.right }
+//    var oneLine: String { debugData.left + (debugData.right ?? "") }
     var double: Double { n.last.gmp != nil ? n.last.gmp!.toDouble() : -1.0 }
 
     func speedTest() async -> String {

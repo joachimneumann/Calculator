@@ -8,7 +8,7 @@
 import Foundation
 
 class Number: CustomDebugStringConvertible {
-    private var _precision: Int = 0
+    private (set) var precision: Int = 0
     private var _str: String?
     private var _gmp: Gmp?
     static let MAX_DISPLAY_LENGTH = 10_000 // too long strings in Text() crash the app
@@ -23,14 +23,14 @@ class Number: CustomDebugStringConvertible {
     }
     func copy() -> Number {
         if isStr {
-            return Number(str!, precision: _precision)
+            return Number(str!, precision: precision)
         } else {
-            return Number(gmp!.copy(), precision: _precision)
+            return Number(gmp!.copy())
         }
     }
     func toGmp() {
         if isStr {
-            _gmp = Gmp(fromString: str!, bits: Self.bits(for: _precision))
+            _gmp = Gmp(withString: str!, precision: precision)
             _str = nil
         }
     }
@@ -47,19 +47,19 @@ class Number: CustomDebugStringConvertible {
     init(_ str: String, precision: Int) {
         _str = str
         _gmp = nil
-        _precision = precision
+        self.precision = precision
     }
-    init(_ gmp: Gmp, precision: Int) {
+    init(_ gmp: Gmp) {
         //print("Number init()")
         _str = nil
         _gmp = gmp
-        _precision = precision
+        self.precision = gmp.precision
     }
     fileprivate init() {
         //print("Number init()")
         _str = nil
         _gmp = nil
-        _precision = 0
+        precision = 0
     }
     
     func setValue(other number: Number) {
@@ -83,11 +83,11 @@ class Number: CustomDebugStringConvertible {
         }
     }
     
-    func appendComma() {
+    func appendDot() {
         if str == nil {
-            _str = "0,"
+            _str = "0."
         } else {
-            if !_str!.contains(",") { _str!.append(",") }
+            if !_str!.contains(".") { _str!.append(".") }
         }
     }
     var isNegative: Bool {
@@ -112,9 +112,9 @@ class Number: CustomDebugStringConvertible {
     
     var debugDescription: String {
         if isStr {
-            return "\(_str!) precision \(_precision) string"
+            return "\(_str!) precision \(precision) string"
         } else {
-            return "\(_gmp!.toDouble())  precision \(_precision) gmp "
+            return "\(_gmp!.toDouble())  precision \(precision) gmp "
         }
     }
     
@@ -127,7 +127,7 @@ class Number: CustomDebugStringConvertible {
         showAsFloat: Bool) -> DisplayData {
             let lengths: Lengths
             if useMaximalLength {
-                lengths = Lengths(_precision)
+                lengths = Lengths(precision)
             } else {
                 lengths = specifiedLengths
             }
@@ -135,8 +135,8 @@ class Number: CustomDebugStringConvertible {
             if !forceScientific {
                 if let s = str {
                     assert(!s.contains("e"), "What, a scientific string?") /// pasted numbers are always gmp
-                    if let commaPosition = s.position(of: ",") {
-                        if commaPosition < lengths.withCommaNonScientific { /// we want the comma to be visible in the first line!
+                    if let dotPosition = s.position(of: ".") {
+                        if dotPosition < lengths.withCommaNonScientific { /// we want the comma to be visible in the first line!
                             if multipleLines {
                                 displayData.left = String(s.prefix(Number.MAX_DISPLAY_LENGTH))
                                 displayData.right = nil
@@ -144,8 +144,8 @@ class Number: CustomDebugStringConvertible {
                             } else {
                                 /// Is there something hidden after the zeroes in the first line? --> do nothing
                                 let visible = String(s.prefix(lengths.withCommaNonScientific))
-                                let allStripped = s.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: "0", with: "")
-                                let visibleStripped = visible.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: "0", with: "")
+                                let allStripped = s.replacingOccurrences(of: ".", with: "").replacingOccurrences(of: "0", with: "")
+                                let visibleStripped = visible.replacingOccurrences(of: ".", with: "").replacingOccurrences(of: "0", with: "")
                                 if visibleStripped.count == 0 && allStripped.count > 0 {
                                     /// the number will be displayed as scientific
                                 } else {
@@ -177,7 +177,7 @@ class Number: CustomDebugStringConvertible {
                 // Let's try three times the length with a minumum of 1000
                 // Note that displayGmp is not used in further calculations!
                 let displayPrecision: Int = max(str!.count * 3, 1000)
-                displayGmp = Gmp(fromString: str!, bits: Self.bits(for: displayPrecision))
+                displayGmp = Gmp(withString: str!, precision: displayPrecision)
             }
             
             if displayGmp.NaN {
@@ -203,25 +203,25 @@ class Number: CustomDebugStringConvertible {
             
             if multipleLines {
                 if useMaximalLength {
-                    mantissaLength                  = _precision
-                    withoutComma                    = _precision
-                    withCommaNonScientific          = _precision
-                    withCommaScientific             = _precision
-                    firstLineWithoutComma           = _precision
-                    firstLineWithCommaNonScientific = _precision
+                    mantissaLength                  = precision
+                    withoutComma                    = precision
+                    withCommaNonScientific          = precision
+                    withCommaScientific             = precision
+                    firstLineWithoutComma           = precision
+                    firstLineWithCommaNonScientific = precision
                 } else {
-                    mantissaLength                  = min(_precision, Number.MAX_DISPLAY_LENGTH)
-                    withoutComma                    = min(_precision, Number.MAX_DISPLAY_LENGTH)
-                    withCommaNonScientific          = min(_precision, Number.MAX_DISPLAY_LENGTH)
-                    withCommaScientific             = min(_precision, Number.MAX_DISPLAY_LENGTH)
-                    firstLineWithoutComma           = min(_precision, lengths.withoutComma)
-                    firstLineWithCommaNonScientific = min(_precision, lengths.withCommaNonScientific)
+                    mantissaLength                  = min(precision, Number.MAX_DISPLAY_LENGTH)
+                    withoutComma                    = min(precision, Number.MAX_DISPLAY_LENGTH)
+                    withCommaNonScientific          = min(precision, Number.MAX_DISPLAY_LENGTH)
+                    withCommaScientific             = min(precision, Number.MAX_DISPLAY_LENGTH)
+                    firstLineWithoutComma           = min(precision, lengths.withoutComma)
+                    firstLineWithCommaNonScientific = min(precision, lengths.withCommaNonScientific)
                 }
             } else {
                 mantissaLength                  = lengths.withCommaScientific
-                withoutComma                    = min(_precision, lengths.withoutComma)
-                withCommaNonScientific          = min(_precision, lengths.withCommaNonScientific)
-                withCommaScientific             = min(_precision, lengths.withCommaScientific)
+                withoutComma                    = min(precision, lengths.withoutComma)
+                withCommaNonScientific          = min(precision, lengths.withCommaNonScientific)
+                withCommaScientific             = min(precision, lengths.withCommaScientific)
                 firstLineWithoutComma           = withoutComma
                 firstLineWithCommaNonScientific = withCommaNonScientific
             }
@@ -269,7 +269,7 @@ class Number: CustomDebugStringConvertible {
                 if exponent < withCommaNonScientific - 1 {
                     var floatString = mantissa
                     let index = floatString.index(floatString.startIndex, offsetBy: exponent+1)
-                    floatString.insert(",", at: index)
+                    floatString.insert(".", at: index)
                     
                     /// is the comma visible in the first line and is there at least one digit after the comma?
                     if exponent + 1 >= firstLineWithCommaNonScientific { if !displayData.canBeInteger { displayData.canBeFloat = true } }
@@ -315,7 +315,7 @@ class Number: CustomDebugStringConvertible {
             /// needs to be displayed in scientific notation
             displayData.right = "e\(exponent)"
             let indexOne = mantissa.index(mantissa.startIndex, offsetBy: 1)
-            mantissa.insert(",", at: indexOne)
+            mantissa.insert(".", at: indexOne)
             if mantissa.count <= 2 { mantissa += "0" } /// e.g. 1e16 -> 1,e16 -> 1,0e16
             if mantissa.count + displayData.right!.count > withCommaScientific {
                 /// Do I need to shorten the mantissa to fit into the display?
@@ -347,10 +347,10 @@ class Number: CustomDebugStringConvertible {
             return precision + 50000
         }
     }
+    
     static func bits(for precision: Int) -> Int {
         Int(Double(internalPrecision(for: precision)) * 3.32192809489)
     }
-    
 }
 
 
