@@ -21,12 +21,16 @@ actor Brain {
     func setPrecision(_ newPrecision: Int) -> Number {
         brainEngine.setPrecision(newPrecision)
     }
-    
-    func replaceLast(with number: Number) -> Number {
-        brainEngine.replaceLast(with: number)
+
+    func replaceLast(withString s: String) -> Number {
+        brainEngine.replaceLast(with: number(s))
     }
-    
+
     var precision: Int {
         brainEngine.precision
+    }
+    
+    func number(_ s: String) -> Number {
+        brainEngine.number(s)
     }
 }

@@ -14,18 +14,42 @@ class CalculatorTests: XCTestCase {
     func test_Separators() {
         let debugBrain = DebugBrain(precision: 1_000, lengths: Lengths(50))
         let screen = Screen(CGSize(width: 200, height: 200))
-        screen.thousandSeparatorCase = 0 // none
-        screen.decimalSeparatorCase = 0 // comma
+        screen.thousandSeparator = .none
+        screen.decimalSeparator = .comma
         debugBrain.push(1234567.7)
         XCTAssertEqual(debugBrain.oneLine, "1234567,7")
-        screen.decimalSeparatorCase = 1 // dot
+        screen.decimalSeparator = .dot
         XCTAssertEqual(debugBrain.oneLine, "1234567.7")
-        screen.thousandSeparatorCase = 1 // comma
-        screen.decimalSeparatorCase = 0 // dot
+        screen.thousandSeparator = .comma
+        screen.decimalSeparator = .dot
         XCTAssertEqual(debugBrain.oneLine, "1,234,567.7")
-        screen.thousandSeparatorCase = 1 // dot
-        screen.decimalSeparatorCase = 0 // comma
+        screen.thousandSeparator = .dot
+        screen.decimalSeparator = .comma
         XCTAssertEqual(debugBrain.oneLine, "1.234.567,7")
+    }
+
+    func test_display() {
+        let precision = 1_000
+        let debugBrain = DebugBrain(precision: precision, lengths: Lengths(10))
+        let screen = Screen(CGSize(width: 200, height: 200))
+        
+        screen.thousandSeparator = .none
+        screen.decimalSeparator = .comma
+        displayTest()
+        screen.thousandSeparator = .none
+        screen.decimalSeparator = .dot
+        displayTest()
+        screen.thousandSeparator = .dot
+        screen.decimalSeparator = .comma
+        displayTest()
+        screen.thousandSeparator = .comma
+        screen.decimalSeparator = .dot
+        displayTest()
+        
+        func displayTest() {
+            let n = debugBrain.number("12345")
+        }
+
     }
     
     func testBits() {

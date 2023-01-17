@@ -238,7 +238,7 @@ class ViewModel: ObservableObject {
                 print("pasteString", pasteString, pasteString.count)
                 if pasteString.count > 0 {
                     if Gmp.isValidGmpString(pasteString, bits: 1000) {
-                        displayNumber = await brain.replaceLast(with: Number(pasteString, precision: brain.precision))
+                        displayNumber = await brain.replaceLast(withString: pasteString)
                         await refreshDisplay(screen: screen)
                         return true
                     }

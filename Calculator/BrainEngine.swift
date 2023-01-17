@@ -13,7 +13,7 @@ class BrainEngine {
     private (set) var precision: Int = 0
     private var pending: Bool
     private var memory: Number? = nil
-    private var nullNumber: Number { Number("0", precision: precision) }
+    private var nullNumber: Number { number("0") }
     private let constantOperators: Dictionary <String, Inplace> = [
         "π":    Inplace(Gmp.π, 0),
         "e":    Inplace(Gmp.e, 0),
@@ -73,10 +73,10 @@ class BrainEngine {
     }
     private func percentage() {
         if operatorStack.count == 0 {
-            n.last.execute(Gmp.mul, with: Number("0.01", precision: precision))
+            n.last.execute(Gmp.mul, with: number("0.01"))
         } else if operatorStack.count >= 1 && n.count >= 2 {
             if let secondLast = n.secondLast {
-                n.last.execute(Gmp.mul, with: Number("0.01", precision: precision))
+                n.last.execute(Gmp.mul, with: number("0.01"))
                 n.last.execute(Gmp.mul, with: secondLast)
             }
         }
@@ -208,6 +208,8 @@ class BrainEngine {
         return n.last
     }
     
+    func number(_ s: String) -> Number { Number(s, precision: precision) }
+
     /// used on Settings
     func setPrecision(_ newPrecision: Int) -> Number {
         if newPrecision != precision {
@@ -222,7 +224,7 @@ class BrainEngine {
         operatorStack.removeAll()
         n.removeAll()
         pending = false
-        n.append(Number("0", precision: precision))
+        n.append(number("0"))
         //        operation("π")
         //        operation("8")
     }
