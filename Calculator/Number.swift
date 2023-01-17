@@ -264,8 +264,8 @@ class Number: CustomDebugStringConvertible {
             }
             
             /// Is floating point XXX,xxx?
-            /// additional requirement: comma in first line. If not, it is not easy to see the comma
             if !forceScientific && exponent >= 0 {
+                /// additional requirement: comma in first line. I don't want the comma to be hidden behind the keyboard
                 if exponent < withCommaNonScientific - 1 {
                     var floatString = mantissa
                     let index = floatString.index(floatString.startIndex, offsetBy: exponent+1)
