@@ -158,43 +158,44 @@ class Screen: Equatable, ObservableObject {
         eWidth                 = "e".textWidth(for: uiFont, kerning: kerning)
         decimalSeparatorWidth  = _decimalSeparator.wrappedValue.string.textWidth(for: uiFont, kerning: kerning)
         thousandSeparatorWidth = _thousandSeparator.wrappedValue.string.textWidth(for: uiFont, kerning: kerning)
-        
-        measureTextLengths(screenSize: screenSize)
-        
     }
-    
-    func measureTextLengths(screenSize: CGSize) {
-        lengths = lengthMeasurement(width: displayWidth, uiFont: uiFont, infoUiFont: infoUiFont, ePadding: ePadding, kerning: kerning)
-        objectWillChange.send()
-    }
-    
-    func localized(_ candidate: String, forceScientific: Bool = false) -> DisplayData {
-        if forceScientific {
-            // what precision do I need to convert the string into a Gmp?
-            // The length of the string is not sufficient because Gmp does not use base 10
-            // Let's try three times the length with a minumum of 1000
-            // Note that displayGmp is not used in further calculations!
-            let displayPrecision: Int = max(candidate.count * 3, 1000)
-            let asGmp = Gmp(withString: candidate, precision: displayPrecision)
-            return localizedScientific(asGmp)
-        }
-        guard !candidate.contains(",") else { assert(false, "string contains comma, but only dot is allowed") }
         
-        if candidate.contains("e") {
-            /// scientific
-            return DisplayData(left: "scientific?")
-        } else {
-            /// integer or float
-            let withSeparators = withSeparators(numberString: candidate)
-            if withSeparators.textWidth(for: uiFont, kerning: kerning) < displayWidth {
-                return DisplayData(left: withSeparators, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+    func localized(_ stringNumber: String) -> DisplayData {
+        guard !stringNumber.contains(",") else { assert(false, "string contains comma, but only dot is allowed") }
+        guard !stringNumber.contains("e") else { assert(false, "scientific?") }
+
+        var mantissa: String
+        var exponent: Int
+
+        /// integer or float
+        if stringNumber.contains(".") {
+            /// float
+            let tempArray = stringNumber.split(separator: ".")
+            
+            var integerPart: String = ""
+            var fractionPart: String = ""
+            if tempArray.count == 1 {
+                integerPart = String(tempArray[0])
+                fractionPart = ""
+            } else if tempArray.count == 2 {
+                integerPart = String(tempArray[0])
+                fractionPart = String(tempArray[1])
+            } else {
+                assert(false, "localized: tempArray.count = \(tempArray.count)")
             }
-            
-            /// longer, might be float
-            
-            /// no integer or float -> show as scientific
-            return localized(candidate, forceScientific: true)
+
+            mantissa = integerPart + fractionPart
+            exponent = integerPart.count - 1
+            while mantissa.starts(with: "0") {
+                mantissa = mantissa.replacingFirstOccurrence(of: "0", with: "")
+                exponent -= 1
+            }
+        } else {
+            /// no dot --> integer
+            mantissa = stringNumber
+            exponent = stringNumber.count - 1
         }
+        return process(mantissa, exponent)
     }
     
     func localizedScientific(_ displayGmp: Gmp) -> DisplayData {
@@ -204,50 +205,28 @@ class Screen: Equatable, ObservableObject {
         print("localizedScientific exponent", exponent)
         if exponent < 0 {
             /// is floating point 0,xxxx
-            let secondIndex = mantissa.index(mantissa.startIndex, offsetBy: 1)
-            mantissa.insert(decimalSeparator.character, at: secondIndex)
+            if mantissa.first == "-" {
+                let thirdIndex = mantissa.index(mantissa.startIndex, offsetBy: 2)
+                mantissa.insert(decimalSeparator.character, at: thirdIndex)
+            } else {
+                let secondIndex = mantissa.index(mantissa.startIndex, offsetBy: 1)
+                mantissa.insert(decimalSeparator.character, at: secondIndex)
+            }
             print("localizedScientific mantissa", mantissa)
             print("localizedScientific exponent", exponent)
             return DisplayData(left: mantissa, right: "e\(exponent)", maxlength: 0, canBeInteger: false, canBeFloat: true)
+        } else {
+            /// exponent >= 0
         }
         return DisplayData(left: "scientific", right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
     }
     
-
-    
-    func localized(_ candidate: Number, forceScientific: Bool = false) -> DisplayData {
-        if candidate.str != nil {
-            return localized(candidate.str!, forceScientific: forceScientific)
-        }
-
-        guard candidate.gmp != nil else {
-            assert(false, "localized candidate no str and no gmp")
-            return DisplayData(left: "error")
-        }
+    func process(_ mantissa_: String, _ exponent_: Int) -> DisplayData {
+        var mantissa = mantissa_
+        var exponent = exponent_
         
-        let displayGmp: Gmp = candidate.gmp!
-        
-        if displayGmp.NaN {
-            return DisplayData(left: "not a number")
-        }
-        if displayGmp.inf {
-            return DisplayData(left: "infinity")
-        }
-        
-        if forceScientific {
-            return localizedScientific(displayGmp)
-        }
-
-        if displayGmp.isZero {
-            return DisplayData(left: "0")
-        }
-
-        var (mantissa, exponent) = displayGmp.mantissaExponent(len: min(displayGmp.precision, Number.MAX_DISPLAY_LENGTH))
-
         if mantissa.isEmpty {
             mantissa = "0"
-        } else {
-            exponent = exponent - 1
         }
 
         /// negative? Special treatment
@@ -266,7 +245,7 @@ class Screen: Equatable, ObservableObject {
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
             let withSeparators = withSeparators(numberString: mantissa)
             if withSeparators.textWidth(for: uiFont, kerning: kerning) < displayWidth {
-                return DisplayData(left: withSeparators, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+                return DisplayData(left: withSeparators, right: nil, maxlength: 0, canBeInteger: true, canBeFloat: false)
             }
         }
         
@@ -274,8 +253,12 @@ class Screen: Equatable, ObservableObject {
         if exponent >= 0 {
             var floatString = mantissa
             let index = floatString.index(floatString.startIndex, offsetBy: exponent+1)
+            let indexInt: Int = floatString.distance(from: floatString.startIndex, to: index)
             floatString.insert(decimalSeparator.character, at: index)
-//            return DisplayData(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+            let floatCandidate = String(floatString.prefix(indexInt+1))
+            if floatCandidate.textWidth(for: uiFont, kerning: kerning) <= displayWidth {
+                return DisplayData(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+            }
             /// is the comma visible in the first line and is there at least one digit after the comma?
         }
         
@@ -301,7 +284,7 @@ class Screen: Equatable, ObservableObject {
 //            /// restore trailing zeros that have been removed
 //            mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
 //            // print(mantissa)
-//            
+//
 //            if mantissa.count > firstLineWithoutComma { displayData.canBeInteger = true }
 //            if mantissa.count <= firstLineWithoutComma ||
 //                (multipleLines && showAsInteger) {
@@ -313,6 +296,39 @@ class Screen: Equatable, ObservableObject {
 
 
         return DisplayData(left: "not implemented", right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+    }
+    
+    func localized(_ candidate: Number, forceScientific: Bool = false) -> DisplayData {
+        if candidate.str != nil {
+            return localized(candidate.str!)
+        }
+
+        guard candidate.gmp != nil else {
+            assert(false, "localized candidate no str and no gmp")
+            return DisplayData(left: "error")
+        }
+        
+        let displayGmp: Gmp = candidate.gmp!
+        
+        if displayGmp.NaN {
+            return DisplayData(left: "not a number")
+        }
+        if displayGmp.inf {
+            return DisplayData(left: "infinity")
+        }
+        
+        if forceScientific {
+            return localizedScientific(displayGmp)
+        }
+
+        if displayGmp.isZero {
+            return DisplayData(left: "0")
+        }
+
+        let (mantissa, exponent) = displayGmp.mantissaExponent(len: min(displayGmp.precision, Number.MAX_DISPLAY_LENGTH))
+
+        return process(mantissa, exponent)
+
     }
     
     func withSeparators(numberString: String) -> String {
@@ -361,6 +377,11 @@ extension String {
         }
         return ""
     }
+
+    func replacingFirstOccurrence(of target: String, with replacement: String) -> String {
+        guard let range = self.range(of: target) else { return self }
+        return self.replacingCharacters(in: range, with: replacement)
+    }
 }
 
 
@@ -390,3 +411,13 @@ extension String {
 //        print("--> trimmed", trimmed)
 //        return trimmed
 //    }
+
+//if forceScientific {
+//    // what precision do I need to convert the string into a Gmp?
+//    // The length of the string is not sufficient because Gmp does not use base 10
+//    // Let's try three times the length with a minumum of 1000
+//    // Note that displayGmp is not used in further calculations!
+//    let displayPrecision: Int = max(stringNumber.count * 3, 1000)
+//    let asGmp = Gmp(withString: stringNumber, precision: displayPrecision)
+//    return localizedScientific(asGmp)
+//}
