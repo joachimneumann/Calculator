@@ -32,15 +32,11 @@ struct Lengths {
 //let xxx = "0".size(withAttributes: fontAttribute)  // for Single Line
 //let _ = print("Calculator len \(model.displayData.longLeft) \(xxx.width)")
 
-func heightMeasurement(uiFont: UIFont, kerning: CGFloat) -> CGFloat {
-    "0".textSize(for: uiFont, kerning: kerning).height
-}
-
 func lengthMeasurement(width: CGFloat, uiFont: UIFont, infoUiFont: UIFont, ePadding: CGFloat, kerning: CGFloat) -> Lengths {
-    let digitWidth = "0".textSize(for: uiFont, kerning: kerning).width
-    let commaWidth = ",".textSize(for: uiFont, kerning: kerning).width
-    let eWidth     = "e".textSize(for: uiFont, kerning: kerning).width
-    assert(".".textSize(for: uiFont, kerning: kerning).width == commaWidth, "lengthMeasurement: dotWidth != commaWidth")
+    let digitWidth = "0".textWidth(for: uiFont, kerning: kerning)
+    let commaWidth = ",".textWidth(for: uiFont, kerning: kerning)
+    let eWidth     = "e".textWidth(for: uiFont, kerning: kerning)
+    assert(".".textWidth(for: uiFont, kerning: kerning) == commaWidth, "lengthMeasurement: dotWidth != commaWidth")
 
     let withoutComma           = Int(  width                                   / digitWidth)
     let withCommaNonScientific = Int( (width - commaWidth)                     / digitWidth) + 1
@@ -59,15 +55,20 @@ func lengthMeasurement(width: CGFloat, uiFont: UIFont, infoUiFont: UIFont, ePadd
 
     
 extension String {
-    func textSize(for uiFont: UIFont, kerning: CGFloat) -> CGSize {
+    func textHeight(for uiFont: UIFont, kerning: CGFloat) -> CGFloat {
         //  attrString.addAttribute(NSAttributedStringKey.kern, value: 2, range: NSMakeRange(0, attrString.length))
 
         var attributes: [NSAttributedString.Key : Any] = [:]
         attributes[.kern] = kerning
-//        attributes[.strokeWidth] = 300
         attributes[.font] = uiFont
-//        let fontAttribute = [NSAttributedString.Key.font: uiFont]
-        let size = self.size(withAttributes: attributes)  // for Single Line
-        return size;
+        return self.size(withAttributes: attributes).height
+    }
+    func textWidth(for uiFont: UIFont, kerning: CGFloat) -> CGFloat {
+        //  attrString.addAttribute(NSAttributedStringKey.kern, value: 2, range: NSMakeRange(0, attrString.length))
+
+        var attributes: [NSAttributedString.Key : Any] = [:]
+        attributes[.kern] = kerning
+        attributes[.font] = uiFont
+        return self.size(withAttributes: attributes).width
     }
 }

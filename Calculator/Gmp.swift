@@ -45,8 +45,8 @@ class Gmp: Equatable, CustomDebugStringConvertible {
     }
 
     var debugDescription: String {
-        let mantissaExponent = mantissaExponent(len: 100)
-        return "\(mantissaExponent.mantissa) \(mantissaExponent.exponent)"
+        let (mantissa, exponent) = mantissaExponent(len: 100)
+        return "\(mantissa) \(exponent)"
     }
 
     static func isValidGmpString(_ gmpString: String, bits: Int) -> Bool {
@@ -54,13 +54,8 @@ class Gmp: Equatable, CustomDebugStringConvertible {
         mpfr_init2 (&temp_mpfr, bits)
         return mpfr_set_str (&temp_mpfr, gmpString, 10, MPFR_RNDN) == 0
     }
-    
-    struct MantissaExponent {
-        let mantissa: String
-        let exponent: Int
-    }
-    
-    func mantissaExponent(len: Int) -> MantissaExponent {
+        
+    func mantissaExponent(len: Int) -> (String, Int) {
         var exponent: mpfr_exp_t = 0
         
         var charArray: Array<CChar> = Array(repeating: 0, count: len+10)
@@ -75,7 +70,7 @@ class Gmp: Equatable, CustomDebugStringConvertible {
         zeroCharacterSet.insert(charactersIn: "0")
         mantissa = mantissa.trimmingCharacters(in: zeroCharacterSet)
 
-        return MantissaExponent(mantissa: mantissa, exponent: exponent)
+        return (mantissa, exponent)
     }
 
     func copy() -> Gmp {

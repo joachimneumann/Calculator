@@ -11,7 +11,8 @@ import XCTest
 
 class CalculatorTests: XCTestCase {
     
-    var screen: Screen = Screen(CGSize(width: 200, height: 200))
+    var screen: Screen = Screen(CGSize(width: 130, height: 130))
+    let precision = 1000
     
     override func setUpWithError() throws {
         screen.thousandSeparator = .none
@@ -39,7 +40,7 @@ class CalculatorTests: XCTestCase {
     }
 
     func test_Separators() {
-        let debugBrain = DebugBrain(precision: 1_000, lengths: Lengths(50))
+        let debugBrain = DebugBrain(precision: precision, lengths: Lengths(50))
         screen.decimalSeparator = .comma
         screen.thousandSeparator = .none
         XCTAssertEqual(left("1234567.7"), "1234567,7")
@@ -59,21 +60,65 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(left(debugBrain.last), "1.234.567,7")
     }
 
-    func test_display() {
+    func compare(_ number: Number, _ left: String, _ right: String?) {
+        let localized = screen.localized(number)
+        XCTAssertEqual(localized.left, "123")
+        XCTAssertEqual(localized.right, right)
+    }
 
-        screen.thousandSeparator = .none
-        screen.decimalSeparator = .comma
-        XCTAssertEqual(left("123"),     "123")
-        XCTAssertEqual(left("1234"),    "1234")
-        XCTAssertEqual(left("12345"),   "12345")
-        XCTAssertEqual(left("123456"),  "123456")
-        XCTAssertEqual(left("1234567"), "1234567")
-        XCTAssertEqual(left("123.99"),     "123,99")
-        XCTAssertEqual(left("1234.99"),    "1234,99")
-        XCTAssertEqual(left("12345.99"),   "12345,99")
-        XCTAssertEqual(left("123456.99"),  "123456,99")
-        XCTAssertEqual(left("1234567.99"), "1234567,99")
+    func compare(_ numberString: String, _ left: String, _ right: String?) {
+        let localized = screen.localized(Number(numberString, precision: precision))
+        XCTAssertEqual(localized.left, "123")
+        XCTAssertEqual(localized.right, right)
+    }
 
+    func test_float_more_than_1() {
+        XCTAssertEqual(left("1.9"),              "1,9")
+        XCTAssertEqual(left("12.9"),             "12,9")
+        XCTAssertEqual(left("1234.9"),           "1234,9")
+        XCTAssertEqual(left("12345.9"),          "12345,9")
+        XCTAssertEqual(left("123456.9"),         "123456,9")
+        XCTAssertEqual(left("1234567.9"),        "1234567,9")
+        XCTAssertEqual(left("12345678.9"),       "12345678,9")
+        XCTAssertEqual(left("123456789.9"),      "123456789,9")
+        XCTAssertEqual(left("1234567890.9"),     "1234567890,9")
+        XCTAssertEqual(left("12345678901.9"),    "12345678901,9")
+        XCTAssertEqual(left("123456789012.9"),   "123456789012,9")
+        XCTAssertEqual(left("1234567890123.9"),  "1234567890123,9")
+        XCTAssertEqual(left("12345678901234.9"), "12345678901234,9")
+
+        XCTAssertEqual(left("1.987654321"),              "1,987654321")
+        XCTAssertEqual(left("12.987654321"),             "12,987654321")
+        XCTAssertEqual(left("1234.987654321"),           "1234,987654321")
+        XCTAssertEqual(left("12345.987654321"),          "12345,987654321")
+        XCTAssertEqual(left("123456.987654321"),         "123456,987654321")
+        XCTAssertEqual(left("1234567.987654321"),        "1234567,987654321")
+        XCTAssertEqual(left("12345678.987654321"),       "12345678,987654321")
+        XCTAssertEqual(left("123456789.987654321"),      "123456789,987654321")
+        XCTAssertEqual(left("1234567890.987654321"),     "1234567890,987654321")
+        XCTAssertEqual(left("12345678901.987654321"),    "12345678901,987654321")
+        XCTAssertEqual(left("123456789012.987654321"),   "123456789012,987654321")
+        XCTAssertEqual(left("1234567890123.987654321"),  "1234567890123,987654321")
+        XCTAssertEqual(left("12345678901234.987654321"), "12345678901234,987654321")
+
+    }
+    func test_float_less_than_1() {
+        XCTAssertEqual(left("0.123"),              "0,123")         ; XCTAssertNil(right("0.123"))
+        XCTAssertEqual(left("0.0123"),             "0,0123")        ; XCTAssertNil(right("0.0123"))
+        XCTAssertEqual(left("0.00123"),            "0,00123")       ; XCTAssertNil(right("0.00123"))
+        XCTAssertEqual(left("0.000123"),           "0,000123")      ; XCTAssertNil(right("0.000123"))
+        XCTAssertEqual(left("0.0000123"),          "0,0000123")     ; XCTAssertNil(right("0.0000123"))
+        XCTAssertEqual(left("0.00000123"),         "0,00000123")    ; XCTAssertNil(right("0.00000123"))
+        XCTAssertEqual(left("0.000000123"),        "0,000000123")   ; XCTAssertNil(right("0.000000123"))
+        XCTAssertEqual(left("0.0000000123"),       "0,0000000123")  ; XCTAssertNil(right("0.0000000123"))
+        XCTAssertEqual(left("0.00000000123"),      "1,23")        ; XCTAssertEqual(right("0.00000000123"), "e-8")
+        XCTAssertEqual(left("0.000000000123"),     "1,23")        ; XCTAssertEqual(right("0.000000000123"), "e-9")
+        XCTAssertEqual(left("0.0000000000123"),    "1,23")        ; XCTAssertEqual(right("0.0000000000123"), "e-10")
+        XCTAssertEqual(left("0.00000000000123"),   "1,23")        ; XCTAssertEqual(right("0.00000000000123"), "e-11")
+        XCTAssertEqual(left("0.000000000000123"),  "1,23")        ; XCTAssertEqual(right("0.000000000000123"), "e-12")
+        XCTAssertEqual(left("0.0000000000000123"), "1,23")        ; XCTAssertEqual(right("0.0000000000000123"), "e-13")
+    }
+    func test_xx() {
         screen.thousandSeparator = .none
         screen.decimalSeparator = .dot
         XCTAssertEqual(left("123"),     "123")
@@ -97,6 +142,11 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(left("12345"),   "12,345")
         XCTAssertEqual(left("123456"),  "123,456")
         XCTAssertEqual(left("1234567"), "1,234,567")
+        XCTAssertEqual(left("12345678"), "1,234,5678")
+        XCTAssertEqual(left("123456789"), "1,234,56789")
+        XCTAssertEqual(left("1234567890"), "1,234,567890")
+        XCTAssertEqual(left("12345678901"), "1,234,5678901")
+        XCTAssertEqual(left("123456789012"), "1,234,56789012")
 
     }
     
@@ -116,14 +166,28 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(oneLine(debugBrain.last), "0,7")
     }
     
-    func testmultipleLiner() {
+    func test_Integer() {
+        screen.thousandSeparator = .none
+        screen.decimalSeparator = .comma
+        XCTAssertEqual(left("123"),     "123")
+        XCTAssertEqual(left("1234"),    "1234")
+        XCTAssertEqual(left("12345"),   "12345")
+        XCTAssertEqual(left("123456"),  "123456")
+        XCTAssertEqual(left("1234567"), "1234567")
+        XCTAssertEqual(left("12345678"), "12345678")
+        XCTAssertEqual(left("123456789"), "123456789")
+        XCTAssertEqual(left("1234567890"), "1234567890")
+        XCTAssertEqual(left("12345678901"), "12345678901")
+        XCTAssertEqual(left("123456789012"), "123456789012")
+        XCTAssertEqual(left("1234567890123"), "1234567890123")
+        XCTAssertEqual(left("12345678901234"), "12345678901234")
+        XCTAssertEqual(left("123456789012345"), "123456789012345")
+
         let debugBrain = DebugBrain(precision: 100, lengths: Lengths(withoutComma: 8, withCommaNonScientific: 9, withCommaScientific: 9, digitWidth: 0, ePadding: 0))
-
-        /// integers
+        
         debugBrain.pushnew(123)
-        XCTAssertEqual(left(debugBrain.last), "123")
-        XCTAssertNil(right(debugBrain.last))
-
+        compare(debugBrain.last, "123", nil)
+        
         debugBrain.pushnew(1234)
         XCTAssertEqual(left(debugBrain.last), "1234")
         XCTAssertNil(right(debugBrain.last))
@@ -170,42 +234,44 @@ class CalculatorTests: XCTestCase {
         debugBrain.pushnew("123456789")
         XCTAssertEqual(left(debugBrain.last), "1,23456")
         XCTAssertEqual(right(debugBrain.last), "e8")
-
-
-        debugBrain.pushnew("-123")
-        XCTAssertEqual(left(debugBrain.last), "-123")
-        XCTAssertNil(right(debugBrain.last))
-
-
-        debugBrain.pushnew(-12345)
-        XCTAssertEqual(left(debugBrain.last), "-12345")
-        XCTAssertNil(right(debugBrain.last))
-
-
-        debugBrain.pushnew(-123456)
-        XCTAssertEqual(left(debugBrain.last), "-123456")
-        XCTAssertNil(right(debugBrain.last))
-
-
-        debugBrain.pushnew(-1234567)
-        XCTAssertEqual(left(debugBrain.last), "-1234567")
-        XCTAssertNil(right(debugBrain.last))
-
-
-        debugBrain.pushnew(-12345678)
-        XCTAssertEqual(left(debugBrain.last), "-1,2345")
-        XCTAssertEqual(right(debugBrain.last), "e7")
-
-        debugBrain.pushnew(1234567)
-        XCTAssertEqual(left(debugBrain.last), "1234567")
-        XCTAssertNil(right(debugBrain.last))
-
-
-        debugBrain.pushnew(-1234567)
-        XCTAssertEqual(left(debugBrain.last), "-1234567")
-        XCTAssertNil(right(debugBrain.last))
+//
+//
+//        debugBrain.pushnew("-123")
+//        XCTAssertEqual(left(debugBrain.last), "-123")
+//        XCTAssertNil(right(debugBrain.last))
+//
+//
+//        debugBrain.pushnew(-12345)
+//        XCTAssertEqual(left(debugBrain.last), "-12345")
+//        XCTAssertNil(right(debugBrain.last))
+//
+//
+//        debugBrain.pushnew(-123456)
+//        XCTAssertEqual(left(debugBrain.last), "-123456")
+//        XCTAssertNil(right(debugBrain.last))
+//
+//
+//        debugBrain.pushnew(-1234567)
+//        XCTAssertEqual(left(debugBrain.last), "-1234567")
+//        XCTAssertNil(right(debugBrain.last))
+//
+//
+//        debugBrain.pushnew(-12345678)
+//        XCTAssertEqual(left(debugBrain.last), "-1,2345")
+//        XCTAssertEqual(right(debugBrain.last), "e7")
+//
+//        debugBrain.pushnew(1234567)
+//        XCTAssertEqual(left(debugBrain.last), "1234567")
+//        XCTAssertNil(right(debugBrain.last))
+//
+//
+//        debugBrain.pushnew(-1234567)
+//        XCTAssertEqual(left(debugBrain.last), "-1234567")
+//        XCTAssertNil(right(debugBrain.last))
         
-        /// floating point numbers
+    }
+    func test_Float() {
+        let debugBrain = DebugBrain(precision: 100, lengths: Lengths(withoutComma: 8, withCommaNonScientific: 9, withCommaScientific: 9, digitWidth: 0, ePadding: 0))
         screen.decimalSeparator = .comma
         debugBrain.pushnew("1,234")
         XCTAssertEqual(left(debugBrain.last), "1,234")

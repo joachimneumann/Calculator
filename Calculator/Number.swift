@@ -226,10 +226,7 @@ class Number: CustomDebugStringConvertible {
                 firstLineWithCommaNonScientific = withCommaNonScientific
             }
             
-            let mantissaExponent = displayGmp.mantissaExponent(len: mantissaLength)
-            
-            var mantissa: String = mantissaExponent.mantissa
-            var exponent: Int = mantissaExponent.exponent
+            var (mantissa, exponent) = displayGmp.mantissaExponent(len: mantissaLength)
             
             if mantissa.isEmpty {
                 mantissa = "0"

@@ -131,8 +131,8 @@ class Screen: Equatable, ObservableObject {
         infoUiFont = UIFont.monospacedDigitSystemFont(ofSize: infoUiFontSize, weight: .regular)
         kerning = -0.02 * uiFontSize
         
-        textHeight = heightMeasurement(uiFont: uiFont, kerning: kerning)
-        infoTextHeight = heightMeasurement(uiFont: infoUiFont, kerning: 0)
+        textHeight = "0".textHeight(for: uiFont, kerning: kerning)
+        infoTextHeight = "0".textHeight(for: infoUiFont, kerning: 0)
         
         offsetToVerticallyAlignTextWithkeyboard =
         CGFloat(screenSize.height) -
@@ -154,10 +154,10 @@ class Screen: Equatable, ObservableObject {
         displayWidth = calculatorWidth -
         (isPortraitPhone ? 2.0 * portraitIPhoneDisplayHorizontalPadding : plusIconSize + plusIconLeftPadding)
         
-        digitWidth             = "0".textSize(for: uiFont, kerning: kerning).width
-        eWidth                 = "e".textSize(for: uiFont, kerning: kerning).width
-        decimalSeparatorWidth  = _decimalSeparator.wrappedValue.string.textSize(for: uiFont, kerning: kerning).width
-        thousandSeparatorWidth = _thousandSeparator.wrappedValue.string.textSize(for: uiFont, kerning: kerning).width
+        digitWidth             = "0".textWidth(for: uiFont, kerning: kerning)
+        eWidth                 = "e".textWidth(for: uiFont, kerning: kerning)
+        decimalSeparatorWidth  = _decimalSeparator.wrappedValue.string.textWidth(for: uiFont, kerning: kerning)
+        thousandSeparatorWidth = _thousandSeparator.wrappedValue.string.textWidth(for: uiFont, kerning: kerning)
         
         measureTextLengths(screenSize: screenSize)
         
@@ -185,17 +185,35 @@ class Screen: Equatable, ObservableObject {
             return DisplayData(left: "scientific?")
         } else {
             /// integer or float
-            let localised = withSeparators(numberString: candidate)
-            return DisplayData(left: localised)
+            let withSeparators = withSeparators(numberString: candidate)
+            if withSeparators.textWidth(for: uiFont, kerning: kerning) < displayWidth {
+                return DisplayData(left: withSeparators, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+            }
+            
+            /// longer, might be float
+            
+            /// no integer or float -> show as scientific
+            return localized(candidate, forceScientific: true)
         }
     }
     
     func localizedScientific(_ displayGmp: Gmp) -> DisplayData {
-        let mantissaExponent = displayGmp.mantissaExponent(len: min(displayGmp.precision, Number.MAX_DISPLAY_LENGTH))
-        var mantissa: String = mantissaExponent.mantissa
-        var exponent: Int = mantissaExponent.exponent
-        return DisplayData(left: mantissa, right: "e\(exponent)", maxlength: 0, canBeInteger: false, canBeFloat: false)
+        print("localizedScientific", displayGmp.debugDescription)
+        var (mantissa, exponent) = displayGmp.mantissaExponent(len: min(displayGmp.precision, Number.MAX_DISPLAY_LENGTH))
+        print("localizedScientific mantissa", mantissa)
+        print("localizedScientific exponent", exponent)
+        if exponent < 0 {
+            /// is floating point 0,xxxx
+            let secondIndex = mantissa.index(mantissa.startIndex, offsetBy: 1)
+            mantissa.insert(decimalSeparator.character, at: secondIndex)
+            print("localizedScientific mantissa", mantissa)
+            print("localizedScientific exponent", exponent)
+            return DisplayData(left: mantissa, right: "e\(exponent)", maxlength: 0, canBeInteger: false, canBeFloat: true)
+        }
+        return DisplayData(left: "scientific", right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
     }
+    
+
     
     func localized(_ candidate: Number, forceScientific: Bool = false) -> DisplayData {
         if candidate.str != nil {
@@ -216,17 +234,15 @@ class Screen: Equatable, ObservableObject {
             return DisplayData(left: "infinity")
         }
         
-        if !forceScientific && displayGmp.isZero {
-            return DisplayData(left: "0")
-        }
-        
         if forceScientific {
             return localizedScientific(displayGmp)
         }
 
-        let mantissaExponent = displayGmp.mantissaExponent(len: min(displayGmp.precision, Number.MAX_DISPLAY_LENGTH))
-        var mantissa: String = mantissaExponent.mantissa
-        var exponent: Int = mantissaExponent.exponent
+        if displayGmp.isZero {
+            return DisplayData(left: "0")
+        }
+
+        var (mantissa, exponent) = displayGmp.mantissaExponent(len: min(displayGmp.precision, Number.MAX_DISPLAY_LENGTH))
 
         if mantissa.isEmpty {
             mantissa = "0"
@@ -241,10 +257,17 @@ class Screen: Equatable, ObservableObject {
         }
         
         /// Can be displayed as Integer?
+        /*
+         123,456,789,012,345,678,901,123,456 --> 400 pixel
+         What can be displayed in 200 pixel?
+         - I dont want the separator as leading character!
+         */
         if mantissa.count <= exponent+1 { /// smaller than because of possible trailing zeroes in the integer
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
-            let mantissaWithSeparators = withSeparators(numberString: mantissa)
-            return DisplayData(left: mantissaWithSeparators, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+            let withSeparators = withSeparators(numberString: mantissa)
+            if withSeparators.textWidth(for: uiFont, kerning: kerning) < displayWidth {
+                return DisplayData(left: withSeparators, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+            }
         }
         
         /// Is floating point XXX,xxx?
@@ -252,7 +275,7 @@ class Screen: Equatable, ObservableObject {
             var floatString = mantissa
             let index = floatString.index(floatString.startIndex, offsetBy: exponent+1)
             floatString.insert(decimalSeparator.character, at: index)
-            return DisplayData(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+//            return DisplayData(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
             /// is the comma visible in the first line and is there at least one digit after the comma?
         }
         
@@ -339,3 +362,31 @@ extension String {
         return ""
     }
 }
+
+
+//    func trimToDisplaylength(withSeparators: String) -> String {
+//        var position = withSeparators.count - 1
+//        print("withSeparators", withSeparators, "position", position)
+//        print("displayWidth", displayWidth)
+//
+//        var trimmed = ""
+//        while position >= 0 && trimmed.textWidth(for: uiFont, kerning: kerning) < displayWidth {
+//            print("position", position, "width", trimmed.textWidth(for: uiFont, kerning: kerning))
+//            let startIndex = withSeparators.index(withSeparators.startIndex, offsetBy: position)
+//            let endIndex = withSeparators.index(before: withSeparators.endIndex)
+//            trimmed = String(withSeparators[startIndex...endIndex])
+//            position -= 1
+//        }
+////        let endIndex = withSeparators.endIndex
+////        print(withSeparators[endIndex])
+////        var n = 1
+////        var x = ""
+////        while x.textWidth(for: uiFont, kerning: kerning) < displayWidth && n < withSeparators.count {
+////            let index = withSeparators.index(endIndex, offsetBy: -n)
+////            x = String(withSeparators[index...endIndex])
+////            n += 1
+////        }
+////
+//        print("--> trimmed", trimmed)
+//        return trimmed
+//    }
