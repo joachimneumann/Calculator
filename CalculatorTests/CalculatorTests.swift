@@ -15,7 +15,7 @@ class CalculatorTests: XCTestCase {
     
     override func setUpWithError() throws {
         screen.thousandSeparator = .none
-        screen.decimalSeparator = .dot
+        screen.decimalSeparator = .comma
     }
     
     override func tearDownWithError() throws {
@@ -206,6 +206,7 @@ class CalculatorTests: XCTestCase {
         XCTAssertNil(right(debugBrain.last))
         
         /// floating point numbers
+        screen.decimalSeparator = .comma
         debugBrain.pushnew("1,234")
         XCTAssertEqual(left(debugBrain.last), "1,234")
         XCTAssertNil(right(debugBrain.last))

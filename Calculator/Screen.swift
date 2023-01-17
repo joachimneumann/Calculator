@@ -190,9 +190,13 @@ class Screen: Equatable, ObservableObject {
         }
     }
     
-    func localizedScientific(_ candidate: Gmp) -> DisplayData {
-        return DisplayData(left: "SCIENTIFIC")
+    func localizedScientific(_ displayGmp: Gmp) -> DisplayData {
+        let mantissaExponent = displayGmp.mantissaExponent(len: min(displayGmp.precision, Number.MAX_DISPLAY_LENGTH))
+        var mantissa: String = mantissaExponent.mantissa
+        var exponent: Int = mantissaExponent.exponent
+        return DisplayData(left: mantissa, right: "e\(exponent)", maxlength: 0, canBeInteger: false, canBeFloat: false)
     }
+    
     func localized(_ candidate: Number, forceScientific: Bool = false) -> DisplayData {
         if candidate.str != nil {
             return localized(candidate.str!, forceScientific: forceScientific)
@@ -237,24 +241,55 @@ class Screen: Equatable, ObservableObject {
         }
         
         /// Can be displayed as Integer?
-        let mantissaWithSeparators = withSeparators(numberString: mantissa)
-        let displayLengthOfInteger = Int(displayWidth / digitWidth)
-        if mantissa.count <= exponent+1 && exponent+1 <= withoutComma { /// smaller than because of possible trailing zeroes in the integer
-            /// restore trailing zeros that have been removed
+        if mantissa.count <= exponent+1 { /// smaller than because of possible trailing zeroes in the integer
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
-            // print(mantissa)
-            
-            if mantissa.count > firstLineWithoutComma { displayData.canBeInteger = true }
-            if mantissa.count <= firstLineWithoutComma ||
-                (multipleLines && showAsInteger) {
-                displayData.left = (isNegative ? "-" : "") + mantissa
-                displayData.maxlength = lengths.withoutComma
-                return displayData
+            let mantissaWithSeparators = withSeparators(numberString: mantissa)
+            return DisplayData(left: mantissaWithSeparators, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+        }
+        
+        /// Is floating point XXX,xxx?
+        if exponent >= 0 {
+            var floatString = mantissa
+            let index = floatString.index(floatString.startIndex, offsetBy: exponent+1)
+            floatString.insert(decimalSeparator.character, at: index)
+            return DisplayData(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+            /// is the comma visible in the first line and is there at least one digit after the comma?
+        }
+        
+        /// is floating point 0,xxxx
+        /// additional requirement: first non-zero digit in first line. If not -> Scientific
+        if exponent < 0 {
+            var floatString = mantissa
+            for _ in 0..<(-1*exponent - 1) {
+                floatString = "0" + floatString
             }
+            floatString = "0" + decimalSeparator.string + floatString
+            if isNegative { floatString = "-" + floatString }
+            return DisplayData(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
         }
 
+//        let mantissaWithSeparators = withSeparators(numberString: mantissa)
+//        let lengthOfMantissa = mantissaWithSeparators.textSize(for: uiFont, kerning: kerning).width
+//        let lengthOfExponent = "e\(exponent)".textSize(for: uiFont, kerning: kerning).width
+//        print("candidate", displayGmp.toDouble())
+//        print("lengthOfMantissa", lengthOfMantissa)
+//        print("lengthOfExponent", lengthOfExponent)
+//        if mantissa.count <= exponent+1 && exponent+1 <= withoutComma { /// smaller than because of possible trailing zeroes in the integer
+//            /// restore trailing zeros that have been removed
+//            mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
+//            // print(mantissa)
+//            
+//            if mantissa.count > firstLineWithoutComma { displayData.canBeInteger = true }
+//            if mantissa.count <= firstLineWithoutComma ||
+//                (multipleLines && showAsInteger) {
+//                displayData.left = (isNegative ? "-" : "") + mantissa
+//                displayData.maxlength = lengths.withoutComma
+//                return displayData
+//            }
+//        }
 
-        return DisplayData(left: mantissa, right: "e\(exponent)", maxlength: 0, canBeInteger: false, canBeFloat: false)
+
+        return DisplayData(left: "not implemented", right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
     }
     
     func withSeparators(numberString: String) -> String {
