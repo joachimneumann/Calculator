@@ -195,6 +195,7 @@ class Screen: Equatable, ObservableObject {
             mantissa = stringNumber
             exponent = stringNumber.count - 1
         }
+        if mantissa.starts(with: "-") { exponent -= 1 }
         return process(mantissa, exponent)
     }
     
@@ -220,6 +221,7 @@ class Screen: Equatable, ObservableObject {
         }
         return DisplayData(left: "scientific", right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
     }
+
     
     func process(_ mantissa_: String, _ exponent: Int) -> DisplayData {
         var mantissa = mantissa_
@@ -242,8 +244,8 @@ class Screen: Equatable, ObservableObject {
          */
         if mantissa.count <= exponent+1 { /// smaller than because of possible trailing zeroes in the integer
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
-            let withSeparators = withSeparators(numberString: mantissa)
-            if withSeparators.textWidth(for: uiFont, kerning: kerning) < displayWidth {
+            let withSeparators = withSeparators(numberString: mantissa, isNegative: isNegative)
+            if withSeparators.textWidth(for: uiFont, kerning: kerning) <= displayWidth {
                 return DisplayData(left: withSeparators, right: nil, maxlength: 0, canBeInteger: true, canBeFloat: false)
             }
         }
@@ -251,10 +253,10 @@ class Screen: Equatable, ObservableObject {
         /// Is floating point XXX,xxx?
         if exponent >= 0 {
             var floatString = mantissa
-            var index = floatString.index(floatString.startIndex, offsetBy: exponent+1)
+            let index = floatString.index(floatString.startIndex, offsetBy: exponent+1)
             var indexInt: Int = floatString.distance(from: floatString.startIndex, to: index)
             floatString.insert(".", at: index)
-            floatString = withSeparators(numberString: floatString)
+            floatString = withSeparators(numberString: floatString, isNegative: isNegative)
             if let index = floatString.firstIndex(of: decimalSeparator.character) {
                 indexInt = floatString.distance(from: floatString.startIndex, to: index)
                 let floatCandidate = String(floatString.prefix(indexInt+1))
@@ -264,25 +266,30 @@ class Screen: Equatable, ObservableObject {
                     var floatString = mantissa
                     let secondIndex = mantissa.index(mantissa.startIndex, offsetBy: 1)
                     floatString.insert(".", at: secondIndex)
-                    floatString = withSeparators(numberString: floatString)
+                    floatString = withSeparators(numberString: floatString, isNegative: isNegative)
                     let exponentString = "e\(exponent)"
                     return DisplayData(left: floatString, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: true)
                 }
             }
-
             /// is the comma visible in the first line and is there at least one digit after the comma?
         }
         
         /// is floating point 0,xxxx
         /// additional requirement: first non-zero digit in first line. If not -> Scientific
         if exponent < 0 {
+            let minusSign = isNegative ? "-" : ""
+
+            var testFloat = minusSign + "0" + decimalSeparator.string
             var floatString = mantissa
             for _ in 0..<(-1*exponent - 1) {
                 floatString = "0" + floatString
+                testFloat += "0"
             }
-            floatString = "0" + decimalSeparator.string + floatString
-            if isNegative { floatString = "-" + floatString }
-            return DisplayData(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+            testFloat += "x"
+            if testFloat.textWidth(for: uiFont, kerning: kerning) <= displayWidth {
+                floatString = minusSign + "0" + decimalSeparator.string + floatString
+                return DisplayData(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+            }
         }
 
 //        let mantissaWithSeparators = withSeparators(numberString: mantissa)
@@ -342,7 +349,7 @@ class Screen: Equatable, ObservableObject {
 
     }
     
-    func withSeparators(numberString: String) -> String {
+    func withSeparators(numberString: String, isNegative: Bool) -> String {
         var integerPart: String
         let fractionalPart: String
         
@@ -362,11 +369,11 @@ class Screen: Equatable, ObservableObject {
                 integerPart.insert(c, at: integerPart.index(integerPart.startIndex, offsetBy: count))
             }
         }
-        
+        let minusSign = isNegative ? "-" : ""
         if numberString.contains(".") {
-            return integerPart + decimalSeparator.string + fractionalPart
+            return minusSign + integerPart + decimalSeparator.string + fractionalPart
         } else {
-            return integerPart
+            return minusSign + integerPart
         }
     }
     
@@ -402,7 +409,7 @@ extension String {
 //        print("displayWidth", displayWidth)
 //
 //        var trimmed = ""
-//        while position >= 0 && trimmed.textWidth(for: uiFont, kerning: kerning) < displayWidth {
+//        while position >= 0 && trimmed.textWidth(for: uiFont, kerning: kerning) <= displayWidth {
 //            print("position", position, "width", trimmed.textWidth(for: uiFont, kerning: kerning))
 //            let startIndex = withSeparators.index(withSeparators.startIndex, offsetBy: position)
 //            let endIndex = withSeparators.index(before: withSeparators.endIndex)
