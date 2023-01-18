@@ -19,7 +19,6 @@ struct PortraitDisplay: View {
             .foregroundColor(display.format.color)
             .multilineTextAlignment(.trailing)
             .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
-            .lineLimit(1)
     }
 
     @ViewBuilder

@@ -181,27 +181,21 @@ class ViewModel: ObservableObject {
         //print("defaultTask", symbol)
         if showPreliminaryResults {
             let preliminaryResult = stupidBrain.operation(symbol)
-//            let data = preliminaryResult.getDisplayData(
-//                multipleLines: false,
-//                lengths: screen.lengths,
-//                useMaximalLength: false,
-//                forceScientific: screen.forceScientific,
-//                showAsInteger: showAsInteger,
-//                showAsFloat: showAsFloat)
-//            let format = DisplayFormat(
-//                for: data.length,
-//                withMaxLength: data.maxlength,
-//                showThreeDots: true,
-//                screen: screen)
-//            let preliminaryDisplay = Display(data: data, format: format)
-//            Task(priority: .high) {
-//                try? await Task.sleep(nanoseconds: 300_000_000)
-//                if keyState == .highPrecisionProcessing {
-//                    await MainActor.run() {
-//                        currentDisplay = preliminaryDisplay
-//                    }
-//                }
-//            }
+            let preliminaryData = screen.localized(preliminaryResult)
+            let preliminary = DisplayFormat(
+                for: preliminaryData.length,
+                withMaxLength: preliminaryData.maxlength,
+                showThreeDots: false,
+                screen: screen)
+            let preliminaryDisplay = Display(data: preliminaryData, format: preliminary)
+            Task(priority: .high) {
+                try? await Task.sleep(nanoseconds: 300_000_000)
+                if keyState == .highPrecisionProcessing {
+                    await MainActor.run() {
+                        currentDisplay = preliminaryDisplay
+                    }
+                }
+            }
         }
         keyState = .highPrecisionProcessing
         displayNumber = await brain.operation(symbol)
@@ -210,14 +204,6 @@ class ViewModel: ObservableObject {
     
     func refreshDisplay(screen: Screen) async {
         let tempDisplayData = screen.localized(displayNumber)
-        //print("refreshDisplay")
-//        let tempDisplayData = displayNumber.getDisplayData(
-//                multipleLines: !screen.isPortraitPhone,
-//                lengths: screen.lengths,
-//                useMaximalLength: false,
-//                forceScientific: screen.forceScientific,
-//                showAsInteger: showAsInteger,
-//                showAsFloat: showAsFloat)
         let format = DisplayFormat(
             for: tempDisplayData.length,
             withMaxLength: tempDisplayData.maxlength,

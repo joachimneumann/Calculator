@@ -12,7 +12,7 @@ let testColors = false
 struct Calculator: View {
     @StateObject private var viewModel: ViewModel = ViewModel()
 
-    @ObservedObject var screen: Screen
+    var screen: Screen
     @State var scrollViewHasScrolled = false
     @State var scrollViewID = UUID()
     @State var isZoomed: Bool = false

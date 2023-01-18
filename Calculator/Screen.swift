@@ -7,7 +7,15 @@
 
 import SwiftUI
 
-class Screen: Equatable, ObservableObject {
+class Screen: Equatable {
+        
+    @AppStorage("DecimalSeparator") var decimalSeparator: DecimalSeparator = .comma
+    @AppStorage("ThousandSeparator") var thousandSeparator: ThousandSeparator = .none
+    @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
+
+    static func == (lhs: Screen, rhs: Screen) -> Bool { /// used to detect rotation
+        lhs.keySize == rhs.keySize
+    }
     
     enum DecimalSeparator: String, Codable, CaseIterable{
         case comma
@@ -36,16 +44,7 @@ class Screen: Equatable, ObservableObject {
             return String(character)
         }
     }
-    
-    @AppStorage("DecimalSeparator") var decimalSeparator: DecimalSeparator = .comma
-    @AppStorage("ThousandSeparator") var thousandSeparator: ThousandSeparator = .none
-    @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
 
-    static func == (lhs: Screen, rhs: Screen) -> Bool { /// used to detect rotation
-        lhs.keySize == rhs.keySize
-    }
-    
-    /// no @Published propertied, but objectWillChange.send() at the end of update()
     let isPad: Bool
     let isPortraitPhone: Bool
     let keyboardHeight: CGFloat

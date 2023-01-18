@@ -11,7 +11,7 @@ struct Settings: View {
     @Environment(\.presentationMode) var presentation /// for dismissing the screen
     
     @ObservedObject var viewModel: ViewModel
-    @ObservedObject var screen: Screen
+    var screen: Screen
     let font: Font
     
     @State var timerIsRunning: Bool = false
