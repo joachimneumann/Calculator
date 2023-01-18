@@ -62,23 +62,22 @@ class Screen: Equatable, ObservableObject {
     let portraitIPhoneDisplayBottomPadding: CGFloat
     let horizontalPadding: CGFloat
     let bottomPadding: CGFloat
-    let offsetToVerticallyAlignTextWithkeyboard: CGFloat
-    let offsetToVerticallyIconWithText: CGFloat
+    var offsetToVerticallyAlignTextWithkeyboard: CGFloat = 0.0
+    var offsetToVerticallyIconWithText: CGFloat = 0.0
     let kerning: CGFloat
-    let textHeight: CGFloat
-    let infoTextHeight: CGFloat
-    let displayWidth: CGFloat
-    let digitWidth: CGFloat
-    let eWidth: CGFloat
-    let decimalSeparatorWidth: CGFloat
-    let thousandSeparatorWidth: CGFloat
-    var lengths: Lengths /// will be updated when the digital or thousands separator changes
+    var textHeight: CGFloat = 0.0
+    var infoTextHeight: CGFloat = 0.0
+    var displayWidth: CGFloat = 0.0
+    var digitWidth: CGFloat = 0.0
+    var eWidth: CGFloat = 0.0
+    var decimalSeparatorWidth: CGFloat = 0.0
+    var thousandSeparatorWidth: CGFloat = 0.0
     
     private let uiFont: UIFont
     private let calculatorWidth: CGFloat
     
     init(_ screenSize: CGSize) {
-        // print("Screen INIT", screenSize)
+         print("Screen INIT", screenSize)
         
         isPad = UIDevice.current.userInterfaceIdiom == .pad
         let isPortrait = screenSize.height > screenSize.width
@@ -131,8 +130,8 @@ class Screen: Equatable, ObservableObject {
         infoUiFont = UIFont.monospacedDigitSystemFont(ofSize: infoUiFontSize, weight: .regular)
         kerning = -0.02 * uiFontSize
         
-        textHeight = "0".textHeight(for: uiFont, kerning: kerning)
-        infoTextHeight = "0".textHeight(for: infoUiFont, kerning: 0)
+        textHeight = textHeight("0")
+        infoTextHeight = textHeight("0", uiFont: infoUiFont)
         
         offsetToVerticallyAlignTextWithkeyboard =
         CGFloat(screenSize.height) -
@@ -148,16 +147,14 @@ class Screen: Equatable, ObservableObject {
         CGFloat(uiFont.descender) -
         CGFloat(0.5 * uiFont.capHeight) +
         CGFloat(0.5 * plusIconSize)
-        
-        lengths = Lengths(0)
-        
+                
         displayWidth = calculatorWidth -
         (isPortraitPhone ? 2.0 * portraitIPhoneDisplayHorizontalPadding : plusIconSize + plusIconLeftPadding)
         
-        digitWidth             = "0".textWidth(for: uiFont, kerning: kerning)
-        eWidth                 = "e".textWidth(for: uiFont, kerning: kerning)
-        decimalSeparatorWidth  = _decimalSeparator.wrappedValue.string.textWidth(for: uiFont, kerning: kerning)
-        thousandSeparatorWidth = _thousandSeparator.wrappedValue.string.textWidth(for: uiFont, kerning: kerning)
+        digitWidth             = textWidth("0")
+        eWidth                 = textWidth("0")
+        decimalSeparatorWidth  = textWidth(_decimalSeparator.wrappedValue.string)
+        thousandSeparatorWidth = textWidth(_thousandSeparator.wrappedValue.string)
     }
         
     func localized(_ stringNumber: String) -> DisplayData {
@@ -176,7 +173,7 @@ class Screen: Equatable, ObservableObject {
         } else {
             correctSeparator = withSeparators(numberString: mantissa, isNegative: false)
         }
-        if correctSeparator.textWidth(for: uiFont, kerning: kerning) <= displayWidth {
+        if textWidth(correctSeparator) <= displayWidth {
             return DisplayData(left: correctSeparator, maxlength: 0, canBeInteger: false, canBeFloat: false)
         }
 
@@ -234,7 +231,7 @@ class Screen: Equatable, ObservableObject {
         if mantissa.count <= exponent + 1 { /// smaller than because of possible trailing zeroes in the integer
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
             let withSeparators = withSeparators(numberString: mantissa, isNegative: isNegative)
-            if withSeparators.textWidth(for: uiFont, kerning: kerning) <= displayWidth {
+            if textWidth(withSeparators) <= displayWidth {
                 return DisplayData(left: withSeparators, right: nil, maxlength: 0, canBeInteger: true, canBeFloat: false)
             }
         }
@@ -249,7 +246,7 @@ class Screen: Equatable, ObservableObject {
             if let index = floatString.firstIndex(of: decimalSeparator.character) {
                 indexInt = floatString.distance(from: floatString.startIndex, to: index)
                 let floatCandidate = String(floatString.prefix(indexInt+1))
-                if floatCandidate.textWidth(for: uiFont, kerning: kerning) <= displayWidth {
+                if textWidth(floatCandidate) <= displayWidth {
                     return DisplayData(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
                 }
             }
@@ -268,7 +265,7 @@ class Screen: Equatable, ObservableObject {
                 testFloat += "0"
             }
             testFloat += "x"
-            if testFloat.textWidth(for: uiFont, kerning: kerning) <= displayWidth {
+            if textWidth(testFloat) <= displayWidth {
                 floatString = minusSign + "0" + decimalSeparator.string + floatString
                 return DisplayData(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
             }
@@ -347,6 +344,26 @@ class Screen: Equatable, ObservableObject {
         }
     }
     
+    private func textSize(string: String, uiFont: UIFont?, kerning: CGFloat) -> CGSize {
+        let font: UIFont
+        if uiFont != nil {
+            font = uiFont!
+        } else {
+            font = self.uiFont
+        }
+        var attributes: [NSAttributedString.Key : Any] = [:]
+        attributes[.kern] = kerning
+        attributes[.font] = font
+        return string.size(withAttributes: attributes)
+    }
+    func textWidth(_ string: String, uiFont: UIFont? = nil, kerning: CGFloat = 0.0) -> CGFloat {
+        textSize(string: string, uiFont: uiFont, kerning: kerning).width
+    }
+
+    func textHeight(_ string: String, uiFont: UIFont? = nil, kerning: CGFloat = 0.0) -> CGFloat {
+        textSize(string: string, uiFont: uiFont, kerning: kerning).height
+    }
+
 }
 
 extension String {

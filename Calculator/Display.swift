@@ -70,8 +70,8 @@ struct DisplayFormat {
         font = Font(uiFont)
         color = showThreeDots ? .gray : .white
         self.showThreeDots = showThreeDots
-        self.digitWidth = screen.lengths.digitWidth
-        self.ePadding = screen.lengths.ePadding
+        self.digitWidth = screen.digitWidth
+        self.ePadding = screen.ePadding
         self.kerning = screen.kerning
     }
 }

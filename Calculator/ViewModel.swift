@@ -181,27 +181,27 @@ class ViewModel: ObservableObject {
         //print("defaultTask", symbol)
         if showPreliminaryResults {
             let preliminaryResult = stupidBrain.operation(symbol)
-            let data = preliminaryResult.getDisplayData(
-                multipleLines: false,
-                lengths: screen.lengths,
-                useMaximalLength: false,
-                forceScientific: screen.forceScientific,
-                showAsInteger: showAsInteger,
-                showAsFloat: showAsFloat)
-            let format = DisplayFormat(
-                for: data.length,
-                withMaxLength: data.maxlength,
-                showThreeDots: true,
-                screen: screen)
-            let preliminaryDisplay = Display(data: data, format: format)
-            Task(priority: .high) {
-                try? await Task.sleep(nanoseconds: 300_000_000)
-                if keyState == .highPrecisionProcessing {
-                    await MainActor.run() {
-                        currentDisplay = preliminaryDisplay
-                    }
-                }
-            }
+//            let data = preliminaryResult.getDisplayData(
+//                multipleLines: false,
+//                lengths: screen.lengths,
+//                useMaximalLength: false,
+//                forceScientific: screen.forceScientific,
+//                showAsInteger: showAsInteger,
+//                showAsFloat: showAsFloat)
+//            let format = DisplayFormat(
+//                for: data.length,
+//                withMaxLength: data.maxlength,
+//                showThreeDots: true,
+//                screen: screen)
+//            let preliminaryDisplay = Display(data: data, format: format)
+//            Task(priority: .high) {
+//                try? await Task.sleep(nanoseconds: 300_000_000)
+//                if keyState == .highPrecisionProcessing {
+//                    await MainActor.run() {
+//                        currentDisplay = preliminaryDisplay
+//                    }
+//                }
+//            }
         }
         keyState = .highPrecisionProcessing
         displayNumber = await brain.operation(symbol)
@@ -210,25 +210,25 @@ class ViewModel: ObservableObject {
     
     func refreshDisplay(screen: Screen) async {
         //print("refreshDisplay")
-        let tempDisplayData = displayNumber.getDisplayData(
-                multipleLines: !screen.isPortraitPhone,
-                lengths: screen.lengths,
-                useMaximalLength: false,
-                forceScientific: screen.forceScientific,
-                showAsInteger: showAsInteger,
-                showAsFloat: showAsFloat)
-        let format = DisplayFormat(
-            for: tempDisplayData.length,
-            withMaxLength: tempDisplayData.maxlength,
-            showThreeDots: false,
-            screen: screen)
-
-        //print("tempDisplay", tempDisplay)
-        await MainActor.run() {
-            currentDisplay = Display(data: tempDisplayData, format: format)
-            self.showAC = currentDisplay.data.isZero
-            //print("currentDisplay", currentDisplay.data.left)
-        }
+//        let tempDisplayData = displayNumber.getDisplayData(
+//                multipleLines: !screen.isPortraitPhone,
+//                lengths: screen.lengths,
+//                useMaximalLength: false,
+//                forceScientific: screen.forceScientific,
+//                showAsInteger: showAsInteger,
+//                showAsFloat: showAsFloat)
+//        let format = DisplayFormat(
+//            for: tempDisplayData.length,
+//            withMaxLength: tempDisplayData.maxlength,
+//            showThreeDots: false,
+//            screen: screen)
+//
+//        //print("tempDisplay", tempDisplay)
+//        await MainActor.run() {
+//            currentDisplay = Display(data: tempDisplayData, format: format)
+//            self.showAC = currentDisplay.data.isZero
+//            //print("currentDisplay", currentDisplay.data.left)
+//        }
     }
 
     func copyFromPasteBin(screen: Screen) async -> Bool {
@@ -248,14 +248,13 @@ class ViewModel: ObservableObject {
     }
     
     func copyToPastBin() async {
-        let copyData = displayNumber.getDisplayData(
-            multipleLines: true,
-            lengths: Lengths(0),
-            useMaximalLength: true,
-            forceScientific: false,
-            showAsInteger: showAsInteger,
-            showAsFloat: showAsFloat)
-        UIPasteboard.general.string = copyData.oneLine
+//        let copyData = displayNumber.getDisplayData(
+//            multipleLines: true,
+//            useMaximalLength: true,
+//            forceScientific: false,
+//            showAsInteger: showAsInteger,
+//            showAsFloat: showAsFloat)
+//        UIPasteboard.general.string = copyData.oneLine
     }
 
     /// colors

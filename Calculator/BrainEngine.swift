@@ -234,11 +234,6 @@ class BrainEngine {
 /// DebugBrain is located in the same file, because it uses
 /// fileprivate properties of BrainEngine
 class DebugBrain: BrainEngine {
-    let lengths: Lengths
-    init(precision: Int, lengths: Lengths) {
-        self.lengths = lengths
-        super.init(precision: precision)
-    }
 
     func push(_ numberOrOperator: String) {
         let allOperators = [
@@ -303,12 +298,6 @@ class DebugBrain: BrainEngine {
         return duration.asTime
     }
     
-    private var debugData: DisplayData {
-        let d = n.last.getDisplayData(multipleLines: false, lengths: lengths, useMaximalLength: false, forceScientific: false, showAsInteger: false, showAsFloat: false)
-//        let d = n.last.getDisplayData(multipleLines: false, lengths: lengths, useMaximalLength: false, forceScientific: false, showAsInteger: false, showAsFloat: false)
-        return d
-    }
-
     class ParkBenchTimer {
         let startTime: CFAbsoluteTime
         var endTime: CFAbsoluteTime?

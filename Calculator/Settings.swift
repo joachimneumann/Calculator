@@ -219,7 +219,7 @@ struct Settings: View {
             Button {
                 timerIsRunning = true
                 Task.detached {
-                    let speedTestBrain = DebugBrain(precision: settingsPrecision, lengths: Lengths(0))
+                    let speedTestBrain = DebugBrain(precision: settingsPrecision)
                     let result = await speedTestBrain.speedTest()
                     await MainActor.run() {
                         timerInfo = result
