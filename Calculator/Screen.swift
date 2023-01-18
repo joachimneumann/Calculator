@@ -8,9 +8,7 @@
 import SwiftUI
 
 class Screen: Equatable {
-        
-    let symbol = Locale.current.groupingSeparator
-    
+            
     /// I initialize the decimalSeparator with the locale preference, but
     /// I ignore the value of Locale.current.groupingSeparator
     @AppStorage("DecimalSeparator") var decimalSeparator: DecimalSeparator = Locale.current.decimalSeparator == "," ? .comma : .dot
