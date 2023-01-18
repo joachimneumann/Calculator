@@ -20,7 +20,7 @@ struct Settings: View {
     @State var settingsShowPreliminaryResults: Bool = false
     @State var timerInfo: String = "click to measure"
     @State var settingsDecimalSeparator: Screen.DecimalSeparator = .comma
-    @State var settingsThousandSeparator: Screen.ThousandSeparator = .none
+    @State var settingsGroupingSeparator: Screen.GroupingSeparator = .none
     
     
     var body: some View {
@@ -56,7 +56,7 @@ struct Settings: View {
                     decimalSeparatorView
                         .padding(.top, 20)
                     
-                    thousandsSeparator
+                    groupingSeparator
                         .padding(.top, 20)
                     
                     showPreliminaryResults
@@ -84,8 +84,8 @@ struct Settings: View {
                 if screen.decimalSeparator != settingsDecimalSeparator {
                     screen.decimalSeparator = settingsDecimalSeparator
                 }
-                if screen.thousandSeparator != settingsThousandSeparator {
-                    screen.thousandSeparator = settingsThousandSeparator
+                if screen.groupingSeparator != settingsGroupingSeparator {
+                    screen.groupingSeparator = settingsGroupingSeparator
                 }
             }
         }
@@ -94,7 +94,7 @@ struct Settings: View {
             settingsShowPreliminaryResults = viewModel.showPreliminaryResults
             settingsForceScientific        = screen.forceScientific
             settingsDecimalSeparator       = screen.decimalSeparator
-            settingsThousandSeparator      = screen.thousandSeparator
+            settingsGroupingSeparator      = screen.groupingSeparator
             UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(white: 0.7, alpha: 1.0)
             UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
             UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
@@ -302,7 +302,7 @@ struct Settings: View {
     
     var decimalSeparatorView: some View {
         HStack(spacing: 20.0) {
-            Text("Decimal separator")
+            Text("Decimal Separator")
                 .foregroundColor(timerIsRunning ? .gray : .white)
             Picker("", selection: $settingsDecimalSeparator) {
                 ForEach(Screen.DecimalSeparator.allCases, id: \.self) { value in
@@ -312,12 +312,12 @@ struct Settings: View {
             }
             .onChange(of: settingsDecimalSeparator) { _ in
                 if settingsDecimalSeparator == .comma {
-                    if settingsThousandSeparator == .comma {
-                        settingsThousandSeparator = .dot
+                    if settingsGroupingSeparator == .comma {
+                        settingsGroupingSeparator = .dot
                     }
                 } else if settingsDecimalSeparator == .dot {
-                    if settingsThousandSeparator == .dot {
-                        settingsThousandSeparator = .comma
+                    if settingsGroupingSeparator == .dot {
+                        settingsGroupingSeparator = .comma
                     }
                 }
             }
@@ -330,22 +330,22 @@ struct Settings: View {
         }
     }
     
-    var thousandsSeparator: some View {
+    var groupingSeparator: some View {
         HStack(spacing: 20.0) {
-            Text("Thousand separator")
+            Text("Grouping Separator")
                 .foregroundColor(timerIsRunning ? .gray : .white)
-            Picker("", selection: $settingsThousandSeparator) {
-                ForEach(Screen.ThousandSeparator.allCases, id: \.self) { value in
+            Picker("", selection: $settingsGroupingSeparator) {
+                ForEach(Screen.GroupingSeparator.allCases, id: \.self) { value in
                     Text("\(value.rawValue)")
                         .tag(value)
                 }
             }
-            .onChange(of: settingsThousandSeparator) { _ in
-                if settingsThousandSeparator == .comma {
+            .onChange(of: settingsGroupingSeparator) { _ in
+                if settingsGroupingSeparator == .comma {
                     if settingsDecimalSeparator == .comma {
                         settingsDecimalSeparator = .dot
                     }
-                } else if settingsThousandSeparator == .dot { /// dot
+                } else if settingsGroupingSeparator == .dot { /// dot
                     if settingsDecimalSeparator == .dot { /// also dot
                         settingsDecimalSeparator = .comma
                     }
@@ -353,7 +353,7 @@ struct Settings: View {
             }
             .pickerStyle(.segmented)
             .frame(width: 260)
-            Text("12\(settingsThousandSeparator.string)000\(settingsDecimalSeparator.string)00")
+            Text("12\(settingsGroupingSeparator.string)000\(settingsDecimalSeparator.string)00")
                 .foregroundColor(.gray)
                 .padding(.leading, 20)
             Spacer()

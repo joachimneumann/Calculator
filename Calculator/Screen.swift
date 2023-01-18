@@ -9,8 +9,12 @@ import SwiftUI
 
 class Screen: Equatable {
         
-    @AppStorage("DecimalSeparator") var decimalSeparator: DecimalSeparator = .comma
-    @AppStorage("ThousandSeparator") var thousandSeparator: ThousandSeparator = .none
+    let symbol = Locale.current.groupingSeparator
+    
+    /// I initialize the decimalSeparator with the locale preference, but
+    /// I ignore the value of Locale.current.groupingSeparator
+    @AppStorage("DecimalSeparator") var decimalSeparator: DecimalSeparator = Locale.current.decimalSeparator == "," ? .comma : .dot
+    @AppStorage("GroupingSeparator") var groupingSeparator: GroupingSeparator = .none
     @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
 
     static func == (lhs: Screen, rhs: Screen) -> Bool { /// used to detect rotation
@@ -28,7 +32,7 @@ class Screen: Equatable {
         }
         var string: String { String(character) }
     }
-    enum ThousandSeparator: String, Codable, CaseIterable{
+    enum GroupingSeparator: String, Codable, CaseIterable{
         case none
         case comma
         case dot
@@ -69,15 +73,13 @@ class Screen: Equatable {
     var displayWidth: CGFloat = 0.0
     var digitWidth: CGFloat = 0.0
     var eWidth: CGFloat = 0.0
-    var decimalSeparatorWidth: CGFloat = 0.0
-    var thousandSeparatorWidth: CGFloat = 0.0
     
     private let uiFont: UIFont
     private let calculatorWidth: CGFloat
     
     init(_ screenSize: CGSize) {
-         print("Screen INIT", screenSize)
-        
+        print("Screen INIT", screenSize)
+    
         isPad = UIDevice.current.userInterfaceIdiom == .pad
         let isPortrait = screenSize.height > screenSize.width
         isPortraitPhone = isPad ? false : isPortrait
@@ -152,8 +154,6 @@ class Screen: Equatable {
         
         digitWidth             = textWidth("0")
         eWidth                 = textWidth("0")
-        decimalSeparatorWidth  = textWidth(_decimalSeparator.wrappedValue.string)
-        thousandSeparatorWidth = textWidth(_thousandSeparator.wrappedValue.string)
     }
         
     func localized(_ stringNumber: String) -> DisplayData {
@@ -328,7 +328,7 @@ class Screen: Equatable {
             fractionalPart = ""
         }
         
-        if let c = thousandSeparator.character {
+        if let c = groupingSeparator.character {
             var count = integerPart.count
             while count >= 4 {
                 count = count - 3

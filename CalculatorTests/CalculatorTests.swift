@@ -16,7 +16,7 @@ class CalculatorTests: XCTestCase {
     
     override func setUpWithError() throws {
         screen = Screen(CGSize(width: 130, height: 130))
-        screen.thousandSeparator = .none
+        screen.groupingSeparator = .none
         screen.decimalSeparator = .comma
     }
     
@@ -47,21 +47,21 @@ class CalculatorTests: XCTestCase {
     func test_Separators() {
         let debugBrain = DebugBrain(precision: precision)
         screen.decimalSeparator = .comma
-        screen.thousandSeparator = .none
+        screen.groupingSeparator = .none
         XCTAssertEqual(left("1234567.7"), "1234567,7")
         debugBrain.pushnew(1234567.7)
         XCTAssertEqual(left(debugBrain.last), "1234567,7")
 
         screen.decimalSeparator = .dot
-        screen.thousandSeparator = .none
+        screen.groupingSeparator = .none
         debugBrain.pushnew(1234567.7)
         XCTAssertEqual(left(debugBrain.last), "1234567.7")
 
         screen.decimalSeparator = .dot
-        screen.thousandSeparator = .comma
+        screen.groupingSeparator = .comma
         XCTAssertEqual(left(debugBrain.last), "1,234,567.7")
         screen.decimalSeparator = .comma
-        screen.thousandSeparator = .dot
+        screen.groupingSeparator = .dot
         XCTAssertEqual(left(debugBrain.last), "1.234.567,7")
     }
 
@@ -150,9 +150,9 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(right("12345678901234.987654321098765432"), "e13")
     }
     
-    func test_float_more_than_1_Thousand() {
+    func test_float_more_than_1_grouping() {
         screen.decimalSeparator = .dot
-        screen.thousandSeparator = .comma
+        screen.groupingSeparator = .comma
         XCTAssertEqual( left("1.9"),              "1.9")
         XCTAssertEqual(right("1.9"),              nil)
         XCTAssertEqual( left("12.9"),             "12.9")
@@ -322,9 +322,9 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(right("-12345678901234.987654321098765432"), "e13")
     }
     
-    func test_negative_float_more_than_1_thousands() {
+    func test_negative_float_more_than_1_grouping() {
         screen.decimalSeparator = .comma
-        screen.thousandSeparator = .dot
+        screen.groupingSeparator = .dot
         XCTAssertEqual( left("-1.9"),              "-1,9")
         XCTAssertEqual(right("-1.9"),              nil)
         XCTAssertEqual( left("-12.9"),             "-12,9")
@@ -440,7 +440,7 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(right("0.0000000000000123"), "e-14")
     }
     func test_xx() {
-        screen.thousandSeparator = .none
+        screen.groupingSeparator = .none
         screen.decimalSeparator = .dot
         XCTAssertEqual(left("123"),     "123")
         XCTAssertEqual(left("1234"),    "1234")
@@ -448,7 +448,7 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(left("123456"),  "123456")
         XCTAssertEqual(left("1234567"), "1234567")
 
-        screen.thousandSeparator = .dot
+        screen.groupingSeparator = .dot
         screen.decimalSeparator = .comma
         XCTAssertEqual(left("123"),     "123")
         XCTAssertEqual(left("1234"),    "1.234")
@@ -456,7 +456,7 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(left("123456"),  "123.456")
         XCTAssertEqual(left("1234567"), "1.234.567")
 
-        screen.thousandSeparator = .comma
+        screen.groupingSeparator = .comma
         screen.decimalSeparator = .dot
         XCTAssertEqual( left("123"),     "123")
         XCTAssertEqual(right("123"),     nil)
@@ -500,7 +500,7 @@ class CalculatorTests: XCTestCase {
     }
     
     func test_integer() {
-        screen.thousandSeparator = .none
+        screen.groupingSeparator = .none
         screen.decimalSeparator = .comma
         XCTAssertEqual( left("123"),             "123")
         XCTAssertEqual(right("123"),             nil)
@@ -530,7 +530,7 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(right("123456789012345"), "e14")
         
         screen.decimalSeparator = .dot
-        screen.thousandSeparator = .comma
+        screen.groupingSeparator = .comma
         XCTAssertEqual( left("123"),             "123")
         XCTAssertEqual(right("123"),             nil)
         XCTAssertEqual( left("1234"),            "1,234")
@@ -560,7 +560,7 @@ class CalculatorTests: XCTestCase {
     }
     
     func test_negative_integer() {
-        screen.thousandSeparator = .none
+        screen.groupingSeparator = .none
         screen.decimalSeparator = .comma
         XCTAssertEqual( left("-123"),             "-123")
         XCTAssertEqual(right("-123"),             nil)
@@ -590,7 +590,7 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(right("-123456789012345"), "e14")
         
         screen.decimalSeparator = .dot
-        screen.thousandSeparator = .comma
+        screen.groupingSeparator = .comma
         XCTAssertEqual( left("-123"),             "-123")
         XCTAssertEqual(right("-123"),             nil)
         XCTAssertEqual( left("-1234"),            "-1,234")
