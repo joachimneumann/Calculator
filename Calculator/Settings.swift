@@ -9,17 +9,19 @@ import SwiftUI
 
 struct Settings: View {
     @Environment(\.presentationMode) var presentation /// for dismissing the screen
-
+    
     @ObservedObject var viewModel: ViewModel
     @ObservedObject var screen: Screen
     let font: Font
-
+    
     @State var timerIsRunning: Bool = false
     @State var settingsPrecision: Int = 0
     @State var settingsForceScientific: Bool = false
     @State var settingsShowPreliminaryResults: Bool = false
     @State var timerInfo: String = "click to measure"
-
+    @State var settingsDecimalSeparator: Screen.DecimalSeparator = .comma
+    @State var settingsThousandSeparator: Screen.ThousandSeparator = .none
+    
     
     var body: some View {
         VStack {
@@ -53,12 +55,12 @@ struct Settings: View {
                     
                     decimalSeparatorView
                         .padding(.top, 20)
-
+                    
                     thousandsSeparator
                         .padding(.top, 20)
-
+                    
                     showPreliminaryResults
-                    .padding(.top, 20)
+                        .padding(.top, 20)
                     
                     Spacer()
                 }
@@ -67,31 +69,39 @@ struct Settings: View {
             }
             .padding()
             .onDisappear() {
-                if screen.forceScientific != settingsForceScientific {
-                    screen.forceScientific = settingsForceScientific
-                }
-                if viewModel.showPreliminaryResults != settingsShowPreliminaryResults {
-                    viewModel.showPreliminaryResults = settingsShowPreliminaryResults
-                }
                 Task {
                     if viewModel.precision != settingsPrecision {
                         await viewModel.updatePrecision(to: settingsPrecision)
                     }
                     await viewModel.refreshDisplay(screen: screen)
                 }
+                if viewModel.showPreliminaryResults != settingsShowPreliminaryResults {
+                    viewModel.showPreliminaryResults = settingsShowPreliminaryResults
+                }
+                if screen.forceScientific != settingsForceScientific {
+                    screen.forceScientific = settingsForceScientific
+                }
+                if screen.decimalSeparator != settingsDecimalSeparator {
+                    screen.decimalSeparator = settingsDecimalSeparator
+                }
+                if screen.thousandSeparator != settingsThousandSeparator {
+                    screen.thousandSeparator = settingsThousandSeparator
+                }
             }
         }
         .onAppear() {
-            settingsForceScientific = screen.forceScientific
+            settingsPrecision              = viewModel.precision
             settingsShowPreliminaryResults = viewModel.showPreliminaryResults
-            settingsPrecision       = viewModel.precision
+            settingsForceScientific        = screen.forceScientific
+            settingsDecimalSeparator       = screen.decimalSeparator
+            settingsThousandSeparator      = screen.thousandSeparator
             UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(white: 0.7, alpha: 1.0)
             UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
             UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
         }
         .navigationBarBackButtonHidden(true)
     }
-
+    
     struct Precision: View {
         let timerIsRunning: Bool
         @Binding var settingsPrecision: Int
@@ -165,7 +175,7 @@ struct Settings: View {
                     }
                 })
         }
-
+        
         func decrease(_ current: Int) -> Int {
             let asString = "\(current)"
             if asString.starts(with: "2") {
@@ -186,9 +196,9 @@ struct Settings: View {
                 return current * 2
             }
         }
-
+        
     }
-
+    
     struct Measurement: View {
         @Binding var timerIsRunning: Bool
         @Binding var timerInfo: String
@@ -286,7 +296,7 @@ struct Settings: View {
                     .padding(.leading, 20)
                 Spacer()
             }
-
+            
         }
     }
     
@@ -294,24 +304,26 @@ struct Settings: View {
         HStack(spacing: 20.0) {
             Text("Decimal separator")
                 .foregroundColor(timerIsRunning ? .gray : .white)
-            Picker("", selection: $screen.decimalSeparator) {
-                Text("Comma").tag(0)
-                Text("Dot").tag(1)
+            Picker("", selection: $settingsDecimalSeparator) {
+                ForEach(Screen.DecimalSeparator.allCases, id: \.self) { value in
+                    Text("\(value.rawValue)")
+                        .tag(value)
+                }
             }
-            .onChange(of: screen.decimalSeparator) { _ in
-                if screen.decimalSeparator == .comma {
-                    if screen.thousandSeparator == .comma {
-                        screen.thousandSeparator = .dot
+            .onChange(of: settingsDecimalSeparator) { _ in
+                if settingsDecimalSeparator == .comma {
+                    if settingsThousandSeparator == .comma {
+                        settingsThousandSeparator = .dot
                     }
-                } else if screen.decimalSeparator == .dot {
-                    if screen.thousandSeparator == .dot {
-                        screen.thousandSeparator = .comma
+                } else if settingsDecimalSeparator == .dot {
+                    if settingsThousandSeparator == .dot {
+                        settingsThousandSeparator = .comma
                     }
                 }
             }
             .pickerStyle(.segmented)
             .frame(width: 160)
-            Text("e.g., 3\(screen.decimalSeparator.string)14159")
+            Text("e.g., 3\(settingsDecimalSeparator.string)14159")
                 .foregroundColor(.gray)
                 .padding(.leading, 20)
             Spacer()
@@ -322,25 +334,26 @@ struct Settings: View {
         HStack(spacing: 20.0) {
             Text("Thousand separator")
                 .foregroundColor(timerIsRunning ? .gray : .white)
-            Picker("Thousand separator", selection: $screen.thousandSeparator) {
-                            Text("None").tag(0)
-                            Text("Comma").tag(1)
-                            Text("Dot").tag(2)
-                        }
-            .onChange(of: screen.thousandSeparator) { _ in
-                if screen.thousandSeparator == .comma {
-                    if screen.decimalSeparator == .comma {
-                        screen.decimalSeparator = .dot
+            Picker("", selection: $settingsThousandSeparator) {
+                ForEach(Screen.ThousandSeparator.allCases, id: \.self) { value in
+                    Text("\(value.rawValue)")
+                        .tag(value)
+                }
+            }
+            .onChange(of: settingsThousandSeparator) { _ in
+                if settingsThousandSeparator == .comma {
+                    if settingsDecimalSeparator == .comma {
+                        settingsDecimalSeparator = .dot
                     }
-                } else if screen.thousandSeparator == .dot { /// dot
-                    if screen.decimalSeparator == .dot { /// also dot
-                        screen.decimalSeparator = .comma
+                } else if settingsThousandSeparator == .dot { /// dot
+                    if settingsDecimalSeparator == .dot { /// also dot
+                        settingsDecimalSeparator = .comma
                     }
                 }
             }
             .pickerStyle(.segmented)
             .frame(width: 260)
-            Text("12\(screen.thousandSeparator.string)000\(screen.decimalSeparator.string)00")
+            Text("12\(settingsThousandSeparator.string)000\(settingsDecimalSeparator.string)00")
                 .foregroundColor(.gray)
                 .padding(.leading, 20)
             Spacer()
@@ -361,7 +374,7 @@ struct Settings: View {
                 .disabled(timerIsRunning)
         }
     }
-
+    
     struct ColoredToggleStyle: ToggleStyle {
         var label = ""
         var onColor = Color(UIColor.green)

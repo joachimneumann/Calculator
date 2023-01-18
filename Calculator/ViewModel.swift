@@ -209,6 +209,7 @@ class ViewModel: ObservableObject {
     }
     
     func refreshDisplay(screen: Screen) async {
+        let tempDisplayData = screen.localized(displayNumber)
         //print("refreshDisplay")
 //        let tempDisplayData = displayNumber.getDisplayData(
 //                multipleLines: !screen.isPortraitPhone,
@@ -217,18 +218,18 @@ class ViewModel: ObservableObject {
 //                forceScientific: screen.forceScientific,
 //                showAsInteger: showAsInteger,
 //                showAsFloat: showAsFloat)
-//        let format = DisplayFormat(
-//            for: tempDisplayData.length,
-//            withMaxLength: tempDisplayData.maxlength,
-//            showThreeDots: false,
-//            screen: screen)
-//
-//        //print("tempDisplay", tempDisplay)
-//        await MainActor.run() {
-//            currentDisplay = Display(data: tempDisplayData, format: format)
-//            self.showAC = currentDisplay.data.isZero
-//            //print("currentDisplay", currentDisplay.data.left)
-//        }
+        let format = DisplayFormat(
+            for: tempDisplayData.length,
+            withMaxLength: tempDisplayData.maxlength,
+            showThreeDots: false,
+            screen: screen)
+
+        //print("tempDisplay", tempDisplay)
+        await MainActor.run() {
+            currentDisplay = Display(data: tempDisplayData, format: format)
+            self.showAC = currentDisplay.data.isZero
+            //print("currentDisplay", currentDisplay.data.left)
+        }
     }
 
     func copyFromPasteBin(screen: Screen) async -> Bool {

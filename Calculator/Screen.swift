@@ -38,7 +38,7 @@ class Screen: Equatable, ObservableObject {
     }
     
     @AppStorage("DecimalSeparator") var decimalSeparator: DecimalSeparator = .comma
-    @AppStorage("DecimalSeparator") var thousandSeparator: ThousandSeparator = .none
+    @AppStorage("ThousandSeparator") var thousandSeparator: ThousandSeparator = .none
     @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
 
     static func == (lhs: Screen, rhs: Screen) -> Bool { /// used to detect rotation
@@ -209,7 +209,7 @@ class Screen: Equatable, ObservableObject {
         return process(mantissa, exponent)
     }
     
-    func process(_ mantissa_: String, _ exponent: Int) -> DisplayData {
+    private func process(_ mantissa_: String, _ exponent: Int) -> DisplayData {
         var mantissa = mantissa_
         
         if mantissa.isEmpty {
