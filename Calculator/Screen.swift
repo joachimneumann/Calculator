@@ -221,9 +221,8 @@ class Screen: Equatable, ObservableObject {
         return DisplayData(left: "scientific", right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
     }
     
-    func process(_ mantissa_: String, _ exponent_: Int) -> DisplayData {
+    func process(_ mantissa_: String, _ exponent: Int) -> DisplayData {
         var mantissa = mantissa_
-        var exponent = exponent_
         
         if mantissa.isEmpty {
             mantissa = "0"
@@ -252,13 +251,25 @@ class Screen: Equatable, ObservableObject {
         /// Is floating point XXX,xxx?
         if exponent >= 0 {
             var floatString = mantissa
-            let index = floatString.index(floatString.startIndex, offsetBy: exponent+1)
-            let indexInt: Int = floatString.distance(from: floatString.startIndex, to: index)
-            floatString.insert(decimalSeparator.character, at: index)
-            let floatCandidate = String(floatString.prefix(indexInt+1))
-            if floatCandidate.textWidth(for: uiFont, kerning: kerning) <= displayWidth {
-                return DisplayData(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+            var index = floatString.index(floatString.startIndex, offsetBy: exponent+1)
+            var indexInt: Int = floatString.distance(from: floatString.startIndex, to: index)
+            floatString.insert(".", at: index)
+            floatString = withSeparators(numberString: floatString)
+            if let index = floatString.firstIndex(of: decimalSeparator.character) {
+                indexInt = floatString.distance(from: floatString.startIndex, to: index)
+                let floatCandidate = String(floatString.prefix(indexInt+1))
+                if floatCandidate.textWidth(for: uiFont, kerning: kerning) <= displayWidth {
+                    return DisplayData(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+                } else {
+                    var floatString = mantissa
+                    let secondIndex = mantissa.index(mantissa.startIndex, offsetBy: 1)
+                    floatString.insert(".", at: secondIndex)
+                    floatString = withSeparators(numberString: floatString)
+                    let exponentString = "e\(exponent)"
+                    return DisplayData(left: floatString, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: true)
+                }
             }
+
             /// is the comma visible in the first line and is there at least one digit after the comma?
         }
         
