@@ -70,7 +70,7 @@ class Gmp: Equatable, CustomDebugStringConvertible {
         zeroCharacterSet.insert(charactersIn: "0")
         mantissa = mantissa.trimmingCharacters(in: zeroCharacterSet)
 
-        return (mantissa, exponent)
+        return (mantissa, exponent - 1)
     }
 
     func copy() -> Gmp {

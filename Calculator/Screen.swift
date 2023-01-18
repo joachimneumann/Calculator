@@ -167,6 +167,19 @@ class Screen: Equatable, ObservableObject {
         var mantissa: String
         var exponent: Int
 
+        /// stringNumber fits in the display? show it!
+        let correctSeparator: String
+        mantissa = stringNumber
+        if stringNumber.starts(with: "-") {
+            let temp = String(mantissa.dropFirst())
+            correctSeparator = withSeparators(numberString: temp, isNegative: true)
+        } else {
+            correctSeparator = withSeparators(numberString: mantissa, isNegative: false)
+        }
+        if correctSeparator.textWidth(for: uiFont, kerning: kerning) <= displayWidth {
+            return DisplayData(left: correctSeparator, maxlength: 0, canBeInteger: false, canBeFloat: false)
+        }
+
         /// integer or float
         if stringNumber.contains(".") {
             /// float
@@ -199,30 +212,6 @@ class Screen: Equatable, ObservableObject {
         return process(mantissa, exponent)
     }
     
-    func localizedScientific(_ displayGmp: Gmp) -> DisplayData {
-        print("localizedScientific", displayGmp.debugDescription)
-        var (mantissa, exponent) = displayGmp.mantissaExponent(len: min(displayGmp.precision, Number.MAX_DISPLAY_LENGTH))
-        print("localizedScientific mantissa", mantissa)
-        print("localizedScientific exponent", exponent)
-        if exponent < 0 {
-            /// is floating point 0,xxxx
-            if mantissa.first == "-" {
-                let thirdIndex = mantissa.index(mantissa.startIndex, offsetBy: 2)
-                mantissa.insert(decimalSeparator.character, at: thirdIndex)
-            } else {
-                let secondIndex = mantissa.index(mantissa.startIndex, offsetBy: 1)
-                mantissa.insert(decimalSeparator.character, at: secondIndex)
-            }
-            print("localizedScientific mantissa", mantissa)
-            print("localizedScientific exponent", exponent)
-            return DisplayData(left: mantissa, right: "e\(exponent)", maxlength: 0, canBeInteger: false, canBeFloat: true)
-        } else {
-            /// exponent >= 0
-        }
-        return DisplayData(left: "scientific", right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
-    }
-
-    
     func process(_ mantissa_: String, _ exponent: Int) -> DisplayData {
         var mantissa = mantissa_
         
@@ -242,7 +231,7 @@ class Screen: Equatable, ObservableObject {
          What can be displayed in 200 pixel?
          - I dont want the separator as leading character!
          */
-        if mantissa.count <= exponent+1 { /// smaller than because of possible trailing zeroes in the integer
+        if mantissa.count <= exponent + 1 { /// smaller than because of possible trailing zeroes in the integer
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
             let withSeparators = withSeparators(numberString: mantissa, isNegative: isNegative)
             if withSeparators.textWidth(for: uiFont, kerning: kerning) <= displayWidth {
@@ -262,13 +251,6 @@ class Screen: Equatable, ObservableObject {
                 let floatCandidate = String(floatString.prefix(indexInt+1))
                 if floatCandidate.textWidth(for: uiFont, kerning: kerning) <= displayWidth {
                     return DisplayData(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
-                } else {
-                    var floatString = mantissa
-                    let secondIndex = mantissa.index(mantissa.startIndex, offsetBy: 1)
-                    floatString.insert(".", at: secondIndex)
-                    floatString = withSeparators(numberString: floatString, isNegative: isNegative)
-                    let exponentString = "e\(exponent)"
-                    return DisplayData(left: floatString, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: true)
                 }
             }
             /// is the comma visible in the first line and is there at least one digit after the comma?
@@ -291,29 +273,21 @@ class Screen: Equatable, ObservableObject {
                 return DisplayData(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
             }
         }
+        
+        mantissa = mantissa_
+        if isNegative {
+            mantissa.removeFirst()
+        }
 
-//        let mantissaWithSeparators = withSeparators(numberString: mantissa)
-//        let lengthOfMantissa = mantissaWithSeparators.textSize(for: uiFont, kerning: kerning).width
-//        let lengthOfExponent = "e\(exponent)".textSize(for: uiFont, kerning: kerning).width
-//        print("candidate", displayGmp.toDouble())
-//        print("lengthOfMantissa", lengthOfMantissa)
-//        print("lengthOfExponent", lengthOfExponent)
-//        if mantissa.count <= exponent+1 && exponent+1 <= withoutComma { /// smaller than because of possible trailing zeroes in the integer
-//            /// restore trailing zeros that have been removed
-//            mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
-//            // print(mantissa)
-//
-//            if mantissa.count > firstLineWithoutComma { displayData.canBeInteger = true }
-//            if mantissa.count <= firstLineWithoutComma ||
-//                (multipleLines && showAsInteger) {
-//                displayData.left = (isNegative ? "-" : "") + mantissa
-//                displayData.maxlength = lengths.withoutComma
-//                return displayData
-//            }
-//        }
-
-
-        return DisplayData(left: "not implemented", right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+        let secondIndex = mantissa.index(mantissa.startIndex, offsetBy: 1)
+        mantissa.insert(".", at: secondIndex)
+        if mantissa.count == 2 {
+            // 4.
+            mantissa.append("0")
+        }
+        mantissa = withSeparators(numberString: mantissa, isNegative: isNegative)
+        let exponentString = "e\(exponent)"
+        return DisplayData(left: mantissa, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: true)
     }
     
     func localized(_ candidate: Number, forceScientific: Bool = false) -> DisplayData {
@@ -335,10 +309,6 @@ class Screen: Equatable, ObservableObject {
             return DisplayData(left: "infinity")
         }
         
-        if forceScientific {
-            return localizedScientific(displayGmp)
-        }
-
         if displayGmp.isZero {
             return DisplayData(left: "0")
         }
