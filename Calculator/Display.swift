@@ -8,16 +8,12 @@
 import SwiftUI
 
 struct Display {
-    let data: DisplayData
-    let format: DisplayFormat
-}
-
-struct DisplayData {
     var left: String
     var right: String?
     var maxlength: Int
     var canBeInteger: Bool
     var canBeFloat: Bool
+    var format: DisplayFormat
     var isZero: Bool {
         left == "0" && right == nil
     }
@@ -32,38 +28,55 @@ struct DisplayData {
     }
 }
 
-extension DisplayData {
+extension Display {
+    init(
+    left: String,
+    right: String?,
+    maxlength: Int,
+    canBeInteger: Bool,
+    canBeFloat: Bool,
+    screen: Screen) {
+        self.left = left
+        self.right = right
+        self.maxlength = maxlength
+        self.canBeInteger = canBeInteger
+        self.canBeFloat = canBeFloat
+        self.format = DisplayFormat(for: 10, withMaxLength: 10, showThreeDots: false, screen: screen)
+    }
     init(left: String) {
         self.left = left
         right = nil
         maxlength = 0
         canBeInteger = false
         canBeFloat = false
+        format = DisplayFormat(for: 10, withMaxLength: 10, showThreeDots: false, screen: Screen(CGSize()))
     }
-    init(number: Number, forceScientific: Bool = false, screen: Screen) {
+    init(_ number: Number, forceScientific: Bool = false, screen: Screen) {
         self.left = "0"
         right = nil
         maxlength = 0
         canBeInteger = false
         canBeFloat = false
+        format = DisplayFormat(for: 10, withMaxLength: 10, showThreeDots: false, screen: screen)
         self = fromNumber(number, screen: screen)
     }
-    init(stringNumber: String, screen: Screen) {
+    init(_ stringNumber: String, screen: Screen) {
         self.left = "0"
         right = nil
         maxlength = 0
         canBeInteger = false
         canBeFloat = false
+        format = DisplayFormat(for: 10, withMaxLength: 10, showThreeDots: false, screen: screen)
         self = fromStringNumber(stringNumber, screen: screen)
     }
 }
 
-extension DisplayData {
-    func fromLeft(_ left: String) -> DisplayData {
-        return DisplayData(left: left)
+extension Display {
+    func fromLeft(_ left: String) -> Display {
+        return Display(left: left)
     }
 
-    func fromNumber(_ number: Number, screen: Screen) -> DisplayData {
+    func fromNumber(_ number: Number, screen: Screen) -> Display {
         if number.str != nil {
             return fromStringNumber(number.str!, screen: screen)
         }
@@ -91,7 +104,7 @@ extension DisplayData {
         return fromMantissaAndExponent(mantissa, exponent, screen: screen)
     }
 
-    func fromStringNumber(_ stringNumber: String, screen: Screen) -> DisplayData {
+    func fromStringNumber(_ stringNumber: String, screen: Screen) -> Display {
         guard !stringNumber.contains(",") else { assert(false, "string contains comma, but only dot is allowed") }
         guard !stringNumber.contains("e") else { assert(false, "scientific?") }
         
@@ -185,7 +198,7 @@ extension DisplayData {
         textSize(string: string, screen: screen, kerning: kerning).height
     }
     
-    private func fromMantissaAndExponent(_ mantissa_: String, _ exponent: Int, screen: Screen) -> DisplayData {
+    private func fromMantissaAndExponent(_ mantissa_: String, _ exponent: Int, screen: Screen) -> Display {
         var mantissa = mantissa_
         
         if mantissa.isEmpty {
@@ -208,7 +221,7 @@ extension DisplayData {
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
             let withSeparators = withSeparators(numberString: mantissa, isNegative: isNegative, screen: screen)
             if textWidth(withSeparators, screen: screen) <= screen.displayWidth {
-                return DisplayData(left: withSeparators, right: nil, maxlength: 0, canBeInteger: true, canBeFloat: false)
+                return Display(left: withSeparators, right: nil, maxlength: 0, canBeInteger: true, canBeFloat: false, screen: screen)
             }
         }
         
@@ -223,7 +236,7 @@ extension DisplayData {
                 indexInt = floatString.distance(from: floatString.startIndex, to: index)
                 let floatCandidate = String(floatString.prefix(indexInt+1))
                 if textWidth(floatCandidate, screen: screen) <= screen.displayWidth {
-                    return DisplayData(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+                    return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false, screen: screen)
                 }
             }
             /// is the comma visible in the first line and is there at least one digit after the comma?
@@ -243,7 +256,7 @@ extension DisplayData {
             testFloat += "x"
             if textWidth(testFloat, screen: screen) <= screen.displayWidth {
                 floatString = minusSign + "0" + screen.decimalSeparator.string + floatString
-                return DisplayData(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+                return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false, screen: screen)
             }
         }
         
@@ -260,7 +273,7 @@ extension DisplayData {
         }
         mantissa = withSeparators(numberString: mantissa, isNegative: isNegative, screen: screen)
         let exponentString = "e\(exponent)"
-        return DisplayData(left: mantissa, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: true)
+        return Display(left: mantissa, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: true, screen: screen)
     }
 }
 

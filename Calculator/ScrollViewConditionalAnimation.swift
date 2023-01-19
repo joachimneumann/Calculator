@@ -29,7 +29,7 @@ struct ScrollViewConditionalAnimation: View {
         GeometryReader { g in
             ScrollView(.vertical) {
                 HStack(alignment: .bottom, spacing: 0.0) {
-                    let toShow = preliminary && display.data.left.count > 1 ? String(display.data.left.dropLast()) : display.data.left
+                    let toShow = preliminary && display.left.count > 1 ? String(display.left.dropLast()) : display.left
                     Spacer(minLength: 0.0)
                     Text(toShow)
                         .kerning(display.format.kerning)

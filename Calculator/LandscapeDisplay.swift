@@ -30,8 +30,8 @@ struct LandscapeDisplay: View {
     
     @ViewBuilder
     var exponent: some View {
-        if display.data.right != nil {
-            Text(display.data.right!)
+        if display.right != nil {
+            Text(display.right!)
                 .kerning(display.format.kerning)
                 .font(display.format.font)
                 .foregroundColor(showOrange ? .orange : display.format.color)

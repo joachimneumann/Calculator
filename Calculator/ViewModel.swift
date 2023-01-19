@@ -53,7 +53,8 @@ class ViewModel: ObservableObject {
         
         /// currentDisplay will be updated shortly by refreshDisplay in onAppear() of Calculator
         /// I just set some values here
-        self.currentDisplay = Display(data: DisplayData(left: "0", maxlength: 0, canBeInteger: false, canBeFloat: false), format: DisplayFormat(for: 10, withMaxLength: 10, showThreeDots: false, screen: Screen(CGSize())))
+        currentDisplay = Display(left: "0", right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false, screen: Screen(CGSize()))
+        //, format: DisplayFormat(for: 10, withMaxLength: 10, showThreeDots: false, screen: Screen(CGSize())))
         brain = Brain(precision: _precision.wrappedValue)
         precisionDescription = _precision.wrappedValue.useWords
     }
@@ -184,18 +185,18 @@ class ViewModel: ObservableObject {
         //print("defaultTask", symbol)
         if showPreliminaryResults {
             let preliminaryResult = stupidBrain.operation(symbol)
-            let preliminaryData = DisplayData(number: preliminaryResult, screen: screen)
-            let preliminary = DisplayFormat(
-                for: preliminaryData.length,
-                withMaxLength: preliminaryData.maxlength,
-                showThreeDots: false,
-                screen: screen)
-            let preliminaryDisplay = Display(data: preliminaryData, format: preliminary)
+            let preliminary = Display(preliminaryResult, screen: screen)
+//            let preliminaryFormat = DisplayFormat(
+//                for: preliminaryData.length,
+//                withMaxLength: preliminaryData.maxlength,
+//                showThreeDots: false,
+//                screen: screen)
+            //let preliminaryDisplay = Display(data: preliminaryData)//, format: preliminary)
             Task(priority: .high) {
                 try? await Task.sleep(nanoseconds: 300_000_000)
                 if keyState == .highPrecisionProcessing {
                     await MainActor.run() {
-                        currentDisplay = preliminaryDisplay
+                        currentDisplay = preliminary
                     }
                 }
             }
@@ -206,17 +207,17 @@ class ViewModel: ObservableObject {
     }
     
     func refreshDisplay(screen: Screen) async {
-        let tempDisplayData = DisplayData(number: displayNumber, screen: screen)
-        let format = DisplayFormat(
-            for: tempDisplayData.length,
-            withMaxLength: tempDisplayData.maxlength,
-            showThreeDots: false,
-            screen: screen)
+        let tempDisplay = Display(displayNumber, screen: screen)
+//        let format = DisplayFormat(
+//            for: tempDisplayData.length,
+//            withMaxLength: tempDisplayData.maxlength,
+//            showThreeDots: false,
+//            screen: screen)
 
         //print("tempDisplay", tempDisplay)
         await MainActor.run() {
-            currentDisplay = Display(data: tempDisplayData, format: format)
-            self.showAC = currentDisplay.data.isZero
+            currentDisplay = tempDisplay
+            self.showAC = currentDisplay.isZero
             //print("currentDisplay", currentDisplay.data.left)
         }
     }

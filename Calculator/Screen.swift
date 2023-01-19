@@ -153,7 +153,7 @@ class Screen: Equatable {
         digitWidth             = textWidth("0")
         eWidth                 = textWidth("0")
     }
-        
+    /*
     func localized(_ stringNumber: String) -> DisplayData {
         guard !stringNumber.contains(",") else { assert(false, "string contains comma, but only dot is allowed") }
         guard !stringNumber.contains("e") else { assert(false, "scientific?") }
@@ -340,7 +340,7 @@ class Screen: Equatable {
             return minusSign + integerPart
         }
     }
-    
+    */
     private func textSize(string: String, uiFont: UIFont?, kerning: CGFloat) -> CGSize {
         let font: UIFont
         if uiFont != nil {

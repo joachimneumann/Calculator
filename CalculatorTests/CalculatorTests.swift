@@ -25,19 +25,22 @@ class CalculatorTests: XCTestCase {
     }
 
     func left(_ s: String) -> String {
-        DisplayData(s, screen: screen).left
+        Display(s, screen: screen).left
     }
     func right(_ s: String) -> String? {
-        DisplayData(s, screen: screen).right
+        Display(s, screen: screen).right
+    }
+    func oneLine(_ s: String) -> String {
+        Display(s, screen: screen).oneLine
     }
     func left(_ n: Number) -> String {
-        DisplayData(n, screen: screen).left
+        Display(n, screen: screen).left
     }
     func right(_ n: Number) -> String? {
-        DisplayData(n, screen: screen).right
+        Display(n, screen: screen).right
     }
     func oneLine(_ n: Number) -> String {
-        screen.localized(n).oneLine
+        Display(n, screen: screen).oneLine
     }
 
     func test_Separators() {
@@ -524,6 +527,8 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(right("12345678901234"),  "e13")
         XCTAssertEqual( left("123456789012345"), "1,23456789012345")
         XCTAssertEqual(right("123456789012345"), "e14")
+        XCTAssertEqual(oneLine("123456789012345"), "1,23456789012345e14")
+
         
         screen.decimalSeparator = .dot
         screen.groupingSeparator = .comma
