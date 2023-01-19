@@ -10,8 +10,6 @@ import SwiftUI
 struct Icons : View {
     let simulatePurchased = true
     @Environment(\.scenePhase) var scenePhase
-    @Environment(\.decimalSeparator) var decimalSeparator: Binding<DecimalSeparator>
-    @Environment(\.groupingSeparator) var groupingSeparator: Binding<GroupingSeparator>
     @ObservedObject var store: Store
     @ObservedObject var viewModel: ViewModel
     let screen: Screen
@@ -141,7 +139,7 @@ struct Icons : View {
             Button {
                 viewModel.showAsInteger.toggle()
                 Task {
-                    await viewModel.refreshDisplay(screen: screen, decimalSeparator: decimalSeparator.wrappedValue, groupingSeparator: groupingSeparator.wrappedValue)
+                    await viewModel.refreshDisplay(screen: screen)
                 }
             } label: {
                 Text(integerLabel)
@@ -158,7 +156,7 @@ struct Icons : View {
             Button {
                 viewModel.showAsFloat.toggle()
                 Task {
-                    await viewModel.refreshDisplay(screen: screen, decimalSeparator: decimalSeparator.wrappedValue, groupingSeparator: groupingSeparator.wrappedValue)
+                    await viewModel.refreshDisplay(screen: screen)
                 }
             } label: {
                 Text(floatLabel)

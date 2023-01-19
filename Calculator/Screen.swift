@@ -45,11 +45,23 @@ enum GroupingSeparator: String, Codable, CaseIterable{
     }
 }
 
-struct Screen: Equatable, DisplayLengthLimiter {    
+protocol Separators {
+    var decimalSeparator: DecimalSeparator   { get }
+    var groupingSeparator: GroupingSeparator { get }
+}
+
+struct Screen: Equatable, DisplayLengthLimiter, Separators {    
             
     /// I initialize the decimalSeparator with the locale preference, but
     /// I ignore the value of Locale.current.groupingSeparator
-    @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
+    @AppStorage("forceScientific", store: .standard)
+    var forceScientific: Bool = false
+    
+    @AppStorage("decimalSeparator", store: .standard)
+    var decimalSeparator: DecimalSeparator = Locale.current.decimalSeparator == "," ? .comma : .dot
+    
+    @AppStorage("groupingSeparator", store: .standard)
+    var groupingSeparator: GroupingSeparator = .none
 
     static func == (lhs: Screen, rhs: Screen) -> Bool { /// used to detect rotation
         lhs.keySize == rhs.keySize

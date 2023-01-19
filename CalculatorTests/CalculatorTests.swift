@@ -24,22 +24,22 @@ class CalculatorTests: XCTestCase {
     }
 
     func left(_ s: String) -> String {
-        Display(s, screen: screen).left
+        Display(s, displayLengthLimiter: screen, separators: screen).left
     }
     func right(_ s: String) -> String? {
-        Display(s, screen: screen).right
+        Display(s, displayLengthLimiter: screen, separators: screen).right
     }
     func allInOneLine(_ s: String) -> String {
-        Display(s, screen: screen).allInOneLine
+        Display(s, displayLengthLimiter: screen, separators: screen).allInOneLine
     }
     func left(_ n: Number) -> String {
-        Display(n, screen: screen).left
+        Display(n, displayLengthLimiter: screen, separators: screen).left
     }
     func right(_ n: Number) -> String? {
-        Display(n, screen: screen).right
+        Display(n, displayLengthLimiter: screen, separators: screen).right
     }
     func allInOneLine(_ n: Number) -> String {
-        Display(n, screen: screen).allInOneLine
+        Display(n, displayLengthLimiter: screen, separators: screen).allInOneLine
     }
 
     func test_portraitIPhone() {

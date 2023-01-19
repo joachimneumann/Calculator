@@ -7,11 +7,8 @@
 
 import SwiftUI
 
-
 struct Settings: View {
-    @Environment(\.presentationMode) var presentation /// for dismissing the screen
-    @Environment(\.decimalSeparator) var decimalSeparator: Binding<DecimalSeparator>
-    @Environment(\.groupingSeparator) var groupingSeparator: Binding<GroupingSeparator>
+    @Environment(\.presentationMode) var presentation /// for dismissing the Settings View
 
     @ObservedObject var viewModel: ViewModel
     let screen: Screen
@@ -76,7 +73,7 @@ struct Settings: View {
                     if viewModel.precision != settingsPrecision {
                         await viewModel.updatePrecision(to: settingsPrecision)
                     }
-                    await viewModel.refreshDisplay(screen: screen, decimalSeparator: decimalSeparator.wrappedValue, groupingSeparator: groupingSeparator.wrappedValue)
+                    await viewModel.refreshDisplay(screen: screen)
                 }
                 if viewModel.showPreliminaryResults != settingsShowPreliminaryResults {
                     viewModel.showPreliminaryResults = settingsShowPreliminaryResults
@@ -84,11 +81,11 @@ struct Settings: View {
                 if screen.forceScientific != settingsForceScientific {
                     screen.forceScientific = settingsForceScientific
                 }
-                if decimalSeparator.wrappedValue != settingsDecimalSeparator {
-                    decimalSeparator.wrappedValue = settingsDecimalSeparator
+                if screen.decimalSeparator != settingsDecimalSeparator {
+                    screen.decimalSeparator = settingsDecimalSeparator
                 }
-                if groupingSeparator.wrappedValue != settingsGroupingSeparator {
-                    groupingSeparator.wrappedValue = settingsGroupingSeparator
+                if screen.groupingSeparator != settingsGroupingSeparator {
+                    screen.groupingSeparator = settingsGroupingSeparator
                 }
             }
         }
@@ -96,8 +93,8 @@ struct Settings: View {
             settingsPrecision              = viewModel.precision
             settingsShowPreliminaryResults = viewModel.showPreliminaryResults
             settingsForceScientific        = screen.forceScientific
-            settingsDecimalSeparator       = decimalSeparator.wrappedValue
-            settingsGroupingSeparator      = groupingSeparator.wrappedValue
+            settingsDecimalSeparator       = screen.decimalSeparator
+            settingsGroupingSeparator      = screen.groupingSeparator
             UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(white: 0.7, alpha: 1.0)
             UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
             UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
