@@ -122,7 +122,7 @@ extension Display {
         }
         print("fromStringNumber textWidth", textWidth(correctSeparator, screen: screen))
 
-        if textWidth(correctSeparator, screen: screen) <= screen.displayWidth {
+        if textWidth(correctSeparator, screen: screen) <= screen.displayWidth - screen.ePadding {
             return fromLeft(correctSeparator)
         }
         
@@ -222,7 +222,7 @@ extension Display {
         if mantissa.count <= exponent + 1 { /// smaller than because of possible trailing zeroes in the integer
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
             let withSeparators = withSeparators(numberString: mantissa, isNegative: isNegative, screen: screen)
-            if textWidth(withSeparators, screen: screen) <= screen.displayWidth {
+            if textWidth(withSeparators, screen: screen) <= screen.displayWidth - screen.ePadding {
                 return Display(left: withSeparators, right: nil, maxlength: 0, canBeInteger: true, canBeFloat: false, screen: screen)
             }
         }
@@ -237,9 +237,9 @@ extension Display {
             if let index = floatString.firstIndex(of: screen.decimalSeparator.character) {
                 indexInt = floatString.distance(from: floatString.startIndex, to: index)
                 var floatCandidate = String(floatString.prefix(indexInt+1))
-                if textWidth(floatCandidate, screen: screen) <= screen.displayWidth {
+                if textWidth(floatCandidate, screen: screen) <= screen.displayWidth - screen.ePadding {
                     if screen.isPortraitPhone {
-                        while textWidth(floatCandidate, screen: screen) <= screen.displayWidth {
+                        while textWidth(floatCandidate, screen: screen) <= screen.displayWidth - screen.ePadding {
                             indexInt += 1
                             floatCandidate = String(floatString.prefix(indexInt+1))
                         }
@@ -264,7 +264,7 @@ extension Display {
                 testFloat += "0"
             }
             testFloat += "x"
-            if textWidth(testFloat, screen: screen) <= screen.displayWidth {
+            if textWidth(testFloat, screen: screen) <= screen.displayWidth - screen.ePadding {
                 floatString = minusSign + "0" + screen.decimalSeparator.string + floatString
                 return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false, screen: screen)
             }
@@ -286,15 +286,15 @@ extension Display {
         if screen.isPortraitPhone {
             var indexInt = 3 /// minimum: 2,3
             var floatString = String(mantissa.prefix(indexInt))
-            if textWidth(floatString + exponentString, screen: screen) > screen.displayWidth {
+            if textWidth(floatString + exponentString, screen: screen) > screen.displayWidth - screen.ePadding {
                 return Display(left: "can not show")
             }
-            while textWidth(floatString + exponentString, screen: screen) <= screen.displayWidth {
+            while textWidth(floatString + exponentString, screen: screen) <= screen.displayWidth - screen.ePadding {
                 indexInt += 1
                 floatString = String(mantissa.prefix(indexInt))
             }
             floatString = String(floatString.prefix(indexInt-1))
-            return Display(left: floatString + exponentString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false, screen: screen)
+            return Display(left: floatString, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: false, screen: screen)
         } else {
             return Display(left: mantissa, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: true, screen: screen)
         }

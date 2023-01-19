@@ -1,6 +1,5 @@
 //
 //  CalculatorTests.swift
-//  xxTests
 //
 //  Created by Joachim Neumann on 10/31/21.
 //
@@ -18,6 +17,7 @@ class CalculatorTests: XCTestCase {
         screen = Screen(CGSize(width: 130, height: 130))
         screen.groupingSeparator = .none
         screen.decimalSeparator = .comma
+        screen.ePadding = 0.0
     }
     
     override func tearDownWithError() throws {
@@ -47,7 +47,7 @@ class CalculatorTests: XCTestCase {
         screen = Screen(CGSize(width: 130, height: 130))
         screen.groupingSeparator = .none
         screen.decimalSeparator = .dot
-        screen.displayWidth = 111.072
+        screen.ePadding = 0.0
         XCTAssertEqual( left("12345678901"),     "12345678901")
         XCTAssertEqual(right("12345678901"),     nil)
         
@@ -66,12 +66,12 @@ class CalculatorTests: XCTestCase {
         screen = Screen(CGSize(width: 130, height: 130.01))
         screen.groupingSeparator = .none
         screen.decimalSeparator = .dot
-        screen.displayWidth = 111.072
+        screen.ePadding = 0.0
         XCTAssertEqual( left("12345678901"),     "12345678901")
         XCTAssertEqual(right("12345678901"),     nil)
 
-        XCTAssertEqual( left("123456789012"),    "1.234567e11")
-        XCTAssertEqual(right("123456789012"),    nil)
+        XCTAssertEqual( left("123456789012"),    "1.234567")
+        XCTAssertEqual(right("123456789012"),    "e11")
 
         XCTAssertEqual( left("123456.4444444444"), "123456.44444")
         XCTAssertEqual(right("123456.4444444444"),     nil)
@@ -79,8 +79,8 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual( left("1234567890.1"),     "1234567890.1")
         XCTAssertEqual(right("12345678901"),     nil)
         
-        XCTAssertEqual( left("12345678901.1"),     "1.234567e10")
-        XCTAssertEqual(right("12345678901.1"),     nil)
+        XCTAssertEqual( left("12345678901.1"),     "1.234567")
+        XCTAssertEqual(right("12345678901.1"),     "e10")
 
         
     }
