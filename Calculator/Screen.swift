@@ -72,7 +72,7 @@ class Screen: Equatable {
     var digitWidth: CGFloat = 0.0
     var eWidth: CGFloat = 0.0
     
-    private let uiFont: UIFont
+    let uiFont: UIFont
     private let calculatorWidth: CGFloat
     
     init(_ screenSize: CGSize) {

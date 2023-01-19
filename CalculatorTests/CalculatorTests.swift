@@ -13,7 +13,7 @@ class CalculatorTests: XCTestCase {
     
     var screen: Screen = Screen(CGSize(width: 130, height: 130))
     let precision = 1000
-    
+
     override func setUpWithError() throws {
         screen = Screen(CGSize(width: 130, height: 130))
         screen.groupingSeparator = .none
@@ -25,21 +25,17 @@ class CalculatorTests: XCTestCase {
     }
 
     func left(_ s: String) -> String {
-         screen.localized(s).left
-//        let n = Number(s, precision: precision)
-//        return screen.localized(n).left
+        DisplayData(s, screen: screen).left
     }
     func right(_ s: String) -> String? {
-         screen.localized(s).right
-//        let n = Number(s, precision: precision)
-//        return screen.localized(n).right
+        DisplayData(s, screen: screen).right
     }
     func left(_ n: Number) -> String {
-        screen.localized(n).left
+        DisplayData(n, screen: screen).left
     }
     func right(_ n: Number) -> String? {
-        screen.localized(n).right
-    }    
+        DisplayData(n, screen: screen).right
+    }
     func oneLine(_ n: Number) -> String {
         screen.localized(n).oneLine
     }

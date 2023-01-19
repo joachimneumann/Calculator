@@ -50,7 +50,10 @@ class ViewModel: ObservableObject {
 
     init() {
         //print("ViewModel INIT")
-        self.currentDisplay = Display()
+        
+        /// currentDisplay will be updated shortly by refreshDisplay in onAppear() of Calculator
+        /// I just set some values here
+        self.currentDisplay = Display(data: DisplayData(left: "0", maxlength: 0, canBeInteger: false, canBeFloat: false), format: DisplayFormat(for: 10, withMaxLength: 10, showThreeDots: false, screen: Screen(CGSize())))
         brain = Brain(precision: _precision.wrappedValue)
         precisionDescription = _precision.wrappedValue.useWords
     }
@@ -181,7 +184,7 @@ class ViewModel: ObservableObject {
         //print("defaultTask", symbol)
         if showPreliminaryResults {
             let preliminaryResult = stupidBrain.operation(symbol)
-            let preliminaryData = screen.localized(preliminaryResult)
+            let preliminaryData = DisplayData(number: preliminaryResult, screen: screen)
             let preliminary = DisplayFormat(
                 for: preliminaryData.length,
                 withMaxLength: preliminaryData.maxlength,
@@ -203,7 +206,7 @@ class ViewModel: ObservableObject {
     }
     
     func refreshDisplay(screen: Screen) async {
-        let tempDisplayData = screen.localized(displayNumber)
+        let tempDisplayData = DisplayData(number: displayNumber, screen: screen)
         let format = DisplayFormat(
             for: tempDisplayData.length,
             withMaxLength: tempDisplayData.maxlength,
