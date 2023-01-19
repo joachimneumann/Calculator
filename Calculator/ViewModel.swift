@@ -231,7 +231,7 @@ class ViewModel: ObservableObject {
     }
     
     func copyToPastBin(screen: Screen) async {
-        let copyData = Display(displayNumber, screen: screen)
+        let copyData = Display(displayNumber, screen: screen, noLimits: true)
         UIPasteboard.general.string = copyData.allInOneLine
     }
 

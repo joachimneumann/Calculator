@@ -60,13 +60,13 @@ extension Display {
         canBeInteger = false
         canBeFloat = false
     }
-    init(_ number: Number, forceScientific: Bool = false, screen: Screen) {
+    init(_ number: Number, forceScientific: Bool = false, screen: Screen, noLimits: Bool = false) {
         self.left = "0"
         right = nil
         maxlength = 0
         canBeInteger = false
         canBeFloat = false
-        self = fromNumber(number, displayLengthLimiter: screen, separators: screen)
+        self = fromNumber(number, displayLengthLimiter: noLimits ? nil : screen, separators: screen)
     }
     init(_ stringNumber: String, screen: Screen) {
         self.left = "0"
