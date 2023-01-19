@@ -118,7 +118,7 @@ extension Display {
         } else {
             correctSeparator = withSeparators(numberString: mantissa, isNegative: false, screen: screen)
         }
-        print("fromStringNumber textWidth", textWidth(correctSeparator, screen: screen))
+        //print("fromStringNumber textWidth", textWidth(correctSeparator, screen: screen))
 
         if textWidth(correctSeparator, screen: screen) <= screen.displayWidth - screen.ePadding {
             return fromLeft(correctSeparator)

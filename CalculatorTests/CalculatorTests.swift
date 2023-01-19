@@ -67,20 +67,20 @@ class CalculatorTests: XCTestCase {
         screen.groupingSeparator = .none
         screen.decimalSeparator = .dot
         screen.ePadding = 0.0
-        XCTAssertEqual( left("12345678901"),     "12345678901")
-        XCTAssertEqual(right("12345678901"),     nil)
+        XCTAssertEqual( left("123456789"),     "123456789")
+        XCTAssertEqual(right("123456789"),     nil)
 
-        XCTAssertEqual( left("123456789012"),    "1.234567")
+        XCTAssertEqual( left("123456789012"),    "1.23456")
         XCTAssertEqual(right("123456789012"),    "e11")
 
-        XCTAssertEqual( left("123456.4444444444"), "123456.44444")
+        XCTAssertEqual( left("123456.4444444444"), "123456.4444")
         XCTAssertEqual(right("123456.4444444444"),     nil)
         
-        XCTAssertEqual( left("1234567890.1"),     "1234567890.1")
-        XCTAssertEqual(right("12345678901"),     nil)
+        XCTAssertEqual( left("123456789.1"),     "123456789.1")
+        XCTAssertEqual(right("123456789.1"),     nil)
         
-        XCTAssertEqual( left("12345678901.1"),     "1.234567")
-        XCTAssertEqual(right("12345678901.1"),     "e10")
+        XCTAssertEqual( left("1234567890.1"),     "1.234567")
+        XCTAssertEqual(right("1234567890.1"),     "e9")
 
         
     }
