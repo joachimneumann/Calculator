@@ -207,19 +207,10 @@ class ViewModel: ObservableObject {
     }
     
     func refreshDisplay(screen: Screen) async {
-        print("refreshDisplay forceScientific =", screen.forceScientific)
         let tempDisplay = Display(displayNumber, screen: screen)
-//        let format = DisplayFormat(
-//            for: tempDisplayData.length,
-//            withMaxLength: tempDisplayData.maxlength,
-//            showThreeDots: false,
-//            screen: screen)
-
-        //print("tempDisplay", tempDisplay)
         await MainActor.run() {
             currentDisplay = tempDisplay
             self.showAC = currentDisplay.isZero
-            //print("currentDisplay", currentDisplay.data.left)
         }
     }
 
@@ -241,12 +232,6 @@ class ViewModel: ObservableObject {
     
     func copyToPastBin(screen: Screen) async {
         let copyData = Display(displayNumber, screen: screen)
-//        displayNumber.getDisplayData(
-//            multipleLines: true,
-//            useMaximalLength: true,
-//            forceScientific: false,
-//            showAsInteger: showAsInteger,
-//            showAsFloat: showAsFloat)
         UIPasteboard.general.string = copyData.allInOneLine
     }
 
