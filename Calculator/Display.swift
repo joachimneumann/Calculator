@@ -9,6 +9,7 @@ import SwiftUI
 
 struct Display {
     var left: String
+    var portraitPhoneString: String?
     var right: String?
     var maxlength: Int
     var canBeInteger: Bool
@@ -18,7 +19,7 @@ struct Display {
         left == "0" && right == nil
     }
     
-    var oneLine: String {
+    var allInOneLine: String {
         left + (right ?? "")
     }
     var length: Int {

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class Screen: Equatable {
+struct Screen: Equatable {
             
     /// I initialize the decimalSeparator with the locale preference, but
     /// I ignore the value of Locale.current.groupingSeparator

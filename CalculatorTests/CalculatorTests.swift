@@ -30,8 +30,8 @@ class CalculatorTests: XCTestCase {
     func right(_ s: String) -> String? {
         Display(s, screen: screen).right
     }
-    func oneLine(_ s: String) -> String {
-        Display(s, screen: screen).oneLine
+    func allInOneLine(_ s: String) -> String {
+        Display(s, screen: screen).allInOneLine
     }
     func left(_ n: Number) -> String {
         Display(n, screen: screen).left
@@ -39,10 +39,26 @@ class CalculatorTests: XCTestCase {
     func right(_ n: Number) -> String? {
         Display(n, screen: screen).right
     }
-    func oneLine(_ n: Number) -> String {
-        Display(n, screen: screen).oneLine
+    func allInOneLine(_ n: Number) -> String {
+        Display(n, screen: screen).allInOneLine
     }
 
+    func test_portraitIPhone() {
+        screen = Screen(CGSize(width: 130, height: 400))
+        screen.decimalSeparator = .dot
+        screen.groupingSeparator = .none
+        XCTAssertEqual( left("123456789"),  "123456789")
+        XCTAssertEqual(right("123456789"),  nil)
+        XCTAssertEqual( left("1234567890"), "1.234567890")
+        XCTAssertEqual(right("1234567890"), "e9")
+        screen = Screen(CGSize(width: 130, height: 400))
+        XCTAssertEqual( left("123456789"),  "123456789")
+        XCTAssertEqual(right("123456789"),  nil)
+        XCTAssertEqual( left("1234567890"), "1.2345678e9")
+        XCTAssertEqual(right("1234567890"), nil)
+    }
+    
+    
     func test_Separators() {
         let debugBrain = DebugBrain(precision: precision)
         screen.decimalSeparator = .comma
@@ -488,14 +504,14 @@ class CalculatorTests: XCTestCase {
         debugBrain.push("One_x")
         XCTAssertEqual(left(debugBrain.last), "7,7")
         XCTAssertEqual(right(debugBrain.last), nil)
-        XCTAssertEqual(oneLine(debugBrain.last), "7,7")
+        XCTAssertEqual(allInOneLine(debugBrain.last), "7,7")
 
         debugBrain.push("AC")
         debugBrain.push(0.3)
         debugBrain.push("+")
         debugBrain.push("0,4")
         debugBrain.push("=")
-        XCTAssertEqual(oneLine(debugBrain.last), "0,7")
+        XCTAssertEqual(allInOneLine(debugBrain.last), "0,7")
     }
     
     func test_integer() {
@@ -527,7 +543,7 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(right("12345678901234"),  "e13")
         XCTAssertEqual( left("123456789012345"), "1,23456789012345")
         XCTAssertEqual(right("123456789012345"), "e14")
-        XCTAssertEqual(oneLine("123456789012345"), "1,23456789012345e14")
+        XCTAssertEqual(allInOneLine("123456789012345"), "1,23456789012345e14")
 
         
         screen.decimalSeparator = .dot
