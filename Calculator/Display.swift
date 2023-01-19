@@ -7,6 +7,14 @@
 
 import SwiftUI
 
+protocol DisplayLengthLimiter {
+    var kerning: CGFloat      { get }
+    var uiFont: UIFont        { get }
+    var displayWidth: CGFloat { set get }
+    var ePadding: CGFloat     { set get }
+    var isPortraitPhone: Bool { get }
+}
+
 struct Display {
     var left: String
     var portraitPhoneString: String?
@@ -52,21 +60,21 @@ extension Display {
         canBeInteger = false
         canBeFloat = false
     }
-    init(_ number: Number, forceScientific: Bool = false, screen: Screen) {
+    init(_ number: Number, forceScientific: Bool = false, displayLengthLimiter: DisplayLengthLimiter?, decimalSeparator: DecimalSeparator, groupingSeparator: GroupingSeparator) {
         self.left = "0"
         right = nil
         maxlength = 0
         canBeInteger = false
         canBeFloat = false
-        self = fromNumber(number, screen: screen)
+        self = fromNumber(number, displayLengthLimiter: displayLengthLimiter, decimalSeparator: decimalSeparator, groupingSeparator: groupingSeparator)
     }
-    init(_ stringNumber: String, screen: Screen) {
+    init(_ stringNumber: String, displayLengthLimiter: DisplayLengthLimiter, decimalSeparator: DecimalSeparator, groupingSeparator: GroupingSeparator) {
         self.left = "0"
         right = nil
         maxlength = 0
         canBeInteger = false
         canBeFloat = false
-        self = fromStringNumber(stringNumber, screen: screen)
+        self = fromStringNumber(stringNumber, displayLengthLimiter: displayLengthLimiter, decimalSeparator: decimalSeparator, groupingSeparator: groupingSeparator)
     }
 }
 
@@ -75,9 +83,9 @@ extension Display {
         return Display(left: left)
     }
 
-    func fromNumber(_ number: Number, screen: Screen) -> Display {
+    func fromNumber(_ number: Number, displayLengthLimiter: DisplayLengthLimiter?, decimalSeparator: DecimalSeparator, groupingSeparator: GroupingSeparator) -> Display {
         if number.str != nil {
-            return fromStringNumber(number.str!, screen: screen)
+            return fromStringNumber(number.str!, displayLengthLimiter: displayLengthLimiter, decimalSeparator: decimalSeparator, groupingSeparator: groupingSeparator)
         }
 
         guard number.gmp != nil else {
@@ -98,12 +106,18 @@ extension Display {
             return fromLeft("0")
         }
 
-        let (mantissa, exponent) = displayGmp.mantissaExponent(len: min(displayGmp.precision, Number.MAX_DISPLAY_LENGTH))
+        let mantissaLength: Int
+        if displayLengthLimiter != nil {
+            mantissaLength = min(displayGmp.precision, Number.MAX_DISPLAY_LENGTH)
+        } else {
+            mantissaLength = displayGmp.precision
+        }
+        let (mantissa, exponent) = displayGmp.mantissaExponent(len: mantissaLength)
         
-        return fromMantissaAndExponent(mantissa, exponent, screen: screen)
+        return fromMantissaAndExponent(mantissa, exponent, displayLengthLimiter: displayLengthLimiter, decimalSeparator: decimalSeparator, groupingSeparator: groupingSeparator)
     }
 
-    func fromStringNumber(_ stringNumber: String, screen: Screen) -> Display {
+    func fromStringNumber(_ stringNumber: String, displayLengthLimiter: DisplayLengthLimiter?, decimalSeparator: DecimalSeparator, groupingSeparator: GroupingSeparator) -> Display {
         guard !stringNumber.contains(",") else { assert(false, "string contains comma, but only dot is allowed") }
         guard !stringNumber.contains("e") else { assert(false, "scientific?") }
         var mantissa: String
@@ -114,13 +128,16 @@ extension Display {
         mantissa = stringNumber
         if stringNumber.starts(with: "-") {
             let temp = String(mantissa.dropFirst())
-            correctSeparator = withSeparators(numberString: temp, isNegative: true, screen: screen)
+            correctSeparator = withSeparators(numberString: temp, isNegative: true, decimalSeparator: decimalSeparator, groupingSeparator: groupingSeparator)
         } else {
-            correctSeparator = withSeparators(numberString: mantissa, isNegative: false, screen: screen)
+            correctSeparator = withSeparators(numberString: mantissa, isNegative: false, decimalSeparator: decimalSeparator, groupingSeparator: groupingSeparator)
         }
-        //print("fromStringNumber textWidth", textWidth(correctSeparator, screen: screen))
 
-        if textWidth(correctSeparator, screen: screen) <= screen.displayWidth - screen.ePadding {
+        if let displayLengthLimiter = displayLengthLimiter {
+            if textWidth(correctSeparator, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
+                return fromLeft(correctSeparator)
+            }
+        } else {
             return fromLeft(correctSeparator)
         }
         
@@ -153,10 +170,10 @@ extension Display {
             exponent = stringNumber.count - 1
         }
         if mantissa.starts(with: "-") { exponent -= 1 }
-        return fromMantissaAndExponent(mantissa, exponent, screen: screen)
+        return fromMantissaAndExponent(mantissa, exponent, displayLengthLimiter: displayLengthLimiter, decimalSeparator: decimalSeparator, groupingSeparator: groupingSeparator)
     }
     
-    func withSeparators(numberString: String, isNegative: Bool, screen: Screen) -> String {
+    func withSeparators(numberString: String, isNegative: Bool, decimalSeparator: DecimalSeparator, groupingSeparator: GroupingSeparator) -> String {
         var integerPart: String
         let fractionalPart: String
         
@@ -169,7 +186,7 @@ extension Display {
             fractionalPart = ""
         }
         
-        if let c = screen.groupingSeparator.character {
+        if let c = groupingSeparator.character {
             var count = integerPart.count
             while count >= 4 {
                 count = count - 3
@@ -178,27 +195,27 @@ extension Display {
         }
         let minusSign = isNegative ? "-" : ""
         if numberString.contains(".") {
-            return minusSign + integerPart + screen.decimalSeparator.string + fractionalPart
+            return minusSign + integerPart + decimalSeparator.string + fractionalPart
         } else {
             return minusSign + integerPart
         }
     }
     
-    private func textSize(string: String, screen: Screen, kerning: CGFloat) -> CGSize {
+    private func textSize(string: String, displayLengthLimiter: DisplayLengthLimiter) -> CGSize {
         var attributes: [NSAttributedString.Key : Any] = [:]
-        attributes[.kern] = kerning
-        attributes[.font] = screen.uiFont
+        attributes[.kern] = displayLengthLimiter.kerning
+        attributes[.font] = displayLengthLimiter.uiFont
         return string.size(withAttributes: attributes)
     }
-    func textWidth(_ string: String, screen: Screen, uiFont: UIFont? = nil, kerning: CGFloat = 0.0) -> CGFloat {
-        textSize(string: string, screen: screen, kerning: kerning).width
+    func textWidth(_ string: String, displayLengthLimiter: DisplayLengthLimiter) -> CGFloat {
+        textSize(string: string, displayLengthLimiter: displayLengthLimiter).width
     }
     
-    func textHeight(_ string: String, screen: Screen, uiFont: UIFont? = nil, kerning: CGFloat = 0.0) -> CGFloat {
-        textSize(string: string, screen: screen, kerning: kerning).height
+    func textHeight(_ string: String, displayLengthLimiter: DisplayLengthLimiter) -> CGFloat {
+        textSize(string: string, displayLengthLimiter: displayLengthLimiter).height
     }
     
-    private func fromMantissaAndExponent(_ mantissa_: String, _ exponent: Int, screen: Screen) -> Display {
+    private func fromMantissaAndExponent(_ mantissa_: String, _ exponent: Int, displayLengthLimiter: DisplayLengthLimiter?, decimalSeparator: DecimalSeparator, groupingSeparator: GroupingSeparator) -> Display {
         var mantissa = mantissa_
         
         if mantissa.isEmpty {
@@ -219,8 +236,12 @@ extension Display {
          */
         if mantissa.count <= exponent + 1 { /// smaller than because of possible trailing zeroes in the integer
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
-            let withSeparators = withSeparators(numberString: mantissa, isNegative: isNegative, screen: screen)
-            if textWidth(withSeparators, screen: screen) <= screen.displayWidth - screen.ePadding {
+            let withSeparators = withSeparators(numberString: mantissa, isNegative: isNegative, decimalSeparator: decimalSeparator, groupingSeparator: groupingSeparator)
+            if let displayLengthLimiter = displayLengthLimiter {
+                if textWidth(withSeparators, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
+                    return Display(left: withSeparators, right: nil, maxlength: 0, canBeInteger: true, canBeFloat: false)
+                }
+            } else {
                 return Display(left: withSeparators, right: nil, maxlength: 0, canBeInteger: true, canBeFloat: false)
             }
         }
@@ -231,21 +252,25 @@ extension Display {
             let index = floatString.index(floatString.startIndex, offsetBy: exponent+1)
             var indexInt: Int = floatString.distance(from: floatString.startIndex, to: index)
             floatString.insert(".", at: index)
-            floatString = withSeparators(numberString: floatString, isNegative: isNegative, screen: screen)
-            if let index = floatString.firstIndex(of: screen.decimalSeparator.character) {
-                indexInt = floatString.distance(from: floatString.startIndex, to: index)
-                var floatCandidate = String(floatString.prefix(indexInt+1))
-                if textWidth(floatCandidate, screen: screen) <= screen.displayWidth - screen.ePadding {
-                    if screen.isPortraitPhone {
-                        while textWidth(floatCandidate, screen: screen) <= screen.displayWidth - screen.ePadding {
-                            indexInt += 1
-                            floatCandidate = String(floatString.prefix(indexInt+1))
+            floatString = withSeparators(numberString: floatString, isNegative: isNegative, decimalSeparator: decimalSeparator, groupingSeparator: groupingSeparator)
+            if let displayLengthLimiter = displayLengthLimiter {
+                if let index = floatString.firstIndex(of: decimalSeparator.character) {
+                    indexInt = floatString.distance(from: floatString.startIndex, to: index)
+                    var floatCandidate = String(floatString.prefix(indexInt+1))
+                    if textWidth(floatCandidate, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
+                        if displayLengthLimiter.isPortraitPhone {
+                            while textWidth(floatCandidate, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
+                                indexInt += 1
+                                floatCandidate = String(floatString.prefix(indexInt+1))
+                            }
+                            return Display(left: floatCandidate, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+                        } else {
+                            return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
                         }
-                        return Display(left: floatCandidate, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
-                    } else {
-                        return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
                     }
                 }
+            } else {
+                return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
             }
             /// is the comma visible in the first line and is there at least one digit after the comma?
         }
@@ -255,15 +280,19 @@ extension Display {
         if exponent < 0 {
             let minusSign = isNegative ? "-" : ""
             
-            var testFloat = minusSign + "0" + screen.decimalSeparator.string
+            var testFloat = minusSign + "0" + decimalSeparator.string
             var floatString = mantissa
             for _ in 0..<(-1*exponent - 1) {
                 floatString = "0" + floatString
                 testFloat += "0"
             }
             testFloat += "x"
-            if textWidth(testFloat, screen: screen) <= screen.displayWidth - screen.ePadding {
-                floatString = minusSign + "0" + screen.decimalSeparator.string + floatString
+            if let displayLengthLimiter = displayLengthLimiter {
+                if textWidth(testFloat, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
+                    floatString = minusSign + "0" + decimalSeparator.string + floatString
+                    return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+                }
+            } else {
                 return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
             }
         }
@@ -279,20 +308,24 @@ extension Display {
             // 4.
             mantissa.append("0")
         }
-        mantissa = withSeparators(numberString: mantissa, isNegative: isNegative, screen: screen)
+        mantissa = withSeparators(numberString: mantissa, isNegative: isNegative, decimalSeparator: decimalSeparator, groupingSeparator: groupingSeparator)
         let exponentString = "e\(exponent)"
-        if screen.isPortraitPhone {
-            var indexInt = 3 /// minimum: 2,3
-            var floatString = String(mantissa.prefix(indexInt))
-            if textWidth(floatString + exponentString, screen: screen) > screen.displayWidth - screen.ePadding {
-                return Display(left: "can not show")
+        if let displayLengthLimiter = displayLengthLimiter {
+            if displayLengthLimiter.isPortraitPhone {
+                var indexInt = 3 /// minimum: 2,3
+                var floatString = String(mantissa.prefix(indexInt))
+                if textWidth(floatString + exponentString, displayLengthLimiter: displayLengthLimiter) > displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
+                    return Display(left: "can not show")
+                }
+                while textWidth(floatString + exponentString, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
+                    indexInt += 1
+                    floatString = String(mantissa.prefix(indexInt))
+                }
+                floatString = String(floatString.prefix(indexInt-1))
+                return Display(left: floatString, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: false)
+            } else {
+                return Display(left: mantissa, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: true)
             }
-            while textWidth(floatString + exponentString, screen: screen) <= screen.displayWidth - screen.ePadding {
-                indexInt += 1
-                floatString = String(mantissa.prefix(indexInt))
-            }
-            floatString = String(floatString.prefix(indexInt-1))
-            return Display(left: floatString, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: false)
         } else {
             return Display(left: mantissa, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: true)
         }

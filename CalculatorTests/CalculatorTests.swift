@@ -9,7 +9,6 @@ import XCTest
 @testable import Better_Calc
 
 class CalculatorTests: XCTestCase {
-    
     var screen: Screen = Screen(CGSize(width: 130, height: 130))
     let precision = 1000
 

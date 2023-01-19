@@ -21,6 +21,9 @@ class ViewModel: ObservableObject {
     var showPrecision: Bool = false
     var secondActive = false
     var keyColor = KeyColor()
+    
+    let decimalSeparator: DecimalSeparator = .comma
+    let groupingSeparator: GroupingSeparator = .none
 
     @AppStorage("precision", store: .standard) private (set) var precision: Int = 1000
     @AppStorage("showPreliminaryResults", store: .standard) var showPreliminaryResults: Bool = true
@@ -144,6 +147,9 @@ class ViewModel: ObservableObject {
     }
     
     func touchUp(of symbol: String, screen: Screen) {
+        let decimalSeparator: DecimalSeparator = .comma
+        let groupingSeparator: GroupingSeparator = .none
+
         let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(symbol) && !rad ? symbol+"D" : symbol
 
         switch symbol {
@@ -175,17 +181,17 @@ class ViewModel: ObservableObject {
                 await setPendingColors(for: symbol)
             }
             Task.detached(priority: .low) {
-                await self.defaultTask(for: symbol, screen: screen)
+                await self.defaultTask(for: symbol, screen: screen, decimalSeparator: decimalSeparator, groupingSeparator: groupingSeparator)
                 self.keyState = .notPressed
             }
         }
     }
     
-    func defaultTask(for symbol: String, screen: Screen) async {
+    func defaultTask(for symbol: String, screen: Screen, decimalSeparator: DecimalSeparator, groupingSeparator: GroupingSeparator) async {
         //print("defaultTask", symbol)
         if showPreliminaryResults {
             let preliminaryResult = stupidBrain.operation(symbol)
-            let preliminary = Display(preliminaryResult, screen: screen)
+            let preliminary = Display(preliminaryResult, displayLengthLimiter: screen, decimalSeparator: decimalSeparator, groupingSeparator: groupingSeparator)
 //            let preliminaryFormat = DisplayFormat(
 //                for: preliminaryData.length,
 //                withMaxLength: preliminaryData.maxlength,
@@ -203,11 +209,11 @@ class ViewModel: ObservableObject {
         }
         keyState = .highPrecisionProcessing
         displayNumber = await brain.operation(symbol)
-        await refreshDisplay(screen: screen)
+        await refreshDisplay(screen: screen, decimalSeparator: decimalSeparator, groupingSeparator: groupingSeparator)
     }
     
-    func refreshDisplay(screen: Screen) async {
-        let tempDisplay = Display(displayNumber, screen: screen)
+    func refreshDisplay(screen: Screen, decimalSeparator: DecimalSeparator, groupingSeparator: GroupingSeparator) async {
+        let tempDisplay = Display(displayNumber, displayLengthLimiter: screen, decimalSeparator: decimalSeparator, groupingSeparator: groupingSeparator)
 //        let format = DisplayFormat(
 //            for: tempDisplayData.length,
 //            withMaxLength: tempDisplayData.maxlength,
@@ -229,7 +235,7 @@ class ViewModel: ObservableObject {
                 if pasteString.count > 0 {
                     if Gmp.isValidGmpString(pasteString, bits: 1000) {
                         displayNumber = await brain.replaceLast(withString: pasteString)
-                        await refreshDisplay(screen: screen)
+                        await refreshDisplay(screen: screen, decimalSeparator: decimalSeparator, groupingSeparator: groupingSeparator)
                         return true
                     }
                 }
@@ -238,14 +244,15 @@ class ViewModel: ObservableObject {
         return false
     }
     
-    func copyToPastBin() async {
-//        let copyData = displayNumber.getDisplayData(
+    func copyToPastBin(screen: Screen) async {
+        let copyData = Display(displayNumber, displayLengthLimiter: screen, decimalSeparator: decimalSeparator, groupingSeparator: groupingSeparator)
+//        displayNumber.getDisplayData(
 //            multipleLines: true,
 //            useMaximalLength: true,
 //            forceScientific: false,
 //            showAsInteger: showAsInteger,
 //            showAsFloat: showAsFloat)
-//        UIPasteboard.general.string = copyData.oneLine
+        UIPasteboard.general.string = copyData.allInOneLine
     }
 
     /// colors

@@ -7,44 +7,52 @@
 
 import SwiftUI
 
-struct Screen: Equatable {
-            
-    /// I initialize the decimalSeparator with the locale preference, but
-    /// I ignore the value of Locale.current.groupingSeparator
-    @AppStorage("DecimalSeparator") var decimalSeparator: DecimalSeparator = Locale.current.decimalSeparator == "," ? .comma : .dot
-    @AppStorage("GroupingSeparator") var groupingSeparator: GroupingSeparator = .none
-    @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
-
-    static func == (lhs: Screen, rhs: Screen) -> Bool { /// used to detect rotation
-        lhs.keySize == rhs.keySize
-    }
-    
-    enum DecimalSeparator: String, Codable, CaseIterable{
-        case comma
-        case dot
-        var character: Character {
+enum DecimalSeparator: String, Codable, CaseIterable{
+    case comma
+    case dot
+    var character: Character {
+        get {
             switch self {
             case .comma: return ","
             case .dot: return "."
             }
         }
-        var string: String { String(character) }
     }
-    enum GroupingSeparator: String, Codable, CaseIterable{
-        case none
-        case comma
-        case dot
-        var character: Character? {
+    var string: String {
+        get {
+            String(character)
+        }
+    }
+}
+enum GroupingSeparator: String, Codable, CaseIterable{
+    case none
+    case comma
+    case dot
+    var character: Character? {
+        get {
             switch self {
             case .none: return nil
             case .comma: return ","
             case .dot: return "."
             }
         }
-        var string: String {
+    }
+    var string: String {
+        get {
             guard let character = character else { return "" }
             return String(character)
         }
+    }
+}
+
+struct Screen: Equatable, DisplayLengthLimiter {    
+            
+    /// I initialize the decimalSeparator with the locale preference, but
+    /// I ignore the value of Locale.current.groupingSeparator
+    @AppStorage("forceScientific", store: .standard) var forceScientific: Bool = false
+
+    static func == (lhs: Screen, rhs: Screen) -> Bool { /// used to detect rotation
+        lhs.keySize == rhs.keySize
     }
 
     let isPad: Bool
@@ -151,7 +159,6 @@ struct Screen: Equatable {
         (isPortraitPhone ? 2.0 * portraitIPhoneDisplayHorizontalPadding : plusIconSize + plusIconLeftPadding)
         
         digitWidth             = textWidth("0")
-        eWidth                 = textWidth("0")
     }
     /*
     func localized(_ stringNumber: String) -> DisplayData {

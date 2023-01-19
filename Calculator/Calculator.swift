@@ -11,6 +11,8 @@ let testColors = false
 
 struct Calculator: View {
     @StateObject private var viewModel: ViewModel = ViewModel()
+    @Environment(\.decimalSeparator) var decimalSeparator: Binding<DecimalSeparator>
+    @Environment(\.groupingSeparator) var groupingSeparator: Binding<GroupingSeparator>
 
     var screen: Screen
     @State var scrollViewHasScrolled = false
@@ -126,12 +128,12 @@ struct Calculator: View {
             .preferredColorScheme(.dark)
             .onAppear() {
                 Task {
-                    await viewModel.refreshDisplay(screen: screen)
+                    await viewModel.refreshDisplay(screen: screen, decimalSeparator: decimalSeparator.wrappedValue, groupingSeparator: groupingSeparator.wrappedValue)
                 }
             }
             .onChange(of: screen) { newScreen in /// e.g., rotation
                 Task {
-                    await viewModel.refreshDisplay(screen: newScreen)
+                    await viewModel.refreshDisplay(screen: newScreen, decimalSeparator: decimalSeparator.wrappedValue, groupingSeparator: groupingSeparator.wrappedValue)
                 }
             }
     }

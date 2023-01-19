@@ -10,6 +10,8 @@ import SwiftUI
 struct Icons : View {
     let simulatePurchased = true
     @Environment(\.scenePhase) var scenePhase
+    @Environment(\.decimalSeparator) var decimalSeparator: Binding<DecimalSeparator>
+    @Environment(\.groupingSeparator) var groupingSeparator: Binding<GroupingSeparator>
     @ObservedObject var store: Store
     @ObservedObject var viewModel: ViewModel
     let screen: Screen
@@ -18,7 +20,7 @@ struct Icons : View {
     @State var pasteDone = true
     @State var isValidPasteContent = true
     @State var wait300msDone = false
-
+    
     var plus: some View {
         Image(systemName: "plus.circle.fill")
             .resizable()
@@ -64,7 +66,7 @@ struct Icons : View {
                         }
                         Task(priority: .low) {
                             copyDone = false
-                            await viewModel.copyToPastBin()
+                            await viewModel.copyToPastBin(screen: screen)
                             copyDone = true
                             if wait300msDone {
                                 setIsCopying(to: false)
@@ -139,7 +141,7 @@ struct Icons : View {
             Button {
                 viewModel.showAsInteger.toggle()
                 Task {
-                    await viewModel.refreshDisplay(screen: screen)
+                    await viewModel.refreshDisplay(screen: screen, decimalSeparator: decimalSeparator.wrappedValue, groupingSeparator: groupingSeparator.wrappedValue)
                 }
             } label: {
                 Text(integerLabel)
@@ -156,7 +158,7 @@ struct Icons : View {
             Button {
                 viewModel.showAsFloat.toggle()
                 Task {
-                    await viewModel.refreshDisplay(screen: screen)
+                    await viewModel.refreshDisplay(screen: screen, decimalSeparator: decimalSeparator.wrappedValue, groupingSeparator: groupingSeparator.wrappedValue)
                 }
             } label: {
                 Text(floatLabel)

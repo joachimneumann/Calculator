@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct NonScientificKeyboard: View {
+    @Environment(\.decimalSeparator) var decimalSeparator: Binding<DecimalSeparator>
     let screen: Screen
     @ObservedObject var viewModel: ViewModel
     
@@ -40,7 +41,7 @@ struct NonScientificKeyboard: View {
             }
             HStack(spacing: spacing) {
                 Key("0", screen, viewModel)
-                Key(screen.decimalSeparator.string, screen, viewModel)
+                Key(decimalSeparator.wrappedValue.string, screen, viewModel)
                 Key("=", screen, viewModel)
             }
         }

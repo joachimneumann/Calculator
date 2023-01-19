@@ -7,11 +7,14 @@
 
 import SwiftUI
 
+
 struct Settings: View {
     @Environment(\.presentationMode) var presentation /// for dismissing the screen
-    
+    @Environment(\.decimalSeparator) var decimalSeparator: Binding<DecimalSeparator>
+    @Environment(\.groupingSeparator) var groupingSeparator: Binding<GroupingSeparator>
+
     @ObservedObject var viewModel: ViewModel
-    var screen: Screen
+    let screen: Screen
     let font: Font
     
     @State var timerIsRunning: Bool = false
@@ -19,8 +22,8 @@ struct Settings: View {
     @State var settingsForceScientific: Bool = false
     @State var settingsShowPreliminaryResults: Bool = false
     @State var timerInfo: String = "click to measure"
-    @State var settingsDecimalSeparator: Screen.DecimalSeparator = .comma
-    @State var settingsGroupingSeparator: Screen.GroupingSeparator = .none
+    @State var settingsDecimalSeparator: DecimalSeparator = .comma
+    @State var settingsGroupingSeparator: GroupingSeparator = .none
     
     
     var body: some View {
@@ -56,7 +59,7 @@ struct Settings: View {
                     decimalSeparatorView
                         .padding(.top, 20)
                     
-                    groupingSeparator
+                    groupingSeparatorView
                         .padding(.top, 20)
                     
                     showPreliminaryResults
@@ -73,7 +76,7 @@ struct Settings: View {
                     if viewModel.precision != settingsPrecision {
                         await viewModel.updatePrecision(to: settingsPrecision)
                     }
-                    await viewModel.refreshDisplay(screen: screen)
+                    await viewModel.refreshDisplay(screen: screen, decimalSeparator: decimalSeparator.wrappedValue, groupingSeparator: groupingSeparator.wrappedValue)
                 }
                 if viewModel.showPreliminaryResults != settingsShowPreliminaryResults {
                     viewModel.showPreliminaryResults = settingsShowPreliminaryResults
@@ -81,11 +84,11 @@ struct Settings: View {
                 if screen.forceScientific != settingsForceScientific {
                     screen.forceScientific = settingsForceScientific
                 }
-                if screen.decimalSeparator != settingsDecimalSeparator {
-                    screen.decimalSeparator = settingsDecimalSeparator
+                if decimalSeparator.wrappedValue != settingsDecimalSeparator {
+                    decimalSeparator.wrappedValue = settingsDecimalSeparator
                 }
-                if screen.groupingSeparator != settingsGroupingSeparator {
-                    screen.groupingSeparator = settingsGroupingSeparator
+                if groupingSeparator.wrappedValue != settingsGroupingSeparator {
+                    groupingSeparator.wrappedValue = settingsGroupingSeparator
                 }
             }
         }
@@ -93,8 +96,8 @@ struct Settings: View {
             settingsPrecision              = viewModel.precision
             settingsShowPreliminaryResults = viewModel.showPreliminaryResults
             settingsForceScientific        = screen.forceScientific
-            settingsDecimalSeparator       = screen.decimalSeparator
-            settingsGroupingSeparator      = screen.groupingSeparator
+            settingsDecimalSeparator       = decimalSeparator.wrappedValue
+            settingsGroupingSeparator      = groupingSeparator.wrappedValue
             UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(white: 0.7, alpha: 1.0)
             UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
             UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
@@ -305,7 +308,7 @@ struct Settings: View {
             Text("Decimal Separator")
                 .foregroundColor(timerIsRunning ? .gray : .white)
             Picker("", selection: $settingsDecimalSeparator) {
-                ForEach(Screen.DecimalSeparator.allCases, id: \.self) { value in
+                ForEach(DecimalSeparator.allCases, id: \.self) { value in
                     Text("\(value.rawValue)")
                         .tag(value)
                 }
@@ -330,12 +333,12 @@ struct Settings: View {
         }
     }
     
-    var groupingSeparator: some View {
+    var groupingSeparatorView: some View {
         HStack(spacing: 20.0) {
             Text("Grouping Separator")
                 .foregroundColor(timerIsRunning ? .gray : .white)
             Picker("", selection: $settingsGroupingSeparator) {
-                ForEach(Screen.GroupingSeparator.allCases, id: \.self) { value in
+                ForEach(GroupingSeparator.allCases, id: \.self) { value in
                     Text("\(value.rawValue)")
                         .tag(value)
                 }
