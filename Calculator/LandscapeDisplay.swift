@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LandscapeDisplay: View {
     let display: Display
+    let screen: Screen
     let showOrange: Bool
     let disabledScrolling: Bool
     @Binding var scrollViewHasScrolled: Bool
@@ -18,24 +19,23 @@ struct LandscapeDisplay: View {
     var mantissa: some View {
         ScrollViewConditionalAnimation(
             display: display,
-            foregroundColor: showOrange ? .orange : display.format.color,
+            screen: screen,
+            foregroundColor: showOrange ? .orange : display.color,
             backgroundColor: testColors ? .yellow : .black,
             offsetY: offsetToVerticallyAlignTextWithkeyboard,
             disabledScrolling: disabledScrolling,
             scrollViewHasScolled: $scrollViewHasScrolled,
-            scrollViewID: scrollViewID,
-            preliminary: display.format.showThreeDots,
-            digitWidth: display.format.digitWidth)
+            scrollViewID: scrollViewID)
     }
     
     @ViewBuilder
     var exponent: some View {
         if display.right != nil {
             Text(display.right!)
-                .kerning(display.format.kerning)
-                .font(display.format.font)
-                .foregroundColor(showOrange ? .orange : display.format.color)
-                .padding(.leading, display.format.ePadding)
+                .kerning(screen.kerning)
+                .font(Font(screen.uiFont))
+                .foregroundColor(showOrange ? .orange : display.color)
+                .padding(.leading, screen.ePadding)
                 .offset(y: offsetToVerticallyAlignTextWithkeyboard)
         }
     }

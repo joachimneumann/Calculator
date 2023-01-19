@@ -9,23 +9,24 @@ import SwiftUI
 
 struct PortraitDisplay: View {
     let display: Display
+    let screen: Screen
     
     @ViewBuilder
     var mantissa: some View {
-        let toShow = display.format.showThreeDots && display.left.count > 1 ? String(display.left.dropLast()) : display.left
+        let toShow = display.preliminary && display.left.count > 1 ? String(display.left.dropLast()) : display.left
         Text(toShow)
-            .kerning(display.format.kerning)
-            .font(display.format.font)
-            .foregroundColor(display.format.color)
+            .kerning(screen.kerning)
+            .font(Font(screen.uiFont))
+            .foregroundColor(display.color)
             .multilineTextAlignment(.trailing)
             .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
     }
 
     @ViewBuilder
     var threeDots: some View {
-        if display.format.showThreeDots {
-            ThreeDots().frame(width: display.format.digitWidth, height: display.format.digitWidth / 3)
-                .offset(y: -display.format.digitWidth / 3)
+        if display.preliminary {
+            ThreeDots().frame(width: screen.digitWidth, height: screen.digitWidth / 3)
+                .offset(y: -screen.digitWidth / 3)
         }
     }
     
@@ -33,13 +34,13 @@ struct PortraitDisplay: View {
     var exponent: some View {
         if let exponent = display.right {
             Text(exponent)
-                .kerning(display.format.kerning)
-                .font(display.format.font)
-                .foregroundColor(display.format.color)
+                .kerning(screen.kerning)
+                .font(Font(screen.uiFont))
+                .foregroundColor(display.color)
                 .multilineTextAlignment(.trailing)
                 .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
                 .lineLimit(1)
-                .padding(.leading, display.format.ePadding)
+                .padding(.leading, screen.ePadding)
         }
     }
     

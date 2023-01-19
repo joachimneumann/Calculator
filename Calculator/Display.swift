@@ -14,7 +14,10 @@ struct Display {
     var maxlength: Int
     var canBeInteger: Bool
     var canBeFloat: Bool
-    var format: DisplayFormat
+    var preliminary: Bool = false
+
+    var color: Color = .white
+    
     var isZero: Bool {
         left == "0" && right == nil
     }
@@ -35,14 +38,12 @@ extension Display {
     right: String?,
     maxlength: Int,
     canBeInteger: Bool,
-    canBeFloat: Bool,
-    screen: Screen) {
+    canBeFloat: Bool) {
         self.left = left
         self.right = right
         self.maxlength = maxlength
         self.canBeInteger = canBeInteger
         self.canBeFloat = canBeFloat
-        self.format = DisplayFormat(for: 10, withMaxLength: 10, showThreeDots: false, screen: screen)
     }
     init(left: String) {
         self.left = left
@@ -50,7 +51,6 @@ extension Display {
         maxlength = 0
         canBeInteger = false
         canBeFloat = false
-        format = DisplayFormat(for: 10, withMaxLength: 10, showThreeDots: false, screen: Screen(CGSize()))
     }
     init(_ number: Number, forceScientific: Bool = false, screen: Screen) {
         self.left = "0"
@@ -58,7 +58,6 @@ extension Display {
         maxlength = 0
         canBeInteger = false
         canBeFloat = false
-        format = DisplayFormat(for: 10, withMaxLength: 10, showThreeDots: false, screen: screen)
         self = fromNumber(number, screen: screen)
     }
     init(_ stringNumber: String, screen: Screen) {
@@ -67,7 +66,6 @@ extension Display {
         maxlength = 0
         canBeInteger = false
         canBeFloat = false
-        format = DisplayFormat(for: 10, withMaxLength: 10, showThreeDots: false, screen: screen)
         self = fromStringNumber(stringNumber, screen: screen)
     }
 }
@@ -223,7 +221,7 @@ extension Display {
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
             let withSeparators = withSeparators(numberString: mantissa, isNegative: isNegative, screen: screen)
             if textWidth(withSeparators, screen: screen) <= screen.displayWidth - screen.ePadding {
-                return Display(left: withSeparators, right: nil, maxlength: 0, canBeInteger: true, canBeFloat: false, screen: screen)
+                return Display(left: withSeparators, right: nil, maxlength: 0, canBeInteger: true, canBeFloat: false)
             }
         }
         
@@ -243,9 +241,9 @@ extension Display {
                             indexInt += 1
                             floatCandidate = String(floatString.prefix(indexInt+1))
                         }
-                        return Display(left: floatCandidate, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false, screen: screen)
+                        return Display(left: floatCandidate, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
                     } else {
-                        return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false, screen: screen)
+                        return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
                     }
                 }
             }
@@ -266,7 +264,7 @@ extension Display {
             testFloat += "x"
             if textWidth(testFloat, screen: screen) <= screen.displayWidth - screen.ePadding {
                 floatString = minusSign + "0" + screen.decimalSeparator.string + floatString
-                return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false, screen: screen)
+                return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
             }
         }
         
@@ -294,43 +292,43 @@ extension Display {
                 floatString = String(mantissa.prefix(indexInt))
             }
             floatString = String(floatString.prefix(indexInt-1))
-            return Display(left: floatString, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: false, screen: screen)
+            return Display(left: floatString, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: false)
         } else {
-            return Display(left: mantissa, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: true, screen: screen)
+            return Display(left: mantissa, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: true)
         }
     }
 }
-
-struct DisplayFormat {
-    let font: Font
-    let color: Color
-    let showThreeDots: Bool
-    let digitWidth: CGFloat
-    let ePadding: CGFloat
-    let kerning: CGFloat
-    
-    init(for length: Int, withMaxLength maxLength: Int, showThreeDots: Bool, screen: Screen) {
-        var factor = 1.0
-        
-        if screen.isPortraitPhone {
-            let factorMin = 1.0
-            let factorMax = 2.0
-            // if factorMax is too large (above 2.3) the space needed
-            // for the new caracter is more then the shrinking,
-            // which results in the string to be too long
-            
-            let notOccupiedLength = CGFloat(length) / CGFloat(maxLength)
-            factor = factorMax - notOccupiedLength * (factorMax - factorMin)
-            if factor > 1.5 { factor = 1.5 }
-            if factor < 1.0 { factor = 1.0 }
-        }
-        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: screen.uiFontSize * factor, weight: screen.uiFontWeight)
-        
-        font = Font(uiFont)
-        color = showThreeDots ? .gray : .white
-        self.showThreeDots = showThreeDots
-        self.digitWidth = screen.digitWidth
-        self.ePadding = screen.ePadding
-        self.kerning = screen.kerning
-    }
-}
+//
+//struct DisplayFormat {
+//    let font: Font
+//    let color: Color
+//    let showThreeDots: Bool
+//    let digitWidth: CGFloat
+//    let ePadding: CGFloat
+//    let kerning: CGFloat
+//    
+//    init(for length: Int, withMaxLength maxLength: Int, showThreeDots: Bool, screen: Screen) {
+//        var factor = 1.0
+//        
+//        if screen.isPortraitPhone {
+//            let factorMin = 1.0
+//            let factorMax = 2.0
+//            // if factorMax is too large (above 2.3) the space needed
+//            // for the new caracter is more then the shrinking,
+//            // which results in the string to be too long
+//            
+//            let notOccupiedLength = CGFloat(length) / CGFloat(maxLength)
+//            factor = factorMax - notOccupiedLength * (factorMax - factorMin)
+//            if factor > 1.5 { factor = 1.5 }
+//            if factor < 1.0 { factor = 1.0 }
+//        }
+//        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: screen.uiFontSize * factor, weight: screen.uiFontWeight)
+//        
+//        font = Font(uiFont)
+//        color = showThreeDots ? .gray : .white
+//        self.showThreeDots = showThreeDots
+//        self.digitWidth = screen.digitWidth
+//        self.ePadding = screen.ePadding
+//        self.kerning = screen.kerning
+//    }
+//}

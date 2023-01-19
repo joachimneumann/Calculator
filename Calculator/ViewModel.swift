@@ -53,7 +53,7 @@ class ViewModel: ObservableObject {
         
         /// currentDisplay will be updated shortly by refreshDisplay in onAppear() of Calculator
         /// I just set some values here
-        currentDisplay = Display(left: "0", right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false, screen: Screen(CGSize()))
+        currentDisplay = Display(left: "0", right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
         //, format: DisplayFormat(for: 10, withMaxLength: 10, showThreeDots: false, screen: Screen(CGSize())))
         brain = Brain(precision: _precision.wrappedValue)
         precisionDescription = _precision.wrappedValue.useWords
