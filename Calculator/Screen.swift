@@ -149,9 +149,10 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         infoUiFont = UIFont.monospacedDigitSystemFont(ofSize: infoUiFontSize, weight: .regular)
         kerning = -0.02 * uiFontSize
         
-        textHeight = textHeight("0")
+        textHeight     = textHeight("0")
         infoTextHeight = textHeight("0", uiFont: infoUiFont)
-        
+        digitWidth     = textWidth("0")
+
         offsetToVerticallyAlignTextWithkeyboard =
         CGFloat(screenSize.height) -
         CGFloat(keyboardHeight) -
@@ -169,7 +170,6 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
                 
         displayWidth = calculatorWidth -
         (isPortraitPhone ? 2.0 * portraitIPhoneDisplayHorizontalPadding : plusIconSize + plusIconLeftPadding)
-        digitWidth             = textWidth("0")
     }
 
     private func textSize(string: String, uiFont: UIFont?, kerning: CGFloat) -> CGSize {
@@ -217,40 +217,3 @@ extension String {
     }
 }
 
-
-//    func trimToDisplaylength(withSeparators: String) -> String {
-//        var position = withSeparators.count - 1
-//        print("withSeparators", withSeparators, "position", position)
-//        print("displayWidth", displayWidth)
-//
-//        var trimmed = ""
-//        while position >= 0 && trimmed.textWidth(for: uiFont, kerning: kerning) <= displayWidth {
-//            print("position", position, "width", trimmed.textWidth(for: uiFont, kerning: kerning))
-//            let startIndex = withSeparators.index(withSeparators.startIndex, offsetBy: position)
-//            let endIndex = withSeparators.index(before: withSeparators.endIndex)
-//            trimmed = String(withSeparators[startIndex...endIndex])
-//            position -= 1
-//        }
-////        let endIndex = withSeparators.endIndex
-////        print(withSeparators[endIndex])
-////        var n = 1
-////        var x = ""
-////        while x.textWidth(for: uiFont, kerning: kerning) < displayWidth && n < withSeparators.count {
-////            let index = withSeparators.index(endIndex, offsetBy: -n)
-////            x = String(withSeparators[index...endIndex])
-////            n += 1
-////        }
-////
-//        print("--> trimmed", trimmed)
-//        return trimmed
-//    }
-
-//if forceScientific {
-//    // what precision do I need to convert the string into a Gmp?
-//    // The length of the string is not sufficient because Gmp does not use base 10
-//    // Let's try three times the length with a minumum of 1000
-//    // Note that displayGmp is not used in further calculations!
-//    let displayPrecision: Int = max(stringNumber.count * 3, 1000)
-//    let asGmp = Gmp(withString: stringNumber, precision: displayPrecision)
-//    return localizedScientific(asGmp)
-//}
