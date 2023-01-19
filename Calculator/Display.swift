@@ -263,6 +263,7 @@ extension Display {
                                 indexInt += 1
                                 floatCandidate = String(floatString.prefix(indexInt+1))
                             }
+                            floatCandidate = String(floatCandidate.prefix(indexInt))
                             return Display(left: floatCandidate, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
                         } else {
                             return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
@@ -287,10 +288,21 @@ extension Display {
                 testFloat += "0"
             }
             testFloat += "x"
+            floatString = minusSign + "0" + separators.decimalSeparator.string + floatString
             if let displayLengthLimiter = displayLengthLimiter {
                 if textWidth(testFloat, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
-                    floatString = minusSign + "0" + separators.decimalSeparator.string + floatString
-                    return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+                    if displayLengthLimiter.isPortraitPhone {
+                        var indexInt = 3 /// minimum: X,x
+                        var limitedFloatString = String(floatString.prefix(indexInt))
+                        while textWidth(limitedFloatString, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth {
+                            indexInt += 1
+                            limitedFloatString = String(floatString.prefix(indexInt))
+                        }
+                        limitedFloatString = String(limitedFloatString.prefix(indexInt-1))
+                        return Display(left: limitedFloatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+                    } else {
+                        return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+                    }
                 }
             } else {
                 return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
@@ -312,7 +324,7 @@ extension Display {
         let exponentString = "e\(exponent)"
         if let displayLengthLimiter = displayLengthLimiter {
             if displayLengthLimiter.isPortraitPhone {
-                var indexInt = 3 /// minimum: 2,3
+                var indexInt = 3 /// minimum: X,x
                 var floatString = String(mantissa.prefix(indexInt))
                 if textWidth(floatString + exponentString, displayLengthLimiter: displayLengthLimiter) > displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
                     return Display(left: "can not show")
