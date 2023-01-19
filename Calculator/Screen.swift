@@ -122,7 +122,9 @@ struct Screen: Equatable {
         plusIconSize = keyboardHeight * 0.13
         plusIconLeftPadding = plusIconSize * 0.4
         ePadding = isPortraitPhone ? plusIconSize * 0.1 : plusIconSize * 0.3
-        uiFontSize = ((isPortraitPhone ? 0.125 : 0.16) * keyboardHeight).rounded()
+//        uiFontSize = ((isPortraitPhone ? 0.125 : 0.16) * keyboardHeight).rounded()
+        uiFontSize = 17
+        print("UNDO THIS!")
         uiFontWeight = UIFont.Weight.thin
         uiFont = UIFont.monospacedDigitSystemFont(ofSize: uiFontSize, weight: uiFontWeight)
         infoUiFontSize = uiFontSize * 0.3

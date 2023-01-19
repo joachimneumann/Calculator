@@ -108,7 +108,6 @@ extension Display {
     func fromStringNumber(_ stringNumber: String, screen: Screen) -> Display {
         guard !stringNumber.contains(",") else { assert(false, "string contains comma, but only dot is allowed") }
         guard !stringNumber.contains("e") else { assert(false, "scientific?") }
-        
         var mantissa: String
         var exponent: Int
         
@@ -121,6 +120,8 @@ extension Display {
         } else {
             correctSeparator = withSeparators(numberString: mantissa, isNegative: false, screen: screen)
         }
+        print("fromStringNumber textWidth", textWidth(correctSeparator, screen: screen))
+
         if textWidth(correctSeparator, screen: screen) <= screen.displayWidth {
             return fromLeft(correctSeparator)
         }
@@ -235,9 +236,17 @@ extension Display {
             floatString = withSeparators(numberString: floatString, isNegative: isNegative, screen: screen)
             if let index = floatString.firstIndex(of: screen.decimalSeparator.character) {
                 indexInt = floatString.distance(from: floatString.startIndex, to: index)
-                let floatCandidate = String(floatString.prefix(indexInt+1))
+                var floatCandidate = String(floatString.prefix(indexInt+1))
                 if textWidth(floatCandidate, screen: screen) <= screen.displayWidth {
-                    return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false, screen: screen)
+                    if screen.isPortraitPhone {
+                        while textWidth(floatCandidate, screen: screen) <= screen.displayWidth {
+                            indexInt += 1
+                            floatCandidate = String(floatString.prefix(indexInt+1))
+                        }
+                        return Display(left: floatCandidate, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false, screen: screen)
+                    } else {
+                        return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false, screen: screen)
+                    }
                 }
             }
             /// is the comma visible in the first line and is there at least one digit after the comma?
@@ -274,7 +283,21 @@ extension Display {
         }
         mantissa = withSeparators(numberString: mantissa, isNegative: isNegative, screen: screen)
         let exponentString = "e\(exponent)"
-        return Display(left: mantissa, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: true, screen: screen)
+        if screen.isPortraitPhone {
+            var indexInt = 3 /// minimum: 2,3
+            var floatString = String(mantissa.prefix(indexInt))
+            if textWidth(floatString + exponentString, screen: screen) > screen.displayWidth {
+                return Display(left: "can not show")
+            }
+            while textWidth(floatString + exponentString, screen: screen) <= screen.displayWidth {
+                indexInt += 1
+                floatString = String(mantissa.prefix(indexInt))
+            }
+            floatString = String(floatString.prefix(indexInt-1))
+            return Display(left: floatString + exponentString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false, screen: screen)
+        } else {
+            return Display(left: mantissa, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: true, screen: screen)
+        }
     }
 }
 

@@ -44,18 +44,45 @@ class CalculatorTests: XCTestCase {
     }
 
     func test_portraitIPhone() {
-        screen = Screen(CGSize(width: 130, height: 400))
-        screen.decimalSeparator = .dot
+        screen = Screen(CGSize(width: 130, height: 130))
         screen.groupingSeparator = .none
-        XCTAssertEqual( left("123456789"),  "123456789")
-        XCTAssertEqual(right("123456789"),  nil)
-        XCTAssertEqual( left("1234567890"), "1.234567890")
-        XCTAssertEqual(right("1234567890"), "e9")
-        screen = Screen(CGSize(width: 130, height: 400))
-        XCTAssertEqual( left("123456789"),  "123456789")
-        XCTAssertEqual(right("123456789"),  nil)
-        XCTAssertEqual( left("1234567890"), "1.2345678e9")
-        XCTAssertEqual(right("1234567890"), nil)
+        screen.decimalSeparator = .dot
+        screen.displayWidth = 111.072
+        XCTAssertEqual( left("12345678901"),     "12345678901")
+        XCTAssertEqual(right("12345678901"),     nil)
+        
+        XCTAssertEqual( left("123456789012"),    "1.23456789012")
+        XCTAssertEqual(right("123456789012"),    "e11")
+        
+        XCTAssertEqual( left("123456.4444444444"), "123456.4444444444")
+        XCTAssertEqual(right("123456.4444444444"),     nil)
+        
+        XCTAssertEqual( left("1234567890.1"),     "1234567890.1")
+        XCTAssertEqual(right("12345678901"),     nil)
+        
+        XCTAssertEqual( left("12345678901.1"),     "1.23456789011")
+        XCTAssertEqual(right("12345678901.1"),     "e10")
+        
+        screen = Screen(CGSize(width: 130, height: 130.01))
+        screen.groupingSeparator = .none
+        screen.decimalSeparator = .dot
+        screen.displayWidth = 111.072
+        XCTAssertEqual( left("12345678901"),     "12345678901")
+        XCTAssertEqual(right("12345678901"),     nil)
+
+        XCTAssertEqual( left("123456789012"),    "1.234567e11")
+        XCTAssertEqual(right("123456789012"),    nil)
+
+        XCTAssertEqual( left("123456.4444444444"), "123456.44444")
+        XCTAssertEqual(right("123456.4444444444"),     nil)
+        
+        XCTAssertEqual( left("1234567890.1"),     "1234567890.1")
+        XCTAssertEqual(right("12345678901"),     nil)
+        
+        XCTAssertEqual( left("12345678901.1"),     "1.234567e10")
+        XCTAssertEqual(right("12345678901.1"),     nil)
+
+        
     }
     
     
