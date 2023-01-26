@@ -16,6 +16,8 @@ protocol DisplayLengthLimiter {
 }
 
 struct Display {
+    static let MAX_DISPLAY_LENGTH = 10_000 // too long strings in Text() crash the app
+
     var left: String
     var portraitPhoneString: String?
     var right: String?
@@ -108,7 +110,7 @@ extension Display {
 
         let mantissaLength: Int
         if displayLengthLimiter != nil {
-            mantissaLength = min(displayGmp.precision, Number.MAX_DISPLAY_LENGTH)
+            mantissaLength = min(displayGmp.precision, Display.MAX_DISPLAY_LENGTH)
         } else {
             mantissaLength = displayGmp.precision
         }
