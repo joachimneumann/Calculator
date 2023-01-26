@@ -59,20 +59,26 @@ class ViewModel: ObservableObject, ShowAs {
         
         /// currentDisplay will be updated shortly by refreshDisplay in onAppear() of Calculator
         /// I just set some values here
-        currentDisplay = Display(left: "0", right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
-        //, format: DisplayFormat(for: 10, withMaxLength: 10, showThreeDots: false, screen: Screen(CGSize())))
+        currentDisplay = Display(left: "0", right: nil, canBeInteger: false, canBeFloat: false)
         brain = Brain(precision: _precision.wrappedValue)
         precisionDescription = _precision.wrappedValue.useWords
     }
     
     /// the update of the precision in brain can be slow.
     /// Therefore, I only want to do that when leaving the settings screen
-    func updatePrecision(to newPecision: Int) async {
+    func updatePrecision(to newPrecision: Int) async {
         await MainActor.run {
-            precision = newPecision
+            precision = newPrecision
             precisionDescription = self.precision.useWords
         }
-        let _ = await brain.setPrecision(newPecision)
+        let _ = await brain.setPrecision(newPrecision)
+        
+        /// also change the precision in the displayNumber
+        let new = Number("0", precision: newPrecision)
+        new.setValue(other: displayNumber)
+        await MainActor.run {
+            displayNumber = new
+        }
     }
 
     ///  To give a clear visual feedback to the user that the button has been pressed,
@@ -192,12 +198,6 @@ class ViewModel: ObservableObject, ShowAs {
         if showPreliminaryResults {
             let preliminaryResult = stupidBrain.operation(symbol)
             let preliminary = Display(preliminaryResult, screen: screen, showAs: self)
-//            let preliminaryFormat = DisplayFormat(
-//                for: preliminaryData.length,
-//                withMaxLength: preliminaryData.maxlength,
-//                showThreeDots: false,
-//                screen: screen)
-            //let preliminaryDisplay = Display(data: preliminaryData)//, format: preliminary)
             Task(priority: .high) {
                 try? await Task.sleep(nanoseconds: 300_000_000)
                 if keyState == .highPrecisionProcessing {
@@ -221,6 +221,7 @@ class ViewModel: ObservableObject, ShowAs {
     }
     
     func refreshDisplay(screen: Screen) async {
+        //print("refreshDisplay precision =", displayNumber.precision)
         let tempDisplay = Display(displayNumber, screen: screen, showAs: self)
         await MainActor.run() {
             currentDisplay = tempDisplay

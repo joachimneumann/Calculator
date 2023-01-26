@@ -21,7 +21,6 @@ struct Display {
     var left: String
     var portraitPhoneString: String?
     var right: String?
-    var maxlength: Int
     var canBeInteger: Bool
     var canBeFloat: Bool
     var preliminary: Bool = false
@@ -46,26 +45,22 @@ extension Display {
     init(
     left: String,
     right: String?,
-    maxlength: Int,
     canBeInteger: Bool,
     canBeFloat: Bool) {
         self.left = left
         self.right = right
-        self.maxlength = maxlength
         self.canBeInteger = canBeInteger
         self.canBeFloat = canBeFloat
     }
     init(left: String) {
         self.left = left
         right = nil
-        maxlength = 0
         canBeInteger = false
         canBeFloat = false
     }
     init(_ number: Number, forceScientific: Bool = false, screen: Screen, noLimits: Bool = false, showAs: ShowAs) {
         self.left = "0"
         right = nil
-        maxlength = 0
         canBeInteger = false
         canBeFloat = false
         self = fromNumber(number, displayLengthLimiter: noLimits ? nil : screen, separators: screen, showAs: showAs)
@@ -73,7 +68,6 @@ extension Display {
     init(_ stringNumber: String, screen: Screen, showAs: ShowAs) {
         self.left = "0"
         right = nil
-        maxlength = 0
         canBeInteger = false
         canBeFloat = false
         self = fromStringNumber(stringNumber, displayLengthLimiter: screen, separators: screen, showAs: showAs)
@@ -225,7 +219,7 @@ extension Display {
         separators: Separators,
         showAs: ShowAs) -> Display {
 
-        print("showAs", showAs.showAsInt, showAs.showAsFloat)
+        //print("showAs", showAs.showAsInt, showAs.showAsFloat)
         var returnValue: Display = Display(left: "error")
         var mantissa = mantissa_
         
@@ -373,37 +367,4 @@ extension Display {
         }
     }
 }
-//
-//struct DisplayFormat {
-//    let font: Font
-//    let color: Color
-//    let showThreeDots: Bool
-//    let digitWidth: CGFloat
-//    let ePadding: CGFloat
-//    let kerning: CGFloat
-//    
-//    init(for length: Int, withMaxLength maxLength: Int, showThreeDots: Bool, screen: Screen) {
-//        var factor = 1.0
-//        
-//        if screen.isPortraitPhone {
-//            let factorMin = 1.0
-//            let factorMax = 2.0
-//            // if factorMax is too large (above 2.3) the space needed
-//            // for the new caracter is more then the shrinking,
-//            // which results in the string to be too long
-//            
-//            let notOccupiedLength = CGFloat(length) / CGFloat(maxLength)
-//            factor = factorMax - notOccupiedLength * (factorMax - factorMin)
-//            if factor > 1.5 { factor = 1.5 }
-//            if factor < 1.0 { factor = 1.0 }
-//        }
-//        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: screen.uiFontSize * factor, weight: screen.uiFontWeight)
-//        
-//        font = Font(uiFont)
-//        color = showThreeDots ? .gray : .white
-//        self.showThreeDots = showThreeDots
-//        self.digitWidth = screen.digitWidth
-//        self.ePadding = screen.ePadding
-//        self.kerning = screen.kerning
-//    }
-//}
+
