@@ -51,6 +51,7 @@ class ViewModel: ObservableObject, ShowAs {
     private let upTime = 0.4
     
     private var displayNumber = Number("0", precision: 10)
+    
     private var previouslyPendingOperator: String? = nil
 
     init() {
@@ -207,8 +208,16 @@ class ViewModel: ObservableObject, ShowAs {
             }
         }
         keyState = .highPrecisionProcessing
-        displayNumber = await brain.operation(symbol)
-        await refreshDisplay(screen: screen)
+        let tempNumber = await brain.operation(symbol)
+        if (displayNumber != tempNumber) {
+            displayNumber = tempNumber.copy()
+            /// new number: reset showAs
+            await MainActor.run() {
+                showAsInt = false
+                showAsFloat = false
+            }
+            await refreshDisplay(screen: screen)
+        }
     }
     
     func refreshDisplay(screen: Screen) async {

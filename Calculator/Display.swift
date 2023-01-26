@@ -114,7 +114,7 @@ extension Display {
         }
         let (mantissa, exponent) = displayGmp.mantissaExponent(len: mantissaLength)
         
-        return fromMantissaAndExponent(mantissa, exponent, displayLengthLimiter: displayLengthLimiter, separators: separators)
+        return fromMantissaAndExponent(mantissa, exponent, displayLengthLimiter: displayLengthLimiter, separators: separators, showAs: showAs)
     }
 
     func fromStringNumber(_ stringNumber: String, displayLengthLimiter: DisplayLengthLimiter?, separators: Separators, showAs: ShowAs) -> Display {
@@ -171,7 +171,7 @@ extension Display {
             exponent = stringNumber.count - 1
         }
         if mantissa.starts(with: "-") { exponent -= 1 }
-        return fromMantissaAndExponent(mantissa, exponent, displayLengthLimiter: displayLengthLimiter, separators: separators)
+        return fromMantissaAndExponent(mantissa, exponent, displayLengthLimiter: displayLengthLimiter, separators: separators, showAs: showAs)
     }
     
     func withSeparators(numberString: String, isNegative: Bool, separators: Separators) -> String {
@@ -216,7 +216,15 @@ extension Display {
         textSize(string: string, displayLengthLimiter: displayLengthLimiter).height
     }
     
-    private func fromMantissaAndExponent(_ mantissa_: String, _ exponent: Int, displayLengthLimiter: DisplayLengthLimiter?, separators: Separators) -> Display {
+    private func fromMantissaAndExponent(
+        _ mantissa_: String,
+        _ exponent: Int,
+        displayLengthLimiter: DisplayLengthLimiter?,
+        separators: Separators,
+        showAs: ShowAs) -> Display {
+
+        print("showAs", showAs.showAsInt, showAs.showAsFloat)
+        var returnValue: Display = Display(left: "error")
         var mantissa = mantissa_
         
         if mantissa.isEmpty {
@@ -239,11 +247,15 @@ extension Display {
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
             let withSeparators = withSeparators(numberString: mantissa, isNegative: isNegative, separators: separators)
             if let displayLengthLimiter = displayLengthLimiter {
-                if textWidth(withSeparators, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
-                    return Display(left: withSeparators, right: nil, maxlength: 0, canBeInteger: true, canBeFloat: false)
+                let fitsInOneLine = textWidth(withSeparators, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding
+                if !fitsInOneLine { returnValue.canBeInteger = true }
+                if showAs.showAsInt || fitsInOneLine {
+                    returnValue.left = withSeparators
+                    return returnValue
                 }
             } else {
-                return Display(left: withSeparators, right: nil, maxlength: 0, canBeInteger: true, canBeFloat: false)
+                returnValue.left = withSeparators
+                return returnValue
             }
         }
         
@@ -258,21 +270,25 @@ extension Display {
                 if let index = floatString.firstIndex(of: separators.decimalSeparator.character) {
                     indexInt = floatString.distance(from: floatString.startIndex, to: index)
                     var floatCandidate = String(floatString.prefix(indexInt+1))
-                    if textWidth(floatCandidate, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
-                        if displayLengthLimiter.isPortraitPhone {
-                            while textWidth(floatCandidate, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
-                                indexInt += 1
-                                floatCandidate = String(floatString.prefix(indexInt+1))
-                            }
-                            floatCandidate = String(floatCandidate.prefix(indexInt))
-                            return Display(left: floatCandidate, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
-                        } else {
-                            return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+                    let fitsInOneLine = textWidth(floatCandidate, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding
+                    if !fitsInOneLine { returnValue.canBeFloat = true }
+                    if fitsInOneLine && displayLengthLimiter.isPortraitPhone {
+                        while textWidth(floatCandidate, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
+                            indexInt += 1
+                            floatCandidate = String(floatString.prefix(indexInt+1))
                         }
+                        floatCandidate = String(floatCandidate.prefix(indexInt))
+                        returnValue.left = floatCandidate
+                        return returnValue
+                    }
+                    if showAs.showAsFloat || fitsInOneLine {
+                        returnValue.left = floatString
+                        return returnValue
                     }
                 }
             } else {
-                return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+                returnValue.left = floatString
+                return returnValue
             }
             /// is the comma visible in the first line and is there at least one digit after the comma?
         }
@@ -291,22 +307,26 @@ extension Display {
             testFloat += "x"
             floatString = minusSign + "0" + separators.decimalSeparator.string + floatString
             if let displayLengthLimiter = displayLengthLimiter {
-                if textWidth(testFloat, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
-                    if displayLengthLimiter.isPortraitPhone {
-                        var indexInt = 3 /// minimum: X,x
-                        var limitedFloatString = String(floatString.prefix(indexInt))
-                        while textWidth(limitedFloatString, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth {
-                            indexInt += 1
-                            limitedFloatString = String(floatString.prefix(indexInt))
-                        }
-                        limitedFloatString = String(limitedFloatString.prefix(indexInt-1))
-                        return Display(left: limitedFloatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
-                    } else {
-                        return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+                let fitsInOneLine = textWidth(testFloat, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding
+                if !fitsInOneLine { returnValue.canBeFloat = true }
+                if fitsInOneLine && displayLengthLimiter.isPortraitPhone {
+                    var indexInt = 3 /// minimum: X,x
+                    var limitedFloatString = String(floatString.prefix(indexInt))
+                    while textWidth(limitedFloatString, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth {
+                        indexInt += 1
+                        limitedFloatString = String(floatString.prefix(indexInt))
                     }
+                    limitedFloatString = String(limitedFloatString.prefix(indexInt-1))
+                    returnValue.left = limitedFloatString
+                    return returnValue
+                }
+                if showAs.showAsFloat || fitsInOneLine {
+                    returnValue.left = floatString
+                    return returnValue
                 }
             } else {
-                return Display(left: floatString, right: nil, maxlength: 0, canBeInteger: false, canBeFloat: false)
+                returnValue.left = floatString
+                return returnValue
             }
         }
         
@@ -328,19 +348,26 @@ extension Display {
                 var indexInt = 3 /// minimum: X,x
                 var floatString = String(mantissa.prefix(indexInt))
                 if textWidth(floatString + exponentString, displayLengthLimiter: displayLengthLimiter) > displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
-                    return Display(left: "can not show")
+                    returnValue.left = "can not show"
+                    return returnValue
                 }
                 while textWidth(floatString + exponentString, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
                     indexInt += 1
                     floatString = String(mantissa.prefix(indexInt))
                 }
                 floatString = String(floatString.prefix(indexInt-1))
-                return Display(left: floatString, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: false)
+                returnValue.left = floatString
+                returnValue.right = exponentString
+                return returnValue
             } else {
-                return Display(left: mantissa, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: true)
+                returnValue.left = mantissa
+                returnValue.right = exponentString
+                return returnValue
             }
         } else {
-            return Display(left: mantissa, right: exponentString, maxlength: 0, canBeInteger: false, canBeFloat: true)
+            returnValue.left = mantissa
+            returnValue.right = exponentString
+            return returnValue
         }
     }
 }

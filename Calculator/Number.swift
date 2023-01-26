@@ -7,15 +7,42 @@
 
 import Foundation
 
-class Number: CustomDebugStringConvertible {
+class Number: CustomDebugStringConvertible, Equatable {
     private (set) var precision: Int = 0
     private var _str: String?
     private var _gmp: Gmp?
     static let MAX_DISPLAY_LENGTH = 10_000 // too long strings in Text() crash the app
     
     var isStr: Bool { _str != nil }
+    var isGmp: Bool { _gmp != nil }
     var str: String? { return _str }
     var gmp: Gmp? { return _gmp }
+    
+    static func ==(lhs: Number, rhs: Number) -> Bool {
+        if lhs.isStr && rhs.isStr { return lhs.str! == rhs.str! }
+        if lhs.isGmp && rhs.isGmp { return lhs.gmp! == rhs.gmp! }
+        /// mixed str and Gmp
+
+        if lhs.precision != rhs.precision { return false }
+
+        let lGmp: Gmp
+        let rGmp: Gmp
+        if lhs.isGmp {
+            lGmp = lhs.gmp!
+        } else {
+            lGmp = Gmp(withString: lhs.str!, precision: lhs.precision)
+        }
+        if rhs.isGmp {
+            rGmp = rhs.gmp!
+        } else {
+            rGmp = Gmp(withString: rhs.str!, precision: lhs.precision)
+        }
+        return lGmp == rGmp
+    }
+    
+    static func !=(lhs: Number, rhs: Number) -> Bool {
+        return !(lhs == rhs)
+    }
     
     var isValid: Bool {
         if isStr { return true }
