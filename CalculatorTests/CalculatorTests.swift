@@ -546,6 +546,69 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(allInOneLine(debugBrain.last), "0,7")
     }
     
+    func test_showAs_Int() {
+        screen.groupingSeparator = .none
+        screen.decimalSeparator = .comma
+        viewModel.showAsInt = false
+        viewModel.showAsFloat = false
+        XCTAssertEqual( left("1234567890"),      "1234567890")
+        XCTAssertEqual(right("1234567890"),      nil)
+        XCTAssertEqual( left("123456789012345"), "1,23456789012345")
+        XCTAssertEqual(right("123456789012345"), "e14")
+        viewModel.showAsInt = true
+        viewModel.showAsFloat = true
+        XCTAssertEqual( left("1234567890"),      "1234567890")
+        XCTAssertEqual(right("1234567890"),      nil)
+        XCTAssertEqual( left("123456789012345"), "123456789012345")
+        XCTAssertEqual(right("123456789012345"), nil)
+        screen.decimalSeparator = .dot
+        screen.groupingSeparator = .comma
+        XCTAssertEqual( left("1234567890"),      "1,234,567,890")
+        XCTAssertEqual(right("1234567890"),      nil)
+        XCTAssertEqual( left("123456789012345"), "123,456,789,012,345")
+        XCTAssertEqual(right("123456789012345"), nil)
+    }
+
+    func test_showAs_Float() {
+        let debugBrain = DebugBrain(precision: 100)
+        screen.groupingSeparator = .none
+        screen.decimalSeparator = .comma
+        viewModel.showAsInt = false
+        viewModel.showAsFloat = false
+        debugBrain.pushnew("0,0023")
+        XCTAssertEqual(left(debugBrain.last), "0,0023")
+        XCTAssertNil(right(debugBrain.last))
+        debugBrain.pushnew("0,0000000000232837642876")
+        XCTAssertEqual(left(debugBrain.last), "2,32837642876")
+        XCTAssertEqual(right(debugBrain.last), "e-11")
+
+        viewModel.showAsInt = true
+        viewModel.showAsFloat = true
+        debugBrain.pushnew("0,0023")
+        XCTAssertEqual(left(debugBrain.last), "0,0023")
+        XCTAssertNil(right(debugBrain.last))
+        debugBrain.pushnew("0,0000000000232837642876")
+        XCTAssertEqual(left(debugBrain.last), "0,0000000000232837642876")
+        XCTAssertEqual(right(debugBrain.last), nil)
+        
+        screen.decimalSeparator = .dot
+        screen.groupingSeparator = .comma
+        debugBrain.pushnew("0,0023")
+        XCTAssertEqual(left(debugBrain.last), "0.0023")
+        XCTAssertNil(right(debugBrain.last))
+        debugBrain.pushnew("0,0000000000232837642876")
+        XCTAssertEqual(left(debugBrain.last), "0.0000000000232837642876")
+        XCTAssertEqual(right(debugBrain.last), nil)
+
+        debugBrain.pushnew("1000,0023")
+        XCTAssertEqual(left(debugBrain.last), "1,000.0023")
+        XCTAssertNil(right(debugBrain.last))
+        debugBrain.pushnew("1000,0000000000232837642876")
+        XCTAssertEqual(left(debugBrain.last), "1,000.0000000000232837642876")
+        XCTAssertEqual(right(debugBrain.last), nil)
+
+    }
+
     func test_integer() {
         screen.groupingSeparator = .none
         screen.decimalSeparator = .comma
