@@ -7,8 +7,13 @@
 
 import SwiftUI
 
-class ViewModel: ObservableObject {
-    @Published internal var showAsInteger = false /// This will update the "-> Int or -> sci button texts
+protocol ShowAs {
+    var showAsInt: Bool   { get }
+    var showAsFloat: Bool { get }
+}
+
+class ViewModel: ObservableObject, ShowAs {
+    @Published var showAsInt = false /// This will update the "-> Int or -> sci button texts
     @Published var showAsFloat = false
     @Published var isCopying: Bool = false
     @Published var isPasting: Bool = false
@@ -185,7 +190,7 @@ class ViewModel: ObservableObject {
         //print("defaultTask", symbol)
         if showPreliminaryResults {
             let preliminaryResult = stupidBrain.operation(symbol)
-            let preliminary = Display(preliminaryResult, screen: screen)
+            let preliminary = Display(preliminaryResult, screen: screen, showAs: self)
 //            let preliminaryFormat = DisplayFormat(
 //                for: preliminaryData.length,
 //                withMaxLength: preliminaryData.maxlength,
@@ -207,7 +212,7 @@ class ViewModel: ObservableObject {
     }
     
     func refreshDisplay(screen: Screen) async {
-        let tempDisplay = Display(displayNumber, screen: screen)
+        let tempDisplay = Display(displayNumber, screen: screen, showAs: self)
         await MainActor.run() {
             currentDisplay = tempDisplay
             self.showAC = currentDisplay.isZero
@@ -231,7 +236,7 @@ class ViewModel: ObservableObject {
     }
     
     func copyToPastBin(screen: Screen) async {
-        let copyData = Display(displayNumber, screen: screen, noLimits: true)
+        let copyData = Display(displayNumber, screen: screen, noLimits: true, showAs: self)
         UIPasteboard.general.string = copyData.allInOneLine
     }
 

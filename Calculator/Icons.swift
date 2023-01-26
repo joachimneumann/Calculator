@@ -134,10 +134,10 @@ struct Icons : View {
     
     @ViewBuilder
     var toInt: some View {
-        let integerLabel = viewModel.currentDisplay.canBeInteger ? (viewModel.showAsInteger ? "→ sci" : "→ int") : ""
+        let integerLabel = viewModel.currentDisplay.canBeInteger ? (viewModel.showAsInt ? "→ sci" : "→ int") : ""
         if integerLabel.count > 0 {
             Button {
-                viewModel.showAsInteger.toggle()
+                viewModel.showAsInt.toggle()
                 Task {
                     await viewModel.refreshDisplay(screen: screen)
                 }

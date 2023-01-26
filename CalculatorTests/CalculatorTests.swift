@@ -10,6 +10,7 @@ import XCTest
 
 class CalculatorTests: XCTestCase {
     var screen: Screen = Screen(CGSize(width: 130, height: 130))
+    let viewModel = ViewModel()
     let precision = 1000
 
     override func setUpWithError() throws {
@@ -24,22 +25,22 @@ class CalculatorTests: XCTestCase {
     }
 
     func left(_ s: String) -> String {
-        Display(s, displayLengthLimiter: screen, separators: screen).left
+        Display(s, screen: screen, showAs: viewModel).left
     }
     func right(_ s: String) -> String? {
-        Display(s, displayLengthLimiter: screen, separators: screen).right
+        Display(s, screen: screen, showAs: viewModel).right
     }
     func allInOneLine(_ s: String) -> String {
-        Display(s, displayLengthLimiter: screen, separators: screen).allInOneLine
+        Display(s, screen: screen, showAs: viewModel).allInOneLine
     }
     func left(_ n: Number) -> String {
-        Display(n, displayLengthLimiter: screen, separators: screen).left
+        Display(n, screen: screen, showAs: viewModel).left
     }
     func right(_ n: Number) -> String? {
-        Display(n, displayLengthLimiter: screen, separators: screen).right
+        Display(n, screen: screen, showAs: viewModel).right
     }
     func allInOneLine(_ n: Number) -> String {
-        Display(n, displayLengthLimiter: screen, separators: screen).allInOneLine
+        Display(n, screen: screen, showAs: viewModel).allInOneLine
     }
 
     func test_portraitIPhone() {

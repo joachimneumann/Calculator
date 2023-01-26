@@ -60,21 +60,21 @@ extension Display {
         canBeInteger = false
         canBeFloat = false
     }
-    init(_ number: Number, forceScientific: Bool = false, screen: Screen, noLimits: Bool = false) {
+    init(_ number: Number, forceScientific: Bool = false, screen: Screen, noLimits: Bool = false, showAs: ShowAs) {
         self.left = "0"
         right = nil
         maxlength = 0
         canBeInteger = false
         canBeFloat = false
-        self = fromNumber(number, displayLengthLimiter: noLimits ? nil : screen, separators: screen)
+        self = fromNumber(number, displayLengthLimiter: noLimits ? nil : screen, separators: screen, showAs: showAs)
     }
-    init(_ stringNumber: String, screen: Screen) {
+    init(_ stringNumber: String, screen: Screen, showAs: ShowAs) {
         self.left = "0"
         right = nil
         maxlength = 0
         canBeInteger = false
         canBeFloat = false
-        self = fromStringNumber(stringNumber, displayLengthLimiter: screen, separators: screen)
+        self = fromStringNumber(stringNumber, displayLengthLimiter: screen, separators: screen, showAs: showAs)
     }
 }
 
@@ -83,9 +83,9 @@ extension Display {
         return Display(left: left)
     }
 
-    func fromNumber(_ number: Number, displayLengthLimiter: DisplayLengthLimiter?, separators: Separators) -> Display {
+    func fromNumber(_ number: Number, displayLengthLimiter: DisplayLengthLimiter?, separators: Separators, showAs: ShowAs) -> Display {
         if number.str != nil {
-            return fromStringNumber(number.str!, displayLengthLimiter: displayLengthLimiter, separators: separators)
+            return fromStringNumber(number.str!, displayLengthLimiter: displayLengthLimiter, separators: separators, showAs: showAs)
         }
 
         guard number.gmp != nil else {
@@ -117,28 +117,29 @@ extension Display {
         return fromMantissaAndExponent(mantissa, exponent, displayLengthLimiter: displayLengthLimiter, separators: separators)
     }
 
-    func fromStringNumber(_ stringNumber: String, displayLengthLimiter: DisplayLengthLimiter?, separators: Separators) -> Display {
+    func fromStringNumber(_ stringNumber: String, displayLengthLimiter: DisplayLengthLimiter?, separators: Separators, showAs: ShowAs) -> Display {
         guard !stringNumber.contains(",") else { assert(false, "string contains comma, but only dot is allowed") }
         guard !stringNumber.contains("e") else { assert(false, "scientific?") }
         var mantissa: String
         var exponent: Int
         
         /// stringNumber fits in the display? show it!
-        let correctSeparator: String
+        let signAndSeparator: String
         mantissa = stringNumber
         if stringNumber.starts(with: "-") {
             let temp = String(mantissa.dropFirst())
-            correctSeparator = withSeparators(numberString: temp, isNegative: true, separators: separators)
+            signAndSeparator = withSeparators(numberString: temp, isNegative: true, separators: separators)
         } else {
-            correctSeparator = withSeparators(numberString: mantissa, isNegative: false, separators: separators)
+            signAndSeparator = withSeparators(numberString: mantissa, isNegative: false, separators: separators)
         }
 
         if let displayLengthLimiter = displayLengthLimiter {
-            if textWidth(correctSeparator, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
-                return fromLeft(correctSeparator)
-            }
+            if textWidth(signAndSeparator, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
+                return fromLeft(signAndSeparator)
+            } /// else: too long to fil into a single line display
         } else {
-            return fromLeft(correctSeparator)
+            /// no limiter: return. E.g. to copy to paste bin
+            return fromLeft(signAndSeparator)
         }
         
         /// integer or float
