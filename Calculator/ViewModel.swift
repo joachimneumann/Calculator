@@ -197,7 +197,7 @@ class ViewModel: ObservableObject, ShowAs {
         //print("defaultTask", symbol)
         if showPreliminaryResults {
             let preliminaryResult = stupidBrain.operation(symbol)
-            let preliminary = Display(preliminaryResult, screen: screen, showAs: self)
+            let preliminary = Display(preliminaryResult, screen: screen, showAs: self, forceScientific: screen.forceScientific)
             Task(priority: .high) {
                 try? await Task.sleep(nanoseconds: 300_000_000)
                 if keyState == .highPrecisionProcessing {
@@ -222,7 +222,7 @@ class ViewModel: ObservableObject, ShowAs {
     
     func refreshDisplay(screen: Screen) async {
         //print("refreshDisplay precision =", displayNumber.precision)
-        let tempDisplay = Display(displayNumber, screen: screen, showAs: self)
+        let tempDisplay = Display(displayNumber, screen: screen, showAs: self, forceScientific: screen.forceScientific)
         await MainActor.run() {
             currentDisplay = tempDisplay
             self.showAC = currentDisplay.isZero
@@ -246,7 +246,7 @@ class ViewModel: ObservableObject, ShowAs {
     }
     
     func copyToPastBin(screen: Screen) async {
-        let copyData = Display(displayNumber, screen: screen, noLimits: true, showAs: self)
+        let copyData = Display(displayNumber, screen: screen, noLimits: true, showAs: self, forceScientific: screen.forceScientific)
         UIPasteboard.general.string = copyData.allInOneLine
     }
 

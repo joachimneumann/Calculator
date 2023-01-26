@@ -58,19 +58,19 @@ extension Display {
         canBeInteger = false
         canBeFloat = false
     }
-    init(_ number: Number, forceScientific: Bool = false, screen: Screen, noLimits: Bool = false, showAs: ShowAs) {
+    init(_ number: Number, screen: Screen, noLimits: Bool = false, showAs: ShowAs, forceScientific: Bool) {
         self.left = "0"
         right = nil
         canBeInteger = false
         canBeFloat = false
-        self = fromNumber(number, displayLengthLimiter: noLimits ? nil : screen, separators: screen, showAs: showAs)
+        self = fromNumber(number, displayLengthLimiter: noLimits ? nil : screen, separators: screen, showAs: showAs, forceScientific: forceScientific)
     }
-    init(_ stringNumber: String, screen: Screen, showAs: ShowAs) {
+    init(_ stringNumber: String, screen: Screen, showAs: ShowAs, forceScientific: Bool) {
         self.left = "0"
         right = nil
         canBeInteger = false
         canBeFloat = false
-        self = fromStringNumber(stringNumber, displayLengthLimiter: screen, separators: screen, showAs: showAs)
+        self = fromStringNumber(stringNumber, displayLengthLimiter: screen, separators: screen, showAs: showAs, forceScientific: forceScientific)
     }
 }
 
@@ -79,9 +79,14 @@ extension Display {
         return Display(left: left)
     }
 
-    func fromNumber(_ number: Number, displayLengthLimiter: DisplayLengthLimiter?, separators: Separators, showAs: ShowAs) -> Display {
+    func fromNumber(
+        _ number: Number,
+        displayLengthLimiter: DisplayLengthLimiter?,
+        separators: Separators,
+        showAs: ShowAs,
+        forceScientific: Bool) -> Display {
         if number.str != nil {
-            return fromStringNumber(number.str!, displayLengthLimiter: displayLengthLimiter, separators: separators, showAs: showAs)
+            return fromStringNumber(number.str!, displayLengthLimiter: displayLengthLimiter, separators: separators, showAs: showAs, forceScientific: forceScientific)
         }
 
         guard number.gmp != nil else {
@@ -110,10 +115,15 @@ extension Display {
         }
         let (mantissa, exponent) = displayGmp.mantissaExponent(len: mantissaLength)
         
-        return fromMantissaAndExponent(mantissa, exponent, displayLengthLimiter: displayLengthLimiter, separators: separators, showAs: showAs)
+        return fromMantissaAndExponent(mantissa, exponent, displayLengthLimiter: displayLengthLimiter, separators: separators, showAs: showAs, forceScientific: forceScientific)
     }
 
-    func fromStringNumber(_ stringNumber: String, displayLengthLimiter: DisplayLengthLimiter?, separators: Separators, showAs: ShowAs) -> Display {
+    func fromStringNumber(
+        _ stringNumber: String,
+        displayLengthLimiter: DisplayLengthLimiter?,
+        separators: Separators,
+        showAs: ShowAs,
+        forceScientific: Bool) -> Display {
         guard !stringNumber.contains(",") else { assert(false, "string contains comma, but only dot is allowed") }
         guard !stringNumber.contains("e") else { assert(false, "scientific?") }
         var mantissa: String
@@ -130,7 +140,7 @@ extension Display {
         }
 
         if let displayLengthLimiter = displayLengthLimiter {
-            if textWidth(signAndSeparator, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
+            if !forceScientific && textWidth(signAndSeparator, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
                 return fromLeft(signAndSeparator)
             } /// else: too long to fil into a single line display
         } else {
@@ -167,7 +177,7 @@ extension Display {
             exponent = stringNumber.count - 1
         }
         if mantissa.starts(with: "-") { exponent -= 1 }
-        return fromMantissaAndExponent(mantissa, exponent, displayLengthLimiter: displayLengthLimiter, separators: separators, showAs: showAs)
+        return fromMantissaAndExponent(mantissa, exponent, displayLengthLimiter: displayLengthLimiter, separators: separators, showAs: showAs, forceScientific: forceScientific)
     }
     
     func withSeparators(numberString: String, isNegative: Bool, separators: Separators) -> String {
@@ -217,7 +227,8 @@ extension Display {
         _ exponent: Int,
         displayLengthLimiter: DisplayLengthLimiter?,
         separators: Separators,
-        showAs: ShowAs) -> Display {
+        showAs: ShowAs,
+        forceScientific: Bool) -> Display {
 
         //print("showAs", showAs.showAsInt, showAs.showAsFloat)
         var returnValue: Display = Display(left: "error")
@@ -239,7 +250,7 @@ extension Display {
          What can be displayed in 200 pixel?
          - I dont want the separator as leading character!
          */
-        if mantissa.count <= exponent + 1 { /// smaller than because of possible trailing zeroes in the integer
+        if mantissa.count <= exponent + 1 && !forceScientific { /// smaller than because of possible trailing zeroes in the integer
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
             let withSeparators = withSeparators(numberString: mantissa, isNegative: isNegative, separators: separators)
             if let displayLengthLimiter = displayLengthLimiter {
@@ -256,7 +267,7 @@ extension Display {
         }
         
         /// Is floating point XXX,xxx?
-        if exponent >= 0 {
+        if exponent >= 0 && !forceScientific {
             var floatString = mantissa
             let index = floatString.index(floatString.startIndex, offsetBy: exponent+1)
             var indexInt: Int = floatString.distance(from: floatString.startIndex, to: index)
@@ -291,7 +302,7 @@ extension Display {
         
         /// is floating point 0,xxxx
         /// additional requirement: first non-zero digit in first line. If not -> Scientific
-        if exponent < 0 {
+        if exponent < 0 && !forceScientific {
             let minusSign = isNegative ? "-" : ""
             
             var testFloat = minusSign + "0" + separators.decimalSeparator.string

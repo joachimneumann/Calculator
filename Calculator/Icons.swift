@@ -135,7 +135,7 @@ struct Icons : View {
     @ViewBuilder
     var toInt: some View {
         let integerLabel = viewModel.currentDisplay.canBeInteger ? (viewModel.showAsInt ? "→ sci" : "→ int") : ""
-        if integerLabel.count > 0 {
+        if integerLabel.count > 0 && !screen.forceScientific {
             Button {
                 viewModel.showAsInt.toggle()
                 Task {
@@ -152,7 +152,7 @@ struct Icons : View {
     @ViewBuilder
     var toFloat: some View {
         let floatLabel = viewModel.currentDisplay.canBeFloat ? (viewModel.showAsFloat ? "→ sci" : "→ float") : ""
-        if !viewModel.currentDisplay.canBeInteger && floatLabel.count > 0 {
+        if !viewModel.currentDisplay.canBeInteger && floatLabel.count > 0 && !screen.forceScientific {
             Button {
                 viewModel.showAsFloat.toggle()
                 Task {
