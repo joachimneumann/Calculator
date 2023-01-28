@@ -280,7 +280,7 @@ extension Display {
                     let fitsInOneLine = textWidth(floatCandidate, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding
                     if !fitsInOneLine { returnValue.canBeFloat = true }
                     if fitsInOneLine && displayLengthLimiter.isPortraitPhone {
-                        while textWidth(floatCandidate, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
+                        while indexInt <= floatString.count && textWidth(floatCandidate, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
                             indexInt += 1
                             floatCandidate = String(floatString.prefix(indexInt+1))
                         }
@@ -319,7 +319,7 @@ extension Display {
                 if fitsInOneLine && displayLengthLimiter.isPortraitPhone {
                     var indexInt = 3 /// minimum: X,x
                     var limitedFloatString = String(floatString.prefix(indexInt))
-                    while textWidth(limitedFloatString, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth {
+                    while indexInt <= floatString.count && textWidth(limitedFloatString, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth {
                         indexInt += 1
                         limitedFloatString = String(floatString.prefix(indexInt))
                     }
@@ -358,7 +358,7 @@ extension Display {
                     returnValue.left = "can not show"
                     return returnValue
                 }
-                while textWidth(floatString + exponentString, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
+                while indexInt <= mantissa.count && textWidth(floatString + exponentString, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
                     indexInt += 1
                     floatString = String(mantissa.prefix(indexInt))
                 }
