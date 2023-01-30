@@ -35,17 +35,19 @@ class ViewModel: ObservableObject, ShowAs {
     private let brain: Brain /// initialized later with _precision.wrappedValue
     private var stupidBrain = BrainEngine(precision: 100) /// I want to call fast sync functions
 
-    private enum KeyState {
-        case notPressed
-        case pressed
-        case highPrecisionProcessing
-    }
-
     private let keysThatRequireValidNumber = ["±", "%", "/", "x", "-", "+", "=", "( ", " )", "m+", "m-", "x^2", "x^3", "x^y", "e^x", "y^x", "2^x", "10^x", "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10", "x!", "sin", "cos", "tan", "asin", "acos", "atan", "EE", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh"]
     private static let MAX_DISPLAY_LEN = 10_000 /// too long strings in Text() crash the app
 
     private var upHasHappended = false
     private var downAnimationFinished = false
+
+    private enum KeyState {
+        case notPressed
+        case pressed
+        case highPrecisionProcessing
+        case highPrecisionProcessingDisabled
+    }
+
     private var keyState: KeyState = .notPressed
     private let downTime = 0.1
     private let upTime = 0.4
@@ -125,9 +127,20 @@ class ViewModel: ObservableObject, ShowAs {
     }
     
     func touchDown(for symbol: String) {
+        print("touchDown1 keyState =", keyState)
+        if keyState == .highPrecisionProcessing {
+            keyState = .highPrecisionProcessingDisabled
+            Task(priority: .userInitiated) {
+                await showDisabledColors(for: symbol)
+            }
+            return
+        }
+        
         Task(priority: .userInitiated) {
             let validOrAllowed = displayNumber.isValid || !keysThatRequireValidNumber.contains(symbol)
+            print("touchDown2 keyState =", keyState, "validOrAllowed =", validOrAllowed)
             guard keyState == .notPressed && validOrAllowed else {
+                //keyState = .disabledPressed
                 await showDisabledColors(for: symbol)
                 return
             }
@@ -135,27 +148,13 @@ class ViewModel: ObservableObject, ShowAs {
         }
     }
     
-    func setPendingColors(for symbol: String) async {
-        if let previous = previouslyPendingOperator {
-            await MainActor.run() {
-                withAnimation(.easeIn(duration: downTime)) {
-                    backgroundColor[previous] = upColor(for: previous, isPending: false)
-                    textColor[previous] = textColor(for: previous, isPending: false)
-                }
-            }
-        }
-        if ["/", "x", "-", "+", "x^y", "y^x", "y√"].contains(symbol) {
-            await MainActor.run() {
-                withAnimation(.easeIn(duration: downTime)) {
-                    backgroundColor[symbol] = upColor(for: symbol, isPending: true)
-                    textColor[symbol] = textColor(for: symbol, isPending: true)
-                    previouslyPendingOperator = symbol
-                }
-            }
-        }
-    }
-    
     func touchUp(of symbol: String, screen: Screen) {
+        if keyState == .highPrecisionProcessingDisabled {
+            keyState = .highPrecisionProcessing
+            /// this allows the user to try pressing a button again
+            return
+        }
+
         let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(symbol) && !rad ? symbol+"D" : symbol
 
         switch symbol {
@@ -190,6 +189,28 @@ class ViewModel: ObservableObject, ShowAs {
                 await self.defaultTask(for: symbol, screen: screen)
                 self.keyState = .notPressed
             }
+        }
+    }
+    
+    func setPendingColors(for symbol: String) async {
+        if let previous = previouslyPendingOperator {
+            await MainActor.run() {
+                withAnimation(.easeIn(duration: downTime)) {
+                    backgroundColor[previous] = upColor(for: previous, isPending: false)
+                    textColor[previous] = textColor(for: previous, isPending: false)
+                }
+            }
+        }
+        if ["/", "x", "-", "+", "x^y", "y^x", "y√"].contains(symbol) {
+            await MainActor.run() {
+                withAnimation(.easeIn(duration: downTime)) {
+                    backgroundColor[symbol] = upColor(for: symbol, isPending: true)
+                    textColor[symbol] = textColor(for: symbol, isPending: true)
+                    previouslyPendingOperator = symbol
+                }
+            }
+        } else {
+            previouslyPendingOperator = nil
         }
     }
     
