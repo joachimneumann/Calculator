@@ -224,6 +224,7 @@ class ViewModel: ObservableObject, ShowAs {
                 if keyState == .highPrecisionProcessing {
                     await MainActor.run() {
                         currentDisplay = preliminary
+                        currentDisplay.preliminary = true
                     }
                 }
             }
