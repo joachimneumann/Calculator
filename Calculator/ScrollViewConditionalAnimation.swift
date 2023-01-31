@@ -27,6 +27,7 @@ struct ScrollViewConditionalAnimation: View {
     private var scrollView: some View {
         GeometryReader { g in
             HStack(alignment: .top, spacing: 0.0) {
+                Spacer(minLength: 0.0)
                 ScrollView(.vertical) {
                     HStack(alignment: .bottom, spacing: 0.0) {
                         let toShow = display.preliminary && display.left.count > 1 ? String(display.left.dropLast()) : display.left
@@ -49,8 +50,18 @@ struct ScrollViewConditionalAnimation: View {
                 .id(scrollViewID)
                 .disabled(disabledScrolling)
                 if display.preliminary {
-                    ThreeDots().frame(width: screen.digitWidth, height: screen.digitWidth / 3)
+//                    Text("0")
+//                        .kerning(screen.kerning)
+//                        .font(Font(screen.uiFont))
+//                        .foregroundColor(display.preliminary ? .gray : foregroundColor)
+//                        .multilineTextAlignment(.trailing)
+//                        .background(Color.yellow)// backgroundColor)
+//                        .lineLimit(nil)
+//                        .offset(y: offsetY)
+                    ThreeDots()
+                        .frame(width: screen.digitWidth, height: screen.digitWidth / 3)
                         .offset(y: screen.textHeight - offsetY - screen.digitWidth / 3)
+//                        .background(Color.green)// backgroundColor)
                 }
             }
         }

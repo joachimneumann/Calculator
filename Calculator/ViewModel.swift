@@ -127,7 +127,7 @@ class ViewModel: ObservableObject, ShowAs {
     }
     
     func touchDown(for symbol: String) {
-        print("touchDown1 keyState =", keyState)
+        //print("touchDown1 keyState =", keyState)
         if keyState == .highPrecisionProcessing {
             keyState = .highPrecisionProcessingDisabled
             Task(priority: .userInitiated) {
@@ -138,7 +138,7 @@ class ViewModel: ObservableObject, ShowAs {
         
         Task(priority: .userInitiated) {
             let validOrAllowed = displayNumber.isValid || !keysThatRequireValidNumber.contains(symbol)
-            print("touchDown2 keyState =", keyState, "validOrAllowed =", validOrAllowed)
+            //print("touchDown2 keyState =", keyState, "validOrAllowed =", validOrAllowed)
             guard keyState == .notPressed && validOrAllowed else {
                 //keyState = .disabledPressed
                 await showDisabledColors(for: symbol)

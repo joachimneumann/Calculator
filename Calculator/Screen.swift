@@ -149,11 +149,12 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         uiFont = UIFont.monospacedDigitSystemFont(ofSize: uiFontSize, weight: uiFontWeight)
         infoUiFontSize = uiFontSize * 0.3
         infoUiFont = UIFont.monospacedDigitSystemFont(ofSize: infoUiFontSize, weight: .regular)
+
         kerning = -0.02 * uiFontSize
         
-        textHeight     = textHeight("0")
-        infoTextHeight = textHeight("0", uiFont: infoUiFont)
-        digitWidth     = textWidth("0")
+        textHeight     = textHeight("0", kerning: kerning)
+        infoTextHeight = textHeight("0", uiFont: infoUiFont, kerning: kerning)
+        digitWidth     = textWidth("0", kerning: kerning)
 
         offsetToVerticallyAlignTextWithkeyboard =
         CGFloat(screenSize.height) -
@@ -186,11 +187,11 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         attributes[.font] = font
         return string.size(withAttributes: attributes)
     }
-    func textWidth(_ string: String, uiFont: UIFont? = nil, kerning: CGFloat = 0.0) -> CGFloat {
+    func textWidth(_ string: String, uiFont: UIFont? = nil, kerning: CGFloat) -> CGFloat {
         textSize(string: string, uiFont: uiFont, kerning: kerning).width
     }
 
-    func textHeight(_ string: String, uiFont: UIFont? = nil, kerning: CGFloat = 0.0) -> CGFloat {
+    func textHeight(_ string: String, uiFont: UIFont? = nil, kerning: CGFloat) -> CGFloat {
         textSize(string: string, uiFont: uiFont, kerning: kerning).height
     }
 
