@@ -26,31 +26,33 @@ struct ScrollViewConditionalAnimation: View {
     
     private var scrollView: some View {
         GeometryReader { g in
-            ScrollView(.vertical) {
-                HStack(alignment: .bottom, spacing: 0.0) {
-                    let toShow = display.preliminary && display.left.count > 1 ? String(display.left.dropLast()) : display.left
-                    Spacer(minLength: 0.0)
-                    Text(toShow)
-                        .kerning(screen.kerning)
-                        .font(Font(screen.uiFont))
-                        .foregroundColor(display.preliminary ? .gray : foregroundColor)
-                        .multilineTextAlignment(.trailing)
-                        .background(backgroundColor)
-                        .lineLimit(nil)
-                        .offset(y: offsetY)
-                        .anchorPreference(key: OffsetKey.self, value: .top) {
-                            g[$0].y
-                        }
-                        .accessibilityIdentifier("landscapeDisplayText")
+            HStack(alignment: .top, spacing: 0.0) {
+                ScrollView(.vertical) {
+                    HStack(alignment: .bottom, spacing: 0.0) {
+                        let toShow = display.preliminary && display.left.count > 1 ? String(display.left.dropLast()) : display.left
+                        Spacer(minLength: 0.0)
+                        Text(toShow)
+                            .kerning(screen.kerning)
+                            .font(Font(screen.uiFont))
+                            .foregroundColor(display.preliminary ? .gray : foregroundColor)
+                            .multilineTextAlignment(.trailing)
+                            .background(backgroundColor)
+                            .lineLimit(nil)
+                            .offset(y: offsetY)
+                            .anchorPreference(key: OffsetKey.self, value: .top) {
+                                g[$0].y
+                            }
+                            .accessibilityIdentifier("landscapeDisplayText")
                         //.animation(Animation.easeInOut(duration: 0.2), value: foregroundColor)
-                    if display.preliminary {
-                        ThreeDots().frame(width: screen.digitWidth, height: screen.digitWidth / 3)
-                            .offset(y: -screen.digitWidth / 6)
                     }
                 }
+                .id(scrollViewID)
+                .disabled(disabledScrolling)
+                if display.preliminary {
+                    ThreeDots().frame(width: screen.digitWidth, height: screen.digitWidth / 3)
+                        .offset(y: screen.textHeight - offsetY - screen.digitWidth / 3)
+                }
             }
-            .id(scrollViewID)
-            .disabled(disabledScrolling)
         }
     }
     
