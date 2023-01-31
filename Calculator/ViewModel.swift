@@ -48,7 +48,7 @@ class ViewModel: ObservableObject, ShowAs {
         case highPrecisionProcessingDisabled
     }
 
-    private var keyState: KeyState = .notPressed
+    private var keyState: KeyState = .notPressed //{ didSet { print("keyState ->", keyState) } }
     private let downTime = 0.1
     private let upTime = 0.4
     
@@ -215,6 +215,12 @@ class ViewModel: ObservableObject, ShowAs {
     }
     
     func defaultTask(for symbol: String, screen: Screen) async {
+
+        await MainActor.run() {
+            showAsInt = false
+            showAsFloat = false
+        }
+
         //print("defaultTask", symbol)
         if showPreliminaryResults {
             let preliminaryResult = stupidBrain.operation(symbol)
@@ -230,16 +236,8 @@ class ViewModel: ObservableObject, ShowAs {
             }
         }
         keyState = .highPrecisionProcessing
-        let tempNumber = await brain.operation(symbol)
-        if (displayNumber != tempNumber) {
-            displayNumber = tempNumber.copy()
-            /// new number: reset showAs
-            await MainActor.run() {
-                showAsInt = false
-                showAsFloat = false
-            }
-            await refreshDisplay(screen: screen)
-        }
+        displayNumber = await brain.operation(symbol)
+        await refreshDisplay(screen: screen)
     }
     
     func refreshDisplay(screen: Screen) async {
