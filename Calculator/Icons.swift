@@ -180,7 +180,7 @@ struct Icons : View {
             .lineLimit(1)
             .minimumScaleFactor(0.01) // in case "paste" is too wide on small phones
         }
-        .frame(width: screen.plusIconSize)
+        .frame(width: screen.iconsWidth)
         .padding(.leading, screen.plusIconLeftPadding)
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .active {

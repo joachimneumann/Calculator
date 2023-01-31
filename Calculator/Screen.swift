@@ -74,6 +74,7 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
     let keySize: CGSize
     var ePadding: CGFloat /// var and not let, because it is set to 0.0 in the tests
     let plusIconSize: CGFloat
+    let iconsWidth: CGFloat
     let plusIconLeftPadding: CGFloat
     let uiFontSize: CGFloat
     let uiFontWeight: UIFont.Weight
@@ -140,6 +141,7 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         keySize = CGSize(width: tempKeyWidth, height: tempKeyheight)
         
         plusIconSize = keyboardHeight * 0.13
+        iconsWidth   = keyboardHeight * 0.16
         plusIconLeftPadding = plusIconSize * 0.4
         ePadding = isPortraitPhone ? plusIconSize * 0.1 : plusIconSize * 0.3
         uiFontSize = ((isPortraitPhone ? 0.125 : 0.16) * keyboardHeight).rounded()
@@ -169,7 +171,7 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         CGFloat(0.5 * plusIconSize)
                 
         displayWidth = calculatorWidth -
-        (isPortraitPhone ? 2.0 * portraitIPhoneDisplayHorizontalPadding : plusIconSize + plusIconLeftPadding)
+        (isPortraitPhone ? 2.0 * portraitIPhoneDisplayHorizontalPadding : iconsWidth + plusIconLeftPadding)
     }
 
     private func textSize(string: String, uiFont: UIFont?, kerning: CGFloat) -> CGSize {
