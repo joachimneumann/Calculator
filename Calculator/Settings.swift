@@ -112,7 +112,11 @@ struct Settings: View {
         let memoryNeeded: Int
         let internalPrecisionInfo: Int
         private let PHYSICAL_MEMORY = ProcessInfo.processInfo.physicalMemory
+
         private let MIN_PRECISION   = 10
+        /// The maximal precision of the mpfr library on iOS devices is 2^63 - 1 - 256 = 9223372036854775551
+        /// We run into memory limitations long before reaching this limit
+
         private let timerInfoDefault: String = "click to measure"
         var body: some View {
             HStack {
