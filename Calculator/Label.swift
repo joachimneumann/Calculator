@@ -25,6 +25,7 @@ struct Label: View {
         "=": "equal",
         "%": "percent",
     ]
+    
     init(symbol: String, size: CGFloat, color: Color) {
         //let _ = print("LABEL for", symbol)
         self.symbol = symbol
@@ -57,6 +58,7 @@ struct Label: View {
     var body: some View {
         // let _ = print("Label \(symbol)")
         switch symbol {
+        case "√2":    RootShapeView(rootDigit: "", color: color, size: size, underTheRoot: "2")
         case "√" :    RootShapeView(rootDigit: "2", color: color, size: size)
         case "3√":    RootShapeView(rootDigit: "3", color: color, size: size)
         case "y√":    RootShapeView(rootDigit: "y", color: color, size: size)
@@ -127,6 +129,15 @@ struct Label: View {
         let rootDigit: String
         let color: Color
         let size: CGFloat
+        let underTheRoot: String
+        
+        init(rootDigit: String, color: Color, size: CGFloat, underTheRoot: String = "x") {
+            self.rootDigit = rootDigit
+            self.color = color
+            self.size = size
+            self.underTheRoot = underTheRoot
+        }
+        
         var body: some View {
             let rootSize = size * 0.8
             let fontSize = rootSize * 0.2
@@ -141,7 +152,7 @@ struct Label: View {
                     .padding(.top, rootSize * -0.14)
             }
             .overlay() {
-                Text("x")
+                Text(underTheRoot)
                     .font(.system(size: xFontSize, weight: .semibold))
                     .foregroundColor(color)
                     .padding(.leading, rootSize * 0.2)

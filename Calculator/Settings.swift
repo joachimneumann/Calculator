@@ -48,16 +48,17 @@ struct Settings: View {
                                 screen: screen,
                                 settingsPrecision: settingsPrecision)
                     
-                    ForceScientificDisplay(
-                        timerIsRunning: timerIsRunning,
-                        settingsForceScientific: $settingsForceScientific)
-                    .padding(.top, 20)
-                    
                     decimalSeparatorView
                         .padding(.top, 20)
                     
                     groupingSeparatorView
                         .padding(.top, 20)
+                    
+                    ForceScientificDisplay(
+                        timerIsRunning: timerIsRunning,
+                        settingsForceScientific: $settingsForceScientific,
+                        decimalSeparator: settingsDecimalSeparator)
+                    .padding(.top, 20)
                     
                     showPreliminaryResults
                         .padding(.top, 20)
@@ -132,7 +133,7 @@ struct Settings: View {
             Text("\(more ? "Maximal n" : "N")umber of digits in the display: \(min(settingsPrecision, Display.MAX_DISPLAY_LENGTH)) \(more ? "(copy fetches all \(settingsPrecision.useWords) digits)" : " ")")
                 .padding(.bottom, 5)
                 .foregroundColor(.gray)
-            Text("Memory size of one Number: \(sizeOfOneNumber.asMemorySize)")
+            Text("Memory size of one number: \(sizeOfOneNumber.asMemorySize)")
                 .foregroundColor(.gray)
                 .padding(.bottom, -4)
         }
@@ -217,12 +218,12 @@ struct Settings: View {
                 Text("Time to calculate sin(")
                     .foregroundColor(.gray)
                 let h = 3 * screen.infoUiFontSize
-                Label(symbol: "√", size: h, color: .gray)
+                Label(symbol: "√2", size: h, color: .gray)
                     .frame(width: h, height: h)
-                    .offset(x: -1.2 * screen.infoUiFontSize)
+                    .offset(x: -1.45 * screen.infoUiFontSize)
                 Text("):")
                     .foregroundColor(.gray)
-                    .offset(x: -2.4 * screen.infoUiFontSize)
+                    .offset(x: -2.8 * screen.infoUiFontSize)
             }
         }
         var measurementButton: some View {
@@ -230,7 +231,7 @@ struct Settings: View {
                 timerIsRunning = true
                 Task.detached {
                     let speedTestBrain = DebugBrain(precision: settingsPrecision)
-                    let result = await speedTestBrain.speedTest()
+                    let result = await speedTestBrain.speedTestSinSqrt2()
                     await MainActor.run() {
                         timerInfo = result
                         timerIsRunning = false
@@ -279,6 +280,8 @@ struct Settings: View {
     struct ForceScientificDisplay: View {
         let timerIsRunning: Bool
         @Binding var settingsForceScientific: Bool
+        let decimalSeparator: DecimalSeparator
+        
         var body: some View {
             HStack(spacing: 0.0) {
                 Text("Force scientific display")
@@ -291,9 +294,6 @@ struct Settings: View {
                                            thumbColor: timerIsRunning ? .gray : .white))
                     .frame(width: 70)
                     .disabled(timerIsRunning)
-                Text(settingsForceScientific ? "e.g. 3,1415926 e0" : "e.g. 3,141592653")
-                    .foregroundColor(.gray)
-                    .padding(.leading, 20)
                 Spacer()
             }
             
@@ -302,6 +302,9 @@ struct Settings: View {
     
     var decimalSeparatorView: some View {
         HStack(spacing: 20.0) {
+            let example = settingsForceScientific ?
+            "1\(settingsDecimalSeparator.string)20003 e4" :
+            "12\(settingsGroupingSeparator.string)000\(settingsDecimalSeparator.string)3"
             Text("Decimal Separator")
                 .foregroundColor(timerIsRunning ? .gray : .white)
             Picker("", selection: $settingsDecimalSeparator) {
@@ -323,9 +326,9 @@ struct Settings: View {
             }
             .pickerStyle(.segmented)
             .frame(width: 160)
-            Text("e.g., 3\(settingsDecimalSeparator.string)14159")
+            Text("for example \(example)")
                 .foregroundColor(.gray)
-                .padding(.leading, 20)
+                .padding(.leading, 0)
             Spacer()
         }
     }
@@ -353,9 +356,6 @@ struct Settings: View {
             }
             .pickerStyle(.segmented)
             .frame(width: 260)
-            Text("12\(settingsGroupingSeparator.string)000\(settingsDecimalSeparator.string)00")
-                .foregroundColor(.gray)
-                .padding(.leading, 20)
             Spacer()
         }
     }
