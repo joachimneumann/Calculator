@@ -51,7 +51,11 @@ protocol Separators {
 }
 
 struct Screen: Equatable, DisplayLengthLimiter, Separators {    
-            
+    static func uiFont(ofSize size: CGFloat, portrait: Bool, weight: UIFont.Weight = .thin) -> UIFont {
+        return UIFont.monospacedDigitSystemFont(ofSize: size, weight: weight)
+    }
+
+    
     /// I initialize the decimalSeparator with the locale preference, but
     /// I ignore the value of Locale.current.groupingSeparator
     @AppStorage("forceScientific", store: .standard)
@@ -77,7 +81,6 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
     let iconsWidth: CGFloat
     let plusIconLeftPadding: CGFloat
     let uiFontSize: CGFloat
-    let uiFontWeight: UIFont.Weight
     let infoUiFont: UIFont
     let infoUiFontSize: CGFloat
     let portraitIPhoneDisplayHorizontalPadding: CGFloat
@@ -95,7 +98,7 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
     
     let uiFont: UIFont
     private let calculatorWidth: CGFloat
-    
+        
     init(_ screenSize: CGSize) {
         //print("Screen INIT", screenSize)
     
@@ -145,10 +148,10 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         plusIconLeftPadding = plusIconSize * 0.4
         ePadding = isPortraitPhone ? plusIconSize * 0.1 : plusIconSize * 0.3
         uiFontSize = ((isPortraitPhone ? 0.125 : 0.16) * keyboardHeight).rounded()
-        uiFontWeight = UIFont.Weight.thin
-        uiFont = UIFont.monospacedDigitSystemFont(ofSize: uiFontSize, weight: uiFontWeight)
+        uiFont = Self.uiFont(ofSize: uiFontSize, portrait: isPortraitPhone)
         infoUiFontSize = uiFontSize * 0.3
-        infoUiFont = UIFont.monospacedDigitSystemFont(ofSize: infoUiFontSize, weight: .regular)
+        infoUiFont = Screen.uiFont(ofSize: infoUiFontSize, portrait: isPortrait
+                                   , weight: .regular)
 
         kerning = -0.02 * uiFontSize
         

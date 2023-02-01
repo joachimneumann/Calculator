@@ -10,8 +10,13 @@ import SwiftUI
 struct PortraitDisplay: View {
     let display: Display
     let screen: Screen
+    private let font: Font
     
-    func font() -> Font {
+    init(display: Display, screen: Screen) {
+        self.display = display
+        self.screen = screen
+        
+        /// calculate possibly expanded font
         var availableDisplayWidth = screen.displayWidth
         if display.right != nil {
             availableDisplayWidth -= screen.ePadding
@@ -28,8 +33,8 @@ struct PortraitDisplay: View {
             if factor > 1.5 { factor = 1.5 }
             if factor < 1.0 { factor = 1.0 }
         }
-        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: screen.uiFontSize * factor, weight: screen.uiFontWeight)
-        return Font(uiFont)
+        let uiFont = Screen.uiFont(ofSize: screen.uiFontSize * factor, portrait: true)
+        font = Font(uiFont)
     }
     
     @ViewBuilder
@@ -37,7 +42,7 @@ struct PortraitDisplay: View {
         let toShow = display.preliminary && display.left.count > 1 ? String(display.left.dropLast()) : display.left
         Text(toShow)
             .kerning(screen.kerning)
-            .font(font())
+            .font(font)
             .foregroundColor(display.preliminary ? .gray : display.color)
             .multilineTextAlignment(.trailing)
             .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
@@ -56,7 +61,7 @@ struct PortraitDisplay: View {
         if let exponent = display.right {
             Text(exponent)
                 .kerning(screen.kerning)
-                .font(font())
+                .font(font)
                 .foregroundColor(display.preliminary ? .gray : display.color)
                 .multilineTextAlignment(.trailing)
                 .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)

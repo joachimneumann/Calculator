@@ -422,7 +422,10 @@ private extension Int {
 
 struct ControlCenter_Previews: PreviewProvider {
     static var previews: some View {
-        Settings(viewModel: ViewModel(), screen: Screen(CGSize()), font: Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
+        Settings(
+            viewModel: ViewModel(),
+            screen: Screen(CGSize()),
+            font: Font(Screen.uiFont(ofSize: 20, portrait: true)))
             .background(Color.black)
     }
 }

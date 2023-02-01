@@ -91,6 +91,12 @@ struct PurchaseView: View {
 
 //struct PurchaseView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        PurchaseView(store: Store(), viewModel: ViewModel(), font: Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
+//        PurchaseView(
+//            store: Store(),
+//            viewModel: ViewModel(),
+//            screen: Screen(CGSize()),
+//            font: Font(Screen.uiFont(ofSize: 20, portrait: true))
+//        )
 //    }
 //}
+
