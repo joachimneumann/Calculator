@@ -51,7 +51,7 @@ struct ScrollViewConditionalAnimation: View {
                 if display.preliminary {
                     ThreeDots()
                         .frame(width: screen.digitWidth, height: screen.digitWidth / 3)
-                        .offset(y: screen.textHeight - offsetY - screen.digitWidth / 3)
+                        .offset(y: offsetY + screen.textHeight - screen.digitWidth * 2.0 / 3.0)
                 }
             }
         }
