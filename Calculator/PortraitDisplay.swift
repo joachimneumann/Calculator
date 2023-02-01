@@ -17,7 +17,7 @@ struct PortraitDisplay: View {
         Text(toShow)
             .kerning(screen.kerning)
             .font(Font(screen.uiFont))
-            .foregroundColor(display.color)
+            .foregroundColor(display.preliminary ? .gray : display.color)
             .multilineTextAlignment(.trailing)
             .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
     }
@@ -36,7 +36,7 @@ struct PortraitDisplay: View {
             Text(exponent)
                 .kerning(screen.kerning)
                 .font(Font(screen.uiFont))
-                .foregroundColor(display.color)
+                .foregroundColor(display.preliminary ? .gray : display.color)
                 .multilineTextAlignment(.trailing)
                 .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
                 .lineLimit(1)
