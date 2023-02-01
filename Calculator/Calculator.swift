@@ -22,7 +22,9 @@ struct Calculator: View {
     var portraitView: some View {
         VStack(spacing: 0.0) {
             Spacer(minLength: 0.0)
-            PortraitDisplay(display: viewModel.currentDisplay, screen: screen)
+            PortraitDisplay(
+                display: viewModel.currentDisplay,
+                screen: screen)
                 .padding(.bottom, screen.portraitIPhoneDisplayBottomPadding)
                 .padding(.horizontal, screen.portraitIPhoneDisplayHorizontalPadding)
             NonScientificKeyboard(

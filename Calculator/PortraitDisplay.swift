@@ -11,12 +11,33 @@ struct PortraitDisplay: View {
     let display: Display
     let screen: Screen
     
+    func font() -> Font {
+        var availableDisplayWidth = screen.displayWidth
+        if display.right != nil {
+            availableDisplayWidth -= screen.ePadding
+        }
+        let text = display.left + (display.right ?? "")
+        let n = CGFloat(text.count)
+        let lengthOfNulls = n * screen.digitWidth
+        
+        var factor: CGFloat = 1.0
+        let expandLimit = screen.displayWidth - screen.digitWidth * 0.9
+        if lengthOfNulls < expandLimit {
+            /// scale up
+            factor = expandLimit / lengthOfNulls
+            if factor > 1.5 { factor = 1.5 }
+            if factor < 1.0 { factor = 1.0 }
+        }
+        let uiFont = UIFont.monospacedDigitSystemFont(ofSize: screen.uiFontSize * factor, weight: screen.uiFontWeight)
+        return Font(uiFont)
+    }
+    
     @ViewBuilder
     var mantissa: some View {
         let toShow = display.preliminary && display.left.count > 1 ? String(display.left.dropLast()) : display.left
         Text(toShow)
             .kerning(screen.kerning)
-            .font(Font(screen.uiFont))
+            .font(font())
             .foregroundColor(display.preliminary ? .gray : display.color)
             .multilineTextAlignment(.trailing)
             .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
@@ -35,7 +56,7 @@ struct PortraitDisplay: View {
         if let exponent = display.right {
             Text(exponent)
                 .kerning(screen.kerning)
-                .font(Font(screen.uiFont))
+                .font(font())
                 .foregroundColor(display.preliminary ? .gray : display.color)
                 .multilineTextAlignment(.trailing)
                 .background(testColors ? .yellow : .black).opacity(testColors ? 0.9 : 1.0)
