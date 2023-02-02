@@ -166,7 +166,6 @@
 		AA08C7B5272EDA48001B8575 = {
 			isa = PBXGroup;
 			children = (
-				AA92B4C429266CC1005E43F0 /* ThreeDots.swift */,
 				AA08C7EB272F1241001B8575 /* Calculator.entitlements */,
 				AA08C7C0272EDA48001B8575 /* Calculator */,
 				AA08C7D1272EDA4A001B8575 /* CalculatorTests */,
@@ -199,6 +198,7 @@
 				AA08C7C5272EDA4A001B8575 /* Assets.xcassets */,
 				AA08C7C7272EDA4A001B8575 /* Preview Content */,
 				AA92B4C829273A58005E43F0 /* Calculator.swift */,
+				AA92B4C429266CC1005E43F0 /* ThreeDots.swift */,
 				AA29F589293CD608001ADF5A /* PortraitDisplay.swift */,
 				AAB10B94292A2222004707E9 /* Label.swift */,
 				AABCF8B9292B8818007E5C35 /* ScientificKeyboard.swift */,
