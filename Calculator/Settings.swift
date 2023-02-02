@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Settings: View {
     @Environment(\.presentationMode) var presentation /// for dismissing the Settings View
-
+    
     @ObservedObject var viewModel: ViewModel
     let screen: Screen
     let font: Font
@@ -63,6 +63,9 @@ struct Settings: View {
                     showPreliminaryResults
                         .padding(.top, 20)
                     
+                    hobbyProject
+                        .padding(.top, 20)
+                    
                     Spacer()
                 }
                 .font(font)
@@ -112,11 +115,11 @@ struct Settings: View {
         let memoryNeeded: Int
         let internalPrecisionInfo: Int
         private let PHYSICAL_MEMORY = ProcessInfo.processInfo.physicalMemory
-
+        
         private let MIN_PRECISION   = 10
         /// The maximal precision of the mpfr library on iOS devices is 2^63 - 1 - 256 = 9223372036854775551
         /// We run into memory limitations long before reaching this limit
-
+        
         private let timerInfoDefault: String = "click to measure"
         var body: some View {
             HStack {
@@ -379,6 +382,14 @@ struct Settings: View {
         }
     }
     
+    var hobbyProject: some View {
+        (Text("This is a hobby project by Joachim Neumann. Although I have done some testing, errors may occur. The App is free to use - except for the copying and pasting the result. The code is open source and you may open an issue at the ")
+         + Text("[github repository](https://github.com/joachimneumann/Calculator)")
+         + Text("\nNote: the gmp and mpfr libraries can in rare circumstances crash the app. Interestingly, their developers deem it appropriate for the library to crash the app in certain situations without allowing the me to catch the error. Sorry for that."))
+        .foregroundColor(.gray)
+        .tint(.blue) /// link color
+    }
+    
     struct ColoredToggleStyle: ToggleStyle {
         var label = ""
         var onColor = Color(UIColor.green)
@@ -430,6 +441,6 @@ struct ControlCenter_Previews: PreviewProvider {
             viewModel: ViewModel(),
             screen: Screen(CGSize()),
             font: Font(Screen.uiFont(ofSize: 20, portrait: true)))
-            .background(Color.black)
+        .background(Color.black)
     }
 }
