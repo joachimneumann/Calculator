@@ -1,5 +1,6 @@
 */xcuserdata
 Calculator.xcodeproj/project.xcworkspace/xcuserdata/
+dist.old
 dist/*.lz
 dist/*.gz
 dist/gmp/*
