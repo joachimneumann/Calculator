@@ -32,7 +32,6 @@ struct KeyColor {
     private let pendingScientificColors = ThreeColors(0.30, 0.70, 0.60)
     private let secondColors            = ThreeColors(236.0/255.0, 101.0/255.0, 127.0/255.0)
     private let secondActiveColors      = ThreeColors(236.0/255.0, 0.30, 127.0/255.0)
-    let appBackgroundColor         = Color(white: 86.0/255.0)
 #else
     private let digitColors             = ThreeColors(1.00, 0.20, 0.45)
     private let operatorColors          = ThreeColors(1.00, 0.50, 0.70)
@@ -41,7 +40,6 @@ struct KeyColor {
     private let pendingScientificColors = ThreeColors(0.30, 0.70, 0.60)
     private let secondColors            = ThreeColors(1.00, 0.12, 0.12)
     private let secondActiveColors      = ThreeColors(0.20, 0.60, 0.60)
-    let appBackgroundColor      = Color.black
 #endif
   
     private func color(for symbol: String, isPending pending: Bool) -> ThreeColors {

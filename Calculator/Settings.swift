@@ -438,6 +438,6 @@ struct ControlCenter_Previews: PreviewProvider {
             viewModel: ViewModel(),
             screen: Screen(CGSize()),
             font: Font(Screen.appleFont(ofSize: 20, portrait: true)))
-        .background(ViewModel().keyColor.appBackgroundColor)
+        .background(Screen.backgroundColor)
     }
 }

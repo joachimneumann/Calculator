@@ -38,7 +38,11 @@ struct Label: View {
 
         switch symbol {
         case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "C", "AC":
+#if os(macOS)
+            sizeFactor = sizeFactorDigits * 0.85
+#else
             sizeFactor = sizeFactorDigits
+#endif
         case "±", "%":
             sizeFactor = sizeFactorSpecialOperator
         case "x":
@@ -52,7 +56,10 @@ struct Label: View {
         default:
             sizeFactor = 1.0
         }
-        self.size = size * sizeFactor /// here I can reduce all labels, e.g.  * 0.5
+#if os(macOS)
+        sizeFactor *= 1.2
+#endif
+        self.size = size * sizeFactor
     }
 
     var body: some View {

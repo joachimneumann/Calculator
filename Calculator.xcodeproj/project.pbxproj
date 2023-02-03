@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AA01B9D42957E44300617AFB /* Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA01B9D32957E44300617AFB /* Display.swift */; };
+		AA03B1EF298D537400A7837A /* CalculatorAppMac.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA03B1ED298D535800A7837A /* CalculatorAppMac.swift */; };
 		AA050D5A296BECD500A55498 /* Calculator_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA050D59296BECD500A55498 /* Calculator_UITests.swift */; };
 		AA050D5C296BECD500A55498 /* Calculator_UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA050D5B296BECD500A55498 /* Calculator_UITestsLaunchTests.swift */; };
 		AA08C7C6272EDA4A001B8575 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA08C7C5272EDA4A001B8575 /* Assets.xcassets */; };
@@ -15,7 +16,6 @@
 		AA08C7D3272EDA4A001B8575 /* CalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA08C7D2272EDA4A001B8575 /* CalculatorTests.swift */; };
 		AA0CE3CF298CBFB00057D0D8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA0CE3CE298CBFB00057D0D8 /* Assets.xcassets */; };
 		AA0CE3D2298CBFB00057D0D8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA0CE3D1298CBFB00057D0D8 /* Preview Assets.xcassets */; };
-		AA0CE3D7298CC09E0057D0D8 /* CalculatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FABFF272F2348006DE4C8 /* CalculatorApp.swift */; };
 		AA0CE3D8298CC0BA0057D0D8 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92B4C829273A58005E43F0 /* Calculator.swift */; };
 		AA0CE3D9298CC0C40057D0D8 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE426F629597AE3005FE365 /* Screen.swift */; };
 		AA0CE3DA298CC0D50057D0D8 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6CE7062945C1D4002BB5FE /* Store.swift */; };
@@ -109,6 +109,7 @@
 
 /* Begin PBXFileReference section */
 		AA01B9D32957E44300617AFB /* Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Display.swift; sourceTree = "<group>"; };
+		AA03B1ED298D535800A7837A /* CalculatorAppMac.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorAppMac.swift; sourceTree = "<group>"; };
 		AA050D57296BECD500A55498 /* Calculator_UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Calculator_UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA050D59296BECD500A55498 /* Calculator_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculator_UITests.swift; sourceTree = "<group>"; };
 		AA050D5B296BECD500A55498 /* Calculator_UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculator_UITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -236,6 +237,7 @@
 			children = (
 				AA1B007B294772980054C851 /* Brain */,
 				AA2FABFF272F2348006DE4C8 /* CalculatorApp.swift */,
+				AA03B1ED298D535800A7837A /* CalculatorAppMac.swift */,
 				AA32853A297248B800D86CB4 /* ViewModel.swift */,
 				AA92B4C829273A58005E43F0 /* Calculator.swift */,
 				AAE426F629597AE3005FE365 /* Screen.swift */,
@@ -549,6 +551,7 @@
 				AA0CE3E7298CC4530057D0D8 /* LandscapeDisplay.swift in Sources */,
 				AA0CE3EF298CC4CB0057D0D8 /* NumberStack.swift in Sources */,
 				AA0CE3EA298CC4720057D0D8 /* PurchaseView.swift in Sources */,
+				AA03B1EF298D537400A7837A /* CalculatorAppMac.swift in Sources */,
 				AA0CE3ED298CC4C30057D0D8 /* Brain.swift in Sources */,
 				AA0CE3F4298CFA100057D0D8 /* ColoredStepper.swift in Sources */,
 				AA0CE3E3298CC3980057D0D8 /* OperatorStack.swift in Sources */,
@@ -558,7 +561,6 @@
 				AA0CE3E2298CC3770057D0D8 /* Gmp.swift in Sources */,
 				AA0CE3EB298CC4890057D0D8 /* FlexibleNavigation.swift in Sources */,
 				AA0CE3DD298CC31C0057D0D8 /* PortraitDisplay.swift in Sources */,
-				AA0CE3D7298CC09E0057D0D8 /* CalculatorApp.swift in Sources */,
 				AA0CE3D8298CC0BA0057D0D8 /* Calculator.swift in Sources */,
 				AA0CE3DE298CC32A0057D0D8 /* ScientificKeyboard.swift in Sources */,
 				AA0CE3E1298CC36E0057D0D8 /* Number.swift in Sources */,

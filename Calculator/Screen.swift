@@ -56,7 +56,13 @@ protocol Separators {
     var groupingSeparator: GroupingSeparator { get }
 }
 
-struct Screen: Equatable, DisplayLengthLimiter, Separators {    
+struct Screen: Equatable, DisplayLengthLimiter, Separators {
+#if os(macOS)
+    static let backgroundColor: Color = Color(white: 80.0/255.0)
+#else
+    static let backgroundColor: Color = .black
+#endif
+
     static func appleFont(ofSize size: CGFloat, portrait: Bool, weight: AppleFont.Weight = .thin) -> AppleFont {
         return AppleFont.monospacedDigitSystemFont(ofSize: size, weight: weight)
     }

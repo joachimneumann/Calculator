@@ -25,7 +25,7 @@ struct Calculator: View {
             PortraitDisplay(
                 display: viewModel.currentDisplay,
                 screen: screen,
-                backgroundColor: viewModel.keyColor.appBackgroundColor)
+                backgroundColor: Screen.backgroundColor)
                 .padding(.bottom, screen.portraitIPhoneDisplayBottomPadding)
                 .padding(.horizontal, screen.portraitIPhoneDisplayHorizontalPadding)
             NonScientificKeyboard(
@@ -44,7 +44,7 @@ struct Calculator: View {
                 screen: screen,
                 viewModel: viewModel)
         }
-        .background(viewModel.keyColor.appBackgroundColor) /// this hides the Icons
+        .background(Screen.backgroundColor) /// this hides the Icons
     }
     
     var infoView: some View {
@@ -63,7 +63,7 @@ struct Calculator: View {
         return VStack(spacing: 0.0) {
             Spacer(minLength: 0.0)
             Rectangle()
-                .foregroundColor(viewModel.keyColor.appBackgroundColor)
+                .foregroundColor(Screen.backgroundColor)
                 .frame(height: screen.infoTextHeight)
                 .overlay() {
                     infoView
@@ -81,7 +81,7 @@ struct Calculator: View {
                 display: viewModel.currentDisplay,
                 screen: screen,
                 foregroundColor: (viewModel.isCopying || viewModel.isPasting) ? .orange : viewModel.currentDisplay.color,
-                backgroundColor: testColors ? .yellow : viewModel.keyColor.appBackgroundColor,
+                backgroundColor: testColors ? .yellow : Screen.backgroundColor,
                 disabledScrolling: !isZoomed,
                 scrollViewHasScrolled: $scrollViewHasScrolled,
                 offsetToVerticallyAlignTextWithkeyboard: screen.offsetToVerticallyAlignTextWithkeyboard,
