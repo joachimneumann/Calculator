@@ -9,18 +9,21 @@ DEVELOPER=`${__name} ${__pr}`
 
 BITCODE="-fembed-bitcode"
 
-OSX_PLATFORM=`xcrun --sdk macosx --show-sdk-platform-path`
-OSX_SDK=`xcrun --sdk macosx --show-sdk-path`
 
-IPHONEOS_PLATFORM=`xcrun --sdk iphoneos --show-sdk-platform-path`
-IPHONEOS_SDK=`xcrun --sdk iphoneos --show-sdk-path`
+PLATFORM_IPHONE=`xcrun --sdk iphoneos --show-sdk-platform-path`
+PLATFORM_SIMULATOR=`xcrun --sdk iphonesimulator --show-sdk-platform-path`
+PLATFORM_OSX=`xcrun --sdk macosx --show-sdk-platform-path`
 
-IPHONESIMULATOR_PLATFORM=`xcrun --sdk iphonesimulator --show-sdk-platform-path`
-IPHONESIMULATOR_SDK=`xcrun --sdk iphonesimulator --show-sdk-path`
+SDK_IPHONE=`xcrun --sdk iphoneos --show-sdk-path`
+SDK_SIMULATOR=`xcrun --sdk iphonesimulator --show-sdk-path`
+SDK_OSX=`xcrun --sdk macosx --show-sdk-path`
 
 CLANG=`xcrun --sdk iphoneos --find clang`
 CLANGPP=`xcrun --sdk iphoneos --find clang++`
 
+TARGET_IPHONE="arm64-apple-ios15.0"
+TARGET_SIMULATOR=${TARGET_IPHONE}"-simulator"
+TARGET_IPHONE_MAC="x86_64-apple-darwin22.1.0" # MACOS 13.0 ventura
 
 build()
 {
@@ -44,46 +47,39 @@ build()
 	make &> "${CURRENT}/build.log"
 }
 
-# rm -rf arm64-apple-ios15.0 arm64-apple-ios15.0-simulator
-# mkdir arm64-apple-ios15.0 arm64-apple-ios15.0-simulator
-#
-# cd gmp
-# build "arm64" "${IPHONEOS_SDK}" "${IPHONEOS_PLATFORM}" "-target arm64-apple-ios15.0"
-# cp .libs/libgmp.a ../arm64-apple-ios15.0/libgmp.a
-#
-# build "arm64" "${IPHONESIMULATOR_SDK}" "${IPHONESIMULATOR_PLATFORM}" "-target arm64-apple-ios15.0-simulator"
-# cp .libs/libgmp.a ../arm64-apple-ios15.0-simulator/libgmp.a
-# cd ..
-#
-# pwd=`pwd`
+rm -rf ${TARGET_IPHONE} ${TARGET_SIMULATOR}
+mkdir ${TARGET_IPHONE} ${TARGET_SIMULATOR}
+
+cd gmp
+build "arm64" "${SDK_IPHONE}" "${PLATFORM_IPHONE}" "-target ${TARGET_IPHONE}"
+cp .libs/libgmp.a ../${TARGET_IPHONE}/libgmp.a
+
+build "arm64" "${SDK_SIMULATOR}" "${PLATFORM_SIMULATOR}" "-target ${TARGET_SIMULATOR}"
+cp .libs/libgmp.a ../${TARGET_SIMULATOR}/libgmp.a
+cd ..
+
+pwd=`pwd`
 
 cd mpfr
-build "arm64" "${IPHONEOS_SDK}" "${IPHONEOS_PLATFORM}" "-target arm64-apple-ios15.0" "--with-gmp-lib=../arm64-apple-ios15.0 --with-gmp-include=../include"
-cp src/.libs/libmpfr.a ../arm64-apple-ios15.0/libmpfr.a
+build "arm64" "${SDK_IPHONE}" "${PLATFORM_IPHONE}" "-target ${TARGET_IPHONE}" "--with-gmp-lib=../${TARGET_IPHONE} --with-gmp-include=../include"
+cp src/.libs/libmpfr.a ../${TARGET_IPHONE}/libmpfr.a
 
-build "arm64" "${IPHONESIMULATOR_SDK}" "${IPHONESIMULATOR_PLATFORM}" "-target arm64-apple-ios15.0-simulator" "--with-gmp-lib=../arm64-apple-ios15.0-simulator --with-gmp-include=../include"
-cp src/.libs/libmpfr.a ../arm64-apple-ios15.0-simulator/libmpfr.a
+build "arm64" "${SDK_SIMULATOR}" "${PLATFORM_SIMULATOR}" "-target ${TARGET_SIMULATOR}" "--with-gmp-lib=../${TARGET_SIMULATOR} --with-gmp-include=../include"
+cp src/.libs/libmpfr.a ../${TARGET_SIMULATOR}/libmpfr.a
 
 cd ..
 
 rm -rf signed
 mkdir signed
-cp -r arm64-apple-ios15.0 arm64-apple-ios15.0-simulator signed
+cp -r ${TARGET_IPHONE} ${TARGET_SIMULATOR} signed
 
 # code signing: get the correct expanded identity with the command $security find-identity
 identity='07CE931939C2E7BA7E99210B7DE7BC6A85CEE016'
-codesign -s ${identity} signed/arm64-apple-ios15.0/libgmp.a
-codesign -s ${identity} signed/arm64-apple-ios15.0-simulator/libgmp.a
-codesign -s ${identity} signed/arm64-apple-ios15.0/libmpfr.a
-codesign -s ${identity} signed/arm64-apple-ios15.0-simulator/libmpfr.a
+codesign -s ${identity} signed/${TARGET_IPHONE}/libgmp.a
+codesign -s ${identity} signed/${TARGET_SIMULATOR}/libgmp.a
+codesign -s ${identity} signed/${TARGET_IPHONE}/libmpfr.a
+codesign -s ${identity} signed/${TARGET_SIMULATOR}/libmpfr.a
 
 rm -rf mpfr.xcframework gmp.xcframework
-xcodebuild -create-xcframework -library signed/arm64-apple-ios15.0/libgmp.a  -library signed/arm64-apple-ios15.0-simulator/libgmp.a  -output gmp.xcframework
-xcodebuild -create-xcframework -library signed/arm64-apple-ios15.0/libmpfr.a -library signed/arm64-apple-ios15.0-simulator/libmpfr.a -output mpfr.xcframework
-
-# cp -r gmp.xcframework/ios-x86_64-maccatalyst gmp.xcframework/ios-arm64_x86_64-maccatalyst
-# cp -r mpfr.xcframework/ios-x86_64-maccatalyst mpfr.xcframework/ios-arm64_x86_64-maccatalyst
-
-# Troubleshooting:
-# remove frameworks from copy in build phases
-# Exclusive Access to memory: compile time only
+xcodebuild -create-xcframework -library signed/${TARGET_IPHONE}/libgmp.a  -library signed/${TARGET_SIMULATOR}/libgmp.a  -output gmp.xcframework
+xcodebuild -create-xcframework -library signed/${TARGET_IPHONE}/libmpfr.a -library signed/${TARGET_SIMULATOR}/libmpfr.a -output mpfr.xcframework
