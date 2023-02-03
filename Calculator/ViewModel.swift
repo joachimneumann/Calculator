@@ -250,24 +250,24 @@ class ViewModel: ObservableObject, ShowAs {
     }
 
     func copyFromPasteBin(screen: Screen) async -> Bool {
-        if UIPasteboard.general.hasStrings {
-            if let pasteString = UIPasteboard.general.string {
-                print("pasteString", pasteString, pasteString.count)
-                if pasteString.count > 0 {
-                    if Gmp.isValidGmpString(pasteString, bits: 1000) {
-                        displayNumber = await brain.replaceLast(withString: pasteString)
-                        await refreshDisplay(screen: screen)
-                        return true
-                    }
-                }
-            }
-        }
+//        if UIPasteboard.general.hasStrings {
+//            if let pasteString = UIPasteboard.general.string {
+//                print("pasteString", pasteString, pasteString.count)
+//                if pasteString.count > 0 {
+//                    if Gmp.isValidGmpString(pasteString, bits: 1000) {
+//                        displayNumber = await brain.replaceLast(withString: pasteString)
+//                        await refreshDisplay(screen: screen)
+//                        return true
+//                    }
+//                }
+//            }
+//        }
         return false
     }
     
     func copyToPastBin(screen: Screen) async {
-        let copyData = Display(displayNumber, screen: screen, noLimits: true, showAs: self, forceScientific: screen.forceScientific)
-        UIPasteboard.general.string = copyData.allInOneLine
+//        let copyData = Display(displayNumber, screen: screen, noLimits: true, showAs: self, forceScientific: screen.forceScientific)
+//        UIPasteboard.general.string = copyData.allInOneLine
     }
 
     /// colors

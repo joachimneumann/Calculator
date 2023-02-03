@@ -39,6 +39,12 @@
 		AA0CE3ED298CC4C30057D0D8 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA689124295E681400129593 /* Brain.swift */; };
 		AA0CE3EE298CC4C70057D0D8 /* BrainEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FAC01272F2348006DE4C8 /* BrainEngine.swift */; };
 		AA0CE3EF298CC4CB0057D0D8 /* NumberStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FABFB272F2348006DE4C8 /* NumberStack.swift */; };
+		AA0CE3F0298CF8820057D0D8 /* mpfr.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA2FABEA272F2135006DE4C8 /* mpfr.xcframework */; };
+		AA0CE3F1298CF8820057D0D8 /* gmp.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA2FABEE272F2141006DE4C8 /* gmp.xcframework */; };
+		AA0CE3F2298CF8D10057D0D8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA370C2C293352960041AE4E /* Extensions.swift */; };
+		AA0CE3F3298CF9FB0057D0D8 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3FB8262920E0E5002ECCEB /* Settings.swift */; };
+		AA0CE3F4298CFA100057D0D8 /* ColoredStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92B4C229250827005E43F0 /* ColoredStepper.swift */; };
+		AA0CE3F5298CFD090057D0D8 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB10B94292A2222004707E9 /* Label.swift */; };
 		AA29F58A293CD608001ADF5A /* PortraitDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA29F589293CD608001ADF5A /* PortraitDisplay.swift */; };
 		AA2FABEB272F2135006DE4C8 /* mpfr.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA2FABEA272F2135006DE4C8 /* mpfr.xcframework */; };
 		AA2FABEF272F2141006DE4C8 /* gmp.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA2FABEE272F2141006DE4C8 /* gmp.xcframework */; };
@@ -186,6 +192,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA0CE3F1298CF8820057D0D8 /* gmp.xcframework in Frameworks */,
+				AA0CE3F0298CF8820057D0D8 /* mpfr.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,15 +254,15 @@
 				AA6CE70B2945CE0A002BB5FE /* PurchaseView.swift */,
 				AA32853C29724D5700D86CB4 /* FlexibleNavigation.swift */,
 				AABEFC122972A8780023A3C9 /* KeyColor.swift */,
+				AA370C2C293352960041AE4E /* Extensions.swift */,
 				AA3FB8262920E0E5002ECCEB /* Settings.swift */,
+				AAB10B94292A2222004707E9 /* Label.swift */,
 				AA92B4C229250827005E43F0 /* ColoredStepper.swift */,
 				AA2FABFC272F2348006DE4C8 /* Calculator.entitlements */,
 				AA2FAC04272F2348006DE4C8 /* CalculatorCommands.swift */,
 				AA08C7EC272F1572001B8575 /* Info.plist */,
 				AA08C7C5272EDA4A001B8575 /* Assets.xcassets */,
 				AA08C7C7272EDA4A001B8575 /* Preview Content */,
-				AAB10B94292A2222004707E9 /* Label.swift */,
-				AA370C2C293352960041AE4E /* Extensions.swift */,
 				AA6577F42935B90D00DA98E7 /* TODOs.rtf */,
 				AA6CE7082945C25E002BB5FE /* Calculator.storekit */,
 				AA6CE7092945CC5C002BB5FE /* Test.storekit */,
@@ -540,11 +548,13 @@
 			files = (
 				AA0CE3DA298CC0D50057D0D8 /* Store.swift in Sources */,
 				AA0CE3E6298CC4130057D0D8 /* ThreeDots.swift in Sources */,
+				AA0CE3F3298CF9FB0057D0D8 /* Settings.swift in Sources */,
 				AA0CE3E7298CC4530057D0D8 /* LandscapeDisplay.swift in Sources */,
 				AA0CE3EF298CC4CB0057D0D8 /* NumberStack.swift in Sources */,
 				AA0CE3EA298CC4720057D0D8 /* PurchaseView.swift in Sources */,
 				AA0CE3ED298CC4C30057D0D8 /* Brain.swift in Sources */,
 				AA0CE3CD298CBFAF0057D0D8 /* ContentView.swift in Sources */,
+				AA0CE3F4298CFA100057D0D8 /* ColoredStepper.swift in Sources */,
 				AA0CE3E3298CC3980057D0D8 /* OperatorStack.swift in Sources */,
 				AA0CE3E8298CC45C0057D0D8 /* Icons.swift in Sources */,
 				AA0CE3E0298CC3370057D0D8 /* Key.swift in Sources */,
@@ -558,9 +568,11 @@
 				AA0CE3E1298CC36E0057D0D8 /* Number.swift in Sources */,
 				AA0CE3DF298CC32A0057D0D8 /* NonScientificKeyboard.swift in Sources */,
 				AA0CE3E9298CC4680057D0D8 /* ScrollViewConditionalAnimation.swift in Sources */,
+				AA0CE3F2298CF8D10057D0D8 /* Extensions.swift in Sources */,
 				AA0CE3DB298CC0E40057D0D8 /* ViewModel.swift in Sources */,
 				AA0CE3EC298CC4B90057D0D8 /* KeyColor.swift in Sources */,
 				AA0CE3D9298CC0C40057D0D8 /* Screen.swift in Sources */,
+				AA0CE3F5298CFD090057D0D8 /* Label.swift in Sources */,
 				AA0CE3EE298CC4C70057D0D8 /* BrainEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -892,6 +904,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = off;
+				SWIFT_OBJC_BRIDGING_HEADER = dist/include/bridge.h;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -922,6 +936,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = off;
+				SWIFT_OBJC_BRIDGING_HEADER = dist/include/bridge.h;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

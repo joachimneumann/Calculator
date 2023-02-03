@@ -118,6 +118,7 @@ struct Icons : View {
         }
     }
     
+    @ViewBuilder
     var settings: some View {
         NavigationLink {
             Settings(viewModel: viewModel, screen: screen, font: Font(screen.infoUiFont))

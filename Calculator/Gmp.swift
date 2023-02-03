@@ -12,10 +12,6 @@ import Foundation
 
 var globalUnsignedLongInt: CUnsignedLong = 0
 
-func testMemory(size: Int) -> Bool {
-    return testmalloc(size) == 1
-}
-
 class Gmp: Equatable, CustomDebugStringConvertible {
     private var bits: Int
     private (set) var precision: Int

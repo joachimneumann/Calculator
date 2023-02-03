@@ -476,17 +476,6 @@ using std::FILE;
 
 #include <stdlib.h>
 
-int testmalloc(size_t testSize) {
-    void *memoryChunk;
-    memoryChunk = malloc(testSize);
-    if (memoryChunk == 0) {
-        return 0;
-    } else {
-        free(memoryChunk);
-        return 1;
-    }
-}
-
 #define mp_set_memory_functions __gmp_set_memory_functions
 __GMP_DECLSPEC void mp_set_memory_functions (void *(*) (size_t),
 				      void *(*) (void *, size_t, size_t),

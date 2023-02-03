@@ -99,9 +99,6 @@ struct Settings: View {
             settingsForceScientific        = screen.forceScientific
             settingsDecimalSeparator       = screen.decimalSeparator
             settingsGroupingSeparator      = screen.groupingSeparator
-            UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(white: 0.7, alpha: 1.0)
-            UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
-            UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
         }
         .navigationBarBackButtonHidden(true)
     }
@@ -296,9 +293,9 @@ struct Settings: View {
                 Toggle("", isOn: $settingsForceScientific)
                     .foregroundColor(Color.green)
                     .toggleStyle(
-                        ColoredToggleStyle(onColor: Color(UIColor(white: timerIsRunning ? 0.4 : 0.6, alpha: 1.0)),
-                                           offColor: Color(UIColor(white: 0.3, alpha: 1.0)),
-                                           thumbColor: timerIsRunning ? .gray : .white))
+                        ColoredToggleStyle(onColor: Color(white: timerIsRunning ? 0.4 : 0.6),
+                                           offColor: Color(white: 0.3),
+                        thumbColor: timerIsRunning ? Color.gray : Color.white))
                     .frame(width: 70)
                     .disabled(timerIsRunning)
                 Spacer()
@@ -374,8 +371,8 @@ struct Settings: View {
             Toggle("", isOn: $settingsShowPreliminaryResults)
                 .foregroundColor(Color.green)
                 .toggleStyle(
-                    ColoredToggleStyle(onColor: Color(UIColor(white: timerIsRunning ? 0.4 : 0.6, alpha: 1.0)),
-                                       offColor: Color(UIColor(white: 0.3, alpha: 1.0)),
+                    ColoredToggleStyle(onColor: Color(white: timerIsRunning ? 0.4 : 0.6),
+                                       offColor: Color(white: 0.3),
                                        thumbColor: timerIsRunning ? .gray : .white))
                 .frame(width: 70)
                 .disabled(timerIsRunning)
@@ -392,8 +389,8 @@ struct Settings: View {
     
     struct ColoredToggleStyle: ToggleStyle {
         var label = ""
-        var onColor = Color(UIColor.green)
-        var offColor = Color(UIColor.systemGray5)
+        var onColor = Color.green
+        var offColor = Color(white: 0.5)
         var thumbColor = Color.white
         
         func makeBody(configuration: Self.Configuration) -> some View {

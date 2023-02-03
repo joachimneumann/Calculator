@@ -45,7 +45,7 @@ struct ColoredStepper: View {
                 Image(systemName: "minus")
                     .frame(width: 1.26*height, height: height)
                     .foregroundColor(minusEnabled ? .white : .gray)
-                    .background(state || !minusEnabled ? Color(UIColor.darkGray) : .gray)
+                    .background(state || !minusEnabled ? Color(white: 0.333) : .gray)
                 
             }))
             .disabled(!minusEnabled)
@@ -62,7 +62,7 @@ struct ColoredStepper: View {
                 Image(systemName: "plus")
                     .frame(width: 1.26*height, height: height)
                     .foregroundColor(plusEnabled ? .white : .gray)
-                    .background(state || !plusEnabled ? Color(UIColor.darkGray) : .gray)
+                    .background(state || !plusEnabled ? Color(white: 0.333) : .gray)
                 
             }))
             .disabled(!plusEnabled)
