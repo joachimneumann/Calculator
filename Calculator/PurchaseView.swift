@@ -95,7 +95,7 @@ struct PurchaseView: View {
 //            store: Store(),
 //            viewModel: ViewModel(),
 //            screen: Screen(CGSize()),
-//            font: Font(Screen.uiFont(ofSize: 20, portrait: true))
+//            font: Font(Screen.appleFont(ofSize: 20, portrait: true))
 //        )
 //    }
 //}

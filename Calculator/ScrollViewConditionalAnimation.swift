@@ -33,7 +33,7 @@ struct ScrollViewConditionalAnimation: View {
                         Spacer(minLength: 0.0)
                         Text(toShow)
                             .kerning(screen.kerning)
-                            .font(Font(screen.uiFont))
+                            .font(Font(screen.appleFont))
                             .foregroundColor(display.preliminary ? .gray : foregroundColor)
                             .multilineTextAlignment(.trailing)
                             .background(backgroundColor)

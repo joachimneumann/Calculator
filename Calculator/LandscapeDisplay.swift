@@ -33,7 +33,7 @@ struct LandscapeDisplay: View {
         if display.right != nil {
             Text(display.right!)
                 .kerning(screen.kerning)
-                .font(Font(screen.uiFont))
+                .font(Font(screen.appleFont))
                 .foregroundColor(showOrange ? .orange : display.color)
                 .padding(.leading, screen.ePadding)
                 .offset(y: offsetToVerticallyAlignTextWithkeyboard)

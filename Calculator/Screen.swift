@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+#if os(macOS)
+public typealias AppleFont = NSFont
+#else
+public typealias AppleFont = UIFont
+#endif
+
 enum DecimalSeparator: String, Codable, CaseIterable{
     case comma
     case dot
@@ -51,8 +57,8 @@ protocol Separators {
 }
 
 struct Screen: Equatable, DisplayLengthLimiter, Separators {    
-    static func uiFont(ofSize size: CGFloat, portrait: Bool, weight: UIFont.Weight = .thin) -> UIFont {
-        return UIFont.monospacedDigitSystemFont(ofSize: size, weight: weight)
+    static func appleFont(ofSize size: CGFloat, portrait: Bool, weight: AppleFont.Weight = .thin) -> AppleFont {
+        return AppleFont.monospacedDigitSystemFont(ofSize: size, weight: weight)
     }
 
     
@@ -81,7 +87,7 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
     let iconsWidth: CGFloat
     let plusIconLeftPadding: CGFloat
     let uiFontSize: CGFloat
-    let infoUiFont: UIFont
+    let infoUiFont: AppleFont
     let infoUiFontSize: CGFloat
     let portraitIPhoneDisplayHorizontalPadding: CGFloat
     let portraitIPhoneDisplayBottomPadding: CGFloat
@@ -96,13 +102,17 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
     var digitWidth: CGFloat = 0.0
     var eWidth: CGFloat = 0.0
     
-    let uiFont: UIFont
+    let appleFont: AppleFont
     private let calculatorWidth: CGFloat
         
     init(_ screenSize: CGSize) {
         //print("Screen INIT", screenSize)
     
+#if os(macOS)
+        isPad = false
+#else
         isPad = UIDevice.current.userInterfaceIdiom == .pad
+#endif
         let isPortrait = screenSize.height > screenSize.width
         isPortraitPhone = isPad ? false : isPortrait
         
@@ -148,15 +158,15 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         plusIconLeftPadding = plusIconSize * 0.4
         ePadding = isPortraitPhone ? plusIconSize * 0.1 : plusIconSize * 0.3
         uiFontSize = ((isPortraitPhone ? 0.125 : 0.16) * keyboardHeight).rounded()
-        uiFont = Self.uiFont(ofSize: uiFontSize, portrait: isPortraitPhone)
+        appleFont = Self.appleFont(ofSize: uiFontSize, portrait: isPortraitPhone)
         infoUiFontSize = uiFontSize * 0.3
-        infoUiFont = Screen.uiFont(ofSize: infoUiFontSize, portrait: isPortrait
+        infoUiFont = Screen.appleFont(ofSize: infoUiFontSize, portrait: isPortrait
                                    , weight: .regular)
 
         kerning = -0.02 * uiFontSize
         
         textHeight     = textHeight("0", kerning: kerning)
-        infoTextHeight = textHeight("0", uiFont: infoUiFont, kerning: kerning)
+        infoTextHeight = textHeight("0", appleFont: infoUiFont, kerning: kerning)
         digitWidth     = textWidth("0", kerning: kerning)
 
         offsetToVerticallyAlignTextWithkeyboard =
@@ -170,32 +180,32 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         CGFloat(keyboardHeight) -
         CGFloat(infoUiFontSize) -
         CGFloat(plusIconSize) +
-        CGFloat(uiFont.descender) -
-        CGFloat(0.5 * uiFont.capHeight) +
+        CGFloat(appleFont.descender) -
+        CGFloat(0.5 * appleFont.capHeight) +
         CGFloat(0.5 * plusIconSize)
                 
         displayWidth = calculatorWidth -
         (isPortraitPhone ? 2.0 * portraitIPhoneDisplayHorizontalPadding : iconsWidth + plusIconLeftPadding)
     }
 
-    private func textSize(string: String, uiFont: UIFont?, kerning: CGFloat) -> CGSize {
-        let font: UIFont
-        if uiFont != nil {
-            font = uiFont!
+    private func textSize(string: String, appleFont: AppleFont?, kerning: CGFloat) -> CGSize {
+        let font: AppleFont
+        if appleFont != nil {
+            font = appleFont!
         } else {
-            font = self.uiFont
+            font = self.appleFont
         }
         var attributes: [NSAttributedString.Key : Any] = [:]
         attributes[.kern] = kerning
         attributes[.font] = font
         return string.size(withAttributes: attributes)
     }
-    func textWidth(_ string: String, uiFont: UIFont? = nil, kerning: CGFloat) -> CGFloat {
-        textSize(string: string, uiFont: uiFont, kerning: kerning).width
+    func textWidth(_ string: String, appleFont: AppleFont? = nil, kerning: CGFloat) -> CGFloat {
+        textSize(string: string, appleFont: appleFont, kerning: kerning).width
     }
 
-    func textHeight(_ string: String, uiFont: UIFont? = nil, kerning: CGFloat) -> CGFloat {
-        textSize(string: string, uiFont: uiFont, kerning: kerning).height
+    func textHeight(_ string: String, appleFont: AppleFont? = nil, kerning: CGFloat) -> CGFloat {
+        textSize(string: string, appleFont: appleFont, kerning: kerning).height
     }
 
 }

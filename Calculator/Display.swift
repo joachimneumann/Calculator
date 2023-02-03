@@ -9,7 +9,7 @@ import SwiftUI
 
 protocol DisplayLengthLimiter {
     var kerning: CGFloat      { get }
-    var uiFont: UIFont        { get }
+    var appleFont: AppleFont        { get }
     var displayWidth: CGFloat { set get }
     var ePadding: CGFloat     { set get }
     var isPortraitPhone: Bool { get }
@@ -211,7 +211,7 @@ extension Display {
     private func textSize(string: String, displayLengthLimiter: DisplayLengthLimiter) -> CGSize {
         var attributes: [NSAttributedString.Key : Any] = [:]
         attributes[.kern] = displayLengthLimiter.kerning
-        attributes[.font] = displayLengthLimiter.uiFont
+        attributes[.font] = displayLengthLimiter.appleFont
         return string.size(withAttributes: attributes)
     }
     func textWidth(_ string: String, displayLengthLimiter: DisplayLengthLimiter) -> CGFloat {
