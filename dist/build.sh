@@ -17,9 +17,9 @@ CLANG=`xcrun --sdk iphoneos --find clang`
 CLANGPP=`xcrun --sdk iphoneos --find clang++`
 
 # TARGET_IPHONE="arm64-apple-ios15.0"
-TARGET_IPHONE="ios-arm64"
+TARGET_IPHONE="ios15.0-arm64"
 TARGET_SIMULATOR="arm64-apple-ios15.0-simulator"
-TARGET_MAC="macos-arm64"
+TARGET_MAC="macos12.0-arm64"
 
 build()
 {
@@ -81,7 +81,7 @@ codesign -s ${identity} signed/${TARGET_SIMULATOR}/libmpfr.a
 codesign -s ${identity} signed/${TARGET_MAC}/libgmp.a
 codesign -s ${identity} signed/${TARGET_MAC}/libmpfr.a
 
-# rm -rf mpfr.xcframework
+rm -rf mpfr.xcframework
 rm -rf gmp.xcframework
 xcodebuild -create-xcframework -library signed/${TARGET_IPHONE}/libgmp.a  -library signed/${TARGET_SIMULATOR}/libgmp.a  -library signed/${TARGET_MAC}/libgmp.a  -output gmp.xcframework
 xcodebuild -create-xcframework -library signed/${TARGET_IPHONE}/libmpfr.a -library signed/${TARGET_SIMULATOR}/libmpfr.a -library signed/${TARGET_MAC}/libmpfr.a -output mpfr.xcframework

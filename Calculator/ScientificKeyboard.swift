@@ -55,7 +55,6 @@ struct ScientificKeyboard: View {
                 Key("Rand", screen, viewModel)
             }
         }
-        //.background(Color.black)
     }
 }
 

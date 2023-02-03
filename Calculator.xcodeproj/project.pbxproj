@@ -13,7 +13,6 @@
 		AA08C7C6272EDA4A001B8575 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA08C7C5272EDA4A001B8575 /* Assets.xcassets */; };
 		AA08C7C9272EDA4A001B8575 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA08C7C8272EDA4A001B8575 /* Preview Assets.xcassets */; };
 		AA08C7D3272EDA4A001B8575 /* CalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA08C7D2272EDA4A001B8575 /* CalculatorTests.swift */; };
-		AA0CE3CD298CBFAF0057D0D8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0CE3CC298CBFAF0057D0D8 /* ContentView.swift */; };
 		AA0CE3CF298CBFB00057D0D8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA0CE3CE298CBFB00057D0D8 /* Assets.xcassets */; };
 		AA0CE3D2298CBFB00057D0D8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA0CE3D1298CBFB00057D0D8 /* Preview Assets.xcassets */; };
 		AA0CE3D7298CC09E0057D0D8 /* CalculatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FABFF272F2348006DE4C8 /* CalculatorApp.swift */; };
@@ -121,7 +120,6 @@
 		AA08C7EB272F1241001B8575 /* Calculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Calculator.entitlements; sourceTree = "<group>"; };
 		AA08C7EC272F1572001B8575 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		AA0CE3C8298CBFAF0057D0D8 /* CalculatorMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CalculatorMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA0CE3CC298CBFAF0057D0D8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AA0CE3CE298CBFB00057D0D8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA0CE3D1298CBFB00057D0D8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AA0CE3D3298CBFB00057D0D8 /* CalculatorMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CalculatorMac.entitlements; sourceTree = "<group>"; };
@@ -289,7 +287,6 @@
 		AA0CE3C9298CBFAF0057D0D8 /* CalculatorMac */ = {
 			isa = PBXGroup;
 			children = (
-				AA0CE3CC298CBFAF0057D0D8 /* ContentView.swift */,
 				AA0CE3CE298CBFB00057D0D8 /* Assets.xcassets */,
 				AA0CE3D3298CBFB00057D0D8 /* CalculatorMac.entitlements */,
 				AA0CE3D0298CBFB00057D0D8 /* Preview Content */,
@@ -553,7 +550,6 @@
 				AA0CE3EF298CC4CB0057D0D8 /* NumberStack.swift in Sources */,
 				AA0CE3EA298CC4720057D0D8 /* PurchaseView.swift in Sources */,
 				AA0CE3ED298CC4C30057D0D8 /* Brain.swift in Sources */,
-				AA0CE3CD298CBFAF0057D0D8 /* ContentView.swift in Sources */,
 				AA0CE3F4298CFA100057D0D8 /* ColoredStepper.swift in Sources */,
 				AA0CE3E3298CC3980057D0D8 /* OperatorStack.swift in Sources */,
 				AA0CE3E8298CC45C0057D0D8 /* Icons.swift in Sources */,

@@ -44,7 +44,11 @@ struct Key: View {
             .foregroundColor(textColor)
             .frame(width: keySize.width, height: keySize.height)
             .background(backgroundColor)
+#if os(macOS)
+            .clipShape(Rectangle())
+#else
             .clipShape(Capsule())
+#endif
             .simultaneousGesture(DragGesture(minimumDistance: 0)
                 .onChanged { _ in
                     touchDown(symbol)

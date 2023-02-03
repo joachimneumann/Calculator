@@ -110,12 +110,14 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
     
 #if os(macOS)
         isPad = false
+        isPortraitPhone = false
+        let isPortrait = false
+        keySpacing = 1.0
+        horizontalPadding = 0.0
 #else
         isPad = UIDevice.current.userInterfaceIdiom == .pad
-#endif
         let isPortrait = screenSize.height > screenSize.width
         isPortraitPhone = isPad ? false : isPortrait
-        
         if isPortraitPhone {
             keySpacing = 0.034 * screenSize.width
             horizontalPadding = keySpacing
@@ -124,6 +126,9 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
             keySpacing = 0.012 * screenSize.width
             horizontalPadding = 0.0
         }
+#endif
+        
+        
         
         portraitIPhoneDisplayHorizontalPadding = screenSize.width * 0.035
         portraitIPhoneDisplayBottomPadding = screenSize.height * 0.012
