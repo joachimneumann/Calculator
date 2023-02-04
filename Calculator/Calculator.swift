@@ -48,11 +48,11 @@ struct Calculator: View {
     }
     
     var infoView: some View {
-        let leadingPaddingToCenterRad = 0.5 * (screen.iconsWidth - screen.plusIconSize) + 0.5 * screen.plusIconSize - 0.5 * screen.radWidth
+        let leadingPaddingToCenterRad = 0.5 * (screen.iconsWidth - screen.plusIconSize) + 0.5 * screen.plusIconSize - 0.5 * screen.radWidth + screen.macHorizontalPadding
         return HStack(spacing: 0.0) {
             let info = "\(viewModel.showPrecision ? "Precision: "+viewModel.precisionDescription+" digits" : "\(viewModel.rad ? "Rad" : "")")"
             Text(info)
-                .foregroundColor(.white)
+                .foregroundColor(screen.isMac ? Color(white: 236.0/255.0) : .white)
                 .font(Font(screen.infoUiFont))
                 .accessibilityIdentifier("infoText")
             Spacer()
@@ -105,6 +105,7 @@ struct Calculator: View {
                 }
             }
         }
+        .padding(.horizontal, screen.macHorizontalPadding)
     }
     
     var landscapeView: some View {

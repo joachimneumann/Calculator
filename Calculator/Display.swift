@@ -25,7 +25,11 @@ struct Display {
     var canBeFloat: Bool
     var preliminary: Bool = false
 
+#if os(macOS)
+    var color: Color = Color(white: 230.0/255.0)
+#else
     var color: Color = .white
+#endif
     
     var isZero: Bool {
         left == "0" && right == nil
