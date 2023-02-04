@@ -76,6 +76,12 @@ struct Calculator: View {
     
     var landscapeDisplayAndIcons: some View {
         HStack(alignment: .top, spacing: 0.0) {
+            Icons(
+                store: store,
+                viewModel: viewModel,
+                screen: screen,
+                isZoomed: $isZoomed)
+            .offset(y: screen.offsetToVerticallyIconWithText)
             Spacer(minLength: 0.0)
             LandscapeDisplay(
                 display: viewModel.currentDisplay,
@@ -94,12 +100,6 @@ struct Calculator: View {
                     }
                 }
             }
-            Icons(
-                store: store,
-                viewModel: viewModel,
-                screen: screen,
-                isZoomed: $isZoomed)
-            .offset(y: screen.offsetToVerticallyIconWithText)
         }
     }
     
