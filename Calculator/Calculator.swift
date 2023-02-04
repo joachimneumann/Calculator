@@ -94,6 +94,9 @@ struct Calculator: View {
                 offsetToVerticallyAlignTextWithkeyboard: screen.offsetToVerticallyAlignTextWithkeyboard,
                 scrollViewID: scrollViewID
             )
+            .onTapGesture {
+                isZoomed.toggle()
+            }
             .onChange(of: isZoomed) { _ in
                 if scrollViewHasScrolled {
                     withAnimation(.linear(duration: 0.4)) {
