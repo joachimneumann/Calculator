@@ -22,12 +22,14 @@ struct PurchaseView: View {
                         Button {
                             self.presentation.wrappedValue.dismiss()
                         } label: {
-                            Image(systemName: "chevron.left")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(height: screen.infoUiFontSize * 0.7)
-                                .padding(.trailing, screen.infoUiFontSize * 0.1)
-                            Text("Back")
+                            HStack {
+                                Image(systemName: "chevron.left")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(height: screen.infoUiFontSize * 0.7)
+                                    .padding(.trailing, screen.infoUiFontSize * 0.1)
+                                Text("Back")
+                            }
                         }
                         .padding(.bottom, 40)
                         Spacer()
