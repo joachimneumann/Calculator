@@ -72,7 +72,7 @@ struct Settings: View {
                 .font(font)
                 .foregroundColor(Color.white)
             }
-            .padding()
+            .padding(.horizontal)
             .onDisappear() {
                 Task {
                     if viewModel.precision != settingsPrecision {
