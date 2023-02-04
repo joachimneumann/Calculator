@@ -255,7 +255,7 @@ extension Display {
             let withSeparators = withSeparators(numberString: mantissa, isNegative: isNegative, separators: separators)
             if let displayLengthLimiter = displayLengthLimiter {
                 let fitsInOneLine = textWidth(withSeparators, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding
-                if !fitsInOneLine { returnValue.canBeInteger = true }
+                if !fitsInOneLine && exponent < Self.MAX_DISPLAY_LENGTH { returnValue.canBeInteger = true }
                 if showAs.showAsInt || fitsInOneLine {
                     returnValue.left = withSeparators
                     return returnValue
@@ -278,7 +278,7 @@ extension Display {
                     indexInt = floatString.distance(from: floatString.startIndex, to: index)
                     var floatCandidate = String(floatString.prefix(indexInt+1))
                     let fitsInOneLine = textWidth(floatCandidate, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding
-                    if !fitsInOneLine { returnValue.canBeFloat = true }
+                    if !fitsInOneLine && exponent < Self.MAX_DISPLAY_LENGTH { returnValue.canBeFloat = true }
                     if fitsInOneLine && displayLengthLimiter.isPortraitPhone {
                         while indexInt <= floatString.count && textWidth(floatCandidate, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
                             indexInt += 1
@@ -315,7 +315,7 @@ extension Display {
             floatString = minusSign + "0" + separators.decimalSeparator.string + floatString
             if let displayLengthLimiter = displayLengthLimiter {
                 let fitsInOneLine = textWidth(testFloat, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding
-                if !fitsInOneLine { returnValue.canBeFloat = true }
+                if !fitsInOneLine && exponent > -Self.MAX_DISPLAY_LENGTH { returnValue.canBeFloat = true }
                 if fitsInOneLine && displayLengthLimiter.isPortraitPhone {
                     var indexInt = 3 /// minimum: X,x
                     var limitedFloatString = String(floatString.prefix(indexInt))
