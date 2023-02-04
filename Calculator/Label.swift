@@ -31,18 +31,23 @@ struct Label: View {
         self.symbol = symbol
         self.color = color
         
+#if os(macOS)
+        /// in MacOS, the key shape is a rectangle, which allows for larger labels.
+        /// However, I don't want to emphesize the digits as much as on iOS
+        let sizeFactor                = 1.5
+        let sizeFactorSpecialOperator = 1.12
+        let sizeFactorOperator        = 1.04
+        let sizeFactorComma           = 1.8
+#else
         let sizeFactorDigits          = 1.5
         let sizeFactorSpecialOperator = 0.9333
         let sizeFactorOperator        = 0.8666
         let sizeFactorComma           = 1.5
+#endif
 
         switch symbol {
         case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "C", "AC":
-#if os(macOS)
-            sizeFactor = sizeFactorDigits * 0.85
-#else
             sizeFactor = sizeFactorDigits
-#endif
         case "±", "%":
             sizeFactor = sizeFactorSpecialOperator
         case "x":
@@ -56,9 +61,6 @@ struct Label: View {
         default:
             sizeFactor = 1.0
         }
-#if os(macOS)
-        sizeFactor *= 1.2
-#endif
         self.size = size * sizeFactor
     }
 

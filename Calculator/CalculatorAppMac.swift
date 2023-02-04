@@ -7,13 +7,18 @@
 
 import SwiftUI
 
+public typealias AppleFont = NSFont
+
 @main
 struct CalculatorApp: App {
+    
     let width: CGFloat = 574.0
     let height: CGFloat = 295.0
+    
     var body: some Scene {
+        var screen = Screen(CGSize(width: width, height: height), isMac: true)
         WindowGroup {
-            Calculator(screen: Screen(CGSize(width: width, height: height)))
+            Calculator(screen: screen)
                 .frame(width: width, height: height)
                 .background(Screen.backgroundColor)
         }

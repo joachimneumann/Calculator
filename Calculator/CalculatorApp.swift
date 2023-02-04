@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+public typealias AppleFont = UIFont
+
 @main
 struct CalculatorApp: App {
     var body: some Scene {

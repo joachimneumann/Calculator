@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-#if os(macOS)
-public typealias AppleFont = NSFont
-#else
-public typealias AppleFont = UIFont
-#endif
 
 enum DecimalSeparator: String, Codable, CaseIterable{
     case comma
@@ -57,11 +52,6 @@ protocol Separators {
 }
 
 struct Screen: Equatable, DisplayLengthLimiter, Separators {
-#if os(macOS)
-    static let backgroundColor: Color = Color(white: 80.0/255.0)
-#else
-    static let backgroundColor: Color = .black
-#endif
 
     static func appleFont(ofSize size: CGFloat, portrait: Bool, weight: AppleFont.Weight = .thin) -> AppleFont {
         return AppleFont.monospacedDigitSystemFont(ofSize: size, weight: weight)
@@ -85,6 +75,7 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
 
     let isPad: Bool
     let isPortraitPhone: Bool
+    var isMac: Bool = false
     let keyboardHeight: CGFloat
     let keySpacing: CGFloat
     let keySize: CGSize
@@ -107,33 +98,38 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
     var displayWidth: CGFloat = 0.0
     var digitWidth: CGFloat = 0.0
     var eWidth: CGFloat = 0.0
+    let backgroundColor: Color
     
     let appleFont: AppleFont
     private let calculatorWidth: CGFloat
         
-    init(_ screenSize: CGSize) {
+    init(_ screenSize: CGSize, isMac: Bool = false) {
         //print("Screen INIT", screenSize)
-    
-#if os(macOS)
-        isPad = false
-        isPortraitPhone = false
-        let isPortrait = false
-        keySpacing = 1.0
-        horizontalPadding = 0.0
-#else
-        isPad = UIDevice.current.userInterfaceIdiom == .pad
-        let isPortrait = screenSize.height > screenSize.width
-        isPortraitPhone = isPad ? false : isPortrait
-        if isPortraitPhone {
-            keySpacing = 0.034 * screenSize.width
-            horizontalPadding = keySpacing
-        } else {
-            // with scientific keyboard: narrower spacing
-            keySpacing = 0.012 * screenSize.width
+
+        self.isMac = isMac
+        let isPortrait: Bool
+        if isMac {
+            backgroundColor = Color(white: 80.0/255.0)
+            isPad = false
+            isPortrait = false
+            isPortraitPhone = false
+            let isPortrait = false
+            keySpacing = 1.0
             horizontalPadding = 0.0
+        } else {
+            backgroundColor = .black
+            isPad = UIDevice.current.userInterfaceIdiom == .pad
+            isPortrait = screenSize.height > screenSize.width
+            isPortraitPhone = isPad ? false : isPortrait
+            if isPortraitPhone {
+                keySpacing = 0.034 * screenSize.width
+                horizontalPadding = keySpacing
+            } else {
+                // with scientific keyboard: narrower spacing
+                keySpacing = 0.012 * screenSize.width
+                horizontalPadding = 0.0
+            }
         }
-#endif
-        
         
         
         portraitIPhoneDisplayHorizontalPadding = screenSize.width * 0.035
