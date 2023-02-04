@@ -27,14 +27,14 @@ struct Label: View {
     ]
     
     init(symbol: String, size: CGFloat, color: Color) {
-        //let _ = print("LABEL for", symbol)
+        // let _ = print("LABEL for", symbol)
         self.symbol = symbol
         self.color = color
         
 #if os(macOS)
         /// in MacOS, the key shape is a rectangle, which allows for larger labels.
         /// However, I don't want to emphesize the digits as much as on iOS
-        let sizeFactor                = 1.5
+        let sizeFactorDigits          = 1.5
         let sizeFactorSpecialOperator = 1.12
         let sizeFactorOperator        = 1.04
         let sizeFactorComma           = 1.8

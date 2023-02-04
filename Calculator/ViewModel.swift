@@ -64,6 +64,17 @@ class ViewModel: ObservableObject, ShowAs {
         currentDisplay = Display(left: "0", right: nil, canBeInteger: false, canBeFloat: false)
         brain = Brain(precision: _precision.wrappedValue)
         precisionDescription = _precision.wrappedValue.useWords
+        for symbol in [
+            "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",",
+            "C", "AC", "±", "%", "/", "x", "-", "+", "=",
+            "( ", " )", "mc", "m+", "m-", "mr",
+            "2nd", "x^2", "x^3", "x^y", "e^x", "y^x", "2^x", "10^x",
+            "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10",
+            "x!", "sin", "cos", "tan", "asin", "acos", "atan", "e", "EE",
+            "Deg", "Rad", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh", "π", "Rand"] {
+            backgroundColor[symbol] = keyColor.upColor(for: symbol, isPending: false)
+            textColor[symbol] = keyColor.textColor(for: symbol, isPending: false)
+        }
     }
     
     /// the update of the precision in brain can be slow.
@@ -88,13 +99,13 @@ class ViewModel: ObservableObject, ShowAs {
     func showDisabledColors(for symbol: String) async {
         await MainActor.run {
             withAnimation(.easeIn(duration: downTime)) {
-                backgroundColor[symbol] = disabledColor
+                backgroundColor[symbol] = keyColor.disabledColor
             }
         }
         try? await Task.sleep(nanoseconds: UInt64(downTime * 1_000_000_000))
         await MainActor.run {
             withAnimation(.easeIn(duration: upTime)) {
-                backgroundColor[symbol] = upColor(for: symbol, isPending: symbol == previouslyPendingOperator)
+                backgroundColor[symbol] = keyColor.upColor(for: symbol, isPending: symbol == previouslyPendingOperator)
             }
         }
     }
@@ -104,7 +115,7 @@ class ViewModel: ObservableObject, ShowAs {
         downAnimationFinished = false
         await MainActor.run {
             withAnimation(.easeIn(duration: downTime)) {
-                backgroundColor[symbol] = downColor(for: symbol, isPending: symbol == previouslyPendingOperator)
+                backgroundColor[symbol] = keyColor.downColor(for: symbol, isPending: symbol == previouslyPendingOperator)
             }
         }
         //print("down: downColor sleep START", downTime)
@@ -121,7 +132,7 @@ class ViewModel: ObservableObject, ShowAs {
         /// Set the background color back to normal
         await MainActor.run {
             withAnimation(.easeIn(duration: upTime)) {
-                backgroundColor[symbol] = upColor(for: symbol, isPending: symbol == previouslyPendingOperator)
+                backgroundColor[symbol] = keyColor.upColor(for: symbol, isPending: symbol == previouslyPendingOperator)
             }
         }
     }
@@ -160,11 +171,17 @@ class ViewModel: ObservableObject, ShowAs {
         switch symbol {
         case "2nd":
             secondActive.toggle()
-            backgroundColor["2nd"] = secondColor(active: secondActive)
+            backgroundColor["2nd"] = keyColor.secondColor(active: secondActive)
         case "Rad":
             rad = true
+            Task(priority: .high) {
+                await showUpColors(for: symbol)
+            }
         case "Deg":
             rad = false
+            Task(priority: .high) {
+                await showUpColors(for: symbol)
+            }
         default:
             guard keyState == .notPressed else { return }
 
@@ -196,16 +213,16 @@ class ViewModel: ObservableObject, ShowAs {
         if let previous = previouslyPendingOperator {
             await MainActor.run() {
                 withAnimation(.easeIn(duration: downTime)) {
-                    backgroundColor[previous] = upColor(for: previous, isPending: false)
-                    textColor[previous] = textColor(for: previous, isPending: false)
+                    backgroundColor[previous] = keyColor.upColor(for: previous, isPending: false)
+                    textColor[previous] = keyColor.textColor(for: previous, isPending: false)
                 }
             }
         }
         if ["/", "x", "-", "+", "x^y", "y^x", "y√"].contains(symbol) {
             await MainActor.run() {
                 withAnimation(.easeIn(duration: downTime)) {
-                    backgroundColor[symbol] = upColor(for: symbol, isPending: true)
-                    textColor[symbol] = textColor(for: symbol, isPending: true)
+                    backgroundColor[symbol] = keyColor.upColor(for: symbol, isPending: true)
+                    textColor[symbol] = keyColor.textColor(for: symbol, isPending: true)
                     previouslyPendingOperator = symbol
                 }
             }
@@ -268,22 +285,5 @@ class ViewModel: ObservableObject, ShowAs {
     func copyToPastBin(screen: Screen) async {
 //        let copyData = Display(displayNumber, screen: screen, noLimits: true, showAs: self, forceScientific: screen.forceScientific)
 //        UIPasteboard.general.string = copyData.allInOneLine
-    }
-
-    /// colors
-    func textColor(for symbol: String, isPending pending: Bool) -> Color {
-        keyColor.textColor(for: symbol, isPending: pending)
-    }
-    func upColor(for symbol: String, isPending pending: Bool) -> Color {
-        keyColor.upColor(for: symbol, isPending: pending)
-    }
-    func downColor(for symbol: String, isPending pending: Bool) -> Color {
-        keyColor.downColor(for: symbol, isPending: pending)
-    }
-    func secondColor(active: Bool) -> Color {
-        keyColor.secondColor(active: active)
-    }
-    var disabledColor: Color {
-        keyColor.disabledColor
     }
 }

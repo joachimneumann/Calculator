@@ -31,8 +31,11 @@ struct Key: View {
             self.keySize = screen.keySize
             xOffset = 0.0
         }
-        self.backgroundColor = viewModel.backgroundColor[symbol] ?? viewModel.upColor(for: symbol, isPending: false)
-        self.textColor = viewModel.textColor[symbol]             ?? viewModel.textColor(for: symbol, isPending: false)
+        if symbol == "Deg" {
+            print("Deg")
+        }
+        self.backgroundColor = viewModel.backgroundColor[symbol] ?? .green
+        self.textColor = viewModel.textColor[symbol]             ?? .green
         self.touchDown = viewModel.touchDown
         self.touchUp   = viewModel.touchUp
     }

@@ -103,33 +103,33 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
     let appleFont: AppleFont
     private let calculatorWidth: CGFloat
         
-    init(_ screenSize: CGSize, isMac: Bool = false) {
+    init(_ screenSize: CGSize) {
         //print("Screen INIT", screenSize)
 
-        self.isMac = isMac
-        let isPortrait: Bool
-        if isMac {
-            backgroundColor = Color(white: 80.0/255.0)
-            isPad = false
-            isPortrait = false
-            isPortraitPhone = false
-            let isPortrait = false
-            keySpacing = 1.0
-            horizontalPadding = 0.0
+        
+#if os(macOS)
+        self.isMac = true
+        backgroundColor = Color(white: 80.0/255.0)
+        isPad = false
+        let isPortrait = false
+        isPortraitPhone = false
+        keySpacing = 1.0
+        horizontalPadding = 0.0
+#else
+        self.isMac = false
+        backgroundColor = .black
+        isPad = UIDevice.current.userInterfaceIdiom == .pad
+        let isPortrait = screenSize.height > screenSize.width
+        isPortraitPhone = isPad ? false : isPortrait
+        if isPortraitPhone {
+            keySpacing = 0.034 * screenSize.width
+            horizontalPadding = keySpacing
         } else {
-            backgroundColor = .black
-            isPad = UIDevice.current.userInterfaceIdiom == .pad
-            isPortrait = screenSize.height > screenSize.width
-            isPortraitPhone = isPad ? false : isPortrait
-            if isPortraitPhone {
-                keySpacing = 0.034 * screenSize.width
-                horizontalPadding = keySpacing
-            } else {
-                // with scientific keyboard: narrower spacing
-                keySpacing = 0.012 * screenSize.width
-                horizontalPadding = 0.0
-            }
+            // with scientific keyboard: narrower spacing
+            keySpacing = 0.012 * screenSize.width
+            horizontalPadding = 0.0
         }
+#endif
         
         
         portraitIPhoneDisplayHorizontalPadding = screenSize.width * 0.035

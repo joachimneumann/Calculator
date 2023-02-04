@@ -16,11 +16,11 @@ struct CalculatorApp: App {
     let height: CGFloat = 295.0
     
     var body: some Scene {
-        var screen = Screen(CGSize(width: width, height: height), isMac: true)
+        let screen = Screen(CGSize(width: width, height: height))
         WindowGroup {
             Calculator(screen: screen)
                 .frame(width: width, height: height)
-                .background(Screen.backgroundColor)
+                .background(screen.backgroundColor)
         }
         .windowResizability(.contentSize)
         .windowStyle(HiddenTitleBarWindowStyle())
