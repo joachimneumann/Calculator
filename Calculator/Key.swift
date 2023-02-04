@@ -31,9 +31,6 @@ struct Key: View {
             self.keySize = screen.keySize
             xOffset = 0.0
         }
-        if symbol == "Deg" {
-            print("Deg")
-        }
         self.backgroundColor = viewModel.backgroundColor[symbol] ?? .green
         self.textColor = viewModel.textColor[symbol]             ?? .green
         self.touchDown = viewModel.touchDown

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct Settings: View {
+
     @Environment(\.presentationMode) var presentation /// for dismissing the Settings View
     
     @ObservedObject var viewModel: ViewModel
@@ -203,7 +204,7 @@ struct Settings: View {
         }
         
     }
-    
+        
     struct Measurement: View {
         @Binding var timerIsRunning: Bool
         @Binding var timerInfo: String
@@ -250,10 +251,12 @@ struct Settings: View {
                         .foregroundColor(.gray)
                 }
             }
+            .buttonStyle(TransparentButtonStyle())
             .disabled(timerIsRunning)
             .offset(x: -2.0 * screen.infoUiFontSize)
         }
     }
+
     struct BackButton: View {
         let timerIsRunning: Bool
         let screen: Screen
@@ -273,6 +276,7 @@ struct Settings: View {
                         .padding(.trailing, screen.infoUiFontSize * 0.1)
                     Text("Back")
                 }
+                .buttonStyle(TransparentButtonStyle())
                 Spacer()
             }
             .font(font)
@@ -294,10 +298,11 @@ struct Settings: View {
                     .foregroundColor(Color.green)
                     .toggleStyle(
                         ColoredToggleStyle(onColor: Color(white: timerIsRunning ? 0.4 : 0.6),
-                                           offColor: Color(white: 0.3),
+                                           offColor: Color(white: 0.25),
                         thumbColor: timerIsRunning ? Color.gray : Color.white))
                     .frame(width: 70)
                     .disabled(timerIsRunning)
+                    .buttonStyle(TransparentButtonStyle())
                 Spacer()
             }
             
@@ -372,10 +377,11 @@ struct Settings: View {
                 .foregroundColor(Color.green)
                 .toggleStyle(
                     ColoredToggleStyle(onColor: Color(white: timerIsRunning ? 0.4 : 0.6),
-                                       offColor: Color(white: 0.3),
+                                       offColor: Color(white: 0.25),
                                        thumbColor: timerIsRunning ? .gray : .white))
                 .frame(width: 70)
                 .disabled(timerIsRunning)
+                .buttonStyle(TransparentButtonStyle())
         }
     }
     
@@ -440,4 +446,12 @@ struct ControlCenter_Previews: PreviewProvider {
             font: Font(Screen.appleFont(ofSize: 20, portrait: true)))
         .background(.black)
     }
+}
+
+struct TransparentButtonStyle: ButtonStyle {
+  func makeBody(configuration: Self.Configuration) -> some View {
+    configuration.label
+      .foregroundColor(configuration.isPressed ? .yellow : .white)
+      .background(.clear)
+  }
 }

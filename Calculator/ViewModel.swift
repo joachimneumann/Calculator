@@ -25,8 +25,7 @@ class ViewModel: ObservableObject, ShowAs {
     var precisionDescription = "unknown"
     var showPrecision: Bool = false
     var secondActive = false
-    var keyColor = KeyColor()
-    
+
     @AppStorage("precision", store: .standard) private (set) var precision: Int = 1000
     @AppStorage("showPreliminaryResults", store: .standard) var showPreliminaryResults: Bool = true
     @AppStorage("memoryValue", store: .standard) var memoryValue: String = ""
@@ -37,7 +36,8 @@ class ViewModel: ObservableObject, ShowAs {
 
     private let keysThatRequireValidNumber = ["±", "%", "/", "x", "-", "+", "=", "( ", " )", "m+", "m-", "x^2", "x^3", "x^y", "e^x", "y^x", "2^x", "10^x", "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10", "x!", "sin", "cos", "tan", "asin", "acos", "atan", "EE", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh"]
     private static let MAX_DISPLAY_LEN = 10_000 /// too long strings in Text() crash the app
-
+    private let keyColor = KeyColor()
+    
     private var upHasHappended = false
     private var downAnimationFinished = false
 
