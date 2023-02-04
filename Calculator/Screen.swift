@@ -97,6 +97,7 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
     var infoTextHeight: CGFloat = 0.0
     var displayWidth: CGFloat = 0.0
     var digitWidth: CGFloat = 0.0
+    var radWidth: CGFloat = 0.0
     var eWidth: CGFloat = 0.0
     let backgroundColor: Color
     
@@ -173,7 +174,8 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         kerning = -0.02 * uiFontSize
         
         textHeight     = textHeight("0", kerning: kerning)
-        infoTextHeight = textHeight("0", appleFont: infoUiFont, kerning: kerning)
+        infoTextHeight = textHeight("0", appleFont: infoUiFont, kerning: 0.0)
+        radWidth       = textWidth("Rad", appleFont: infoUiFont, kerning: 0.0)
         digitWidth     = textWidth("0", kerning: kerning)
 
         offsetToVerticallyAlignTextWithkeyboard =

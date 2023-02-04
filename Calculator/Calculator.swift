@@ -48,7 +48,8 @@ struct Calculator: View {
     }
     
     var infoView: some View {
-        HStack(spacing: 0.0) {
+        let leadingPaddingToCenterRad = 0.5 * (screen.iconsWidth - screen.plusIconSize) + 0.5 * screen.plusIconSize - 0.5 * screen.radWidth
+        return HStack(spacing: 0.0) {
             let info = "\(viewModel.showPrecision ? "Precision: "+viewModel.precisionDescription+" digits" : "\(viewModel.rad ? "Rad" : "")")"
             Text(info)
                 .foregroundColor(.white)
@@ -56,7 +57,7 @@ struct Calculator: View {
                 .accessibilityIdentifier("infoText")
             Spacer()
         }
-        .padding(.leading, screen.keySize.width * 0.3)
+        .padding(.leading, leadingPaddingToCenterRad)
     }
     
     var landscapeKeyboardPlusStuff: some View {
