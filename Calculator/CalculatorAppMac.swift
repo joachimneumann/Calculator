@@ -15,6 +15,7 @@ struct CalculatorApp: App {
         WindowGroup {
             Calculator(screen: Screen(CGSize(width: width, height: height)))
                 .frame(width: width, height: height)
+                .background(Screen.backgroundColor)
         }
         .windowResizability(.contentSize)
         .windowStyle(HiddenTitleBarWindowStyle())
