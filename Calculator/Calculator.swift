@@ -64,7 +64,7 @@ struct Calculator: View {
         return VStack(spacing: 0.0) {
             Spacer(minLength: 0.0)
             Rectangle()
-                .foregroundColor(screen.backgroundColor)
+                .foregroundColor(.clear)
                 .frame(height: screen.infoTextHeight)
                 .overlay() {
                     infoView
@@ -82,7 +82,7 @@ struct Calculator: View {
                 viewModel: viewModel,
                 screen: screen,
                 isZoomed: $isZoomed)
-            .offset(y: screen.offsetToVerticallyIconWithText)
+            .offset(y: screen.offsetToVerticallyAlignIconWithText)
             Spacer(minLength: 0.0)
             LandscapeDisplay(
                 display: viewModel.currentDisplay,

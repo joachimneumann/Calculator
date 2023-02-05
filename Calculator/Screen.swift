@@ -90,7 +90,7 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
     let horizontalPadding: CGFloat
     let bottomPadding: CGFloat
     var offsetToVerticallyAlignTextWithkeyboard: CGFloat = 0.0
-    var offsetToVerticallyIconWithText: CGFloat = 0.0
+    var offsetToVerticallyAlignIconWithText: CGFloat = 0.0
     let kerning: CGFloat
     var textHeight: CGFloat = 0.0
     var infoTextHeight: CGFloat = 0.0
@@ -177,7 +177,7 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         ePadding = isPortraitPhone ? plusIconSize * 0.1 : plusIconSize * 0.3
 #if os(macOS)
         uiFontSize = 0.22 * keyboardHeight
-        infoUiFontSize = uiFontSize * 0.25
+        infoUiFontSize = uiFontSize * 0.2
 #else
         uiFontSize = 0.16 * keyboardHeight
         if isPortraitPhone { uiFontSize = 0.125 * keyboardHeight }
@@ -198,13 +198,13 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         offsetToVerticallyAlignTextWithkeyboard =
         CGFloat(screenSize.height) -
         CGFloat(keyboardHeight) -
-        CGFloat(infoUiFontSize) -
+        (isMac ? 0.0 : CGFloat(infoUiFontSize)) -
         CGFloat(textHeight)
         
-        offsetToVerticallyIconWithText =
+        offsetToVerticallyAlignIconWithText =
         CGFloat(screenSize.height) -
         CGFloat(keyboardHeight) -
-        CGFloat(infoUiFontSize) -
+        (isMac ? 0.5 * CGFloat(infoUiFontSize) : CGFloat(infoUiFontSize)) -
         CGFloat(plusIconSize) +
         CGFloat(appleFont.descender) -
         CGFloat(0.5 * appleFont.capHeight) +

@@ -148,6 +148,7 @@ struct Icons : View {
                     .font(Font(screen.infoUiFont))
                     .foregroundColor(Color.white)
             }
+            .buttonStyle(TransparentButtonStyle())
         }
     }
     
@@ -165,12 +166,14 @@ struct Icons : View {
                     .font(Font(screen.infoUiFont))
                     .foregroundColor(Color.white)
             }
+            .buttonStyle(TransparentButtonStyle())
         }
     }
     
     var body: some View {
         VStack(alignment: .center, spacing: 0.0) {
             plus
+                .padding(.top, screen.infoTextHeight * 0.2)
             Group {
                 copy
                 paste
@@ -178,7 +181,7 @@ struct Icons : View {
                 toInt
                 toFloat
             }
-            .padding(.top, screen.plusIconSize * 0.5)
+            .padding(.top, screen.plusIconSize * 0.5)//(viewModel.rad ? screen.infoTextHeight : 0.0))
             .lineLimit(1)
             .minimumScaleFactor(0.01) // in case "paste" is too wide on small phones
         }
