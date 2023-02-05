@@ -35,7 +35,7 @@ struct PortraitDisplay: View {
             if factor > 1.5 { factor = 1.5 }
             if factor < 1.0 { factor = 1.0 }
         }
-        let uiFont = Screen.appleFont(ofSize: screen.uiFontSize * factor, portrait: true)
+        let uiFont = Screen.appleFont(ofSize: screen.uiFontSize * factor)
         font = Font(uiFont)
     }
     

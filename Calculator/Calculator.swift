@@ -64,7 +64,11 @@ struct Calculator: View {
         return VStack(spacing: 0.0) {
             Spacer(minLength: 0.0)
             Rectangle()
+#if os(macOS)
                 .foregroundColor(.clear)
+#else
+                .foregroundColor(screen.backgroundColor)
+#endif
                 .frame(height: screen.infoTextHeight)
                 .overlay() {
                     infoView

@@ -53,13 +53,13 @@ struct Settings: View {
                         .padding(.top, 20)
                     
                     groupingSeparatorView
-                        .padding(.top, 20)
+                        .padding(.top, 15)
                     
                     ForceScientificDisplay(
                         timerIsRunning: timerIsRunning,
                         settingsForceScientific: $settingsForceScientific,
                         decimalSeparator: settingsDecimalSeparator)
-                    .padding(.top, 20)
+                    .padding(.top, 15)
                     
                     showPreliminaryResults
                         .padding(.top, 20)
@@ -135,7 +135,7 @@ struct Settings: View {
                 .padding(.bottom, 5)
                 .foregroundColor(.gray)
             let more = (settingsPrecision > Display.MAX_DISPLAY_LENGTH)
-            Text("\(more ? "Maximal n" : "N")umber of digits in the display: \(min(settingsPrecision, Display.MAX_DISPLAY_LENGTH)) \(more ? "(copy fetches all \(settingsPrecision.useWords) digits)" : " ")")
+            Text("Digits in the display: \(min(settingsPrecision, Display.MAX_DISPLAY_LENGTH)) \(more ? "(copy fetches all \(settingsPrecision.useWords) digits)" : " ")")
                 .padding(.bottom, 5)
                 .foregroundColor(.gray)
             Text("Memory size of one number: \(sizeOfOneNumber.asMemorySize)")
@@ -215,20 +215,20 @@ struct Settings: View {
                 measurementLabel
                 measurementButton
             }
-            .offset(y: -0.15 * screen.infoUiFontSize)
+            .offset(y: -0.15 * screen.configUiFontSize)
         }
         
         var measurementLabel: some View {
             HStack {
                 Text("Time to calculate sin(")
                     .foregroundColor(.gray)
-                let h = 3 * screen.infoUiFontSize
+                let h = 3 * screen.configUiFontSize
                 Label(symbol: "√2", size: h, color: .gray)
                     .frame(width: h, height: h)
-                    .offset(x: -1.45 * screen.infoUiFontSize)
+                    .offset(x: -1.45 * screen.configUiFontSize)
                 Text("):")
                     .foregroundColor(.gray)
-                    .offset(x: -2.8 * screen.infoUiFontSize)
+                    .offset(x: -2.8 * screen.configUiFontSize)
             }
         }
         var measurementButton: some View {
@@ -253,7 +253,7 @@ struct Settings: View {
             }
             .buttonStyle(TransparentButtonStyle())
             .disabled(timerIsRunning)
-            .offset(x: -2.0 * screen.infoUiFontSize)
+            .offset(x: -2.0 * screen.configUiFontSize)
         }
     }
 
@@ -273,8 +273,8 @@ struct Settings: View {
                         Image(systemName: "chevron.left")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(height: screen.infoUiFontSize * 0.7)
-                            .padding(.trailing, screen.infoUiFontSize * 0.1)
+                            .frame(height: screen.configUiFontSize * 0.7)
+                            .padding(.trailing, screen.configUiFontSize * 0.1)
                         Text("Back")
                     }
                 }
@@ -448,7 +448,7 @@ struct ControlCenter_Previews: PreviewProvider {
         Settings(
             viewModel: ViewModel(),
             screen: Screen(CGSize()),
-            font: Font(Screen.appleFont(ofSize: 20, portrait: true)))
+            font: Font(Screen.appleFont(ofSize: 20)))
         .background(.black)
     }
 }

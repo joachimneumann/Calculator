@@ -56,7 +56,7 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
     static func == (lhs: Screen, rhs: Screen) -> Bool { /// used to detect rotation
         lhs.keySize == rhs.keySize
     }
-    static func appleFont(ofSize size: CGFloat, portrait: Bool, weight: AppleFont.Weight = .thin) -> AppleFont {
+    static func appleFont(ofSize size: CGFloat, weight: AppleFont.Weight = .thin) -> AppleFont {
         return AppleFont.monospacedDigitSystemFont(ofSize: size, weight: weight)
     }
     
@@ -72,7 +72,6 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
     var groupingSeparator: GroupingSeparator = .none
 
     private let isPad: Bool
-    private var isMac: Bool = false
 
     let isPortraitPhone: Bool
     let keyboardHeight: CGFloat
@@ -84,7 +83,9 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
     let plusIconTrailingPadding: CGFloat
     var uiFontSize: CGFloat
     let infoUiFont: AppleFont
+    let configUiFont: AppleFont
     let infoUiFontSize: CGFloat
+    let configUiFontSize: CGFloat
     let displayHorizontalPadding: CGFloat
     let portraitIPhoneDisplayBottomPadding: CGFloat
     let horizontalPadding: CGFloat
@@ -109,7 +110,6 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
 
         
 #if os(macOS)
-        self.isMac = true
         backgroundColor = Color(white: 80.0/255.0)
         defaultTextColor = Color(white: 236.0/255.0)
         isPad = false
@@ -119,7 +119,6 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         horizontalPadding = 0.0
         displayHorizontalPadding = 10
 #else
-        self.isMac = false
         backgroundColor = .black
         defaultTextColor = .white
         isPad = UIDevice.current.userInterfaceIdiom == .pad
@@ -128,12 +127,13 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         if isPortraitPhone {
             keySpacing = 0.034 * screenSize.width
             horizontalPadding = keySpacing
+            displayHorizontalPadding = screenSize.width * 0.035
         } else {
             // with scientific keyboard: narrower spacing
             keySpacing = 0.012 * screenSize.width
             horizontalPadding = 0.0
+            displayHorizontalPadding = screenSize.width * 0.015
         }
-        displayHorizontalPadding = screenSize.width * 0.035
 #endif
         
         portraitIPhoneDisplayBottomPadding = screenSize.height * 0.012
@@ -178,37 +178,55 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
 #if os(macOS)
         uiFontSize = 0.22 * keyboardHeight
         infoUiFontSize = uiFontSize * 0.2
+        configUiFontSize = uiFontSize * 0.26
 #else
         uiFontSize = 0.16 * keyboardHeight
         if isPortraitPhone { uiFontSize = 0.125 * keyboardHeight }
         infoUiFontSize = uiFontSize * 0.3
+        configUiFontSize = uiFontSize * 0.4
 #endif
         uiFontSize = uiFontSize.rounded()
-        appleFont = Self.appleFont(ofSize: uiFontSize, portrait: isPortraitPhone)
-        infoUiFont = Screen.appleFont(ofSize: infoUiFontSize, portrait: isPortrait, weight: .regular)
+        appleFont = Self.appleFont(ofSize: uiFontSize)
+        infoUiFont = Screen.appleFont(ofSize: infoUiFontSize, weight: .regular)
+        configUiFont = Screen.appleFont(ofSize: configUiFontSize, weight: .regular)
 
         kerning = -0.02 * uiFontSize
         
         textHeight     = textHeight("0", kerning: kerning)
         infoTextHeight = textHeight("0", appleFont: infoUiFont, kerning: 0.0)
-        print("infoTextHeight", infoTextHeight)
         radWidth       = textWidth("Rad", appleFont: infoUiFont, kerning: 0.0)
         digitWidth     = textWidth("0", kerning: kerning)
 
+#if os(macOS)
         offsetToVerticallyAlignTextWithkeyboard =
         CGFloat(screenSize.height) -
         CGFloat(keyboardHeight) -
-        (isMac ? 0.0 : CGFloat(infoUiFontSize)) -
         CGFloat(textHeight)
-        
+
         offsetToVerticallyAlignIconWithText =
         CGFloat(screenSize.height) -
         CGFloat(keyboardHeight) -
-        (isMac ? 0.5 * CGFloat(infoUiFontSize) : CGFloat(infoUiFontSize)) -
+        0.5 * CGFloat(infoUiFontSize) -
         CGFloat(plusIconSize) +
         CGFloat(appleFont.descender) -
         CGFloat(0.5 * appleFont.capHeight) +
         CGFloat(0.5 * plusIconSize)
+#else
+        offsetToVerticallyAlignTextWithkeyboard =
+        CGFloat(screenSize.height) -
+        CGFloat(keyboardHeight) -
+        CGFloat(textHeight) -
+        CGFloat(infoUiFontSize)
+
+        offsetToVerticallyAlignIconWithText =
+        CGFloat(screenSize.height) -
+        CGFloat(keyboardHeight) -
+        CGFloat(infoUiFontSize) -
+        CGFloat(plusIconSize) +
+        CGFloat(appleFont.descender) -
+        CGFloat(0.5 * appleFont.capHeight) +
+        CGFloat(0.5 * plusIconSize)
+#endif
                 
         if isPortraitPhone {
             displayWidth = calculatorWidth - 2.0 * displayHorizontalPadding

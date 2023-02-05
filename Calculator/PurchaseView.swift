@@ -26,8 +26,8 @@ struct PurchaseView: View {
                                 Image(systemName: "chevron.left")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(height: screen.infoUiFontSize * 0.7)
-                                    .padding(.trailing, screen.infoUiFontSize * 0.1)
+                                    .frame(height: screen.configUiFontSize * 0.7)
+                                    .padding(.trailing, screen.configUiFontSize * 0.1)
                                 Text("Back")
                             }
                         }
