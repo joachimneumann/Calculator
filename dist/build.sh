@@ -20,6 +20,7 @@ CLANGPP=`xcrun --sdk iphoneos --find clang++`
 TARGET_IPHONE="ios15.0-arm64"
 TARGET_SIMULATOR="arm64-apple-ios15.0-simulator"
 TARGET_MAC="macos12.0-arm64"
+TARGET_MACX="macos12.0-x86-64"
 
 build()
 {
@@ -43,12 +44,15 @@ build()
 	make &> "${CURRENT}/build.log"
 }
 
-rm -rf ${TARGET_IPHONE} ${TARGET_SIMULATOR} ${TARGET_MAC}
-mkdir ${TARGET_IPHONE} ${TARGET_SIMULATOR} ${TARGET_MAC}
+rm -rf ${TARGET_IPHONE} ${TARGET_SIMULATOR} ${TARGET_MAC} ${TARGET_MACX}
+mkdir  ${TARGET_IPHONE} ${TARGET_SIMULATOR} ${TARGET_MAC} ${TARGET_MACX}
 
 cd gmp
 build "arm64" "${SDK_MAC}" "${PLATFORM_MAC}" "-target ${TARGET_MAC}"
 cp .libs/libgmp.a ../${TARGET_MAC}/libgmp.a
+
+build "x86_64" "${SDK_MAC}" "${PLATFORM_MAC}" "-target ${TARGET_MACX}"
+cp .libs/libgmp.a ../${TARGET_MACX}/libgmp.a
 
 build "arm64" "${SDK_IPHONE}" "${PLATFORM_IPHONE}" "-target ${TARGET_IPHONE}"
 cp .libs/libgmp.a ../${TARGET_IPHONE}/libgmp.a
@@ -61,6 +65,9 @@ cd mpfr
 build "arm64" "${SDK_MAC}" "${PLATFORM_MAC}" "-target ${TARGET_MAC}" "--with-gmp-lib=../${TARGET_MAC} --with-gmp-include=../include"
 cp src/.libs/libmpfr.a ../${TARGET_MAC}/libmpfr.a
 
+build "x86_64" "${SDK_MAC}" "${PLATFORM_MAC}" "-target ${TARGET_MACX}" "--with-gmp-lib=../${TARGET_MACX} --with-gmp-include=../include"
+cp src/.libs/libmpfr.a ../${TARGET_MACX}/libmpfr.a
+
 build "arm64" "${SDK_IPHONE}" "${PLATFORM_IPHONE}" "-target ${TARGET_IPHONE}" "--with-gmp-lib=../${TARGET_IPHONE} --with-gmp-include=../include"
 cp src/.libs/libmpfr.a ../${TARGET_IPHONE}/libmpfr.a
 
@@ -70,7 +77,7 @@ cd ..
 
 rm -rf signed
 mkdir signed
-cp -r ${TARGET_IPHONE} ${TARGET_SIMULATOR} ${TARGET_MAC} signed
+cp -r ${TARGET_IPHONE} ${TARGET_SIMULATOR} ${TARGET_MAC} ${TARGET_MACX} signed
 
 # code signing: get the correct expanded identity with the command $security find-identity
 identity='07CE931939C2E7BA7E99210B7DE7BC6A85CEE016'
@@ -80,8 +87,12 @@ codesign -s ${identity} signed/${TARGET_SIMULATOR}/libgmp.a
 codesign -s ${identity} signed/${TARGET_SIMULATOR}/libmpfr.a
 codesign -s ${identity} signed/${TARGET_MAC}/libgmp.a
 codesign -s ${identity} signed/${TARGET_MAC}/libmpfr.a
+codesign -s ${identity} signed/${TARGET_MACX}/libgmp.a
+codesign -s ${identity} signed/${TARGET_MACX}/libmpfr.a
 
 rm -rf mpfr.xcframework
 rm -rf gmp.xcframework
-xcodebuild -create-xcframework -library signed/${TARGET_IPHONE}/libgmp.a  -library signed/${TARGET_SIMULATOR}/libgmp.a  -library signed/${TARGET_MAC}/libgmp.a  -output gmp.xcframework
-xcodebuild -create-xcframework -library signed/${TARGET_IPHONE}/libmpfr.a -library signed/${TARGET_SIMULATOR}/libmpfr.a -library signed/${TARGET_MAC}/libmpfr.a -output mpfr.xcframework
+lipo signed/${TARGET_MAC}/libgmp.a  signed/${TARGET_MACX}/libgmp.a  -create -output libgmp.a
+lipo signed/${TARGET_MAC}/libmpfr.a signed/${TARGET_MACX}/libmpfr.a -create -output libmpfr.a
+xcodebuild -create-xcframework -library signed/${TARGET_IPHONE}/libgmp.a  -library signed/${TARGET_SIMULATOR}/libgmp.a  -library signed/${TARGET_MAC}/libgmp.a  -library signed/${TARGET_MACX}/libgmp.a  -output gmp.xcframework
+xcodebuild -create-xcframework -library signed/${TARGET_IPHONE}/libmpfr.a -library signed/${TARGET_SIMULATOR}/libmpfr.a -library signed/${TARGET_MAC}/libmpfr.a -library signed/${TARGET_MACX}/libmpfr.a -output mpfr.xcframework
