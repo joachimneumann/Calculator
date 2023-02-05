@@ -1,6 +1,16 @@
 #!/bin/bash
 
-set -x
+if [ ! -d "gmp" ]
+then
+    echo "download the gmp code from https://gmplib.org/, unpack it and rename the folder to gmp"
+    exit 0
+fi
+
+if [ ! -d "mpfr" ]
+then
+    echo "download the mpfr code from https://www.mpfr.org/, unpack it and rename the folder to mpfr"
+    exit 0
+fi
 
 CURRENT=`pwd`
 BITCODE="-fembed-bitcode"
@@ -79,7 +89,8 @@ rm -rf signed
 mkdir signed
 cp -r ${TARGET_IPHONE} ${TARGET_SIMULATOR} ${TARGET_MAC} ${TARGET_MACX} signed
 
-# code signing: get the correct expanded identity with the command $security find-identity
+# code signing: to get the correct expanded identity with the command:
+# security find-identity
 identity='07CE931939C2E7BA7E99210B7DE7BC6A85CEE016'
 codesign -s ${identity} signed/${TARGET_IPHONE}/libgmp.a
 codesign -s ${identity} signed/${TARGET_IPHONE}/libmpfr.a
@@ -92,7 +103,13 @@ codesign -s ${identity} signed/${TARGET_MACX}/libmpfr.a
 
 rm -rf mpfr.xcframework
 rm -rf gmp.xcframework
+# When I use xcodebuild to create a xcframework, I get this error:
+# Both 'macos-x86_64' and 'macos-arm64' represent two equivalent library definitions.
+# solution: combine the MAcOS arm and X86 archives with lipo onto one archive
 lipo signed/${TARGET_MAC}/libgmp.a  signed/${TARGET_MACX}/libgmp.a  -create -output libgmp.a
 lipo signed/${TARGET_MAC}/libmpfr.a signed/${TARGET_MACX}/libmpfr.a -create -output libmpfr.a
-xcodebuild -create-xcframework -library signed/${TARGET_IPHONE}/libgmp.a  -library signed/${TARGET_SIMULATOR}/libgmp.a  -library signed/${TARGET_MAC}/libgmp.a  -library signed/${TARGET_MACX}/libgmp.a  -output gmp.xcframework
-xcodebuild -create-xcframework -library signed/${TARGET_IPHONE}/libmpfr.a -library signed/${TARGET_SIMULATOR}/libmpfr.a -library signed/${TARGET_MAC}/libmpfr.a -library signed/${TARGET_MACX}/libmpfr.a -output mpfr.xcframework
+xcodebuild -create-xcframework -library signed/${TARGET_IPHONE}/libgmp.a  -library signed/${TARGET_SIMULATOR}/libgmp.a  -library libgmp.a  -output gmp.xcframework
+xcodebuild -create-xcframework -library signed/${TARGET_IPHONE}/libmpfr.a -library signed/${TARGET_SIMULATOR}/libmpfr.a -library libmpfr.a -output mpfr.xcframework
+
+# check if the MacOS binary is universal (Intel and M1) with
+# lipo -archs ~/Library/Developer/Xcode/DerivedData/Calculator-famakvwslclcbzbpvjeqqkftywmo/Build/Products/Debug/CalculatorMac.app/Contents/MacOS/CalculatorMac
