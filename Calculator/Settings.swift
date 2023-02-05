@@ -388,7 +388,13 @@ struct Settings: View {
     }
     
     var hobbyProject: some View {
-        Text("This is a hobby project by Joachim Neumann. Although I have done some testing, errors may occur. The App is free to use - except for copying and pasting the result. The code is open source and you may open an issue at the ")
+        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+        let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
+        
+        return Text("\nVersion: \(appVersion ?? "unknown") (build \(buildNumber ?? "unknown"))")
+            .foregroundColor(Color.gray) +
+
+        Text("\nThis is a hobby project by Joachim Neumann. Although I have done some testing, errors may occur. The App is free to use - except for copying and pasting the result. The code is open source and you may open an issue at the ")
             .foregroundColor(Color.gray) +
             
         Text("[github repository](https://github.com/joachimneumann/Calculator)")
