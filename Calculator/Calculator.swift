@@ -27,7 +27,7 @@ struct Calculator: View {
                 screen: screen,
                 backgroundColor: screen.backgroundColor)
                 .padding(.bottom, screen.portraitIPhoneDisplayBottomPadding)
-                .padding(.horizontal, screen.portraitIPhoneDisplayHorizontalPadding)
+                .padding(.horizontal, screen.displayHorizontalPadding)
             NonScientificKeyboard(
                 screen: screen,
                 viewModel: viewModel)
@@ -48,11 +48,11 @@ struct Calculator: View {
     }
     
     var infoView: some View {
-        let leadingPaddingToCenterRad = 0.5 * (screen.iconsWidth - screen.plusIconSize) + 0.5 * screen.plusIconSize - 0.5 * screen.radWidth + screen.macHorizontalPadding
+        let leadingPaddingToCenterRad = 0.5 * (screen.iconsWidth - screen.plusIconSize) + 0.5 * screen.plusIconSize - 0.5 * screen.radWidth + screen.displayHorizontalPadding
         return HStack(spacing: 0.0) {
             let info = "\(viewModel.showPrecision ? "Precision: "+viewModel.precisionDescription+" digits" : "\(viewModel.rad ? "Rad" : "")")"
             Text(info)
-                .foregroundColor(screen.isMac ? Color(white: 236.0/255.0) : .white)
+                .foregroundColor(screen.defaultTextColor)
                 .font(Font(screen.infoUiFont))
                 .accessibilityIdentifier("infoText")
             Spacer()
@@ -105,7 +105,7 @@ struct Calculator: View {
                 }
             }
         }
-        .padding(.horizontal, screen.macHorizontalPadding)
+        .padding(.horizontal, screen.displayHorizontalPadding)
     }
     
     var landscapeView: some View {

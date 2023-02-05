@@ -53,10 +53,12 @@ protocol Separators {
 
 struct Screen: Equatable, DisplayLengthLimiter, Separators {
 
+    static func == (lhs: Screen, rhs: Screen) -> Bool { /// used to detect rotation
+        lhs.keySize == rhs.keySize
+    }
     static func appleFont(ofSize size: CGFloat, portrait: Bool, weight: AppleFont.Weight = .thin) -> AppleFont {
         return AppleFont.monospacedDigitSystemFont(ofSize: size, weight: weight)
     }
-
     
     /// I initialize the decimalSeparator with the locale preference, but
     /// I ignore the value of Locale.current.groupingSeparator
@@ -69,25 +71,21 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
     @AppStorage("groupingSeparator", store: .standard)
     var groupingSeparator: GroupingSeparator = .none
 
-    static func == (lhs: Screen, rhs: Screen) -> Bool { /// used to detect rotation
-        lhs.keySize == rhs.keySize
-    }
+    private let isPad: Bool
+    private var isMac: Bool = false
 
-    let isPad: Bool
     let isPortraitPhone: Bool
-    var isMac: Bool = false
     let keyboardHeight: CGFloat
     let keySpacing: CGFloat
     let keySize: CGSize
     var ePadding: CGFloat /// var and not let, because it is set to 0.0 in the tests
     let plusIconSize: CGFloat
     let iconsWidth: CGFloat
-    let plusIconLeftPadding: CGFloat
+    let plusIconTrailingPadding: CGFloat
     var uiFontSize: CGFloat
     let infoUiFont: AppleFont
     let infoUiFontSize: CGFloat
-    let portraitIPhoneDisplayHorizontalPadding: CGFloat
-    let macHorizontalPadding: CGFloat
+    let displayHorizontalPadding: CGFloat
     let portraitIPhoneDisplayBottomPadding: CGFloat
     let horizontalPadding: CGFloat
     let bottomPadding: CGFloat
@@ -101,7 +99,8 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
     var radWidth: CGFloat = 0.0
     var eWidth: CGFloat = 0.0
     let backgroundColor: Color
-    
+    let defaultTextColor: Color
+
     let appleFont: AppleFont
     private let calculatorWidth: CGFloat
         
@@ -112,15 +111,17 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
 #if os(macOS)
         self.isMac = true
         backgroundColor = Color(white: 80.0/255.0)
+        defaultTextColor = Color(white: 236.0/255.0)
         isPad = false
         let isPortrait = false
         isPortraitPhone = false
         keySpacing = 1.0
         horizontalPadding = 0.0
-        macHorizontalPadding = 10
+        displayHorizontalPadding = 10
 #else
         self.isMac = false
         backgroundColor = .black
+        defaultTextColor = .white
         isPad = UIDevice.current.userInterfaceIdiom == .pad
         let isPortrait = screenSize.height > screenSize.width
         isPortraitPhone = isPad ? false : isPortrait
@@ -132,11 +133,9 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
             keySpacing = 0.012 * screenSize.width
             horizontalPadding = 0.0
         }
-        macHorizontalPadding = 0.0
+        displayHorizontalPadding = screenSize.width * 0.035
 #endif
         
-        
-        portraitIPhoneDisplayHorizontalPadding = screenSize.width * 0.035
         portraitIPhoneDisplayBottomPadding = screenSize.height * 0.012
         
         calculatorWidth = screenSize.width - 2 * horizontalPadding
@@ -166,7 +165,7 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         
         plusIconSize = keyboardHeight * 0.13
         iconsWidth   = keyboardHeight * 0.16
-        plusIconLeftPadding = plusIconSize * 0.4
+        plusIconTrailingPadding = plusIconSize * 0.4
         ePadding = isPortraitPhone ? plusIconSize * 0.1 : plusIconSize * 0.3
         uiFontSize = 0.16 * keyboardHeight
         if isPortraitPhone { uiFontSize = 0.125 * keyboardHeight }
@@ -200,9 +199,14 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         CGFloat(0.5 * appleFont.capHeight) +
         CGFloat(0.5 * plusIconSize)
                 
-        displayWidth = calculatorWidth -
-        (isPortraitPhone ? 2.0 * portraitIPhoneDisplayHorizontalPadding : iconsWidth + plusIconLeftPadding) -
-        2.0 * macHorizontalPadding
+        if isPortraitPhone {
+            displayWidth = calculatorWidth - 2.0 * displayHorizontalPadding
+        } else {
+            displayWidth = calculatorWidth -
+            2.0 * displayHorizontalPadding -
+            iconsWidth -
+            plusIconTrailingPadding
+        }
     }
 
     private func textSize(string: String, appleFont: AppleFont?, kerning: CGFloat) -> CGSize {

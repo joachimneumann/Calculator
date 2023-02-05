@@ -183,7 +183,7 @@ struct Icons : View {
             .minimumScaleFactor(0.01) // in case "paste" is too wide on small phones
         }
         .frame(width: screen.iconsWidth)
-        .padding(.trailing, screen.plusIconLeftPadding)
+        .padding(.trailing, screen.plusIconTrailingPadding)
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .active {
                 self.isValidPasteContent = true
