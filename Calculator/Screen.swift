@@ -141,6 +141,13 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         calculatorWidth = screenSize.width - 2 * horizontalPadding
         let keyWidth: CGFloat
         let keyHeight: CGFloat
+        
+#if os(macOS)
+        keyWidth = (calculatorWidth - 9.0 * keySpacing) * 0.1
+        keyboardHeight = 0.8 * screenSize.height
+        keyHeight = (keyboardHeight - 4.0 * keySpacing) * 0.2
+        bottomPadding = 0.0
+#else
         if isPortrait {
             /// Round keys
             keyWidth = isPad ? (calculatorWidth - 9.0 * keySpacing) * 0.1 : (calculatorWidth - 3.0 * keySpacing) * 0.25
@@ -152,7 +159,7 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
             keyWidth = (calculatorWidth - 9.0 * keySpacing) * 0.1
             if isPad {
                 /// landscape iPad: half of the screen is the keyboard
-                keyboardHeight = isPortrait ? screenSize.height * 0.4 : screenSize.height * 0.5
+                keyboardHeight = screenSize.height * 0.5
             } else {
                 /// iPhone landscape
                 keyboardHeight = 0.8 * screenSize.height
@@ -160,6 +167,7 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
             keyHeight = (keyboardHeight - 4.0 * keySpacing) * 0.2
             bottomPadding = 0.0
         }
+#endif
         
         keySize = CGSize(width: keyWidth, height: keyHeight)
         
