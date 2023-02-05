@@ -269,12 +269,14 @@ struct Settings: View {
                         presentationMode.wrappedValue.dismiss()
                     }
                 } label: {
-                    Image(systemName: "chevron.left")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: screen.infoUiFontSize * 0.7)
-                        .padding(.trailing, screen.infoUiFontSize * 0.1)
-                    Text("Back")
+                    HStack {
+                        Image(systemName: "chevron.left")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height: screen.infoUiFontSize * 0.7)
+                            .padding(.trailing, screen.infoUiFontSize * 0.1)
+                        Text("Back")
+                    }
                 }
                 .buttonStyle(TransparentButtonStyle())
                 Spacer()
@@ -386,11 +388,14 @@ struct Settings: View {
     }
     
     var hobbyProject: some View {
-        (Text("This is a hobby project by Joachim Neumann. Although I have done some testing, errors may occur. The App is free to use - except for the copying and pasting the result. The code is open source and you may open an issue at the ")
-         + Text("[github repository](https://github.com/joachimneumann/Calculator)")
-         + Text("\nNote: the gmp and mpfr libraries can in rare circumstances crash the app. Interestingly, their developers deem it appropriate for the library to crash the app in certain situations without allowing the me to catch the error. Sorry for that."))
-        .foregroundColor(.gray)
-        .tint(.blue) /// link color
+        Text("This is a hobby project by Joachim Neumann. Although I have done some testing, errors may occur. The App is free to use - except for copying and pasting the result. The code is open source and you may open an issue at the ")
+            .foregroundColor(Color.gray) +
+            
+        Text("[github repository](https://github.com/joachimneumann/Calculator)")
+            .foregroundColor(Color.white) + /// This link is blue in MacOS. I don't know why.
+            
+        Text(".\nNote: the gmp and mpfr libraries can in rare circumstances crash the app. Interestingly, their developers deem it appropriate for the library to crash the app in certain situations without allowing the me to catch the error. Sorry for that.")
+            .foregroundColor(Color.gray)
     }
     
     struct ColoredToggleStyle: ToggleStyle {
@@ -451,7 +456,6 @@ struct ControlCenter_Previews: PreviewProvider {
 struct TransparentButtonStyle: ButtonStyle {
   func makeBody(configuration: Self.Configuration) -> some View {
     configuration.label
-      .foregroundColor(configuration.isPressed ? .yellow : .white)
       .background(.clear)
   }
 }
