@@ -172,7 +172,12 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         if isMac { uiFontSize = 0.22 * keyboardHeight }
         uiFontSize = uiFontSize.rounded()
         appleFont = Self.appleFont(ofSize: uiFontSize, portrait: isPortraitPhone)
-        infoUiFontSize = uiFontSize * (isMac ? 0.25 : 0.3)
+        
+#if os(macOS)
+        infoUiFontSize = uiFontSize * 0.25
+#else
+        infoUiFontSize = uiFontSize * 0.3
+#endif
         infoUiFont = Screen.appleFont(ofSize: infoUiFontSize, portrait: isPortrait
                                    , weight: .regular)
 
