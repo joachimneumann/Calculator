@@ -139,17 +139,17 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         portraitIPhoneDisplayBottomPadding = screenSize.height * 0.012
         
         calculatorWidth = screenSize.width - 2 * horizontalPadding
-        let tempKeyWidth: CGFloat
-        let tempKeyheight: CGFloat
+        let keyWidth: CGFloat
+        let keyHeight: CGFloat
         if isPortrait {
             /// Round keys
-            tempKeyWidth = isPad ? (calculatorWidth - 9.0 * keySpacing) * 0.1 : (calculatorWidth - 3.0 * keySpacing) * 0.25
-            tempKeyheight = tempKeyWidth
-            keyboardHeight = 5 * tempKeyheight + 4 * keySpacing
+            keyWidth = isPad ? (calculatorWidth - 9.0 * keySpacing) * 0.1 : (calculatorWidth - 3.0 * keySpacing) * 0.25
+            keyHeight = keyWidth
+            keyboardHeight = 5 * keyHeight + 4 * keySpacing
             bottomPadding = isPad ? 0.0 : keyboardHeight * 0.09
         } else {
             /// wider keys
-            tempKeyWidth = (calculatorWidth - 9.0 * keySpacing) * 0.1
+            keyWidth = (calculatorWidth - 9.0 * keySpacing) * 0.1
             if isPad {
                 /// landscape iPad: half of the screen is the keyboard
                 keyboardHeight = isPortrait ? screenSize.height * 0.4 : screenSize.height * 0.5
@@ -157,29 +157,27 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
                 /// iPhone landscape
                 keyboardHeight = 0.8 * screenSize.height
             }
-            tempKeyheight = (keyboardHeight - 4.0 * keySpacing) * 0.2
+            keyHeight = (keyboardHeight - 4.0 * keySpacing) * 0.2
             bottomPadding = 0.0
         }
         
-        keySize = CGSize(width: tempKeyWidth, height: tempKeyheight)
+        keySize = CGSize(width: keyWidth, height: keyHeight)
         
         plusIconSize = keyboardHeight * 0.13
         iconsWidth   = keyboardHeight * 0.16
         plusIconTrailingPadding = plusIconSize * 0.4
         ePadding = isPortraitPhone ? plusIconSize * 0.1 : plusIconSize * 0.3
-        uiFontSize = 0.16 * keyboardHeight
-        if isPortraitPhone { uiFontSize = 0.125 * keyboardHeight }
-        if isMac { uiFontSize = 0.22 * keyboardHeight }
-        uiFontSize = uiFontSize.rounded()
-        appleFont = Self.appleFont(ofSize: uiFontSize, portrait: isPortraitPhone)
-        
 #if os(macOS)
+        uiFontSize = 0.22 * keyboardHeight
         infoUiFontSize = uiFontSize * 0.25
 #else
+        uiFontSize = 0.16 * keyboardHeight
+        if isPortraitPhone { uiFontSize = 0.125 * keyboardHeight }
         infoUiFontSize = uiFontSize * 0.3
 #endif
-        infoUiFont = Screen.appleFont(ofSize: infoUiFontSize, portrait: isPortrait
-                                   , weight: .regular)
+        uiFontSize = uiFontSize.rounded()
+        appleFont = Self.appleFont(ofSize: uiFontSize, portrait: isPortraitPhone)
+        infoUiFont = Screen.appleFont(ofSize: infoUiFontSize, portrait: isPortrait, weight: .regular)
 
         kerning = -0.02 * uiFontSize
         
