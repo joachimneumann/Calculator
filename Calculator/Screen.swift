@@ -144,7 +144,7 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         
 #if os(macOS)
         keyWidth = (calculatorWidth - 9.0 * keySpacing) * 0.1
-        keyboardHeight = 0.8 * screenSize.height
+        keyboardHeight = 0.815 * screenSize.height
         keyHeight = (keyboardHeight - 4.0 * keySpacing) * 0.2
         bottomPadding = 0.0
 #else

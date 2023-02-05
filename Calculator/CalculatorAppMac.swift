@@ -13,7 +13,7 @@ public typealias AppleFont = NSFont
 struct CalculatorApp: App {
     
     let width: CGFloat = 574.0
-    let height: CGFloat = 295.0
+    let height: CGFloat = 293.0
     
     var body: some Scene {
         let screen = Screen(CGSize(width: width, height: height))
