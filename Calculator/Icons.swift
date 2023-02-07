@@ -54,7 +54,7 @@ struct Icons : View {
                         setIsCopying(to: true)
                         wait300msDone = false
                         Task.detached(priority: .high) {
-                            try? await Task.sleep(nanoseconds: 3_000_000_000)
+                            try? await Task.sleep(nanoseconds: 300_000_000)
                             await MainActor.run() {
                                 wait300msDone = true
                                 if copyDone {
@@ -97,7 +97,7 @@ struct Icons : View {
                         pasteDone = false
                         wait300msDone = false
                         Task.detached(priority: .high) {
-                            try? await Task.sleep(nanoseconds: 3_000_000_000)
+                            try? await Task.sleep(nanoseconds: 300_000_000)
                             await MainActor.run() {
                                 wait300msDone = true
                                 if pasteDone {
