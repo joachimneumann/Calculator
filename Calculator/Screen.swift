@@ -179,7 +179,7 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
 #else
         uiFontSize = 0.16 * keyboardHeight
         if isPortraitPhone { uiFontSize = 0.125 * keyboardHeight }
-        infoUiFontSize = uiFontSize * 0.3
+        infoUiFontSize = uiFontSize * 0.3 > 20.0 ? 20.0 : uiFontSize * 0.3
 #endif
         uiFontSize = uiFontSize.rounded()
         appleFont = Self.appleFont(ofSize: uiFontSize)
