@@ -119,6 +119,9 @@ struct Settings: View {
             settingsDecimalSeparator       = screen.decimalSeparator
             settingsGroupingSeparator      = screen.groupingSeparator
         }
+#if !os(macOS)
+        .navigationBarHidden(true)
+#endif
         .navigationBarBackButtonHidden(true)
     }
     
