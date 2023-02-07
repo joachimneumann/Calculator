@@ -49,19 +49,37 @@ struct Settings: View {
                                 screen: screen,
                                 settingsPrecision: settingsPrecision)
                     
-                    decimalSeparatorView
-                        .padding(.top, 20)
+//                    HStack(alignment: .center) {
+//                        VStack(alignment: .leading, spacing: 30) {
+//                        Text("This is a short string.")
+//                            .padding()
+//                            .frame(maxHeight: .infinity)
+//                            .background(.red)
+//                        Text("This is a short.")
+//                            .background(.red)
+//                        }
+//                        .fixedSize(horizontal: true, vertical: false)
+//                        VStack(alignment: .leading, spacing: 30) {
+//                            Button("Log in") { }
+//                                .foregroundColor(.white)
+//                                .padding()
+//                                .frame(maxWidth: .infinity)
+//                                .background(.red)
+//                                .clipShape(Capsule())
+//
+//                            Button("Reset Password") { }
+//                                .foregroundColor(.white)
+//                                .padding()
+//                                .frame(maxWidth: .infinity)
+//                                .background(.red)
+//                                .clipShape(Capsule())
+//                        }
+//                        .fixedSize(horizontal: true, vertical: false)
+//                    }
+//                    .fixedSize(horizontal: false, vertical: true)
                     
-                    groupingSeparatorView
-                        .padding(.top, 15)
                     
-                    ForceScientificDisplay(
-                        timerIsRunning: timerIsRunning,
-                        settingsForceScientific: $settingsForceScientific,
-                        decimalSeparator: settingsDecimalSeparator)
-                    .padding(.top, 15)
-                    
-                    showPreliminaryResults
+                    switches
                         .padding(.top, 20)
                     
                     hobbyProject
@@ -286,50 +304,89 @@ struct Settings: View {
         }
     }
     
-    struct ForceScientificDisplay: View {
-        let timerIsRunning: Bool
-        @Binding var settingsForceScientific: Bool
-        let decimalSeparator: DecimalSeparator
-        
-        var body: some View {
-            HStack(spacing: 0.0) {
+//        .fixedSize(horizontal: false, vertical: true)
+//        .fixedSize(horizontal: true, vertical: false)
+    var switches: some View {
+        HStack(alignment: .center, spacing: 20.0) {
+            let tableCellHeight = 50.0
+            VStack(alignment: .leading, spacing: 00.0) {
+                Text("Decimal Separator")
+                    .frame(height: tableCellHeight)
+                Text("Grouping Separator")
+                    .frame(height: tableCellHeight)
                 Text("Force scientific display")
-                    .frame(minWidth: 150)
-                    .background(Color.yellow)
-                    .foregroundColor(timerIsRunning ? .gray : .white)
-                    .multilineTextAlignment(.leading)
-                Toggle("", isOn: $settingsForceScientific)
-                    .foregroundColor(Color.green)
+                    .frame(height: tableCellHeight)
+                Text("Show preliminary results")
+                    .frame(height: tableCellHeight)
+            }
+            .foregroundColor(timerIsRunning ? .gray : .white)
+            .multilineTextAlignment(.leading)
+            VStack(alignment: .leading, spacing: 0.0) {
+                Picker("", selection: $settingsDecimalSeparator) {
+                    ForEach(DecimalSeparator.allCases, id: \.self) { value in
+                        Text("\(value.rawValue)")
+                            .tag(value)
+                    }
+                }
+                .frame(height: tableCellHeight)
+                .onChange(of: settingsDecimalSeparator) { _ in
+                    if settingsDecimalSeparator == .comma {
+                        if settingsGroupingSeparator == .comma {
+                            settingsGroupingSeparator = .dot
+                        }
+                    } else if settingsDecimalSeparator == .dot {
+                        if settingsGroupingSeparator == .dot {
+                            settingsGroupingSeparator = .comma
+                        }
+                    }
+                }
+                .pickerStyle(.segmented)
+                .frame(width: 230 * 2 / 3)
+                Picker("", selection: $settingsGroupingSeparator) {
+                    ForEach(GroupingSeparator.allCases, id: \.self) { value in
+                        Text("\(value.rawValue)")
+                            .tag(value)
+                    }
+                }
+                .frame(height: tableCellHeight)
+                .onChange(of: settingsGroupingSeparator) { _ in
+                    if settingsGroupingSeparator == .comma {
+                        if settingsDecimalSeparator == .comma {
+                            settingsDecimalSeparator = .dot
+                        }
+                    } else if settingsGroupingSeparator == .dot { /// dot
+                        if settingsDecimalSeparator == .dot { /// also dot
+                            settingsDecimalSeparator = .comma
+                        }
+                    }
+                }
+                .pickerStyle(.segmented)
+                .frame(width: 230)
+                HStack(spacing: 40.0) {
+                    Toggle("", isOn: $settingsForceScientific)
+                        .toggleStyle(
+                            ColoredToggleStyle(onColor: Color(white: timerIsRunning ? 0.4 : 0.6),
+                                               offColor: Color(white: 0.25),
+                                               thumbColor: timerIsRunning ? Color.gray : Color.white))
+                        .frame(width: 40)
+                        .disabled(timerIsRunning)
+                        .buttonStyle(TransparentButtonStyle())
+                        .frame(height: tableCellHeight)
+                    let example = settingsForceScientific ?
+                    "1\(settingsDecimalSeparator.string)20003 e4" :
+                    "12\(settingsGroupingSeparator.string)000\(settingsDecimalSeparator.string)3"
+                    Text(example)
+                }
+                Toggle("", isOn: $settingsShowPreliminaryResults)
                     .toggleStyle(
                         ColoredToggleStyle(onColor: Color(white: timerIsRunning ? 0.4 : 0.6),
                                            offColor: Color(white: 0.25),
-                        thumbColor: timerIsRunning ? Color.gray : Color.white))
-                    .frame(width: 70)
+                                           thumbColor: timerIsRunning ? .gray : .white))
+                    .frame(width: 40)
                     .disabled(timerIsRunning)
                     .buttonStyle(TransparentButtonStyle())
-                Spacer()
+                    .frame(height: tableCellHeight)
             }
-            
-        }
-    }
-    
-    var showPreliminaryResults: some View {
-        HStack(spacing: 0.0) {
-            Text("Show preliminary results")
-                .frame(minWidth: 150)
-                .background(Color.yellow)
-                .foregroundColor(timerIsRunning ? .gray : .white)
-                .multilineTextAlignment(.leading)
-            Toggle("", isOn: $settingsShowPreliminaryResults)
-                .foregroundColor(Color.green)
-                .toggleStyle(
-                    ColoredToggleStyle(onColor: Color(white: timerIsRunning ? 0.4 : 0.6),
-                                       offColor: Color(white: 0.25),
-                                       thumbColor: timerIsRunning ? .gray : .white))
-                .frame(width: 70)
-                .disabled(timerIsRunning)
-                .buttonStyle(TransparentButtonStyle())
-            Spacer()
         }
     }
     
@@ -424,7 +481,7 @@ struct Settings: View {
                 {
                     RoundedRectangle(cornerRadius: 16, style: .circular)
                         .fill(configuration.isOn ? onColor : offColor)
-                        .frame(width: 44, height: 22)
+                        .frame(width: 50, height: 29)
                         .overlay(
                             Circle()
                                 .fill(thumbColor)

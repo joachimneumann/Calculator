@@ -26,9 +26,9 @@ enum DecimalSeparator: String, Codable, CaseIterable{
     }
 }
 enum GroupingSeparator: String, Codable, CaseIterable{
-    case none
     case comma
     case dot
+    case none
     var character: Character? {
         get {
             switch self {
