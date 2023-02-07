@@ -118,6 +118,7 @@ struct Calculator: View {
                 .overlay() {
                     landscapeKeyboardPlusStuff
                 }
+                .navigationBarHidden(true)
         }
         .accentColor(.white) // for the navigation back button
     }
