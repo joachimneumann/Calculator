@@ -174,14 +174,13 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         plusIconTrailingPadding = plusIconSize * 0.4
         ePadding = isPortraitPhone ? plusIconSize * 0.1 : plusIconSize * 0.3
 #if os(macOS)
-        uiFontSize = 0.22 * keyboardHeight
-        infoUiFontSize = uiFontSize * 0.2
+        uiFontSize = (0.22 * keyboardHeight).rounded()
+        infoUiFontSize = 12.0
 #else
-        uiFontSize = 0.16 * keyboardHeight
+        uiFontSize = (0.16 * keyboardHeight).rounded()
         if isPortraitPhone { uiFontSize = 0.125 * keyboardHeight }
-        infoUiFontSize = uiFontSize * 0.3 > 20.0 ? 20.0 : uiFontSize * 0.3
+        infoUiFontSize = 16.0
 #endif
-        uiFontSize = uiFontSize.rounded()
         appleFont = Self.appleFont(ofSize: uiFontSize)
         infoUiFont = Screen.appleFont(ofSize: infoUiFontSize, weight: .regular)
 
