@@ -20,19 +20,25 @@ struct Icons : View {
     @State var wait300msDone = false
     
     var plus: some View {
-        Image(systemName: "plus.circle.fill")
-            .resizable()
-            .font(Font.title.weight(.thin))
-            .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
-            .frame(width: screen.plusIconSize, height: screen.plusIconSize)
-            .background(.white)
-            .foregroundColor(.gray)
-            .clipShape(Circle())
-            .animation(.linear, value: isZoomed)
-            .onTapGesture {
-                isZoomed.toggle()
-            }
-            .accessibilityIdentifier("plusButton")
+        ZStack() {
+            Image(systemName: "plus.circle.fill")
+                .resizable()
+                .font(Font.title.weight(.thin))
+                .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
+                .frame(width: screen.plusIconSize, height: screen.plusIconSize)
+                .background(.white)
+                .foregroundColor(.gray)
+                .clipShape(Circle())
+                .animation(.linear, value: isZoomed)
+                .onTapGesture {
+                    isZoomed.toggle()
+                }
+                .accessibilityIdentifier("plusButton")
+            /// This circle removes antialising effects from the background color at the edge of the plus image
+            Circle()
+                .stroke(.gray, lineWidth: 1)
+                .frame(width: screen.plusIconSize, height: screen.plusIconSize)
+        }
     }
     
     @ViewBuilder
