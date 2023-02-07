@@ -178,10 +178,15 @@ struct Settings: View {
         }
         
         var precisionStepper: some View {
-            ColoredStepper(
+#if os(macOS)
+            let h: CGFloat = 22.0
+#else
+            let h: CGFloat = 25.0
+#endif
+            return ColoredStepper(
                 plusEnabled: !timerIsRunning && memoryNeeded < PHYSICAL_MEMORY,
                 minusEnabled: !timerIsRunning && settingsPrecision > MIN_PRECISION,
-                height: 25,
+                height: h,
                 onIncrement: {
                     Task {
                         await MainActor.run() {
@@ -237,7 +242,11 @@ struct Settings: View {
         }
         
         var measurementLabel: some View {
+#if os(macOS)
+            let h: CGFloat = 60.0 * 12.0 / 16.0
+#else
             let h: CGFloat = 60.0
+#endif
             return HStack(spacing: 0.0) {
                 Text("Time to calculate sin(")
                     .foregroundColor(.gray)
