@@ -83,9 +83,7 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
     let plusIconTrailingPadding: CGFloat
     var uiFontSize: CGFloat
     let infoUiFont: AppleFont
-    let configUiFont: AppleFont
     let infoUiFontSize: CGFloat
-    let configUiFontSize: CGFloat
     let displayHorizontalPadding: CGFloat
     let portraitIPhoneDisplayBottomPadding: CGFloat
     let horizontalPadding: CGFloat
@@ -178,17 +176,14 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
 #if os(macOS)
         uiFontSize = 0.22 * keyboardHeight
         infoUiFontSize = uiFontSize * 0.2
-        configUiFontSize = uiFontSize * 0.26
 #else
         uiFontSize = 0.16 * keyboardHeight
         if isPortraitPhone { uiFontSize = 0.125 * keyboardHeight }
         infoUiFontSize = uiFontSize * 0.3
-        configUiFontSize = uiFontSize * 0.4
 #endif
         uiFontSize = uiFontSize.rounded()
         appleFont = Self.appleFont(ofSize: uiFontSize)
         infoUiFont = Screen.appleFont(ofSize: infoUiFontSize, weight: .regular)
-        configUiFont = Screen.appleFont(ofSize: configUiFontSize, weight: .regular)
 
         kerning = -0.02 * uiFontSize
         

@@ -12,7 +12,6 @@ struct PurchaseView: View {
     @ObservedObject var store: Store
     let viewModel: ViewModel
     let screen: Screen
-    let font: Font
     
     var body: some View {
         Group {
@@ -26,8 +25,8 @@ struct PurchaseView: View {
                                 Image(systemName: "chevron.left")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(height: screen.configUiFontSize * 0.7)
-                                    .padding(.trailing, screen.configUiFontSize * 0.1)
+                                    .frame(height: screen.infoUiFontSize * 0.7)
+                                    .padding(.trailing, screen.infoUiFontSize * 0.1)
                                 Text("Back")
                             }
                         }
@@ -81,7 +80,6 @@ struct PurchaseView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .font(font)
         .foregroundColor(.white)
         .padding()
         .task {

@@ -69,7 +69,7 @@ struct Settings: View {
                     
                     Spacer()
                 }
-                .font(font)
+                //.font(font)
                 .foregroundColor(Color.white)
             }
             .padding(.horizontal)
@@ -163,7 +163,7 @@ struct Settings: View {
             ColoredStepper(
                 plusEnabled: !timerIsRunning && memoryNeeded < PHYSICAL_MEMORY,
                 minusEnabled: !timerIsRunning && settingsPrecision > MIN_PRECISION,
-                height: 30,
+                height: 25,
                 onIncrement: {
                     Task {
                         await MainActor.run() {
@@ -215,21 +215,21 @@ struct Settings: View {
                 measurementLabel
                 measurementButton
             }
-            .offset(y: -0.15 * screen.configUiFontSize)
+            .offset(y: -0.15 * screen.infoUiFontSize)
         }
         
         var measurementLabel: some View {
-            HStack {
+            let h: CGFloat = 60.0
+            return HStack(spacing: 0.0) {
                 Text("Time to calculate sin(")
                     .foregroundColor(.gray)
-                let h = 3 * screen.configUiFontSize
                 Label(symbol: "√2", size: h, color: .gray)
-                    .frame(width: h, height: h)
-                    .offset(x: -1.45 * screen.configUiFontSize)
+                    .offset(x: -0.23 * h)
                 Text("):")
                     .foregroundColor(.gray)
-                    .offset(x: -2.8 * screen.configUiFontSize)
+                    .offset(x: -0.42 * h)
             }
+            .padding(.trailing, 0.6 * h)
         }
         var measurementButton: some View {
             Button {
@@ -253,7 +253,7 @@ struct Settings: View {
             }
             .buttonStyle(TransparentButtonStyle())
             .disabled(timerIsRunning)
-            .offset(x: -2.0 * screen.configUiFontSize)
+            .offset(x: -2.0 * screen.infoUiFontSize)
         }
     }
 
@@ -273,15 +273,14 @@ struct Settings: View {
                         Image(systemName: "chevron.left")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(height: screen.configUiFontSize * 0.7)
-                            .padding(.trailing, screen.configUiFontSize * 0.1)
+                            .frame(height: 15.0)
                         Text("Back")
                     }
                 }
                 .buttonStyle(TransparentButtonStyle())
                 Spacer()
             }
-            .font(font)
+//            .font(font)
             .foregroundColor(timerIsRunning ? .gray : .white)
             .padding()
         }
@@ -295,7 +294,10 @@ struct Settings: View {
         var body: some View {
             HStack(spacing: 0.0) {
                 Text("Force scientific display")
+                    .frame(minWidth: 150)
+                    .background(Color.yellow)
                     .foregroundColor(timerIsRunning ? .gray : .white)
+                    .multilineTextAlignment(.leading)
                 Toggle("", isOn: $settingsForceScientific)
                     .foregroundColor(Color.green)
                     .toggleStyle(
@@ -308,6 +310,26 @@ struct Settings: View {
                 Spacer()
             }
             
+        }
+    }
+    
+    var showPreliminaryResults: some View {
+        HStack(spacing: 0.0) {
+            Text("Show preliminary results")
+                .frame(minWidth: 150)
+                .background(Color.yellow)
+                .foregroundColor(timerIsRunning ? .gray : .white)
+                .multilineTextAlignment(.leading)
+            Toggle("", isOn: $settingsShowPreliminaryResults)
+                .foregroundColor(Color.green)
+                .toggleStyle(
+                    ColoredToggleStyle(onColor: Color(white: timerIsRunning ? 0.4 : 0.6),
+                                       offColor: Color(white: 0.25),
+                                       thumbColor: timerIsRunning ? .gray : .white))
+                .frame(width: 70)
+                .disabled(timerIsRunning)
+                .buttonStyle(TransparentButtonStyle())
+            Spacer()
         }
     }
     
@@ -371,22 +393,6 @@ struct Settings: View {
         }
     }
     
-    var showPreliminaryResults: some View {
-        HStack(spacing: 20.0) {
-            Text("show preliminary results")
-                .foregroundColor(timerIsRunning ? .gray : .white)
-            Toggle("", isOn: $settingsShowPreliminaryResults)
-                .foregroundColor(Color.green)
-                .toggleStyle(
-                    ColoredToggleStyle(onColor: Color(white: timerIsRunning ? 0.4 : 0.6),
-                                       offColor: Color(white: 0.25),
-                                       thumbColor: timerIsRunning ? .gray : .white))
-                .frame(width: 70)
-                .disabled(timerIsRunning)
-                .buttonStyle(TransparentButtonStyle())
-        }
-    }
-    
     var hobbyProject: some View {
         let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
         let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
@@ -418,7 +424,7 @@ struct Settings: View {
                 {
                     RoundedRectangle(cornerRadius: 16, style: .circular)
                         .fill(configuration.isOn ? onColor : offColor)
-                        .frame(width: 50, height: 29)
+                        .frame(width: 44, height: 22)
                         .overlay(
                             Circle()
                                 .fill(thumbColor)

@@ -39,15 +39,15 @@ struct Icons : View {
     var copy: some View {
         if !simulatePurchased && store.purchasedIDs.isEmpty {
             NavigationLink {
-                PurchaseView(store: store, viewModel: viewModel, screen: screen, font: Font(screen.configUiFont))
+                PurchaseView(store: store, viewModel: viewModel, screen: screen)
             } label: {
                 Text("copy")
-                    .font(Font(screen.configUiFont))
+                    .font(Font(screen.infoUiFont))
                     .foregroundColor(Color.white)
             }
         } else {
             Text("copy")
-                .font(Font(screen.configUiFont))
+                .font(Font(screen.infoUiFont))
                 .foregroundColor(viewModel.isCopying ? Color.orange : Color.white)
                 .onTapGesture {
                     if copyDone && pasteDone && !viewModel.isCopying && !viewModel.isPasting {
@@ -81,15 +81,15 @@ struct Icons : View {
     var paste: some View {
         if !simulatePurchased && store.purchasedIDs.isEmpty {
             NavigationLink {
-                PurchaseView(store: store, viewModel: viewModel, screen: screen, font: Font(screen.configUiFont))
+                PurchaseView(store: store, viewModel: viewModel, screen: screen)
             } label: {
                 Text("paste")
-                    .font(Font(screen.configUiFont))
+                    .font(Font(screen.infoUiFont))
                     .foregroundColor(Color.white)
             }
         } else {
             Text("paste")
-                .font(Font(screen.configUiFont))
+                .font(Font(screen.infoUiFont))
                 .foregroundColor(isValidPasteContent ? (viewModel.isPasting ? .orange : .white) : .gray)
                 .onTapGesture {
                     if copyDone && pasteDone && !viewModel.isCopying && !viewModel.isPasting && isValidPasteContent {
@@ -121,7 +121,7 @@ struct Icons : View {
     @ViewBuilder
     var settings: some View {
         NavigationLink {
-            Settings(viewModel: viewModel, screen: screen, font: Font(screen.configUiFont))
+            Settings(viewModel: viewModel, screen: screen, font: Font(screen.infoUiFont))
         } label: {
             Image(systemName: "gearshape")
                 .resizable()
@@ -145,7 +145,7 @@ struct Icons : View {
                 }
             } label: {
                 Text(integerLabel)
-                    .font(Font(screen.configUiFont))
+                    .font(Font(screen.infoUiFont))
                     .foregroundColor(Color.white)
             }
             .buttonStyle(TransparentButtonStyle())
@@ -163,7 +163,7 @@ struct Icons : View {
                 }
             } label: {
                 Text(floatLabel)
-                    .font(Font(screen.configUiFont))
+                    .font(Font(screen.infoUiFont))
                     .foregroundColor(Color.white)
             }
             .buttonStyle(TransparentButtonStyle())
