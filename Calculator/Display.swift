@@ -128,8 +128,10 @@ extension Display {
         separators: Separators,
         showAs: ShowAs,
         forceScientific: Bool) -> Display {
-        guard !stringNumber.contains(",") else { assert(false, "string contains comma, but only dot is allowed") }
-        guard !stringNumber.contains("e") else { assert(false, "scientific?") }
+        
+        assert(!stringNumber.contains(","))
+        assert(!stringNumber.contains("e"))
+            
         var mantissa: String
         var exponent: Int
         
