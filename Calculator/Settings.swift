@@ -23,7 +23,6 @@ struct Settings: View {
     @State var settingsDecimalSeparator: DecimalSeparator = .comma
     @State var settingsGroupingSeparator: GroupingSeparator = .none
     
-    
     var body: some View {
         VStack {
             BackButton(
@@ -43,42 +42,10 @@ struct Settings: View {
                         sizeOfOneNumber: sizeOfOneNumber,
                         memoryNeeded: sizeOfOneNumber * 100,
                         internalPrecisionInfo: Number.internalPrecision(for: settingsPrecision))
-                    
                     Measurement(timerIsRunning: $timerIsRunning,
                                 timerInfo: $timerInfo,
                                 screen: screen,
                                 settingsPrecision: settingsPrecision)
-                    
-//                    HStack(alignment: .center) {
-//                        VStack(alignment: .leading, spacing: 30) {
-//                        Text("This is a short string.")
-//                            .padding()
-//                            .frame(maxHeight: .infinity)
-//                            .background(.red)
-//                        Text("This is a short.")
-//                            .background(.red)
-//                        }
-//                        .fixedSize(horizontal: true, vertical: false)
-//                        VStack(alignment: .leading, spacing: 30) {
-//                            Button("Log in") { }
-//                                .foregroundColor(.white)
-//                                .padding()
-//                                .frame(maxWidth: .infinity)
-//                                .background(.red)
-//                                .clipShape(Capsule())
-//
-//                            Button("Reset Password") { }
-//                                .foregroundColor(.white)
-//                                .padding()
-//                                .frame(maxWidth: .infinity)
-//                                .background(.red)
-//                                .clipShape(Capsule())
-//                        }
-//                        .fixedSize(horizontal: true, vertical: false)
-//                    }
-//                    .fixedSize(horizontal: false, vertical: true)
-                    
-                    
                     switches
                         .padding(.top, 20)
                     

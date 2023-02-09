@@ -177,11 +177,13 @@ class ViewModel: ObservableObject, ShowAs {
             Task(priority: .high) {
                 await showUpColors(for: symbol)
             }
+            showPrecision = false
         case "Deg":
             rad = false
             Task(priority: .high) {
                 await showUpColors(for: symbol)
             }
+            showPrecision = false
         default:
             guard keyState == .notPressed else { return }
 
