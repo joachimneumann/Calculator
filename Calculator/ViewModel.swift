@@ -166,8 +166,7 @@ class ViewModel: ObservableObject, ShowAs {
             return
         }
 
-        let symbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(symbol) && !rad ? symbol+"D" : symbol
-
+        let calculatorSymbol = ["sin", "cos", "tan", "asin", "acos", "atan"].contains(symbol) && !rad ? symbol+"D" : symbol
         switch symbol {
         case "2nd":
             secondActive.toggle()
@@ -205,7 +204,7 @@ class ViewModel: ObservableObject, ShowAs {
                 await setPendingColors(for: symbol)
             }
             Task.detached(priority: .low) {
-                await self.defaultTask(for: symbol, screen: screen)
+                await self.defaultTask(for: calculatorSymbol, screen: screen)
                 self.keyState = .notPressed
             }
         }
