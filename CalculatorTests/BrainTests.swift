@@ -215,4 +215,140 @@ class BrainTests: XCTestCase {
         debugBrain.push("=")
         XCTAssertEqual(debugBrain.double, 5.43656365691809)
     }
+    
+    func testComma() {
+        debugBrain.push("AC")
+        debugBrain.push(",")
+        XCTAssertEqual(debugBrain.double, 0.0)
+
+        debugBrain.push("AC")
+        debugBrain.push(",")
+        debugBrain.push(",")
+        XCTAssertEqual(debugBrain.double, 0.0)
+
+        debugBrain.push("AC")
+        debugBrain.push(",")
+        debugBrain.push("0")
+        XCTAssertEqual(debugBrain.double, 0.0)
+        
+        debugBrain.push("AC")
+        debugBrain.push(",")
+        debugBrain.push("0")
+        debugBrain.push("0")
+        XCTAssertEqual(debugBrain.double, 0.0)
+        
+        debugBrain.push("AC")
+        debugBrain.push(",")
+        debugBrain.push("0")
+        debugBrain.push("0")
+        debugBrain.push("0")
+        XCTAssertEqual(debugBrain.double, 0.0)
+        
+        debugBrain.push("AC")
+        debugBrain.push(",")
+        debugBrain.push("0")
+        debugBrain.push("0")
+        debugBrain.push("0")
+        debugBrain.push("1")
+        XCTAssertEqual(debugBrain.double, 0.0001)
+    }
+    
+    func testSci() {
+        /// 3 e6
+        debugBrain.push("AC")
+        debugBrain.push(3)
+        debugBrain.push("EE")
+        debugBrain.push(6)
+        debugBrain.push("=")
+        XCTAssertEqual(debugBrain.double, 3000000.0)
+
+        /// 3 e6 + 0.01
+        debugBrain.push("AC")
+        debugBrain.push(3)
+        debugBrain.push("EE")
+        debugBrain.push(5)
+        debugBrain.push("=")
+        debugBrain.push("+")
+        debugBrain.push(",")
+        debugBrain.push(0)
+        debugBrain.push(0)
+        debugBrain.push(1)
+        debugBrain.push("=")
+        XCTAssertEqual(debugBrain.double, 300000.001)
+
+        /// 3 e77
+        debugBrain.push("AC")
+        debugBrain.push(3)
+        debugBrain.push("EE")
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push("=")
+        XCTAssertEqual(debugBrain.double, 3.0e77)
+
+        /// 3 e-77
+        debugBrain.push("AC")
+        debugBrain.push(3)
+        debugBrain.push("EE")
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push("±")
+        debugBrain.push("=")
+        XCTAssertEqual(debugBrain.double, 3.0e-77)
+
+        /// -3 e-77
+        debugBrain.push("AC")
+        debugBrain.push(3)
+        debugBrain.push("EE")
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push("±")
+        debugBrain.push("=")
+        debugBrain.push("±")
+        XCTAssertEqual(debugBrain.double, -3.0e-77)
+
+        /// -3 e-77
+        debugBrain.push("AC")
+        debugBrain.push(3)
+        debugBrain.push("±")
+        debugBrain.push("EE")
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push("±")
+        debugBrain.push("=")
+        XCTAssertEqual(debugBrain.double, -3.0e-77)
+
+
+        /// 8888888
+        debugBrain.push("AC")
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        XCTAssertEqual(debugBrain.double, 8888888.0)
+
+        debugBrain.push("AC")
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        debugBrain.push(8)
+        XCTAssertEqual(debugBrain.double, 8.88888888888888888888e18)
+    }
 }

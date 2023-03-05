@@ -1161,10 +1161,9 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(right(debugBrain.last), "e-11")
 
     }
-
-    func test() {
+    
+    func testComma() {
         let debugBrain = DebugBrain(precision: 100)
-
         /// 0,
         screen.decimalSeparator = .comma
         debugBrain.push("AC")
@@ -1207,6 +1206,10 @@ class CalculatorTests: XCTestCase {
         debugBrain.push("1")
         XCTAssertEqual(left(debugBrain.last), "0.0001")
         XCTAssertEqual(right(debugBrain.last), nil)
+    }
+
+    func test() {
+        let debugBrain = DebugBrain(precision: 100)
 
         /// -0,7
         debugBrain.push("AC")
