@@ -59,6 +59,7 @@
 		AA370C2D293352960041AE4E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA370C2C293352960041AE4E /* Extensions.swift */; };
 		AA370C31293352D60041AE4E /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA370C30293352D60041AE4E /* Key.swift */; };
 		AA3FB8272920E0E5002ECCEB /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3FB8262920E0E5002ECCEB /* Settings.swift */; };
+		AA510C7C29B470B7009368FC /* BrainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA510C7B29B470B7009368FC /* BrainTests.swift */; };
 		AA6577F52935B90D00DA98E7 /* TODOs.rtf in Resources */ = {isa = PBXBuildFile; fileRef = AA6577F42935B90D00DA98E7 /* TODOs.rtf */; };
 		AA672B0A295189950044DC08 /* ScrollViewConditionalAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA672B09295189950044DC08 /* ScrollViewConditionalAnimation.swift */; };
 		AA689125295E681400129593 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA689124295E681400129593 /* Brain.swift */; };
@@ -144,6 +145,7 @@
 		AA370C2C293352960041AE4E /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		AA370C30293352D60041AE4E /* Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		AA3FB8262920E0E5002ECCEB /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		AA510C7B29B470B7009368FC /* BrainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrainTests.swift; sourceTree = "<group>"; };
 		AA6577F42935B90D00DA98E7 /* TODOs.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = TODOs.rtf; sourceTree = "<group>"; };
 		AA672B09295189950044DC08 /* ScrollViewConditionalAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewConditionalAnimation.swift; sourceTree = "<group>"; };
 		AA689124295E681400129593 /* Brain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brain.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 			isa = PBXGroup;
 			children = (
 				AA08C7D2272EDA4A001B8575 /* CalculatorTests.swift */,
+				AA510C7B29B470B7009368FC /* BrainTests.swift */,
 			);
 			path = CalculatorTests;
 			sourceTree = "<group>";
@@ -537,6 +540,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA510C7C29B470B7009368FC /* BrainTests.swift in Sources */,
 				AA08C7D3272EDA4A001B8575 /* CalculatorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

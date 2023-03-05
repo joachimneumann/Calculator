@@ -284,7 +284,12 @@ class DebugBrain: BrainEngine {
     var no: Int { operatorStack.count }
     var nn: Int { n.count }
     var last: Number { n.last }
-    var double: Double { n.last.gmp != nil ? n.last.gmp!.toDouble() : -1.0 }
+    var double: Double {
+        if n.last.isStr {
+            n.last.toGmp()
+        }
+        return n.last.gmp!.toDouble()
+    }
 
     func speedTestSinSqrt2() async -> String {
         let parkBenchTimer = ParkBenchTimer()
