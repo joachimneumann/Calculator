@@ -375,17 +375,36 @@ class BrainTests: XCTestCase {
         /// memory
         debugBrain.push("AC")
         debugBrain.push("mc")
+        XCTAssertEqual(debugBrain.memoryDouble, 0.0)
         debugBrain.push(12)
         XCTAssertEqual(debugBrain.double, 12.0)
+        XCTAssertEqual(debugBrain.memoryDouble, 0.0)
 
         debugBrain.push("m+")
         XCTAssertEqual(debugBrain.double, 12.0)
+        XCTAssertEqual(debugBrain.memoryDouble, 12.0)
 
         debugBrain.push("m+")
         XCTAssertEqual(debugBrain.double, 12.0)
+        XCTAssertEqual(debugBrain.memoryDouble, 24.0)
+
+        debugBrain.push("m+")
+        XCTAssertEqual(debugBrain.double, 12.0)
+        XCTAssertEqual(debugBrain.memoryDouble, 36.0)
 
         debugBrain.push("mr")
-        XCTAssertEqual(debugBrain.double, 24.0)
+        XCTAssertEqual(debugBrain.double, 36.0)
+        XCTAssertEqual(debugBrain.memoryDouble, 36.0)
+
+        debugBrain.push(100)
+        XCTAssertEqual(debugBrain.double, 100.0)
+        XCTAssertEqual(debugBrain.memoryDouble, 36.0)
+
+        debugBrain.push("m+")
+        XCTAssertEqual(debugBrain.double, 100.0)
+
+        debugBrain.push("mr")
+        XCTAssertEqual(debugBrain.double, 136.0)
 
         debugBrain.push(10)
         XCTAssertEqual(debugBrain.double, 10.0)
@@ -394,7 +413,7 @@ class BrainTests: XCTestCase {
         XCTAssertEqual(debugBrain.double, 10.0)
 
         debugBrain.push("mr")
-        XCTAssertEqual(debugBrain.double, 14.0)
+        XCTAssertEqual(debugBrain.double, 126.0)
     }
 
 }
