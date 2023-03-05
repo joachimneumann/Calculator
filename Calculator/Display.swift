@@ -146,7 +146,8 @@ extension Display {
         }
 
         if let displayLengthLimiter = displayLengthLimiter {
-            if !forceScientific && textWidth(signAndSeparator, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
+            let w = signAndSeparator.textWidth(kerning: displayLengthLimiter.kerning, appleFont: displayLengthLimiter.appleFont)
+            if !forceScientific && w <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
                 return fromLeft(signAndSeparator)
             } /// else: too long to fil into a single line display
         } else {
@@ -213,21 +214,7 @@ extension Display {
             return minusSign + integerPart
         }
     }
-    
-    private func textSize(string: String, displayLengthLimiter: DisplayLengthLimiter) -> CGSize {
-        var attributes: [NSAttributedString.Key : Any] = [:]
-        attributes[.kern] = displayLengthLimiter.kerning
-        attributes[.font] = displayLengthLimiter.appleFont
-        return string.size(withAttributes: attributes)
-    }
-    func textWidth(_ string: String, displayLengthLimiter: DisplayLengthLimiter) -> CGFloat {
-        textSize(string: string, displayLengthLimiter: displayLengthLimiter).width
-    }
-    
-    func textHeight(_ string: String, displayLengthLimiter: DisplayLengthLimiter) -> CGFloat {
-        textSize(string: string, displayLengthLimiter: displayLengthLimiter).height
-    }
-    
+        
     private func fromMantissaAndExponent(
         _ mantissa_: String,
         _ exponent: Int,
@@ -260,7 +247,8 @@ extension Display {
             mantissa = mantissa.padding(toLength: exponent+1, withPad: "0", startingAt: 0)
             let withSeparators = withSeparators(numberString: mantissa, isNegative: isNegative, separators: separators)
             if let displayLengthLimiter = displayLengthLimiter {
-                let fitsInOneLine = textWidth(withSeparators, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding
+                let w = withSeparators.textWidth(kerning: displayLengthLimiter.kerning, appleFont: displayLengthLimiter.appleFont)
+                let fitsInOneLine = w <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding
                 if !fitsInOneLine && exponent < Self.MAX_DISPLAY_LENGTH { returnValue.canBeInteger = true }
                 if showAs.showAsInt || fitsInOneLine {
                     returnValue.left = withSeparators
@@ -283,10 +271,11 @@ extension Display {
                 if let index = floatString.firstIndex(of: separators.decimalSeparator.character) {
                     indexInt = floatString.distance(from: floatString.startIndex, to: index)
                     var floatCandidate = String(floatString.prefix(indexInt+1))
-                    let fitsInOneLine = textWidth(floatCandidate, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding
+                    let w = floatCandidate.textWidth(kerning: displayLengthLimiter.kerning, appleFont: displayLengthLimiter.appleFont)
+                    let fitsInOneLine = w <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding
                     if !fitsInOneLine && exponent < Self.MAX_DISPLAY_LENGTH { returnValue.canBeFloat = true }
                     if fitsInOneLine && displayLengthLimiter.isPortraitPhone {
-                        while indexInt <= floatString.count && textWidth(floatCandidate, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
+                        while indexInt <= floatString.count && w <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
                             indexInt += 1
                             floatCandidate = String(floatString.prefix(indexInt+1))
                         }
@@ -320,12 +309,13 @@ extension Display {
             testFloat += "x"
             floatString = minusSign + "0" + separators.decimalSeparator.string + floatString
             if let displayLengthLimiter = displayLengthLimiter {
-                let fitsInOneLine = textWidth(testFloat, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding
+                let w = testFloat.textWidth(kerning: displayLengthLimiter.kerning, appleFont: displayLengthLimiter.appleFont)
+                let fitsInOneLine = w <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding
                 if !fitsInOneLine && exponent > -Self.MAX_DISPLAY_LENGTH { returnValue.canBeFloat = true }
                 if fitsInOneLine && displayLengthLimiter.isPortraitPhone {
                     var indexInt = 3 /// minimum: X,x
                     var limitedFloatString = String(floatString.prefix(indexInt))
-                    while indexInt <= floatString.count && textWidth(limitedFloatString, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth {
+                    while indexInt <= floatString.count && w <= displayLengthLimiter.displayWidth {
                         indexInt += 1
                         limitedFloatString = String(floatString.prefix(indexInt))
                     }
@@ -360,11 +350,12 @@ extension Display {
             if displayLengthLimiter.isPortraitPhone {
                 var indexInt = 3 /// minimum: X,x
                 var floatString = String(mantissa.prefix(indexInt))
-                if textWidth(floatString + exponentString, displayLengthLimiter: displayLengthLimiter) > displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
+                let w = (floatString + exponentString).textWidth(kerning: displayLengthLimiter.kerning, appleFont: displayLengthLimiter.appleFont)
+                if w > displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
                     returnValue.left = "can not show"
                     return returnValue
                 }
-                while indexInt <= mantissa.count && textWidth(floatString + exponentString, displayLengthLimiter: displayLengthLimiter) <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
+                while indexInt <= mantissa.count && w <= displayLengthLimiter.displayWidth - displayLengthLimiter.ePadding {
                     indexInt += 1
                     floatString = String(mantissa.prefix(indexInt))
                 }

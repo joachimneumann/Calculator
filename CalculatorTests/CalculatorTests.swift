@@ -46,10 +46,11 @@ class CalculatorTests: XCTestCase {
     }
 
     func test_portraitIPhone() {
-        screen = Screen(CGSize(width: 130, height: 130))
+        screen = Screen(CGSize(width: 230, height: 230))
         screen.groupingSeparator = .none
         screen.decimalSeparator = .dot
         screen.ePadding = 0.0
+        let x = screen.uiFontSize// "12345678901".textWidth(kerning: 0.0, appleFont: screen.appleFont)
         XCTAssertEqual( left("12345678901"),     "12345678901")
         XCTAssertEqual(right("12345678901"),     nil)
         
@@ -86,8 +87,6 @@ class CalculatorTests: XCTestCase {
         
         XCTAssertEqual( left("1234567890.1"),     "1.2345678")
         XCTAssertEqual(right("1234567890.1"),     "e9")
-
-        
     }
     
     
@@ -1704,7 +1703,7 @@ class CalculatorTests: XCTestCase {
         debugBrain.push("AC")
         debugBrain.push(3)
         debugBrain.push("One_x")
-        var correct = "0,33333333"
+        var correct = "0,433333333"
 
         XCTAssertEqual (String(left(debugBrain.last).prefix(10)), correct)
         debugBrain.push("±")

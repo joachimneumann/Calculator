@@ -186,10 +186,10 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
 
         kerning = -0.02 * uiFontSize
         
-        textHeight     = textHeight("0", kerning: kerning)
-        infoTextHeight = textHeight("0", appleFont: infoUiFont, kerning: 0.0)
-        radWidth       = textWidth("Rad", appleFont: infoUiFont, kerning: 0.0)
-        digitWidth     = textWidth("0", kerning: kerning)
+        textHeight     = "0".textHeight(kerning: kerning, appleFont: appleFont)
+        infoTextHeight = "0".textHeight(kerning: 0.0, appleFont: infoUiFont)
+        radWidth       = "Rad".textWidth(kerning: 0.0, appleFont: infoUiFont)
+        digitWidth     = "0".textWidth(kerning: kerning, appleFont: appleFont)
 
 #if os(macOS)
         offsetToVerticallyAlignTextWithkeyboard =
@@ -231,27 +231,6 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
             plusIconTrailingPadding
         }
     }
-
-    private func textSize(string: String, appleFont: AppleFont?, kerning: CGFloat) -> CGSize {
-        let font: AppleFont
-        if appleFont != nil {
-            font = appleFont!
-        } else {
-            font = self.appleFont
-        }
-        var attributes: [NSAttributedString.Key : Any] = [:]
-        attributes[.kern] = kerning
-        attributes[.font] = font
-        return string.size(withAttributes: attributes)
-    }
-    func textWidth(_ string: String, appleFont: AppleFont? = nil, kerning: CGFloat) -> CGFloat {
-        textSize(string: string, appleFont: appleFont, kerning: kerning).width
-    }
-
-    func textHeight(_ string: String, appleFont: AppleFont? = nil, kerning: CGFloat) -> CGFloat {
-        textSize(string: string, appleFont: appleFont, kerning: kerning).height
-    }
-
 }
 
 extension String {
@@ -275,5 +254,20 @@ extension String {
         guard let range = self.range(of: target) else { return self }
         return self.replacingCharacters(in: range, with: replacement)
     }
+    
+    func textWidth(kerning: CGFloat, appleFont: AppleFont) -> CGFloat {
+        var attributes: [NSAttributedString.Key : Any] = [:]
+        attributes[.kern] = kerning
+        attributes[.font] = appleFont
+        return self.size(withAttributes: attributes).width
+    }
+    
+    func textHeight(kerning: CGFloat, appleFont: AppleFont) -> CGFloat {
+        var attributes: [NSAttributedString.Key : Any] = [:]
+        attributes[.kern] = kerning
+        attributes[.font] = appleFont
+        return self.size(withAttributes: attributes).height
+    }
+
 }
 
