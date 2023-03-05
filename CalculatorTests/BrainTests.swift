@@ -253,6 +253,24 @@ class BrainTests: XCTestCase {
         XCTAssertEqual(debugBrain.double, 0.0001)
     }
     
+    func testNegative() {
+        /// -0,7
+        debugBrain.push("AC")
+        debugBrain.push(",")
+        XCTAssertEqual(debugBrain.double, 0.0)
+
+        debugBrain.push("AC")
+        debugBrain.push(",")
+        debugBrain.push(7)
+        XCTAssertEqual(debugBrain.double, 0.7)
+
+        debugBrain.push("AC")
+        debugBrain.push(",")
+        debugBrain.push(7)
+        debugBrain.push("±")
+        XCTAssertEqual(debugBrain.double, -0.7)
+    }
+    
     func testSci() {
         /// 3 e6
         debugBrain.push("AC")
@@ -284,39 +302,6 @@ class BrainTests: XCTestCase {
         debugBrain.push(7)
         debugBrain.push("=")
         XCTAssertEqual(debugBrain.double, 3.0e77)
-
-        /// 3 e-77
-        debugBrain.push("AC")
-        debugBrain.push(3)
-        debugBrain.push("EE")
-        debugBrain.push(7)
-        debugBrain.push(7)
-        debugBrain.push("±")
-        debugBrain.push("=")
-        XCTAssertEqual(debugBrain.double, 3.0e-77)
-
-        /// -3 e-77
-        debugBrain.push("AC")
-        debugBrain.push(3)
-        debugBrain.push("EE")
-        debugBrain.push(7)
-        debugBrain.push(7)
-        debugBrain.push("±")
-        debugBrain.push("=")
-        debugBrain.push("±")
-        XCTAssertEqual(debugBrain.double, -3.0e-77)
-
-        /// -3 e-77
-        debugBrain.push("AC")
-        debugBrain.push(3)
-        debugBrain.push("±")
-        debugBrain.push("EE")
-        debugBrain.push(7)
-        debugBrain.push(7)
-        debugBrain.push("±")
-        debugBrain.push("=")
-        XCTAssertEqual(debugBrain.double, -3.0e-77)
-
 
         /// 8888888
         debugBrain.push("AC")
@@ -351,4 +336,65 @@ class BrainTests: XCTestCase {
         debugBrain.push(8)
         XCTAssertEqual(debugBrain.double, 8.88888888888888888888e18)
     }
+    
+    func testSciNegative() {
+        /// 3 e-77
+        debugBrain.push("AC")
+        debugBrain.push(3)
+        debugBrain.push("EE")
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push("±")
+        debugBrain.push("=")
+        XCTAssertEqual(debugBrain.double, 3.0e-77)
+
+        /// -3 e-77
+        debugBrain.push("AC")
+        debugBrain.push(3)
+        debugBrain.push("EE")
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push("±")
+        debugBrain.push("=")
+        debugBrain.push("±")
+        XCTAssertEqual(debugBrain.double, -3.0e-77)
+
+        /// -3 e-77
+        debugBrain.push("AC")
+        debugBrain.push(3)
+        debugBrain.push("±")
+        debugBrain.push("EE")
+        debugBrain.push(7)
+        debugBrain.push(7)
+        debugBrain.push("±")
+        debugBrain.push("=")
+        XCTAssertEqual(debugBrain.double, -3.0e-77)
+    }
+    
+    func testMemory() {
+        /// memory
+        debugBrain.push("AC")
+        debugBrain.push("mc")
+        debugBrain.push(12)
+        XCTAssertEqual(debugBrain.double, 12.0)
+
+        debugBrain.push("m+")
+        XCTAssertEqual(debugBrain.double, 12.0)
+
+        debugBrain.push("m+")
+        XCTAssertEqual(debugBrain.double, 12.0)
+
+        debugBrain.push("mr")
+        XCTAssertEqual(debugBrain.double, 24.0)
+
+        debugBrain.push(10)
+        XCTAssertEqual(debugBrain.double, 10.0)
+
+        debugBrain.push("m-")
+        XCTAssertEqual(debugBrain.double, 10.0)
+
+        debugBrain.push("mr")
+        XCTAssertEqual(debugBrain.double, 14.0)
+    }
+
 }
