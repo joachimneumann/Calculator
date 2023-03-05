@@ -11,9 +11,13 @@ actor Brain {
     private let brainEngine: BrainEngine
     
     init(precision: Int) {
+        print("brain init")
         self.brainEngine = BrainEngine(precision: precision)
     }
-    
+
+    deinit {
+        print("brain deinit")
+    }
     func operation(_ symbol: String) -> Number {
         brainEngine.operation(symbol)
     }

@@ -31,7 +31,7 @@ class ViewModel: ObservableObject, ShowAs {
     @AppStorage("memoryValue", store: .standard) var memoryValue: String = ""
     @AppStorage("rad", store: .standard) var rad: Bool = false
 
-    private let brain: Brain /// initialized later with _precision.wrappedValue
+    private var brain: Brain? /// initialized later with _precision.wrappedValue
     private var stupidBrain = BrainEngine(precision: 100) /// I want to call fast sync functions
 
     private let keysThatRequireValidNumber = ["±", "%", "/", "x", "-", "+", "=", "( ", " )", "m+", "m-", "x^2", "x^3", "x^y", "e^x", "y^x", "2^x", "10^x", "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10", "x!", "sin", "cos", "tan", "asin", "acos", "atan", "EE", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh"]
@@ -84,7 +84,7 @@ class ViewModel: ObservableObject, ShowAs {
             precision = newPrecision
             precisionDescription = self.precision.useWords
         }
-        let _ = await brain.setPrecision(newPrecision)
+        let _ = await brain?.setPrecision(newPrecision)
         
         /// also change the precision in the displayNumber
         let new = Number("0", precision: newPrecision)
@@ -161,6 +161,10 @@ class ViewModel: ObservableObject, ShowAs {
     
     func touchUp(of symbol: String, screen: Screen) {
         if keyState == .highPrecisionProcessingDisabled {
+            if symbol == "AC" || symbol == "C" {
+                brain = nil
+                brain = Brain(precision: _precision.wrappedValue)
+            }
             keyState = .highPrecisionProcessing
             /// this allows the user to try pressing a button again
             return
@@ -254,7 +258,7 @@ class ViewModel: ObservableObject, ShowAs {
             }
         }
         keyState = .highPrecisionProcessing
-        displayNumber = await brain.operation(symbol)
+        displayNumber = await brain!.operation(symbol)
         await refreshDisplay(screen: screen)
     }
     
@@ -288,3 +292,58 @@ class ViewModel: ObservableObject, ShowAs {
 //        UIPasteboard.general.string = copyData.allInOneLine
     }
 }
+
+joachim@M1 GARMIN MAPS % ls -lh * Europe/*
+-rw-r--r--@ 1 joachim  staff   2.9G Jun 25  2022 Europe/europe_gmapsupp1.img
+-rw-r--r--@ 1 joachim  staff   2.9G Jun 25  2022 Europe/europe_gmapsupp2.img
+-rw-r--r--@ 1 joachim  staff   2.9G Jun 25  2022 Europe/europe_gmapsupp3.img
+-rw-r--r--@ 1 joachim  staff   2.9G Jun 25  2022 Europe/europe_gmapsupp4.img
+-rw-r--r--@ 1 joachim  staff   2.2G Jun 25  2022 Europe/europe_gmapsupp5.img
+-rw-r--r--@ 1 joachim  staff    10G Jun 25  2022 Europe/europe_rout.tgz
+-rwxrwxrwx  1 joachim  staff    47M Jan 25  2021 gmapbmap.img
+-rwxrwxrwx  1 joachim  staff   919M Dec 11  2017 gmapdem.img
+-rwxrwxrwx  1 joachim  staff   577K Apr  8  2021 gmaptz.img
+
+Europe:
+total 50382072
+-rw-r--r--@ 1 joachim  staff   2.9G Jun 25  2022 europe_gmapsupp1.img
+-rw-r--r--@ 1 joachim  staff   2.9G Jun 25  2022 europe_gmapsupp2.img
+-rw-r--r--@ 1 joachim  staff   2.9G Jun 25  2022 europe_gmapsupp3.img
+-rw-r--r--@ 1 joachim  staff   2.9G Jun 25  2022 europe_gmapsupp4.img
+-rw-r--r--@ 1 joachim  staff   2.2G Jun 25  2022 europe_gmapsupp5.img
+-rw-r--r--@ 1 joachim  staff    10G Jun 25  2022 europe_rout.tgz
+/*
+
+                                         2.9G 
+                                         2.9G
+                                         2.9G
+                                         2.9G
+                                         2.2G
+                                          10G
+                                          47M
+                                         919M
+                                         577K
+                                         2.9G
+                                         2.9G
+                                         2.9G
+                                         2.9G
+                                         2.2G
+                                          10G
+
+ 2.9G    Europe/europe_gmapsupp1.img
+ 2.9G    Europe/europe_gmapsupp2.img
+ 2.9G    Europe/europe_gmapsupp3.img
+ 2.9G    Europe/europe_gmapsupp4.img
+ 2.2G    Europe/europe_gmapsupp5.img
+  10G    Europe/europe_rout.tgz
+  47M    gmapbmap.img
+ 919M    gmapdem.img
+ 577K    gmaptz.img
+ 2.9G    europe_gmapsupp1.img
+ 2.9G    europe_gmapsupp2.img
+ 2.9G    europe_gmapsupp3.img
+ 2.9G    europe_gmapsupp4.img
+ 2.2G    europe_gmapsupp5.img
+  10G    europe_rout.tgz
+
+*/

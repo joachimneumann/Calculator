@@ -220,6 +220,7 @@ class BrainEngine {
     }
     
     init(precision: Int) {
+        print("BrainEngine init")
         self.precision = precision
         operatorStack.removeAll()
         n.removeAll()
@@ -227,6 +228,10 @@ class BrainEngine {
         n.append(number("0"))
         //        operation("π")
         //        operation("8")
+    }
+    
+    deinit {
+        print("BrainEngine deallocated")
     }
     
 }
