@@ -12,7 +12,7 @@ class BrainEngine {
     fileprivate var operatorStack = OperatorStack()
     private (set) var precision: Int = 0
     private var pending: Bool
-    private var memory: Number? = nil
+    fileprivate var memory: Number? = nil
     private var nullNumber: Number { number("0") }
     private let constantOperators: Dictionary <String, Inplace> = [
         "π":    Inplace(Gmp.π, 0),
@@ -124,14 +124,13 @@ class BrainEngine {
     }
 
     /// used in the model for mr and paste
-    func replaceLast(with number: Number) -> Number {
+    func replaceLast(with number: Number) {
         if pending {
             n.append(number)
             pending = false
         } else {
             n.replaceLast(with: number)
         }
-        return n.last
     }
     
     /// central function, used in the model
@@ -152,22 +151,22 @@ class BrainEngine {
             memory = nil
         case "m+":
             n.last.toGmp()
-            if memory == nil {
-                memory = n.last.copy()
-            } else {
-                memory!.execute(Gmp.add, with: n.last)
+            guard let memory = memory else {
+                memory = Number(n.last.gmp!)
+                break
             }
+            memory.execute(Gmp.add, with: n.last)
         case "m-":
-            if memory == nil {
-                memory = n.last.copy()
+            n.last.toGmp()
+            guard let memory = memory else {
+                memory = Number(n.last.gmp!)
                 memory!.execute(Gmp.changeSign)
-            } else {
-                memory!.execute(Gmp.sub, with: n.last.copy())
+                break
             }
+            memory.execute(Gmp.sub, with: n.last)
         case "mr":
-            if memory != nil {
-                _ = replaceLast(with: memory!)
-            }
+            guard let memory = memory else { break }
+            replaceLast(with: Number(memory.gmp!))
         case "( ":
             self.operatorStack.push(self.openParenthesis)
         case " )":
@@ -289,6 +288,14 @@ class DebugBrain: BrainEngine {
             n.last.toGmp()
         }
         return n.last.gmp!.toDouble()
+    }
+
+    var memoryDouble: Double {
+        guard let memory = memory else { return 0.0 }
+        if memory.isStr {
+            memory.toGmp()
+        }
+        return memory.gmp!.toDouble()
     }
 
     func speedTestSinSqrt2() async -> String {
