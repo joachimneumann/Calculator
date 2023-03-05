@@ -402,18 +402,27 @@ class BrainTests: XCTestCase {
 
         debugBrain.push("m+")
         XCTAssertEqual(debugBrain.double, 100.0)
+        XCTAssertEqual(debugBrain.memoryDouble, 136.0)
 
         debugBrain.push("mr")
         XCTAssertEqual(debugBrain.double, 136.0)
+        XCTAssertEqual(debugBrain.memoryDouble, 136.0)
 
         debugBrain.push(10)
         XCTAssertEqual(debugBrain.double, 10.0)
+        XCTAssertEqual(debugBrain.memoryDouble, 136.0)
 
         debugBrain.push("m-")
         XCTAssertEqual(debugBrain.double, 10.0)
+        XCTAssertEqual(debugBrain.memoryDouble, 126.0)
 
         debugBrain.push("mr")
         XCTAssertEqual(debugBrain.double, 126.0)
+        XCTAssertEqual(debugBrain.memoryDouble, 126.0)
+        
+        debugBrain.push("mc")
+        XCTAssertEqual(debugBrain.double, 126.0)
+        XCTAssertEqual(debugBrain.memoryDouble, 0.0)
     }
 
 }
