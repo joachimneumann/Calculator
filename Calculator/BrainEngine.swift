@@ -241,7 +241,9 @@ class DebugBrain: BrainEngine {
             "( ", " )", "mc", "m+", "m-", "mr",
             "2nd", "x^2", "x^3", "x^y", "e^x", "y^x", "2^x", "10^x",
             "One_x", "√", "3√", "y√", "logy", "ln", "log2", "log10",
-            "x!", "sin", "cos", "tan", "asin", "acos", "atan", "e", "EE",
+            "x!", "sin", "cos", "tan", "sinD", "cosD", "tanD",
+            "asin", "acos", "atan", "asinD", "acosD", "atanD",
+            "e", "EE",
             "Deg", "Rad", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh", "π", "Rand"]
         if allOperators.contains(numberOrOperator) {
             _ = operation(numberOrOperator)
