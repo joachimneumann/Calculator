@@ -1103,6 +1103,14 @@ class BrainTests: XCTestCase {
         XCTAssertEqual(debugBrain.double, 10_000.0)
     }
 
+    func test_thirdPower() {
+        debugBrain.push("AC")
+        debugBrain.push("2")
+        XCTAssertEqual(debugBrain.double, 2.0)
+        debugBrain.push("x^3")
+        XCTAssertEqual(debugBrain.double, 8.0)
+    }
+
     func test_rootOfNegativeNumber() {
         debugBrain.push("AC")
         debugBrain.push(-2)
@@ -1204,6 +1212,31 @@ class BrainTests: XCTestCase {
             debugBrain.push("tan")
             XCTAssertEqual(debugBrain.double, expectedTan[i], accuracy: precision)
         }
+    }
+    
+    func test_factorial() {
+        debugBrain.push(69)
+        debugBrain.push("x!")
+        XCTAssertEqual(debugBrain.double, 1.711224524281413e98)
+
+        debugBrain.push(300)
+        debugBrain.push("x!")
+        debugBrain.push("/")
+        debugBrain.push(1)
+        debugBrain.push("EE")
+        debugBrain.push(600)
+        debugBrain.push("=")
+        XCTAssertEqual(debugBrain.double, 3.060575122164406e14) /// 3.06 e614 / 1e600 = 3.06 e14
+    }
+    
+    func test_log() {
+        debugBrain.push(10.0)
+        debugBrain.push("ln")
+        XCTAssertEqual(debugBrain.double, 2.302585092994046)
+
+        debugBrain.push(100_000.0)
+        debugBrain.push("log10")
+        XCTAssertEqual(debugBrain.double, 5.0)
     }
     
     func _testSpeed1() throws {
