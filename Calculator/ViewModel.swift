@@ -75,6 +75,7 @@ class ViewModel: ObservableObject, ShowAs {
             backgroundColor[symbol] = keyColor.upColor(for: symbol, isPending: false)
             textColor[symbol] = keyColor.textColor(for: symbol, isPending: false)
         }
+        backgroundColor["plus"] = keyColor.upColor(for: "+", isPending: false)
     }
     
     /// the update of the precision in brain can be slow.
@@ -161,7 +162,7 @@ class ViewModel: ObservableObject, ShowAs {
     
     func touchUp(of symbol: String, screen: Screen) {
         if keyState == .highPrecisionProcessingDisabled {
-            keyState = .highPrecisionProcessing
+            keyState = .notPressed
             /// this allows the user to try pressing a button again
             return
         }
