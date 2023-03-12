@@ -21,13 +21,14 @@ struct Icons : View {
     
     var plus: some View {
         ZStack() {
+            let plusIconBackgroundColor = viewModel.backgroundColor["plus"] ?? Color.gray
             Image(systemName: "plus.circle.fill")
                 .resizable()
                 .font(Font.title.weight(.thin))
                 .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
                 .frame(width: screen.plusIconSize, height: screen.plusIconSize)
                 .background(.white)
-                .foregroundColor(.gray)
+                .foregroundColor(plusIconBackgroundColor)
                 .clipShape(Circle())
                 .animation(.linear, value: isZoomed)
                 .onTapGesture {
@@ -36,7 +37,7 @@ struct Icons : View {
                 .accessibilityIdentifier("plusButton")
             /// This circle removes antialising effects from the background color at the edge of the plus image
             Circle()
-                .stroke(.gray, lineWidth: 1)
+                .stroke(plusIconBackgroundColor, lineWidth: 1)
                 .frame(width: screen.plusIconSize, height: screen.plusIconSize)
         }
     }
