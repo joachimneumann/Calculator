@@ -18,13 +18,18 @@ struct Icons : View {
     @State var pasteDone = true
     @State var isValidPasteContent = true
     @State var wait300msDone = false
-    
+#if os(macOS)
+    private let plusWeight = Font.Weight.light
+#else
+    private let plusWeight = Font.Weight.thin
+#endif
+
     var plus: some View {
         ZStack() {
             let plusIconBackgroundColor = viewModel.backgroundColor["plus"] ?? Color.gray
             Image(systemName: "plus.circle.fill")
                 .resizable()
-                .font(Font.title.weight(.thin))
+                .font(Font.title.weight(plusWeight))
                 .rotationEffect(isZoomed ? .degrees(-45.0) : .degrees(0.0))
                 .frame(width: screen.plusIconSize, height: screen.plusIconSize)
                 .background(.white)

@@ -35,23 +35,31 @@ struct Label: View {
         /// in MacOS, the key shape is a rectangle, which allows for larger labels.
         /// However, I don't want to emphesize the digits as much as on iOS
         let sizeFactorDigits          = 1.5
+        let sizeFactorCAC             = 1.4
         let sizeFactorSpecialOperator = 1.12
         let sizeFactorOperator        = 1.04
+        let sizeFactorOperatorX       = sizeFactorOperator * 0.86
         let sizeFactorComma           = 1.8
+        let sizeFactorScientific      = 1.2
 #else
         let sizeFactorDigits          = 1.5
+        let sizeFactorCAC             = sizeFactorDigits
         let sizeFactorSpecialOperator = 0.9333
         let sizeFactorOperator        = 0.8666
+        let sizeFactorOperatorX       = sizeFactorOperator
         let sizeFactorComma           = 1.5
+        let sizeFactorScientific      = 1.0
 #endif
 
         switch symbol {
-        case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "C", "AC":
+        case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
             sizeFactor = sizeFactorDigits
+        case "C", "AC":
+            sizeFactor = sizeFactorCAC
         case "±", "%":
             sizeFactor = sizeFactorSpecialOperator
         case "x":
-            sizeFactor = 0.8 /// the sfImage multiply is a bit large
+            sizeFactor = sizeFactorOperatorX
         case _ where sfImageforKey.keys.contains(symbol):
             sizeFactor = sizeFactorOperator
         case ",", ".":
@@ -59,7 +67,7 @@ struct Label: View {
         case "One_x":
             sizeFactor = 0.9
         default:
-            sizeFactor = 1.0
+            sizeFactor = sizeFactorScientific
         }
         self.size = size * sizeFactor
     }
@@ -90,7 +98,6 @@ struct Label: View {
         case "acosh": Pow(base: "cosh", exponent: "-1", size: size)
         case "atanh": Pow(base: "tanh", exponent: "-1", size: size)
         default:
-            
             if let sfImage = sfImageforKey[symbol] {
                 Image(systemName: sfImage)
                     .resizable()
