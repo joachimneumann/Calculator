@@ -474,8 +474,6 @@ extern "C" {
 using std::FILE;
 #endif
 
-#include <stdlib.h>
-
 #define mp_set_memory_functions __gmp_set_memory_functions
 __GMP_DECLSPEC void mp_set_memory_functions (void *(*) (size_t),
 				      void *(*) (void *, size_t, size_t),
