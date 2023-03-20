@@ -87,7 +87,7 @@ mkdir signed
 cp -r iPhone simulator x86_64-catalyst arm64-catalyst signed
 
 # code signing: get the correct expanded identity with the command $security find-identity
-identity='A4E25604F83A7BDD478B07BC86807B554C447B97'
+identity='D5F6BA5B4198B5EE78827B42C20035A746E6AA3E'
 codesign -s ${identity} signed/iPhone/libgmp.a
 codesign -s ${identity} signed/simulator/libgmp.a
 codesign -s ${identity} signed/x86_64-catalyst/libgmp.a
