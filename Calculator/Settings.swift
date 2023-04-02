@@ -86,7 +86,7 @@ struct Settings: View {
             settingsDecimalSeparator       = screen.decimalSeparator
             settingsGroupingSeparator      = screen.groupingSeparator
         }
-#if !os(macOS)
+#if os(iOS)
         .navigationBarHidden(true)
 #endif
         .navigationBarBackButtonHidden(true)
@@ -148,7 +148,7 @@ struct Settings: View {
         }
         
         var precisionStepper: some View {
-#if os(macOS)
+#if os(macOS) || targetEnvironment(macCatalyst)
             let h: CGFloat = 22.0
 #else
             let h: CGFloat = 25.0
@@ -212,7 +212,7 @@ struct Settings: View {
         }
         
         var measurementLabel: some View {
-#if os(macOS)
+#if os(macOS) || targetEnvironment(macCatalyst)
             let h: CGFloat = 60.0 * 12.0 / 16.0
 #else
             let h: CGFloat = 60.0

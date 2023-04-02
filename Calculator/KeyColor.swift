@@ -17,28 +17,33 @@ struct KeyColor {
             self.upColor = upColor
             self.downColor = downColor
         }
-        init(_ textGrayscale: CGFloat, _ upGrayscale: CGFloat, _ downGrayscale: CGFloat) {
+        init(_ textGrayscale: CGFloat, _ upGrayscale: CGFloat, _ downGrayscale: CGFloat, _ color: CGFloat = 0) {
             self.init(textColor: Color(white: textGrayscale),
                       upColor:   Color(white: upGrayscale),
                       downColor: Color(white: downGrayscale))
         }
+        init(hue: CGFloat, saturation: CGFloat, brightness: CGFloat) {
+            let darker = Color(hue: hue, saturation: saturation, brightness: brightness*0.75)
+            let color = Color(hue: hue, saturation: saturation, brightness: brightness)
+            self.init(textColor: .white, upColor: color, downColor: darker)
+        }
     }
     
-#if os(macOS)
-//    private let digitColors             = ThreeColors(0.90, 0.80, 0.45)
-//    private let operatorColors          = ThreeColors(0.90, 0.40, 0.70)
+#if os(macOS) || targetEnvironment(macCatalyst)
+//    private let digitColors             = ThreeColors(1.00, 0.20, 0.45)
+//    private let operatorColors          = ThreeColors(0.92, 0.40, 0.50)
 //    private let pendingOperatorColors   = ThreeColors(0.30, 0.90, 0.80)
-//    private let scientificColors        = ThreeColors(0.90, 0.30, 0.32)
+//    private let scientificColors        = ThreeColors(0.90, 0.12, 0.32)
 //    private let pendingScientificColors = ThreeColors(0.30, 0.70, 0.60)
-//    private let secondColors            = ThreeColors(0.90, 0.30, 0.12)
-//    private let secondActiveColors      = ThreeColors(0.20, 0.60, 0.60)
-    private let digitColors             = ThreeColors(1.000, 0.490, 0.690)
-    private let operatorColors          = ThreeColors(0.925, 0.396, 0.498)
-    private let pendingOperatorColors   = ThreeColors(0.300, 0.900, 0.800)
-    private let scientificColors        = ThreeColors(0.925, 0.396, 0.498)
-    private let pendingScientificColors = ThreeColors(0.300, 0.700, 0.600)
-    private let secondColors            = ThreeColors(0.925, 0.396, 0.498)
-    private let secondActiveColors      = ThreeColors(0.925, 0.300, 0.498)
+//    private let secondColors            = ThreeColors(0.93, 0.12, 0.12)
+//    private let secondActiveColors      = ThreeColors(0.93, 0.60, 0.60)
+    private let digitColors             = ThreeColors(1.00, 0.38, 0.70)
+    private let operatorColors          = ThreeColors(hue: 0.52, saturation: 0.45, brightness: 0.75)
+    private let pendingOperatorColors   = ThreeColors(hue: 0.52, saturation: 0.45, brightness: 0.75)
+    private let scientificColors        = ThreeColors(1.00, 0.23, 0.32)
+    private let pendingScientificColors = ThreeColors(0.30, 0.70, 0.60)
+    private let secondColors            = ThreeColors(1.00, 0.23, 0.32)
+    private let secondActiveColors      = ThreeColors(0.20, 0.60, 0.60)
 #else
     private let digitColors             = ThreeColors(1.00, 0.20, 0.45)
     private let operatorColors          = ThreeColors(1.00, 0.50, 0.70)
@@ -54,7 +59,7 @@ struct KeyColor {
             return digitColors
         } else if symbol == "2nd" {
             return secondColors
-        } else if ["C", "AC", "±", "%", "/", "x", "-", "+", "="].contains(symbol) {
+        } else if ["/", "x", "-", "+", "="].contains(symbol) {
             return pending ? pendingOperatorColors : operatorColors
         } else {
             return pending ? pendingScientificColors : scientificColors

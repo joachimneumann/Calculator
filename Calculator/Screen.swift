@@ -107,8 +107,8 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         //print("Screen INIT", screenSize)
 
         
-#if os(macOS)
-        backgroundColor = Color(white: 80.0/255.0)
+#if os(macOS) || targetEnvironment(macCatalyst)
+        backgroundColor = .black // Color(white: 80.0/255.0)
         defaultTextColor = Color(white: 236.0/255.0)
         isPad = false
         let isPortrait = false
@@ -140,7 +140,7 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         let keyWidth: CGFloat
         let keyHeight: CGFloat
         
-#if os(macOS)
+#if os(macOS) || targetEnvironment(macCatalyst)
         keyWidth = (calculatorWidth - 9.0 * keySpacing) * 0.1
         keyboardHeight = 0.815 * screenSize.height
         keyHeight = (keyboardHeight - 4.0 * keySpacing) * 0.2
@@ -173,7 +173,7 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         iconsWidth   = keyboardHeight * 0.16
         plusIconTrailingPadding = plusIconSize * 0.4
         ePadding = isPortraitPhone ? plusIconSize * 0.1 : plusIconSize * 0.3
-#if os(macOS)
+#if os(macOS) || targetEnvironment(macCatalyst)
         uiFontSize = (0.22 * keyboardHeight).rounded()
         infoUiFontSize = 12.0
 #else
@@ -191,7 +191,7 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         radWidth       = "Rad".textWidth(kerning: 0.0, appleFont: infoUiFont)
         digitWidth     = "0".textWidth(kerning: kerning, appleFont: appleFont)
 
-#if os(macOS)
+#if os(macOS) || targetEnvironment(macCatalyst)
         offsetToVerticallyAlignTextWithkeyboard =
         CGFloat(screenSize.height) -
         CGFloat(keyboardHeight) -
