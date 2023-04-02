@@ -18,7 +18,7 @@ struct Icons : View {
     @State var pasteDone = true
     @State var isValidPasteContent = true
     @State var wait300msDone = false
-#if os(macOS)
+#if os(macOS) || targetEnvironment(macCatalyst)
     private let plusWeight = Font.Weight.light
 #else
     private let plusWeight = Font.Weight.thin
