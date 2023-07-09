@@ -23,6 +23,11 @@ struct CalculatorApp: App {
                 .background(screen.backgroundColor)
         }
         .windowResizability(.contentSize)
-        .windowStyle(HiddenTitleBarWindowStyle())
+        .windowStyle(.hiddenTitleBar)
     }
 }
+
+class AppDelegate: NSObject, NSApplicationDelegate {
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { true }
+}
+

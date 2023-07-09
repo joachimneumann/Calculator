@@ -173,11 +173,10 @@ struct Screen: Equatable, DisplayLengthLimiter, Separators {
         iconsWidth   = keyboardHeight * 0.16
         plusIconTrailingPadding = plusIconSize * 0.4
         ePadding = isPortraitPhone ? plusIconSize * 0.1 : plusIconSize * 0.3
+        uiFontSize = (0.16 * keyboardHeight).rounded()
 #if os(macOS) || targetEnvironment(macCatalyst)
-        uiFontSize = (0.22 * keyboardHeight).rounded()
         infoUiFontSize = 12.0
 #else
-        uiFontSize = (0.16 * keyboardHeight).rounded()
         if isPortraitPhone { uiFontSize = 0.125 * keyboardHeight }
         infoUiFontSize = 16.0
 #endif
