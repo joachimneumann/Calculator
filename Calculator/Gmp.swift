@@ -14,7 +14,7 @@ var globalUnsignedLongInt: CUnsignedLong = 0
 
 class Gmp: Equatable, CustomDebugStringConvertible {
     private var bits: Int
-    private (set) var precision: Int
+    private(set) var precision: Int
 
     /// init with zeros. The struct will be initialized correctly in init() with mpfr_init2()
     private var mpfr: mpfr_t = mpfr_t(_mpfr_prec: 0, _mpfr_sign: 0, _mpfr_exp: 0, _mpfr_d: &globalUnsignedLongInt)

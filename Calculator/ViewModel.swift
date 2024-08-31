@@ -26,7 +26,7 @@ class ViewModel: ObservableObject, ShowAs {
     var showPrecision: Bool = false
     var secondActive = false
 
-    @AppStorage("precision", store: .standard) private (set) var precision: Int = 1000
+    @AppStorage("precision", store: .standard) private(set) var precision: Int = 1000
     @AppStorage("showPreliminaryResults", store: .standard) var showPreliminaryResults: Bool = true
     @AppStorage("memoryValue", store: .standard) var memoryValue: String = ""
     @AppStorage("rad", store: .standard) var rad: Bool = false

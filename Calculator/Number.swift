@@ -8,7 +8,7 @@
 import Foundation
 
 class Number: CustomDebugStringConvertible, Equatable {
-    private (set) var precision: Int = 0
+    private(set) var precision: Int = 0
     private var _str: String?
     private var _gmp: Gmp?
     

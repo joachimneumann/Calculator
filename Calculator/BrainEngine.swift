@@ -10,7 +10,7 @@ import Foundation
 class BrainEngine {
     fileprivate var n = NumberStack()
     fileprivate var operatorStack = OperatorStack()
-    private (set) var precision: Int = 0
+    private(set) var precision: Int = 0
     private var pending: Bool
     fileprivate var memory: Number? = nil
     private var nullNumber: Number { number("0") }
