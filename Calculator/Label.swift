@@ -31,7 +31,7 @@ struct Label: View {
         self.symbol = symbol
         self.color = color
         
-#if os(macOS)
+#if os(macOS) || targetEnvironment(macCatalyst)
         /// in MacOS, the key shape is a rectangle, which allows for larger labels.
         /// However, I don't want to emphesize the digits as much as on iOS
         let sizeFactorDigits          = 1.5

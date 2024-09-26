@@ -64,7 +64,7 @@ struct Calculator: View {
         return VStack(spacing: 0.0) {
             Spacer(minLength: 0.0)
             Rectangle()
-#if os(macOS)
+#if os(macOS) || targetEnvironment(macCatalyst)
                 .foregroundColor(.clear)
 #else
                 .foregroundColor(screen.backgroundColor)
@@ -118,7 +118,7 @@ struct Calculator: View {
                 .overlay() {
                     landscapeKeyboardPlusStuff
                 }
-#if !os(macOS)
+#if os(iOS)
                 .navigationBarHidden(true)
 #endif
         }

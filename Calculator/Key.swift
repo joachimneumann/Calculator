@@ -44,7 +44,7 @@ struct Key: View {
             .foregroundColor(textColor)
             .frame(width: keySize.width, height: keySize.height)
             .background(backgroundColor)
-#if os(macOS)
+#if os(macOS) || targetEnvironment(macCatalyst)
             .clipShape(Rectangle())
 #else
             .clipShape(Capsule())
